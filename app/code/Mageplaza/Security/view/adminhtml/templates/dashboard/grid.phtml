@@ -1,0 +1,139 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Security
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+$numColumns = count($block->getColumns());
+?>
+<?php if ($block->getCollection()) : ?>
+    <?php if ($block->isReports()) : ?>
+        <style>
+            #container > #mp-login-log {
+                display: none;
+            }
+
+            #mp-login-log > .dashboard-item-title {
+                display: none;
+            }
+        </style>
+    <?php endif; ?>
+    <div class="dashboard-item" id="mp-login-log">
+        <div class="dashboard-item-title"><?= /* @noEscape */ __('Login Log') ?></div>
+        <div class="dashboard-item-content">
+            <?php if ($block->getCollection()->getSize() > 0) : ?>
+                <table class="admin__table-primary dashboard-data" id="<?= /* @noEscape */ $block->getId() ?>_table">
+                    <?php
+                    /* This part is commented to remove all <col> tags from the code. */
+                    /* foreach ($block->getColumns() as $_column): ?>
+                    <col <?= $_column->getHtmlProperty() ?> />
+                    <?php endforeach; */ ?>
+                    <?php if ($block->getHeadersVisibility() || $block->getFilterVisibility()) : ?>
+                        <thead>
+                        <?php if ($block->getHeadersVisibility()) : ?>
+                            <tr>
+                                <?php foreach ($block->getColumns() as $_column) : ?>
+                                    <?= $_column->getHeaderHtml() ?>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endif; ?>
+                        </thead>
+                    <?php endif; ?>
+                    <?php if (!$block->getIsCollapsed()) : ?>
+                        <tbody>
+                        <?php foreach ($block->getCollection() as $_index => $_item) : ?>
+                            <tr title="<?= /* @noEscape */ $block->getRowUrl($_item) ?>">
+                                <?php $i = 0;
+                                foreach ($block->getColumns() as $_column) : ?>
+                                    <td class="<?= /* @noEscape */ $_column->getCssProperty() ?> <?= ++$i === $numColumns ? 'last' : '' ?>">
+                                        <?= /* @noEscape */ ($_column->getRowField($_item) != '') ? $_column->getRowField($_item) : '&nbsp;' ?>
+                                    </td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    <?php endif; ?>
+                </table>
+            <?php else : ?>
+                <div class="<?= /* @noEscape */ $block->getEmptyTextClass() ?>"><?= /* @noEscape */ $block->getEmptyText() ?></div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <script>
+        require([
+            'jquery'
+        ], function ($) {
+            $(document).ready(function () {
+                $('.dashboard-secondary').append($('#mp-login-log'));
+            })
+        });
+    </script>
+    <?php if ($block->canDisplayContainer()) : ?>
+        <script>
+            var deps = [];
+
+            <?php if ($block->getDependencyJsObject()) : ?>
+            deps.push('uiRegistry');
+            <?php endif; ?>
+
+            <?php if (strpos($block->getRowClickCallback(), 'order.') !== false) : ?>
+            deps.push('Magento_Sales/order/create/form');
+            <?php endif; ?>
+
+            deps.push('mage/adminhtml/grid');
+
+            require(deps, function (<?=($block->getDependencyJsObject() ? 'registry' : '') ?>) {
+                <?php //TODO: getJsObjectName and getRowClickCallback has unexpected behavior. Should be removed ?>
+
+                <?php if ($block->getDependencyJsObject()) : ?>
+                registry.get('<?= /** noEscape */ $block->getDependencyJsObject() ?>', function (<?= /** noEscape */ $block->getDependencyJsObject() ?>) {
+                    <?php endif; ?>
+
+                    <?= /** noEscape */ $block->getJsObjectName() ?> = new varienGrid('<?= /** noEscape */ $block->getId() ?>', '<?= /** noEscape */ $block->getGridUrl() ?>', '<?= /** noEscape */ $block->getVarNamePage() ?>', '<?= /** noEscape */ $block->getVarNameSort() ?>', '<?= /** noEscape */ $block->getVarNameDir() ?>', '<?= /** noEscape */ $block->getVarNameFilter() ?>');
+                    <?= /** noEscape */ $block->getJsObjectName() ?>.
+                        useAjax = '<?= /** noEscape */ $block->getUseAjax() ?>';
+                    <?php if ($block->getRowClickCallback()) : ?>
+                    <?= /** noEscape */ $block->getJsObjectName() ?>.
+                        rowClickCallback = <?= /** noEscape */ $block->getRowClickCallback() ?>;
+                    <?php endif; ?>
+                    <?php if ($block->getCheckboxCheckCallback()) : ?>
+                    <?= /** noEscape */ $block->getJsObjectName() ?>.
+                        checkboxCheckCallback = <?= /** noEscape */ $block->getCheckboxCheckCallback() ?>;
+                    <?php endif; ?>
+                    <?php if ($block->getRowInitCallback()) : ?>
+                    <?= /** noEscape */ $block->getJsObjectName() ?>.
+                        initRowCallback = <?= /** noEscape */ $block->getRowInitCallback() ?>;
+                    <?= /** noEscape */ $block->getJsObjectName() ?>.
+                    rows.each(function (row) {
+                        <?= /** noEscape */ $block->getRowInitCallback() ?>(<?= /** noEscape */ $block->getJsObjectName() ?>, row
+                        )
+                    });
+                    <?php endif; ?>
+                    <?php if ($block->getMassactionBlock()->isAvailable()) : ?>
+                    <?= /** noEscape */ $block->getMassactionBlock()->getJavaScript() ?>
+                    <?php endif ?>
+
+                    <?php if ($block->getDependencyJsObject()) : ?>
+                });
+                <?php endif; ?>
+            });
+        </script>
+    <?php endif; ?>
+<?php endif ?>
+
+

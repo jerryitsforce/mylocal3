@@ -1,0 +1,66 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Branch8\Refund\Api\SalesRefundRepositoryInterface" type="Branch8\Refund\Model\SalesRefundRepository"/>
+	<preference for="Branch8\Refund\Api\Data\SalesRefundInterface" type="Branch8\Refund\Model\SalesRefund"/>
+	<preference for="Branch8\Refund\Api\Data\SalesRefundSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<!-- Logger -->
+	<virtualType name="Branch8\Refund\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">Refund</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\Refund\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\Refund\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <!-- Hotai_RefundProcessor_Command -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="HotaiRefundConsole" xsi:type="object">Branch8\Refund\Console\Command\RefundProcessor</item>
+			</argument>
+		</arguments>
+	</virtualType>
+    <!-- Hotai_Refund_Manual_Command -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="HotaiRefundApiConsole" xsi:type="object">Branch8\Refund\Console\Command\RefundManualApi</item>
+			</argument>
+		</arguments>
+	</virtualType>
+    <!-- Hotai_Cron_Refund_Command -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="HotaiRefundCronConsole" xsi:type="object">Branch8\Refund\Console\Command\RefundCron</item>
+			</argument>
+		</arguments>
+	</virtualType>
+	<!-- Hotai_Refund_Email_Result_Command -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="HotaiRefundEmailResultConsole" xsi:type="object">Branch8\Refund\Console\Command\SendRefundResultEmail</item>
+			</argument>
+		</arguments>
+	</virtualType>
+    <!-- Before refund -->
+    <!-- <type name="Magento\Sales\Model\Order\Payment">
+        <plugin name="Hotai_Refund_Plugin" type="Branch8\Refund\Plugin\Payment" />
+    </type> -->
+
+	<!-- Before refund -->
+    <type name="Magento\Sales\Api\CreditmemoManagementInterface">
+        <plugin name="Hotai_Credit_Memo_Refund_Plugin" type="Branch8\Refund\Plugin\Creditmemo" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Branch8\Refund\Observer\LogCreditmemoCreatorAfterCommit">
+        <arguments>
+            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
+        </arguments>
+    </type>
+</config>

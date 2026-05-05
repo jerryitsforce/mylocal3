@@ -1,0 +1,46 @@
+<?php
+/** @var $block \Branch8\Customer\Block\AutoLogout\SessionRefresher
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+$refreshInterval = $block->getRefreshInterval();
+?>
+<?php if ($refreshInterval && $block->isLoggedIn()): ?>
+    <?php
+    $scriptString = <<<script
+    require([
+        'jquery',
+        'mage/url'
+    ], function ($, urlBuilder) {
+        'use strict';
+
+        function refreshSession() {
+            return new Promise((resolve) => {
+                $.ajax({
+                    url: urlBuilder.build('hotaiconnected_account/customer/refreshsession'),
+                    method: 'POST',
+                    data: {
+                        form_key: '{$block->escapeJs($block->getFormKey())}'
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function(response) {
+                        resolve(response.success);
+                    },
+                    error: function(xhr, status, error) {
+                        resolve(false);
+                    }
+                });
+            });
+        }
+
+        setInterval(async function() {
+            const success = await refreshSession();
+            if (success) {
+                console.log('Session refreshed successfully');
+            }
+        }, {$block->escapeJs($refreshInterval)} * 60 * 1000);
+    });
+    script;
+    ?>
+    <?= /* @noEscape */ $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptString, false) ?>
+<?php endif; ?>

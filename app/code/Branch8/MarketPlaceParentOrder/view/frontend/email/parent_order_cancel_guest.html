@@ -1,0 +1,99 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Your %store_name order has been canceled" store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var formattedBillingAddress|raw":"Billing Address",
+"var order_data.email_customer_note|escape|nl2br":"Email Order Note",
+"var order.increment_id":"Order Id",
+"layout handle=\"sales_email_order_items\" order=$order area=\"frontend\"":"Order Items Grid",
+"var payment_html|raw":"Payment Details",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var order.shipping_description":"Shipping Description",
+"var shipping_msg":"Shipping message",
+"var created_at_formatted":"Order Created At (datetime)",
+"var store.frontend_name":"Store Frontend Name",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var store_hours":"Store Hours",
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var order_data.is_not_virtual":"Order Type",
+"var order":"Order",
+"var order_id": "Order DB Id",
+"var order_data.customer_name":"Customer Name"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>訂單取消通知</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    親愛的○○({{trans "%name" name=$order_data.customer_name}})您好，<br/>
+    我們已經收到並處理了您的訂單取消請求，現通知您您的訂單編號 {{trans "%name" name=$increment_id}} 已成功取消，取消訂單的詳細信息如下：
+<p>
+
+<table cellpadding="0" cellspacing="0" class="order-info canceled-order m-bottom__m">
+    <thead>
+    <tr>
+        <th>訂單明細</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">訂單編號</td>
+                    <td class="value">
+                        <a target="_blank" href="#">{{var increment_id}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">訂單日期</td>
+                    <td class="value">{{var order_data.created_at}}</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">預計退還金額</td>
+                    <td class="value">{{var order_data.paid|raw}}</td>
+                </tr>
+                {{depend order_data.is_point}}
+                <tr class="order_point-discount">
+                    <td class="label">點數折抵</td>
+                    <td class="value">{{var order_data.point_discount|raw}}</td>
+                </tr>
+                {{/depend}}
+                {{depend detail.shipping_method}}
+                <tr class="order_shipping-method">
+                    <td class="label">物流方式</td>
+                    <td class="value">{{var detail.shipping_description}}</td>
+                </tr>
+                {{/depend}}
+                <tr class="order_items">
+                    <td class="label">訂購商品</td>
+                    <td class="value">
+                        {{layout handle="sales_email_parent_order_items" parent_order_id=$parent_order_id area="frontend"}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    如果若您已經付款，我們將會在7個工作日內將款項退還至您的原支付方式的帳號。<br>
+    請注意，款項到帳時間可能會根據您的支付方式和銀行流程有所不同
+    若有其他問題，請至 帳號管理 > <a target="_blank" class="link-primary" href='{{var order_data.url_history}}'>訂單查詢</a> 瀏覽完整訂單內容。
+</p>
+
+{{template config_path="design/email/footer_template"}}

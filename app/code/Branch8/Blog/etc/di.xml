@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--Grid collection-->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="branch8_blog_post_listing_data_source" xsi:type="string">Branch8\Blog\Model\ResourceModel\Post\Grid\Collection</item>
+                <item name="branch8_blog_tag_listing_data_source" xsi:type="string">Branch8\Blog\Model\ResourceModel\Tag\Grid\Collection</item>
+                <item name="branch8_blog_topic_listing_data_source" xsi:type="string">Branch8\Blog\Model\ResourceModel\Topic\Grid\Collection</item>
+                <item name="branch8_blog_comment_listing_data_source" xsi:type="string">Branch8\Blog\Model\ResourceModel\Comment\Grid\Collection</item>
+                <item name="branch8_blog_author_listing_data_source" xsi:type="string">Branch8\Blog\Model\ResourceModel\Author\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Blog\Model\ResourceModel\Author\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_blog_author</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Blog\Model\ResourceModel\Author</argument>
+        </arguments>
+    </type>
+    <virtualType name="Branch8\Blog\Model\ResourceModel\Post\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_blog_post</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Blog\Model\ResourceModel\Post</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\Blog\Model\ResourceModel\Tag\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_blog_tag</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Blog\Model\ResourceModel\Tag</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\Blog\Model\ResourceModel\Topic\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_blog_topic</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Blog\Model\ResourceModel\Topic</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\App\Rss\RssManagerInterface">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="blog_posts" xsi:type="string">Branch8\Blog\Block\Post\Rss\Lists</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Branch8\Blog\Api\Data\PostInterface" type="Branch8\Blog\Model\Post" />
+    <preference for="Branch8\Blog\Api\Data\CommentInterface" type="Branch8\Blog\Model\Comment" />
+    <preference for="Branch8\Blog\Api\Data\TagInterface" type="Branch8\Blog\Model\Tag" />
+    <preference for="Branch8\Blog\Api\Data\CategoryInterface" type="Branch8\Blog\Model\Category" />
+    <preference for="Branch8\Blog\Api\Data\TopicInterface" type="Branch8\Blog\Model\Topic" />
+    <preference for="Branch8\Blog\Api\Data\AuthorInterface" type="Branch8\Blog\Model\Author" />
+    <preference for="Branch8\Blog\Api\Data\BlogConfigInterface" type="Branch8\Blog\Model\BlogConfig" />
+    <preference for="Branch8\Blog\Api\Data\MonthlyArchiveInterface" type="Branch8\Blog\Model\MonthlyArchive" />
+    <preference for="Branch8\Blog\Api\Data\Config\GeneralInterface" type="Branch8\Blog\Model\Config\General" />
+    <preference for="Branch8\Blog\Api\Data\Config\SidebarInterface" type="Branch8\Blog\Model\Config\Sidebar" />
+    <preference for="Branch8\Blog\Api\Data\Config\SeoInterface" type="Branch8\Blog\Model\Config\Seo" />
+    <preference for="Branch8\Blog\Api\BlogRepositoryInterface" type="Branch8\Blog\Model\Api\BlogRepository" />
+
+    <preference for="Branch8\Blog\Api\Data\SearchResult\PostSearchResultInterface" type="Branch8\Blog\Model\ResourceModel\Post\Collection" />
+    <preference for="Branch8\Blog\Api\Data\SearchResult\CategorySearchResultInterface" type="Branch8\Blog\Model\ResourceModel\Category\Collection" />
+    <preference for="Branch8\Blog\Api\Data\SearchResult\TagSearchResultInterface" type="Branch8\Blog\Model\ResourceModel\Tag\Collection" />
+    <preference for="Branch8\Blog\Api\Data\SearchResult\TopicSearchResultInterface" type="Branch8\Blog\Model\ResourceModel\Topic\Collection" />
+    <preference for="Branch8\Blog\Api\Data\SearchResult\CommentSearchResultInterface" type="Branch8\Blog\Model\ResourceModel\Comment\Collection" />
+
+</config>

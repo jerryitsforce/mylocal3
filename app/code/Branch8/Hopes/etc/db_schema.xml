@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_shipment_track" resource="sales" engine="innodb" comment="Sales Flat Shipment Track">
+        <column xsi:type="varchar" name="arrival_date" nullable="true" length="50" comment="Arrival Date"/>
+    </table>
+    <table name="marketplace_rma_details">
+        <column xsi:type="smallint" name="is_sent_to_hopes" nullable="false" default="0" comment="Is Sent To Hopes"/>
+    </table>
+</schema>

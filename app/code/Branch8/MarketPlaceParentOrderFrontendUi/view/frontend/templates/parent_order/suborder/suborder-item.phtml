@@ -1,0 +1,317 @@
+<?php
+use Magento\Sales\Model\Order;
+use Branch8\MarketPlaceParentOrder\Model\ParentOrder;
+use Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\History;
+use Branch8\HotaiCore\Model\Order\Status;
+
+$mpRmaHelper = $this->helper(\Branch8\Rma\Helper\Data::class);
+
+$viewModel = $block->getViewModel();
+
+$customerInfoHelper = $this->helper('Branch8\Customer\Helper\Info');
+$giftConfirmHelper = $this->helper(\Branch8\GiftToFriend\Helper\Confirm::class);
+
+$_order = $block->getOrder();
+$parentBlock = $block->getHistoryBlock();
+?>
+<?php 
+    $isGiftOrder = $block->isGiftOrder($_order);
+    $expiredDate = $giftConfirmHelper->getOrderExpiredDate($_order->getGiftExpiredAt(), 'Y/m/d H:i');
+    $giftConfirmUrl = $giftConfirmHelper->getConfirmationUrl($_order);
+    ?>
+<div class="order-item" data-parent-number="<?= $_order->getData('increment_id') ?>" data-invoice-fail="<?= $block->hasInvoiceFail($_order)? '1' : '0' ?>"  data-full-points-products="<?= $block->hasOnlyPointsProducts($_order)? '1' : '0' ?>">
+    <?php $parentOrderStatus = $parentBlock->getParentOrderStatus($_order) ?>
+    <div class="order-header no-border-bottom" data-parent-order-status="<?= $parentOrderStatus ?>" data-order-detail-state="<?= $_order->getDetail()->getState() ?>" data-order-detail-status="<?= $_order->getDetail()->getStatus() ?>" data-order-detail-rma="<?= $_order->getDetail()->getRmaStatus() ?>">
+        <h5>
+            <?= $block->escapeHtml(__('Order Time')) ?>
+            <?= $block->escapeHtml($parentBlock->getOrderDate($_order->getCreatedAt())) ?>
+            <span data-parent-id="parent-<?= $_order->getId() ?>" class="order-status-badge <?= $parentOrderStatus ?>">
+                <?= $parentBlock->getParentOderStatusLabel($parentOrderStatus) ?>
+            </span>
+        </h5>
+        <?php if($isGiftOrder): ?>
+            <p class="order-number">
+                <span class="title"><?= $block->escapeHtml(__('訂單類別')) ?></span>
+                <span class="content">
+                    <span class="gift-order-label"><?= $block->escapeHtml(__('禮物訂單')) ?></span>
+                </span>
+            </p>
+        <?php endif; ?>
+
+        <p class="order-number">
+            <span class="title"><?= $block->escapeHtml(__('Order Number')) ?></span>
+            <span
+                    class="content"><?= $block->escapeHtml(__("No.%1",
+                    $_order->getData('hotai_parent_order_number') ?
+                        $_order->getData('hotai_parent_order_number') : $_order->getData('increment_id')
+                )) ?>
+            </span>
+        </p>
+
+        <p class="order-amount">
+            <span class="title"><?= $block->escapeHtml(__(
+                'Order Amount')) ?> </span>
+            <span
+                class="content"><?= $_order->formatPrice($parentBlock->getTotalByCode($_order, 'grand_total')) ?>
+                <?php if ($parentBlock->getTotalByCode($_order, 'point_used_total') > 0) : ?>
+                + <span
+                    class="reward-point"><?= $parentBlock->getTotalByCode($_order, 'point_used_total') ?></span>
+            </span>
+            <?php endif ?>
+        </p>
+
+        <?php if($isGiftOrder): ?>
+            <?php if(!$parentBlock->isTicketOrder($_order) && $parentBlock->isGiftOrderConfirmed($_order)):?>
+                <p class="order-shipping-description">
+                    <span class="title"><?= $block->escapeHtml(__('Pickup Method')) ?></span>
+                    <span class="content">
+                        <?= $block->escapeHtml($parentBlock->renderShippingInfo($_order)) ?>
+                    </span>
+                </p>
+            <?php endif ?>
+        <?php else: ?>
+            <p class="order-shipping-description">
+                <span class="title"><?= $block->escapeHtml(__('Pickup Method')) ?></span>
+                <span class="content">
+                    <?php if ($parentBlock->isTicketOrder($_order)) : ?>
+                        <a class="action secondary action-sm go-to-my-ticket"
+                        href="<?= $block->escapeHtml($parentBlock->getMyTicketUrl()) ?>"><?= $block->escapeHtml(__("Go to my tickets")) ?></a>
+                    <?php else : ?>
+                        <?= $block->escapeHtml($parentBlock->renderShippingInfo($_order)) ?>
+                    <?php endif ?>
+                </span>
+            </p>
+        <?php endif ?>
+
+        <?php if ($parentBlock->isNeedToDisplayInvoiceNote($_order)) : ?>
+            <div class="invoice-credit-note">
+                <a href="<?= $parentBlock->getInvoiceCreditNoteUrl()?>"
+                    class="invoice-credit-note-link"><?= $block->escapeHtml(__("Invoice Credit Note")) ?></a>
+
+            </div>
+        <?php endif ?>
+
+        <?php if ($parentBlock->canRepayment($_order)) : ?>
+            <div class="alert-box payment-warning">
+                <div class="alert-text">
+                    <span><?= $block->escapeHtml(__("Pending payment")) ?></span>
+                    <div class="alert-message-s"><?= $parentBlock->getRepaymentMessage($_order) ?></div>
+                </div>
+                <div class="action-button">
+                    <a href="<?= $parentBlock->getRePaymentUrl($_order) ?>"
+                    class="a-button action-sm retry-payment-button"><?= $block->escapeHtml(__("Repay")) ?></a>
+                </div>
+            </div>
+        <?php else: ?> 
+            <?php if($isGiftOrder): ?>
+                <div class="gift-order-alert-box">
+                    <?php if ($parentBlock->isOrderCancelled($_order)) : ?>   
+                        <div class="gift-order-alert-message error">
+                            <div class="gift-order-alert-message-info" data-is-paid="<?= $parentBlock->getIsPaid($_order); ?>" data-pending="<?= $parentBlock->isPendingPaymentOrderAutoCancelled($_order)? '1': '0' ?>" data-confirmed="<?= $parentBlock->isGiftOrderConfirmed($_order)? '1': '0' ?>">
+                                <h4 class="gift-order-alert-message-title"><?= $block->escapeHtml(__('訂單已取消')) ?></h4>
+                                <?php if($parentBlock->isOrderAutoCancelled($_order) && $parentBlock->isPendingPaymentOrderAutoCancelled($_order) && !$parentBlock->isGiftOrderConfirmed($_order)):?>
+                                <p class="gift-order-alert-message-text">
+                                    <?= $block->escapeHtml(__('收禮人未填寫收件資料')) ?>
+                                </p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <?php if(!$parentBlock->isGiftOrderConfirmed($_order)):?>
+                            <div class="gift-order-alert-message note">
+                                <div class="gift-order-alert-message-info">
+                                    <h4 class="gift-order-alert-message-title"><?= $block->escapeHtml(__('待收禮人填寫收件資訊')) ?></h4>
+                                    <p class="gift-order-alert-message-text">
+                                        <?= $block->escapeHtml(__('請於%1 前完成填寫，逾期將自動取消訂單', $expiredDate)) ?>
+                                    </p>
+                                </div>
+                                <div class="gift-order-alert-message-action">
+                                    <button class="action action-link action-copy-confirm-url" data-clipboard-text="<?= $block->escapeHtml($giftConfirmUrl) ?>">
+                                        <span class="action-copy-text"><?= $block->escapeHtml(__('分享連結')) ?></span>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="gift-order-alert-message success">
+                                <div class="gift-order-alert-message-info">
+                                    <h4 class="gift-order-alert-message-title"><?= $block->escapeHtml(__('已確認收件資訊')) ?></h4>
+                                    <p class="gift-order-alert-message-text">
+                                        <?= $block->escapeHtml(__('已確認收件資訊，可透過右方按鈕分享目前禮物資訊')) ?>
+                                    </p>
+                                </div>
+                                <div class="gift-order-alert-message-action">
+                                    <button class="action action-link action-copy-confirm-url" data-clipboard-text="<?= $block->escapeHtml($giftConfirmUrl) ?>">
+                                        <span class="action-copy-text"><?= $block->escapeHtml(__('分享連結')) ?></span>
+                                    </button>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>  
+            <?php endif ?>   
+        <?php endif ?>
+
+        <?php if ($parentBlock->isOrderAutoCancelled($_order) && !$isGiftOrder) : ?>
+            <div class="alert-box has-reason">
+                <div class="alert-text">
+                    <span><?= $block->escapeHtml(__("Order Canceled")) ?></span>
+                    <span class="hidden"><?= $block->escapeHtml(__("Payment failed")) ?></span>
+                </div>
+            </div>
+        <?php endif ?>
+
+        <?php
+
+        // Set the $_order object to the child block 'order_items'
+        $block->getChildBlock('sub_order_items_image')->setOrder($_order)->setItemsCollection('');
+        ?>
+        <?= $block->getChildHtml('sub_order_items_image',false) ?>
+
+        <!--    Cancel Order Button-->
+        <?php if ($parentBlock->canShowCancelBtn($_order)) : ?>
+             <div class="order-actions">
+                <button class="cancel-order-btn" id="cancel-order-<?= $block->escapeHtml($_order->getId()) ?>"
+                    data-mage-init='{
+                            "cancelParentOrderModal":{
+                                "url": "<?= /* @noEscape */ $block->getBaseUrl(); ?>",
+                                "orderId": "<?= $block->escapeHtml($_order->getId()); ?>"
+                            }
+                        }'>
+                    <span><?= $block->escapeHtml(__('Cancel Order')) ?></span>
+                </button>
+            </div>
+
+            <?= $this->getLayout()->createBlock("Magento\Framework\View\Element\Template")
+                ->setOrder($_order)
+                ->setReasons($parentBlock->getCancellationReasons())
+                ->setTemplate("Branch8_MarketPlaceParentOrderFrontendUi::parent_order/cancel-order-modal.phtml")->toHtml()
+            ?>
+        <?php endif ?>
+
+    </div>
+    <div class="order-detail-container no-display">
+        <?php
+        // Set the $_order object to the child block 'order_items'
+        $block->getChildBlock('sub_order_items')->setOrder($_order)->setItemsCollection($block->getChildBlock('sub_order_items_image')->getItemsCollection());
+        ?>
+        <?= $block->getChildHtml('sub_order_items',false) ?>
+        <!-- Payment Info Section -->
+        <div class="payment-info">
+            <div class="section-title"><?= $block->escapeHtml(__("Payment info")) ?></div>
+            <?php $pointDiscount = $parentBlock->getPointDiscount($_order);?>
+            <?php $orderDiscountAmount = $parentBlock->getDiscountAmount($_order);?>
+            <div class="info-row">
+                <div class="info-label"><?= $block->escapeHtml(__("Total merchandise volume")) ?></div>
+                <div
+                    class="info-value"><?= $_order->formatPrice($parentBlock->getTotalByCode($_order, 'subtotal_include_tax') + $orderDiscountAmount /*- $processFlagshipOrderValue*/) ?></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><?= $block->escapeHtml(__("Points")) ?></div>
+                <div class="info-value"><?= ((int)$pointDiscount > 0)
+                    ? /* @noEscape */ '-'. $_order->formatPrice($block->escapeHtml($pointDiscount))
+                    : /* @noEscape */ $_order->formatPrice($block->escapeHtml($pointDiscount))  ?></div>
+            </div>
+            <div class="info-row">
+                <!--                    shipping free-->
+                <div class="info-label"><?= $block->escapeHtml(__("Freight")) ?></div>
+                <div
+                    class="info-value"><?= $_order->formatPrice($parentBlock->getTotalByCode($_order, 'shipping_include_tax') /*+ $processFlagshipOrderValue*/) ?></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><?= $block->escapeHtml(__("Actual Amount Paid")) ?></div>
+                <div
+                    class="info-value"><?= $_order->formatPrice($parentBlock->getTotalByCode($_order, 'grand_total')) . $block->escapeHtml($parentBlock->getPaymentMethodTitle($_order)) ?></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><?= $block->escapeHtml(__("Payment Time")) ?></div>
+                <div class="info-value"><?= $block->escapeHtml($parentBlock->getOrderDate($_order->getCreatedAt())) ?></div>
+            </div>
+            <?php
+            $invoiceCarruerType = $parentBlock->getEcpayInvoiceCarruerType($_order);
+            $invoiceCustomerIdentifier = $parentBlock->getEcpayInvoiceCustomerIdentifier($_order);
+            $invoiceCustomerCompany = $parentBlock->getEcpayInvoiceCustomerCompany($_order);
+            $invoiceCustomerNum = $parentBlock->getEcpayInvoiceCarruerNum($_order);
+            $seletedInvoice = '';
+            $invoiceAdditionalData = $parentBlock->getEcpayInvoiceAdditionalData($_order);
+            switch($invoiceCarruerType){
+                case '3':
+                    $seletedInvoice = __("手機條碼載具");
+                    break;
+                case '0':
+                    if ($invoiceCustomerIdentifier != ''){
+                        $seletedInvoice = __("三聯式發票(公司)");
+                    } else{
+                        $seletedInvoice = __("二聯式發票(個人)");
+                    }
+                    break;
+                default:
+                    break;
+            }
+            ?>
+            <?php if (!empty($seletedInvoice)): ?>
+                <div class="info-row">
+                    <div class="info-label"><?= $block->escapeHtml(__("Invoice Infomation")) ?></div>
+                    <div class="info-value"><?= $block->escapeHtml($seletedInvoice) . ' ' . $block->escapeHtml($invoiceAdditionalData) ?></div>
+                </div>
+            <?php endif ?>
+        </div>
+        <?php 
+            $showShippingInfo = true;
+            if($isGiftOrder && !$parentBlock->isGiftOrderConfirmed($_order)){
+                $showShippingInfo = false;
+            }
+        ?>
+        <?php if($showShippingInfo):?>
+        <!-- Receiver Info Section -->
+        <div class="order-detail-item shipping-info">
+            <?php
+                $telephone = '';
+                $receiptionName = '';
+
+            // Check if the shipping address exists and has a telephone
+            if($_order->getShippingAddress()){
+                if($_order->getShippingAddress()->getTelephone()){
+                    $telephone = $_order->getShippingAddress()->getTelephone();
+                }
+                if($_order->getShippingAddress()->getFirstName() || $_order->getShippingAddress()->getLastName()){
+                    $receiptionName = $_order->getShippingAddress()->getFirstName();
+                }
+            }elseif($_order->getBillingAddress()){
+                if($_order->getBillingAddress()->getTelephone()){
+                // Fallback to billing address if no shipping address or shipping address phone is missing
+                    $telephone = $_order->getBillingAddress()->getTelephone();
+                }
+
+                if($_order->getBillingAddress()->getFirstName() || $_order->getBillingAddress()->getLastName()){
+                    $receiptionName = $_order->getBillingAddress()->getFirstName();
+                }
+            }
+            ?>
+            <div class="section-title"><?= $block->escapeHtml(__("Recipient Information")) ?></div>
+            <div class="info-row">
+                <div class="info-label"><?= $block->escapeHtml(__("Receipt Name")) ?></div>
+                <div class="info-value"><?= $escaper->escapeHtml($customerInfoHelper->getOAuthName('',$receiptionName)) ?></div>
+            </div>
+            <div class="info-row">
+                <div class="info-label"><?= $block->escapeHtml(__("Receipt Phone")) ?></div>
+                <div
+                    class="info-value">
+                    <?= $escaper->escapeHtml($customerInfoHelper->getOAuthPhone($telephone)) ?></div>
+            </div>
+        </div>
+        <?php endif; ?>
+        <?php
+        $orderNote = $_order->getData('order_note');
+        ?>
+        <?php if($orderNote): ?>
+        <div class="order-detail-item order-item-note">
+            <div class="section-title"><?= $block->escapeHtml(__('Order Note')) ?></div>
+            <p><?= $orderNote ?></p>
+        </div>
+        <?php endif; ?>
+    </div>
+    <!-- Collapse Control -->
+    <div class="collapse-control collapsed">
+        <span><?= $block->escapeHtml(__("Show more")) ?></span>
+    </div>
+</div>

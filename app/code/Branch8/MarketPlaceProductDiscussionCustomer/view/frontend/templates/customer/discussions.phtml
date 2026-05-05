@@ -1,0 +1,25 @@
+<?php
+declare(strict_types=1);
+/**
+ * @project    HotaiConnected
+ * @package    Branch8
+ * @author     cuongho803@gmail.com
+ * @date       27/02/2026
+ */
+?>
+<div class="cus-threads-wrapper" data-role="questioning" data-bind="scope:'questioning'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
+    <script type="text/x-magento-init">
+        {
+            "[data-role='questioning']": {
+                "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?= $block->escapeJs($block->escapeUrl($block->getViewFileUrl(
+            'images/loader-1.gif'
+        ))) ?>"
+        }
+    }
+    </script>
+</div>

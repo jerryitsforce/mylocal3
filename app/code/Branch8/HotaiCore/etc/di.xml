@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="branch8_hotai_core_cancel_tickets" xsi:type="object">Branch8\HotaiCore\Console\Command\Ticket\CancelTickets</item>
+				<item name="branch8_hotai_core_trigger_event_ecpay_invoice_before_issue_for_no_money" xsi:type="object">Branch8\HotaiCore\Console\Command\TriggerEvent\EcpayInvoiceBeforeIssueForNoMoney</item>
+				<item name="branch8_hotai_core_trigger_event_ecpay_invoice_issued_for_paid" xsi:type="object">Branch8\HotaiCore\Console\Command\TriggerEvent\EcpayInvoiceIssuedForPaid</item>
+				<item name="branch8_hotai_core_trigger_event_ecpay_inovice_ticket_item_arrived_check" xsi:type="object">Branch8\HotaiCore\Console\Command\TriggerEvent\EcpayInoviceTicketItemArrivedCheck</item>
+				<item name="branch8_hotai_core_trigger_event_check_ticket_order_all_complete_manually" xsi:type="object">Branch8\HotaiCore\Console\Command\TriggerEvent\CheckTicketOrderAllCompleteManually</item>
+				<item name="branch8_hotai_core_trigger_event_check_ticket_order_not_all_complete_manually" xsi:type="object">Branch8\HotaiCore\Console\Command\TriggerEvent\CheckTicketOrderNotAllCompleteManually</item>
+				<item name="branch8_hotai_core_trigger_event_hotaiPay_payment_retry" xsi:type="object">Branch8\HotaiCore\Console\Command\TriggerEvent\ReDeductionPointForPaymentRetry</item>
+				<item name="branch8_hotai_core_delete_ticket_batch_setting_custom_option" xsi:type="object">Branch8\HotaiCore\Console\Command\Ticket\DeleteTicketBatchSettingCustomOption</item>
+				<item name="branch8_hotai_core_create_ticket_batch_setting_custom_option" xsi:type="object">Branch8\HotaiCore\Console\Command\Ticket\CreateTicketBatchSettingCustomOption</item>
+			</argument>
+		</arguments>
+	</virtualType>
+</config>

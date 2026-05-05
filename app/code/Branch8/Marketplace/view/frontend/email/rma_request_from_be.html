@@ -1,0 +1,56 @@
+<!--@subject {{var email_subject}} @-->
+<!--@vars {
+"var seller_name":"Seller Name",
+"var number":"Number of Orders",
+"var seller_backend_url":"HOTAI Seller Backend URL",
+"var order_date":"Order Date",
+"var sub_order_number":"Sub-order Number",
+"var items":"Array of Items"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-information">
+        <td>
+            <table class="query-details">
+                <tr>
+                    <td class="product-details">
+                        <p>{{var seller_name}}<p>您好，<br>
+                        {{var message}}<br>
+                        <a href="{{var seller_backend_url}}" target="_blank">查看後台</a><br>
+                        退換貨訂單<br>
+                        <div style="margin: 10px 0;">
+                            <strong>退換貨訂單</strong>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                            <tr style="background-color: #f5f5f5;">
+                                <td style="padding: 8px; border: 1px solid #ddd;">訂單日期</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">訂單編號</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">商品名稱</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">規格</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">SKU</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">數量</td>
+                            </tr>
+                            {{for item in items}}
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{var order_date}}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{var sub_order_number}}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{var item.name}}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{var item.specification_name}}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{var item.sku}}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">{{var item.qty}}</td>
+                            </tr>
+                            {{/for}}
+                        </table>
+                        <br>
+                        HOTAI購商城自動信件，請勿直接回覆此信
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

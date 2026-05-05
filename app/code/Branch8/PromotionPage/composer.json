@@ -1,0 +1,24 @@
+{
+  "name": "branch8/module-promotion-page",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "amasty/module-special-promo": "2.14.*",
+    "amasty/module-special-promo-pro": "2.14.*",
+    "magento/module-catalog": "104.0.*",
+    "magento/module-rule": "100.4.*"
+  },
+  "license": [
+    ""
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\PromotionPage\\": ""
+    }
+  }
+}

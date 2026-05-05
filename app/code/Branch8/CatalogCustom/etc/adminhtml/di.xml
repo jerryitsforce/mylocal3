@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Wyomind\DataFeedManager\Block\Adminhtml\Feeds\Edit\Tab\Cron"
+                type="Branch8\CatalogCustom\Block\Adminhtml\Feeds\Edit\Tab\Cron"/>
+    <preference for="Dotsquares\ImageEditor\Controller\Adminhtml\Index\Upload"
+                type="Branch8\CatalogCustom\Controller\Adminhtml\Index\Upload"/>
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="b8_product_inventory" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\CatalogCustom\Ui\DataProvider\Product\Form\Modifier\CustomField</item>
+                    <item name="sortOrder" xsi:type="number">13000</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="b8_product_inventory" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\CatalogCustom\Ui\DataProvider\Product\Form\Modifier\CustomField</item>
+                    <item name="sortOrder" xsi:type="number">13000</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

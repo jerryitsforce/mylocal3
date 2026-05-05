@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiPay\Block\Payment\Checkout
+ */
+?>
+<?php
+$reqjsonpwd = $block->getData('reqjsonpwd');
+$endpoint = $block->getCheckoutUrl();
+?>
+<div>
+    <form name="checkout" id="checkout" method="post" enctype="multipart/form-data" action = "<?=$block->escapeUrl($block->getCheckoutUrl())?>">
+        <input type="hidden" id="checkout_data" name = "reqjsonpwd" value='<?=$block->getData('reqjsonpwd')?>'/>
+    </form>
+</div>
+
+<script>
+    var form = document.getElementById("checkout");
+    window.onload = form.submit();
+</script>

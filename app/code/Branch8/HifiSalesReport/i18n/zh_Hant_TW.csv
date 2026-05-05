@@ -1,0 +1,14 @@
+Hifi ID,項次
+Parent ID,母訂單項次
+Payment methods belong to "credit card",歸屬於"信用卡"的支付方式
+Payment methods belong to "convenient store",歸屬於"超商收款"的支付方式
+Transaction Fully Paid By Points,全點數交易
+Credit Card,信用卡
+Convenient Store Collecting,超商收款
+Hifi Quick View,訂單日報表
+Invoice change end date must be greater than invoice change start date.,發票變動結束日必須晚於發票變動起始日
+Invoice change date can't overlap with existing records.,發票變動日不可與已創建的紀錄重疊
+Invoice issued,發票開立
+Invoice canceled,發票作廢
+Invoice allowances,發票折讓
+No invoice needed,不開發票

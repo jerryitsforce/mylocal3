@@ -1,0 +1,38 @@
+<?php
+$scriptData = $block->getData('scriptData');
+?>
+<script type="text/javascript">
+    var customerGroup = <?php echo json_encode($scriptData['groups']);?>;
+    var prevLevel = <?php echo $scriptData['prevLevel'];?>;
+    var nxtLevel = <?php echo $scriptData['nxtLevel'];?>;
+    require(["jquery"], function ($) {
+        $("#condition_num_orders").val('<?php echo $scriptData['numberOfOrder'];?>');
+        $("#condition_combine").val('<?php echo $scriptData['combine'];?>');
+        $("#condition_total_value").val('<?php echo $scriptData['totalValue'];?>');
+        function changeOrganization(organizationId){
+            $("#prev_level").html("<option value=\'\'> - - - - - Please select - - - - -</option>");
+            $("#nxt_level").html("<option value=\'\'> - - - - - Please select - - - - -</option>");
+            $.each(customerGroup, function(groupId, group){
+                if(group.organization == organizationId){
+                    if(groupId != <?php echo (int)$scriptData['groupId'];?>){
+                        if(prevLevel == groupId){
+                            $("#prev_level").append("<option selected=\"selected\" value=\'"+groupId+"\'>"+group.value+"</option>");
+                        }else{
+                            $("#prev_level").append("<option value=\'"+groupId+"\'>"+group.value+"</option>");
+                        }
+                        if(nxtLevel == groupId){
+                            $("#nxt_level").append("<option selected=\"selected\" value=\'"+groupId+"\'>"+group.value+"</option>");
+                        }else{
+                            $("#nxt_level").append("<option value=\'"+groupId+"\'>"+group.value+"</option>");
+                        }
+
+                    }
+                }
+            })
+        }
+        changeOrganization($("#organization").val());
+        $("#organization").change(function(){
+            changeOrganization($(this).val());
+        })
+    });
+</script>

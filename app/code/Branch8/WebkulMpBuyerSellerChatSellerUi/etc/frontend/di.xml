@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\WebkulMpBuyerSellerChat\Controller\Chat\PostMedia">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">mediaChatUploader</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\WebkulMpBuyerSellerChat\Controller\Chat\ChangeProfileImage">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">profileUploader</argument>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\WebkulMpBuyerSellerChat\Controller\Chat\UseProfileImage">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">profileUploader</argument>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <virtualType name="mediaChatUploader" type="Branch8\WebkulMpBuyerSellerChat\Model\Chat\MediaUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">mpchatsystem/tmp/conversation</argument>
+            <argument name="basePath" xsi:type="string">mpchatsystem/conversation</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="profileUploader" type="Branch8\WebkulMpBuyerSellerChat\Model\Chat\ImageProfileUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">mpchatsystem/tmp/chatProfile</argument>
+            <argument name="basePath" xsi:type="string">mpchatsystem/chatProfile</argument>
+        </arguments>
+    </virtualType>
+    <type name="CoreConfig">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\WebkulMpBuyerSellerChat\ViewModel\CoreConfig">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\WebkulMpBuyerSellerChatSellerUi\ViewModel\SellerConfig">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy\Proxy</argument>
+        </arguments>
+    </type>
+</config>

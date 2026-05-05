@@ -1,0 +1,103 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Default appearance styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    [data-content-type='row'] {
+        li.product-item {
+            text-align: left;
+        }
+    }
+
+    .pagebuilder-column {
+        .widget-product-grid {
+            .product-item {
+                max-width: 100%;
+                min-width: 50px;
+
+                .price-box {
+                    word-wrap: break-word;
+
+                    .price {
+                        white-space: normal;
+                    }
+                }
+
+                .product-item-actions {
+                    .actions-primary {
+                        display: inline-block;
+                        max-width: 100%;
+                    }
+
+                    .actions-secondary {
+                        display: inline-block;
+                        width: auto;
+                    }
+
+                    .tocart {
+                        max-width: 100%;
+                        white-space: normal;
+                    }
+                }
+            }
+        }
+
+        [data-content-type='products'] {
+            .block.widget {
+                .products-grid {
+                    .widget-product-grid.product-items {
+                        .product-item {
+                            width: 200px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    [data-content-type="product_recommendations"],
+    .product-recommendations-below-main-content{
+        .recommendation-loader{
+            min-height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &:after{
+                content: '';
+                &:extend(.abs-loader-spinner all);
+            }
+        }
+
+        * + .recommendation-loader{
+            display: none;
+        }
+    }
+}
+
+//
+//  Desktop > 768
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .pagebuilder-column {
+        + .pagebuilder-column{
+            [data-content-type="product_recommendations"]:first-child:last-child{
+                display: flex;
+                min-height: 100%;
+                > div{
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                }
+                > div .recommendation-loader{
+                    height: 100%;
+                }
+            }
+        }
+    }
+}

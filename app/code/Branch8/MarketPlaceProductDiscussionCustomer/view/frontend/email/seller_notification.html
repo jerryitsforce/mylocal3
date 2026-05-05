@@ -1,0 +1,34 @@
+<!--@subject New Question for your product: {{var product_name}} @-->
+<!--@vars
+{"var product_name":"Product Name",
+"var customer_name":"Customer Name",
+"var question_content":"Question Content",
+"var product_url":"Product URL"}
+@-->
+{{template config_path="design/email/header_template"}}
+<table style="width:100%">
+    <tr class="email-summary">
+        <td>
+            <p>{{trans "Hello %seller_name," seller_name=$seller_name}}</p>
+            <p>{{trans "A customer has asked a new question regarding your product: <strong>%product_name</strong>."
+                product_name=$product_name}}</p>
+        </td>
+    <tr>
+
+    <tr class="email-information">
+        <td>
+            <div style="background-color: #f9f9f9; padding: 15px; border: 1px solid #ddd; margin: 10px 0;">
+                <p><strong>{{trans "Customer:"}}</strong> {{var customer_name}}</p>
+                <p><strong>{{trans "Question:"}}</strong></p>
+                <p>{{var question_content}}</p>
+            </div>
+
+            <p>{{trans "You can view the product and reply to the question here:"}} <a href="{{var product_url}}">{{var
+                product_url}}</a></p>
+
+            <p>{{trans "Best regards,"}}</p>
+            <p>{{var store_name}}</p>
+        </td>
+    </tr>
+</table>
+{{template config_path="design/email/footer_template"}}

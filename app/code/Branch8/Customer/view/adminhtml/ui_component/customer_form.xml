@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <htmlContent name="level_history_content">
+        <block class="Branch8\Customer\Block\Adminhtml\LevelHistoryTab" name="level_history" />
+    </htmlContent>
+    <fieldset name="customer">
+        <field name="prefix">
+            <settings>
+                <visible>false</visible>
+            </settings>
+        </field>
+         <field name="firstname" formElement="input">
+            <settings>
+                <label translate="true">Name</label>
+            </settings>
+        </field>
+        <field name="middlename">
+            <settings>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="lastname">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="suffix">
+            <settings>
+                <visible>false</visible>
+            </settings>
+        </field>
+    </fieldset>
+</form>

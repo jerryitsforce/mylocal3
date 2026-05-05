@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\AppNotification\Api\CustomerFcmTokenManagementInterface" type="Branch8\AppNotification\Model\CustomerFcmTokenManagement"/>
+    <preference for="Branch8\AppNotification\Api\CustomerNotificationManagementInterface" type="Branch8\AppNotification\Model\CustomerNotificationManagement"/>
+    <preference for="Branch8\AppNotification\Api\NotificationServiceInterface" type="Branch8\AppNotification\Model\Service\FcmNotificationService"/>
+
+    <preference for="Branch8\AppNotification\Api\Data\CustomerNotificationResponseInterface" type="Branch8\AppNotification\Model\Data\CustomerNotificationResponse"/>
+    <preference for="Branch8\AppNotification\Api\Data\NotificationInterface" type="Branch8\AppNotification\Model\Data\Notification"/>
+    <preference for="Branch8\AppNotification\Api\Data\CustomerFcmTokenInterface" type="Branch8\AppNotification\Model\CustomerFcmToken"/>
+    <preference for="Branch8\AppNotification\Api\Data\NotificationMessageInterface" type="Branch8\AppNotification\Model\Data\NotificationMessage"/>
+    <preference for="Branch8\AppNotification\Api\Data\MarkAsReadResponseInterface" type="Branch8\AppNotification\Model\Data\MarkAsReadResponse"/>
+
+    <type name="Magenest\NotificationBox\Helper\Helper">
+        <plugin name="branch8_app_notification_notification_box_plugin"
+                type="Branch8\AppNotification\Plugin\NotificationBoxPlugin"/>
+    </type>
+</config>

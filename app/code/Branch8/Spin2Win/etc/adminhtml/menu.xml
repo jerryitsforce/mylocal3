@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+          <remove id="Webkul_SpinToWin::spintowin" />
+          <add id="Branch8_Spin2Win::spintowin" title="Events" module="Branch8_Spin2Win" parent="Magento_Backend::marketing" 
+               sortOrder="100" resource="Webkul_SpinToWin::spintowin" translate="title" />
+          <add id="Branch8_Spin2Win::manage" title="Spins" sortOrder="10" module="Branch8_Spin2Win" translate="title"
+               parent="Branch8_Spin2Win::spintowin" action="spintowin/manage/index" resource="Webkul_SpinToWin::manage"/>
+          <add id="Branch8_Spin2Win::reports" title="Spins Report" sortOrder="15" module="Branch8_Spin2Win"
+               parent="Branch8_Spin2Win::spintowin" action="spintowin/report/campaign" resource="Branch8_Spin2Win::report" translate="title" />
+     </menu>
+</config>

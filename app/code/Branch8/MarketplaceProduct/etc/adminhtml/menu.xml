@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_MarketplaceProduct::marketplacectrl" title="Approval Management" module="Branch8_MarketplaceProduct" sortOrder="11" 
+            resource="Branch8_MarketplaceProduct::marketplacectrl" />
+        <add id="Branch8_MarketplaceProduct::product" title="Product Approval" module="Branch8_MarketplaceProduct" sortOrder="11" 
+            parent="Branch8_MarketplaceProduct::marketplacectrl" resource="Branch8_MarketplaceProduct::product"/>
+        <add id="Branch8_MarketplaceProduct::product_approval" title="Product Approval" module="Branch8_MarketplaceProduct" sortOrder="0" 
+            parent="Branch8_MarketplaceProduct::product" action="marketplacectrl/product" resource="Branch8_MarketplaceProduct::product_approval"/>
+        <add id="Branch8_MarketplaceProduct::manager_product_approval" title="Manager Product Approval" module="Branch8_MarketplaceProduct" sortOrder="0" 
+            parent="Branch8_MarketplaceProduct::product" action="marketplacectrl/managerProduct" resource="Branch8_MarketplaceProduct::manager_product_approval"/>
+        <add id="Branch8_MarketplaceProduct::marketplace_product_version" title="Product Version" module="Branch8_MarketplaceProduct" sortOrder="9999" 
+            parent="Branch8_MarketplaceProduct::product" resource="Branch8_MarketplaceProduct::product" action="marketplacectrl/productversion/index"/>
+    </menu>
+</config>

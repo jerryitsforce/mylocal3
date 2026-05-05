@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route url="/V1/hotaiconnected-product/product-serial-no" method="POST">
+		<service class="HotaiConnected\Product\Api\ProductSerialNoManagementInterface" method="postProductSerialNo"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/hotaiconnected-product/product-serial-no" method="PUT">
+		<service class="HotaiConnected\Product\Api\ProductSerialNoManagementInterface" method="updateProductSerialNo"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+</routes>

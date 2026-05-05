@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="HotaiConnected\CustomerSync\Api\CustomerSyncManagementInterface" type="HotaiConnected\CustomerSync\Model\CustomerSyncManagement"/>
+    
+    <!-- Add Bearer Token validation -->
+    <type name="HotaiConnected\CustomerSync\Model\CustomerSyncManagement">
+        <plugin name="validate_bearer_token" type="HotaiConnected\CustomerSync\Plugin\ValidateBearerToken"/>
+    </type>
+    
+    <!-- Skip CSRF validation for API endpoints -->
+    <type name="Magento\Framework\App\Request\CsrfValidator">
+        <plugin name="customer_sync_csrf_validator_skip" type="HotaiConnected\CustomerSync\Plugin\CsrfValidatorSkip"/>
+    </type>
+</config>

@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <hotai_711>
+                <model>Branch8\HotaiShipping\Model\Carrier\HotaiSevenEleven</model>
+                <active>0</active>
+                <title>Hotai 711</title>
+                <name>hotai_711</name>
+                <price>80</price>
+                <refrigerated_price>100</refrigerated_price>
+                <frozen_price>200</frozen_price>
+                <price_threshold>799</price_threshold>
+                <refrigerated_price_threshold>899</refrigerated_price_threshold>
+                <frozen_price_threshold>1299</frozen_price_threshold>
+                <special_shipping_enable>0</special_shipping_enable>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <sallowspecific>0</sallowspecific>
+                <special_free_shipping_enable>0</special_free_shipping_enable>
+                <special_free_shipping_price_by_normal>0.00</special_free_shipping_price_by_normal>
+                <special_free_shipping_price_by_refrigerated>0.00</special_free_shipping_price_by_refrigerated>
+                <special_free_shipping_price_by_frozen>0.00</special_free_shipping_price_by_frozen>
+            </hotai_711>
+            <hotai_delivery>
+                <model>Branch8\HotaiShipping\Model\Carrier\HotaiDelivery</model>
+                <active>0</active>
+                <title>Hotai Delivery</title>
+                <name>hotai_delivery</name>
+                <price>85</price>
+                <refrigerated_price>105</refrigerated_price>
+                <frozen_price>205</frozen_price>
+                <price_threshold>799</price_threshold>
+                <refrigerated_price_threshold>899</refrigerated_price_threshold>
+                <frozen_price_threshold>1299</frozen_price_threshold>
+                <special_shipping_enable>0</special_shipping_enable>
+                <specificerrmsg>This shipping method is not available. To use this shipping method, please contact us.</specificerrmsg>
+                <sallowspecific>0</sallowspecific>
+                <special_free_shipping_enable>0</special_free_shipping_enable>
+                <special_free_shipping_price_by_normal>0.00</special_free_shipping_price_by_normal>
+                <special_free_shipping_price_by_refrigerated>0.00</special_free_shipping_price_by_refrigerated>
+                <special_free_shipping_price_by_frozen>0.00</special_free_shipping_price_by_frozen>
+            </hotai_delivery>
+        </carriers>
+    </default>
+</config>

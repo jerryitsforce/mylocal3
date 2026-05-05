@@ -1,0 +1,79 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product view template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+/** @var \Branch8\AppSettings\Helper\Data $appHelper */
+$appHelper = $this->helper(Branch8\AppSettings\Helper\Data::class);
+$_product = $block->getProduct();
+?>
+<div class="socials-sharing">
+    <span class="title"><?= $block->escapeHtml(__("Share")); ?></span>
+    <div class="share-buttons">
+        <?php if (!$appHelper->isHotaiApp()) :?>
+        <div class="facebook sharing button fb-share-button" data-href="<?= $_product->getProductUrl(); ?>" data-layout="" data-size=""><a target="_blank" href="<?php echo 'https://www.facebook.com/sharer/sharer.php?u='.urlencode($_product->getProductUrl()).'&amp;src=sdkpreparse'; ?>" class="fb-xfbml-parse-ignore text"></a></div>
+        <div class="line sharing button">
+            <a target="_blank" href="<?php echo 'https://social-plugins.line.me/lineit/share?url='.urlencode($_product->getProductUrl()) ?>" class="text"></a>
+        </div>
+        <div class="copy sharing button" onclick="copyText(event, '<?= $_product->getProductUrl(); ?>')" data-href="<?= $_product->getProductUrl(); ?>">
+            <span class="text"></span>
+            <span class="copy-notify"><?= $block->escapeHtml(__("URL copied")); ?></span>
+        </div>
+        <?php else :?>
+            <div class="copy sharing button" onclick="onAppShare('<?= $_product->getName(); ?>', '<?= $_product->getProductUrl(); ?>')" data-href="<?= $_product->getProductUrl(); ?>">
+                <span class="text"></span>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<script>
+    function copyText(event, text) {
+        // Use the Clipboard API (modern browsers)
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage(event);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        } else {
+            // Fallback for older browsers
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showMessage(event);
+        }
+    }
+
+    function onAppShare(productName, productUrl) {
+        window.ReactNativeWebView?.postMessage(JSON.stringify({
+            type: 'SHARE_PRODUCT',
+            data: {
+                productUrl,
+                productName
+            }
+        }));
+    }
+
+    function showMessage(event) {
+        const message = document.getElementById("message");
+        event.target.nextElementSibling.classList.add("copied");
+        setTimeout(() => {
+            event.target.nextElementSibling.classList.remove("copied");
+        }, 2000); // Hide message after 2 seconds
+    }
+</script>

@@ -1,0 +1,114 @@
+input, textarea {
+    ime-mode: auto; 
+    word-break: keep-all;
+    white-space: pre-wrap;
+    // background: red;
+}
+
+.admin__field-control .select2-container {
+    display: block;
+    width: 100%!important;
+    border-radius: 0;
+}
+
+.admin__field-control .select2-container--default .select2-selection--multiple {
+    border-radius: 0;
+}
+
+.admin__field-control .select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #adadad;
+    border-radius: 0;
+}
+
+.admin__field-control .select2-container--default .select2-search--inline .select2-search__field {
+    padding: 0 30px 0 10px;
+    height: 30px;
+    border: 1px solid #dbdbdb;
+    width: 100% !important;
+    margin: 0;
+}
+
+.admin__field-control .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    padding: 0 15px 0 5px;
+}
+
+.admin__field-control .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-search--inline {
+    display: block;
+    width: 100%;
+    position: absolute;
+    background: #fff;
+    bottom: -47px;
+    left: 0;
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-top: 0;
+    z-index: 1051;
+    display: none;
+
+    &::after {
+        -webkit-font-smoothing: antialiased;
+        font-family: 'Admin Icons';
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        speak: none;
+        color: #222;
+        content: '\e60c';
+        display: block;
+        font-size: 16px;
+        position: absolute;
+        right: 14px;
+        top: 16px;
+    }
+}
+.admin__field-control .select2-container--default.select2-container--open .select2-selection--multiple .select2-selection__rendered .select2-search--inline,
+.admin__field-control .select2-container--default.select2-container--focus .select2-selection--multiple .select2-selection__rendered .select2-search--inline {
+    display: block;
+}
+
+.select2-container--open .select2-dropdown {
+    margin-top: 47px;
+}
+
+.select2-results__option {
+    // &::before {
+    //     content: '';
+    //     display: inline-block;
+    //     width: 20px;
+    //     height: 20px;
+    //     margin-right: 10px;
+    //     background: url('../images/checkbox.svg') no-repeat;
+    //     background-size: contain;
+    // }
+}
+
+.select2-container--default .select2-results__option[aria-selected=true] {
+    // &::before {
+    //     background: url('../images/checkbox-checked.svg') no-repeat;
+    // }
+}
+
+.admin__field-control.select2-brand-container {
+    position: relative;
+}
+
+.admin__field-control .select2-container ~ .select2-container.select2-container--default {
+    position: absolute !important;
+    left: 0 !important;
+    top: auto !important;
+    bottom: 5px;
+}
+
+.modal-slide .admin__field-control .select2-container ~ .select2-container.select2-container--default {
+    bottom: 10px;
+}
+.admin__field-control .select2-container--default .select2-selection--multiple .select2-selection__clear {
+    right: 0;
+    position: absolute;
+    top: 0;
+}
+
+@media screen and (min-width: 1024px) {
+   
+
+}

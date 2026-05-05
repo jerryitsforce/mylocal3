@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root">
+        <block class="Magento\Sales\Block\Adminhtml\Order\View\History"
+               name="order_history" template="Branch8_Sales::order/view/history.phtml">
+            <arguments>
+                <argument name="status_resolver_model" xsi:type="object">Branch8\Sales\ViewModel\StatusResolver
+                </argument>
+            </arguments>
+        </block>
+        <block class="Branch8\Sales\Rewrite\Magento\Sales\Block\Adminhtml\Order\View"
+               name="sales_order_edit">
+            <arguments>
+                <argument name="status_resolver_model" xsi:type="object">Branch8\Sales\ViewModel\StatusResolver
+                </argument>
+            </arguments>
+        </block>
+    </container>
+</layout>

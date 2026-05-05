@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:MessageQueue/etc/queue_consumer.xsd">
+    <consumer name="RevenueExportConsumer" 
+              queue="hotaiconnected_reconciliation_revenue_export" 
+              connection="amqp" 
+              handler="HotaiConnected\FinancialReconciliation\Model\Queue\RevenueExportConsumer::process"/>
+    <consumer name="OrderExportConsumer" 
+              queue="hotaiconnected_reconciliation_order_export" 
+              connection="amqp" 
+              handler="HotaiConnected\FinancialReconciliation\Model\Queue\OrderExportConsumer::process"/>
+    <consumer name="TicketExportConsumer" 
+              queue="hotaiconnected_reconciliation_ticket_export" 
+              connection="amqp" 
+              handler="HotaiConnected\FinancialReconciliation\Model\Queue\TicketExportConsumer::process"/>
+</config>

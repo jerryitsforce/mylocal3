@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Branch8_RmaAdminUi::css/styles.css"/>
+    </head>
+    <referenceBlock name="rma_info">
+        <arguments>
+            <argument name="status_model" xsi:type="object">Branch8\Sales\ViewModel\StatusResolver</argument>
+        </arguments>
+    </referenceBlock>
+</page>

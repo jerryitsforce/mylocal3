@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Ui\Component\Filters\Type\Date"
+                type="Branch8\MagentoUi\Override\Magento\Ui\Component\Filters\Type\Date" />
+    
+    <!-- Override Calendar class to fix null array offset warning -->
+    <preference for="Magento\Framework\View\Element\Html\Calendar"
+                type="Branch8\MagentoUi\Override\Magento\Framework\View\Element\Html\Calendar" />
+</config>

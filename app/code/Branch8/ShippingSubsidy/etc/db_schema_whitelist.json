@@ -1,0 +1,42 @@
+{
+    "marketplace_userdata": {
+        "column": {
+            "shipping_subsidy_enabled": true,
+            "shipping_subsidy_mode": true,
+            "use_default_subsidy_mode": true,
+            "shipping_subsidy_home_delivery": true,
+            "use_default_home_delivery": true,
+            "shipping_subsidy_store_pickup": true,
+            "use_default_store_pickup": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "seller_shipping_amount": true,
+            "platform_shipping_amount": true,
+            "shipping_subsidy_config": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "seller_shipping_amount": true,
+            "platform_shipping_amount": true,
+            "shipping_subsidy_config": true
+        }
+    },
+    "quote": {
+        "column": {
+            "is_sub_quote": true,
+            "seller_shipping_amount": true,
+            "platform_shipping_amount": true,
+            "shipping_subsidy_config": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "seller_shipping_amount": true,
+            "platform_shipping_amount": true,
+            "shipping_subsidy_config": true
+        }
+    }
+}

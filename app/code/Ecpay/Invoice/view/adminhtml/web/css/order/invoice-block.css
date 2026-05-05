@@ -1,0 +1,48 @@
+.invoice-info label {
+    display: inline-block;
+    width: 160px;
+}
+
+.order-view-custom-block {
+    position: relative;
+}
+.invoice-msg {
+    position: absolute;
+    right: 0;
+}
+.invoice-msg .msg {
+    margin-bottom: 2rem;
+    padding: 1rem 2rem 1rem 2rem;
+    border-radius: 4px;
+    color: #514943;
+}
+.invoice-msg.error .msg {
+    background-color: #ffc5c5;
+}
+.invoice-msg.success .msg {
+    background-color: #c5ffd3;
+}
+
+/* 確保左右佈局 - 限制在發票頁面 */
+#invoice-block .admin__page-section-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+#invoice-block .admin__page-section-item {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Manual Invoice 表單輸入欄位寬度減半 */
+#invoice-block .invoice-manual-form .admin__field-control .admin__control-text,
+#invoice-block .invoice-manual-form .admin__field-control .admin__control-select {
+    width: 50%;
+    max-width: 300px;
+}
+
+/* 按鈕和訊息容器之間的間距 */
+#manual-invoice-message-container {
+    margin-top: 1rem;
+}

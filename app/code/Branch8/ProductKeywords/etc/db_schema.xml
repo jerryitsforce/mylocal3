@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalog_keyword" resource="default" comment="Key words">
+        <column xsi:type="int" name="entity_id" unsigned="true" identity="true" comment="Entity ID" />
+        <column xsi:type="varchar" name="keyword" length="255" nullable="false" comment="Key Word" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <constraint xsi:type="unique" referenceId="CATALOG_KEYWORD_KEYWORD">
+            <column name="keyword"/>
+        </constraint>
+    </table>
+    <table name="catalog_keyword_product" resource="default" comment="Key words">
+        <column xsi:type="int" name="entity_id" unsigned="true"  identity="true" comment="Entity ID" />
+        <column xsi:type="int" name="keyword_id" nullable="false" unsigned="true" identity="false"
+                comment="Key Word Entity ID"/>
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" identity="false"
+                comment="Product Entity ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CATALOG_KEYWORD_PRODUCT_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ROW_ID" table="catalog_keyword_product" column="product_id" referenceTable="catalog_product_entity" referenceColumn="row_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="CATALOG_KEYWORD_PRODUCT_KEYWORD_ID_CATALOG_KEYWORD_ENTITY_ID" table="catalog_keyword_product" column="keyword_id" referenceTable="catalog_keyword" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+</schema>

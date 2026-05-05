@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<!-- minute(0-59) hour(0-23) dayOfMonth(1-31) month(1-12) dayOfWeek(0-7, sunday=0or7) -->
+	<group id="ticket_cron_update">
+		<job instance="Branch8\GeneralNonNotifyTicket\Cron\UpdateTicketQuantityBySaleTime" method="execute" name="general_non_notify_ticket_update_ticket_quantity_by_sale_time">
+			<schedule>0 */8 * * *</schedule>
+		</job>
+	</group>
+</config>

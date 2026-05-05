@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\CustomerData\DefaultItem">
+        <plugin name="Branch8_CatalogCustom::add-custom-attribute-to-cart-minicart"
+                type="Branch8\CatalogCustom\Plugin\Checkout\CustomerData\DefaultItemPlugin" />
+    </type>
+    <!-- <type name="Magento\Checkout\Controller\Index\Index">
+        <plugin name="branch8_custom_uncheck_item"
+                type="Branch8\CatalogCustom\Plugin\UncheckItem"
+                sortOrder="10"/>
+    </type> -->
+    <preference for="Magento\CatalogImportExport\Model\Import\Product"
+                type="Branch8\CatalogCustom\Model\Import\Product"/>
+    <type name="Webkul\Marketplace\Block\Product\Helper\Form\Gallery\Content">
+        <plugin name="branch8_custom_content_media"
+                type="Branch8\CatalogCustom\Plugin\MediaAllowSeller"
+                sortOrder="10"/>
+    </type>
+</config>

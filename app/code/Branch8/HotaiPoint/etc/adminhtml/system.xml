@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+        <section id="hotai_point" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Hotai Point</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiPoint::config</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>General</label>
+                <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="app_id" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP ID</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="app_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP KEY</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="app_version" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP Version</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="aes_key" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES Key</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="aes_iv" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES IV</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="trans_desc_white_list" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Trans Desc White List</label>
+                    <comment>Special characters are blocked by default. If set, characters listed here are additionally allowed (alphanumeric and CJK Unified Ideographs are always preserved).</comment>
+                </field>
+                <field id="point_image" translate="label comment" type="image" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Image</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">hotai/rewardpoints</upload_dir>
+                    <base_url type="media" scope_info="1">hotai/rewardpoints</base_url>
+                </field>
+                <field id="point_deduct_image" translate="label comment" type="image" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Deduct Image</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Image</backend_model>
+                    <upload_dir config="system/filesystem/media" scope_info="1">hotai/rewardpoints</upload_dir>
+                    <base_url type="media" scope_info="1">hotai/rewardpoints</base_url>
+                </field>
+            </group>
+            <group id="ftp" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>FTP</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable FTP to upload point transaction file.</comment>
+                </field>
+                <field id="host" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Host</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Username</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="password" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Password</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="remove_sync_backup_file_after_x_days" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Remove sync backup file after X days</label>
+                    <!-- integer greater than 0 -->
+                    <validate>validate-digits validate-not-negative-number validate-greater-than-zero</validate>
+                </field>
+                <field id="sync_folder_path" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sync Folder Path</label>
+                    <comment>FTP folder path for uploading sync files (ex: /HTPOS/DT/ for testing or /DT/ for production).</comment>
+                </field>
+            </group>
+            <group id="cron" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>Cron</label>
+                <field id="created_after_minutes_for_adding_point_to_complete_sales_order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Created after minutes for adding point to complete sales order</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Setting for adding point to complete sales order in cron which has passed certain minutes since created.</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+            </group>
+            <group id="tracking_log" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="60" translate="label">
+                <label>Tracking Log</label>
+                <field id="return_point_fields_clean_tracking" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Track return point fields cleaned</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable to log when hotai_point return point fields are cleared on order item save.</comment>
+                </field>
+            </group>
+        </section>
+        <section id="hotai_account_page" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="hotai_point" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="60" translate="label">
+                <label>Hotai Points</label>
+                <field id="rules_explanation_cms_block" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Rules Explanation CMS Block</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="point_transfer_url" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Transfer URL</label>
+                    <validate>validate-url</validate>
+                </field>
+                <field id="point_transfer_static_content" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Transfer - Static Content</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="point_registration_url" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Registration URL</label>
+                    <validate>validate-url</validate>
+                </field>
+                <field id="point_registration_static_content" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Registration - Static Content</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="point_conversion_url" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Conversion URL</label>
+                    <validate>validate-url</validate>
+                </field>
+                <field id="max_date_range_filter" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Max Date Range Filter (Days)</label>
+                    <validate>validate-number validate-greater-than-zero required-entry</validate>
+                </field>
+
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_hotaipoint" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_HotaiPoint</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\HotaiPoint\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

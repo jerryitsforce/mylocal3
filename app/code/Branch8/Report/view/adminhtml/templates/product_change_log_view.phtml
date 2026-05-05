@@ -1,0 +1,33 @@
+<?php
+
+use Branch8\MarketplaceProduct\Api\Data\ProductVersionInterface;
+use Webkul\Marketplace\Model\Product;
+
+/**
+ * @var \Branch8\Report\Block\Adminhtml\Product\Logging\Detail $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="entry-edit form-inline">
+    <section class="admin__page-section">
+        <div class="field log-details-grid">
+            <?= $block->getChildHtml('productchangelog_grid') ?>
+        </div>
+    </section>
+</div>
+
+<style>
+    #productChangeLogGrid_table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    #productChangeLogGrid_table th,
+    #productChangeLogGrid_table td {
+        width: 33.33%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+    }
+</style>

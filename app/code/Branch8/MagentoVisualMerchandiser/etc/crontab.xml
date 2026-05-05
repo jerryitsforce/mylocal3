@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<group id="index">
+		<job name="publish_vmrules_need_to_rebuild"
+             instance="Branch8\MagentoVisualMerchandiser\Cron\PublishVmRulesNeedToRebuild" method="execute">
+            <config_path>branch8_visualmerchandiser/configuration/cron_path</config_path>
+        </job>
+	</group>
+</config>

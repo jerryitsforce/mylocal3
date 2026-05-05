@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="sellersubaccount_email_setting_new_sub_email_without_password" label="New Sub account email"
+              file="new_sub_account_without_password.html" type="html"
+              module="Branch8_MarketplaceSubAccount" area="frontend"/>
+    <template id="sellersubaccount_email_setting_sub_account_before_changed"
+              label="Sub account email before change" file="to_before_changed_email.html" type="html"
+              module="Branch8_MarketplaceSubAccount" area="frontend"/>
+</config>

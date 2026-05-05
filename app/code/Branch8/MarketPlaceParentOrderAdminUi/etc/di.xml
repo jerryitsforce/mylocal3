@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_parent_order_grid_data_source" xsi:type="string">Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\ParentOrder\Grid\Collection</item>
+                <item name="sales_parent_order_invoice_grid_data_source" xsi:type="string">ParentOrderInvoiceGridCollection</item>
+                <item name="sales_parent_order_creditnemo_grid_data_source" xsi:type="string">ParentOrderCreditNemoGridCollection</item>
+                <item name="sales_parent_order_shipment_grid_data_source" xsi:type="string">ParentOrderShipmentGridCollection</item>
+                <item name="sales_parent_order_rma_grid_data_source" xsi:type="string">ParentOrderRmaGridCollection</item>
+                <item name="sales_parent_order_suborders_data_source" xsi:type="string">Branch8\MarketPlaceParentOrderAdminUi\Model\Model\ResourceModel\Order\SubOrderCollection</item>
+                <item name="sales_parent_order_history_grid_data_source" xsi:type="string">Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\ParentOrder\History\Grid\Collection</item>
+
+            </argument>
+        </arguments>
+    </type>
+    <virtualType
+        type="Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\Order\AbstractGridCollection"
+        name="ParentOrderInvoiceGridCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_invoice_grid</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_invoice</argument>
+            <argument name="eventObject" xsi:type="string">Magento\Sales\Model\Order\Invoice</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Invoice</argument>
+        </arguments>
+    </virtualType>
+    <virtualType
+        type="Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\Order\AbstractGridCollection"
+        name="ParentOrderCreditNemoGridCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_creditmemo_grid</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_creditnemo</argument>
+            <argument name="eventObject" xsi:type="string">Magento\Sales\Model\Order\Creditmemo</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Creditmemo</argument>
+        </arguments>
+    </virtualType>
+    <virtualType
+        type="Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\Order\AbstractGridCollection"
+        name="ParentOrderShipmentGridCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_shipment_grid</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_shipment</argument>
+            <argument name="eventObject" xsi:type="string">Magento\Sales\Model\Order\Shipment</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Shipment</argument>
+        </arguments>
+    </virtualType>
+    <virtualType
+        type="Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\Order\AbstractGridCollection"
+        name="ParentOrderRmaGridCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">magento_rma_grid</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_rma</argument>
+            <argument name="eventObject" xsi:type="string">Magento\Rma\Model\Rma</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Rma\Model\ResourceModel\Rma</argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\Order\SubOrderCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_parent_order_children</argument>
+            <argument name="eventPrefix" xsi:type="string">sales_order</argument>
+            <argument name="eventObject" xsi:type="string">Magento\Sales\Model\Order</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order</argument>
+        </arguments>
+    </type>
+    <type name="Webkul\Mpsplitorder\Controller\Adminhtml\Order\Create\Save">
+        <plugin name="redirect_to_parent_order_index_page"
+                type="Branch8\MarketPlaceParentOrderAdminUi\Plugin\Magento\Sales\Controller\Adminhtml\Order\Create\SavePlugin"
+                sortOrder="1" disabled="false"/>
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid">
+        <arguments>
+            <argument name="joins" xsi:type="array">
+                <item name="sales_parent_order_children" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_parent_order_children</item>
+                    <item name="origin_column" xsi:type="string">entity_id</item>
+                    <item name="target_column" xsi:type="string">children_id</item>
+                </item>
+                <item name="sales_parent_order_detail" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_parent_order_detail</item>
+                    <item name="from_table" xsi:type="string">sales_parent_order_children</item>
+                    <item name="origin_column" xsi:type="string">parent_id</item>
+                    <item name="target_column" xsi:type="string">parent_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <item name="parent_order_id" xsi:type="string">sales_parent_order_children.parent_id</item>
+                <item name="parent_increment_id" xsi:type="string">sales_parent_order_detail.increment_id</item>
+                <item name="rma_status" xsi:type="string">sales_order.rma_status</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

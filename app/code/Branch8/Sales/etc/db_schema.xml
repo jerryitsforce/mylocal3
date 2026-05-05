@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="text" name="applied_rule_names" nullable="true" comment="Applied Rule Names"/>
+        <column xsi:type="varchar" name="rma_status" nullable="true" length="128" comment="Rma Status"/>
+        <column xsi:type="text" name="distribution_thermosphere" nullable="true" comment="Distribution Thermosphere"/>
+        <column xsi:type="int" name="site_free_shipping_threshold" unsigned="true" nullable="true" comment="(All Site) Free Shipping Threshold"/>
+        <column xsi:type="int" name="site_shipping_fee"  unsigned="true" nullable="true" comment="(All Site) Shipping Fee"/>
+        <column xsi:type="int" name="order_free_shipping_threshold" unsigned="true" nullable="true" comment="Order Free Shipping Threshold"/>
+        <column xsi:type="varchar" name="order_type" nullable="true" length="255" comment="Sub order type"/>
+        <column xsi:type="varchar" name="forced_can_creditmemo"  nullable="true" comment="force issue creditmemo"/>
+        <column xsi:type="tinyint" name="is_paid" default="0" nullable="false" unsigned="false"/>
+    </table>
+    <table name="sales_parent_order_detail" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="varchar" name="rma_status" nullable="true" length="128" comment="Rma Status"/>
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="varchar" name="flow_status" length="64" nullable="true" default="pending" comment="Sales Order Item Status"/>
+        <column xsi:type="decimal" name="special_price" nullable="true" unsigned="true" scale="4" precision="12" comment="Product special price"/>
+        <column xsi:type="text" name="price_log" nullable="true" comment="Price log at checkout"/>
+    </table>
+    <table name="quote_item">
+        <column xsi:type="decimal" name="special_price" nullable="true" unsigned="true" scale="4" precision="12" comment="Product special price"/>
+    </table>
+    <table name="sales_order_status_history">
+        <column xsi:type="int" name="item_id" nullable="true" comment="Sales Order Item Id"/>
+        <column xsi:type="varchar" name="item_status" length="64" nullable="true" comment="Sales Order Item Status"/>
+        <column xsi:type="text" name="resource_owner" nullable="true" comment="Who add this history"/>
+        <index referenceId="SALES_ORDER_STATUS_HISTORY_FULLTEXT" indexType="fulltext">
+            <column name="comment"/>
+        </index>
+    </table>
+    <table name="sales_shipment_track">
+        <column xsi:type="text" name="logistics_company_url" nullable="true" comment="Logistics Company URL"/>
+    </table>
+    <table name="sales_creditmemo" resource="sales" comment="Sales Flat Creditmemo">
+        <column xsi:type="int" name="financial_review_status"  nullable="false" comment="Financial Review Status"/>
+		<column xsi:type="int" name="void_invoice_type"  nullable="false" comment="Void Invoice Type: 0:不用做事 1:作廢 2:折讓 3:作廢且重開 4.作廢且折讓"/>
+        <column xsi:type="boolean" name="is_invoice_success"  nullable="false" comment="Is Invoice Success 發票排程是否處理完成"/>
+        <column xsi:type="datetime" name="invoice_success_at" nullable="true" comment="invoice success_at 發票排程處理完成時間"/>
+        <column xsi:type="boolean" name="is_reissued_invoice"  nullable="false" comment="Is Reissued Invoice 是否完成重開發票"/>
+        <column xsi:type="boolean" name="is_voided_invoice"  nullable="false" comment="Is Voided Invoice 是否完成註銷發票"/>
+        <column xsi:type="boolean" name="is_issued_offinvoice"  nullable="false" comment="Is Issued Off-Invoice 是否完成開立折讓發票"/>
+        <column xsi:type="int" name="reissue_invoice_retry_count"  nullable="false" comment="Reissue Invoice Retry Count 重新開立發票次數"/>
+        <column xsi:type="int" name="void_invoice_retry_count"  nullable="false" comment="Void Invoice Retry Count 註銷發票次數"/>
+        <column xsi:type="int" name="issue_offinvoice_retry_count"  nullable="false" comment="Issue Off-invoice Retry Count 開立折讓發票次數"/>
+        <column xsi:type="int" name="issue_type"  nullable="false" comment="Issue Type 開立 Credit Memo 類型: 0: 退貨 1: 取消"/>
+        <column xsi:type="int" name="refunded_amount"  nullable="false" comment="Refunded Amount"/>
+    </table>
+	<table name="sales_creditmemo_item" resource="sales" comment="Sales Flat Creditmemo Item">
+        <column xsi:type="int" name="refund_point"  nullable="false" comment="Refund Point"/>
+		<column xsi:type="int" name="refunded_amount"  nullable="false" comment="Refunded Amount" disabled="true"/>
+		<column xsi:type="int" name="refunded_point"  nullable="false" comment="Refunded Point"/>
+		<column xsi:type="boolean" name="is_ready_to_refund_point"  nullable="false" comment="Is Ready to refund point" disabled="true"/>
+		<column xsi:type="int" name="refund_point_status"  nullable="false" comment="Refund Point Status"/>
+		<column xsi:type="int" name="refund_point_retry_count"  nullable="false" comment="Refund Point Retry"/>
+	</table>
+<!--    <table name="sales_order_item_price_log" resource="sales" engine="innodb" comment="Price item log">-->
+<!--        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Log ID"/>-->
+<!--        <column xsi:type="int" name="order_item_id" nullable="false" comment="Order Item ID"/>-->
+<!--        <column xsi:type="int" name="origin_price" nullable="false" comment="Product origin price"/>-->
+<!--        <column xsi:type="int" name="new_level" nullable="false" comment="New level"/>-->
+<!--        <column xsi:type="datetime" name="created_at" nullable="false" comment="Created At"/>-->
+<!--        <column xsi:type="text" name="details" nullable="false" comment="Detail for history" />-->
+<!--        <constraint xsi:type="primary" referenceId="PRIMARY">-->
+<!--            <column name="entity_id"/>-->
+<!--        </constraint>-->
+<!--        <index referenceId="B8_LEVEL_HISTORY_CUSTOMER_ID" indexType="btree">-->
+<!--            <column name="customer_id"/>-->
+<!--        </index>-->
+<!--    </table>-->
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
+        <column xsi:type="int" name="quote_id"
+                unsigned="true"
+                nullable="true" identity="false"
+                comment="Quote ID"/>
+        <column xsi:type="smallint" name="is_virtual" unsigned="true" nullable="true" identity="false"
+                comment="Is Virtual"/>
+
+        <index referenceId="SALES_ORDER_GRID_IS_VIRTUAL" indexType="btree">
+            <column name="is_virtual"/>
+        </index>
+    </table>
+</schema>

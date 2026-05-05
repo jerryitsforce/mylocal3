@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="logistics_waybill" resource="default" engine="innodb" comment="物流單號記錄表">
+        <!-- 基本資訊 -->
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="主鍵ID"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="false" comment="訂單ID"/>
+        <column xsi:type="varchar" name="order_increment_id" length="50" nullable="false" comment="訂單編號"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="特約商ID"/>
+
+        <!-- 物流商資訊 -->
+        <column xsi:type="smallint" name="logistics_company_id" unsigned="true" nullable="false" comment="物流公司ID"/>
+        <column xsi:type="varchar" name="logistics_company_name" length="50" nullable="false" comment="物流公司名稱"/>
+        <column xsi:type="int" name="logistics_settings_id" unsigned="true" nullable="true" comment="物流設定ID"/>
+
+        <!-- 取號資訊 -->
+        <column xsi:type="varchar" name="waybill_number" length="100" nullable="true" comment="物流單號"/>
+        <column xsi:type="varchar" name="tracking_number" length="100" nullable="true" comment="追蹤號碼"/>
+        <column xsi:type="varchar" name="destination_station" length="50" nullable="true" comment="到著站號碼"/>
+        <column xsi:type="decimal" name="weight" scale="2" precision="10" nullable="true" comment="重量"/>
+        <column xsi:type="varchar" name="sequence_number" length="20" nullable="true" comment="傳送序號"/>
+
+        <!-- 標籤圖片 -->
+        <column xsi:type="text" name="label_image" nullable="true" comment="標籤圖片Base64"/>
+        <column xsi:type="varchar" name="label_image_path" length="255" nullable="true" comment="標籤圖片路徑"/>
+
+        <!-- 狀態管理 -->
+        <column xsi:type="varchar" name="status" length="20" nullable="false" default="pending" comment="處理狀態"/>
+        <column xsi:type="varchar" name="api_status" length="1" nullable="true" comment="API狀態"/>
+        <column xsi:type="text" name="error_message" nullable="true" comment="錯誤訊息"/>
+
+        <!-- 原始資料 -->
+        <column xsi:type="text" name="request_data" nullable="true" comment="請求資料JSON"/>
+        <column xsi:type="text" name="response_data" nullable="true" comment="回應資料JSON"/>
+        <column xsi:type="text" name="raw_response" nullable="true" comment="原始完整回應"/>
+
+        <!-- 商品明細 -->
+        <column xsi:type="varchar" name="order_item_ids" length="255" nullable="true" comment="訂單商品ID"/>
+
+        <!-- 出貨關聯 -->
+        <column xsi:type="int" name="shipment_id" unsigned="true" nullable="true" comment="出貨單ID"/>
+        <column xsi:type="varchar" name="shipment_increment_id" length="50" nullable="true" comment="出貨單編號"/>
+
+        <!-- 時間戳記 -->
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="建立時間"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="更新時間"/>
+        <column xsi:type="timestamp" name="picked_up_at" nullable="true" comment="取號時間"/>
+
+        <!-- 主鍵 -->
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+
+        <!-- 唯一鍵 -->
+        <constraint xsi:type="unique" referenceId="LOGISTICS_WAYBILL_WAYBILL_NUMBER">
+            <column name="waybill_number"/>
+        </constraint>
+
+        <!-- 索引 -->
+        <index referenceId="LOGISTICS_WAYBILL_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="LOGISTICS_WAYBILL_ORDER_INCREMENT_ID" indexType="btree">
+            <column name="order_increment_id"/>
+        </index>
+        <index referenceId="LOGISTICS_WAYBILL_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="LOGISTICS_WAYBILL_LOGISTICS_COMPANY_ID" indexType="btree">
+            <column name="logistics_company_id"/>
+        </index>
+        <index referenceId="LOGISTICS_WAYBILL_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="LOGISTICS_WAYBILL_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+        <index referenceId="LOGISTICS_WAYBILL_ORDER_SELLER" indexType="btree">
+            <column name="order_id"/>
+            <column name="seller_id"/>
+        </index>
+    </table>
+</schema>

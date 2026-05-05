@@ -1,0 +1,76 @@
+/* app/code/HotaiConnected/Account/view/frontend/web/css/custom.css */
+/* 重設基本容器 */
+.page-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.page-main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.columns {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.column.main {
+    width: 100% !important;
+    padding: 0 !important;
+    float: none !important;
+}
+
+/* 自定義容器樣式 */
+.hotai-container-full-width {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    display: block !important;
+}
+
+/* 內容區塊置中 */
+.hotaiconnected-account-success,
+.hotaiconnected-account-content {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    display: block !important;
+}
+
+/* cms blocks 置中 */
+.content-section {
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+}
+
+/* 響應式設計 */
+@media only screen and (max-width: 1280px) {
+    .hotai-container-full-width,
+    .hotaiconnected-account-success,
+    .hotaiconnected-account-content {
+        padding: 0 20px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .hotai-container-full-width,
+    .hotaiconnected-account-success,
+    .hotaiconnected-account-content {
+        padding: 0 15px !important;
+    }
+}

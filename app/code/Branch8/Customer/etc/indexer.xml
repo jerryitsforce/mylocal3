@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="customer_grid" view_id="customer_dummy" class="Magento\Framework\Indexer\Action\Entity" primary="customer">
+        <fieldset name="customer">
+            <field name="buyer_email" xsi:type="filterable" dataType="varchar"/>
+            <field name="member_seq" xsi:type="filterable" dataType="varchar"/>
+            <field name="seller_phone" xsi:type="filterable" dataType="varchar"/>
+            <field name="one_id" xsi:type="filterable" dataType="varchar"/>
+            <field name="platform" xsi:type="filterable" dataType="varchar"/>
+        </fieldset>
+        <fieldset name="order" source="Branch8\Customer\Model\ResourceModel\Indexer\CustomerLatestOrder\Collection">
+            <reference fieldset="customer" from="customer_id" to="entity_id"/>
+            <field name="latest_order_ids" xsi:type="searchable" dataType="mediumtext"/>
+        </fieldset>
+    </indexer>
+    <indexer id="customer_orders_latest_index" view_id="customer_orders_latest_index"
+             class="Branch8\Customer\Model\Indexer\CustomerLatestOrder">
+        <title translate="true">Customer Latest Order</title>
+        <description translate="true">Index latest sales data for customer</description>
+        <saveHandler class="Branch8\Customer\Model\Indexer\CustomerLatestOrder\IndexerHandler"/>
+        <structure class="Branch8\Customer\Model\Indexer\CustomerLatestOrder\IndexStructure"/>
+    </indexer>
+    <indexer id="customer_orders_index" view_id="customer_orders_index"
+             class="Branch8\Customer\Model\Indexer\CustomerOrders">
+        <title translate="true">Customer Orders Index</title>
+        <description translate="true">Index sales search data for customer</description>
+        <saveHandler class="Branch8\Customer\Model\Indexer\CustomerOrders\IndexerHandler"/>
+        <structure class="Branch8\Customer\Model\Indexer\CustomerOrders\IndexStructure"/>
+    </indexer>
+</config>

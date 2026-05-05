@@ -1,0 +1,17 @@
+<!-- ko if: showBlockBox() === true -->
+<div class="user-block-reason">
+    <i class="fa fa-close cancel-reason-box" data-bind="click: closeBlockBox, clickBubble:false"></i>
+    <form data-bind="submit: blockUserFormSubmit">
+        <input type="hidden" name="customerUniqueId" data-bind="value: blockUserUniqueId"></input>
+        <textarea name="block_reason" id="block_reason" class="block-reason"
+                  data-bind="attr :{placeholder: $t('Enter Reason to Block')}"></textarea>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" class="button action primary">
+                    <span data-bind="i18n: 'Block'"></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- /ko -->

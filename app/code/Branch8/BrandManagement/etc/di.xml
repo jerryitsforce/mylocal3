@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\BrandManagement\Api\BrandOptionRepositoryInterface" type="Branch8\BrandManagement\Model\BrandOptionRepository"/>
+    
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="brand_listing_data_source" xsi:type="string">Branch8\BrandManagement\Model\ResourceModel\BrandOption\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <virtualType name="Branch8\BrandManagement\Model\ResourceModel\BrandOption\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">eav_attribute_option</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\BrandManagement\Model\ResourceModel\BrandOption</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\ImageUploader" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">ImageUploader</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\BrandOptionRepository" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">BrandOptionRepository</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_Save" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_Save</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_Delete" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_Delete</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_MassDelete" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_MassDelete</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_InlineEdit" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_InlineEdit</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_ImageUpload" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_ImageUpload</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_SliderImageUploader" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_SliderImageUploader</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Controller_Edit" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Controller_Edit</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\BrandDataProvider_Form" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">BrandDataProvider_Form</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\BrandDataProvider_Listing" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">BrandDataProvider_Listing</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Plugin_AddUrlToResponse" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Plugin_AddUrlToResponse</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Observer_OptionFormBuildAfter" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Observer_OptionFormBuildAfter</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Branch8\BrandManagement\Logger\ConditionalLogger\Source_CmsBlock" type="Branch8\BrandManagement\Logger\ConditionalLogger">
+        <arguments>
+            <argument name="target" xsi:type="string">Source_CmsBlock</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Branch8\BrandManagement\Model\ImageUploader">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\ImageUploader</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Model\BrandOptionRepository">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\BrandOptionRepository</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\Save">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_Save</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\Delete">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_Delete</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\MassDelete">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_MassDelete</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\InlineEdit">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_InlineEdit</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\ImageUpload">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_ImageUpload</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\SliderImageUploader">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_SliderImageUploader</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Controller\Adminhtml\Brand\Edit">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Controller_Edit</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Model\Brand\DataProvider">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\BrandDataProvider_Form</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Ui\Component\Listing\DataProvider\BrandDataProvider">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\BrandDataProvider_Listing</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Plugin\MediaGallery\OnInsert\AddUrlToResponse">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Plugin_AddUrlToResponse</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Observer\Admin\OptionFormBuildAfter">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Observer_OptionFormBuildAfter</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\BrandManagement\Model\Config\Source\CmsBlock">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\BrandManagement\Logger\ConditionalLogger\Source_CmsBlock</argument>
+        </arguments>
+    </type>
+</config>

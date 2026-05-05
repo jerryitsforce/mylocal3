@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+   <preference for="Branch8\MarketPlaceOrderExport\Model\InvoiceGroupDataInterface"
+                     type="Branch8\MarketPlaceOrderExport\Model\InvoiceGroupData"/>
+    <type name="Branch8\MarketPlaceOrderExport\Model\RecordsProvider">
+        <arguments>
+            <argument name="columns"  xsi:type="array">
+                <item name="order_checkout_serial_number_date" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\CheckoutSerialNumber</item>
+                <item name="order_date" xsi:type="string">Order Date</item>
+                <item name="parent_order_number" xsi:type="string">Parent-Order Number</item>
+                <item name="sub_order_number" xsi:type="string">Sub-Order Number</item>
+                <item name="hotai_checkout_number" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\HotaiCheckoutNumber</item>
+                <item name="ecpay_invoice_number" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\InvoiceNumber</item>
+                <item name="ecpay_invoice_status" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\InvoiceStatus</item>
+                <item name="flow_status" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\FlowStatus</item>
+                <item name="is_reverse" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\IsReverse</item>
+                <item name="order_status" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\OrderStatus</item>
+                <item name="rma_status" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\RmaStatus</item>
+                <item name="buyer_name" xsi:type="string">Export Buyer Name</item>
+                <item name="buyer_phone" xsi:type="string">Buyer Phone</item>
+                <item name="receiver_name" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ReceiverName</item>
+                <item name="receiver_phone" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ReceiverPhone</item>
+                <item name="product_type" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ProductType</item>
+                <item name="shop_title" xsi:type="string">Seller Name</item>
+                <item name="seller_code" xsi:type="string">Seller Code</item>
+                <item name="shipping_description" xsi:type="string">Shipping Method</item>
+                <item name="tracking_number" xsi:type="string">Tracking Number</item>
+                <item name="logistic_company_name" xsi:type="string">Logistics Company Name</item>
+                <item name="address" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\Address</item>
+                <item name="pickup_store_name" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\PickUpStoreName</item>
+                <item name="product_id" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ProductId</item>
+                <item name="product_name" xsi:type="string">Product Name</item>
+                <item name="product_sku" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ProductSku</item>
+                <item name="vendor_sku" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\VendorSku</item>
+                <item name="origin_sku" xsi:type="string">Origin Sku</item>
+                <item name="option_sku" xsi:type="string">Option Sku</item>
+                <item name="variation_sku" xsi:type="string">Variation Sku</item>
+                <item name="supplier_sku" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\SupplierSKU</item>
+                <item name="option_title" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\OptionTitle</item>
+                <item name="option_name" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\OptionName</item>
+                <item name="base_original_price" xsi:type="string">Price</item>
+                <item name="special_price" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\SpecialPrice</item>
+                <item name="cost" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\Cost</item>
+                <item name="total_item_invoiced" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\TotalItemInvoiced</item>
+                <item name="qty" xsi:type="string">Qty</item>
+                <item name="catalog_discount" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\CatalogDiscount</item>
+                <item name="catalog_price" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\CatalogPrice</item>
+                <item name="cart_price_discount" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\CartPriceDiscount</item>
+                <item name="row_total_point_used" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\UsePoint</item>
+                <item name="total_amount_credit_card" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\TotalAmountCreditCard</item>
+                <item name="subtotalFull" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\SubTotalFull</item>
+                <item name="subtotal" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\SubTotal</item>
+                <item name="catalog_rule_names" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\CatalogRuleNames</item>
+                <item name="applied_rule_names" xsi:type="string">Cart Price Rule Name</item>
+                <item name="vendor_share" xsi:type="string">Vendor Share</item>
+                <item name="platform_share" xsi:type="string">Platform Share</item>
+                <item name="main_category" xsi:type="string">Main Category</item>
+                <item name="hotai_point_deduction_point_trans_s_n" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\TransSN</item>
+                <item name="order_cancellation_time" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\OrderCancellationTime</item>
+                <item name="order_reason_for_cancellation" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ReasonForCancellation</item>
+                <item name="apply_for_return_time" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ApplyForReturnTime</item>
+                <item name="apply_for_return_review_results" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ApplyForReturnResults</item>
+                <item name="agree_on_return_time" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\AgreeOnReturnTime</item>
+                <item name="return_result" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ReturnResult</item>
+                <item name="return_result_confirmation_time" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ReturnResultConfirmationTime</item>
+                <item name="distribution_thermosphere" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\DistributionThermosphere</item>
+                <item name="all_sites_free_shipping_threshold" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\AllSiteFreeShippingThreshold</item>
+                <item name="all_sites_shipping_fee" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\AllSiteFreeShipping</item>
+                <item name="order_free_shipping_threshold" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\OrderFreeShippingThreshold</item>
+                <item name="schedule_change_special_price" xsi:type="string">Scheduled Changes Of Special Price</item>
+                <item name="scheduled_changes_of_special_price_start_date" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ScheduledChangesOfSpecialPriceStartDate</item>
+                <item name="scheduled_changes_of_special_price_end_date" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\ScheduledChangesOfSpecialPriceEndDate</item>
+                <item name="hifi" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\Hifi</item>
+                <item name="marketing_fee" xsi:type="string">Marketing Fee</item>
+                <item name="logistic_support_fee" xsi:type="string">Logistic Support Fee</item>
+                <item name="sale_rep" xsi:type="object">Branch8\MarketPlaceOrderExport\Model\Column\SalesRepresentatives</item>
+                <item name="order_note" xsi:type="string">Export Order Note</item>
+            </argument>
+            <argument name="columSettings" xsi:type="array">
+                <!--Order Columns-->
+                <item name="order_date" xsi:type="array">
+                    <item name="setHorizontal" xsi:type="string">right</item>
+                </item>
+                <item name="parent_order_number" xsi:type="array">
+                    <item name="setHorizontal" xsi:type="string">right</item>
+                </item>
+                <item name="tracking_number" xsi:type="array">
+                    <item name="setHorizontal" xsi:type="string">right</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="exportEcPayOrderLog" xsi:type="object">Branch8\MarketPlaceOrderExport\Console\Command\ExportEcpayOrderLogs</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="auditExportOrderDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/auditExportOrder.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="auditExportOrderDebugLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">auditExportOrderDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\MarketPlaceOrderExport\Helper\Logger">
+        <arguments>
+            <argument name="logger" xsi:type="object">auditExportOrderDebugLogger</argument>
+        </arguments>
+    </type>
+</config>

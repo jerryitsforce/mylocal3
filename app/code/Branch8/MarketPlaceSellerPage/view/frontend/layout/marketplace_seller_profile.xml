@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <remove src="Webkul_Marketplace::css/filter.css"/>
+        <remove src="Magento_Swatches::css/swatches.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock name="marketplace_seller_top_block" remove="true"/>
+            <referenceBlock name="marketplace_sellerprofile" remove="true"/>
+            <referenceBlock name="marketplace_sellercollectionleft" remove="true"/>
+            <referenceBlock name="microsite.details" remove="true"/>
+        </referenceContainer>
+        <referenceContainer name="columns">
+            <block class="Magento\LiveSearchProductListing\Block\Frontend\Search\SaaSContext" before="-"
+                   name="seller.livesearch.product.listing"
+                   template="Branch8_MarketPlaceSellerPage::templates/product_listing.phtml"
+                   ifconfig="storefront_features/website_configuration/product_listing_widgets_active"
+            >
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Branch8\MarketPlaceSellerPage\ViewModel\SellerProfile</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

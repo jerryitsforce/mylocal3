@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<body>
+		<!-- <referenceBlock name="header.container" remove="true" />
+		<referenceBlock name="catalog.topnav" remove="true" /> -->
+		<referenceBlock name="breadcrumbs">
+			<action method="addCrumb">
+					<argument name="crumbName" xsi:type="string" translate="true">Home</argument>
+					<argument name="crumbInfo" xsi:type="array">
+							<item name="label" xsi:type="string" translate="true">Home</item>
+							<item name="title" xsi:type="string" translate="true">Go to Home Page</item>
+							<item name="link" xsi:type="string">/</item>
+					</argument>
+			</action>
+			<action method="addCrumb">
+					<argument name="crumbName" xsi:type="string" translate="true">訂單管理</argument>
+					<argument name="crumbInfo" xsi:type="array">
+							<item name="label" xsi:type="string" translate="true">訂單管理</item>
+							<item name="title" xsi:type="string" translate="true">訂單管理</item>
+							<item name="link" xsi:type="string">/sales/parentOrder/history</item>
+					</argument>
+			</action>
+			<action method="addCrumb">
+					<argument name="crumbName" xsi:type="string" translate="true">重新付款</argument>
+					<argument name="crumbInfo" xsi:type="array">
+							<item name="label" xsi:type="string" translate="true">重新付款</item>
+							<item name="title" xsi:type="string" translate="true">重新付款</item>
+					</argument>
+			</action>
+		</referenceBlock>
+		<referenceContainer name="content">
+			<block name="checkout.processor" 
+					class="Branch8\Repayment\Block\Checkout\Processor" 
+					template="Branch8_Repayment::checkout/processor.phtml"
+					cacheable="false">
+				<block name="repayment.popup.card.binding.fail" class="Branch8\Customer\Block\Hotaipay\Index" template="Branch8_Customer::hotaipay/popup/card_binding_failed.phtml"/>
+				<block name="repayment.popup.card.binding.complete" class="Branch8\Customer\Block\Hotaipay\PopupComplete" template="Branch8_Customer::hotaipay/popup/card_binding_completed.phtml"/>
+			</block>
+		</referenceContainer>
+	</body>
+	<!-- <update handle="checkout_index_index" /> -->
+</page>

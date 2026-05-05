@@ -1,0 +1,19 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Magento\Framework\Escaper;
+
+/** @var \Branch8\Blog\Block\Post\View $block */
+/** @var Escaper $escaper */
+$_post = $block->getPost();
+?>
+<!--Open Graph Meta tags by Mageplaza-->
+<meta property="og:url"             content="<?= $escaper->escapeUrl($_post->getUrl()) ?>" />
+<meta property="og:title"           content="<?= $escaper->escapeHtml($_post->getName()) ?>" />
+<meta property="og:image"           content="<?= $escaper->escapeUrl($block->getImageUrl($_post->getImage())) ?>" />
+<meta property="og:description"    content="<?= $escaper->escapeHtml($_post->getShortDescription()) ?>" />
+<!--End Open Graph Meta tags by Mageplaza-->

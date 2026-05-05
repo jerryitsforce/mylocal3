@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Magento\Customer\Model\Authentication">
+		<plugin name="Branch8_Security_Plugin_Magento_Customer_Model_Authentication" type="Branch8\Security\Plugin\Magento\Customer\Model\Authentication" sortOrder="10" disabled="false"/>
+	</type>
+    <type name="Magento\Csp\Model\Collector\CspWhitelistXmlCollector">
+        <plugin name="branch8_security_csp_whitelist" type="Branch8\Security\Plugin\CspWhitelist"/>
+    </type>
+    <type name="Branch8\Security\Plugin\CspWhitelist">
+        <arguments>
+            <argument name="configReader" xsi:type="object">Magento\Csp\Model\Collector\CspWhitelistXml\Data</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\App\PageCache\FormKey">
+        <plugin name="form_key_secure_plugin" type="Branch8\Security\Plugin\FormKeySecurePlugin" sortOrder="10"/>
+    </type>
+</config>

@@ -1,0 +1,62 @@
+// @codingStandardsIgnoreFile
+//
+//  One Step Checkout
+
+//
+//  Variables
+//  ---------------------------------------------
+
+@mobile-screen-width: 900px;
+@icon-close-base64: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTS0xLTFoMTJ2MTJILTF6Ii8+PHBhdGggZmlsbD0iI2I1YjViNSIgY2xhc3M9ImFjdGl2ZS1wYXRoIiBkPSJNNiA1bDQtNC0xLTEtNCA0LTQtNC0xIDEgNCA0LTQgNCAxIDEgNC00IDQgNCAxLTEtNC00eiIgc3Ryb2tlPSJudWxsIi8+PC9zdmc+);
+@amcheckout-fieldbox-side__padding: 7px;
+@amcheckout__background-color: unset;
+@amcheckout-minicart-delete__border-color: #b6b6b6;
+@amcheckout-registration__border-color: #f58c12;
+@screen__sl: 1280px;
+//
+//  Common
+//  ---------------------------------------------
+
+& when (@media-common = true) {
+   
+}
+
+//
+//  Mobile
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+   
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+}
+
+//
+//  Tablet
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
+    
+}
+
+//
+//  Tablet +
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+   
+}
+
+//
+//  Desktop
+//  ---------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+  
+}
+
+// .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+
+// }

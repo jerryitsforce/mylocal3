@@ -1,0 +1,31 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/** @var $block \Magento\Catalog\Block\Product\Image */
+/** @var $escaper \Magento\Framework\Escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+$width = (int)$block->getWidth();
+$paddingBottom = $block->getRatio() * 100;
+$helper = $this->helper(Branch8\ProductAlert\Helper\Data::class);
+$imageAlert = $helper->getProductAlertImage();
+$isAlertIcon = $helper->getEighteenProducts($block->getProductId());
+?>
+<span class="product-image-container product-image-container-<?= /* @noEscape */ $block->getProductId() ?>" style="width: <?= $escaper->escapeHtmlAttr($width) ?>px;">
+    <?php if ($isAlertIcon): ?>
+        <span class="products-overlay"><img src="<?= $imageAlert ?>" style="border: none;"></span>
+    <?php endif; ?>
+    <span class="product-image-wrapper" style="padding-bottom: <?= $escaper->escapeHtmlAttr($paddingBottom) ?>%;">
+        <img class="<?= $escaper->escapeHtmlAttr($block->getClass()) ?>"
+            <?php foreach ($block->getCustomAttributes() as $name => $value): ?>
+                <?= $escaper->escapeHtmlAttr($name) ?>="<?= $escaper->escapeHtml($value) ?>"
+            <?php endforeach; ?>
+            src="<?= $escaper->escapeUrl($block->getImageUrl()) ?>"
+            loading="lazy"
+            width="<?= $escaper->escapeHtmlAttr($block->getWidth()) ?>"
+            height="<?= $escaper->escapeHtmlAttr($block->getHeight()) ?>"
+            alt="<?= $escaper->escapeHtmlAttr($block->getLabel()) ?>"/></span>
+</span>

@@ -1,0 +1,267 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\Marketplace\Logger\Logger"
+                type="Branch8\MarketplaceProduct\Logger\Logger"/>
+    <type name="Webkul\Marketplace\Logger\Logger">
+        <arguments>
+            <argument name="logFile" xsi:type="string">marketplace.log</argument>
+        </arguments>
+    </type>
+    <preference for="Branch8\MarketplaceProduct\Api\ProductVersionRepositoryInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductVersionRepository"/>
+    <preference for="Branch8\MarketplaceProduct\Api\Data\ProductVersionInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductVersion"/>
+    <preference for="Branch8\MarketplaceProduct\Api\Data\ProductVersionSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Branch8\MarketplaceProduct\Api\ProductInitialInformationRepositoryInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductInitialInformationRepository"/>
+    <preference for="Branch8\MarketplaceProduct\Api\Data\ProductInitialInformationInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductInitialInformation"/>
+    <preference for="Branch8\MarketplaceProduct\Api\ProductRepositoryInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductRepository"/>
+    <preference for="Branch8\MarketplaceProduct\Api\ProductTempDataRepositoryInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductTempDataRepository"/>
+    <preference for="Branch8\MarketplaceProduct\Api\Data\ProductTempDataInterface"
+                type="Branch8\MarketplaceProduct\Model\ProductTempData"/>
+    <preference for="Branch8\MarketplaceProduct\Api\Data\ProductTempDataSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Branch8\MarketplaceProduct\Api\Data\ApproveProductDataInterface"
+                type="Branch8\MarketplaceProduct\Model\Data\ApproveProductData" />
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\ProductVersion\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_product_version</argument>
+            <argument name="eventPrefix" xsi:type="string">marketplace</argument>
+            <argument name="eventObject" xsi:type="string">_product_version_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\ProductVersion\Collection</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\ProductTempData\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_product_temp</argument>
+            <argument name="eventPrefix" xsi:type="string">marketplace</argument>
+            <argument name="eventObject" xsi:type="string">_product_temp_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\ProductTempData\Collection</argument>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="product_approval_management_listing_data_source" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\ProductApprovalManagement\Grid\CollectionStaff</item>
+                <item name="manager_product_approval_management_listing_data_source" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\ProductApprovalManagement\Grid\CollectionManager</item>
+                <item name="marketplace_seller_products_list_data_source" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\SellerProductManagement\Grid\Collection</item>
+                <item name="marketplacectrl_product_version_listing_data_source" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\ProductVersion\Grid\Collection</item>
+                <item name="marketplacectrl_temp_products_listing_data_source" xsi:type="string">Branch8\MarketplaceProduct\Model\ResourceModel\ProductTempData\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <plugin name="add_filter_approval_product"
+                type="Branch8\MarketplaceProduct\Plugin\Product\AdminApprovalCustomFilter"
+                sortOrder="100"/>
+        <plugin name="add_filter_manager_product_approval"
+                type="Branch8\MarketplaceProduct\Plugin\Product\AdminProductManagerApprovalCustomFilter"
+                sortOrder="110"/>
+    </type>
+
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\ProductApprovalManagement\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_product</argument>
+            <argument name="eventPrefix" xsi:type="string">marketplace_product_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">product_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Webkul\Marketplace\Model\ResourceModel\Product</argument>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\SellerProductManagement\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_product</argument>
+            <argument name="eventPrefix" xsi:type="string">marketplace_product_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">product_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Webkul\Marketplace\Model\ResourceModel\Product</argument>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product">
+        <plugin name="Branch8_MarketplaceProduct::update_quote_after_product_price_change"
+                type="Branch8\MarketplaceProduct\Plugin\Product\UpdateQuoteAfterPriceChange"
+                sortOrder="100"/>
+    </type>
+    <virtualType name="Branch8\MarketplaceProduct\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8-mproduct.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8MarketplaceProductLogger" type="Branch8\MarketplaceProduct\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">branch8_mproduct</argument>
+            <argument name="logFile" xsi:type="string">branch8-mproduct.log</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Branch8\MarketplaceProduct\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Bundle\Model\ProductRelationsProcessorComposite">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="bundle_price_change" xsi:type="object">Branch8\MarketplaceProduct\Model\BundlePriceChangeProcessor</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\BundlePriceChangeProcessor">
+        <arguments>
+            <argument name="comparisonFieldsTypeMapper" xsi:type="array">
+                <item name="sku" xsi:type="string">string</item>
+                <item name="price" xsi:type="string">float</item>
+                <item name="price_type" xsi:type="string">string</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Tax\Model\ClassModel">
+        <plugin name="Branch8_MarketplaceProduct::update_tax_class_translate"
+                type="Branch8\MarketplaceProduct\Plugin\Magento\Tax\Model\ClassModel"
+                sortOrder="100"/>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
+        <plugin name="trackproductuser_product_grid" type="Branch8\MarketplaceProduct\Plugin\Product\Grid" />
+    </type>
+    <!-- plugin for Customer Id -->
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="marketplace-abstractaction-customerid-plugin" disabled="true" />
+    </type>
+    <!-- plugin end -->
+
+    <virtualType name="approveProductByConsumerHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/approveProductByConsumer.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="approveProductByConsumerHandlerLogger" type="Branch8\MarketplaceProduct\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">approveProductByConsumer</argument>
+            <argument name="logFile" xsi:type="string">approveProductByConsumer.log</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">approveProductByConsumerHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\MarketplaceProduct\Model\Consumer\ApproveProductConsumer">
+        <arguments>
+            <argument name="logger" xsi:type="object">approveProductByConsumerHandlerLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\GetProductLogEntryByProductId">
+        <arguments>
+            <argument name="logger" xsi:type="object">approveProductByConsumerHandlerLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Helper\ProductApproval">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\Product\AddImageToMediaGallery">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\Import\InventoryImport">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Plugin\Product\AdminApprovalCustomFilter">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <!-- From adminhtml/di.xml -->
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\Approve">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\Disapprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\MassApprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\DealerApprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\DealerDisapprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\MassDealerApprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\MassDealerDisapprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Controller\Adminhtml\Product\MassDisapprove">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\SummaryChange">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\VariationCost">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\VariationPrice">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- From frontend/di.xml (Logger pieces only) -->
+    <type name="Branch8\MarketplaceProduct\Model\Product\SaveProductWithChanges">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Observer\ProcessProductPreviewObserver">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Observer\FirstEnabledDateObserver">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Observer\ProductInitialInformationObserver">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Observer\TrackUpdatedUser">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Plugin\Webkul\Marketplace\Controller\Product\Builder">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8MarketplaceProductLogger</argument>
+        </arguments>
+    </type>
+</config>

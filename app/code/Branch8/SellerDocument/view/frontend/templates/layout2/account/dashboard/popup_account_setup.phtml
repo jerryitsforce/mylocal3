@@ -1,0 +1,78 @@
+<?php
+$helper = $this->helper('Branch8\SellerDocument\Helper\Data');
+$documentTemplateFileUrl = $helper->getDocumentTemplateFileUrl();
+$documentExpiredTime = $helper->getDocumentExpiredTime();
+$showPopup = $helper->showPopup();
+?>
+<div>
+    <button id="setup-button"><?=__('Seller Account Setup')?></button>
+</div>
+
+<div id="seller-popup-modal-main" style="display:none;">
+    <div>
+        <h4><?=__('Upload your documents')?></h4>
+        <form id="upload-document-form" class="upload-document-form" action="/marketplace/seller/uploadDestructionDocuments" enctype="multipart/form-data" method="POST">
+            <label for="files"><?=__('Personal data destruction affidavit')?> :</label>
+            <input type="file" id="personal_data_destruction_affidavit" name="personal_data_destruction_affidavit" required accept="application/pdf, application/msword, .doc, .docx">
+            <div style="margin-bottom:10px">
+                <a href="<?=$documentTemplateFileUrl?>" download><?=__('Download template')?></a>
+            </div>
+
+            <div style="margin-bottom:10px">
+                <label for="files"><?=__('Personal data destruction certificate')?> :</label>
+                <input type="file" id="personal_data_destruction_certificate" name="personal_data_destruction_certificate" required accept="image/*">
+            </div>
+            <input type="checkbox" id="confirm_checkbox" name="confirm_checkbox" value="confirm" required/>
+            <label for="vehicle1"><?=__('I have indeed destroyed the downloaded order')?></label><br>
+            <input type="hidden" id="expired_time" name="expired_time" value="<?=$documentExpiredTime?>">
+        </form>
+        <button type="submit" form="upload-document-form" value="Submit"><?=__('Send')?></button>
+        <button id="skip-button"><?=__('Skip')?></button>
+    </div>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'jquery/jquery.cookie'
+        ],
+        function($, modal) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'seller-account-setup-popup',
+                buttons: []
+            };
+
+            var popup = modal(options, $('#seller-popup-modal-main'));
+            $("#setup-button").on('click',function(){
+                $("#seller-popup-modal-main").modal("openModal");
+            });
+
+            $("#skip-button").on('click',function(){
+                $("#seller-popup-modal-main").modal("closeModal");
+            });
+
+            $(document).ready(function () {
+                var showPopup = '<?=$showPopup?>';
+                if(showPopup) {
+                    /* show popup */
+                    setTimeout(function(){ $('#seller-popup-modal-main').modal('openModal'); }, 2500);
+                }
+            });
+        }
+    );
+</script>
+<style type="text/css">
+   .seller-account-setup-popup {
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .upload-document-form {
+        margin-bottom : 10px;
+    }
+</style>

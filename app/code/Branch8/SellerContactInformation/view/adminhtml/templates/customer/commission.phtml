@@ -1,0 +1,37 @@
+<?php
+/** @var $block \Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\Tab\Commission */
+$commissionValue = $block->getCommission();
+
+
+?>
+
+
+<?= $block->getGridHtml() ?>
+
+<div class="admin__fieldset-wrapper opened">
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <table class="admin__table-secondary">
+                <tbody>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Total Sale'));?></th>
+                        <td><?= $block->escapeHtml($block->getCurrencyPrice($commissionValue['total_sale'])); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Total Seller Sale')); ?></th>
+                        <td><?= $block->escapeHtml($block
+                        ->getCurrencyPrice($commissionValue['actual_seller_amt'])); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Total Admin Sale')) ?></th>
+                        <td><?= $block->escapeHtml($block->getCurrencyPrice($commissionValue['total_comm'])); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $block->escapeHtml(__('Current Commission %')) ?></th>
+                        <td><?= $block->escapeHtml($commissionValue['current_val']); ?>%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+</div>

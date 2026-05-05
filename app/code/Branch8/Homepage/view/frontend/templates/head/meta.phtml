@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var \Branch8\Homepage\Block\Head\Meta $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+// 取得 kv 用的圖片（確保可在 view-source 看到）
+$backgroundImages = $block->getBackgroundImagesForViewSource();
+?>
+
+<?php foreach ($backgroundImages as $backgroundImage): ?>
+<link rel="preload" href="<?= $escaper->escapeUrl($backgroundImage) ?>" as="image" fetchpriority="high"/>
+<?php endforeach; ?>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <!-- <job name="chat_unreadmessage_generate_queue"
+              instance="Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron\Generate"
+              method="execute">
+             <schedule>0 */6 * * *</schedule>
+         </job>-->
+        <!-- <job name="chat_unreadmessage_process_queue"
+              instance="Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron\Process"
+              method="execute">
+             <schedule>0 * * * *</schedule>
+         </job>-->
+        <job name="chat_unreadmessage_remind_process"
+             instance="Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron\SellerRemindUnreadMessage"
+             method="execute">
+            <config_path>buyer_seller_chat/notification/cron_exp</config_path>
+        </job>
+        <job name="branch8_chat_customer_notification_process_queue"
+             instance="Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron\ProcessCustomerNotificationQueue"
+             method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="branch8_chat_notification_cleanup" 
+             instance="Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron\CleanupQueue" 
+             method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

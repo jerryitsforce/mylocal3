@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="qware_cron_retry_failed_template" 
+              label="Qware Cron Retry Failed Notification" 
+              file="cron_retry_failed_template.html" 
+              type="html" 
+              module="HotaiConnected_Qware" 
+              area="frontend"/>
+              
+    <template id="qware_api_error_template" 
+              label="Qware API Error Notification" 
+              file="api_error_template.html" 
+              type="html" 
+              module="HotaiConnected_Qware" 
+              area="frontend"/>
+</config>

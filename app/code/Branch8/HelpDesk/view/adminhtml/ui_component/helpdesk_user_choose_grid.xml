@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">helpdesk_user_choose_grid.helpdesk_user_choose_grid_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>helpdesk_user_choose_grid_columns</spinner>
+        <deps>
+            <dep>helpdesk_user_choose_grid.helpdesk_user_choose_grid_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="helpdesk_user_choose_grid_data_source"
+                component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">user_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Branch8\HelpDesk\Model\ResourceModel\User\DataProvider"
+                      name="helpdesk_user_choose_grid_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>user_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="helpdesk_user_choose_grid_columns"
+             component="Branch8_HelpDesk/js/ticket/create/customer-choose-grid"
+        template="Branch8_HelpDesk/ticket/create/customer-listing">
+        <column name="user_id"  component="Branch8_HelpDesk/js/ticket/create/choose-grid-column">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="username" component="Branch8_HelpDesk/js/ticket/create/choose-grid-column">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">User Name</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="email" component="Branch8_HelpDesk/js/ticket/create/choose-grid-column">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Email</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="HotaiConnected_OpenHub" setup_version="1.0.0">
+        <sequence>
+            <module name="Branch8_GeneralNotifyTicket"/>
+            <module name="Branch8_HotaiCore"/>
+            <module name="Branch8_TicketApi"/>
+            <module name="Branch8_CustomerTicketTable"/>
+            <module name="Magento_Catalog"/>
+            <module name="Magento_Sales"/>
+            <module name="Magento_Customer"/>
+        </sequence>
+    </module>
+</config>

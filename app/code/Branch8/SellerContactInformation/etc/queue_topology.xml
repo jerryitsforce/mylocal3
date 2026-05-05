@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="db">
+        <binding id="SellerContractUpdateCommissionRateBinding" topic="seller.contract.active.update_product" destinationType="queue"    destination="seller.contract.active.update_product"/>
+    </exchange>
+</config>

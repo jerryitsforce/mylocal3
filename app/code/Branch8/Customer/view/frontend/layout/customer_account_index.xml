@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_dashboard_info">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_Customer::account/dashboard/info.phtml</argument>
+            </action>
+			<block name="branch8_customer_account_nickname" class="Branch8\Customer\Block\Info\Index" template="Branch8_Customer::account/dashboard/nickname.phtml"/>
+            <block class="Branch8\Customer\Block\Info\Detail"
+                   name="branch8_customer_account_invoice_carrier"
+                   template="Branch8_Customer::info/detail/invoice-carrier.phtml"/>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block name="branch8_customer_account_confirmation_poppup" class="Magento\Framework\View\Element\Template" template="Branch8_Customer::account/confirmation_popup.phtml" after="-"/>
+        </referenceContainer>
+    </body>
+</page>

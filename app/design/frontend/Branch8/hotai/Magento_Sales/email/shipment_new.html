@@ -1,0 +1,112 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Your %store_name order has shipped" store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var formattedBillingAddress|raw":"Billing Address",
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var order_data.customer_name":"Customer Name",
+"var order.increment_id":"Order Id",
+"var payment_html|raw":"Payment Details",
+"var comment|escape|nl2br":"Shipment Comment",
+"var shipment.increment_id":"Shipment Id",
+"layout handle=\"sales_email_order_shipment_items\" shipment=$shipment order=$order":"Shipment Items Grid",
+"block class='Magento\\\\Framework\\\\View\\\\Element\\\\Template' area='frontend' template='Magento_Sales::email\/shipment\/track.phtml' shipment=$shipment order=$order":"Shipment Track Details",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var order.shipping_description":"Shipping Description",
+"var store.frontend_name":"Store Frontend Name",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var store_hours":"Store Hours",
+"var order_data.is_not_virtual": "Order Type",
+"var shipment": "Shipment",
+"var order": "Order",
+"var order_id": "Order DB Id",
+"var shipment_id": "Shipment DB Id"
+} @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>{{trans "訂單已出貨通知信"}}</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {{trans "親愛的%nickname您好，<br/>您期待的商品已透過 宅配物流 於 %shipment_created_at 寄出。" nickname=$custom_data.customer_nickname shipment_created_at=$custom_data.shipment_created_at |raw}}
+<p>
+
+<table cellpadding="0" cellspacing="0" class="order-info new-shipment m-bottom__m">
+    <thead>
+    <tr>
+        <th>{{trans "訂單明細" }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">{{trans "訂單編號" }}</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var custom_data.url_history}}">{{var order.increment_id}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">{{trans "訂單日期" }}</td>
+                    <td class="value">{{var custom_data.order_created_at}}</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">{{trans "商品總額" }}</td>
+                    <td class="value">{{var custom_data.subtotal_incl_tax|raw}}</td>
+                </tr>
+                {{depend custom_data.is_point}}
+                <tr class="order_point-discount">
+                    <td class="label">{{trans "點數折抵" }}</td>
+                    <td class="value">-{{var custom_data.point_discount_total|raw}}</td>
+                </tr>
+                {{/depend}}
+                <tr class="order_shipping-fee">
+                    <td class="label">{{trans "運費" }}</td>
+                    <td class="value">{{var custom_data.shipping_incl_tax|raw}}</td>
+                </tr>
+
+                <tr class="order_grand-total">
+                    <td class="label">{{trans "實付金額" }}</td>
+                    <td class="value">{{var custom_data.grand_total|raw}}</td>
+                </tr>
+
+                <tr class="order_shipping-method">
+                    <td class="label">{{trans "物流方式" }}</td>
+                    <td class="value">{{var order.shipping_description}}</td>
+                </tr>
+                <tr class="shipment_tracking_numbers">
+                    <td class="label">{{trans "物流編號" }}</td>
+                    <td class="value">
+                        {{layout handle="sales_email_order_shipment_track" shipment_id=$shipment_id order_id=$order_id}}
+                    </td>
+                </tr>
+                <tr class="order_items">
+                    <td class="label">{{trans "訂購商品" }}</td>
+                    <td class="value">
+                        {{layout handle="sales_email_order_shipment_items_custom" shipment_id=$shipment_id order_id=$order_id}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    {{trans '請留意近期手機訊息及確保收貨資訊正確。<br> 請至 帳號管理 > <a target="_blank" class="link-primary" href="%order_url_history">訂單查詢</a> 瀏覽完整訂單內容。' order_url_history=$custom_data.url_history |raw}}
+</p>
+
+{{template config_path="design/email/footer_template"}}

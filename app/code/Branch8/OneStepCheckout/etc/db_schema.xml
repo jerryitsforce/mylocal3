@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Mpsplitorder
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote_address">
+        <column xsi:type="text" name="store_address_info" nullable="true" comment="Store Address Info"/>
+        <column xsi:type="varchar" name="cvs_store_code" nullable="true" comment="Store Address Code"/>
+        <column xsi:type="varchar" name="cvs_store_name" nullable="true" comment="Store Address Name"/>
+        <column xsi:type="varchar" name="cvs_store_servicetype" nullable="true" comment="Store Address Servicetype"/>
+        <column xsi:type="smallint" name="cvs_store_outside" nullable="true" comment="Is Store Address Outside"/>
+    </table>
+    <table name="sales_order_address">
+        <column xsi:type="text" name="store_address_info" nullable="true" comment="Store Address Info"/>
+        <column xsi:type="varchar" name="cvs_store_code" nullable="true" comment="Store Address Code"/>
+        <column xsi:type="varchar" name="cvs_store_name" nullable="true" comment="Store Address Name"/>
+        <column xsi:type="varchar" name="cvs_store_servicetype" nullable="true" comment="Store Address Servicetype"/>
+        <column xsi:type="smallint" name="cvs_store_outside" nullable="true" comment="Is Store Address Outside"/>
+    </table>
+</schema>

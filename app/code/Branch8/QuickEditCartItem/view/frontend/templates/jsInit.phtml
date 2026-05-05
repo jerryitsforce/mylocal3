@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ *
+ */
+$helper = $this->helper(\Magetop\Quickview\Helper\Data::class);
+$baseUrl = $helper->getBaseUrl();
+$params = [
+    'editLinkClass' => '.product-item-details dl.item-options',
+    'baseUrl' => $baseUrl
+];
+?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "quickCartItemEdit": <?= json_encode($params) ?>
+    }
+}
+</script>

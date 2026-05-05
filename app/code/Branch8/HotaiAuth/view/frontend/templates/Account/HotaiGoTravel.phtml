@@ -1,0 +1,51 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiAuth\Block\Account\HotaiGoTravel
+ */
+?>
+
+<?php
+$postData = $block->getData('post_data');
+?>
+<div>
+    <?php if(count($postData) === 0):?>
+        <span><?= $block->escapeHtml(__('Please login.')) ?></span>
+    <?php endif?>
+</div>
+
+<?php if(count($postData) > 0):?>
+    <script>
+        const appsrc = "<?php echo $postData['appsrc']; ?>";
+        const token = "<?php echo $postData['token']; ?>";
+        //const redirect_url = "<?php //echo $redirect_url; ?>//";
+
+        // 創建並提交表單的函數
+        const createNewForm = (url, params, method = "post") => {
+            const newForm = document.createElement('form');
+            newForm.method = method;
+            newForm.action = url;
+            newForm.style.display = 'none';
+
+            for (const p in params) {
+                const newInput = document.createElement('input');
+                newInput.name = p;
+                newInput.value = params[p];
+                newForm.append(newInput);
+            }
+
+            document.querySelector('body').append(newForm);
+            newForm.submit();
+        };
+
+        const hotaigoInterface = "<?php echo $postData['url']; ?>";
+
+        const params = {
+            appsrc: appsrc,
+            token: token,
+            // redirect_url: redirect_url
+        };
+
+        createNewForm(hotaigoInterface, params);
+    </script>
+
+<?php endif?>

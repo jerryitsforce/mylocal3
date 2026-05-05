@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="Branch8\MaskInformation\Api\MaskRulesCompositeInterface" type="Branch8\MaskInformation\Model\MaskRulesComposite"/>
+
+    <type name="Branch8\MaskInformation\Model\MaskRulesComposite">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="address" xsi:type="object">Branch8\MaskInformation\Model\Rules\Address</item>
+                <item name="birthday" xsi:type="object">Branch8\MaskInformation\Model\Rules\BirthDay</item>
+                <item name="birthday_en" xsi:type="object">Branch8\MaskInformation\Model\Rules\BirthDayEn</item>
+                <item name="email" xsi:type="object">Branch8\MaskInformation\Model\Rules\Email</item>
+                <item name="name" xsi:type="object">Branch8\MaskInformation\Model\Rules\FirstName</item>
+                <item name="firstname" xsi:type="object">Branch8\MaskInformation\Model\Rules\FirstName</item>
+                <item name="lastname" xsi:type="object">Branch8\MaskInformation\Model\Rules\LastName</item>
+                <item name="phone" xsi:type="object">Branch8\MaskInformation\Model\Rules\Phone</item>
+                <item name="prefix_name" xsi:type="object">Branch8\MaskInformation\Model\Rules\PrefixName</item>
+                <item name="customer_group" xsi:type="object">Branch8\MaskInformation\Model\Rules\CustomerGroup</item>
+                <item name="invoice_carrier" xsi:type="object">Branch8\MaskInformation\Model\Rules\InvoiceCarrier</item>
+                <item name="group_id" xsi:type="object">Branch8\MaskInformation\Model\Rules\GroupId</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

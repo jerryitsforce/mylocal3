@@ -1,0 +1,29 @@
+<!--@subject {{trans "HOTAI Product Approval Notification"}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">Dear Administrators,</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <table class="query-details">
+                <tr>
+                    <td class="product-details">
+                        <p>{{trans "Please find attached the products which has been approved by dealer "}} {{var dealer_name}}</p>
+                        <p>{{trans "Thank you."}}</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../Cron/etc/crontab.xsd">
+    <group id="default">
+        <job name="upgrade_downgrade_customer_level" instance="Branch8\Customer\Cron\CheckLevelPeriod" method="execute">
+            <schedule>*/20 * * * *</schedule>
+        </job>
+    </group>
+</config>

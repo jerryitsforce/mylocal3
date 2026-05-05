@@ -1,0 +1,49 @@
+// =============================================
+//  Checkout Popup Actions - Specific Styles
+// =============================================
+//  各 action 功能的特定樣式擴展
+//  
+//  對應功能模組：
+//  - download-monthly-summary  (JS: 291行, HTML: 46行)
+//  - exception-authorization   (JS: 242行, HTML: 76行)
+//  - unlock-checkout           (JS: 364行, HTML: 66行)
+//  - download-vendor-statement (JS: 待確認)
+//  
+//  這些功能的 CSS 樣式較少，統一在此管理
+//  基礎彈窗樣式：components/_ui-modal-form.less (UiShared)
+//
+//  @updated 2025-10-28 - 重構：合併所有 actions 特定樣式，避免過度拆分
+// =============================================
+
+// Download Monthly Summary
+// 下載月結報表視窗的特定樣式
+
+.ticket-verification-details {
+    & .error-msg {
+        margin-top: 5px;
+        color: #e02b27;
+    }
+
+    &__date-range {
+       & .ui-modal-form__content {
+        grid-template-columns: 1fr 1fr auto;
+       }
+    }
+
+    &__download {
+        display: grid;
+        align-items: center;
+        gap: 5px 10px;
+        grid-template-columns: auto 1fr;
+
+        & label.ui-modal-form__label {
+            margin: 0;
+        }
+    }
+
+    & button {
+        &:not(:disabled) + small.error-msg {
+            display: none;
+        }
+    }
+}

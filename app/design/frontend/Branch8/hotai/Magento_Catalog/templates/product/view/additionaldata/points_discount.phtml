@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var $block Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Branch8\Catalog\Helper\Data::class);
+$_product = $block->getProduct();
+
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+$jsonData = [
+    'price' => $_product->getPriceInfo()->getPrice('final_price')->getValue(),
+    'point_type' => $_product->getPointMoneyConfigType(),
+    'point_product_point' => $_product->getPointMoneyConfigProductPoint(),
+    'point_lower_type' => $_product->getPointMoneyConfigFreeRatioLowerRedeemLimitType(),
+    'point_lower_value' => $_product->getPointMoneyConfigFreeRatioLowerRedeemLimitValue(),
+    'point_upper_type' => $_product->getPointMoneyConfigFreeRatioUpperRedeemLimitType(),
+    'point_upper_value' => $_product->getPointMoneyConfigFreeRatioUpperRedeemLimitValue(),
+];
+?>
+<div id="product-point-message-container" class="product-point-message-container" data-src="<?= $block->getUrl('productpoint/ajax/message') ?>"></div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_ProductPoint/js/productpoint": {
+                "info": <?php echo $this->helper(\Magento\Framework\Json\Helper\Data::class)->jsonEncode($jsonData); ?>,
+                "selector": "#product-point-message-container"
+            }
+        }
+    }
+</script>

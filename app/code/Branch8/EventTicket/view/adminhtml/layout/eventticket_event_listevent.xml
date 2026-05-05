@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="ticket_event_listing"/>
+            <block name="popup_import_serial" class="Magento\Backend\Block\Template" template="Branch8_EventTicket::import_serial_popup.phtml" />
+            <block name="popup_import_batch" class="Magento\Backend\Block\Template" template="Branch8_EventTicket::batch_code_popup.phtml" />
+            <block name="popup_import_mapping" class="Magento\Backend\Block\Template" template="Branch8_EventTicket::mapping_popup.phtml" />
+        </referenceContainer>
+    </body>
+</page>

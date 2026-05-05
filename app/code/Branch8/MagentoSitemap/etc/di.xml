@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\Sitemap\Model\ItemProvider\Composite">
+        <plugin name="Branch8_MagentoSitemap::overrideGeneration"
+                type="Branch8\MagentoSitemap\Plugin\Magento\Sitemap\Model\ItemProvider\CompositePlugin" sortOrder="1" disabled="false"/>
+    </type>
+    <type name="Branch8\MagentoSitemap\Plugin\Magento\Sitemap\Model\ItemProvider\CompositePlugin">
+        <arguments>
+            <argument name="disableItems" xsi:type="array">
+                <item name="amBrand" xsi:type="string">amBrand</item>
+            </argument>
+            <argument name="itemProviders" xsi:type="array">
+                <item name="storeUrlProvider" xsi:type="object">Magento\Sitemap\Model\ItemProvider\StoreUrl</item>
+                <item name="categoryProvider" xsi:type="object">Magento\Sitemap\Model\ItemProvider\Category</item>
+                <item name="cmsPageProvider" xsi:type="object">Magento\Sitemap\Model\ItemProvider\CmsPage</item>
+                <item name="productProvider" xsi:type="object">Magento\Sitemap\Model\ItemProvider\Product</item>
+                <item name="amBrand" xsi:type="object">Amasty\ShopbyBrand\Model\Sitemap\ItemProvider\Brand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,40 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php
+    $buttonTitle = $_product->getData('individual_product')?__('Buy Now') :__('Add to Cart');
+?>
+
+<div class="bottom-bar">
+    <?= $block->getChildHtml('', true) ?>
+    
+    <?php if ($_product->isSaleable()) :?>
+        <?php if(!$_product->getData('individual_product')): ?>
+        <button type="button"
+                title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                class="action tocart<?php if($_product->getData('individual_product')){ echo ' primary'; } ?>"
+                id="bottom-tocart-button">
+            <span><?= $block->escapeHtmlAttr($buttonTitle) ?></span>
+        </button>
+        <?php endif; ?>
+        <button type="button"
+            title="<?= $block->escapeHtml(__('Buy Now')) ?>"
+            class="action primary buynow"
+            id="bottom-buynow-button">
+            <span><?= $block->escapeHtml(__('Buy Now')) ?></span>
+        </button>
+    <?php else: ?>
+        <button type="button" title="<?= $block->escapeHtml(__('Restocking')) ?>" class="action primary" id="bottom-product-oos-button" disabled>
+            <span><?= $block->escapeHtml(__('Restocking')) ?></span>
+        </button>
+    <?php endif; ?>
+</div>
+
+
+                

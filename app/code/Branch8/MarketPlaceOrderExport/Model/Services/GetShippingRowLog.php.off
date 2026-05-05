@@ -1,0 +1,89 @@
+<?php
+
+namespace Branch8\MarketPlaceOrderExport\Model\Services;
+
+use Magento\Framework\App\ResourceConnection;
+use Magento\Store\Model\StoreManager;
+use  Branch8\HifiSalesReport\Helper\Common as CommonHelper;
+
+class GetShippingRowLog
+{
+    private ResourceConnection $resource;
+
+    /**
+     * @param ResourceConnection $resource
+     */
+    public function __construct(
+        ResourceConnection $resource
+    )
+    {
+        $this->resource = $resource;
+    }
+
+    /**
+     * @param $record
+     * @param $logId
+     * @return mixed
+     */
+    public function get($record, $logId)
+    {
+        $shippingRow = $record;
+        $shippingFee = 0;
+        $shippingRow['row_total_point_used'] = '';
+        $shippingRow['price_incl_tax'] = $shippingRow['total_item_invoiced'] = $shippingRow['total_amount_credit_card'] = $shippingFee;
+        $shippingRow['subtotal'] = sprintf("0P + %s$", $shippingFee);
+        $shippingRow['distribution_thermosphere'] = $shippingRow['product_name'] = __('運費');
+        $shippingRow['qty'] = 1;
+        $nullColumn = [
+            'total_item_invoiced',
+            'price',
+            'product_id',
+            'product_sku',
+            'option_title',
+            'option_name',
+            'cost',
+            'discount_amount',
+            'order_cancellation_time',
+            'order_reason_for_cancellation',
+            'agree_on_return_time',
+            'ReturnResultConfirmationTime',
+            'return_result',
+            'schedule_change_special_price',
+            'scheduled_changes_of_special_price_start_date',
+            'scheduled_changes_of_special_price_end_date',
+            'applied_rule_names'
+        ];
+        foreach ($shippingRow as $key => $value) {
+            if (in_array($key, $nullColumn)) {
+                $shippingRow[$key] = '';
+            }
+        }
+        if ($logId) {
+            //return $shippingRow;
+            $select = $this->resource->getConnection()->select();
+            $connection = $this->resource->getConnection();
+            $columns = [
+                'include_tax' => 'include_tax'
+            ];
+            $select->from('ecpay_invoice_hotai_order_invoice_logs', $columns)
+                ->join('ecpay_invoice_hotai_order_item_invoice_logs',
+                    'ecpay_invoice_hotai_order_invoice_logs.hotai_order_invoice_logs_id=ecpay_invoice_hotai_order_item_invoice_logs.hotai_order_invoice_log_id')
+                ->where('ecpay_invoice_hotai_order_invoice_logs.hotai_order_invoice_logs_id = ?', $logId)
+                ->where('ecpay_invoice_hotai_order_item_invoice_logs.type = ?', 'shipping');
+            $data = $connection->fetchRow($select);
+            if (!$data) {
+                return [];
+            }
+            //echo $select;
+            if ($data) {
+                $shippingFee = $data['include_tax'];
+                $shippingRow['price_incl_tax'] = $shippingRow['total_item_invoiced'] = $shippingRow['total_amount_credit_card'] = $shippingFee;
+                $shippingRow['subtotal'] = sprintf("0P + %s$", $shippingFee);
+            }
+        }
+        // echo "<pre>";
+        // print_r($shippingRow);
+        //die;
+        return $shippingRow;
+    }
+}

@@ -1,0 +1,27 @@
+<div style="display:none" id="reject_popup">
+    <form id="mass_reject_forrm" action="<?php echo $this->getUrl('promocatalog/approval/massReject');?>" method="POST">
+        <input type="hidden" name="form_key" value="<?php echo $this->getFormKey();?>" />
+        <table id="reject_popup_content">
+            <tr>
+                <td><?php echo __('Rule name');?></td>
+                <td><?php echo __('Reason');?></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script>
+    var ruleNames = {};
+    require(["jquery"], function($){
+        
+        $('body').on('change', '.admin__data-grid-wrap .admin__control-checkbox', function(){
+            $.each($('.admin__data-grid-wrap .admin__control-checkbox'), function(k, elm){
+                if($(elm).is(":checked")){
+                    ruleNames[$(elm).val()] = $('#rname'+$(elm).val()).val();
+                }
+            });
+
+            
+        });
+    });
+</script>

@@ -1,0 +1,17 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\GA4\Block\Core
+ */
+?>
+<?php if ($block->isEnabled() && $block->isAllowedPage()) : ?>
+<?php $dataLayerObject = $block->getDataLayerAsJson(); ?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_GA4/js/actions/ga4push": <?=$dataLayerObject?>
+        }
+    }
+</script>
+<?php endif; ?>

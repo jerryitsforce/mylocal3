@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<section id="optionsWithStockAndImages">
+			<group id="setting">
+				<field id="only_enable_dropdown" type="select" sortOrder="11" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>Only Enable Dropdown</label>
+					<comment/>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+			</group>
+            <group id="cart">
+                <field id="block_not_exist_variant" type="select" sortOrder="11" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Block Not Exist Variant</label>
+                    <comment>Yes -  allow not exist variants could add to cart</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+		</section>
+		<section id="branch8_debug">
+            <group id="branch8_optionswithstockandimages" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Branch8_OptionsWithStockAndImages</label>
+                <field id="debug_mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Debug Mode</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="log_types" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\OptionsWithStockAndImages\Model\Config\Source\LogType</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="debug_mode">1</field>
+                    </depends>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+	</system>
+</config>

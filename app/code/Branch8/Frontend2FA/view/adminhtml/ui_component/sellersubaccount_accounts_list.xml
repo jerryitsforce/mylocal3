@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <container name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="reset2fa" class="Branch8\Frontend2FA\Ui\Component\Action\MassReset2FA">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">reset2fa</item>
+                        <item name="label" xsi:type="string" translate="true">Reset 2FA</item>
+                        <item name="url" xsi:type="url" path="marketplace/tfa/resetSubAccount"/>
+                        <item name="urlPath" xsi:type="string">marketplace/tfa/resetSubAccount</item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Reset 2FA for Sub Account</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you wan't to RESET 2FA selected sub account?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+    </container>
+</listing>

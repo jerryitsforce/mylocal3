@@ -1,0 +1,19 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
+    <menu>
+        <add id="Branch8_HelpDesk::helpdesk" sortOrder="10" title="Help Desk" module="Branch8_HelpDesk"
+             resource="Magento_Backend::helpdesk_elements"/>
+        <add id="Branch8_HelpDesk::ticket" title="Ticket" module="Branch8_HelpDesk" sortOrder="20"
+             parent="Branch8_HelpDesk::helpdesk" action="helpdesk/ticket/index"
+             resource="Branch8_HelpDesk::ticket"/>
+        <add id="Branch8_HelpDesk::category" title="Category" module="Branch8_HelpDesk" sortOrder="30"
+             parent="Branch8_HelpDesk::helpdesk" action="helpdesk/category/index"
+             resource="Branch8_HelpDesk::category"/>
+        <add id="Branch8_HelpDesk::team" title="Team" module="Branch8_HelpDesk" sortOrder="40"
+             parent="Branch8_HelpDesk::helpdesk" action="helpdesk/team/index"
+             resource="Branch8_HelpDesk::team"/>
+        <add id="Branch8_HelpDesk::settings" title="Configuration" module="Branch8_HelpDesk" sortOrder="150"
+             action="adminhtml/system_config/edit/section/helpdesk" resource="Branch8_HelpDesk::config_helpdesk"
+             parent="Branch8_HelpDesk::helpdesk"/>
+    </menu>
+</config>

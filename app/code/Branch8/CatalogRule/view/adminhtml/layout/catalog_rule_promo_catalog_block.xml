@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="promo.catalog.grid.columnSet">   
+            <block class="Magento\Backend\Block\Widget\Grid\Column" name="promo.catalog.grid.columnSet.is_active" as="is_active" after="promo.catalog.grid.columnSet.sort_order">
+                <arguments>
+                    <argument name="header" xsi:type="string" translate="true">Is Active</argument>
+                    <argument name="index" xsi:type="string">is_active</argument>
+                    <argument name="type" xsi:type="string">options</argument>
+                    <argument name="options" xsi:type="options" model="Magento\Config\Model\Config\Source\Yesno"/>
+                </arguments>
+            </block>
+            <block class="Magento\Backend\Block\Widget\Grid\Column" name="promo.catalog.grid.columnSet.review_status" 
+                as="review_status" before="promo.catalog.grid.columnSet.action">
+                <arguments>
+                    <argument name="header" xsi:type="string" translate="true">Review Status</argument>
+                    <argument name="index" xsi:type="string">review_status</argument>
+                    <argument name="sortable" xsi:type="string">0</argument>
+                    <argument name="filter" xsi:type="string">0</argument>
+                    <argument name="renderer" xsi:type="string">Branch8\CatalogRule\Block\Widget\Grid\Column\Renderer\ReviewStatus</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Backend\Block\Widget\Grid\Column" name="promo.catalog.grid.columnSet.history" as="history" after="promo.catalog.grid.columnSet.review_status">
+                <arguments>
+                    <argument name="id" xsi:type="string">history</argument>
+                    <argument name="header" xsi:type="string" translate="true">History</argument>
+                    <argument name="type" xsi:type="string">action</argument>
+                    <argument name="getter" xsi:type="string">getRuleId</argument>
+                    <argument name="filter" xsi:type="string">0</argument>
+                    <argument name="sortable" xsi:type="string">0</argument>
+                    <argument name="is_system" xsi:type="string">0</argument>
+                    <argument name="actions" xsi:type="array">
+                        <item name="edit_action" xsi:type="array">
+                            <item name="caption" xsi:type="string" translate="true">View History</item>
+                            <item name="url" xsi:type="array">
+                                <item name="base" xsi:type="string">promocatalog/history/index</item>
+                            </item>
+                            <item name="field" xsi:type="string">catalogrule_id</item>
+                        </item>
+                    </argument>
+                    <argument name="header_css_class" xsi:type="string">col-actions</argument>
+                    <argument name="column_css_class" xsi:type="string">col-actions</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

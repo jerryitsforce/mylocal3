@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/* @var $block \Branch8\MagentoVisualMerchandiser\Block\Adminhtml\Widget\UseAdvanceRuleSwitcher */
+?>
+<div class="smart-category-toggle <?php if (!$block->smartCategoryEnabled()): ?> hidden <?php endif ?>"
+     id="use_advance_rule_wrapper">
+    <label class="admin__field-label"><span><?= $block->escapeHtml(__('Use Advanced Rule')) ?></span></label>
+    <div class="admin__actions-switch">
+        <input id="use_advance_rule"
+            <?= ($block->isUseAdvanceRuleSwitcher()) ? ' checked="checked"' : '' ?>
+               data-form-part="category_form"
+               name="use_advance_rule"
+               value="1"
+               class="admin__actions-switch-checkbox"
+               type="checkbox"/>
+        <label class="admin__actions-switch-label"
+               for="use_advance_rule">
+            <span data-text-on="<?= $block->escapeHtmlAttr(__('Yes')) ?>"
+                  data-text-off="<?= $block->escapeHtmlAttr(__('No')) ?>"
+                  class="admin__actions-switch-text"></span>
+        </label>
+    </div>
+</div>

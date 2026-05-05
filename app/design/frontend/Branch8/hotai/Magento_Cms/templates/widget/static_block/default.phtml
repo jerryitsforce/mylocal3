@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var $block \Magento\Cms\Block\Widget\Block */
+$blockId = $block->getData('block_id');
+$ajax = false;
+// if($blockId === "banner_slider_feature_section") {
+//     $ajax = true;
+// } 
+?>
+<?php if ($ajax): ?>
+<div class="widget block block-static-block co-loading-ajax" id="cms-widget-block-id-<?= $blockId ?>" data-src="<?= $block->getUrl('ajaxcms/ajax/block', ['block_id' => $blockId]) ?>"></div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Cms/js/widgetBlock": {
+              "selector": "#cms-widget-block-id-<?= $blockId ?>",
+              "block_id": "<?= $blockId ?>"
+            }
+        }
+    }
+</script>
+<?php else: ?>
+  <div class="widget block block-static-block">
+    <?= /* @noEscape */ $block->getText() ?>
+  </div>
+<?php endif; ?>

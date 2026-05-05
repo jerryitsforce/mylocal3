@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_widgetcache>
+                <log_file>false</log_file>
+            </branch8_widgetcache>
+        </branch8_debug>
+        <widget_cache>
+            <general>
+                <enabled>1</enabled>
+                <lifetime>3600</lifetime>
+                <debug>0</debug>
+            </general>
+        </widget_cache>
+    </default>
+</config>

@@ -1,0 +1,57 @@
+<?php
+/**
+ * @var $block \Magento\Catalog\Block\Product\View
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php $buttonTitle = __('Add to Cart'); ?>
+<div class="box-tocart<?php if (!$_product->isSaleable()){ echo ' disabled'; }?>">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+            <div class="field qty">
+                <label class="label" for="qty"><span><?= $escaper->escapeHtml(__('Qty')) ?></span></label>
+                <div class="control">
+                    <span class="increase down"><?php /* @escapeNotVerified */ echo __('Down') ?></span>
+                    <input type="number"
+                            name="qty"
+                            id="qty"
+                            min="0"
+                            value="<?= $block->getProductDefaultQty() * 1 ?>"
+                            title="<?= $escaper->escapeHtmlAttr(__('Qty')) ?>"
+                            class="input-text qty"
+                            data-validate="<?= $escaper->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                    />
+                    <span class="increase up"><?php /* @escapeNotVerified */ echo __('Up') ?></span>
+                </div>
+            </div>
+        <?php endif; ?>
+        <div class="actions-sticky-bar">
+            <div class="sticky-inner">
+                <div class="actions">
+                <?php if ($_product->isSaleable()) :?>
+                    <?php if(!$_product->getData('individual_product')): ?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action tocart<?php if($_product->getData('individual_product')){ echo ' primary'; } ?>"
+                            id="product-addtocart-button-preview" disabled>
+                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                    </button>
+                    <?php endif; ?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtml(__('Buy Now')) ?>"
+                            class="action primary buynow"
+                            id="product-buynow-button-preview">
+                        <span><?= $block->escapeHtml(__('Buy Now')) ?></span>
+                    </button>
+                <?php else: ?>
+                    <button type="button" title="<?= $block->escapeHtml(__('Restocking')) ?>" class="action primary" id="product-oos-button-preview" disabled>
+                        <span><?= $block->escapeHtml(__('Restocking')) ?></span>
+                    </button>
+                <?php endif; ?>
+                <?= $block->getChildHtml('', true) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

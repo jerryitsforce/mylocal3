@@ -1,0 +1,89 @@
+<div class="block" data-bind="visible:$data.configuration.showTicketInformation">
+    <div class="block-content" data-bind="blockLoader: isLoading">
+        <table class="data-table table">
+            <tbody>
+            <tr>
+                <th><span translate="'Ticket ID'"></span></th>
+                <td><strong data-bind="text:getTicketData('code')"></strong></td>
+            </tr>
+            <tr>
+                <th><span translate="'Title'"></span></th>
+                <td><strong data-bind="text:getTicketData('title')"></strong></td>
+            </tr>
+            <tr>
+                <th><span translate="'Name'"></span></th>
+                <td><strong data-bind="text:getTicketData('customer_name')"></strong></td>
+            </tr>
+            <tr>
+                <th><span translate="'Email'"></span></th>
+                <td><strong data-bind="text:getTicketData('customer_email_masked')"></strong></td>
+            </tr>
+            <tr>
+                <th><span translate="'Phone'"></span></th>
+                <td><strong data-bind="text:getTicketData('phone_masked')"></strong></td>
+            </tr>
+            <tr>
+                <th><span translate="'Order Number'"></span></th>
+                <td>
+                    <ol data-bind="foreach: getTicketData('orderLinks')">
+                        <li>
+                            <a target="_blank"
+                               data-bind="attr:{href:$data.link,title:$data.title},text:$data.title">
+                            </a>
+                        </li>
+                    </ol>
+
+                </td>
+            </tr>
+            <tr>
+                <th><span translate="'Problems encountered'"></span></th>
+                <td><strong data-bind="text:getTicketData('categoryName')"></strong></td>
+            </tr>
+            <tr>
+                <th><span translate="'Status'"></span></th>
+                <td><strong data-bind="text:getTicketData('statusName')"></strong></td>
+            </tr>
+            </tbody>
+        </table>
+        <fieldset class="fieldset">
+            <div class="field">
+                <label class="label problem-description" for="title">
+                    <span data-bind="i18n: 'Problem Description'"></span>
+                </label>
+                <div class="control problem-description">
+                    <div class="problem-description" data-bind="html:getTicketData('content')"></div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label attachments" for="title">
+                    <span data-bind="i18n: 'Attachments'"></span>
+                </label>
+                <div class="control attachments">
+                    <div class="message-attachments"
+                         data-bind="foreach: getTicketData('attachments')">
+                        <div class="file-uploader-summary">
+                            <div class="file-uploader-preview">
+                                <a target="_blank"
+                                   data-bind="attr:{href:full_path,title:name}, class:'preview-link preview-'+type">
+                                    <!-- ko if: type=='image' -->
+                                    <img data-bind="attr:{alt:name, src:full_path}"/>
+                                    <!-- /ko -->
+                                </a>
+                            </div>
+                            <div class="file-uploader-filename" data-bind="text:name"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<!-- ko if: configuration.enableChat -->
+<!-- ko foreach: getRegion('postReply') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko foreach: getRegion('history') -->
+<!-- ko template: getTemplate() --><!-- /ko -->
+<!-- /ko -->
+

@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="webkul" translate="label comment" sortOrder="10">
+            <label>Webkul</label>
+        </tab>
+        <section id="buyer_seller_chat" translate="label comment" type="text" sortOrder="305" showInDefault="1"
+                 showInWebsite="1" showInStore="1">
+            <group id="general_settings" translate="label comment" type="text" sortOrder="1" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="test_connection" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label/>
+                    <button_label>Ping</button_label>
+                    <button_url>adminhtml/chat/ping</button_url>
+                    <frontend_model>Branch8\WebkulMpBuyerSellerChat\Block\Adminhtml\System\Config\PingButton</frontend_model>
+                    <depends>
+                        <field id="buyer_seller_chat/general_settings/enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="notification" translate="label comment" type="text" sortOrder="5" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Notification</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <group id="email" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Email Options</label>
+                    <field id="sender_email_identity" translate="label" type="select" sortOrder="20" showInDefault="1"
+                           showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Email Sender</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                        <config_path>buyer_seller_chat/notification/unread_sender_email_identity</config_path>
+                        <depends>
+                            <field id="buyer_seller_chat/notification/enable">1</field>
+                        </depends>
+                    </field>
+                    <field id="unread_email_template" translate="label comment" type="select" sortOrder="30"
+                           showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Email Template</label>
+                        <comment>Email template chosen based on theme fallback when "Default" option is selected.
+                        </comment>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                        <config_path>buyer_seller_chat/notification/unread_email_template</config_path>
+                        <depends>
+                            <field id="buyer_seller_chat/notification/enabled">1</field>
+                        </depends>
+                    </field>
+                    <field id="cc_sub_accounts" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                           showInWebsite="0" showInStore="0">
+                        <label>Send CC Email to SubAcounts</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>buyer_seller_chat/notification/cc_sub_accounts</config_path>
+                    </field>
+                </group>
+                <group id="queue" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Notify Settings</label>
+                    <field id="remind_interval" translate="label" type="text"
+                           sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                        <label>Remind time intervals minute(s)</label>
+                        <comment>After interval in minutes ,if seller not read message, mail will be sent to seller</comment>
+                        <config_path>buyer_seller_chat/notification/remind_interval</config_path>
+                        <validate>required-entry validate-greater-than-zero validate-digits</validate>
+                        <depends>
+                            <field id="buyer_seller_chat/notification/enabled">1</field>
+                        </depends>
+                    </field>
+                    <field id="cron_exp" translate="label comment" sortOrder="50" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                        <label>Cron Expression</label>
+                        <config_path>buyer_seller_chat/notification/cron_exp</config_path>
+                    </field>
+                </group>
+            </group>
+            <group id="customer_notification_box" translate="label comment" type="text" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Customer Notification Box (Magenest Integration)</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>buyer_seller_chat/customer_notification_box/enable</config_path>
+                </field>
+                <field id="delay" translate="label comment" type="text" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Bundling Delay (seconds)</label>
+                    <comment>Time to wait for more messages before sending a bundled notification.</comment>
+                    <config_path>buyer_seller_chat/customer_notification_box/delay</config_path>
+                    <validate>required-entry validate-greater-than-zero validate-digits</validate>
+                    <depends>
+                        <field id="buyer_seller_chat/customer_notification_box/enable">1</field>
+                    </depends>
+                </field>
+                <field id="cleanup_days" translate="label comment" type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Clean Up Sent Records After (Days)</label>
+                    <comment>Number of days to keep processed notifications in the queue table before deletion.</comment>
+                    <config_path>buyer_seller_chat/customer_notification_box/cleanup_days</config_path>
+                    <validate>required-entry validate-greater-than-zero validate-digits</validate>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_webkulmpbuyersellerchatunreadmessagereminder" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Webkul MP Buyer Seller Chat Unread Message Reminder</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\Config\Source\LogTypes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,134 @@
+{
+    "branch8_marketplace_product_discussion_thread": {
+        "column": {
+            "thread_id": true,
+            "product_id": true,
+            "store_id": true,
+            "sku": true,
+            "product_name": true,
+            "seller_id": true,
+            "seller_name": true,
+            "author_name": true,
+            "author_type": true,
+            "author_id": true,
+            "review_id": true,
+            "title": true,
+            "content": true,
+            "thread_type": true,
+            "status": true,
+            "is_verified_buyer": true,
+            "is_featured": true,
+            "is_locked": true,
+            "is_seller_reply": true,
+            "seller_replied_at": true,
+            "helpful_count": true,
+            "message_count": true,
+            "meta": true,
+            "created_at": true,
+            "updated_at": true,
+            "product_spec": true
+        },
+        "index": {
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_PRODUCT_ID": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_SELLER_REPLIED_AT": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_SKU": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_PRODUCT_NAME": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_IS_SELLER_REPLY": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_SELLER_ID": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_AUTHOR_ID": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_AUTHOR_NAME": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_SELLER_NAME": true,
+            "BRANCH8_MARKETPLACE_PRD_DISCUSSION_THREAD_AUTHOR_ID_AUTHOR_TYPE": true,
+            "FTI_A5F01AE23DCB5A9E07F03D367A747C8F": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_THREAD_STATUS": true,
+            "FTI_FE71D8554D51DC9F288B240AAEB85778": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_249E103C88B4B0B886F54F1B5EF4794E": true,
+            "FK_197AF6E1283D33D6193B0FE7D5BACA46": true
+        }
+    },
+    "branch8_marketplace_product_discussion_message": {
+        "column": {
+            "message_id": true,
+            "thread_id": true,
+            "parent_message_id": true,
+            "author_type": true,
+            "author_id": true,
+            "author_name": true,
+            "message": true,
+            "is_seller_reply": true,
+            "is_edited": true,
+            "is_moderated": true,
+            "helpful_count": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MESSAGE_THREAD_ID": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MESSAGE_AUTHOR_NAME": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MESSAGE_CREATED_AT": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MESSAGE_PARENT_MESSAGE_ID": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MESSAGE_AUTHOR_ID": true,
+            "FTI_CA1BFB98AC0D0DC49B8B55F1DDFA11CA": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_99802A0DD2001798B5F32C562854CEAE": true,
+            "FK_56768E3B1C3D8BED7F9CD353F8B5E6ED": true
+        }
+    },
+    "branch8_marketplace_product_discussion_participant": {
+        "column": {
+            "participant_id": true,
+            "thread_id": true,
+            "user_type": true,
+            "user_id": true,
+            "is_owner": true,
+            "is_seller": true,
+            "joined_at": true
+        },
+        "index": {
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_PARTICIPANT_THREAD_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_E5CF4FD8744C1E455E409660FC07222E": true,
+            "UNQ_3370AC3A58A103E6E70BA69CDB4DA5FC": true
+        }
+    },
+    "branch8_marketplace_product_discussion_vote": {
+        "column": {
+            "vote_id": true,
+            "message_id": true,
+            "user_type": true,
+            "user_id": true,
+            "vote_type": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_334951F256A1844B2D39A10160AF7F68": true,
+            "UNQ_C920C69F8E337A045121D6B2F597807E": true
+        }
+    },
+    "branch8_marketplace_product_discussion_moderation": {
+        "column": {
+            "moderation_id": true,
+            "thread_id": true,
+            "message_id": true,
+            "action": true,
+            "reason": true,
+            "moderator_id": true,
+            "created_at": true
+        },
+        "index": {
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MODERATION_THREAD_ID": true,
+            "BRANCH8_MARKETPLACE_PRODUCT_DISCUSSION_MODERATION_MESSAGE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

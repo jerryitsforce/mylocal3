@@ -1,0 +1,20 @@
+<!-- ko if: isShippingMethodSelected()-->
+    <!-- ko if: (visible())-->
+    <div class="shipping-address-listing">
+        <form>
+            <div class="shipping-address-items">
+                <table class="table-shipping-address-list">
+                    <!-- ko foreach: { data: elems, as: 'element' } -->
+                        <!-- ko template: element.getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </table>
+            </div>
+        </form>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: (visible())-->
+        <div class="shipping-address-listing shipping-address-listing-no-items">
+            <span translate="'Frequent recipients have not been set yet'"></span>
+        </div>
+    <!-- /ko -->
+<!-- /ko -->

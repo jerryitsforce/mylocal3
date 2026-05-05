@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="sales_email_parent_order_comment_template"
+              label="Parent Order Update" file="parent_order_update.html" type="html" module="Branch8_MarketPlaceParentOrder" area="frontend"/>
+    <template id="sales_email_parent_order_comment_guest_template"
+              label="Parent Order Update for Guest"
+              file="parent_order_update_guest.html" type="html" module="Branch8_MarketPlaceParentOrder" area="frontend"/>
+    <template id="sales_email_parent_order_template"
+              label="Parent Order Confirmation"
+              file="parent_order_new.html" type="html" module="Branch8_MarketPlaceParentOrder" area="frontend"/>
+    <template id="sales_email_parent_order_guest_template"
+              label="Parent Order Confirmation for Guest" file="parent_order_new_guest.html" type="html"
+              module="Branch8_MarketPlaceParentOrder" area="frontend"/>
+    <template id="sales_email_parent_order_cancel_template"
+              label="Parent Order Cancellation"
+              file="parent_order_cancel.html" type="html" module="Branch8_MarketPlaceParentOrder" area="frontend"/>
+    <template id="sales_email_parent_order_cancel_guest_template"
+              label="Parent Order Cancellation for Guest"
+              file="parent_order_cancel_guest.html" type="html" module="Branch8_MarketPlaceParentOrder" area="frontend"/>
+</config>

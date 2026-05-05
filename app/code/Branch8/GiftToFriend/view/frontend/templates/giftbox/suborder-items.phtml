@@ -1,0 +1,287 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var Items $block */
+
+use Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Items;
+
+$profileModel = $block->getProfile();
+$parentBlock = $block->getParentBlock();
+$preorderHelper = $block->getPreorderHelper();
+$placeHolderImage = $block->getPlaceHoderImage();
+$cachedSubOrders = [];
+$flagshipHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+$isGiftOrder = $block->isGiftOrder($block->getOrder());
+?>
+<?php $listItemsWithSeller = $block->getItems(); ?>
+<?php $giftMessage = '' ?>
+<div class="giftbox-listing-suborder">
+  <?php foreach ($listItemsWithSeller as $key => $items): ?>
+    <?php
+    list($sellerId, $subOrderId) = explode('-', $key);
+    if (!isset($cachedSubOrders[$subOrderId])) {
+        $childOrder = $block->getSubOrderById($subOrderId);
+        if($childOrder->getData('is_flagship_store_process_order')){
+            continue;
+        }
+        $cachedSubOrders[$subOrderId] = $childOrder;
+    }
+    $subOrder = $cachedSubOrders[$subOrderId];
+    if (!$sellerId) {
+        $sellerId = $block->getSellerIdByOrder($subOrderId);
+    }
+
+    $flagshipStoreId = $flagshipHelper->getFlagshipStoreFromSellerId($sellerId);
+    if($flagshipStoreId){
+        $flagshipStoreData = $flagshipHelper->getFlagshipStoreData($flagshipStoreId);
+        $shopTitle = $flagshipStoreData['shop_title'];
+        $shopUrl = $flagshipStoreData['shop_url'];
+    }else{
+        list($shopTitle, $shopUrl) = $profileModel->getSellerDetails($sellerId);
+    }
+
+    /**
+     * @var $subOrder \Magento\Sales\Model\Order
+     */
+
+    $isOldHotaiOrder = $string = preg_match('/^hotai_order_\w+/', (string)$subOrder->getIncrementId());
+    $invoiceCollection = $subOrder->getInvoiceCollection();
+    $hasPaid = false;
+    $hasEcpayInvoiceFail = false;
+    foreach ($invoiceCollection as $invoice) {
+        if ($invoice->getState() == Magento\Sales\Model\Order\Invoice::STATE_PAID) {
+            $hasPaid = true;
+            break;
+        }
+    }
+    foreach ($invoiceCollection as $invoice) {
+        if ($invoice->getState() != Magento\Sales\Model\Order\Invoice::STATE_PAID) {
+            $hasEcpayInvoiceFail = true;
+            break;
+        }
+    }
+    if (!$hasPaid && $isOldHotaiOrder) {
+        $hasPaid = true;
+    }
+
+    $thermosphere = $subOrder->getData('order_type');
+
+    $progressType = $block->getItemsBlock()->getProgressType($subOrder);
+    $isVirtual = $progressType === \Branch8\Sales\Helper\FrontOrderFlow::PROGRESS_TYPE_TICKET;
+    ?>
+  <div class="giftbox-listing-suborder-wrap">
+    <div class="giftbox-listing-suborder-header">
+      <div class="giftbox-listing-suborder-header-info">
+        <h3 class="giftbox-listing-suborder-title">
+          <span class="seller-name"><?= $block->escapeHtml($shopTitle) ?></span>
+          <?php if ($thermosphere): ?>
+              <span class="thermosphere">| <?= $block->escapeHtml(__($thermosphere)) ?></span>
+          <?php endif; ?>
+        </h3>
+        <div class="giftbox-listing-suborder-number">No.<?= $block->escapeHtml($subOrder->getData('hotai_child_order_number')
+                            ? $subOrder->getData('hotai_child_order_number') : $subOrder->getData('increment_id')
+                        ) ?></div>
+      </div>
+    </div>
+    <div class="giftbox-listing-suborder-items">
+      <?php foreach ($items as $item): ?>
+        <?php
+            $trackingInfo = $block->getLogisticInfo($subOrder, $item->getId());
+        ?>
+        <?php if ($item->getParentItem() || !$item):
+            continue;
+        endif; ?>
+        <?php
+        $product = $item->getProduct();
+        $productImage = $placeHolderImage;
+        if ($product) {
+        }
+        $productName = $item->getName();
+        $productUrl = '';
+        if ($product) {
+            $productImage = $block->getProductImageUrl($item->getProduct());
+            //$productName = $product->getName();
+            $productUrl = $product->getProductUrl();
+        }
+        ?>
+        <div class="giftbox-listing-suborder-item"  data-flow-status="<?= $item->getFlowStatus(); ?>" data-order-item-id="<?= $item->getId() ?>">
+          <div class="giftbox-listing-suborder-item-product" data-id="<?= $item->getData('product_id') ?>">
+            <div class="giftbox-listing-suborder-item-product-image">
+              <img src="<?= $productImage ?>" alt="<?= $productName ?>">
+            </div>
+            <div class="giftbox-listing-suborder-item-product-info">
+              <h4 class="giftbox-listing-suborder-item-product-title">
+                <?php if($productUrl !=''): ?>
+                    <a class="product-name-link" title="<?= $block->escapeHtml($productName) ?>" href="<?= $block->escapeHtml($productUrl) ?>">
+                        <?= $block->escapeHtml($productName) ?>
+                    </a>
+                <?php else: ?>
+                    <?= $block->escapeHtml($productName) ?>
+                <?php endif; ?>
+              </h4>
+              <?php if ($_options = $block->getItemOptions($item->getProductOptions())): ?>
+                  <?php
+                  $optionText = '';
+                  ?>
+                  <?php foreach ($_options as $_option): ?>
+                      <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                      <?php $optionText .= ($optionText === '' ? '' : '+') . $block->escapeHtml($optionValue); ?>
+                  <?php endforeach; ?>
+                  <p class="giftbox-listing-suborder-item-product-option"><?= $optionText ?></p>
+              <?php endif; ?>
+              <p class="giftbox-listing-suborder-item-product-qty">x<?= (int)$item->getQtyOrdered() ?></p>
+            </div>
+          </div>
+        <?php if($isVirtual): ?>
+            <?php
+                $virtualStatus = $block->getTicketStatusByOrderItemId($item);
+                // self::STATUS_ARRIVED,
+                // self::STATUS_PICKED,
+                // self::STATUS_PENDING_COMPLETE,
+                // self::STATUS_COMPLETE
+                $virtualArrivedOrderStatus = $item->getFlowStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_GIFT_INFO_COMPLETE || $item->getFlowStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_PROCESSING || $item->getFlowStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_ARRIVED || $item->getFlowStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_PICKED || $item->getFlowStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_PENDING_COMPLETE || $item->getFlowStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_COMPLETE;
+            ?>
+            <?php if (!empty($errorMessage) && $item->getFlowStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_FINANCIAL_REVIEW): ?>
+                <?php if (!$block->isParentOrderAutoCancelled()) : ?>
+                    <?php $hasReason = isset($errorMessage['reason']); ?>
+                    <div class="gift-order-alert-box <?= $hasReason ? ' has-reason' : '' ?>">
+                        <div class="gift-order-alert-message error">
+                            <div class="gift-order-alert-message-info">
+                                <h4 class="gift-order-alert-message-title"><?= $block->escapeHtml($errorMessage['error_msg']) ?></h4>
+                                <?php if ($hasReason): ?>
+                                <p class="gift-order-alert-message-text"><?= $block->escapeHtml($errorMessage['reason']) ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php else: ?>
+                <?php if($virtualStatus && $virtualArrivedOrderStatus):?>
+                <div class="giftbox-listing-suborder-status-wrap">
+                    <?php
+                    // var_dump($virtualStatus);
+                    $unusedStatusArr = $virtualStatus['unused'] ?? null;
+                    $usedStatusArr = $virtualStatus['used'] ?? null;
+                    $expirationStatusArr = $virtualStatus['expiration'] ?? null;
+                    $canceledStatusArr = $virtualStatus['canceled'] ?? null;
+                    // $exceptionStatusArr = $virtualStatus['exception'] ?? null;
+                    $remainingDay = $virtualStatus['remainDay'] ?? null;
+                    // processing
+                    // unused
+                    // used
+                    // expired
+                    // canceled
+                    // exception
+                    ?>
+                    <?php if ($unusedStatusArr || $usedStatusArr || $expirationStatusArr || $canceledStatusArr): ?>
+                    <div class="giftbox-listing-suborder-status">
+                        <?php foreach ($unusedStatusArr as $index => $unusedStatus): ?>
+                            <?php $remainDayItem = $remainingDay[$index]?? 0 ; ?>
+                            <div class="giftbox-listing-suborder-status-item">
+                                <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__("取票狀態"))?></span>
+                                <span class="giftbox-listing-suborder-status-value"><span class="status-value warning unused">
+                                    <?php if($remainDayItem ===0):?>
+                                        <?= $block->escapeHtml(__("無使用期限")) ?>
+                                    <?php else: ?>
+                                        <?= $block->escapeHtml(__("%1日後到期", $remainingDay[$index])) ?>
+                                    <?php endif; ?>
+                                </span></span>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php foreach ($usedStatusArr as $usedStatus): ?>
+                            <div class="giftbox-listing-suborder-status-item">
+                                <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__("取票狀態"))?></span>
+                                <span class="giftbox-listing-suborder-status-value"><span class="status-value used"><?= $block->escapeHtml(__("已使用")) ?></span></span>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php foreach ($expirationStatusArr as $expirationStatus): ?>
+                            <div class="giftbox-listing-suborder-status-item">
+                                <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__("取票狀態"))?></span>
+                                <span class="giftbox-listing-suborder-status-value"><span class="status-value expired"><?= $block->escapeHtml(__("已過期")) ?></span></span>
+                            </div>
+                        <?php endforeach; ?>
+                        <?php foreach ($canceledStatusArr as $canceledStatus): ?>
+                            <div class="giftbox-listing-suborder-status-item">
+                                <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__("取票狀態"))?></span>
+                                <span class="giftbox-listing-suborder-status-value"><span class="status-value canceled"><?= $block->escapeHtml(__("已退貨(已取消)")) ?></span></span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                    <?php
+                    $ticketIdArr = $virtualStatus['ticketId'] ?? [];
+                    ?>
+                    <?php foreach ($ticketIdArr as $ticketId): ?>
+                        <div class="giftbox-listing-suborder-actions">
+                            <a href="<?= $block->escapeHtml($block->getMyTicketUrl($ticketId)) ?>" class="action secondary view-ticket" title="查看票券">
+                                <span><?= $block->escapeHtml(__("查看票券")) ?></span>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php else: ?>
+                    <div class="giftbox-listing-suborder-status-wrap">
+                        <div class="giftbox-listing-suborder-status">
+                            <div class="giftbox-listing-suborder-status-item">
+                                <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__("取票狀態"))?></span>
+                                <span class="giftbox-listing-suborder-status-value"><span class="status-value processing"><?= $block->escapeHtml(__("處理中")) ?></span></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php else: ?>
+            <?php $errorMessage = $block->getItemErrorMessage($item, $subOrder, $block->getOrder()) ?>
+            <?php if (!empty($errorMessage) && $item->getFlowStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_FINANCIAL_REVIEW): ?>
+                <?php if (!$block->isParentOrderAutoCancelled()) : ?>
+                    <?php $hasReason = isset($errorMessage['reason']); ?>
+                    <div class="gift-order-alert-box <?= $hasReason ? ' has-reason' : '' ?>">
+                        <div class="gift-order-alert-message error">
+                            <div class="gift-order-alert-message-info">
+                                <h4 class="gift-order-alert-message-title"><?= $block->escapeHtml($errorMessage['error_msg']) ?></h4>
+                                <?php if ($hasReason): ?>
+                                <p class="gift-order-alert-message-text"><?= $block->escapeHtml($errorMessage['reason']) ?></p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php else: ?>
+                <?php if ($block->getChildBlock('order_progress')): ?>
+                    <?php $status = $block->getChildBlock('order_progress')->setItem($item); ?>
+                    <?= $block->getChildHtml('order_progress', false); ?>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if (!empty($trackingInfo) && $subOrder->getStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_COMPLETE && !$block->canCancelRmaRequest($item->getFlowStatus())) : ?>
+                <?php foreach ($trackingInfo as $track): ?>
+                    <div class="giftbox-listing-suborder-status-wrap">
+                      <div class="giftbox-listing-suborder-status">
+                        <div class="giftbox-listing-suborder-status-item">
+                            <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__('物流方式')) ?></span>
+                            <span class="giftbox-listing-suborder-status-value"><span><span><?= $block->escapeHtml($track['logistics_company']) ?></span> <?php if(isset($track['logistics_company_url']) && $track['logistics_company_url'] != ''):?>(<a
+                                    class="shipping-info-link" target="_blank"
+                                    href="<?= $track['logistics_company_url'] ?>"><?= $block->escapeHtml(__('配送進度')) ?></a>) <?php endif; ?></span></span>
+                        </div>
+                        <div class="giftbox-listing-suborder-status-item">
+                            <span class="giftbox-listing-suborder-status-label"><?= $block->escapeHtml(__('物流編號')) ?></span>
+                            <span class="giftbox-listing-suborder-status-value"><span><span><?= $block->escapeHtml($track['tracking_number']?? '---') ?></span> (<a
+                                    href="#"
+                                    data-tracking-number="<?= $block->escapeHtml($track['tracking_number']) ?>"
+                                    class="shipping-info-link copy-button"><?= $block->escapeHtml(__('複製')) ?></a>)</span></span>
+                        </div>
+                      </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+  <?php endforeach; ?>
+</div>

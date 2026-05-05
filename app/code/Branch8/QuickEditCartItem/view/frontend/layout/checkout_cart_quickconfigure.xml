@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="checkout_cart_configure"/>
+    <body>
+        <attribute name="class" value="magetop_quickview-catalog_product-view"/>
+        <referenceBlock name="wk-product-chat-link" remove="true"/>
+        <referenceBlock name="customer_chat_link_js_init" remove="true"/>
+        <referenceBlock name="customer_core_config_model" remove="true"/>
+        <referenceBlock name="customer_minichat" remove="true"/>
+
+        <referenceBlock  name="megamenu.script" remove="true"/>
+        <referenceBlock  name="megamenu" remove="true"/>
+        <referenceBlock name="header.container" remove="true" />
+        <referenceBlock name="page.top" remove="true" />
+        <referenceBlock name="footer-container" remove="true" />
+        <referenceContainer name="head" remove="true"/>
+        <referenceContainer name="header" remove="true"/>
+        <referenceContainer name="menu" remove="true"/>
+        <referenceContainer name="magetop.demo.notices" remove="true"/>
+        <referenceContainer name="footer" remove="true"/>
+        <referenceBlock name="copyright" remove="true" />
+        <referenceBlock name="authentication-popup" remove="true" />
+        <referenceContainer name="content">
+            <block class="Magento\Catalog\Block\Product\View\Type\Simple" ifconfig="magetop_quickview/general/enable_goto_product_button" name="goto.product" template="Magetop_Quickview::gotoproduct.phtml" before="-" />
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Magetop\Quickview\Block\Initialize" name="magetop.quickview.beforebodyend" template="Magetop_Quickview::beforebodyend.phtml" />
+        </referenceContainer>
+        <referenceBlock name="product.info.addtocart" class="Magetop\Quickview\Block\Product\View" template="Magetop_Quickview::product/view/addtocart.phtml">
+        </referenceBlock>
+<!--        <referenceBlock name="product.info.addtocart.additional"
+                        class="Magetop\Quickview\Block\Product\View"
+                        template="Magetop_Quickview::product/view/addtocart.phtml">
+        </referenceBlock>-->
+        <referenceBlock name="view.addto.compare" remove="true" />
+        <referenceBlock name="view.addto.wishlist" remove="true" />
+        <referenceBlock name="product.info.details" remove="true"/>
+        <referenceContainer name="content.aside" remove="true"/>
+       <!-- <referenceBlock name="product.info.addtocart.additional">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_QuickEditCartItem::cart/item/configure/updatecart.phtml</argument>
+            </action>
+        </referenceBlock>-->
+        <referenceBlock name="checkout.cart.item.configure.block"
+                        class="Branch8\QuickEditCartItem\Block\Cart\Item\Configure">
+
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_QuickEditCartItem::cart/item/configure/updatecart.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart.additional">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_QuickEditCartItem::cart/item/configure/updatecart.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <referenceBlock name="product_recommendations_product_below_content" remove="true" />
+        <referenceBlock name="core_config_model" remove="true" />
+        <referenceBlock name="active_customer_model" remove="true" />
+        <referenceBlock name="branch8_mpproduct_price_change_popup" remove="true" />
+
+        <referenceBlock name="view.shipping.method.simple" remove="true" />
+        <referenceBlock name="product.info.sku" remove="true" />
+        <referenceBlock name="product.info.stock.sku" remove="true" />
+        <referenceBlock name="goto.product" remove="true" />
+        <referenceContainer name="product.info.main.wrapper" remove="true" />
+        <referenceBlock name="product.share.socials" remove="true" />
+        <referenceContainer name="product.additional.attributes" remove="true" />
+        <referenceBlock name="product.info.details" remove="true" />
+        <referenceContainer name="content.aside" remove="true" />
+        <move element="product.info" destination="content" before="product.info.details"/>
+        <move element="product.info.main" destination="product.main.wrapper" after="product.info.media" />
+    </body>
+</page>

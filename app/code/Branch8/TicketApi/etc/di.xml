@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\TicketApi\Api\NotifyUsedInterface" type="Branch8\TicketApi\Model\Api\NotifyUsed"/>
+    <preference for="Branch8\TicketApi\Api\Data\NotifyResponseInterface" type="Branch8\TicketApi\Model\Api\Data\NotifyResponse"/>
+    <preference for="Branch8\TicketApi\Api\Data\NotifyDataInterface" type="Branch8\TicketApi\Model\Api\Data\NotifyData"/>
+
+    <preference for="Branch8\TicketApi\Api\CheckInterface" type="Branch8\TicketApi\Model\Api\Check"/>
+    <preference for="Branch8\TicketApi\Api\Data\CheckResponseInterface" type="Branch8\TicketApi\Model\Api\Data\CheckResponse"/>
+    <preference for="Branch8\TicketApi\Api\Data\CheckDataInterface" type="Branch8\TicketApi\Model\Api\Data\CheckData"/>
+
+    <preference for="Branch8\TicketApi\Api\NotifyCancelInterface" type="Branch8\TicketApi\Model\Api\NotifyCancel"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ticket_api_brand_listing_data_source" xsi:type="string">Branch8\TicketApi\Model\ResourceModel\TicketApiBrand\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\TicketApi\Model\ResourceModel\TicketApiBrand\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ticket_api_brand</argument>
+            <argument name="eventPrefix" xsi:type="string">ticket_api_brand_eventPrefix</argument>
+            <argument name="eventObject" xsi:type="string">ticket_api_brand_eventObject</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\TicketApi\Model\ResourceModel\TicketApiBrand</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ticket_api_merchant_listing_data_source" xsi:type="string">Branch8\TicketApi\Model\ResourceModel\TicketApiMerchant\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\TicketApi\Model\ResourceModel\TicketApiMerchant\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ticket_api_merchant</argument>
+            <argument name="eventPrefix" xsi:type="string">ticket_api_merchant_eventPrefix</argument>
+            <argument name="eventObject" xsi:type="string">ticket_api_merchant_eventObject</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\TicketApi\Model\ResourceModel\TicketApiMerchant</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ticket-api:generate-aes-string" xsi:type="object">Branch8\TicketApi\Console\Command\GenerateAesString</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="general">
+        <field name="catalog_price_rule_id" sortOrder="100" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Catalog Price Rule Id</label>
+                <disabled>true</disabled>
+            </settings>
+        </field>
+        <field name="catalog_price_rule_vip_id" sortOrder="101" formElement="input">
+            <settings>
+                <dataType>string</dataType>
+                <label translate="true">Catalog Price Rule Id (Vip Label)</label>
+                <disabled>true</disabled>
+            </settings>
+        </field>
+        <field name="catalog_price_rule_date_from" sortOrder="102" formElement="date">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Start Time</label>
+            </settings>
+        </field>
+        <field name="catalog_price_rule_date_to" sortOrder="103" formElement="date">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">End Time</label>
+            </settings>
+        </field>
+
+    </fieldset>
+</form>

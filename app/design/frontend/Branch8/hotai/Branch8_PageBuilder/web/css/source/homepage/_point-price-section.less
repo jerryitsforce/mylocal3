@@ -1,0 +1,375 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Default appearance styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+  // Product list on full-width tabs
+  .point-price-section[data-content-type="row"][data-appearance="full-bleed"]{
+    [data-content-type="product_recommendations"],
+    [data-content-type="products"]{
+      // width: 100%;
+      max-width: var(--layout__max-width);
+      box-sizing: border-box;
+    }
+  }
+
+  .point-price-section {
+    .tabs-navigation{
+      font-family: @font-family__secondary;
+    }
+
+    [data-content-type="banner"]{
+      margin-bottom: 16px;
+
+      [data-element="content"]{
+        
+        font-size: 22px;
+        line-height: 32px;
+        color: #ffffff;
+
+        .price-text,
+        strong{
+          font-family: @font-family__secondary;
+        }
+      }
+    }
+
+    .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+      padding: 18px 20px 18px 24px;
+
+      p:last-child{
+        margin-bottom: 0;
+      }
+    }
+
+    .pagebuilder-button-primary{
+      min-width: 161px;
+    }
+  }
+
+  .guess-you-might-like-section{
+    .product-items{
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .popular-topic-category-section{
+    .product-items{
+      margin-top: 16px;
+      margin-bottom: 28px;
+    }
+
+    .block .title{
+      margin-bottom: 0;
+    }
+
+    .block-static-block.widget{
+      margin-bottom: 0;
+    }
+
+    .pagebuilder-banner-rounded-corner .pagebuilder-banner-wrapper{
+      max-width: 50%;
+    }
+
+    .pagebuilder-banner-content{
+      padding: 5px 16px; 
+    }
+  }
+
+  #html-body .popular-topic-category-section{
+    .pagebuilder-column-group.invisible,
+    [data-content-type="divider"].invisible{
+      height: 1px;
+      overflow: hidden;
+      padding: 0;
+      visibility: hidden;
+    }
+    .view-less-btn{
+      display: none;
+    }
+
+    &:not(.show-all){
+      [data-content-type="divider"].invisible{
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    &.show-all{
+      .pagebuilder-column-group.invisible,
+      [data-content-type="divider"].invisible{
+        height: auto;
+        overflow: visible;
+        width: auto;
+        visibility: visible;
+      }
+
+      .view-more-btn{
+        display: none;
+      }
+      .view-less-btn{
+        display: inline-block;
+      }
+    }
+
+    .view-less-btn,
+    .view-more-btn{
+      [data-element="empty_link"]{
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+  [data-content-type="row"][data-appearance="full-bleed"]{
+    [data-content-type="product_recommendations"][data-appearance='carousel'],
+    [data-content-type='products'][data-appearance='carousel'] {  
+      padding-left: 8px;  
+      padding-right: 0;
+      margin-left: 0;
+      margin-right: 0;
+    
+      &[data-carousel-mode="continuous"],
+      &[data-slidetoshow-mobile="continuous"]{
+          padding-left: 0;
+          padding-right: 0;
+      }
+    }
+  }
+
+  #html-body [data-content-type="row"] .popular-topic-category-section{
+    margin-bottom: 60px;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  [data-content-type="row"][data-appearance="full-bleed"]{
+    [data-content-type="product_recommendations"],
+    [data-content-type="products"]{
+        padding-left: var(--layout-indent__width);
+        padding-right: var(--layout-indent__width);
+    }
+
+    [data-appearance="carousel"]{
+      padding-right: 0;
+      margin-right: 0;
+    }
+
+    [data-slidetoshow-mobile="continuous"],
+    [data-carousel-mode="continuous"]{
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+
+  .popular-topic-category-section{
+    [data-appearance="rounded-corner"]{
+      margin-left: ~'calc(-1 * var(--layout-indent__width))';
+      margin-right: ~'calc(-1 * var(--layout-indent__width))';
+    }
+    .pagebuilder-banner-rounded-corner{
+      border-top-width: 2px !important;
+      border-bottom-width: 2px !important;
+    }
+    .pagebuilder-banner-rounded-corner, 
+    .pagebuilder-banner-content,
+    .pagebuilder-banner-wrapper{
+      border-radius: 0 !important;
+    }
+    .pagebuilder-banner-content{
+
+      h2, h3, h4, h5, h6{
+        margin-top: 0;
+        margin-bottom: 0px;
+        letter-spacing: 1px;
+      }
+
+      h5{
+        &:extend(.abs-mb-caption1-medium all);
+      }
+
+      .tag{
+        display: none;
+      }
+
+    }
+
+    .pagebuilder-column{
+      padding-right: 0 !important;
+    }
+
+    
+  }
+
+  #html-body .popular-topic-category-section{
+    .heading{
+      margin-bottom: 24px;
+    }
+  }
+
+  .point-price-section{
+    [data-appearance="carousel"]{
+      margin-bottom: 32px;
+    }
+
+    [data-content-type="banner"]{
+      [data-element="content"]{
+        font-weight: 700;
+      }
+    }
+
+    .pagebuilder-banner-rounded-corner{
+      .pagebuilder-banner-wrapper{
+        max-width: 58%;
+      }
+    }
+  }
+
+  #html-body .point-price-section [data-content-type="banner"] .pagebuilder-banner-content{
+    text-align: left;
+  }
+}
+
+// [640 - 768 ]
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__s) and (@break-max = @screen__m) {
+  .popular-topic-category-section{
+    .pagebuilder-banner-content{
+      [data-element="content"]{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .pagebuilder-rounded-corner-content{
+        display: flex;
+        gap: 4px;
+      }
+    }
+
+    
+  }
+
+  .point-price-section{
+    .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+      padding-left: var(--layout-indent__width);
+    }
+  }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .point-price-section[data-content-type="row"][data-appearance="full-bleed"]{
+    [data-content-type="product_recommendations"],
+    [data-content-type='products']{
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: ~'calc(var(--layout-indent__width) - 10px)';
+      padding-right:~'calc(var(--layout-indent__width) - 10px)';
+      width: 100%;
+    }
+  }
+
+  .point-price-section {
+    [data-content-type="banner"]{
+      margin-bottom: 30px;
+    }
+
+    .pagebuilder-button-primary{
+      min-width: 180px;
+    }
+  }
+
+  #html-body {
+    [data-content-type="row"].point-price-section{
+      margin-bottom: 119px;
+    }
+
+    [data-content-type="row"] .guess-you-might-like-section{
+      margin-bottom: 148px;
+    }
+  }
+
+  .popular-topic-category-section{
+    .product-items{
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .pagebuilder-column:not(:only-child) [data-appearance*='carousel']{
+      margin-right: -10px;
+      margin-left: 42px;
+    }
+  }
+}
+
+// [769 - 1280 ]
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__l) and (@break-max = @screen__sl) {
+  #html-body .popular-topic-category-section{
+    .heading{
+      margin-bottom: 30px;
+    }
+    .pagebuilder-column-line{
+      .pagebuilder-column:first-child{
+        padding-right: 38px;
+      }
+    }
+    
+    [data-content-type="divider"]{
+      hr{
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+
+// 1024px
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+  .point-price-section {
+    [data-content-type="banner"]{
+
+      [data-element="content"]{
+        font-size: 32px;
+        line-height: 32px;
+
+        .price-text{
+          font-size: 56px;
+          line-height: 66px;
+        }
+      }
+    }
+
+    .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+      padding: 30px 80px 40px 20px;
+    }
+  }
+
+  .popular-topic-category-section{
+    .pagebuilder-banner-rounded-corner .pagebuilder-banner-wrapper{
+      max-width: 62%;
+    }
+  }
+}
+
+// > 1280
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+
+  #html-body [data-content-type="row"] .popular-topic-category-section{
+    margin-bottom: 140px;
+  }
+}
+

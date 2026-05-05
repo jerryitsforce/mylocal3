@@ -1,0 +1,13 @@
+<!--@subject {{trans "Triiger Fail Notification"}} @-->
+
+<!--@vars {
+"var incrementIds":"Order Increment Id"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+There are some trigger refund fail orders. Please check thanks.
+<br>
+{{trans "%orderIdList" orderIdList=$incrementIds}}
+
+{{template config_path="design/email/footer_template"}}

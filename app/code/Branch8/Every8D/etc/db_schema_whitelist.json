@@ -1,0 +1,16 @@
+{
+    "branch8_every8d_smslog": {
+        "column": {
+            "smslog_id": true,
+            "phone": true,
+            "content": true,
+            "response": true,
+            "ip": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

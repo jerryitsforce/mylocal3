@@ -1,0 +1,142 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
+use Magento\CatalogWidget\Block\Product\ProductsList;
+use Magento\Framework\Escaper;
+use Magento\Wishlist\Helper\Data;
+
+/** @var Escaper $escaper */
+/** @var ProductsList $block */
+?>
+<?php
+// phpcs:disable Generic.Files.LineLength.TooLong
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+$helperLabel = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+$preOrderHelper = $this->helper(\Branch8\Preorder\Override\Helper\Data::class);
+/** @var Branch8\GA4\Helper\ProductHelper $productHelper */
+$productHelper = $this->helper(\Branch8\GA4\Helper\ProductHelper::class);
+$ga4Data = [
+    'item_list_id' => $this->getData('item_list_id'),
+    'item_list_name' => $this->getData('item_list_name'),
+    'promotion_id' => $this->getData('promotion_id'),
+    'promotion_name' => $this->getData('promotion_name'),
+];
+
+$ga4SettingsObject = new \Magento\Framework\DataObject($ga4Data);
+$additionalParams = [];
+foreach ($ga4Data as $key => $value) {
+    if (!empty($value)) {
+        $additionalParams[$key] = $value;
+    }
+}
+$additionalParams = $additionalParams ? ['_query' => $additionalParams] : ['_query' => ["referer" => "card"]];
+$attrDataStr = "
+data-item-list-id='{$ga4SettingsObject->getData('item_list_id')}'
+data-item-list-name='{$ga4SettingsObject->getData('item_list_name')}'
+data-promotion-id='{$ga4SettingsObject->getData('promotion_id')}'
+data-promotion-name='{$ga4SettingsObject->getData('promotion_name')}'
+";
+?>
+<?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->count())): ?>
+    <?php
+    $type = 'widget-product-grid';
+
+    $mode = 'grid';
+
+    $image = 'new_products_content_widget_grid';
+    $items = $block->getProductCollection()->getItems();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    $templateType = ReviewRendererInterface::SHORT_VIEW;
+    $description = false;
+    ?>
+    <div class="block widget block-products-list <?= /* @noEscape */ $mode ?>">
+        <?php if ($block->getTitle()): ?>
+            <div class="block-title">
+                <strong><?= $escaper->escapeHtml(__($block->getTitle())) ?></strong>
+            </div>
+        <?php endif ?>
+        <div class="block-content">
+            <?= /* @noEscape */ '<!-- ' . $image . '-->' ?>
+            <?php
+            $compareHelper = $this->helper(\Magento\Catalog\Helper\Product\Compare::class);
+            $products = [];
+            $iterator = 1;
+            foreach ($items as $_item) {
+                $index = $iterator - 1;
+                $additionalParams['_query']['position'] = $index;
+                $isPreorder = $preOrderHelper->isPreorder($_item->getId());
+                $_item->setData('ga4_settings', $ga4SettingsObject);
+
+                $postParams = [];
+                if ($_item->isSaleable()) {
+                    $postParams = $block->getAddToCartPostParams($_item);
+                }
+
+                $products[] = [
+                    'id' => $_item->getId(),
+                    'sku' => $_item->getSku(),
+                    'name' => $_item->getName(),
+                    'url' => htmlspecialchars_decode($block->getProductUrl($_item, $additionalParams)),
+                    'imageUrl' => $block->getImage($_item, $image)->toHtml(),
+                    'priceHtml' => $block->getProductPriceHtml($_item, $type),
+                    'reviewsSummaryHtml' => $templateType ? $block->getReviewsSummaryHtml($_item, $templateType) : '',
+                    'isSaleable' => $_item->isSaleable(),
+                    'isAvailable' => $_item->isAvailable(),
+                    'isPreorder' => $isPreorder,
+                    'isVip' => $helperLabel->isProductInVipCategory($_item),
+                    'ga4ItemJson' => $productHelper->getGa4ItemJson($_item, $index),
+                    'addToCartParams' => [
+                        'action' => $postParams['action'] ?? '',
+                        'data' => $postParams['data'] ?? []
+                    ],
+                    'ga4Data' => [
+                        'itemListId' => $block->getData('item_list_id'),
+                        'itemListName' => $block->getData('item_list_name'),
+                        'promotionId' => $block->getData('promotion_id'),
+                        'promotionName' => $block->getData('promotion_name'),
+                    ],
+                    'productDetailsHtml' => $block->getProductDetailsHtml($_item),
+                    'addToWishlistParams' => ($this->helper(Data::class)->isAllow() && $showWishlist) ? $block->getAddToWishlistParams($_item) : '',
+                    'addToCompareParams' => ($block->getAddToCompareUrl() && $showCompare) ? $compareHelper->getPostDataParams($_item) : '',
+                    'labels' => [
+                        'addToCart' => __('Add to Cart'),
+                        'inStock' => __('In stock'),
+                        'outOfStock' => __('缺貨中'),
+                        'addToWishlist' => __('Add to Wish List'),
+                        'addToCompare' => __('Add to Compare'),
+                        'preorder' => __('Preorder'),
+                        'vip' => 'VIP'
+                    ]
+                ];
+                $iterator++;
+            }
+
+            $widgetData = [
+                'products' => $products,
+                'title' => $block->getTitle(),
+                'mode' => $mode,
+                'showWishlist' => $showWishlist,
+                'showCompare' => $showCompare,
+                'showCart' => $showCart
+            ];
+            $uniqueId = uniqid('react-product-widget-');
+            ?>
+
+            <div class="react-product-widget"
+                 id="<?= $uniqueId ?>"
+                 data-widget='<?= $escaper->escapeHtmlAttr(json_encode($widgetData)) ?>'
+                 data-widget-id="<?= $uniqueId ?>">
+            </div>
+            <?= $block->getPagerHtml() ?>
+        </div>
+    </div>
+<?php endif; ?>

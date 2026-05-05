@@ -1,0 +1,262 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!--   The "marketplace_chat_profile_info" table added to replace marketplace_chat_customer_info
+     for multiple profile(admin,customer) purpose
+ -->
+    <table name="marketplace_chat_profile_info" resource="default" engine="innodb" comment="Customer Data">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="object_id" padding="10"
+                unsigned="true" nullable="false" identity="false"
+                default="0" comment="(admin_id,customer_id)"/>
+        <column xsi:type="varchar" name="nickname"
+                length="256"
+                nullable="true"
+                comment="Nick Name"/>
+        <column xsi:type="varchar" name="name"
+                length="64"
+                nullable="false"
+                comment="Profile Name"/>
+        <column xsi:type="varchar" name="email"
+                nullable="true" length="255" comment="Email"/>
+
+        <column xsi:type="varchar"
+                length="255"
+                name="entity_type" nullable="false"
+                comment="(Admin,Customer)"/>
+        <column xsi:type="text" name="unique_id" nullable="false" comment="Customer Unique ID"/>
+        <column xsi:type="text" name="image" nullable="true" comment="Profile Image"/>
+        <column xsi:type="int" name="chat_status" padding="10" nullable="false" identity="false" default="0"
+                comment="Chat Status"/>
+        <column xsi:type="varchar"
+                length="255"
+                name="registered_as"
+                nullable="true" comment="Registered as"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique"
+                    referenceId="MARKETPLACE_CHAT_PROFILE_INFO_UNIQUE_PROFILE">
+            <column name="object_id"/>
+            <column name="entity_type"/>
+            <column name="registered_as"/>
+        </constraint>
+        <index referenceId="MARKETPLACE_CHAT_PROFILE_INFO_EMAIL" indexType="btree">
+            <column name="email"/>
+        </index>
+    </table>
+    <table name="marketplace_chat_conversation" resource="default" engine="innodb" comment="Chat Conversation">
+        <column xsi:type="int" name="conversation_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="total_messages"
+                padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Total Messages"/>
+        <column xsi:type="int" name="total_unread_messages"
+                padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Total Unread Messages"/>
+        <column xsi:type="varchar" name="unique_id"
+                length="64"
+                nullable="false"
+                comment="Conversation Unique ID"/>
+        <column xsi:type="int" name="creator_profile_id"
+                padding="10" unsigned="true"
+                nullable="false"
+                identity="false" comment="Creator Chat Profile Id"/>
+        <column xsi:type="smallint" name="status" nullable="false"
+                identity="false" default="1"
+                comment="Conversation Status(active,closed)"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false"
+                nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="varchar" name="type"
+                length="24"
+                nullable="false"
+                comment="Type Chat"/>
+        <column xsi:type="timestamp" name="last_update"
+                on_update="true" nullable="false"
+                default="CURRENT_TIMESTAMP"
+                comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="conversation_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_PROFILE_INFO"
+                    table="marketplace_chat_conversation"
+                    column="creator_profile_id"
+                    referenceTable="marketplace_chat_profile_info"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="marketplace_chat_participant"
+           resource="default" engine="innodb" comment="Chat Participant">
+        <column xsi:type="int" name="entity_id"
+                padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="conversation_id"
+                padding="10" unsigned="true"
+                nullable="false"
+                identity="false" comment="Conversation ID"/>
+        <column xsi:type="int" name="profile_id"
+                padding="10" unsigned="true"
+                nullable="false"
+                identity="false" comment="Chat Profile Id"/>
+
+        <!-- Reminding Mechanism columns -->
+        <column xsi:type="int" name="total_unread_messages"
+                padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Total Unread Messages"/>
+        <column xsi:type="int" name="last_read_message" padding="10"
+                unsigned="true"
+                nullable="true"
+                identity="false" comment="Last Read Message"/>
+        <column xsi:type="int" name="last_unread_message" padding="10"
+                unsigned="true"
+                nullable="true"
+                identity="false" comment="Last Un-Read Message"/>
+        <column xsi:type="timestamp" name="last_unread_received_at"
+                on_update="false" nullable="false" default="0"
+                comment="Last Un-Unread Received At"/>
+        <column xsi:type="timestamp" name="expire_reminder_date"
+                on_update="false" nullable="false" default="0"
+                comment="Reminder expiry At"/>
+        <column xsi:type="smallint" name="retried"
+                nullable="false"
+                identity="false" default="0"
+                comment="Retry Sending"/>
+        <column xsi:type="smallint" name="mail_sent"
+                nullable="false"
+                identity="false" default="0"
+                comment="Send Mail"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="UNIQUE_CONVERSATION_ID_PROFILE_ID">
+            <column name="conversation_id"/>
+            <column name="profile_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_PROFILE_INFO"
+                    table="marketplace_chat_participant"
+                    column="profile_id"
+                    referenceTable="marketplace_chat_profile_info"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_CONVERSATION"
+                    table="marketplace_chat_participant"
+                    column="conversation_id"
+                    referenceTable="marketplace_chat_conversation"
+                    referenceColumn="conversation_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_PARTICIPANT_LAST_READ_MESSAGE"
+                    table="marketplace_chat_participant"
+                    column="last_read_message"
+                    referenceTable="marketplace_chat_history"
+                    referenceColumn="entity_id" onDelete="SET NULL"/>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_PARTICIPANT_LAST_UNREAD_MESSAGE"
+                    table="marketplace_chat_participant"
+                    column="last_unread_message"
+                    referenceTable="marketplace_chat_history"
+                    referenceColumn="entity_id" onDelete="SET NULL"/>
+
+    </table>
+    <table name="marketplace_chat_history"
+           resource="default" engine="innodb">
+        <column xsi:type="int" name="conversation_id"
+                padding="10" unsigned="true" nullable="false"
+                default="null"
+                comment="Conversation ID"/>
+        <column xsi:type="varchar" name="unique_id"
+                length="32"
+                nullable="true" default="null"
+                comment="Message Unique ID"
+        />
+        <column xsi:type="varchar" name="message_type"
+                nullable="false" length="8" default="text" comment="Message Type"/>
+        <column xsi:type="text" name="meta"
+                nullable="true"
+                comment="Meta"/>
+        <column xsi:type="timestamp" name="date" on_update="false"
+                default="CURRENT_TIMESTAMP"
+                nullable="true" comment="Message Date"/>
+        <column xsi:type="varchar" name="conversation_unique_id"
+                length="64"
+                nullable="true"
+                comment="Conversation Unique ID"/>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_CONVERSATION"
+                    table="marketplace_chat_history"
+                    column="conversation_id"
+                    referenceTable="marketplace_chat_conversation"
+                    referenceColumn="conversation_id" onDelete="CASCADE"/>
+        <index referenceId="MARKETPLACE_CHAT_HISTORY_UNIQUE_ID"
+               indexType="btree">
+            <column name="unique_id"/>
+        </index>
+    </table>
+    <table name="marketplace_chat_message_recipient" resource="default" engine="innodb"
+           comment="Message Recipient (Use To check read/unread message)">
+        <column xsi:type="int" name="id"
+                padding="10" unsigned="true"
+                identity="true"
+                nullable="false"
+                comment="Message Recipient ID"/>
+        <column xsi:type="text" name="receiver_unique_id"
+                nullable="true" comment="Receiver Unique Id"/>
+        <column xsi:type="int" name="message_chat_history_id"
+                padding="10" unsigned="true" nullable="false"
+                identity="false" comment="Message Chat History ID"/>
+        <column xsi:type="smallint" name="is_read"
+                nullable="false"
+                identity="false" default="0"
+                comment="Read/Unread"/>
+        <constraint xsi:type="unique" referenceId="UNIQUE_MESSAGE_CHAT_HISTORY_ID">
+            <column name="message_chat_history_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_HISTORY"
+                    table="marketplace_chat_message_recipient"
+                    column="message_chat_history_id"
+                    referenceTable="marketplace_chat_history"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="marketplace_chat_message_notify_msg_schedule"
+           resource="default" engine="innodb"
+           comment="Send Unread Message Schedule">
+        <column xsi:type="int" name="id"
+                padding="10" unsigned="true"
+                identity="true"
+                nullable="false"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="participant_id"
+                padding="10" unsigned="true"
+                nullable="false"
+                identity="false"
+                comment="Participant ID"/>
+        <column xsi:type="varchar" name="status"
+                nullable="false" length="24" default="pending" comment="Status"/>
+        <column xsi:type="text" name="messages" nullable="true" comment="Messages"/>
+        <column xsi:type="timestamp" name="scheduled_at" on_update="false" nullable="true" comment="Scheduled At"/>
+        <column xsi:type="timestamp" name="executed_at" on_update="false" nullable="true" comment="Executed At"/>
+        <column xsi:type="timestamp" name="finished_at" on_update="false" nullable="true" comment="Finished At"/>
+        <constraint xsi:type="foreign"
+                    referenceId="MARKETPLACE_CHAT_PARTICIPANT"
+                    table="marketplace_chat_message_notify_msg_schedule"
+                    column="participant_id"
+                    referenceTable="marketplace_chat_participant"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <index referenceId="MARKETPLACE_CHAT_HISTORY_UNIQUE_PARTICIPANT_SHEDULEAT"
+               indexType="btree">
+            <column name="participant_id"/>
+            <column name="scheduled_at"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>

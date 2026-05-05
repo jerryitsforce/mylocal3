@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="HotaiConnected\FinancialReconciliation\Api\MarketPlaceReconciliationManagementInterface" type="HotaiConnected\FinancialReconciliation\Model\MarketPlaceReconciliationManagement" />
+    <preference for="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" type="HotaiConnected\FinancialReconciliation\Model\ReconciliationManagement" />
+    <preference for="HotaiConnected\FinancialReconciliation\Api\SellerInterface" type="HotaiConnected\FinancialReconciliation\Model\Seller"/>
+    <preference for="HotaiConnected\FinancialReconciliation\Api\SellerRevenueSummarizeInterface" type="HotaiConnected\FinancialReconciliation\Model\SellerRevenueSummarize"/>
+</config>

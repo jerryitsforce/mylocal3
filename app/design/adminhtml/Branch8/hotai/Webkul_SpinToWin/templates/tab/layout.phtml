@@ -1,0 +1,334 @@
+<?php
+$spinLayout = $block->getLayoutData();
+$draftHelper = $this->helper(\Branch8\Spin2Win\Helper\Draft::class);
+$spinId = $spinLayout->getSpinId();
+if($spinId){
+    $layoutDraft = $draftHelper->getDraftByType($spinId, 'layout');
+    if($layoutDraft){
+        $layoutData = array_merge($spinLayout->getData(), $layoutDraft);
+        $spinLayout->setData($layoutData);
+    }
+}
+// $triggerBtnPosn = $spinLayout->getTriggerButtonPosition();
+// $wheelView = $spinLayout->getWheelView();
+$helper = $block->spinHelper();
+$mainColorWinRecord = $spinLayout['main_color_win_record'];
+$baseFrameColor1 = $spinLayout['base_frame_color1'];
+$baseFrameColor2 = $spinLayout['base_frame_color2'];
+$baseFrameColor3 = $spinLayout['base_frame_color3'];
+$mainColorOfTheRoulette = $spinLayout['main_color_of_the_roulette'];
+$secondaryColorOfTheRoulette = $spinLayout['secondary_color_of_the_roulette'];
+$mainTextColorOfTheRoulette = $spinLayout['main_text_color_of_the_roulette'];
+$secondaryTextColorOfTheRoulette = $spinLayout['secondary_text_color_of_the_roulette'];
+?>
+<div class="spin-content-layoutform admin__scope-old">
+    <form data-mage-init='{"validation":{}}' class= "spin-form"
+    action="<?= /* @noEscape */ $block->getUrl('spintowin/manage/savelayout') ?>"
+    enctype="multipart/form-data" method="post" id="spinlayoutformedit">
+    <input type="hidden" value="<?= /* @noEscape */ $spinLayout->getId()?>" name="entity_id" />
+    <?= /* @noEscape */ $block->getBlockHtml('formkey')?> 
+    <fieldset class="fieldset admin__fieldset">
+        <legend class="legend">
+            <span><?= /* @noEscape */ __('Layout Configuration') ?></span>
+        </legend>
+        <div class="spin-content-layoutform-container">
+            <div class="field admin__field field-attribute_label required _required">
+                <label class="label" for="layout_view">
+                    <span><?= /* @noEscape */ __('View')?></span>
+                </label>
+                <div class="control">
+                    <select id="layout_view" name="view" type="text" class="input-text required-entry">
+                        <?php
+                        $layoutView = $helper->getLayoutView();
+                        foreach ($layoutView as $layoutViewKey => $layoutViewValue) { ?>
+                            <option <?= /* @noEscape */ $layoutViewKey==$spinLayout->getView()? 'selected':''; ?>
+                            value="<?= /* @noEscape */ $layoutViewKey ?>">
+                            <?= /* @noEscape */ __($layoutViewValue)?></option>
+                        <?php }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="field admin__field field-attribute_label required _required">
+                <label class="label" for="layout_position">
+                    <span><?= /* @noEscape */ __('Position')?></span>
+                </label>
+                <div class="control">
+                    <select id="layout_position" name="position" type="text" class="input-text required-entry">
+                        <?php
+                        $layoutPosition = $helper->getLayoutPosition();
+                        foreach ($layoutPosition as $key => $value) { ?>
+                            <option <?= /* @noEscape */ $key==$spinLayout->getPosition()? 'selected':''; ?>
+                            value="<?= /* @noEscape */ $key ?>"><?= /* @noEscape */ __($value)?>
+                            </option>
+                        <?php }
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="field admin__field field-attribute_label required _required">
+                <label class="label" for="page_url">
+                    <span><?= /* @noEscape */ __('Campaign URL')?></span>
+                </label>
+                <div class="control">
+                    <input class="required" type="text" name="page_url" id="page_url" value="<?php echo $spinLayout->getPageUrl();?>" />
+                    <div class="note admin__field-note" id="page-url-note">Example: campaign.html</div>
+                </div>
+            </div>
+            <div class="field admin__field field-attribute_label required _required">
+                <label class="label" for="page_title">
+                    <span><?= /* @noEscape */ __('Campaign Title')?></span>
+                </label>
+                <div class="control">
+                    <input class="required" type="text" name="page_title" id="page_title" value="<?php echo $spinLayout->getPageTitle();?>" />
+                </div>
+            </div>
+            <div class="field admin__field field-attribute_label required _required">
+                <label class="label" for="page_title2">
+                    <span><?= /* @noEscape */ __('Campaign Title 2')?></span>
+                </label>
+                <div class="control">
+                    <input class="required" type="text" name="page_title2" id="page_title2" value="<?php echo $spinLayout->getData('page_title2');?>" />
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label">
+                <label class="label" for="spin_desktop_background_image">
+                    <span><?= /* @noEscape */ __('Background Desktop')?></span>
+                </label>
+                <div class="control">
+                    <input type="file" id="spin_desktop_background_image"
+                    name="desktop_background_image" value="" class="input-text spin-files"
+                    data-spin-bind-image="spin_desktop_background_image_preview"
+                    data-upload-id="spin_desktop_background_image_hidden"
+                    data-upload-url="<?= /* @noEscape */ $block->getUploadUrl(); ?>" />
+                    <input type="hidden" id="spin_desktop_background_image_hidden"
+                    name="desktop_background_image"
+                    value="<?= /* @noEscape */ $spinLayout->getDesktopBackgroundImage()?>"/>
+                    <button type="button" id="spin_desktop_background_image_1"
+                    class="spin-button spin-upload-button spin-files-button"
+                    data-triggerid="spin_desktop_background_image"><?php echo __('Browse Files...');?></button>
+                    <div class="spin-image-preview-container">
+                        <img src="<?= /* @noEscape */ ($spinLayout->getDesktopBackgroundImage()
+                        ? $block->getMediaUrl($spinLayout->getDesktopBackgroundImage()):'') ?>"
+                        id="banner-img" class="spin-image spin-image-preview">
+                        <span class="spin-image-delete" data-delete="spin_desktop_background_image"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field admin__field  field-attribute_label">
+                <label class="label" for="spin_mobile_background_image">
+                    <span><?= /* @noEscape */ __('Background Mobile')?></span>
+                </label>
+                <div class="control">
+                    <input type="file" id="spin_mobile_background_image"
+                    name="mobile_background_image" value="" class="input-text spin-files"
+                    data-spin-bind-image="spin_mobile_background_image_preview"
+                    data-upload-id="spin_mobile_background_image_hidden"
+                    data-upload-url="<?= /* @noEscape */ $block->getUploadUrl(); ?>" />
+                    <input type="hidden" id="spin_mobile_background_image_hidden"
+                    name="mobile_background_image"
+                    value="<?= /* @noEscape */ $spinLayout->getMobileBackgroundImage()?>"/>
+                    <button type="button" id="spin_mobile_background_image_1"
+                    class="spin-button spin-upload-button spin-files-button"
+                    data-triggerid="spin_mobile_background_image"><?php echo __('Browse Files...');?></button>
+                    <div class="spin-image-preview-container">
+                        <img src="<?= /* @noEscape */ ($spinLayout->getMobileBackgroundImage()
+                        ? $block->getMediaUrl($spinLayout->getMobileBackgroundImage()):'') ?>"
+                        id="banner-img" class="spin-image spin-image-preview">
+                        <span class="spin-image-delete" data-delete="spin_mobile_background_image"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="field admin__field field-attribute_label required _required">
+                <label class="label" for="hint_title">
+                    <span><?= /* @noEscape */ __('Hint title')?></span>
+                </label>
+                <div class="control">
+                    <input class="required" type="text" name="hint_title" id="hint_title" value="<?php echo $spinLayout->getHintTitle();?>" />
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label required _required">
+                <label class="label" for="hint_text">
+                    <span><?= /* @noEscape */ __('Hint text')?></span>
+                </label>
+                <div class="control">
+                <textarea id="hint_text" name="hint_text" class="required-entry"><?= /* @noEscape */  $spinLayout->getHintText(); ?></textarea>
+                </div>
+            </div>
+            <?php
+            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+            $wysiwygObj = $objectManager->create(\Magento\Cms\Model\Wysiwyg\Config::class);
+            $wysiwygConfig = json_encode($wysiwygObj->getConfig()->getData());
+            ?>
+            <script>
+                require([
+                "jquery", 
+                "mage/translate", 
+                "mage/adminhtml/events", 
+                "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                ], function(jQuery){
+                    wysiwygHintText = new wysiwygSetup("hint_text", <?php echo $wysiwygConfig;?>);
+                    wysiwygHintText.setup("exact");
+                });
+            </script>
+
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="main_color_of_the_roulette">
+                    <span><?= /* @noEscape */ __('Main color of the roulette')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $mainColorOfTheRoulette ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#main_color_of_the_roulette"}}'></span>
+                    <input type="text" id="main_color_of_the_roulette" name="main_color_of_the_roulette"
+                    value="<?= /* @noEscape */ $mainColorOfTheRoulette;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="main_text_color_of_the_roulette">
+                    <span><?= /* @noEscape */ __('Main text color of the roulette')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $mainTextColorOfTheRoulette ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#main_text_color_of_the_roulette"}}'></span>
+                    <input type="text" id="main_text_color_of_the_roulette" name="main_text_color_of_the_roulette"
+                    value="<?= /* @noEscape */ $mainTextColorOfTheRoulette;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="secondary_color_of_the_roulette">
+                    <span><?= /* @noEscape */ __('Secondary color of the roulette')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $secondaryColorOfTheRoulette ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#secondary_color_of_the_roulette"}}'></span>
+                    <input type="text" id="secondary_color_of_the_roulette" name="secondary_color_of_the_roulette"
+                    value="<?= /* @noEscape */ $secondaryColorOfTheRoulette;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="secondary_text_color_of_the_roulette">
+                    <span><?= /* @noEscape */ __('Secondary text color of the roulette')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $secondaryTextColorOfTheRoulette ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#secondary_text_color_of_the_roulette"}}'></span>
+                    <input type="text" id="secondary_text_color_of_the_roulette" name="secondary_text_color_of_the_roulette"
+                    value="<?= /* @noEscape */ $secondaryTextColorOfTheRoulette;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="main_color_win_record">
+                    <span><?= /* @noEscape */ __('Main color of the winning record')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $mainColorWinRecord ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#main_color_win_record"}}'></span>
+                    <input type="text" id="main_color_win_record" name="main_color_win_record"
+                    value="<?= /* @noEscape */ $mainColorWinRecord;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="base_frame_color1">
+                    <span><?= /* @noEscape */ __('Base frame color 1')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $baseFrameColor1 ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#base_frame_color1"}}'></span>
+                    <input type="text" id="base_frame_color1" name="base_frame_color1"
+                    value="<?= /* @noEscape */ $baseFrameColor1;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="base_frame_color2">
+                    <span><?= /* @noEscape */ __('Base frame color 2')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $baseFrameColor2 ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#base_frame_color2"}}'></span>
+                    <input type="text" id="base_frame_color2" name="base_frame_color2"
+                    value="<?= /* @noEscape */ $baseFrameColor2;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+            <div class="field admin__field  field-attribute_label  required _required">
+                <label class="label" for="base_frame_color3">
+                    <span><?= /* @noEscape */ __('Base frame color 3')?></span>
+                </label>
+                <div class="control">
+                    <span class="color-pick spin-color-box" data-role="color-pick"
+                    data-mage-init='{"colorPickerFunction":
+                    {"spanBackgroundColor" : "<?= /* @noEscape */ $baseFrameColor3 ?>",
+                    "getActiveColorPickerStatus" : "1",
+                    "backgroundWidthSelector" : "#base_frame_color3"}}'></span>
+                    <input type="text" id="base_frame_color3" name="base_frame_color3"
+                    value="<?= /* @noEscape */ $baseFrameColor3;?>"
+                    class="input-text spin-color-input required-entry"/>
+                </div>
+            </div>
+
+            <button title="<?= /* @noEscape */ __('Update Layout') ?>"
+            type="button" id="update-spinwheelform"
+            class="action-default save spin-save spin-save-ajax"
+            data-spin-bind-form="spinlayoutformedit">
+                <span><?= /* @noEscape */ __('Update Layout') ?></span>
+                <span class="admin__page-nav-item-messages">
+                    <span class="admin__page-nav-item-message _changed">
+                        <span class="admin__page-nav-item-message-icon"></span>
+                        <span class="admin__page-nav-item-message-tooltip"
+                        data-bind="i18n:'Changes have been made to this section that have not been saved.'">
+                        </span>
+                    </span>
+                </span>
+            </button>
+        </div>
+    </fieldset>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "layout": {}
+        }
+    }
+</script>
+
+
+<!-- TAB TRIGGER -->
+<?php
+echo $this->getLayout()->createBlock(
+    \Webkul\SpinToWin\Block\Adminhtml\Spin\Edit\Tab\Trigger::class
+)->toHtml()
+?>
+<!-- TAB SPIN WHEEL -->
+<?php
+ echo $this->getLayout()->createBlock(
+    \Webkul\SpinToWin\Block\Adminhtml\Spin\Edit\Tab\Wheel::class
+)->toHtml()
+?>

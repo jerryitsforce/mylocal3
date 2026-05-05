@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<!-- minute(0-59) hour(0-23) dayOfMonth(1-31) month(1-12) dayOfWeek(0-7, sunday=0or7) -->
+	<group id="ticket_cron_update">
+		<job instance="Branch8\CustomerTicketTable\Cron\SetRecordsToOverDue" method="execute" name="customer_ticket_table_set_records_to_over_due">
+			<schedule>0 0 * * *</schedule>
+		</job>
+		<job instance="Branch8\CustomerTicketTable\Cron\CheckVirtualOrderTicketStatus" method="execute" name="customer_ticket_table_check_virtual_order_ticket_status">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+	</group>
+</config>

@@ -1,0 +1,253 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var Items $block */
+
+use Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Items;
+
+$profileModel = $block->getProfile();
+$parentBlock = $block->getParentBlock();
+$preorderHelper = $block->getPreorderHelper();
+$placeHolderImage = $block->getPlaceHoderImage();
+$cachedSubOrders = [];
+$flagshipHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+$isGiftOrder = $block->isGiftOrder($block->getOrder());
+?>
+
+<?php $listItemsWithSeller = $block->getItems(); ?>
+<?php $giftMessage = '' ?>
+<div class="order-details">
+    <?php foreach ($listItemsWithSeller as $key => $items): ?>
+        <?php
+        list($sellerId, $subOrderId) = explode('-', $key);
+        if (!isset($cachedSubOrders[$subOrderId])) {
+            $childOrder = $block->getSubOrderById($subOrderId);
+            if($childOrder->getData('is_flagship_store_process_order')){
+                continue;
+            }
+            $cachedSubOrders[$subOrderId] = $childOrder;
+        }
+        $subOrder = $cachedSubOrders[$subOrderId];
+        if (!$sellerId) {
+            $sellerId = $block->getSellerIdByOrder($subOrderId);
+        }
+
+        $flagshipStoreId = $flagshipHelper->getFlagshipStoreFromSellerId($sellerId);
+        if($flagshipStoreId){
+            $flagshipStoreData = $flagshipHelper->getFlagshipStoreData($flagshipStoreId);
+            $shopTitle = $flagshipStoreData['shop_title'];
+            $shopUrl = $flagshipStoreData['shop_url'];
+        }else{
+            list($shopTitle, $shopUrl) = $profileModel->getSellerDetails($sellerId);
+        }
+
+        /**
+         * @var $subOrder \Magento\Sales\Model\Order
+         */
+
+        $isOldHotaiOrder = $string = preg_match('/^hotai_order_\w+/', (string)$subOrder->getIncrementId());
+        $invoiceCollection = $subOrder->getInvoiceCollection();
+        $hasPaid = false;
+        $hasEcpayInvoiceFail = false;
+        foreach ($invoiceCollection as $invoice) {
+            if ($invoice->getState() == Magento\Sales\Model\Order\Invoice::STATE_PAID) {
+                $hasPaid = true;
+                break;
+            }
+        }
+        foreach ($invoiceCollection as $invoice) {
+            if ($invoice->getState() != Magento\Sales\Model\Order\Invoice::STATE_PAID) {
+                $hasEcpayInvoiceFail = true;
+                break;
+            }
+        }
+        if (!$hasPaid && $isOldHotaiOrder) {
+            $hasPaid = true;
+        }
+
+        $thermosphere = $subOrder->getData('order_type');
+
+        $progressType = $block->getItemsBlock()->getProgressType($subOrder);
+        $isVirtual = $progressType === \Branch8\Sales\Helper\FrontOrderFlow::PROGRESS_TYPE_TICKET;
+        ?>
+        <div class="sub-order" data-virtual="<?= $isVirtual ? '1' : '0' ?>">
+            <div class="sub-order-header">
+                <div class="sub-order-info">
+                    <div class="sub-order-title">
+                        <span class="seller-name"><?= $block->escapeHtml($shopTitle) ?></span>
+                        <?php if ($thermosphere): ?>
+                            <span class="thermosphere">| <?= $block->escapeHtml(__($thermosphere)) ?></span>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="sub-order-number">
+                        No.<?= $block->escapeHtml($subOrder->getData('hotai_child_order_number')
+                            ? $subOrder->getData('hotai_child_order_number') : $subOrder->getData('increment_id')
+                        ) ?>
+                    </div>
+                </div>
+                <div class="sub-order-actions">
+                    <?php
+                    $progressType = $block->getItemsBlock()->getProgressType($subOrder);
+                    if ($progressType === \Branch8\Sales\Helper\FrontOrderFlow::PROGRESS_TYPE_TICKET &&
+                        $subOrder->getStatus() === \Branch8\HotaiCore\Model\Order\Status::STATUS_ARRIVED):
+                        ?>
+                        <?php if(!$isGiftOrder): ?>
+                        <a href="<?= $block->escapeHtml($parentBlock->getMyTicketUrl()) ?>"
+                           class="my-tickets"><?= $block->escapeHtml(__("My Tickets")) ?></a>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <?php if (!empty($block->getInvoicePrintUrl($subOrder))): ?>
+                        <a target="_blank" href="<?= $block->escapeHtml($block->getInvoicePrintUrl($subOrder)) ?>"
+                           class="sub-order-invoice"><?= $block->escapeHtml(__('Suborder Invoice')) ?></a>
+                    <?php endif; ?>
+                    <?php if ($subOrder->getStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_CANCELED && $hasPaid) : ?>
+                        <a href="<?= $parentBlock->getPrintUrl($block->getOrder()) ?>"
+                           class="sub-order-proof"><?= $block->escapeHtml(__("Proof Purchase Receipt")) ?></a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php foreach ($items as $item): ?>
+                <?php
+                    $trackingInfo = $block->getLogisticInfo($subOrder, $item->getId());
+                ?>
+                <?php if ($item->getParentItem() || !$item):
+                    continue;
+                endif; ?>
+                <?php
+                $product = $item->getProduct();
+                $productImage = $placeHolderImage;
+                if ($product) {
+                }
+                $productName = $item->getName();
+                $productUrl = '';
+                if ($product) {
+                    $productImage = $block->getProductImageUrl($item->getProduct());
+                    //$productName = $product->getName();
+                    $productUrl = $product->getProductUrl();
+                }
+                ?>
+                <div class="sub-order-content-container" data-flow-status="<?= $item->getFlowStatus(); ?>" data-order-item-id="<?= $item->getId() ?>">
+                    <div class="sub-order-content">
+                        <div class="product-detail-container" data-id="<?= $item->getData('product_id') ?>">
+                            <div class="product-image">
+                                <img src="<?= $productImage ?>" alt="<?= $productName ?>">
+                            </div>
+                            <div class="product-info">
+                                <h6 class="product-name">
+                                    <?php if($productUrl !=''): ?>
+                                        <a class="product-name-link" title="<?= $block->escapeHtml($productName) ?>" href="<?= $block->escapeHtml($productUrl) ?>">
+                                            <?= $block->escapeHtml($productName) ?>
+                                        </a>
+                                    <?php else: ?>
+                                        <?= $block->escapeHtml($productName) ?>
+                                    <?php endif; ?>
+                                </h6>
+                                <?php if ($_options = $block->getItemOptions($item->getProductOptions())): ?>
+                                    <?php
+                                    $optionText = '';
+                                    ?>
+                                    <?php foreach ($_options as $_option): ?>
+                                        <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                                        <?php $optionText .= ($optionText === '' ? '' : '+') . $block->escapeHtml($optionValue); ?>
+                                    <?php endforeach; ?>
+                                    <span class="option-text"><?= $optionText ?></span>
+                                <?php endif; ?>
+                                <p>x<?= (int)$item->getQtyOrdered() ?><span
+                                        class="middle-divider"></span> <?= $subOrder->formatPrice($block->getItemSubTotal($item)) ?>
+                                    <?php if ($item->getData('row_total_point_used')): ?>
+                                    + <span
+                                        class="reward-point"><?= round($item->getData('row_total_point_used')) ?></span>
+                                </p>
+                                <?php if($block->isEdenredTicket($item)):?>
+                                    <p>
+                                        <span class="label"><?= __('宜睿訂單編號 : ') ?></span>
+                                        <span class="value"><?= $block->getEdenredClientOrderNumber($item) ?></span>
+                                    </p>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            </div>
+                        </div>
+
+                        <?php $errorMessage = $block->getItemErrorMessage($item, $subOrder, $block->getOrder()) ?>
+                        <?php if (!empty($errorMessage) && $item->getFlowStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_FINANCIAL_REVIEW): ?>
+                            <?php if (!$block->isParentOrderAutoCancelled()) : ?>
+                                <?php $hasReason = isset($errorMessage['reason']); ?>
+                                <div class="alert-box<?= $hasReason ? ' has-reason' : '' ?>">
+                                    <div class="alert-text">
+                                        <span><?= $block->escapeHtml($errorMessage['error_msg']) ?></span>
+                                        <?php if ($hasReason): ?>
+                                            <span><?= $block->escapeHtml($errorMessage['reason']) ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php if ($block->getChildBlock('order_progress')): ?>
+                                <?php $status = $block->getChildBlock('order_progress')->setItem($item); ?>
+                                <?= $block->getChildHtml('order_progress', false); ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php if (!empty($trackingInfo) && $subOrder->getStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_COMPLETE && !$block->canCancelRmaRequest($item->getFlowStatus())) : ?>
+                            <div class="sub-order-notification">
+                                <?php foreach ($trackingInfo as $track): ?>
+                                <div class="notification-box logistics-container">
+                                    <div class="shipping-method">
+                                        <span class="label"><?= $block->escapeHtml(__('Logistics method')) ?></span>
+                                        <span
+                                            class="value"> <?= $block->escapeHtml($track['logistics_company']) ?>  <?php if(isset($track['logistics_company_url']) && $track['logistics_company_url'] != ''):?>(<a
+                                                class="shipping-info-link" target="_blank"
+                                                href="<?= $track['logistics_company_url'] ?>"><?= $block->escapeHtml(__('配送進度')) ?></a>) <?php endif; ?></span>
+                                    </div>
+                                    <div class="shipping-code">
+                                        <span class="label"><?= $block->escapeHtml(__("Tracking number")) ?></span>
+                                        <span class="value"><?= $block->escapeHtml($track['tracking_number']) ?>  (<a
+                                                href="#"
+                                                data-tracking-number="<?= $block->escapeHtml($track['tracking_number']) ?>"
+                                                class="shipping-info-link copy-button"><?= $block->escapeHtml(__('複製')) ?></a>)</span>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <!--Ticket Order notification-->
+                        <?php if ($item->getFlowStatus() !== \Branch8\HotaiCore\Model\Order\Status::STATUS_CANCELED && $block->isOnlyProductPoint($subOrder, $item)) : ?>
+                            <div class="ticket-box">
+                                <?= $block->escapeHtml(__("This ticket cannot be returned")) ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- Order item notifications -->
+                        <?php if ($block->getChildBlock('item_notifications') && !$isVirtual): ?>
+                            <?= $block->getChildBlock('item_notifications')->setItem($item)->setData('sub_order', $subOrder)->toHtml(); ?>
+                        <?php endif; ?>
+
+                        <!-- RMA Buttons-->
+                        <div class="action-container" data-rma-status="<?= $item->getRmaStatus() ?>"
+                             data-flow-status="<?= $item->getFlowStatus() ?>"
+                             has-invoice-fail="<?= $hasEcpayInvoiceFail ? '1' : '0' ?>"
+                             data-product="<?= (!$product) ? 'no-product' : '' ?>">
+                            <?php if (!$hasEcpayInvoiceFail && $block->getChildBlock('rma_buttons')): ?>
+                                <?php $block->getChildBlock('rma_buttons')->setItem($item); ?>
+                                <?= $block->getChildHtml('rma_buttons', false); ?>
+                            <?php endif; ?>
+                            <?php $block->getChildBlock('marketplace_seller_chat_link')->setItem($item)
+                                ->setOrder($block->getOrder())
+                                ->setSubOrder($subOrder); ?>
+                            <?= $block->getChildHtml('marketplace_seller_chat_link', false); ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+</div>

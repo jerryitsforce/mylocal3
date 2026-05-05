@@ -1,0 +1,51 @@
+<?php
+/**
+ * @var \Branch8\Catalog\Block\Adminhtml\Product\History\Bulkview $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+$bulkData = $block->getBulkData();
+$action = $bulkData['action'] ?? null;
+?>
+<?php if ($action): ?>
+    <div class="entry-edit form-inline">
+        <section class="custom-admin__page-section">
+            <div id="log_details_fieldset" class="field log-details">
+                <table class="admin__table-secondary">
+                    <colgroup>
+                        <col width="25%"/><col/>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th><?= $escaper->escapeHtml(__('Action Name')) ?></th>
+                        <td><?= $escaper->escapeHtml($action) ?></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="custom-admin__page-section">
+            <div class="field log-details-grid">
+                <?= $block->getChildBlock('producthistorybulkview_grid')->setData('bulk_data', $bulkData)->toHtml() ?>
+            </div>
+        </section>
+    </div>
+
+    <style>
+        #productHistoryBulkviewGrid_table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+
+        #productHistoryBulkviewGrid_table th,
+        #productHistoryBulkviewGrid_table td {
+            width: 33.33%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+        }
+    </style>
+<?php endif; ?>

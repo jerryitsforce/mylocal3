@@ -1,0 +1,45 @@
+{
+    "branch8_product_change_log": {
+        "column": {
+            "log_id": true,
+            "product_id": true,
+            "action": true,
+            "post_data": true,
+            "before_values": true,
+            "after_values": true,
+            "user": true,
+            "user_id": true,
+            "created_at": true,
+            "debug_backtrace": true,
+            "user_type": true
+        },
+        "index": {
+            "BRANCH8_PRODUCT_CHANGE_LOG_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_product_change_log_archive": {
+        "column": {
+            "entity_id": true,
+            "log_id": true,
+            "product_id": true,
+            "action": true,
+            "post_data": true,
+            "before_values": true,
+            "after_values": true,
+            "user_type": true,
+            "user_id": true,
+            "created_at": true,
+            "debug_backtrace": true
+        },
+        "index": {
+            "BRANCH8_PRODUCT_CHANGE_LOG_ARCHIVE_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_PRODUCT_CHANGE_LOG_ARCHIVE_LOG_ID": true
+        }
+    }
+}

@@ -1,0 +1,95 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Branch8\Customer\Block\Account\Dashboard\Info $block */
+/** @var  \Branch8\MaskCustomerInformation\ViewModel\MaskPersonal $maskModel */
+/** @var \Magento\Framework\Escaper $escaper */
+$customer = $block->getCustomer();
+$maskModel = $block->getMaskModel();
+$customerInfoHelper = $this->helper('Branch8\Customer\Helper\Info');
+$name = $customer->getFirstname();
+?>
+<div class="block block-dashboard-info member-info-detail"
+     id="block-dashboard-info"
+     data-mage-init='{"mage/tabs": {"openedState": "active", "active": <?= $block->getCurrentTabByNum() ?>,  "disabledState": "disabled"}}'>
+    <div class="dashboard-tab-items">
+        <div class="dashboard-tab-item-title <?= $block->getCurrentTabByNum() == 0 ? 'active': '' ?>" data-role="collapsible">
+            <a class="dashboard-tab-item-switch" data-toggle="trigger" href="#basic"><?= __("基本資料")?></a>
+        </div>
+        <div class="dashboard-tab-item-title <?= $block->getCurrentTabByNum() == 1 ? 'active': '' ?>" data-role="collapsible">
+            <a class="dashboard-tab-item-switch" data-toggle="trigger" href="#nickname"><?= __("會員暱稱")?></a>
+        </div>
+        <div class="dashboard-tab-item-title <?= $block->getCurrentTabByNum() == 2 ? 'active': '' ?>" data-role="collapsible">
+            <a class="dashboard-tab-item-switch" data-toggle="trigger" href="#invoice_carrier"><?= __("發票載具")?></a>
+        </div>
+    </div>
+    <div id="tab-info" class="dashboard-tab-item-content tab-info" data-role="content" style="display: <?= $block->getCurrentTabByNum() == 0? 'block': 'none'?>;">
+        <div class="box-account">
+            <div class="box-account-content">
+                <div class="box-info">
+                    <h4 class="box-label"><?= __("會員帳號(手機號碼）")?></h4>
+                    <?php $customePhone = (string)$customer->getCustomAttribute('phone_number')->getValue();?>
+                    <p class="box-value">+886 <?= $customerInfoHelper->getOAuthPhone($customePhone) ?></p>
+                </div>
+                <div class="box-info">
+                    <h4 class="box-label"><?= __("姓名")?></h4>
+                    <p class="box-value"><?= $customerInfoHelper->getOAuthName('', $name) ?></p>
+                </div>
+                <div class="box-info">
+                    <h4 class="box-label"><?= __("生日")?></h4>
+                    <?php $dob = (string)$customer->getDob();?>
+                    <?php if ($dob): ?>
+                        <p class="box-value"><?= $customerInfoHelper->getOAuthBirthday(str_replace('-', '/', $dob)) ?></p>
+                    <?php endif ?>
+                </div>
+                <div class="box-info">
+                    <h4 class="box-label"><?= __("電子信箱")?></h4>
+                    <p class="box-value"><?= $customerInfoHelper->getOAuthEmail($customer->getEmail()) ?></p>
+                </div>
+            </div>
+            <div class="box-account-actions">
+                <button class="action action-primary action-edit">
+                    <span><?= $block->escapeHtml(__('前往外站更新會員資料')) ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="tab-nickname" class="dashboard-tab-item-content tab-nickname" data-role="content" style="display: <?= $block->getCurrentTabByNum() == 1? 'block': 'none'?>;">
+        <?= $block->getChildHtml('branch8_customer_account_nickname'); ?>
+    </div>
+    <div id="tab-invoice" class="item content tab-invoice" data-role="content" style="display: <?= $block->getCurrentTabByNum() == 2? 'block': 'none'?>;">
+        <?= $block->getChildHtml('branch8_customer_account_invoice_carrier'); ?>
+    </div>
+</div>
+
+<script>
+    require(['jquery'], function ($) {
+        const accountEditUrl = '<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>'
+        const isHotaiApp = $('body').hasClass('hotai-app')
+        $('.action.action-primary.action-edit').on('click', function (e) {
+            if (isHotaiApp) {
+                window.ReactNativeWebView?.postMessage(JSON.stringify({
+                    type: 'OPEN_HOTAI_CONNECT_ACCOUNT_EDIT',
+                    data: ''
+                }));
+            } else {
+                window.location.href = accountEditUrl;
+            }
+        })
+
+        $('a.dashboard-tab-item-switch').on('click', function() {
+            const  href = $(this).attr('href').replace('#', '');
+            history.replaceState(null, '', getTabUrl(href));
+        });
+
+
+        function getTabUrl(tabId) {
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('tab', tabId);
+            return currentUrl.toString();
+        }
+    });
+</script>

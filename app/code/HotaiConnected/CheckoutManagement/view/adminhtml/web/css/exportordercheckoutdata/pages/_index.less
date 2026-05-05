@@ -1,0 +1,72 @@
+// =============================================
+//  Checkout Area - Page Layout
+// =============================================
+//  此檔案僅包含頁面層級的佈局樣式
+//  組件樣式已移至：
+//  - components/_checkout-popup.less
+//  - components/table-cells/_vendor-invoice.less
+//
+//  @updated 2025-10-28 - 重構：拆分組件，精簡頁面樣式
+// =============================================
+
+.export-order-checkout-data {
+    // Top actions bar
+    &__top-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.6rem;
+        letter-spacing: .025em;
+    }
+
+    // Filters toggle (Magento admin override)
+    & .admin__data-grid-filters-wrap {
+        display: none;
+        
+        &._show {
+            display: block;
+        }
+    }
+
+    // Table actions
+    &__table {
+        &__actions {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            &__left {
+                display: flex;
+                align-items: flex-end;
+                gap: 10px;
+                & .records-found-text {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+//  DataTree - 隱藏子層 checkbox
+// =============================================
+//  當使用 DataTree 模式時，隱藏子層（level 1+）的 checkbox
+//  保留父層（level 0）的 checkbox
+//
+//  selectableCheck 負責功能層面的限制（不可選取）
+//  CSS 負責視覺層面的隱藏（不顯示）
+// =============================================
+#tabulator-grid {
+    // 隱藏層級 1 以上（子資料）的 checkbox
+    .tabulator-row.tabulator-tree-level-1,
+    .tabulator-row.tabulator-tree-level-2,
+    .tabulator-row.tabulator-tree-level-3,
+    .tabulator-row.tabulator-tree-level-4,
+    .tabulator-row.tabulator-tree-level-5 {
+        .tabulator-row-header {
+            visibility: hidden; // 使用 visibility 而非 display，保持對齊
+        }
+    }
+}

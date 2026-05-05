@@ -1,0 +1,87 @@
+{
+    "salesrule_coupon_aggregated": {
+        "column": {
+            "cancellation_orders": true,
+            "complete_orders": true,
+            "order_ids": true,
+            "coupon_price_rule": true,
+            "overall_orders": true,
+            "suggested_retail_price": true,
+            "product_selling_price": true,
+            "suggested_retail_price_discounted": true,
+            "product_selling_price_discounted": true,
+            "vendor_burden": true,
+            "network_burden": true,
+            "overall_suggested_retail_price": true,
+            "overall_product_selling_price": true,
+            "network_share": true,
+            "vendor_share": true,
+            "platform_share": true,
+            "coupon_rule_id": true
+        },
+        "index": {
+            "SALESRULE_COUPON_AGGREGATED_COUPON_RULE_ID": true,
+            "SALESRULE_COUPON_AGGREGATED_COUPON_CODE": true
+        }
+    },
+    "salesrule_coupon_aggregated_updated": {
+        "column": {
+            "cancellation_orders": true,
+            "complete_orders": true,
+            "order_ids": true,
+            "coupon_rule_name": true,
+            "coupon_price_rule": true,
+            "suggested_retail_price": true,
+            "product_selling_price": true,
+            "suggested_retail_price_discounted": true,
+            "product_selling_price_discounted": true,
+            "vendor_burden": true,
+            "network_burden": true,
+            "overall_suggested_retail_price": true,
+            "overall_product_selling_price": true,
+            "network_share": true,
+            "vendor_share": true,
+            "overall_orders": true,
+            "platform_share": true,
+            "coupon_rule_id": true
+        },
+        "index": {
+            "SALESRULE_COUPON_AGGREGATED_UPDATED_COUPON_RULE_ID": true,
+            "SALESRULE_COUPON_AGGREGATED_UPDATED_COUPON_CODE": true
+        }
+    },
+    "salesrule_coupon_aggregated_order": {
+        "column": {
+            "cancellation_orders": true,
+            "complete_orders": true,
+            "order_ids": true,
+            "coupon_price_rule": true,
+            "suggested_retail_price": true,
+            "product_selling_price": true,
+            "suggested_retail_price_discounted": true,
+            "product_selling_price_discounted": true,
+            "vendor_burden": true,
+            "network_burden": true,
+            "overall_suggested_retail_price": true,
+            "overall_product_selling_price": true,
+            "vendor_share": true,
+            "network_share": true,
+            "overall_orders": true,
+            "platform_share": true,
+            "coupon_rule_id": true
+        },
+        "index": {
+            "SALESRULE_COUPON_AGGREGATED_ORDER_COUPON_RULE_ID": true,
+            "SALESRULE_COUPON_AGGREGATED_ORDER_COUPON_CODE": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "coupon_price_rule": true,
+            "coupon_rule_id": true
+        },
+        "index": {
+            "SALES_ORDER_COUPON_RULE_ID": true
+        }
+    }
+}

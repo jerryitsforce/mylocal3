@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- OpenHub Ticket Record Interface Preference -->
+    <preference for="HotaiConnected\OpenHub\Api\Data\OpenHubTicketRecordInterface" 
+                type="HotaiConnected\OpenHub\Model\OpenHubTicketRecord"/>
+
+    <!-- Virtual Types for Collection -->
+    <virtualType name="HotaiConnected\OpenHub\Model\ResourceModel\OpenHubTicketRecord\Collection" 
+                 type="Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection">
+        <arguments>
+            <argument name="model" xsi:type="string">HotaiConnected\OpenHub\Model\OpenHubTicketRecord</argument>
+            <argument name="resourceModel" xsi:type="string">HotaiConnected\OpenHub\Model\ResourceModel\OpenHubTicketRecord</argument>
+        </arguments>
+    </virtualType>
+
+</config>

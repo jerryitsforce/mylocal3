@@ -1,0 +1,188 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model;
+
+use Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\ChatParticipant;
+use Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\ChatParticipantFactory;
+use Branch8\WebkulMpBuyerSellerChat\Model\ChatRole;
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Exception\LockException;
+use Magento\Framework\App\ResourceConnection;
+use Psr\Log\LoggerInterface;
+
+class ScheduleQueue
+{
+    private LockModel $lockedModel;
+    private ChatParticipant $chatParticipant;
+    private ChatParticipant|ChatParticipantFactory $chatParticipantFactory;
+    private \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant\CollectionFactory $collectionFactory;
+    private Config $config;
+    private LoggerInterface $logger;
+
+    private ResourceConnection $resourceConnection;
+
+    /**
+     * @param ResourceConnection $resourceConnection
+     * @param Config $config
+     * @param LockModel $lockedModel
+     * @param ChatParticipantFactory $chatParticipantFactory
+     * @param \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant\CollectionFactory $collectionFactory
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        ResourceConnection                                                                     $resourceConnection,
+        Config                                                                                 $config,
+        LockModel                                                                              $lockedModel,
+        ChatParticipantFactory                                                                 $chatParticipantFactory,
+        \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant\CollectionFactory $collectionFactory,
+        LoggerInterface                                                                        $logger
+    )
+    {
+        $this->resourceConnection = $resourceConnection;
+        $this->logger = $logger;
+        $this->config = $config;
+        $this->lockedModel = $lockedModel;
+        $this->collectionFactory = $collectionFactory;
+        $this->chatParticipantFactory = $chatParticipantFactory;
+    }
+
+    /**
+     * @return void
+     * @throws LockException
+     */
+    protected function lock()
+    {
+        if ($this->lockedModel->isQueueLocked(LockModel::SCHEDULE_FLAG)) {
+            throw new LockException(__('Another lock detected (
+            the process unread reminder queue is in a progress).')
+            );
+        }
+
+        $this->lockedModel->setIsQueueLocked(LockModel::SCHEDULE_FLAG, true);
+    }
+
+    /**
+     * @return void
+     */
+    protected function unlock()
+    {
+        $this->lockedModel->setIsQueueLocked(LockModel::SCHEDULE_FLAG, false);
+    }
+
+    /**
+     * @return void
+     */
+    public function forceUnlock()
+    {
+        $this->lockedModel->setIsQueueLocked(LockModel::SCHEDULE_FLAG, false);
+    }
+
+    /**
+     * Generate and process queue
+     *
+     * @return void
+     * @throws LockException
+     */
+    public function schedule()
+    {
+        //$this->lock();
+        $utcTimezone = new \DateTimeZone('UTC');
+        $now = new \DateTime("now", $utcTimezone);
+        $expireDate = clone $now;
+        $days = (int)$this->config->getReminderDayOffset();
+        $nowString = $now->format('Y-m-d H:i:s');
+        $expireDate = $expireDate->modify($days <= 1 ? '+ 1 day' : "+ $days days");
+        /**
+         * @var $collection \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant\Collection
+         */
+        $collection = $this->collectionFactory->create();
+        $collection
+            ->addFieldToFilter('expire_reminder_date', ['lt' => $nowString])
+            ->addFieldToFilter('total_unread_messages', ['gt' => 0])
+            ->addFieldToFilter('mail_sent', 0);
+        $select = $collection->getSelect();
+        // only remind schedule for seller
+        $select->join('marketplace_chat_profile_info',
+            'main_table.profile_id = marketplace_chat_profile_info.entity_id',
+            []
+        )->where('marketplace_chat_profile_info.registered_as = ? ', ChatRole::SELLER);
+        /**
+         * @var $item ChatParticipant
+         */
+        foreach ($collection as $item) {
+            try {
+                /**
+                 *
+                 */
+                $lastExpireDate = $this->generateSchedule(
+                    $item->getData('entity_id'),
+                    $expireDate,
+                    $now
+                );
+                $this->updateExpireReminderDate(
+                    $item->getData('entity_id'),
+                    $lastExpireDate->format('Y-m-d H:i:s')
+                );
+            } catch (\Exception $e) {
+                $this->logger->critical($e->getMessage());
+            }
+        }
+        $this->unlock();
+    }
+
+    /**
+     * @param $id
+     * @param $nextExpiredDate
+     * @return void
+     */
+    private function updateExpireReminderDate($id, $nextExpiredDate)
+    {
+        $this->resourceConnection->getConnection()
+            ->update(
+                'marketplace_chat_participant',
+                ['expire_reminder_date' => $nextExpiredDate],
+                ['entity_id = ?' => $id],
+            );
+    }
+
+    /**
+     * @param $chatParticipantId
+     * @param \DateTime $expireDate
+     * @param \DateTime $currentUtcDate
+     * @return \DateTime|mixed
+     * @throws \DateMalformedStringException
+     */
+    private function generateSchedule($chatParticipantId, \DateTime $expireDate, \DateTime $currentUtcDate)
+    {
+        $timeInterval = $this->config->getReminderFrequency();//in minutes
+        $maxItem = $this->config->getMaxSendMailNotificationRetry();
+        $count = 0;
+        $data = [];
+        while (true) {
+            $nextReminderDate = clone $currentUtcDate;
+            $nextReminderDate->modify(
+                $timeInterval <= 1 ? "+1 minute" :
+                    "+$timeInterval minutes"
+            );
+            if ($nextReminderDate > $expireDate || $count >= $maxItem) {
+                break;
+            }
+            $data[] = [
+                'participant_id' => $chatParticipantId,
+                'scheduled_at' => $nextReminderDate->format('Y-m-d-H:i:s'),
+                'status' => Queue::STATUS_PENDING
+            ];
+            $currentUtcDate = $nextReminderDate;
+            $count++;
+        }
+        if ($data) {
+            $this->resourceConnection->getConnection()
+                ->insertOnDuplicate(
+                    'marketplace_chat_message_notify_msg_schedule',
+                    $data,
+                    ['participant_id', 'scheduled_at']
+                );
+        }
+        return $currentUtcDate;
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\ProductExportRabbitMQ\Plugin\JustBetter\ProductGridExport\Controller\Adminhtml\Export\ProductExport">
+        <arguments>
+            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="JustBetter\ProductGridExport\Controller\Adminhtml\Export\ProductExport">
+        <plugin name="Branch8_ProductExportRabbitMQ::downloadProductFile"
+                type="Branch8\ProductExportRabbitMQ\Plugin\JustBetter\ProductGridExport\Controller\Adminhtml\Export\ProductExport"
+                sortOrder="1" disabled="false" />
+    </type>
+</config>

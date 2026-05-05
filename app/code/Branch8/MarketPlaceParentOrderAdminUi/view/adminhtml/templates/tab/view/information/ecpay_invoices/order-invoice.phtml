@@ -1,0 +1,69 @@
+<?php
+/**
+ * @var $block \Ecpay\Invoice\Block\Adminhtml\Order\OrderInvoice
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Branch8\MarketPlaceParentOrderAdminUi\ViewModel\EcpayInvoiceConfigBuilder $viewModel
+ */
+$viewModel = $block->getParentBlock()->getViewModel();
+?>
+
+<section class="admin__page-section-item order-payment-method"
+         data-role="ec-invoice-<?= $block->getOrder()->getIncrementId() ?>"
+
+>
+    <div id="ec_invoice_<?= $block->getOrder()->getIncrementId() ?>"
+         data-bind="mageInit: {'ecInvoiceAjax': {}}"
+    >
+        <div class="invoice-msg" data-role="invoice-msg" style="display: none;">
+            <span class="msg" data-role="invoice-msg-content"></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item">
+                <div class="admin__page-section-item-title">
+                <span class="title"><?= __(' #%1', $block->getOrder()->getIncrementId()); ?>
+                </span> <!--發票資訊-->
+                </div>
+                <div class="admin__page-section-item-content invoice-info">
+                    <label><?= __('Invoice Number：'); ?></label> <!--發票號碼-->
+                    <span data-role="invoice_no"></span>
+                    <br>
+                    <label><?= __('Invoice Issuance Time：'); ?></label> <!--開立時間-->
+                    <span data-role="invoice_date"></span>
+                    <br>
+                    <label><?= __('Random Number：'); ?></label> <!--隨機碼-->
+                    <span data-role="invoice_random_num"></span>
+                    <br>
+                    <label><?= __('Invoice Mode：'); ?></label> <!--發票開立-->
+                    <span data-role="invoice_type"></span>
+                    <br>
+
+                    <div data-role="invoice_info">
+                        <label><?= __('Invoice Info Type：'); ?></label> <!--開立方式-->
+                        <span data-role="invoice_issue_type"></span>
+                        <br>
+                        <label><?= __('Transaction Number：'); ?></label> <!--交易單號-->
+                        <span data-role="invoice_od_sob"></span>
+                        <br>
+                        <div data-role="invoice_codes">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<?php
+$id = '#' . 'ec_invoice_' . $block->getOrder()->getIncrementId();
+$config = $viewModel->setOrder($block->getOrder())->getConfig();
+$config['baseUrl'] = $block->getBaseUrl();
+$config = json_encode($config);
+$scriptString = <<<script
+        require(['jquery','ecInvoiceAjax'], function($,ecInvoiceAjax){
+            $('$id').ecInvoiceAjax($config)
+        });
+script;
+?>
+<?= /* @noEscape */
+$secureRenderer->renderTag('script', [], $scriptString, false) ?>

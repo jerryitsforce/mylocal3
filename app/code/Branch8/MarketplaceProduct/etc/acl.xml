@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Branch8_MarketplaceProduct::marketplacectrl" title="Approval Management" sortOrder="10" >
+                    <resource id="Branch8_MarketplaceProduct::product" title="Product Approval Management" sortOrder="20" >
+                        <resource id="Branch8_MarketplaceProduct::product_approval" title="Product Approval" sortOrder="30">
+                            <resource id="Branch8_MarketplaceProduct::dealer_approve" title="Dealer Approve" sortOrder="40"/>
+                            <resource id="Branch8_MarketplaceProduct::approve" title="Final Approve" sortOrder="40"/>
+                            <resource id="Branch8_MarketplaceProduct::dealer_disapprove" title="Dealer Disapprove" sortOrder="50"/>
+                            <resource id="Branch8_MarketplaceProduct::disapprove" title="Final Disapprove" sortOrder="60"/>
+                            <resource id="Branch8_MarketplaceProduct::manager_product_approval" title="Manager Approve" sortOrder="60"/>
+                        </resource>
+                        <resource id="Branch8_MarketplaceProduct::marketplace_product_version" title="Marketplace product version" sortOrder="60">
+                            <resource id="Branch8_MarketplaceProduct::marketplace_product_version_view" title="View" sortOrder="70"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

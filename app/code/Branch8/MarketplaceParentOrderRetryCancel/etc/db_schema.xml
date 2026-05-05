@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_parent_order_failed_record" resource="default" engine="innodb"
+           comment="This Table is using re-try cancel when parent order failed">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="status"
+                nullable="true" length="24" default="pending" comment="pending|processing|done"/>
+        <column xsi:type="varchar" name="old_parent_order_id"
+                nullable="true" length="50" comment="Increment ID"/>
+        <column xsi:type="text" name="sub_order_ids" nullable="true" comment="Sub Order IDs"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="int" name="master_quote_id" unsigned="true" nullable="true" identity="false"
+                comment="Use For tracking"/>
+        <column xsi:type="int" name="new_parent_order_id" unsigned="true" nullable="true"
+                comment="New Parent Order ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

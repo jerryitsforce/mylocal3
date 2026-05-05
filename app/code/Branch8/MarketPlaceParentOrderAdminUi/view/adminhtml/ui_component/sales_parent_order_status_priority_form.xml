@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">
+                sales_parent_order_status_priority_form.sales_parent_order_status_priority_form_data_source
+            </item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Page Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\StatusPrirority\Buttons\SaveButton"/>
+        </buttons>
+        <namespace>sales_parent_order_status_priority_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>sales_parent_order_status_priority_form.sales_parent_order_status_priority_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="sales_parent_order_status_priority_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="*/*/SaveStatusPriority"/>
+        </settings>
+        <dataProvider class="Branch8\MarketPlaceParentOrderAdminUi\Model\StatusPriority\DataProvider"
+                      name="sales_parent_order_status_priority_form_data_source">
+            <settings/>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label>All Statuses</label>
+        </settings>
+        <field name="note" formElement="input" sortOrder="10">
+            <settings>
+                <notice translate="true">Parent Order status is determined by LOWEST priority from all sub orders</notice>
+               <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true"/>
+                <imports>
+                    <link name="value">${ $.provider }:data.customer.firstname</link>
+                </imports>
+            </settings>
+        </field>
+        <dynamicRows name="records" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="map" xsi:type="array">
+                        <item name="status" xsi:type="string">status</item>
+                       <!-- <item name="name" xsi:type="string">name</item>-->
+                    </item>
+                    <item name="identificationDRProperty" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">(Drag and drop item to change priority)</label>
+                <defaultRecord>false</defaultRecord>
+                <addButton>false</addButton>
+                <deleteProperty>true</deleteProperty>
+                <recordTemplate>record</recordTemplate>
+                <identificationProperty>entity_id</identificationProperty>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">true</param>
+                    <param name="template" xsi:type="string">ui/dynamic-rows/cells/dnd</param>
+                </dndConfig>
+                <columnsHeader>true</columnsHeader>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                        <item name="dataScope" xsi:type="string" />
+                        <item name="positionProvider" xsi:type="string">priority</item>
+                    </item>
+                </argument>
+                <field name="status" formElement="input" sortOrder="10">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>status</dataScope>
+                        <label translate="true">Status</label>
+                        <labelVisible>false</labelVisible>
+                    </settings>
+                </field>
+                <field name="priority" formElement="input" sortOrder="30">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>number</dataType>
+                        <dataScope>priority</dataScope>
+                        <label translate="true">Priority</label>
+                        <labelVisible>false</labelVisible>
+                        <visible>true</visible>
+                    </settings>
+                </field>
+            </container>
+        </dynamicRows>
+    </fieldset>
+</form>

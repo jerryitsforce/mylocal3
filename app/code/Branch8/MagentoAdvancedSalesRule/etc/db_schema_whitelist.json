@@ -1,0 +1,14 @@
+{
+    "magento_salesrule_filter": {
+        "column": {
+            "filter_skus": true,
+            "filter_text_hash": true
+        },
+        "index": {
+            "MAGENTO_SALESRULE_FILTER_FILTER_SKUS": true,
+            "MAGENTO_SALESRULE_FILTER_FILTER_TEXT_HASH_RULE_ID_GROUP_ID": true,
+            "MAGENTO_SALESRULE_FILTER_FILTER_TEXT_RULE_ID_GROUP_ID": true,
+            "MAGENTO_SALESRULE_FILTER_FILTER_TEXT_RULE_ID_GROUP_ID": false
+        }
+    }
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="member" frontName="member">
+            <module name="Branch8_Customer"/>
+        </route>
+        <route id="customer_test" frontName="customer-test">
+            <module name="Branch8_Customer"/>
+        </route>
+    </router>
+</config>

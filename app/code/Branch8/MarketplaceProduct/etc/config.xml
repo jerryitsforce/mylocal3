@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<marketplace>
+            <branch8_product_popup>
+                <check_price_change>1</check_price_change>
+            </branch8_product_popup>
+			<branch8_product_approval>
+                <exclude_attributes>{"_1702813268023_23":{"value":"quantity_and_stock_status"}}</exclude_attributes>
+                <version_lifetime>180</version_lifetime>
+			</branch8_product_approval>
+            <branch8_dealer_approval>
+                <enable>1</enable>
+                <template>marketplace_branch8_dealer_approval_template</template>
+                <file_prefix>PRODUCT_APPROVAL</file_prefix>
+            </branch8_dealer_approval>
+		</marketplace>
+        <branch8_catalog>
+            <product_approval_setting>
+                <hide_variation_cost>1</hide_variation_cost>
+                <hide_variation_price>1</hide_variation_price>
+            </product_approval_setting>
+        </branch8_catalog>
+	</default>
+</config>

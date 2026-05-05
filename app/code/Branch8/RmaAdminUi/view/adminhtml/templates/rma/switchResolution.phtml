@@ -1,0 +1,83 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+<?php
+$statusResolver = $block->getStatusModel() ? $block->getStatusModel() : \Magento\Framework\App\ObjectManager::getInstance()->get(
+    \Branch8\Sales\ViewModel\StatusResolver::class
+);
+$rmaModel = $block->getData('rma_model');
+$resolutionOptions = $rmaModel->getResolutionOptions();
+$rmaDetails = $rmaModel->getRmaDetails();
+$resolutionType = (int)$rmaDetails->getResolutionType();
+$resolution = $rmaModel->getHelper()->getResolutionTypeTitle($resolutionType);
+$canAdjustShippingStatus = $statusResolver->canAdjustShippingStatus();
+?>
+
+<div class="wk-row action">
+    <span><?= $escaper->escapeHtml(__("Resolution Type")); ?> :</span>
+    <?php if ($canAdjustShippingStatus): ?>
+    <a href="javascript:void(0)" data-role="trigger-show-resolution-popup">
+        <?php endif ?>
+        <?= $escaper->escapeHtml($resolution); ?>
+        <span class="icon-edit edit" aria-hidden="true"></span>
+        <?php if ($canAdjustShippingStatus): ?>
+    </a>
+<?php endif ?>
+</div>
+
+<?php
+$data = [
+    'rmaId' => $rmaModel->getHelper()->encrypt($rmaDetails->getId()),
+    'submitUrl' => $rmaModel->getChangResolutionTypeUrl(),
+    'currentResolutionType' => $resolutionType,
+    'form_key' => $rmaModel->getFormKey(),
+];
+?>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "Branch8_Rma/js/SwitchResolution": <?= $rmaModel->jsonEncode($data) ?>
+    }
+}
+</script>
+<?php if ($canAdjustShippingStatus): ?>
+    <div data-role="resolution-modal-wrapper" style="display: none">
+        <fieldset class="fieldset admin__fieldset " id="base_fieldset">
+            <div class="admin__field field field-entity  with-addon admin__field field field-entity">
+                <label class="label admin__field-label"
+                       for="resolution_<?= \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_RETURN_REFUND ?>">
+                    <span><?= __('Return') ?></span>
+                </label>
+                <div class="admin__field-control control">
+                    <div class="admin__field">
+                        <input type="radio" name="resolutiontype[]"
+                               id="resolution_<?= \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_RETURN_REFUND ?>"
+                               value="<?= \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_RETURN_REFUND ?>"
+                               <?php if ($resolutionType === \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_RETURN_REFUND): ?>checked<?php endif; ?>
+                               aria-required="true">
+                    </div>
+                </div>
+            </div>
+            <div class="admin__field field field-entity  with-addon admin__field field field-entity">
+                <label class="label admin__field-label"
+                       for="resolution_<?= \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_EXCHANGE ?>">
+                    <span><?= __('Replace') ?></span>
+                </label>
+                <div class="admin__field-control control">
+                    <div class="admin__field">
+                        <input type="radio" name="resolutiontype[]"
+                               id="resolution_<?= \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_EXCHANGE ?>"
+                               value="<?= \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_EXCHANGE ?>"
+                               <?php if ($resolutionType === \Branch8\Rma\Model\Rma\Resolution::RESOLUTION_TYPE_EXCHANGE): ?>checked<?php endif; ?>
+                               aria-required="true">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+<?php endif ?>

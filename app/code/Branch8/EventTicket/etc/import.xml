@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_ImportExport:etc/import.xsd">
+<!--    <entity name="mapping_one_id_serial" label="Customer Mapping Ticket Serial"-->
+<!--            model="Branch8\EventTicket\Model\Import\Entity\CustomerSerial"-->
+<!--            behaviorModel="Branch8\EventTicket\Model\Source\Import\Behavior\CustomerSerial" />-->
+</config>

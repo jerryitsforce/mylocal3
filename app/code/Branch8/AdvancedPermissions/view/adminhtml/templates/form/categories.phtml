@@ -1,0 +1,79 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */ /** @var \Branch8\AdvancedPermissions\Block\Adminhtml\Role\Tab\Categories $block */ ?>
+<div id="role_info_tabs_amrolepermissions.categories_content" style=""
+     data-ui-id="adminhtml-user-editroles-tab-content-amrolepermissions-categories"
+     aria-labelledby="role_info_tabs_amrolepermissions.categories"
+     class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+     aria-expanded="true" aria-hidden="false">
+    <div class="entry-edit form-inline">
+        <fieldset class="fieldset admin__fieldset "
+                  id="rule_amrolepermissions_categories_fieldset">
+            <legend class="admin__legend legend">
+                <span><?= $block->escapeHtml(__('Category Access')) ?></span>
+            </legend>
+            <br>
+            <div class="messages">
+            </div>
+            <?= $block->getForm()->getElement('category_access_mode')->toHtml() ?>
+            <div>
+                <div>
+
+                    <label class="addafter" for="rule_allowed_categories">
+                        <div id="allowed-category-select" class="admin__field" data-bind="scope:'allowCategory'" data-index="index">
+                            <!-- ko foreach: elems() -->
+                            <input id="rule_categories" data-bind="value: value" name="amrolepermissions[categories]" data-ui-id="adminhtml-user-tab-amrolepermissions-categories-fieldset-element-hidden-amrolepermissions-categories" type="hidden" />
+                            <!-- ko template: elementTmpl --><!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <?= $block->getChildHtml('form_after') ?>
+</div>
+
+<script>
+    require(["jquery"], function($){
+        window.amrolepermissions_js_object = {updateElement: $("#rule_categories")[0]};
+    });
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "allowCategory": {
+                        "component": "uiComponent",
+                        "children": {
+                            "select_category": {
+                                "component": "Branch8_SellerContactInformation/js/components/new-category",
+                                "config": {
+                                    "filterOptions": true,
+                                    "disableLabel": true,
+                                    "chipsEnabled": true,
+                                    "levelsVisibility": "1",
+                                    "elementTmpl": "ui/grid/filters/elements/ui-select",
+                                    "options": <?= json_encode($block->getCategoriesTree()) ?>,
+                                    "value": <?= json_encode($block->escapeHtml($block->getSelectedCategories())); ?>,
+                                    "listens": {
+                                        "index=create_category:responseData": "setParsed",
+                                        "newOption": "toggleOptionSelected"
+                                    },
+                                    "config": {
+                                        "dataScope": "select_category",
+                                        "sortOrder": 10
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <dataSource name="marketplace_product_attributes_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\MarketplaceStaging\Ui\DataProvider\Product\Attributes</argument>
+            <argument name="name" xsi:type="string">marketplace_product_attributes_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">attribute_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_MarketplaceStaging/js/grid/provider</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">attribute_id</item>
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="update_url" xsi:type="url" path="marketplace/mui_index/render"/>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+</listing>

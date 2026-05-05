@@ -1,0 +1,45 @@
+<?php
+/** @var \HotaiConnected\Account\Block\Login\Success $block */
+?>
+
+<div class="hotaiconnected-account-content">
+    <?php
+    $cmsBlocks = [
+        'point_banner' => __('Point Banner'),
+        'guess_you_might_like_section' => __('Guess You Might Like'),
+        'top_selling_items_section' => __('Top Selling Items'),
+        'popular_topic_category_recommendations' => __('Popular Topics'),
+        'manufacturer-exclusive-section' => __('Manufacturer Exclusive Section'),
+        'register_login_hotaipay_content_bottom' => __('HotaiPay Content'),
+    ];
+
+    $received_points = $block->getReceivedPoints();
+    $received_points_time = $block->getReceivedPointsTime();
+    $points = $block->getHotaiPoint();
+    if($points < 0) {
+        $points = '--';
+    }
+    $nearest_expire_point_text = $block->getNearestExpirePoint();
+
+    foreach ($cmsBlocks as $identifier => $title): ?>
+        <div class="content-section <?= $block->escapeHtmlAttr($identifier) ?>">
+            <?php
+            $contentBlock = $block->getLayout()->createBlock(
+                'Magento\Cms\Block\Block'
+            )->setBlockId($identifier);
+
+            if ($contentBlock) {
+                $html = $contentBlock->toHtml();
+                $html = str_replace(
+                    ['received_points_var', 'received_points_time_var', 'points_var', 'nearest_expire_point_text_var'],
+                    [$received_points, $received_points_time, $points, $nearest_expire_point_text],
+                    $html
+                );
+                echo $html;
+            } ?>
+        </div>
+
+    <?php endforeach;
+
+    ?>
+</div>

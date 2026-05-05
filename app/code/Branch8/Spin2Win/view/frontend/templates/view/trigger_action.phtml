@@ -1,0 +1,40 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+?>
+<div data-bind="scope: 'spin2win_trigger'" class="spin-trigger-wrapper">
+    <div class="spin-trigger-action" data-bind="visible: isTriggerBtnVisible()? true : false">
+        <div class="spin-trigger-action__close-btn">
+            <button class="action spin-trigger-action__close-icon" data-bind="click: close">
+                <span data-bind="i18n: 'Close'"></span>
+            </button>
+        </div>
+        <div class="spin-trigger-action__content">
+            <button class="action spin-trigger-action__submit" id="spin-trigger-btn" data-bind="click: spin">
+                <!-- ko if: imgUrl -->
+                <img data-bind="attr: { src: imgUrl, alt: title }" class="spin-trigger-action__image" />
+                <!-- /ko -->
+                <!-- ko ifnot: imgUrl -->
+                <span  data-bind="text: title"></span>
+                <!-- /ko -->
+            </button>
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "spin2win_trigger": {
+                    "component": "Branch8_Spin2Win/js/view/spin2winTriggerAction",
+                    "config": {
+                        "spinId": "<?= $block->getCurrentSpinId() ?>"
+                    }
+                }
+            }
+        }
+    }
+}
+</script>

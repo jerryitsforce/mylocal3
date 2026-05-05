@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="ticket_event" resource="default" engine="innodb" comment="Ticket Event table">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+        <column xsi:type="int" name="is_enable" nullable="false" default="0" comment="是否啟用" />
+        <column xsi:type="varchar" name="name" nullable="false" comment="活動名稱" />
+        <column xsi:type="text" name="image_url" nullable="false" comment="Event Image" />
+        <column xsi:type="int" name="seller_id" nullable="false"  />
+        <column xsi:type="int" name="display_type" nullable="false"  />
+        <column xsi:type="int" name="barcode_type" nullable="true"  />
+        <column xsi:type="varchar" name="ticket_type" nullable="false"  />
+        <column xsi:type="int" name="amount" nullable="false" />
+        <column xsi:type="text" name="description" nullable="true" />
+        <column xsi:type="int" name="is_offline_operation" nullable="true" default="0" />
+        <column xsi:type="varchar" name="exchange_url" nullable="true" default="" />
+        <column xsi:type="varchar" name="exchange_hint" nullable="true" default="" />
+        <column xsi:type="int" name="display_serial_number" nullable="true" default="1" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" />
+        <column xsi:type="timestamp" name="updated_at" nullable="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <index referenceId="TICKET_EVENT_STATUS_INDEX" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_TYPE_INDEX" indexType="btree">
+            <column name="ticket_type"/>
+        </index>
+    </table>
+    <table name="ticket_event_ticket" resource="default" engine="innodb" comment="Ticket table">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+        <column xsi:type="int" name="event_id" unsigned="true" nullable="false" comment="活動id" />
+        <column xsi:type="varchar" name="batch_code" nullable="false" comment="票券貨號"/>
+        <column xsi:type="timestamp" name="start_date" nullable="true" />
+        <column xsi:type="timestamp" name="end_date" nullable="true" />
+        <column xsi:type="varchar" name="serial_number" nullable="false" comment="票券序號" />
+        <column xsi:type="timestamp" name="redeemed_at" nullable="true" comment="核銷日期"/>
+        <column xsi:type="int" name="status" unsigned="false" nullable="false" comment="使用狀態" />
+        <column xsi:type="varchar" name="used_transaction_no" nullable="true" comment="使用訂單序號"/>
+        <column xsi:type="varchar" name="used_store_no" nullable="true" comment="使用商店代號"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="TICKET_EVENT_TICKET_EVENT_ID"
+                    table="ticket_event_ticket" column="event_id" referenceTable="ticket_event"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="TICKET_EVENT_TICKET_SERIAL_NUMBER_INDEX" indexType="btree">
+            <column name="serial_number"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_BATCH_CODE_INDEX" indexType="btree">
+            <column name="batch_code"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_EVENT_ID_INDEX" indexType="btree">
+            <column name="event_id"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_STATUS_INDEX" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_START_DATE_INDEX" indexType="btree">
+            <column name="start_date"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_END_DATE_INDEX" indexType="btree">
+            <column name="end_date"/>
+        </index>
+    </table>
+    <table name="ticket_event_ticket_customer" resource="default" engine="innodb" comment="Ticket Customer table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+        <column xsi:type="varchar" name="one_id" nullable="false" comment="one_id"/>
+        <column xsi:type="int" name="ticket_id"  unsigned="true" nullable="false" comment=""/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" comment=""/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id" />
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="TICKET_EVENT_TICKET_CUSTOMER_TICKET_ID"
+                    table="ticket_event_ticket_customer" column="ticket_id" referenceTable="ticket_event_ticket"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="TICKET_EVENT_TICKET_CUSTOMER_UNIQUE_ONE_ID_TICKET">
+            <column name="one_id"/>
+            <column name="ticket_id"/>
+        </constraint>
+        <index referenceId="TICKET_EVENT_TICKET_CUSTOMER_ONE_ID_INDEX" indexType="btree">
+            <column name="one_id"/>
+        </index>
+    </table>
+    <table name="ticket_event_ticket_log" resource="default" engine="innodb" comment="Log serial transactions">
+        <column xsi:type="int" name="log_id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+        <column xsi:type="varchar" name="serial_number_id" nullable="false" comment="" />
+        <column xsi:type="varchar" name="serial_number" nullable="false" comment="" />
+        <column xsi:type="varchar" name="ticket_type" nullable="false" comment="Brand of ticket" />
+        <column xsi:type="varchar" name="action_type" nullable="false" comment="check/use/cancel..." />
+        <column xsi:type="text" name="details" nullable="false" comment="API data"  />
+        <column xsi:type="varchar" name="ip" nullable="false"  />
+        <column xsi:type="timestamp" name="created_at" nullable="true" comment=""/>
+        <column xsi:type="timestamp" name="updated_at" nullable="true" comment=""/>
+        <column xsi:type="text" name="response" nullable="true" comment="Response data"  />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id" />
+        </constraint>
+        <index referenceId="TICKET_EVENT_TICKET_LOG_SERIAL_NUMBER_INDEX" indexType="btree">
+            <column name="serial_number"/>
+        </index>
+        <index referenceId="TICKET_EVENT_TICKET_LOG_SERIAL_NUMBER_ID_INDEX" indexType="btree">
+            <column name="serial_number_id"/>
+        </index>
+    </table>
+    <table name="customer_ticket">
+        <column xsi:type="varchar" name="member_seq" nullable="true"/>
+        <column xsi:type="datetime" name="redeemed_at" nullable="true" comment=""/>
+        <index referenceId="CUSTOMER_TICKET_MEMBER_SEQ_INDEX" indexType="btree">
+            <column name="member_seq"/>
+        </index>
+    </table>
+
+    <table name="ticket_import_mapping_queue" resource="default" engine="innodb" comment="Ticket import queue">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="varchar" name="queue_id" nullable="false" />
+        <column xsi:type="varchar" name="member_seq" nullable="false"/>
+        <column xsi:type="varchar" name="serial_number" nullable="false" />
+        <column xsi:type="int" name="record_id" nullable="false"  />
+        <column xsi:type="timestamp" name="created_at"/>
+        <column xsi:type="int" name="pool_id" nullable="false"  />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+    </table>
+    <table name="ticket_import_mapping_log" resource="default" engine="innodb" comment="Ticket import log">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="pool_id" nullable="false"  />
+        <column xsi:type="text" name="content" nullable="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <index referenceId="TICKET_MAPPING_LOG_POOL_ID" indexType="btree">
+            <column name="pool_id"/>
+        </index>
+    </table>
+</schema>

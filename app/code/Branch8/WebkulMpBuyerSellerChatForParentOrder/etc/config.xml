@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <buyer_seller_chat>
+            <general_settings>
+                <enable>1</enable>
+            </general_settings>
+            <parent_order>
+                <contact_links>
+                    <hide_for_order_statues>0</hide_for_order_statues>
+                </contact_links>
+                <enable>1</enable>
+            </parent_order>
+        </buyer_seller_chat>
+
+    </default>
+</config>

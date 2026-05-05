@@ -1,0 +1,106 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Your %store_name order confirmation" store_name=$store.frontend_name}} @-->
+<!--@vars {
+"var formattedBillingAddress|raw":"Billing Address",
+"var order_data.email_customer_note|escape|nl2br":"Email Order Note",
+"var order.increment_id":"Order Id",
+"layout handle=\"sales_email_order_items\" order=$order area=\"frontend\"":"Order Items Grid",
+"var payment_html|raw":"Payment Details",
+"var formattedShippingAddress|raw":"Shipping Address",
+"var order.shipping_description":"Shipping Description",
+"var shipping_msg":"Shipping message",
+"var created_at_formatted":"Order Created At (datetime)",
+"var store.frontend_name":"Store Frontend Name",
+"var store_phone":"Store Phone",
+"var store_email":"Store Email",
+"var store_hours":"Store Hours",
+"var this.getUrl($store,'customer/account/',[_nosid:1])":"Customer Account URL",
+"var order_data.is_not_virtual":"Order Type",
+"var order":"Order",
+"var order_id": "Order DB Id",
+"var order_data.customer_name":"Customer Name"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>{{trans "訂單成立通知信"}}</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {{trans "親愛的%customer_name您好，<br/>謝謝您購買%store_name的商品，並已付款成功。" customer_name=$order_data.customer_name store_name=$store.frontend_name |raw}}
+<p>
+
+<table cellpadding="0" cellspacing="0" class="order-info new-order">
+    <thead>
+    <tr>
+        <th>{{trans "訂單明細" }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">{{trans "訂單編號" }}</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var order_data.url_history}}">{{var increment_id}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">{{trans "訂單日期" }}</td>
+                    <td class="value">{{var order_data.created_at}}</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">{{trans "商品總額" }}</td>
+                    <td class="value">{{var order_data.subtotal|raw}}</td>
+                </tr>
+                {{depend order_data.is_point}}
+                <tr class="order_point-discount">
+                    <td class="label">{{trans "點數折抵" }}</td>
+                    <td class="value">{{var order_data.point_discount|raw}}</td>
+                </tr>
+                {{/depend}}
+                {{depend detail.shipping_method}}
+                <tr class="order_shipping-fee">
+                    <td class="label">{{trans "運費" }}</td>
+                    <td class="value">{{var order_data.shipping_amount|raw}}</td>
+                </tr>
+                {{/depend}}
+                <tr class="order_grand-total">
+                    <td class="label">{{trans "實付金額" }}</td>
+                    <td class="value">{{var order_data.grandTotal|raw}}</td>
+                </tr>
+                {{depend detail.shipping_method}}
+                <tr class="order_shipping-method">
+                    <td class="label">{{trans "物流方式" }}</td>
+                    <td class="value">{{var detail.shipping_description}}</td>
+                </tr>
+                {{/depend}}
+                <tr class="order_items">
+                    <td class="label">{{trans "訂購商品" }}</td>
+                    <td class="value">
+                        {{layout handle="sales_email_parent_order_items" parent_order_id=$parent_order_id area="frontend"}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    {{trans '請至 帳號管理 > <a  class="link-primary" target="_blank" href='%order_history_url'>訂單查詢</a> 瀏覽完整訂單內容。' order_history_url=$order_data.url_history |raw}}
+</p>
+
+{{template config_path="design/email/footer_template"}}

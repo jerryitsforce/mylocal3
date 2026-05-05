@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="logistics_settings" resource="default" engine="innodb" comment="Logistics Settings Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="varchar" name="logistics_company_id" nullable="false" length="50" comment="Logistics Company ID"/>
+        <column xsi:type="varchar" name="logistics_company_name" nullable="false" length="255" comment="Logistics Company Name"/>
+        <column xsi:type="varchar" name="auth_type" nullable="false" length="50" comment="Authentication Type (account/token/api_key)"/>
+        <column xsi:type="text" name="auth_data" nullable="true" comment="Authentication Data (JSON)"/>
+        <column xsi:type="smallint" name="is_active" unsigned="true" nullable="false" default="1" comment="Is Active"/>
+        <column xsi:type="int" name="pickup_count" unsigned="true" nullable="false" default="0" comment="Pickup Count"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        
+        <constraint xsi:type="unique" referenceId="LOGISTICS_SETTINGS_SELLER_COMPANY">
+            <column name="seller_id"/>
+            <column name="logistics_company_id"/>
+        </constraint>
+        
+        <index referenceId="LOGISTICS_SETTINGS_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        
+        <index referenceId="LOGISTICS_SETTINGS_COMPANY_ID" indexType="btree">
+            <column name="logistics_company_id"/>
+        </index>
+        
+        <index referenceId="LOGISTICS_SETTINGS_IS_ACTIVE" indexType="btree">
+            <column name="is_active"/>
+        </index>
+    </table>
+
+    <table name="logistics_waybill" resource="default" engine="innodb" comment="Logistics Waybill Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="false" comment="Sales Order Item ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="Seller ID"/>
+        <column xsi:type="varchar" name="logistics_company_id" nullable="false" length="50" comment="Logistics Company ID"/>
+        <column xsi:type="int" name="logistics_settings_id" unsigned="true" nullable="true" comment="Logistics Settings ID"/>
+        <column xsi:type="varchar" name="waybill_number" nullable="true" length="100" comment="Waybill Number"/>
+        <column xsi:type="varchar" name="tracking_number" nullable="true" length="100" comment="Tracking Number"/>
+        <column xsi:type="text" name="image" nullable="true" comment="Label Image"/>
+        <column xsi:type="text" name="status" nullable="false" comment="Status (JSON)"/>
+        <column xsi:type="text" name="memo" nullable="true" comment="Original Data Memo"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+
+        <constraint xsi:type="unique" referenceId="LOGISTICS_WAYBILL_NUMBER">
+            <column name="waybill_number"/>
+        </constraint>
+
+        <index referenceId="LOGISTICS_WAYBILL_ORDER_ITEM_ID" indexType="btree">
+            <column name="sales_order_item_id"/>
+        </index>
+
+        <index referenceId="LOGISTICS_WAYBILL_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+
+        <index referenceId="LOGISTICS_WAYBILL_COMPANY_ID" indexType="btree">
+            <column name="logistics_company_id"/>
+        </index>
+
+        <index referenceId="LOGISTICS_WAYBILL_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+</schema> 

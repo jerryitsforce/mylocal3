@@ -1,0 +1,28 @@
+<!-- ko template: listTemplate --><!-- /ko -->
+<!--ko if: !configurations.hideTotalThreads && totalThreads() > 10 -->
+<div class="thread-toolbar">
+    <a class="ask-question" data-bind="attr: {href: viewFullThreadUrl}"><!-- ko i18n: '查看全部留言 (10)'--><!-- /ko --></a>
+</div>
+<!-- /ko -->
+<!-- ko ifnot: hasItems -->
+    <!-- ko ifnot: loading -->
+    <div class="prd-no-discussion">
+        <p><!-- ko i18n: '目前還沒有問與答喔！'--><!-- /ko --></p>
+    </div>
+    <!-- /ko -->
+<!-- /ko -->
+<div class="prd-ask-question-wrapper">
+    <!-- ko foreach: getRegion('askQuestionComponent') -->
+       <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+    <!-- ko foreach: getRegion('threadsComponent.askQuestionComponent') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+<!-- ko if:configurations.showPaging -->
+<div class="thread-pager">
+    <!-- ko foreach: getRegion('threadsComponent.paging') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+<!-- /ko -->

@@ -1,0 +1,26 @@
+<?php
+use Branch8\Blog\Block\Post\Listpost;
+/**
+ * @var Listpost $block
+ */
+?>
+<div class="blog-list-header">
+    <?php $bannerGeneral =  $block->escapeUrl($block->getBlogHelper()->getDisplayConfig('image')); ?>
+    <?php $blogContent =  $block->getBlogHelper()->getDisplayConfig('content'); ?>
+    <div class="blog-list-info">
+        <div class="blog-list-content">
+            <?= $block->getChildHtml('') ?>
+            <div class="blog-list-desc">
+                <?= $block->getPageFilter($blogContent); ?>
+            </div>
+        </div>
+
+    </div>
+    <style>
+        .blog-list-info{
+            background-image: url(<?= $block->resizeImage($bannerGeneral, '', ''); ?>);
+            background-size: <?= $block->escapeHtml($block->getBlogHelper()->getDisplayConfig('background_size')); ?>;
+            background-position: <?= $block->escapeHtml($block->getBlogHelper()->getDisplayConfig('background_position')); ?>;
+        }
+    </style>
+</div>

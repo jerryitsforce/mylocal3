@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $viewModel \Branch8\WebkulMpBuyerSellerChatForParentOrder\ViewModel\ChatConfig
+ * @var $escaper \Magento\Framework\Escaper
+ */
+$viewModel = $block->getViewModel();
+$item = $block->getParentBlock()->getItem();
+$order = $viewModel->getOrder($block->getRequest()->getParam('id'));
+$json = $viewModel->getChatData($order, $item);
+if (!$item || !$order || !$viewModel->canShow($order) || !$json) {
+    return '';
+}
+?>
+<button onclick="javascript:void(0)"
+   data-chat='<?= $escaper->escapeHtmlAttr($json) ?>'
+   class="action trigger-load-chat"
+   data-role="chat-with-seller"
+   style="display: none"
+>
+    <span class="button-text"><?= $escaper->escapeHtml(__('Chat')) ?></span>
+</button>
+

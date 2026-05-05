@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="wishlist" xsi:type="string">Branch8\WishlistStockAlert\CustomerData\Wishlist</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist">
+        <plugin name="Branch8_WishlistStockAlert::addToWishListPlugin"
+                type="Branch8\WishlistStockAlert\Plugin\Magento\Wishlist\Block\Catalog\Product\View\AddTo\WishlistPlugin"
+                sortOrder="10"/>
+    </type>
+</config>

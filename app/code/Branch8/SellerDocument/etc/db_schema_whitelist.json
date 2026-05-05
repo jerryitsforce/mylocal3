@@ -1,0 +1,25 @@
+{
+    "branch8_sellerdocument_file": {
+        "column": {
+            "file_id": true,
+            "seller_id": true,
+            "personal_data_destruction_affidavit": true,
+            "personal_data_destruction_certificate": true,
+            "file_name": true,
+            "file_path": true,
+            "file_type": true,
+            "uploaded_at": true,
+            "personal_data_destruction_period": true,
+            "account_make_change": true,
+            "status": true,
+            "comment": true,
+            "expired_time": true
+        },
+        "index": {
+            "BRANCH8_SELLERDOCUMENT_FILE_SELLER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

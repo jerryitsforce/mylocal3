@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\MarketPlaceOrderExportAdminUi\Controller\Adminhtml\Order\DownLoadOrderFilePlugin">
+        <arguments>
+            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceOrderExportAdminUi\Controller\Adminhtml\Order\DownloadOrderFile">
+        <plugin name="Branch8_MarketPlaceOrderExportRabbitMQ::downloadOrderFile"
+                type="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\MarketPlaceOrderExportAdminUi\Controller\Adminhtml\Order\DownLoadOrderFilePlugin"
+                sortOrder="1" disabled="false" />
+    </type>
+    <type name="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\MarketPlaceOrderExportAdminUi\Controller\Adminhtml\Order\DownloadOrderNotification">
+        <arguments>
+            <argument name="authSession" xsi:type="object">Magento\Backend\Model\Auth\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceOrderExportAdminUi\Controller\Adminhtml\Order\DownloadOrderNotification">
+        <plugin name="Branch8_MarketPlaceOrderExportRabbitMQ::downloadOrderNotification"
+                type="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\MarketPlaceOrderExportAdminUi\Controller\Adminhtml\Order\DownloadOrderNotification"
+                sortOrder="1" disabled="false" />
+    </type>
+</config>

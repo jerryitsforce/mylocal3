@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <consumer name="seller.contract.active.update_product"
+                queue="seller.contract.active.update_product"
+                connection="db"
+                maxMessages="5000"
+                consumerInstance="Magento\Framework\MessageQueue\Consumer"
+                handler="Branch8\SellerContactInformation\Model\Consumer::process"/>
+</config>

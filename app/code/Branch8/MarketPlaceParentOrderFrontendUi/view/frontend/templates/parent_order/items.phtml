@@ -1,0 +1,140 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Items $block */
+$helper = $this->helper(\Webkul\Marketplace\Helper\Data::class);
+$flagshipHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+?>
+
+<div class="order-items-wrapper">
+    <!-- Display Items in List Format with Images -->
+    <table class="data table table-order-items" id="my-orders-table" summary="<?= $block->escapeHtml(__('Items Ordered')) ?>">
+        <?php
+        $items = $block->getItems();
+        $groupedItems = [];
+        // Group items by order increment ID
+        foreach ($items as $item) {
+            if ($item->getParentItem()) continue;
+            $order = $item->getOrder();
+            if($order->getData('is_flagship_store_process_order')){
+                continue;
+            }
+            $incrementId = $order->getIncrementId();
+            $groupedItems[$incrementId][] = $item;
+        }
+        ?>
+        <?php foreach ($groupedItems as $incrementId => $group): ?>
+            <tbody>
+            <?php
+            // Display seller information once per group
+            $firstItem = $group[0];
+            $sellerId = '';
+            $type = '';
+            $marketplaceProduct = $helper->getSellerProductDataByProductId($firstItem->getProduct()->getRowId());
+            foreach ($marketplaceProduct as $value) {
+                $sellerId = $value['seller_id'];
+            }
+            $shopTitle = '';
+            $flagshipStoreId = $flagshipHelper->getFlagshipStoreFromSellerId($sellerId);
+            if($flagshipStoreId){
+                $flagshipStoreData = $flagshipHelper->getFlagshipStoreData($flagshipStoreId);
+                $shopTitle = $flagshipStoreData['shop_title'];
+            }else{
+                $sellerInfo = $helper->getSellerInfo($sellerId);
+                $shopTitle = isset($sellerInfo['shop_title']) ? $sellerInfo['shop_title'] : $sellerInfo['shop_url'];
+            }
+
+            ?>
+            <tr class="suborder-info">
+                <td class="col">
+                    <div class="seller-info">
+                        <?= $escaper->escapeHtml($shopTitle) ?>
+                        <span class="seller-line">|</span>
+                        <span class="seller-type"><?= __($firstItem->getOrder()->getData('order_type')) ?></span>
+                    </div>
+                </td>
+                <!-- Display Sub Order Number -->
+                <td class="col order-info">
+                    <div class="sub-order-number"><strong><?= $escaper->escapeHtml(__('No.')) ?></strong>
+                        <?= $escaper->escapeHtml($incrementId) ?></div>
+                </td>
+
+            </tr>
+
+            <?php foreach ($group as $key => $item): ?>
+                <tr>
+                    <!-- Product Information for each item -->
+                    <td class="col order-item" colspan="2">
+                        <div class="product-item-info">
+                                <span class="product-item-photo">
+                                    <a href="<?= /* @escapeNotVerified */  $item->getProduct()->getProductUrl() ?>" class="product-item-photo" tabindex="-1">
+                                        <span class="product-image-container">
+                                            <span class="product-image-wrapper" style="padding-bottom: 100%">
+                                                <img class="product-image-photo" width="240" height="240" src="<?= $escaper->escapeHtml($block->getImageUrl($item->getProduct())) ?>" alt="<?= $escaper->escapeHtml($item->getName()) ?>" />
+                                            </span>
+                                        </span>
+                                    </a>
+                                </span>
+                                <div class="product-item-details-wrapper">
+                                    <div class="product-item-details">
+                                        <p class="product-item-sku"><?= $escaper->escapeHtml($item->getSku()) ?></p>
+                                        <a style="color: #000" class="product-item-link" href="<?= /* @escapeNotVerified */ $item->getProduct()->getProductUrl() ?>">
+                                            <strong class="product-item-name"><?= $escaper->escapeHtml($item->getName()) ?></strong>
+                                        </a>
+                                        <?php if ($_options = $block->getItemOptions($item->getProductOptions())): ?>
+                                            <dl class="item-options">
+                                                <?php foreach ($_options as $_option): ?>
+                                                    <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                                                    <?php if (!$block->getPrintStatus()): ?>
+                                                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                                                        <dd <?= (isset($_formatedOptionValue['full_view']) ? ' class="tooltip wrapper"' : '') ?>>
+                                                            <?= $block->escapeHtml($_formatedOptionValue['value'], ['a']) ?>
+                                                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                                                <div class="tooltip content">
+                                                                    <dl class="item options">
+                                                                        <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+                                                                        <dd><?= $block->escapeHtml($_formatedOptionValue['full_view']) ?></dd>
+                                                                    </dl>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </dd>
+                                                    <?php else: ?>
+                                                        <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                                                        <dd><?= $block->escapeHtml($optionValue) ?></dd>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
+                                            </dl>
+                                        <?php endif; ?>
+                                        <div class="product-item-subtotal">
+                                            <span class="product-qty">x<?= $escaper->escapeHtml(ceil($item->getQtyOrdered())) ?></span><span class="price-container">
+                                                <span class="price">
+                                                    <?= $block->getOrder()->formatPrice($item->getRowTotalInclTax()) ?>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php if($item->getIsVirtual()): ?>
+                                    <a href="<?= $block->getUrl('member/ticket/index') ?>" class="action secondary action-small"><?= $escaper->escapeHtml(__('Go to my tickets')) ?></a>
+                                <?php endif; ?>
+                            </div>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+
+    <!-- If Pagination is Displayed -->
+    <?php if ($block->isPagerDisplayed()): ?>
+        <div class="pager-wrapper">
+            <?= $block->getPagerHtml() ?>
+        </div>
+    <?php endif; ?>
+
+</div>

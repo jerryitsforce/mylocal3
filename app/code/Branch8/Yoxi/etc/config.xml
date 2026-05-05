@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_yoxi>
+                <log_file>yoxi_check_safety_quantity,yoxi_update_ticket_quantity_by_sale_time,yoxi_reset_ticket_status_for_return_order</log_file>
+            </branch8_yoxi>
+        </branch8_debug>
+    </default>
+</config>

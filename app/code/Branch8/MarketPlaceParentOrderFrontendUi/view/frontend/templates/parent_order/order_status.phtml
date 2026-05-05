@@ -1,0 +1,9 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Info */ ?>
+
+<span class="order-status"><?= $block->escapeHtml($block->getOrder()->getDetail()->getFrontendStatusLabel()) ?></span>

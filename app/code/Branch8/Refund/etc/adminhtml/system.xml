@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="sales" translate="label" sortOrder="400">
+            <label>Sales</label>
+        </tab>
+        <section id="sales_email" translate="label" type="text" sortOrder="301" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Sales Emails</label>
+            <tab>sales</tab>
+            <resource>Magento_Sales::sales_email</resource>
+            <group id="refund" translate="label" type="text" sortOrder="1100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Refund Notification</label>
+                <field id="enabled" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="identity" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Refund Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="success_template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Success Refund Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="decline_template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Decline Refund Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="abnormal_template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Abnormal Refund Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="abnormal_mail_receivers" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Abnormal Refund Email Receivers</label>
+                    <comment>Comma-separated.</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+		<tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+		<section id="refund" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+			<label>Refund</label>
+			<tab>branch8</tab>
+			<resource>Branch8_Refund::config_branch8_refund</resource>
+			<group id="cron" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>Schedule Execution Setting</label>
+				<field id="schedule_execute" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Send Request Data to CTBC</label>
+                    <tooltip><![CDATA[Enter cron expression<br/>
+<br/>
+* * * * *<br/>
+| | | | |<br/>
+| | | | +---- Day of the Week   (range: 0-6, 1 standing for Monday)<br/>
+| | | +------ Month of the Year (range: 1-12)<br/>
+| | +-------- Day of the Month  (range: 1-31)<br/>
+| +---------- Hour              (range: 0-23)<br/>
++------------ Minute            (range: 0-59)<br/>
+Example: 0 0 * * * Daily at midnight<br/>
+<br/>
+Read more about cron expressions - <a href="https://en.wikipedia.org/wiki/Cron">here</a>]]></tooltip>
+                    <config_path>refund/cron/schedule_execute</config_path>
+                </field>
+			</group>
+		</section>
+        <section id="branch8_debug" translate="label" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Debug Log</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiCore::debug_log</resource>
+            <group id="branch8_refund" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Refund</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\Refund\Model\Config\Source\LogFileOption</source_model>
+                </field>
+            </group>
+        </section>
+	</system>
+</config>

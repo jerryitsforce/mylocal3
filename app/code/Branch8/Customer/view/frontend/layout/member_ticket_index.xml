@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>票券</title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Customer\Block\Ticket\Index"
+                   name="branch8_customer_account_ticket_index"
+                   template="Branch8_Customer::ticket/index.phtml"
+                   cacheable="false"
+                   />
+        </referenceContainer>
+    </body>
+</page>

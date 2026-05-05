@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <product_discussion>
+            <general>
+                <max_length_input>200</max_length_input>
+                <submit_rate_limit>30</submit_rate_limit>
+            </general>
+            <customer>
+                <page_size>5</page_size>
+                <enable_email_notification>1</enable_email_notification>
+                <email_template>product_discussion_customer_email_template</email_template>
+            </customer>
+        </product_discussion>
+    </default>
+</config>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Branch8.
+ *
+ * @category  Branch8
+ * @package   Branch8_PageBuilder
+ * @author    Branch8: Dev Team
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\PageBuilder\Model\WidgetInitializerConfig">
+        <arguments>
+            <argument name="config" xsi:type="array">
+                <item name="products" xsi:type="array">
+                    <item name="productpoint" xsi:type="array">
+                        <item name="appearance" xsi:type="string">point_grid</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="openhub" translate="label" sortOrder="500">
+            <label>OpenHub</label>
+        </tab>
+        <section id="openhub" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <tab>openhub</tab>
+            <resource>HotaiConnected_OpenHub::config</resource>
+            <group id="api" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>API</label>
+                <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                    <label>General</label>
+                    <field id="api_mode" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="0" translate="label" type="select">
+                        <label>API Mode</label>
+                        <comment></comment>
+                        <source_model>HotaiConnected\OpenHub\Model\Config\Source\ApiMode</source_model>
+                    </field>
+                </group>
+                <group id="dev" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                    <label>Dev Setting</label>
+                    <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Domain</label>
+                    </field>
+                    <field id="x_api_key" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>x-api-key</label>
+                    </field>
+                </group>
+                <group id="production" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Production Setting</label>
+                    <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Domain</label>
+                    </field>
+                    <field id="x_api_key" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>x-api-key</label>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

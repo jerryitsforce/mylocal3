@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">branch8_certification_type_form.certification_type_form_data_source</item>
+            <item name="namespace" xsi:type="string">branch8_certification_type_form</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Certification Type</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+
+    <settings>
+        <buttons>
+            <button name="back" class="Branch8\ProductCertification\Block\Adminhtml\Type\Edit\BackButton"/>
+            <button name="delete" class="Branch8\ProductCertification\Block\Adminhtml\Type\Edit\DeleteButton"/>
+            <button name="save_and_continue" class="Branch8\ProductCertification\Block\Adminhtml\Type\Edit\SaveAndContinueButton"/>
+            <button name="save" class="Branch8\ProductCertification\Block\Adminhtml\Type\Edit\SaveButton"/>
+        </buttons>
+        <namespace>branch8_certification_type_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>branch8_certification_type_form.certification_type_form_data_source</dep>
+        </deps>
+    </settings>
+
+    <dataSource name="certification_type_form_data_source" component="Magento_Ui/js/form/provider">
+        <settings>
+            <submitUrl path="branch8_certification/type/save"/>
+        </settings>
+        <dataProvider class="Branch8CertificationTypeFormDataProvider" name="certification_type_form_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+
+    <!-- General fieldset -->
+    <fieldset name="general" sortOrder="10">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">General Information</label>
+        </settings>
+
+        <field name="entity_id" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>entity_id</dataScope>
+            </settings>
+        </field>
+
+        <field name="certification_name" formElement="input" sortOrder="10">
+            <settings>
+                <label translate="true">Certification Name</label>
+                <dataType>text</dataType>
+                <dataScope>certification_name</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="status" formElement="select" sortOrder="20">
+            <settings>
+                <label translate="true">Status</label>
+                <dataType>select</dataType>
+                <dataScope>status</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\ProductCertification\Model\Source\Status"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <field name="sort_order" formElement="input" sortOrder="30">
+            <settings>
+                <label translate="true">Sort Order</label>
+                <dataType>number</dataType>
+                <dataScope>sort_order</dataScope>
+            </settings>
+        </field>
+
+        <!-- Icon uploader -->
+        <field name="icon" formElement="imageUploader" sortOrder="40">
+            <settings>
+                <label translate="true">Certification Icon (64×64 px)</label>
+                <notice translate="true">Allowed formats: JPG, PNG, GIF, SVG, WebP. Will be automatically resized to 64×64 px.</notice>
+                <componentType>imageUploader</componentType>
+                <dataScope>icon</dataScope>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <allowedExtensions>jpg jpeg png gif svg webp</allowedExtensions>
+                        <maxFileSize>2097152</maxFileSize>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="branch8_certification/type/upload"/>
+                        </uploaderConfig>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+
+        <!-- Category multi-select tree -->
+        <field name="category_ids" component="Magento_Ui/js/form/element/ui-select" formElement="select" sortOrder="50">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">true</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Applicable Main Categories</label>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <dataScope>category_ids</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Catalog\Ui\Component\Product\Form\Categories\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+    </fieldset>
+
+</form>

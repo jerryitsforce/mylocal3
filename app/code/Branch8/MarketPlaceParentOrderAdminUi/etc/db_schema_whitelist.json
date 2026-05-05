@@ -1,0 +1,9 @@
+{
+    "sales_order_grid": {
+        "column": {
+            "parent_order_id": true,
+            "parent_increment_id": true,
+            "rma_status": true
+        }
+    }
+}

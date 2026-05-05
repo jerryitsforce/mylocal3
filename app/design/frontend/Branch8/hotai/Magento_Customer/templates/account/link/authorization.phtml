@@ -1,0 +1,38 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Customer\Block\Account\AuthorizationLink $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$dataPostParam = '';
+$b8CustomerHelper = $this->helper(\Branch8\Customer\Helper\Data::class);
+$subAccountHelper = $this->helper(\Webkul\SellerSubAccount\Helper\Data::class);
+?>
+
+<?php if ($block->isLoggedIn() && !$b8CustomerHelper->isSeller() && !$b8CustomerHelper->isWaitForSeller() && !$subAccountHelper->isSubAccount()) :
+    $dataPostParam = sprintf(" data-posts='%s'", $block->getPostParams());
+?>
+    <li class="link authorization-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
+        <a class="link-logout" <?= $block->getLinkAttributes() ?>
+            <?= $dataPostParam ?>>
+            <?= $escaper->escapeHtml($block->getLabel()) ?>
+        </a>
+    </li>
+    <script type="text/x-magento-init">
+        {
+            ".authorization-link .link-logout": {
+                "b8ConfirmLogout": {}
+            }
+        }
+    </script>
+<?php else: ?>
+    <li class="link authorization-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
+        <a <?= /* @noEscape */ $block->getLinkAttributes() ?>
+            <?= /* @noEscape */ $dataPostParam ?>><?= $escaper->escapeHtml($block->getLabel()) ?></a>
+    </li>
+<?php endif; ?>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="blacklist_keywords_grid_data_source" xsi:type="string">
+                    Branch8\BlackListKeyWords\Model\ResourceModel\Keyword\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Branch8\BlackListKeyWords\Api\KeywordRepositoryInterface"
+                type="Branch8\BlackListKeyWords\Model\KeywordRepository"/>
+    <preference for="Branch8\BlackListKeyWords\Api\KeywordFilterInterface"
+                type="Branch8\BlackListKeyWords\Model\KeywordFilter"/>
+    <preference for="Branch8\BlackListKeyWords\Api\Data\KeywordInterface"
+                type="Branch8\BlackListKeyWords\Model\Keyword"/>
+</config>

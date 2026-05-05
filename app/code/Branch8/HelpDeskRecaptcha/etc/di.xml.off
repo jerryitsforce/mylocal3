@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Branch8HelpDeskRecaptchaLogger"
+                 type="Branch8\HotaiCore\Logger\LoggerProxy">
+        <arguments>
+            <argument name="moduleName" xsi:type="string">Branch8_HelpDeskRecaptcha</argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\HelpDeskRecaptcha\Observer\AjaxSaveTicketObserver">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8HelpDeskRecaptchaLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDeskRecaptcha\Model\AjaxSaveTicket\ErrorProcessor">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8HelpDeskRecaptchaLogger</argument>
+            <argument name="errorMessageConfig" xsi:type="object">Magento\ReCaptchaFrontendUi\Model\ErrorMessageConfig</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HotaiCore\Model\LogModuleProvider">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="b8HelpdeskRecaptha" xsi:type="object">Branch8\HelpDeskRecaptcha\Model\LogDeclaration</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,162 @@
+<div class="page-approval-wrapper" >
+    
+    <div class="v1-rule-wrapper">
+        <div>
+            <h2>Version Information</h2>
+            <?php
+            $versionData = $this->getData('history_record');
+            $originalDate = new \DateTime($versionData['created_at'], new \DateTimeZone('UTC'));
+            $obj = \Magento\Framework\App\ObjectManager::getInstance();
+            $localeTime = $obj->get(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::class);
+            $storeDate = $localeTime->date($originalDate);
+            ?>
+            <div><?php echo __('Time');?>: <?php echo $storeDate->format('Y-m-d H:i:s');?></div>
+            <div><?php echo __('Submitter');?>: <?php echo $versionData['submitter'];?></div>
+            <div><?php echo __('Approver');?>: <?php echo $versionData['approver'];?></div>
+        </div>
+        <?php echo $block->getChildHtml('catalog_rule_form_compare1');?>
+    </div>
+    <div id="v2-rule-wrapper">
+
+    </div>
+    
+</div>
+
+<script>
+    require([
+        'jquery', 
+        'plugins/DOMPurify', 
+        'Magento_Ui/js/modal/modal',
+        'mage/mage'
+    ], function ($, DOMPurify, modal) {
+
+        var isDisableDropdown = false;
+
+        $.ajax({
+            url: '<?php echo $this->getUrl('promocatalog/history/compareVersion2', [
+                'log_id' => $this->getData('2ndItemId'), 
+                'prev_log_id' => $versionData['entity_id'],
+                'id' => $versionData['catalogrule_id']
+                ]);?>',
+            type: 'GET',
+            async: true,
+            success: function (response) {
+                $('#v2-rule-wrapper').html(response);
+                $('#v2-rule-wrapper').first().trigger('contentUpdated');
+                $('#rule_new_version').applyBindings();
+                $('body').trigger('processStart');
+                /** highlight diff */
+                var setDiff = setInterval(function(){
+                    if($('#related_catalogrule_banners_grid').html() == ''){
+                        return;
+                    }
+                    /** Rule Information */
+                    var isInforChange = false;
+                    $('body #v2-rule-wrapper [data-index="rule_information"] .admin__field').each(function(k, elm){
+                        let valueTag = $(elm).find('input, textarea, select');
+                        let tagName = valueTag.attr('name');
+                        if(tagName == undefined){
+                            return;
+                        }
+                        if(tagName == 'rule_id' || tagName == 'from_date'){
+                            return;
+                        }
+                        let newVal = valueTag.val();
+                        let oldVal = $('.v1-rule-wrapper [name="'+tagName+'"]').val();
+                        if(tagName == 'website_ids' || tagName == 'customer_group_ids'){
+                            if(JSON.stringify(oldVal) != JSON.stringify(newVal)){
+                                isInforChange = true;
+                            }else{
+                                $(elm).addClass('hidden');
+                                $('.v1-rule-wrapper .admin__field[data-index="'+tagName+'"]').addClass('hidden');
+                            }
+                        }else{
+                            if(oldVal != newVal){
+                                isInforChange = true;
+                            }else{
+                                $(elm).addClass('hidden');
+                                $('.v1-rule-wrapper .admin__field[data-index="'+tagName+'"]').addClass('hidden');
+                            }
+                        }
+                        
+                    });
+                    if(typeof newSellerIds == "undefined"){
+                        window.location.reload();
+                        clearInterval(setDiff);
+                    }
+                    if(newSellerIds != ruleSellerIds){
+                        isInforChange = true;
+                    }else{
+                        $('.v1-rule-wrapper .admin__field[data-index="seller_ids"]').addClass('hidden');
+                        $('#rule_new_version .admin__field[data-index="seller_ids"]').addClass('hidden');
+                    }
+
+                    if(!isInforChange){
+                        $('#rule_new_version [data-index="rule_information"]').addClass('hidden');
+                        $('.v1-rule-wrapper [data-index="rule_information"]').addClass('hidden');
+                    }
+                    
+                    /** Action */
+                    var isActionChange = false;
+                    $('body #v2-rule-wrapper [data-index="actions"] .admin__field').each(function(k, elm){
+                        let valueTag = $(elm).find('input, textarea, select');
+                        let tagName = valueTag.attr('name');
+                        if(tagName == 'rule_id'){
+                            return;
+                        }
+                        let newVal = valueTag.val();
+                        let oldVal = $('.v1-rule-wrapper [name="'+tagName+'"]').val();
+                        if(oldVal == newVal){
+                            $(elm).addClass('hidden');
+                            $('.v1-rule-wrapper .admin__field[data-index="'+tagName+'"]').addClass('hidden');
+                        }else{
+                            isActionChange = true;
+                        }
+                        if(!isActionChange){
+                            $('#rule_new_version [data-index="actions"]').addClass('hidden');
+                            $('.v1-rule-wrapper [data-index="actions"]').addClass('hidden');
+                        }else{
+                            $('#rule_new_version [data-index="actions"]').removeClass('hidden');
+                            $('.v1-rule-wrapper [data-index="actions"]').removeClass('hidden');
+                        }
+                    });
+                    /** Banners */
+                    var bannerDiff1 = ruleBanners.filter(item => !newBanners.includes(item)); 
+                    var bannerDiff2 = newBanners.filter(item => !ruleBanners.includes(item)); 
+                    if(!bannerDiff1.length && !bannerDiff2.length){
+                        $('#rule_new_version [data-index="catalogrule.related.banners.content"]').addClass('hidden');
+                        $('.v1-rule-wrapper [data-index="catalogrule.related.banners.content"]').addClass('hidden');
+                    }
+
+                    /** Condition tab */
+                    var condition1 = $('.v1-rule-wrapper [data-index="block_promo_catalog_edit_tab_conditions"]').html();
+                    var condition2 = $('#rule_new_version [data-index="block_promo_catalog_edit_tab_conditions"]').html();
+                    var condition1 = condition1Html.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gi, "");
+                    condition1 = $(condition1).text();
+                    var condition2 = condition2Html.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gi, "");
+                    condition2 = $(condition2).text();
+                    
+                    if(condition1 == condition2){
+                        $('[data-index="block_promo_catalog_edit_tab_conditions"]').addClass('hidden');
+                    }else{
+                        $('[data-index="block_promo_catalog_edit_tab_conditions"]').removeClass('hidden');
+                    }
+
+                    /** open Information tab, close other tab */
+                    clearInterval(setDiff);
+                    $('body').trigger('processStop');
+                    isDisableDropdown = true;
+                }, 500);
+                
+            }
+        });
+        var intCheckOption = setInterval(function(){
+            if(!isDisableDropdown){
+                return;
+            }
+            $.each($('.admin__control-multiselect option'), function(k, elm){
+            $(elm).attr('disabled', 'disabled');
+        });
+        }, 1000);
+    });
+</script>

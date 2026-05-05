@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**  @var $block \Magento\Checkout\Block\Cart */
+
+$jsonIcon = $this->getViewFileUrl('images/animation-cart-empty.json');
+?>
+<div class="cart-empty">
+    <div class="cart-animation-icon">
+        <dotlottie-player class="player" src="<?= $jsonIcon ?>" background="transparent" speed="1" direction="1"
+            playMode="normal" loop autoplay></dotlottie-player>
+    </div>
+    <?= $block->getChildHtml('checkout_cart_empty_widget') ?>
+    <div class="actions"><?= $block->escapeHtml(
+        __(
+            '<a class="action pagebuilder-button-primary" href="%1">現在就去逛逛！</a>',
+            $block->escapeUrl($block->getContinueShoppingUrl())
+        ),
+        ['a']
+    ) ?>
+    </div>
+    <?= $block->getChildHtml('shopping.cart.table.after') ?>
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Checkout/js/empty-cart": {}
+    }
+}
+</script>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="before_handle_master_quote">
+        <observer name="edenred_check_order_item_quantity_not_exceed_limit" instance="Branch8\Edenred\Observer\CheckOrderItemQuantityNotExceedLimit" />
+    </event>
+    <event name="hotai_point_deduction_commit_flow_end">
+        <observer name="edenred_ticket_request_observer" instance="Branch8\Edenred\Observer\RequestEdenredApiForTicket" />
+    </event>
+</config>

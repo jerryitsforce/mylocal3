@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento">
+        <binding id="branch8WishlistAlertWhenProductInstock0" topic="branch8.wishlist.alert.when.product.instock0"
+                 destination="branch8.wishlist.alert.when.product.instock0"/>
+        <binding id="branch8WishlistAlertWhenProductInstock1" topic="branch8.wishlist.alert.when.product.instock1"
+                 destination="branch8.wishlist.alert.when.product.instock1"/>
+        <binding id="branch8WishlistAlertWhenProductInstock2" topic="branch8.wishlist.alert.when.product.instock2"
+                 destination="branch8.wishlist.alert.when.product.instock2"/>
+    </exchange>
+</config>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_minichat"/>
+    <referenceContainer name="content">
+        <block class="Magento\Catalog\Block\Product\View"
+               name="wk-product-chat-link"
+               template="Branch8_WebkulMpBuyerSellerChatForProduct::chatLink.phtml"
+               ifconfig="buyer_seller_chat/product/enable"
+        >
+            <arguments>
+                <argument name="view_model" xsi:type="object">Branch8\WebkulMpBuyerSellerChatForProduct\ViewModel\ChatConfig</argument>
+            </arguments>
+        </block>
+    </referenceContainer>
+    <referenceContainer name="before.body.end">
+        <!-- Begin chatLink Js-->
+        <block class="Magento\Framework\View\Element\Template"
+               ifconfig="buyer_seller_chat/product/enable"
+               name="customer_chat_link_js_init"
+               template="Branch8_WebkulMpBuyerSellerChatForProduct::jsInit.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Branch8\WebkulMpBuyerSellerChatForProduct\ViewModel\ChatConfig</argument>
+            </arguments>
+        </block>
+    </referenceContainer>
+</page>

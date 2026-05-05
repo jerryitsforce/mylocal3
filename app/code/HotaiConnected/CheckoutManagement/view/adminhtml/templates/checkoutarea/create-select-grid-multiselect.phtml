@@ -1,0 +1,216 @@
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-buttons">
+            <button type="button" id="back-btn" class="action-secondary" onclick="window.location.href='<?= $block->escapeUrl($block->getUrl('checkout_management/checkoutarea/index')) ?>'">
+                <span><?= $block->escapeHtml(__('Back')) ?></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<form id="create_monthly_batch_form" class="create-monthly-batch-form fade-up-initial" method="post" action="<?= $block->escapeUrl($block->getFormActionUrl()) ?>">
+    <?= $block->getBlockHtml('formkey') ?>
+    
+    <fieldset class="fieldset">
+        
+        <legend class="legend">
+            <?= $block->escapeHtml(__('Please confirm checkout items and enter the information below')) ?>
+        </legend>
+
+        <div class="create-monthly-batch-form__content">
+            <!-- 日期範圍容器 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml( __('Order Checkout Number Modification Date (From-To)') ) ?></span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <div class="row">
+                        <div class="admin__field field col-xs-12 col-sm-12 col-m-12 col-l-12 col-xl-12" data-type="date-range">
+                            <label class="label admin__field-label" for="order-checkout-number-modification-date-from">
+                                <?= $block->escapeHtml(__('From:')) ?>
+                            </label>
+                            <div class="admin__field-control control">
+                                <input 
+                                    id="order-checkout-number-modification-date-from"
+                                    name="order-checkout-number-modification-date-from"
+                                    type="text"
+                                    class="input-text admin__control-text required-entry"
+                                    placeholder="<?= $block->escapeHtmlAttr(__('YYYY-MM-DD')) ?>"
+                                    value=""
+                                    autocomplete="off"
+                                    readonly
+                                    data-validate="{required: true}"
+                                    data-msg-required="<?= $block->escapeHtmlAttr(__('This is a required field')) ?>"
+                                />
+                            </div>
+                            <label class="label admin__field-label" for="order-checkout-number-modification-date-to">
+                                <?= $block->escapeHtml(__('To:')) ?>
+                            </label>
+                            <div class="admin__field-control control">
+                                <input 
+                                    id="order-checkout-number-modification-date-to" 
+                                    name="order-checkout-number-modification-date-to"
+                                    type="text" 
+                                    class="input-text admin__control-text required-entry"
+                                    placeholder="<?= $block->escapeHtmlAttr(__('YYYY-MM-DD')) ?>"
+                                    value=""
+                                    autocomplete="off"
+                                    readonly
+                                    data-validate="{required: true}"
+                                    data-msg-required="<?= $block->escapeHtmlAttr(__('This is a required field')) ?>"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- 特約商名稱 - 多選彈窗選單 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml(__('Authorized Dealer Name')) ?></span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <!-- 可搜尋的多選對話框容器 - 由 JS 動態建立（資料透過 AJAX 獲取）-->
+                    <div class="authorized-dealer-selector mb-3 loading-state"></div>
+                </div>
+            </div>
+
+            <!-- 商品物流狀態 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml(__('Product Shipping Status')) ?></span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <div class="admin__field field row" data-type="checkbox-group">
+                        <div class="admin__field-control control col-xs-12 col-sm-12 col-m-9 col-l-9 col-xl-9">
+                            <!-- 商品物流狀態 由 JS 動態建立，欄數由 columns 參數控制 -->
+                            <div class="product-shipping mb-3 loading-state pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 發票狀態 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml(__('Invoice Status')) ?></span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <div class="admin__field field row" data-type="checkbox-group">
+                        <div class="admin__field-control control col-xs-12 col-sm-12 col-m-9 col-l-9 col-xl-9">
+                            <!-- 發票狀態 由 JS 動態建立，欄數由 columns 參數控制 -->
+                            <div class="invoice-status mb-3 loading-state pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 票券狀態 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml(__('Ticket Status')) ?></span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <div class="admin__field field row" data-type="checkbox-group">
+                        <div class="admin__field-control control col-xs-12 col-sm-12 col-m-9 col-l-9 col-xl-9">
+                            <!-- 票券狀態 由 JS 動態建立，欄數由 columns 參數控制 -->
+                            <div class="ticket-status mb-3 loading-state pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 結帳批次 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml(__('Checkout Batch')) ?></span>
+                        <span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <div class="row" data-type="input">
+                        <div class="admin__field-control control col-xs-12 col-sm-12 col-m-9 col-l-9 col-xl-9">
+                            <input 
+                                type="text" 
+                                class="input-text admin__control-text"
+                                id="checkout-batch" 
+                                name="checkout-batch" 
+                                placeholder="<?= $block->escapeHtmlAttr(__('Please enter %1', __('Checkout Batch'))) ?>"
+                                value=""
+                                data-validate="{required: true}"
+                                data-msg-required="<?= $block->escapeHtmlAttr(__('This is a required field')) ?>"
+                                maxlength="20"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 排除已結帳訂單 -->
+            <div class="row create-monthly-batch-form__item">
+                <div class="col-xs-3 col-sm-3 col-m-3 col-l-3 col-xl-3">
+                    <label class="label admin__field-label">
+                        <span><?= $block->escapeHtml(__('Exclude Checked-out Orders')) ?></span>
+                    </label>
+                </div>
+                <div class="checkbox-group col-xs-9 col-sm-9 col-m-9 col-l-9 col-xl-9">
+                    <div class="checkbox-group__item admin__field-control control" data-type="checkbox">
+                        <input 
+                            type="checkbox" 
+                            name="exclude-checked-out-orders" 
+                            id="exclude-checked-out-orders" 
+                            class="admin__control-checkbox" 
+                            value="1" 
+                        />
+                        <label for="exclude-checked-out-orders" class="admin__field-label">
+                            <span class="d-none"><?= $block->escapeHtml(__('Exclude checked-out orders from the')) ?></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 取消、確認按鈕 -->
+        <div class="create-monthly-batch-form__actions">
+            <a href="<?= $block->escapeUrl($block->getUrl('checkout_management/checkoutarea/index')) ?>" class="action-secondary">
+                <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+            </a>
+            <button type="button" class="action-primary" id="confirm-submit">
+                <span><?= $block->escapeHtml(__('Confirm')) ?></span>
+            </button>
+        </div>
+
+    </fieldset>
+</form>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'hotaiLoadingMask',
+        'HotaiConnected_CheckoutManagement/js/checkoutarea/create-select-grid-multiselect'
+    ], function ($, loadingMask, createForm) {
+        // 初始化載入動畫
+        loadingMask.init();
+        
+        // 初始化模組
+        createForm.initialize();
+    });
+</script> 

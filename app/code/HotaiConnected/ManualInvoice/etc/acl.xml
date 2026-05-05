@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales">
+                    <resource id="Magento_Sales::sales_operation">
+                        <resource id="Magento_Sales::sales_order">
+                            <resource id="HotaiConnected_ManualInvoice::manual_invoice" title="Manual Invoice" translate="title" sortOrder="100">
+                                <resource id="HotaiConnected_ManualInvoice::save" title="Save Manual Invoice" translate="title" sortOrder="10" />
+                                <resource id="HotaiConnected_ManualInvoice::view" title="View Manual Invoice" translate="title" sortOrder="20" />
+                                <resource id="HotaiConnected_ManualInvoice::delete" title="Delete Manual Invoice" translate="title" sortOrder="30" />
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

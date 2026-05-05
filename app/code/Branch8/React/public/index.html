@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<head>
+  <title>Test Page</title>
+</head>
+<body>
+  <div class="profile-section" id="profile-section"></div>
+  <script type="text/javascript">
+    setTimeout(async () => {
+      while (typeof window.CPProfile !== 'function') {
+        console.log('waiting for window.CPProfile to be available');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+      window.CPProfile({ data: {
+        name: "John Doe",
+        age: 30,
+      }, elCls: "profile-section" });
+    }, 1000);
+  </script>
+
+  <div class="customer-section" id="customer-section"></div>
+  <script type="text/javascript">
+    setTimeout(async () => {
+      while (typeof window.CPCustomer !== 'function') {
+        console.log('waiting for window.CPCustomer to be available');
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
+      window.CPCustomer({ data: {
+        name: "John Smith",
+        age: 33,
+      }, elCls: "customer-section" });
+    }, 1000);
+  </script>
+</body>

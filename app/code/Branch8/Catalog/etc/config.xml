@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_catalog>
+            <massaction_settings>
+                <hide_delete_product>0</hide_delete_product>
+            </massaction_settings>
+            <product_status_change_log_cleaner>
+                <months_to_keep>12</months_to_keep>
+            </product_status_change_log_cleaner>
+            <images>
+                <validate_image_tags>1</validate_image_tags>
+                <image_tags_to_validate>image,small_image,thumbnail,swatch_image,dpa_image</image_tags_to_validate>
+            </images>
+        </branch8_catalog>
+    </default>
+</config>

@@ -1,0 +1,186 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+    .post-list-body.grid{
+        display: grid;
+        gap: 0 32px; 
+
+        .post-list-item{
+            margin-bottom: 32px;
+        }
+    }
+
+    .post-item-wraper{
+        border: var(--border-light);
+        border-radius: var(--CardM);
+        box-shadow: 0px 0px 10px 2px rgba(35, 24, 21, 0.04);
+        padding: 8px;
+
+        .post-info-wraper{
+            padding: 16px;
+        }
+
+        h2.mp-post-title{
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+
+        .post-link-title{
+            color: var(--color-text-base);
+
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .post-view-image{
+        height: 216px;
+
+        .post-image{
+            border-radius: var(--TagL);
+            background-repeat: no-repeat;
+            overflow: hidden;
+        }
+
+        img{
+            vertical-align: middle;
+            width: 100%;
+        }
+    }
+
+    .post-view-image.layout-grid-3{
+        display: grid;
+        grid-template-columns: 2fr 1fr; /* Example: three columns with relativelayout-grid-3 widths */
+        grid-template-areas:
+            "image image1"
+            "image image2";
+        gap: 4px;
+        
+
+        .post-image:first-child{
+            grid-area: image;
+        }
+
+        .post-image:nth-child(2){
+            grid-area: image1;
+        }
+
+        .post-image:nth-child(3){
+            grid-area: image2;
+        }
+    }
+
+    .post-view-image.layout-grid{
+        display: flex;
+        gap: 4px;
+
+        .post-image{
+            flex: 1;
+        }
+    }
+
+    .post-list-content{
+        .limiter{
+            &:extend(.abs-visually-hidden all);
+        }
+        .toolbar-amount{
+            float: none;
+            color: var(--color-gray-light2);
+            font-size: 12px;
+            line-height: 1.5;
+            padding: 0;
+            
+        }
+
+        .load-more-container{
+            padding-top: 0;
+            display: none;
+
+            button{
+                min-width: 168px;
+            }
+        }
+    } 
+
+    .blog-toolbar-top{
+        .pager span.toolbar-number{
+            display: block;
+        }
+
+        .toolbar-amount{
+            margin-bottom: 16px;
+        }
+
+        .pages{
+            &:extend(.abs-visually-hidden all);
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    .post-list-content{
+        .blog-toolbar-bottom{
+            display: none;
+        }
+
+        &:has(.pager .pages) .load-more-container{
+            display: block;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__s) {
+    .post-list-body.grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    .post-view-image{
+        height: 236px;
+    }
+
+    .blog-toolbar-top{
+        .toolbar-amount{
+            margin-bottom: 30px;
+        }
+    }
+
+    .blog-toolbar-bottom{
+        .pager:has(.pages){
+            border-top: var(--border-common);
+            padding-top: 30px;
+        };
+
+        .pager{
+            text-align: right;
+        }
+    }
+
+    .pages{
+        .item{
+            &:last-child{
+                margin-right: 0;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__l) {
+    .post-list-body.grid{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+

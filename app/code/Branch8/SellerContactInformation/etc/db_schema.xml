@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="marketplace_userdata">
+        <column xsi:type="varchar" name="seller_code" length="255" comment="Seller Code"/>
+        <column xsi:type="varchar" name="register_account" length="255" comment="Register Account"/>
+        <column xsi:type="varchar" name="company_name" length="255" comment="Company Name"/>
+        <column xsi:type="varchar" name="company_address" length="255" comment="Company Address"/>
+        <column xsi:type="varchar" name="special_dealer_code" length="255" comment="Specical Dealer Code"/>
+        <column xsi:type="varchar" name="special_dealer_name" length="255" comment="Specical Dealer Name"/>
+        <column xsi:type="varchar" name="company_phone" length="255" comment="Company Phone"/>
+        <column xsi:type="varchar" name="company_representative" length="255" comment="Company Representative"/>
+        <column xsi:type="smallint" name="status" nullable="false" default="0" comment="Status"/>
+        <column xsi:type="smallint" name="hot_tag" nullable="false" default="0" comment="Is hot tag"/>
+        <column xsi:type="boolean" name="enable_low_notification" nullable="false" default="false" comment="Enable Low Notification"/>
+        <column xsi:type="smallint" name="low_stock_quantity" nullable="false" default="0" comment="Low Stock Quantity"/>
+
+        <column xsi:type="varchar" name="uniform_numbers" length="255" comment="Uniform Numbers"/>
+        <column xsi:type="varchar" name="invoice_company_no" length="255" comment="Invoice Company No"/>
+        <column xsi:type="varchar" name="invoice_company_name" length="255" comment="Invoice Company Name"/>
+        <column xsi:type="text" name="invoice_company_address" comment="Invoice Company Address"/>
+        <column xsi:type="varchar" name="invoice_title" length="255" comment="Invoice Title"/>
+        <column xsi:type="text" name="invoice_shipping_address" comment="Invoice Shipping Address"/>
+        <column xsi:type="text" name="invoice_and_statement_email" comment="Invoice And Statement Email"/>
+        <column xsi:type="varchar" name="account_name" length="255" comment="Account Name"/>
+        <column xsi:type="varchar" name="bank" length="255" comment="Bank"/>
+        <column xsi:type="varchar" name="bank_type" length="255" comment="Bank Type"/>
+        <column xsi:type="varchar" name="bank_branch_type" length="255" comment="Bank Branch Type"/>
+        <column xsi:type="varchar" name="bank_code" length="255" comment="Bank No"/>
+        <column xsi:type="varchar" name="bank_branch_no" length="255" comment="Bank Branch No"/>
+        <column xsi:type="varchar" name="bank_account" length="255" comment="Bank Account"/>
+        <column xsi:type="varchar" name="bank_memo" length="255" comment="Bank Memo"/>
+        <column xsi:type="varchar" name="basic_information_registration_file" nullable="true" comment="Basic Information Registration File"/>
+
+        <column xsi:type="varchar" name="primary_contact" length="255" comment="Primary Contact"/>
+        <column xsi:type="varchar" name="primary_contact_email" length="255" comment="Primary Contact Email"/>
+        <column xsi:type="varchar" name="financial_liaison" length="255" comment="Financial Liaison"/>
+        <column xsi:type="varchar" name="financial_liaison_contact_number" length="255" comment="Financial Liaison Contact Number"/>
+        <column xsi:type="varchar" name="financial_liaison_email" length="255" comment="Financial Liaison Email"/>
+        <column xsi:type="varchar" name="customer_service_contact" length="255" comment="Customer Service Contact"/>
+        <column xsi:type="varchar" name="customer_service_contact_number" length="255" comment="Customer Service Contact Number"/>
+        <column xsi:type="varchar" name="customer_service_contact_email" length="255" comment="Customer Service Contact Email"/>
+        <column xsi:type="varchar" name="logistics_and_delivery_contract" length="255" comment="Logistics And Delivery Contact"/>
+        <column xsi:type="varchar" name="logistics_and_delivery_phone_number" length="255" comment="Logistics And Delivery Phone Number"/>
+        <column xsi:type="varchar" name="logistics_and_delivery_email" length="255" comment="Logistics And Delivery Email"/>
+
+        <column xsi:type="varchar" name="non_fixed_service_fee" length="255" comment="Non-fixed Service Fee"/>
+        <column xsi:type="varchar" name="applicable_contracts_and_quotations" length="255" comment="Applicable Contracts And Quotations"/>
+        <column xsi:type="timestamp" name="contracts_from" on_update="false" comment="Contracts From"/>
+        <column xsi:type="timestamp" name="contracts_to" on_update="false" comment="Contracts To"/>
+
+        <column xsi:type="varchar" name="preservation_status" length="255" comment="Preservation Status"/>
+        <column xsi:type="varchar" name="salesperson" length="255" comment="Logistics Contracted Partner"/>
+
+        <column xsi:type="varchar" name="most_recent_personal_data_destruction_period" length="255" nullable="false" comment="Most Recenrt Personal Data Destruction Period"/>
+        <column xsi:type="smallint" name="destruction_document_status" nullable="false" default="0" comment="Destruction Document Status"/>
+        <column xsi:type="varchar" name="personal_data_destruction_affidavit" length="255" nullable="false"  comment="Personal data destruction affidavit" />
+		<column xsi:type="varchar" name="personal_data_destruction_certificate" length="255" nullable="false"  comment="Personal data destruction certificate" />
+        <index referenceId="FTI_FF9F29990FC547A01304B96475BC72C6" indexType="fulltext">
+            <column name="seller_code"/>
+            <column name="shop_title"/>
+            <column name="company_name"/>
+            <column name="salesperson"/>
+        </index>
+        <constraint xsi:type="unique" referenceId="MARKETPLACE_USERDATA_SELLER_ID_STORE_ID">
+            <column name="seller_id"/>
+            <column name="store_id"/>
+        </constraint>
+    </table>
+    <table name="seller_contract_files">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" padding="10" identity="true" comment="Entity Id"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="Seller Id"/>
+        <column xsi:type="varchar" name="file_name" length="255" comment="File Name" nullable="false"/>
+        <column xsi:type="varchar" name="applicable_period" length="255" comment="Applicable Period" nullable="true"/>
+        <column xsi:type="timestamp" name="contracts_from" on_update="false" nullable="true" comment="Contracts From"/>
+        <column xsi:type="int" name="update_existed_product" nullable="false" default="0" comment="Update Existing Products"/>
+        <column xsi:type="int" name="is_active" nullable="false" default="0" comment="Is active contract"/>
+        <column xsi:type="timestamp" name="contracts_to" on_update="false" nullable="true" comment="Contracts To"/>
+        <column xsi:type="int" name="commission" nullable="false" />
+        <column xsi:type="int" name="min_commission" nullable="false" />
+        <column xsi:type="varchar" name="updated_by" nullable="false" />
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="SELLER_CONTRACT_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_FILE_NAME" indexType="btree">
+            <column name="file_name"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_FROM" indexType="btree">
+            <column name="contracts_from"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_TO" indexType="btree">
+            <column name="contracts_to"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_IS_ACTIVE" indexType="btree">
+            <column name="is_active"/>
+        </index>
+    </table>
+    <table name="marketplace_saleperpartner">
+        <column xsi:type="decimal" name="special_commission_rate" scale="4" precision="12" unsigned="false" nullable="true" comment="Special Commission Rate"/>
+        <column xsi:type="decimal" name="min_commission_rate" scale="4" precision="12" unsigned="false" nullable="true" comment="Min Commission Rate"/>
+        <column xsi:type="decimal" name="avg_commission_rate" scale="4" precision="12" unsigned="false" nullable="true" comment="Avg. Commission Rate"/>
+        <column xsi:type="decimal" name="default_commission_rate" scale="4" precision="12" unsigned="false" nullable="true" comment="Default Commission Rate"/>
+        <column xsi:type="decimal" name="default_min_commission_rate" scale="4" precision="12" unsigned="false" nullable="true" comment="Default Min Commission Rate"/>
+    </table>
+    <table name="seller_contract_logs">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" padding="10" identity="true" comment="Entity Id"/>
+        <column xsi:type="int" name="contract_id" unsigned="true" nullable="true" comment="Contract ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="true" comment="Seller Id"/>
+        <column xsi:type="varchar" name="file_name" length="255" comment="File Name" nullable="true"/>
+        <column xsi:type="varchar" name="applicable_period" length="255" comment="Applicable Period" nullable="true"/>
+        <column xsi:type="timestamp" name="contracts_from" on_update="false" nullable="true" comment="Contracts From"/>
+        <column xsi:type="int" name="update_existed_product" nullable="true"  comment="Update Existing Products"/>
+        <column xsi:type="int" name="is_active" nullable="true"  comment="Is active contract"/>
+        <column xsi:type="timestamp" name="contracts_to" on_update="false" nullable="true" comment="Contracts To"/>
+        <column xsi:type="int" name="commission" nullable="true" />
+        <column xsi:type="int" name="min_commission" nullable="true" />
+        <column xsi:type="varchar" name="updated_by" nullable="false" />
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <column xsi:type="int" name="is_deleted" nullable="true"  comment="Is deleted the contract"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="SELLER_CONTRACT_LOG_CONTRACT_ID" indexType="btree">
+            <column name="contract_id"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_LOG_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_LOG_FILE_NAME" indexType="btree">
+            <column name="file_name"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_LOG_FROM" indexType="btree">
+            <column name="contracts_from"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_LOG_TO" indexType="btree">
+            <column name="contracts_to"/>
+        </index>
+        <index referenceId="SELLER_CONTRACT_LOG_IS_ACTIVE" indexType="btree">
+            <column name="is_active"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,34 @@
+<!-- ko if: isShowAddress() -->
+<tr data-bind="attr: { id: 'address_list_id_' + getAddressId() }, visible: showAddress()" class="shipping-address-item">
+    <td class="shipping-address-mask">
+        <!-- <input type="radio" name="select_shipping_address" data-bind="checked: isSelectedAddress(), checkedValue: isUseForSelectedShippingMethod()" click="selectAddress"> -->
+        <!-- ko if: isSelected() -->
+            <input type="radio" name="select_shipping_address" click="selectAddress" checked="checked">
+        <!--/ko-->
+        <!-- ko ifnot: isSelected() -->
+            <input type="radio" name="select_shipping_address" click="selectAddress">
+        <!--/ko-->
+    </td>
+    <td class="shipping-address-info">
+        <div class="address-data">
+            <span class="address-data-item address-user-info">
+                <text class="address-name" args="nameMask(address().firstname)" ></text> 
+                <text class="address-phone" if="address().telephone" args="phoneNumberMask(address().telephone)"></text>
+            </span>
+            <span class="address-data-item address-detail">
+                <text args="getAddress(address())"></text>
+            </span>
+        </div>
+    </td>
+    <td class="shipping-address-actions">
+        <div class="address-actions">
+            <button type="button" class="action update-address-link" data-bind="click: function() {updateDataToEdit(address())}">
+                <span translate="'Edit'"></span>
+            </button>
+            <button type="button" class="action delete-address-link" data-bind="click: function() {ajaxDeleteAddressInAddressBook(address())}">
+                <span translate="'Delete'"></span>
+            </button>
+        </div>
+    </td>
+</tr>
+<!--/ko-->

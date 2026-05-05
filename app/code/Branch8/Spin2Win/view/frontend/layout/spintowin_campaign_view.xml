@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <!-- Preconnect to fonts.googleapis.com -->
+        <!-- <link rel="preconnect" src="https://fonts.googleapis.com" src_type="url"/> -->
+        
+        <!-- Preconnect to fonts.gstatic.com with crossorigin -->
+        <!-- <link rel="preconnect" src="https://fonts.gstatic.com" src_type="url" crossorigin="anonymous"/> -->
+
+        <!-- Link to Google Font: Noto Sans TC -->
+        <!-- <link rel="stylesheet" src="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900" src_type="url"/> -->
+    </head>
+		<body>
+        <referenceBlock name="breadcrumbs">
+					<action method="addCrumb">
+							<argument name="crumbName" xsi:type="string" translate="true">Home</argument>
+							<argument name="crumbInfo" xsi:type="array">
+									<item name="label" xsi:type="string" translate="true">Home</item>
+									<item name="title" xsi:type="string" translate="true">Go to Home Page</item>
+									<item name="link" xsi:type="string">/</item>
+							</argument>
+					</action>
+					<action method="addCrumb">
+							<argument name="crumbName" xsi:type="string" translate="true">和泰會員專屬抽獎</argument>
+							<argument name="crumbInfo" xsi:type="array">
+									<item name="label" xsi:type="string" translate="true">和泰會員專屬抽獎</item>
+									<item name="title" xsi:type="string" translate="true">和泰會員專屬抽獎</item>
+							</argument>
+					</action>
+				</referenceBlock>
+        <move element="breadcrumbs" destination="columns.top" before="-"/>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="spin_view" template="Branch8_Spin2Win::view.phtml" cacheable="false"/>
+        </referenceContainer>
+				<referenceContainer name="main.content">
+            <block class="Magento\Framework\View\Element\Template" name="spin_bkg" template="Branch8_Spin2Win::bkg.phtml" before="-"/>
+            <block class="Magento\Framework\View\Element\Template" name="spin_bkg_footer" template="Branch8_Spin2Win::bkg_footer.phtml" after="columns"/>
+            <block class="Magento\Framework\View\Element\Template" name="spin_desc" template="Branch8_Spin2Win::desc.phtml" after="-"/>
+				</referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="spin2win_script" template="Branch8_Spin2Win::spintowin_script.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="spin2win_trigger_action" remove="true"/>
+    </body>
+</page>

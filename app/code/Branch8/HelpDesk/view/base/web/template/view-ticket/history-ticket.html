@@ -1,0 +1,45 @@
+<div class="block lrw-block lrw-account-summary-listing" data-bind="visible: shouldVisible()">
+    <div class="block-title">
+        <strong>
+            <span data-bind="i18n: 'Message History'"></span>
+        </strong>
+    </div>
+    <div class="block-content">
+        <div class="ticket-history" data-bind="foreach:messages ">
+            <div class="message">
+                <div class="message-header">
+                    <strong data-bind="text:$parent.getCommenter($data)"></strong>
+                    <span class="minor"> <span data-bind="i18n: 'commented '"></span>
+                        <span data-bind="text:$parent.timeAgo($data)"></span>
+                    </span>
+
+                </div>
+                <div class=" message-body">
+                    <div class="message" data-bind="html:$data.content"></div>
+                    <div class="message-attachments">
+                        <!-- ko foreach: { data: $data.extension_attributes.attachments, as: 'attachment' } -->
+                        <div class="file-uploader-summary">
+                            <div class="file-uploader-preview">
+                                <a target="_blank"
+                                   data-bind="attr:{href:$parents[1].getAttachmentLink(attachment),title:attachment.name},
+                                class:'preview-link preview-'+attachment.type">
+                                    <!-- ko if: $data.type=='image' -->
+                                    <img
+                                        data-bind="attr:{alt:attachment.name,src:$parents[1].getAttachmentLink(attachment)}"/>
+                                    <!-- /ko -->
+                                </a>
+                            </div>
+                            <div class="file-uploader-filename" data-bind="text: $data.name"></div>
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ticket-history-paging">
+            <!-- ko foreach: getRegion('paging') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+    </div>
+</div>

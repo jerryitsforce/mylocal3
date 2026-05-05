@@ -1,0 +1,1345 @@
+& when (@media-common = true) {
+    .d-none {
+        display: none !important;
+    }
+
+    .mobile-device {
+        .d-none {
+            display: none !important;
+        }
+    }
+
+    .hotaipoint-detail-index {
+        .customer-header-wrapper,
+        .sidebar.sidebar-main,
+        .hotai-point-paging-toolbar,
+        .page-title-wrapper .page-title {
+            display: none;
+        }
+
+        .page-main {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    .hotai-point-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        a {
+            color: #FFFFFF;
+            padding: 10px;
+            &:extend(.abs-caption1-medium all);
+            &:hover {
+                text-decoration: none;
+                color: #FFFFFF;
+            }
+        }
+        #transfer-point-link, #registration-point-link, #convert-point-link {
+            position: relative;
+            padding-left: 34px;
+            &::before {
+                position: absolute;
+                left: 10px;
+                top: 11px;
+
+            }
+        }
+        #transfer-point-link {
+            .lib-icon-font(
+                @_icon-font-content: '\e934',
+                @_icon-font-size: 20px,
+                @_icon-font-line-height: 20px,
+                @_icon-font-position: before,
+                @_icon-font-display: block,
+                @_icon-font-text-hide: false,
+                @_icon-font-color: var(--color-white),
+                @_icon-font-color-hover: var(--color-white),
+                @_icon-font-color-active: var(--color-white)
+            );
+        }
+        #registration-point-link {
+            .lib-icon-font(
+                @_icon-font-content: '\e932',
+                @_icon-font-size: 20px,
+                @_icon-font-line-height: 20px,
+                @_icon-font-position: before,
+                @_icon-font-display: block,
+                @_icon-font-text-hide: false,
+                @_icon-font-color: var(--color-white),
+                @_icon-font-color-hover: var(--color-white),
+                @_icon-font-color-active: var(--color-white)
+            );
+        }
+        #convert-point-link {
+            .lib-icon-font(
+                @_icon-font-content: '\e935',
+                @_icon-font-size: 20px,
+                @_icon-font-line-height: 20px,
+                @_icon-font-position: before,
+                @_icon-font-display: block,
+                @_icon-font-text-hide: false,
+                @_icon-font-color: var(--color-white),
+                @_icon-font-color-hover: var(--color-white),
+                @_icon-font-color-active: var(--color-white)
+            );
+        }
+        #transfer-point-link, #registration-point-link {
+            &:after {
+                content: '';
+                color: black;
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+                padding: 10px;
+                position: absolute;
+                height: 0;
+                right: -7px;
+            }
+        }
+    }
+
+    .hotai-point-detail-container {
+        .filter-toolbar {
+            text-align: right;
+            padding: 25px 16px;
+
+            .history-filter-btn {
+                position: relative;
+                width: 63px;
+                height: 32px;
+                background-color: var(--color-white);
+                padding: 5px 4px 5px 22px;
+                span {
+
+                    &:extend(.abs-caption1-medium all);
+
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-filter,
+                        @_icon-font-size: 20px,
+                        @_icon-font-line-height: 20px,
+                        @_icon-font-position: before,
+                        @_icon-font-display: block,
+                        @_icon-font-text-hide: false,
+                        @_icon-font-color: var(--color-red-base),
+                        @_icon-font-color-hover: var(--color-red-base),
+                        @_icon-font-color-active: var(--color-red-base)
+                    );
+
+                    &::before {
+                        position: absolute;
+                        top: 5px;
+                        left: 4px;
+                    }
+                }
+            }
+        }
+    }
+
+    .current-point-container {
+        position: absolute;
+        top: 24px;
+        width: ~'calc(100% - 32px)';
+        left: 16px;
+        text-align: center;
+        color: var(--color-white);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        padding-bottom: 14px;
+    }
+
+    .current-point {
+        margin-bottom: 8px;
+
+        .current-point-text {
+            display: none;
+        }
+
+        .hotai-customer-points {
+            position: relative;
+            padding-left: 40px;
+            font-family: Outfit;
+            &:extend(.abs-h4 all);
+
+            .lib-icon-font(
+                @_icon-font-content: '\e909',
+                @_icon-font-size: 32px,
+                @_icon-font-line-height: 32px,
+                @_icon-font-position: before,
+                @_icon-font-display: inline-block,
+                @_icon-font-text-hide: false,
+                @_icon-font-color: var(--color-white),
+                @_icon-font-color-hover: var(--color-white),
+                @_icon-font-color-active: var(--color-white)
+            );
+
+            &::before {
+                position: absolute;
+                left: 3px;
+                top: -2px;
+            }
+        }
+
+        .hotai-points-logo-white {
+            width: 100%;
+            margin-left: 10px;
+            margin-bottom: 16px;
+            img {
+                height: 12px;
+            }
+        }
+
+        .hotai-points-logo {
+            display: none;
+        }
+    }
+    .points-expire-soon {
+        .points-expire-soon-message {
+            &:extend(.abs-caption2 all);
+        }
+    }
+
+    .modal-custom-content {
+        .section {
+            &-title {
+                text-align: left;
+                position: relative;
+                padding-bottom: 16px;
+    
+                .title {
+                    padding-left: 8px;
+                    color: var(--color-text-base);
+                    font-weight: @font-weight__bold;
+                    position: relative;
+    
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        top: 6px;
+                        bottom: 4px;
+                        left: 0;
+                        width: 4px;
+                        height: 14px;
+                        border-radius: 8px;
+                        background-color: var(--color-gray-light3);
+                    }
+                }
+            }
+
+            &-remark {
+                text-align: left;
+                padding-top: 10px;
+            }
+        }
+
+        .tooltip {
+            &:extend(.abs-caption2 all);
+            color: var(--color-gray-light2);
+        }
+
+        .control.time-range {
+            width: 100%;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+
+            .input-control {
+                flex: 1;
+
+            }
+
+            .box-input {
+                position: relative;
+                .lib-icon-font(
+                    @_icon-font-content: @icon-calendar,
+                    @_icon-font-size: 22px,
+                    @_icon-font-line-height: 20px,
+                    @_icon-font-position: after,
+                    @_icon-font-display: block,
+                    @_icon-font-text-hide: false,
+                    @_icon-font-color: var(--color-black-solid1),
+                    @_icon-font-color-hover: var(--color-red-base),
+                    @_icon-font-color-active: var(--color-red-base)
+                );
+
+                &:after {
+                    position: absolute;
+                    right: 9px;
+                    top: 12px;
+                    z-index: 1;
+                }
+
+                input {
+                    position: relative;
+                    margin: 0;
+                    z-index: 2;
+                    background-color: transparent;
+                }
+            }
+
+            .divider {
+                width: 12px;
+                height: 2px;
+                box-sizing: border-box;
+                border: 1px solid var(--color-gray-light4);
+            }
+        }
+    }
+
+    .point-tab-title {
+        margin: 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+
+        .item {
+            margin: 0;
+            padding: 4px 12px;
+            min-width: 80px;
+            box-sizing: border-box;
+
+            &.active {
+                background: var(--color-black-solid1);
+                border-radius: 24px;
+
+                a {
+                    color: var(--color-white);
+                    font-weight: @font-weight__heavier;
+                }
+            }
+        }
+
+        a,
+        a:hover,
+        a:focus,
+        a:active {
+            color: var(--color-gray-solid2);
+        }
+    }
+
+    .product.data.items .point-tab-title .item.title a:after{
+        content: none;
+    }
+
+    .hotai-point-detail-container {
+        .product.data.items .item.title > .switch {
+            padding: 0;
+        }
+
+        .product.data.items > .item.content {
+            background-color: transparent;
+        }
+    }
+
+    .point-tables {
+        tbody {
+            > tr {
+                &:extend(.abs-caption1 all);
+
+                .show-on-mobile {
+                    &:extend(.abs-caption2 all);
+                }
+
+                &.has-collapsible-content .add-point .hotai-customer-points,
+                &.has-collapsible-content .deduct-point .hotai-customer-points {
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-down,
+                        @_icon-font-position: after,
+                        @_icon-font-size: 16px,
+                        @_icon-font-line-height: 24px
+                    );
+                    align-items: center;
+                    cursor: pointer;
+                    display: flex;
+                    font-weight: @font-weight__bold;
+                    justify-content: flex-end;
+                    gap: 8px;
+                    &:after {
+                        width: 35px;
+                        font-size: 16px;
+                    }
+                }
+
+                &.expanded .add-point .hotai-customer-points,
+                &.expanded .deduct-point .hotai-customer-points{
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-up,
+                        @_icon-font-position: after
+                    );
+                    display: flex;
+                }
+
+                &.expanded {
+                    > td,
+                    > td:last-child {
+                        border-width: 0;
+                        margin: 0 16px;
+                    }
+                }
+
+                &.collapsible-content{
+                    &:after {
+                        content: unset;
+                    }
+
+                    > td, > td:last-child {
+                        border-width: 0;
+                        padding: 0 16px 16px;
+                    }
+                }
+
+                td {
+                    .hotai-customer-points {
+                        img {
+                            height: 18px;
+                            width: 18px;
+                        }
+                    }
+                }
+
+                &:last-child > td:last-child,
+                &:last-child > td {
+                    border-width: 0;
+                }
+            }
+        }
+
+        table > tbody > tr > td {
+            padding: 16px;
+            margin-bottom: 4px;
+            border-bottom: 4px solid var(--color-gray-light1);
+
+            &.add-point,
+            &.deduct-point {
+                min-width: 89px;
+            }
+        }
+
+        .data.table > tbody > tr {
+            > td:last-child {
+                .account & {
+                    border-bottom: 4px solid var(--color-gray-light1);
+                }
+            }
+
+            &.expanded {
+                > td:last-child {
+                    .account & {
+                        border-width: 0;
+                    }
+                }
+            }
+
+
+        }
+
+        td {
+            p {
+                margin: 0;
+
+                &.source-name {
+                    margin-bottom: 4px;
+                }
+            }
+        }
+    }
+
+    .source-name + p {
+        color: var(--color-gray-light2);
+    }
+
+    .add-point,
+    .deduct-point {
+        text-align: right;
+
+        > div {
+            display: block;
+            vertical-align: middle;
+        }
+
+        // span {
+        //     display: flex;
+        //     vertical-align: middle;
+        //     align-items: center;
+        //     gap: 8px;
+        //     width: 100%;
+        // }
+    }
+
+    .table-points-expire-soon {
+        tr td:last-child {
+            text-align: right;
+        }
+    }
+
+    .load-more-container {
+        text-align: center;
+        padding: 28px 0 48px;
+    }
+
+    .point-rule {
+        padding: 16px 24px 48px;
+
+        .section-title {
+            font-weight: @font-weight__bold;
+            margin-bottom: 12px;
+            display: block;
+
+            &:before {
+                content: '';
+                background-color: #ccc;
+                width: 4px;
+                height: 14px;
+                display: inline-block;
+                margin: -3px 4px 0 0;
+                vertical-align: middle;
+                border-radius: 100px;
+            }
+        }
+
+        ul,
+        ol {
+            padding-left: 19px;
+            margin-bottom: 0;
+
+            li {
+                margin-bottom: 0;
+            }
+        }
+
+        .section-content {
+            color: var(--color-gray-solid1);
+        }
+    }
+
+    //Toolbar
+    .hotai-point-paging-toolbar {
+        .pages {
+            strong,
+            a {
+                padding: 6px 0;
+                width: 36px;
+                border-radius: 12px;
+                box-sizing: border-box;
+            }
+
+            strong.page {
+                &:extend(.abs-body-text-bold all);
+                background: var(--color-red-base);
+                color: var(--color-white);
+                border: solid 1px var(--color-red-base);
+            }
+
+            a,
+            a.page:visited {
+                &:extend(.abs-body-text all);
+                color: var(--color-black-solid1);
+                background-color: transparent;
+            }
+
+            .action {
+                background: transparent;
+                color: var(--color-black-solid1);
+                border-color: var(--color-gray-light3);
+
+                &.next:visited:before,
+                &.previous:visited:before {
+                    color: var(--color-black-solid1);
+                }
+            }
+
+            .items {
+                text-align: center;
+            }
+
+            .item {
+                &.pages-item-next {
+                    margin-right: 0;
+                }
+
+                &.disabled {
+                    a {
+                        &.action.previous, &.action.next {
+                            border: 1px solid var(--color-gray-light3);
+                            cursor: not-allowed;
+                            pointer-events: none;
+                            &::before {
+                                opacity: 30%;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .action.next:before,
+            .action.previous:before {
+                color: var(----color-text-base);
+                font-weight: @font-weight__bold;
+            }
+        }
+    }
+
+    .comment-title {
+        color: var(--color-gray-solid1);
+        margin-bottom: 4px;
+    }
+
+    .wrapper-empty {
+        padding: 36px 0 48px;
+        text-align: center;
+        line-height: 0;
+    }
+
+    .notice {
+        margin: 12px 0 0;
+    }
+
+    .confirm-redirect-modal {
+        .modal-footer .action {
+            padding: 10px 16px;
+        }
+
+        .modal-custom-content p {
+            text-align: center;
+        }
+    }
+
+    .hotai-point-history-filter-modal {
+        #date-range-errors {
+            text-align: left;
+        }
+        .field-error, div.mage-error {
+            margin-top: 4px;
+            color: var(--color-red-light3);
+            text-align: left;
+            line-height: 18px;
+
+            .lib-icon-font(
+                @_icon-font-content: @icon-warning,
+                @_icon-font-size: 11px,
+                @_icon-font-line-height: 11px,
+                @_icon-font-position: before,
+                @_icon-font-display: inline-block,
+                @_icon-font-text-hide: false,
+                @_icon-font-color: var(--color-red-base),
+                @_icon-font-color-hover: var(--color-red-base),
+                @_icon-font-color-active: var(--color-red-base),
+                @_icon-font-margin: 0 4px 2px 0
+            );
+        }
+
+        input.mage-error {
+            box-shadow: 0 0 0 2px #F2411914;
+            border: 1px solid var(#F241194D);
+        }
+
+        input:not([disabled]):focus {
+            border: 1px solid var(--color-gray-light3)
+        }
+    }
+
+    .comment-title {
+        padding-top: 12px;
+        // border-top: solid 1px var(--color-gray-light4);
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+    .show-on-mobile {
+        display: block;
+    }
+
+    .hotai-point-history-filter-modal {
+        .action-close {
+            right: auto;
+            left: 0;
+        }
+
+        .modal-inner-wrap {
+            transform: unset;
+            width: 100%;
+            height: auto;
+            max-width: none;
+            position: fixed;
+            top: auto;
+            left: 0;
+            z-index: 200;
+            bottom: -100vh;
+            border-radius: 20px 20px 0 0;
+            transition: bottom 0.5s ease-in-out;
+        }
+
+        &._show {
+            .modal-inner-wrap {
+                bottom: 0;
+                background-color: white;
+                top: auto;
+                transform: unset;
+            }
+        }
+
+        .modal-header {
+            padding: 14px;
+        }
+
+        .modal-content {
+            padding: 16px 16px 40px;
+        }
+
+        .modal-footer {
+            padding: 12px 16px;
+            border-radius: 20px 20px 0 0;
+            flex-direction: row-reverse;
+            gap: 12px;
+            box-shadow: 0 0 10px 1px #2318151A;
+
+            &:before,
+            &:after {
+                display: none;
+            }
+
+            .action {
+                flex: 1;
+            }
+        }
+
+
+        .search-time {
+            .control.time-range {
+                .input-control input {
+                    height: 40px;
+                }
+            }
+        }
+
+        .modal-custom-content p {
+            text-align: center;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    .hotaipoint-detail-index {
+        .page-main {
+            padding-bottom: 0;
+            background-color: var(--color-gray-light1);
+
+            .page-title-wrapper .page-title {
+                display: none !important;
+            }
+        }
+
+        .page-main .breadcrumbs {
+            display: block;
+        }
+
+        .breadcrumbs {
+            margin-top: 13px;
+            margin-bottom: 12px;
+            padding-left: 14px;
+
+            .item:not(:last-child):before,
+            .item:not(:last-child):after {
+                line-height: 20px;
+            }
+
+            a {
+                line-height: 18px;
+            }
+        }
+
+        .page-title-wrapper {
+            padding: 101px 16px 10px;
+            background-color: var(--color-red-base);
+            border-radius: 0 0 36px 0;
+        }
+    }
+
+    .point-tab-title {
+        box-shadow: 0 0 10px 2px rgba(35, 24, 21, 0.04);
+        border-bottom: 1px solid var(--color-gray-light5);
+        background-color: var(--color-white);
+        border-radius: 20px 20px 0 0;
+        padding: 16px;
+    }
+
+    .point-tab-content {
+        background-color: var(--color-white);
+    }
+
+    .point-rule {
+        .section-content {
+            &:extend(.abs-mb-caption2);
+        }
+    }
+
+    .point-tables {
+        thead {
+            display: none;
+        }
+    }
+}
+
+
+//
+//  Tablet +
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .md-block {
+        display: block !important;
+    }
+
+    .md-none {
+        display: none !important;
+    }
+
+    .mobile-device {
+        .md-block {
+            display: block !important;
+        }
+
+        .md-none {
+            display: none !important;
+        }
+    }
+
+    #html-body.mobile-device.hotaipoint-detail-index .load-more-container {
+        display: none !important;
+    }
+
+    .point-rule {
+        padding: 28px 0 48px;
+
+        label {
+            &:extend(.abs-tb-h5);
+
+            &:before {
+                margin-right: 8px;
+            }
+        }
+
+        .section-content {
+            &:extend(.abs-tb-body-text);
+        }
+
+        ul,
+        ol {
+            padding-left: 22px;
+        }
+
+        .section-title {
+            &:extend(.abs-tb-h5);
+            margin-bottom: 15px;
+
+            &:before {
+                margin-right: 8px;
+                height: 18px;
+            }
+        }
+    }
+    //Pagination
+    .account {
+        .hotai-point-paging-toolbar {
+            margin: 0;
+
+            .pages {
+                position: unset;
+                margin: 32px 0 0;
+                text-align: right;
+            }
+        }
+    }
+
+    .hotaipoint-detail-index {
+        --layout__max-width_xl: 1228px;
+
+        .customer-header-wrapper {
+            display: block;
+        }
+
+        #maincontent {
+            .page-title-wrapper {
+                .page-title {
+                    display: block;
+                    padding: 0;
+                }
+            }
+        }
+
+        .page-title-wrapper {
+            padding: 0;
+            background-color: unset;
+            border-radius: unset;
+            position: relative;
+            margin-bottom: 36px;
+
+            .page-title {
+                font-size: 32px;
+                line-height: 48px;
+                border-bottom: none;
+                text-align: left;
+                margin-bottom: 0;
+            }
+        }
+
+        .page-main {
+            padding: 0 24px;
+            max-width: 1228px;
+        }
+
+        &.page-layout-2columns-left .column.main {
+            padding-left: 0;
+            width: ~'calc(100% - 300px)';
+        }
+    }
+
+    .hotai-point-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        margin-top: 9px;
+
+        a {
+            color: var(--color-text-base);
+            padding: 5px 10px;
+            border: 1px solid var(--color-gray-light4);
+            border-radius: 25px;
+            display: inline-block;
+            width: 62px;
+
+            &:hover {
+                color: var(--color-text-base);
+            }
+        }
+
+        #transfer-point-link,
+        #registration-point-link,
+        #convert-point-link {
+            padding-left: 36px;
+            padding-right: 8px;
+
+            &::before {
+                font-size: 24px;
+                line-height: 24px;
+                top: 4px;
+                color: var(--color-text-base);
+            }
+
+            &:hover, &:focus, &:active {
+                &::before {
+                    color: var(--color-text-base);
+                }
+            }
+
+            &:after {
+                content: unset;
+            }
+        }
+    }
+
+    .point-tab-title {
+        justify-content: flex-start;
+        padding: 59px 0 32px;
+        border-bottom: 1px solid var(--color-gray-light4);
+        gap: 20px;
+
+        .item {
+            padding: 10px 16px;
+            min-width: 120px;
+        }
+    }
+
+    .account .point-tables {
+        .table > tbody > tr {
+            > td {
+                border-top: none;
+                position: relative;
+                z-index: 1;
+                background-color: var(--color-white);
+                border-width: 8px;
+                vertical-align: middle;
+            }
+
+            &.expanded > td,
+            &.expanded > td:last-child {
+                border-width: 0;
+                border-color: var(--color-gray-light4);
+            }
+
+            &.has-collapsible-content {
+                > td:first-child {
+                    border-top-left-radius: 12px;
+                    border-bottom-left-radius: 12px;
+                }
+
+                > td:nth-child(2) {
+                    width: 167px;
+                }
+
+                > td:last-child {
+                    border-top-right-radius: 12px;
+                    border-bottom-right-radius: 12px;
+                    width: 232px;
+                    border-width: 8px;
+                }
+
+                &.expanded td {
+                    border-bottom-right-radius: 0;
+                    border-bottom-left-radius: 0;
+                    padding-bottom: 12px;
+                }
+            }
+
+            &.collapsible-content {
+                > td,
+                > td:last-child {
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                    border-width: 8px;
+                }
+            }
+        }
+
+        .table-points-expire-soon {
+            td:first-child {
+                border-top-left-radius: 12px;
+                border-bottom-left-radius: 12px;
+            }
+
+            td:last-child {
+                border-top-right-radius: 12px;
+                border-bottom-right-radius: 12px;
+                width: 232px;
+            }
+        }
+
+        .table-points-expired {
+            .add-point, .deduct-point {
+                text-align: left;
+            }
+
+            > tbody > tr {
+                &.has-collapsible-content {
+                    > td:last-child {
+                        width: 174px;
+                    }
+                }
+
+                tr > td:nth-child(2) {
+                    width: 118px;
+                }
+
+                tr > td:nth-child(2) {
+                    width: 124px;
+                }
+            }
+        }
+
+        .table-points-expire-soon {
+            td {
+                width: 50%;
+                text-align: left;
+            }
+        }
+    }
+
+    .point-tables {
+        tbody tr {
+            &:not(.collapsible-content) {
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+            &.has-collapsible-content {
+                .add-point,
+                .deduct-point {
+                    .hotai-customer-points:after {
+                        font-size: 24px;
+                        width: 40px;
+                        margin-right: 10px;
+                        margin-top: -3px;
+                    }
+                }
+            }
+        }
+
+        table > thead > tr > th {
+            padding: 0 16px 8px;
+            color: var(--color-gray-light2);
+            font-weight: @font-weight__regular;
+        }
+
+        // .table-points-expired, 
+        .table-point-records {
+            tbody tr.has-collapsible-content {
+                .add-point,
+                .deduct-point {
+                    .hotai-customer-points:after {
+                        content: unset;
+                    }
+
+                    + td .point-expired-date {
+                        .lib-icon-font(
+                            @_icon-font-content: @icon-down,
+                            @_icon-font-position: after,
+                            @_icon-font-size: 24px,
+                            @_icon-font-line-height: 24px
+                        );
+                        align-items: center;
+                        cursor: pointer;
+                        display: flex;
+                        justify-content: space-between;
+                        //font-weight: @font-weight__bold;
+
+                        .date:before {
+                            content: '';
+                        }
+                    }
+                }
+
+                &.expanded .add-point + td .point-expired-date,
+                &.expanded .deduct-point + td .point-expired-date {
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-up,
+                        @_icon-font-position: after,
+                        @_icon-font-size: 24px,
+                        @_icon-font-line-height: 24px
+                    );
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    .item-content-container {
+        padding: 40px 40px 52px;
+        background-color: var(--color-gray-light1);
+        border-bottom-left-radius: 24px;
+        border-bottom-right-radius: 24px;
+
+        #tab-history & {
+            padding-top: 37px;
+        }
+
+        #tab-redeemed & {
+            padding-top: 39px;
+        }
+    }
+
+    .hotai-point-detail-container {
+        .filter-toolbar {
+            padding: 0 0 17px;
+
+            .history-filter-btn {
+                width: 81px;
+
+                span::before {
+                    left: 11px;
+                }
+            }
+        }
+    }
+
+    .hotai-point-history-filter-modal {
+        .modal-header {
+            padding: 40px 40px 15px;
+        }
+
+        .modal-footer {
+            gap: 0 12px;
+        }
+
+        .modal-custom-content .section-title {
+            padding-bottom: 8px;
+
+            .title {
+                padding-left: 12px;
+            }
+        }
+
+        .title, .tooltip {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    .wrapper-empty {
+        padding: 19px 0 5px;
+    }
+
+    .notice {
+        margin: 16px 0 0;
+    }
+
+    .current-point {
+        .current-point-text {
+            display: block;
+        }
+    }
+
+    .confirm-redirect-modal {
+        .modal-custom .modal-footer {
+            padding: 30px 30px 38px;
+        }
+
+        .modal-custom-content .section-title {
+            padding-bottom: 0;
+        }
+    }
+}
+//
+//  Desktop
+//  _____________________________________________
+// > 768px
+.media-width(@extremum, @break) when (@extremum ='min') and (@break = @screen__m) {
+    .current-point-container {
+        background-color: var(--color-gray-light1);
+        padding: 43px 40px 40px 40px;
+        border-radius: 25px;
+        position: unset;
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    .section-content {
+        .current-point {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            flex-direction: column;
+        }
+        .points-expire-soon {
+            .points-expire-soon-message {
+                &:extend(.abs-caption1 all);
+                font-size: 14px;
+                line-height: 22px;
+                font-weight: 400;
+                letter-spacing: 1px;
+                color: var(--color-gray-solid1)
+            }
+        }
+    }
+
+    .current-point {
+        .hotai-points-logo-white {
+            display: none;
+        }
+        .hotai-points-logo {
+            display: flex;
+            img {
+                height: 28px;
+            }
+        }
+    }
+
+    .current-point-text {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 28px;
+        letter-spacing: 2px;
+        color: var(--color-text-base);
+    }
+
+    .current-point .hotai-customer-points {
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 40px;
+        letter-spacing: 3px;
+        color: var(--color-red-base);
+        padding-left: 42px;
+        &::before {
+            font-size: 42px;
+            color: var(--color-red-base);
+            top: -1px;
+            left: -5px;
+            line-height: 42px;
+        }
+
+        &:hover, &:focus, &:active {
+            &:before {
+                color: var(--color-red-base);
+            }
+        }
+    }
+
+    .point-tables tbody tr.has-collapsible-content {
+        & .add-point,
+        & .deduct-point {
+            & .hotai-customer-points {
+                justify-content: flex-start;
+                position: relative;
+                &:after {
+                    width: 40px;
+                    font-size: 24px;
+                    position: absolute;
+                    right: 0;
+                }
+            }   
+        }
+    }
+}
+
+// > 1024px
+.media-width(@extremum, @break) when (@extremum ='min') and (@break = @screen__l) {
+    .hotaipoint-detail-index{
+        .page-title-wrapper{
+            display: flex;
+            align-items: center;
+
+            .page-title{
+                margin-bottom: 0;
+            }
+
+            .hotai-point-actions{
+                margin-left: auto;
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+// > 1280px
+.media-width(@extremum, @break) when (@extremum ='min') and (@break = @screen__sl) {
+    .hide-on-mobile {
+        display: unset;
+        &.td, &.th {
+            display: table-cell;
+        }
+    }
+    .show-on-mobile {
+        display: none !important;
+    }
+
+    .account.hotaipoint-detail-index {
+        .sidebar.sidebar-main {
+            display: block;
+        }
+        .hotai-point-paging-toolbar {
+            display: block;
+        }
+    }
+
+    .hotaipoint-detail-index {
+        .load-more-container {
+            display: none;
+        }
+    }
+}

@@ -1,0 +1,114 @@
+<?php
+/** @var \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\History $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Branch8\Sales\ViewModel\StatusResolver $statusResolverModel */
+$statusResolverModel = $block->getData('status_resolver_model');
+$parentOrder = $block->getParentOrder();
+$canModifyStatus = $statusResolverModel->canModifyParentOrdertatus();
+$currentStatus = $block->getParentOrder()->getDetail()->getStatus();
+
+$statues = $statusResolverModel->resolveStatusForParentOrder($parentOrder);
+?>
+<div id="order_history_block"
+     data-bind="mageInit: {'postParenOrderComment': {}}"
+     class="admin__page-section-item order-comments-history">
+    <div class="order-history-block" id="history_form" data-role="note-form">
+        <div class="admin__field">
+
+            <div class="admin__field-control">
+                <b><?= $block->escapeHtml(__('Current Status:')) ?></b> <?= $currentStatus ?>
+            </div>
+        </div>
+        <div class="admin__field">
+            <label for="history_status" class="admin__field-label">
+                <?= $block->escapeHtml(__('Status')) ?>
+            </label>
+            <?php if ($canModifyStatus && $statues): ?>
+                <div class="admin__field-control">
+                    <select name="history[status]"
+                            id="history_status" class="admin__control-select">
+                        <?php foreach ($statues as $_code => $_label): ?>
+                            <option value="<?= $block->escapeHtmlAttr($_code) ?>"
+                                <?php if ($_code === $block->getParentOrder()->getDetail()->getStatus()): ?>
+                                    selected="selected"
+                                <?php endif; ?>>
+                                <?= $block->escapeHtml($_label) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="admin__field">
+            <label for="history_comment" class="admin__field-label required">
+                <?= $block->escapeHtml(__('Comment')) ?>
+            </label>
+            <div class="admin__field-control">
+                    <textarea name="history[comment]" <?php if (!$statues): ?> disabled="disabled" <?php endif ?>
+                              rows="3"
+                              cols="5"
+                              id="history_comment"
+                              class="admin__control-textarea"></textarea>
+            </div>
+        </div>
+        <div class="admin__field">
+            <div class="order-history-comments-options">
+                <div class="admin__field admin__field-option">
+                    <input
+                        name="history[is_customer_notified]" <?php if (!$statues || !$canModifyStatus): ?> disabled="disabled" <?php endif ?>
+                        type="checkbox"
+                        id="history_notify"
+                        class="admin__control-checkbox"
+                        value="1"/>
+                    <label class="admin__field-label" for="history_notify">
+                        <?= $block->escapeHtml(__('Notify Customer by Email')) ?>
+                    </label>
+
+                </div>
+                <div class="admin__field admin__field-option">
+                    <input
+                        name="history[is_visible_on_front]" <?php if (!$statues || !$canModifyStatus): ?> disabled="disabled" <?php endif ?>
+                        type="checkbox"
+                        id="history_visible"
+                        class="admin__control-checkbox"
+                        value="1"/>
+                    <label class="admin__field-label" for="history_visible">
+                        <?= $block->escapeHtml(__('Visible on Storefront')) ?>
+                    </label>
+                </div>
+            </div>
+            <?php if ($statues && $canModifyStatus): ?>
+                <div class="order-history-comments-actions" data-role="note-trigger">
+                    <button title="Submit Comment"
+                            type="button" class="action-default scalable action-save action-secondary">
+                    <span><?= __('Submit Comment') ?>
+                    </span>
+                    </button>
+                </div>
+            <?php endif ?>
+        </div>
+    </div>
+    <ul class="note-list" data-role="note-list">
+        <?php foreach ($block->getStatusHistoryCollection() as $_item): ?>
+            <?= $block->getLayout()
+                ->createBlock(
+                    \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\History\Record::class
+                )->setItem($_item)
+                ->setTemplate('Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/history/record.phtml')
+                ->toHtml() ?>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php
+$config = json_encode([
+    'postUrl' => $block->getUrl('*/*/postComment', ['id' => $block->getParentOrder()->getIndexId()])
+]);
+
+$scriptString = <<<script
+        require(['jquery','postParenOrderComment'], function($,postComment){
+            $('#order_history_block').parentOrderPostComment($config)
+        });
+script;
+?>
+<?= /* @noEscape */
+$secureRenderer->renderTag('script', [], $scriptString, false) ?>

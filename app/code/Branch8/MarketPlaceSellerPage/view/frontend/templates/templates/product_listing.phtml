@@ -1,0 +1,252 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\LiveSearchProductListing\Block\Frontend\SaaSContext */
+/** @var $helper \Magento\Search\Helper\Data */
+//phpcs:ignore
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+$dataHelper = $this->helper(Branch8\ProductAlert\Helper\Data::class);
+$dataLabel = $this->helper(Branch8\PromotionPage\Helper\Data::class);
+$quickViewHelper = $this->helper(Magetop\Quickview\Helper\Data::class);
+$imageAlert = $dataHelper->getProductAlertImage();
+$productSkus = $dataHelper->getEighteenProducts();
+$shippingAllMethods = $dataHelper->getShippingAllMethodsOptions();
+$alertSkuString = implode(', ', $productSkus);
+$productIdsLabel = @implode(',', $dataLabel->getProductIdMatchVipLabel());
+$productIdsPreOrder = @implode(',', $dataLabel->checkIsPreorder());
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+$viewModel = $block->getViewModel();
+$profile = $viewModel->getSellerProfile();
+?>
+
+<div id="livesearch_root"
+     data-currency-symbol="<?= $block->escapeHtmlAttr($block->getCurrencySymbol()); ?>"
+     data-magento-edition="<?= $block->escapeHtmlAttr($block->getMagentoEdition()); ?>"
+     data-magento-version="<?= $block->escapeHtmlAttr($block->getMagentoVersion()); ?>"
+     data-module-version="<?= $block->escapeHtmlAttr($block->getModuleVersion()); ?>"
+     data-image-src="<?= $imageAlert ?>"
+     data-alert-sku="<?= htmlspecialchars($alertSkuString); ?>"
+></div>
+<style>
+    .column.main {
+        min-height: 0px;
+    }
+</style>
+
+<script>
+    require([
+            'jquery',
+            'magentoStorefrontEvents',
+            "Branch8_ProductAlert/js/search",
+            'Magetop_Quickview/js/jquery.magnific-popup.min'
+        ],
+        function ($, magentoStorefrontEvents, customerData) {
+            var shippingMethod = <?= $shippingAllMethods; ?>;
+            const root = document.getElementById("livesearch_root");
+            var cacheStorage = JSON.parse(window.localStorage.getItem('mage-cache-storage'));
+
+            function addToCart (item){
+                const productId = item.product.id;
+                const sku = item.productView.sku;
+                const ga4Index = item.productView.index;
+
+
+                const form_key = window.FORM_KEY;
+                const url = createAddToCartUrl(productId);
+                const postUenc = encodeUenc(url);
+                var formData = new FormData();
+                formData.append('product', productId);
+                formData.append('uenc', postUenc);
+                formData.append('form_key', form_key);
+                formData.append('skipMessage', 1);
+                formData.append('position', ga4Index);
+
+
+                $.ajax({
+                    url: url,
+                    data: formData,
+                    type: 'post',
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    /** @inheritdoc */
+                    beforeSend: function () {
+                        $('.mfp-preloader').css('display', 'block');
+                    },
+
+                    /** @inheritdoc */
+                    success: function (res) {
+                        var eventData, parameters;
+                        $(document).trigger('ajax:addToCart', {
+                            'sku': sku,
+                            'productIds': productId,
+                            'response': res
+                        });
+                        $('.mfp-preloader').css('display', 'none');
+
+                        if (res.backUrl) {
+                            openPopup(item);
+                            return;
+                        }
+
+                        if (res.minicart) {
+                            $('[data-block="minicart"]').replaceWith(res.minicart);
+                            $('[data-block="minicart"]').trigger('contentUpdated');
+                        }
+                        $(event.target).removeClass('loading');
+                    },
+
+                    /** @inheritdoc */
+                    error: function (res) {
+
+                        $(document).trigger('ajax:addToCart:error', {
+                            'sku': sku,
+                            'productIds': productId,
+                            'response': res
+                        });
+                        $('[data-block="minicart"]').trigger('contentUpdated');
+                        openPopup(item);
+                    },
+
+                    /** @inheritdoc */
+                    complete: function (res) {
+                        $(event.target).removeClass('loading');
+                        if (res.state() === 'rejected') {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
+            function createAddToCartUrl(productId) {
+                const currentLocationUENC = encodeURIComponent(
+                    encodeUenc(BASE_URL),
+                )
+                const postUrl =
+                    BASE_URL +
+                    "checkout/cart/add/uenc/" +
+                    currentLocationUENC +
+                    "/product/" +
+                    productId
+                return postUrl
+            }
+
+            function encodeUenc (value) {
+                const regex = /=/gi
+                return btoa(value).replace(regex, ",")
+            }
+
+            function openPopup (item) {
+
+                const productId = item.product.id;
+                const ga4Index = item.productView.index;
+
+                var productUrl = "<?= $quickViewHelper->getUrl(); ?>" + "id/" + productId + "?quickview=true&position=" + ga4Index;
+                var url = "<?= $block->getUrl('magetop_quickview/index/updatecart'); ?>";
+                if (!productId) {
+                    return false;
+                }
+                $.magnificPopup.open(
+                    {
+                        items: {
+                            src: productUrl
+                        },
+                        type: 'iframe',
+                        closeOnBgClick: false,
+                        scrolling: false,
+                        preloader: true,
+                        tLoading: '',
+                        callbacks: {
+                            open: function () {
+                                $('.mfp-preloader').css('display', 'block');
+                                $("iframe.mfp-iframe").contents().find("html").addClass("magetop_loader");
+                                $("iframe.mfp-iframe").on('load', function() {
+                                    $("iframe.mfp-iframe").contents().find("form").append('<input type="hidden" name="from_popup" value="1">');
+                                    $("iframe.mfp-iframe").contents().find("form").append(`<input type="hidden" name="position" value="${ga4Index}">`);
+                                });
+                                console.log('open');
+                            },
+                            beforeClose: function () {
+                                $.ajax(
+                                    {
+                                        url: url,
+                                        method: "POST"
+                                    }
+                                );
+                            },
+                            close: function () {
+                                $('.mfp-preloader').css('display', 'none');
+                                console.log('close');
+                            },
+                            ajaxContentAdded: function(){
+                                console.log('ajaxContentAdded');
+                            }
+                        }
+                    }
+                );
+                $('iframe.mfp-iframe')[0].addEventListener('load', () => {
+                    $('.mfp-iframe-scaler .mfp-close').show()
+                });
+            }
+
+            window.LiveSearchPLP({storeDetails: {
+                    environmentId: "<?= $block->escapeJs($block->getEnvironmentId()); ?>",
+                    environmentType: "<?= $block->escapeHtmlAttr($block->getEnvironmentType()); ?>",
+                    apiKey: "<?= $block->escapeHtmlAttr($block->getApiKey()); ?>",
+                    websiteCode: "<?= $block->escapeJs($block->getWebsiteCode()); ?>",
+                    storeCode: "<?= $block->escapeJs($block->getStoreCode()); ?>",
+                    storeViewCode: "<?= $block->escapeJs($block->getStoreViewCode()); ?>",
+                    config: {
+                        pageType: 'seller',// seller search , default page type will catalog,
+                        sellerInformation: <?=$viewModel->getSellerProfile()?>,
+                        pageSize: "<?= $block->escapeJs($block->getAutocompleteLimit()); ?>",
+                        perPageConfig: {
+                            pageSizeOptions: "<?= $block->escapeJs($block->getResultsPerPageOptions()); ?>",
+                            defaultPageSizeOption: "<?= $block->escapeJs($block->getResultsPerPageDefault()); ?>"
+                        },
+                        minQueryLength: "<?= $block->escapeJs($helper->getMinQueryLength()); ?>",
+                        currencySymbol: "<?= $block->escapeJs($block->getCurrencySymbol()); ?>",
+                        currencyRate: "<?= $block->escapeJs($block->getCurrencyRate()); ?>",
+                        displayOutOfStock: "<?= $block->escapeJs($block->isDisplayOutOfStock()); ?>",
+                        allowAllProducts: "<?= $block->escapeJs($block->isAllowAllProducts()); ?>",
+                        locale: "<?= $block->escapeJs($block->getLanguageCode()); ?>",
+                        eighteenProducts: {
+                            overlayImageSrc: "<?= $imageAlert ?>",
+                            productsSku: "<?= htmlspecialchars($alertSkuString); ?>"
+                        },
+                        productIdsVipLabel: {
+                            productsIds: "<?= htmlspecialchars($productIdsLabel); ?>"
+                        },
+                        productIdsPreOrder: {
+                            productsIds: "<?= htmlspecialchars($productIdsPreOrder); ?>"
+                        },
+                        customerPoint: (cacheStorage && cacheStorage['ds-customer']?.totalpoints) ? cacheStorage['ds-customer']?.totalpoints : null,
+                        quickView: {
+                            enabled: "<?= $quickViewHelper->enabled(); ?>",
+                            productUrl: "<?= $quickViewHelper->getUrl(); ?>",
+                            productItemInfo: "<?= $quickViewHelper->getProductItemInfo(); ?>",
+                            productImageWrapper: "<?= $quickViewHelper->getProductImageWrapper(); ?>",
+                            buttonText: "<?= $quickViewHelper->getButtonText(); ?>"
+                        },
+                        formatShippingLabel: Object.values(shippingMethod),
+                        addToCart: (item, options, quantity) => {
+                            addToCart(item);
+                        },
+                    },
+                    context: {
+                        customerGroup: "<?= $block->escapeJs($block->getCustomerGroupCode()); ?>"
+                    }
+                }, root});
+        });
+
+    require(['magentoStorefrontEvents'], function (magentoStorefrontEvents) {
+        magentoStorefrontEvents.context.setSearchExtension({
+            version: "<?= $block->escapeHtmlAttr($block->getModuleVersion()); ?>"
+        });
+    });
+</script>

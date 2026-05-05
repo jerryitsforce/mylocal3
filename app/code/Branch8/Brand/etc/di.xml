@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Branch8.
+ *
+ * @category  Branch8
+ * @package   Branch8_PageBuilder
+ * @author    Branch8: Dev Team
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\ShopbyBrand\Block\Widget\BrandList">
+        <plugin name="Branch8_Brand::pluginBrandListAbstract" type="Branch8\Brand\Plugin\BrandListAbstract" sortOrder="20"/>
+    </type>
+    <type name="Amasty\ShopbyBrand\Block\Widget\BrandSlider">
+        <plugin name="Branch8_Brand::pluginBrandListAbstract" type="Branch8\Brand\Plugin\BrandList" sortOrder="20"/>
+    </type>
+    <type name="Amasty\ShopbyBrand\Model\Brand\ListDataProvider\LoadItems">
+        <plugin name="Branch8_Brand::pluginLoadItems" type="Branch8\Brand\Plugin\BrandLoadItems" sortOrder="10"/>
+    </type>
+    <type name="Amasty\ShopbyBrand\Model\ProductCount">
+        <plugin name="Branch8_Brand::pluginProductCount" type="Branch8\Brand\Plugin\ProductCount" sortOrder="10"/>
+    </type>
+    <type name="Branch8\Brand\Plugin\ProductCount">
+        <arguments>
+            <argument name="collectionFactory" xsi:type="object">Magento\CatalogSearch\Model\ResourceModel\Fulltext\CollectionFactory</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Brand\Model\ProductCount">
+        <arguments>
+            <argument name="collectionFactory" xsi:type="object">Magento\CatalogSearch\Model\ResourceModel\Fulltext\CollectionFactory</argument>
+        </arguments>
+    </type>
+
+    <type name="Amasty\ShopbyBrand\Model\Sitemap\ItemProvider\Brand">
+        <plugin name="Branch8_Brand::enableDisablePage"
+                type="Branch8\Brand\Plugin\Amasty\ShopbyBrand\Model\Sitemap\ItemProvider\BrandPlugin" sortOrder="1"/>
+    </type>
+</config>

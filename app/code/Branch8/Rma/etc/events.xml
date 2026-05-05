@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="branch8_rma_status_change_after">
+        <observer name="branch8_catalog_tracking_price_cost_change" instance="Branch8\Rma\Observer\RmaStatusChangeAfterObserver"/>
+    </event>
+</config>

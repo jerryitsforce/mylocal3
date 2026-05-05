@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <!-- <update handle="customer_fullScreenChat"/> -->
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\GiftToFriend\Block\History\Listing" cacheable="false"
+            name="giftbox.listing" template="Branch8_GiftToFriend::giftbox/listing.phtml">
+                <block class="Magento\Framework\View\Element\Template" name="giftbox.listing.note" template="Branch8_GiftToFriend::note.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="giftbox.listing.viewmore" template="Branch8_GiftToFriend::viewmore.phtml"/>
+                <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                       name="sub_order_items"
+                       template="Branch8_GiftToFriend::giftbox/suborder-items.phtml">
+                    <arguments>
+                        <argument name="profile_helper" xsi:type="object">Webkul\Marketplace\ViewModel\Profile</argument>
+                    </arguments>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="order_progress"
+                           template="Branch8_GiftToFriend::giftbox/order_progress.phtml"
+                           cacheable="false">
+                    </block>
+                    <!-- <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="item_notifications"
+                           template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/item_notifications.phtml"/>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="rma_buttons"
+                           template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/rma/rma_buttons.phtml"
+                           cacheable="false">
+                    </block>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="marketplace_seller_chat_link" template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/chat_seller.phtml"
+                           ifconfig="buyer_seller_chat/parent_order/enable"
+                    >
+                        <arguments>
+                            <argument name="view_model" xsi:type="object">Branch8\WebkulMpBuyerSellerChatForParentOrder\ViewModel\ChatConfig</argument>
+                        </arguments>
+                    </block> -->
+                </block>
+                <!-- <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                       name="sub_order_items_image"
+                       template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/suborder-items-image.phtml"> -->
+                <!-- </block> -->
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Magento\OrderCancellationUi\ViewModel\Config</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

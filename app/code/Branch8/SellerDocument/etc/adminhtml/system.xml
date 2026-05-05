@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="seller_info">
+            <group id="setup" translate="label" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Seller Document</label>
+                <field id="enabled" type="select" translate="label,comment" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show/Hide popup upload document on seller dashboard</comment>
+                </field>
+                <field id="show_document_tab" type="select" translate="label,comment" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>Show Document Tab</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Show/Hide 'Personal data destruction record' tab on seller edit page</comment>
+                </field>
+                <field id="document_template" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" 
+                    sortOrder="30" showInDefault="1" showInWebsite="1" >
+                    <label>Destruction Document Template For Sellers</label>
+                    <backend_model>Branch8\SellerDocument\Model\Config\Backend\File</backend_model>
+                    <upload_dir config="system">marketplace/seller_document_template</upload_dir>
+                </field>
+                <field id="document_expired_time" type="text" translate="label" sortOrder="240" showInDefault="1" showInWebsite="1" >
+                    <label>Document Expired Time ( days )</label>
+                    <validate>validate-digits validate-not-negative-number</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

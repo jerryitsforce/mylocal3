@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+          <add id="Branch8_RewardSystem::events" title="Automated Rewards" sortOrder="20" module="Branch8_RewardSystem" translate="title"
+               parent="Branch8_Spin2Win::spintowin" action="rewardsystem/reward/index" resource="Branch8_RewardSystem::manage"/>
+     </menu>
+</config>

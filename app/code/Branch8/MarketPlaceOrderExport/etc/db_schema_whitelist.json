@@ -1,0 +1,7 @@
+{
+    "sales_shipment_item": {
+        "index": {
+            "SALES_SHIPMENT_ITEM_ORDER_ITEM_ID": true
+        }
+    }
+}

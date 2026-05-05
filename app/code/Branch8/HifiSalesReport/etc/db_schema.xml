@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+        <table name="hifi_sales_report_record" resource="default" engine="innodb" comment="HiFi訂單報表拋賬主紀錄表">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="datetime" name="invoice_change_start_date" nullable="false" on_update="false" comment="發票異動開始日期" />
+                <column xsi:type="datetime" name="invoice_change_end_date" nullable="false" on_update="false" comment="發票異動結束日期" />
+                <column xsi:type="int" name="collecting_method" nullable="false" default="0" comment="收款方式(0: 全部, 1: 信用卡, 2: 超商收款)" />
+                <column xsi:type="datetime" name="closing_date" nullable="false" comment="結帳日期" />
+                <column xsi:type="int" name="transfer_status" nullable="false" default="0" comment="拋轉狀態" />
+                <column xsi:type="varchar" name="original_main_file_name" nullable="false" comment="原始訂單主檔檔名" />
+                <column xsi:type="varchar" name="modified_main_file_name" nullable="false" comment="調整訂單主檔檔名" />
+                <column xsi:type="varchar" name="original_detail_file_name" nullable="false" comment="原始訂單明細檔檔名" />
+                <column xsi:type="varchar" name="modified_detail_file_name" nullable="false" comment="調整訂單明細檔檔名" />
+                <column xsi:type="int" name="status" nullable="false" default="0" comment="狀態(0: 初始建立, 1: 已確認(不能修改), 2: 已同步HIFI(不能刪除))" />
+                <column xsi:type="int" name="creator_admin_id" nullable="false" comment="紀錄建立管理員ID" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+
+                <!-- removed columns -->
+                <column xsi:type="varchar" name="sales_report_main_file_name" nullable="false" comment="訂單主檔檔名" disabled="true" />
+                <column xsi:type="varchar" name="sales_report_detail_file_name" nullable="false" comment="訂單明細檔檔名" disabled="true" />
+                <column xsi:type="varchar" name="batch_code" nullable="false" comment="結帳批次代號" disabled="true" />
+                <column xsi:type="int" name="invoice_status" nullable="false" default="1" comment="發票狀態(1: 開立, 2: 作廢, 3: 折讓, 4: 不開發票)" disabled="true" />
+                <!-- 原本是用sales_order_ids來讓檢查檔知道抓取那些order, 但現在可以用"銷貨介面主檔ID"解析回去所以不需要了 -->
+                <column xsi:type="text" name="sales_order_ids" nullable="false" comment="所有訂單ID" disabled="true" />
+        </table>
+        <table name="hifi_sales_report_sub_record" resource="default" engine="innodb" comment="HiFi訂單報表拋賬子紀錄表">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="int" name="parent_id" unsigned="true" nullable="false" comment="和HiFi訂單報表拋賬紀錄表的關聯ID" />
+                <column xsi:type="varchar" name="batch_code" nullable="false" comment="結帳批次代號" />
+                <column xsi:type="int" name="invoice_status" nullable="false" default="1" comment="發票狀態(1: 開立, 2: 作廢, 3: 折讓, 4: 不開發票)" />
+                <column xsi:type="date" name="invoice_change_date" nullable="false" comment="發票異動日" />
+
+                <!-- batch_code可能要unique(或是batch_code+invoice_change_date), 問問看兩個和泰主紀錄如果時間重疊會允許嗎, 這代表子紀錄會有重複天 -->
+
+                <column xsi:type="int" name="sync_status" nullable="false" default="0" comment="HIFI拋轉狀態(0: 未拋轉, 1: 已拋轉)" />
+                <column xsi:type="int" name="sync_result" nullable="false" default="0" comment="HIFI拋轉結果(-1: 異常, 0: 初始狀態未拋轉, 1: 成功)" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+                <constraint xsi:type="foreign" referenceId="FOREIGN_MAIN_RECORD_ID" table="hifi_sales_report_sub_record" column="parent_id" referenceTable="hifi_sales_report_record" referenceColumn="record_id" />
+        </table>
+</schema>

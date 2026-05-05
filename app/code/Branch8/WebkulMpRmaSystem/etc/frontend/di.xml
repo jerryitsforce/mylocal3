@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\MpRmaSystem\Controller\Rewrite\Order\Invoice" type="Branch8\WebkulMpRmaSystem\Rewrite\Webkul\MpRmaSystem\Controller\Rewrite\Order\Invoice"/>
+</config>

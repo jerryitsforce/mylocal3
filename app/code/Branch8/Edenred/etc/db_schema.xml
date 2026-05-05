@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+        <table name="edenred_ticket_record" resource="default" engine="innodb" comment="宜睿(Edenred)票卷紀錄表">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="varchar" name="edenred_order_number" nullable="false" comment="請求API當下設定的宜睿orderNumber" />
+                <column xsi:type="varchar" name="edenred_product_code" nullable="false" comment="請求API當下設定的宜睿productCode" />
+                <column xsi:type="varchar" name="edenred_merchant_code" nullable="false" comment="請求API當下設定的宜睿merchantCode" />
+                <column xsi:type="varchar" name="edenred_client_order_number" nullable="false" comment="請求票券API時傳給宜睿的ClientOrderNumber" />
+                <column xsi:type="varchar" name="edenred_voucher_no" nullable="false" comment="宜睿API回傳票券資料VoucherNo(DES加密)" />
+                <column xsi:type="varchar" name="edenred_voucher_guid" nullable="false" comment="宜睿API回傳票券資料VoucherGuid(宜睿票券展示頁面的參數)" />
+                <column xsi:type="datetime" name="edenred_generate_date" on_update="false" nullable="false" comment="宜睿API回傳票券資料generateDate" />
+                <column xsi:type="datetime" name="edenred_expire_start_date" on_update="false" nullable="false" comment="宜睿API回傳票券資料expireStartDate" />
+                <column xsi:type="datetime" name="edenred_expire_end_date" on_update="false" nullable="false" comment="宜睿API回傳票券資料expireEndDate" />
+                <column xsi:type="varchar" name="edenred_short_url" nullable="false" comment="宜睿API回傳票券資料ShortUrl" />
+                <column xsi:type="varchar" name="edenred_short_url_auth_code" nullable="false" comment="宜睿API回傳票券資料ShortUrlAuthCode" />
+                <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="false" comment="此宜睿票券歸屬的Magento商品ID" />
+                <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="false" comment="此宜睿票券歸屬的sales order item ID" />
+                <column xsi:type="datetime" name="used_date" nullable="true" comment="使用日期" />
+                <column xsi:type="varchar" name="used_transaction_no" nullable="true" comment="使用交易序號" />
+                <column xsi:type="datetime" name="returned_date" nullable="true" comment="退貨日期" />
+                <column xsi:type="int" name="status" nullable="false" default="0" comment="當前流程狀態(-1: 已退貨, 0: 初始API匯入, 1: 已使用, 2: 已取消)" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+                <index referenceId="INDEX_EDENRED_VOUCHER_NO" indexType="btree">
+                        <column name="edenred_voucher_no"/>
+                </index>
+                <index referenceId="INDEX_BELONG_TO_PRODUCT_ID" indexType="btree">
+                        <column name="belong_to_product_id"/>
+                </index>
+                <constraint xsi:type="foreign" referenceId="FOREIGN_SALES_ORDER_ITEM_ID" table="edenred_ticket_record" column="sales_order_item_id" referenceTable="sales_order_item" referenceColumn="item_id" />
+        </table>
+</schema>

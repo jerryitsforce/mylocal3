@@ -1,0 +1,30 @@
+<div class="payment-option _collapsible discount-code" data-bind="visible: isDisplayed()">
+    <div class="payment-option-title field choice">
+        <input type="checkbox" class="checkbox" id="point-money-collect" data-role="point-money-collect" data-bind="checked: isApplied, click: apply"/>
+        <label data-bind="i18n: 'Discount Points', attr: {for: 'point-money-collect'}" class="label"></label>
+    </div>
+    <div class="payment-option-content">
+        <form class="form" id="point-form" novalidate="novalidate">
+            <div class="fieldset">
+                <div class="field">
+                    <label for="point-code" class="label"><span data-bind="i18n: 'Enter your points'"></span></label>
+                    <div class="control">
+                        <input class="input-text" type="text" id="point-code" name="point_code" data-bind="value: pointValue, enable: !isApplied()" placeholder="0"/>
+                    </div>
+                </div>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button class="action primary" type="button" data-bind="click: apply, enable: !isApplied(), css: {disabled: !isApplied()}">
+                            <span data-bind="i18n: 'Apply Points'"></span>
+                        </button>
+                    </div>
+                    <div class="secondary">
+                        <button class="action secondary" type="button" data-bind="click: cancel, enable: isApplied, css: {disabled: !isApplied()}">
+                            <span data-bind="i18n: 'Cancel Points'"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

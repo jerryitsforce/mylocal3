@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock name="adminhtml.block.promo.quote.grid.container">
+                <referenceBlock  name="adminhtml.block.promo.quote.grid">
+                    <arguments>
+                        <argument name="dataSource" xsi:type="object" shared="false">Branch8\SalesRule\Model\ResourceModel\Rule\Quote\GridCollection</argument>
+                    </arguments>
+                    <referenceBlock  name="adminhtml.promo.quote.grid.columnSet">
+                        <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.promo.quote.grid.columnSet.created_in" as="created_in">
+                            <arguments>
+                                <argument name="header" xsi:type="string" translate="true">Start Time</argument>
+                                <argument name="renderer" xsi:type="string">Branch8\SalesRule\Block\Widget\Grid\Column\Renderer\CreatedIn</argument>
+                                <argument name="timezone" xsi:type="boolean">true</argument>
+                                <argument name="index" xsi:type="string">created_in</argument>
+                                <argument name="filter" xsi:type="string">0</argument>
+                                <argument name="column_css_class" xsi:type="string">col-date</argument>
+                                <argument name="header_css_class" xsi:type="string">col-date</argument>
+                            </arguments>
+                        </block>
+                        <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.promo.quote.grid.columnSet.updated_in" as="updated_in">
+                            <arguments>
+                                <argument name="header" xsi:type="string" translate="true">End Time</argument>
+                                <argument name="renderer" xsi:type="string">Branch8\SalesRule\Block\Widget\Grid\Column\Renderer\UpdatedIn</argument>
+                                <argument name="timezone" xsi:type="boolean">true</argument>
+                                <argument name="index" xsi:type="string">updated_in</argument>
+                                <argument name="column_css_class" xsi:type="string">col-date</argument>
+                                <argument name="header_css_class" xsi:type="string">col-date</argument>
+                                <argument name="filter" xsi:type="string">0</argument>
+                            </arguments>
+                        </block>
+                    </referenceBlock>
+                </referenceBlock>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

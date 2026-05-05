@@ -1,0 +1,10 @@
+<script type="text/javascript">
+    var sellerCommissionData = <?php echo json_encode($this->getSellerInfo()); ?>;
+    var getSellerCommissionDataUrl = '<?php echo $this->getUrl('marketplace/commission/getSellerCommissionData');?>';
+    
+    var ticketAttributeSet = <?php echo json_encode(explode(',', (string)$this->getTicketAttributeSet()));?>;
+    var productTypeId = "<?php echo $this->getProductTypeId();?>";
+    var productAttributeSet = '<?php echo $this->getProduct()->getAttributeSetId();?>';
+    var isAllowNegativeGrossProfit = <?php echo $this->isAllowNegativeGrossProfit() ? 'true' : 'false'?>;
+</script>
+<div id="qty_style"></div>

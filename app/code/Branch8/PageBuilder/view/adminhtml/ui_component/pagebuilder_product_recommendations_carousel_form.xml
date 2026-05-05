@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" extends="pagebuilder_base_form">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">pagebuilder_product_recommendations_carousel_form.pagebuilder_product_recommendations_carousel_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Product Recommendation</item>
+    </argument>
+    <settings>
+        <deps>
+            <dep>pagebuilder_product_recommendations_carousel_form.pagebuilder_product_recommendations_carousel_form_data_source</dep>
+        </deps>
+        <namespace>pagebuilder_product_recommendations_carousel_form</namespace>
+    </settings>
+    <dataSource name="pagebuilder_product_recommendations_carousel_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_PageBuilder/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider name="pagebuilder_product_recommendations_carousel_form_data_source" class="Magento\PageBuilder\Model\ContentType\DataProvider">
+            <settings>
+                <requestFieldName/>
+                <primaryFieldName/>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="appearance_fieldset" sortOrder="10" component="Magento_PageBuilder/js/form/element/dependent-fieldset">
+        <settings>
+            <label translate="true">Appearance</label>
+            <additionalClasses>
+                <class name="admin__fieldset-visual-select-large">true</class>
+            </additionalClasses>
+            <collapsible>false</collapsible>
+            <opened>true</opened>
+            <imports>
+                <link name="hideFieldset">${$.name}.appearance:options</link>
+                <link name="hideLabel">${$.name}.appearance:options</link>
+            </imports>
+        </settings>
+        <field name="appearance" formElement="select" sortOrder="10" component="Magento_PageBuilder/js/form/element/dependent-visual-select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">default</item>
+                </item>
+            </argument>
+            <settings>
+                <additionalClasses>
+                    <class name="admin__field-wide">true</class>
+                    <class name="admin__field-visual-select-container">true</class>
+                </additionalClasses>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <elementTmpl>Magento_PageBuilder/form/element/visual-select</elementTmpl>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="AppearanceSourceRecommendationProducts" />
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="general" sortOrder="20">
+        <settings>
+            <label translate="true">Selection</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <component component="Magento_PageBuilderProductRecommendations/js/form/element/block-chooser" name="block_chooser" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="requestParameter" xsi:type="string">unitId</item>
+                    <item name="dataUrlConfigPath" xsi:type="string">content_types.block.additional_data.chooserConfig.dataUrl</item>
+                    <item name="modalName" xsi:type="string">ns = ${ $.ns }, index = modal</item>
+                    <item name="buttonTitle" xsi:type="string" translate="true">Select</item>
+                    <item name="displayMetadata" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <imports>
+                    <link name="id">${ $.ns }.${ $.ns }.general.unit_id:value</link>
+                </imports>
+            </settings>
+        </component>
+        <field name="unit_id" formElement="hidden" sortOrder="20">
+            <settings>
+                <dataType>text</dataType>
+                <imports>
+                    <link name="value">${ $.ns }.${ $.ns }.modal.pagebuilder_product_recommendations_select_grid:externalValue</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="ga4_settings" sortOrder="25">
+        <settings>
+            <label translate="true">Google Analytics 4</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="promotion_id" sortOrder="40" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Promotion ID</label>
+                <dataScope>promotion_id</dataScope>
+            </settings>
+        </field>
+        <field name="promotion_name" sortOrder="50" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Promotion Name</label>
+                <dataScope>promotion_name</dataScope>
+            </settings>
+        </field>
+        <field name="item_list_id" sortOrder="60" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Item List ID</label>
+                <dataScope>item_list_id</dataScope>
+            </settings>
+        </field>
+        <field name="item_list_name" sortOrder="70" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Item List Name</label>
+                <dataScope>item_list_name</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="settings" sortOrder="30">
+        <settings>
+            <label translate="true">Carousel Settings</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="carousel_mode" sortOrder="10" formElement="select" component="Magento_PageBuilder/js/form/element/visual-select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">default</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Carousel Mode</label>
+                <elementTmpl>Magento_PageBuilder/form/element/visual-select</elementTmpl>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="CarouselModeSource"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="autoplay" sortOrder="20" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Autoplay</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">false</map>
+                            <map name="true" xsi:type="string">true</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="autoplay_speed" sortOrder="30" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">4000</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Autoplay Speed</label>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <addAfter translate="true">ms</addAfter>
+                <dataScope>autoplay_speed</dataScope>
+                <notice translate="true">Delay in milliseconds between each slide</notice>
+                <imports>
+                    <link name="disabled">!ns = ${ $.ns }, index = autoplay:checked</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="is_infinite" sortOrder="40" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">false</item>
+                    <item name="disabledValues" xsi:type="array">
+                        <item name="none" xsi:type="string">continuous</item>
+                    </item>
+                    <item name="dependentValues" xsi:type="array">
+                        <item name="continuous" xsi:type="string">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Infinite Loop</label>
+                <imports>
+                    <link name="setDisabled">ns = ${ $.ns }, index = carousel_mode:value</link>
+                    <link name="setDependentValues">ns = ${ $.ns }, index = carousel_mode:value</link>
+                </imports>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">false</map>
+                            <map name="true" xsi:type="string">true</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="show_arrows" sortOrder="50" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">false</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Show Arrows</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">false</map>
+                            <map name="true" xsi:type="string">true</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="show_dots" sortOrder="60" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">true</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Show Dots</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">false</map>
+                            <map name="true" xsi:type="string">true</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="slidetoshow_desktop" sortOrder="70" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Number of slide to show (Desktop)</label>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <dataScope>slidetoshow_desktop</dataScope>
+            </settings>
+        </field>
+        <field name="slidetoshow_tablet" sortOrder="80" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Number of slide to show (Tablet)</label>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <dataScope>slidetoshow_tablet</dataScope>
+            </settings>
+        </field>
+        <field name="slidetoshow_mobile" sortOrder="90" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Number of slide to show (Mobile)</label>
+                <additionalClasses>
+                    <class name="admin__field-small">true</class>
+                </additionalClasses>
+                <dataScope>slidetoshow_mobile</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    <modal name="modal" sortOrder="30">
+        <settings>
+            <options>
+                <option name="title" xsi:type="string" translate="true">Select Product Recommendation</option>
+                <option name="buttons" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="text" xsi:type="string" translate="true">Cancel</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="string">closeModal</item>
+                        </item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="text" xsi:type="string">Add Selected</item>
+                        <item name="class" xsi:type="string">action-primary</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">${ $.name }.pagebuilder_product_recommendations_select_grid</item>
+                                <item name="actionName" xsi:type="string">save</item>
+                            </item>
+                            <item name="1" xsi:type="string">closeModal</item>
+                        </item>
+                    </item>
+                </option>
+            </options>
+        </settings>
+        <insertListing name="pagebuilder_product_recommendations_select_grid" sortOrder="10">
+            <settings>
+                <externalData>unitId_unitName</externalData>
+                <externalProvider>${ $.ns }.pagebuilder_product_recommendations_select_grid_data_source</externalProvider>
+                <loading>false</loading>
+                <selectionsProvider>${ $.ns }.${ $.ns }.columns.ids</selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>unitId</dataScope>
+                <ns>pagebuilder_product_recommendations_select_grid</ns>
+                <dataLinks>
+                    <imports>false</imports>
+                    <exports>true</exports>
+                </dataLinks>
+            </settings>
+        </insertListing>
+        <htmlContent name="html_content">
+            <settings>
+                <additionalClasses>
+                    <class name="html-content-class">true</class>
+                </additionalClasses>
+            </settings>
+            <block name="html_content_block" class="Magento\Backend\Block\Template">
+                <arguments>
+                    <argument name="template" xsi:type="string">Magento_PageBuilderProductRecommendations::navigate.phtml</argument>
+                </arguments>
+            </block>
+        </htmlContent>
+    </modal>
+</form>

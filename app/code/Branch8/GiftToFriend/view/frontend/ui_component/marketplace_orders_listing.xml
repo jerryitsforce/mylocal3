@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="orders_columns">
+        <column name="is_gift_order" component="Magento_Ui/js/grid/columns/select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please Select</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <options class="Branch8\GiftToFriend\Model\Config\Source\OrderType"/>
+                <dataType>select</dataType>
+                <label translate="true">Order Type</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+    </columns>
+</listing>

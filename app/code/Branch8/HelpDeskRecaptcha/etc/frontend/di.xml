@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\HelpDesk\Block\Ticket\Form">
+        <plugin sortOrder="1" name="inject_recaptcha_in_helpdesk_ticket_form"
+                type="Branch8\HelpDeskRecaptcha\Plugin\Branch8\HelpDesk\Block\Ticket\FormPlugin"/>
+    </type>
+    <type name="Branch8\HelpDeskRecaptcha\Observer\AjaxSaveTicketObserver">
+        <arguments>
+            <argument name="captchaResponseResolver" xsi:type="object">Branch8\HelpDeskRecaptcha\Model\AjaxSaveTicket\CaptchaResponseResolver</argument>
+        </arguments>
+    </type>
+</config>

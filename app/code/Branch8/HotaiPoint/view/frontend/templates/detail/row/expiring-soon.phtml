@@ -1,0 +1,17 @@
+<?php
+/** @var \Branch8\HotaiPoint\Block\Detail\Row\ExpiringSoonRow $block */
+
+$pointHelper = $block->getPointHelper();
+$date = $block->getData('date');
+$point = $block->getData('point');
+?>
+
+<tr>
+    <td><?= $date ? $block->createDateFromFormat($date)->format('Y/m/d') : ''?><span><?= __('到期') ?></span></td>
+    <td>
+        <?= $block->getPointHelper()->formatPoints($point)?>
+        <span>
+            <?= __('點') ?>
+        <span>
+    </td>
+</tr>

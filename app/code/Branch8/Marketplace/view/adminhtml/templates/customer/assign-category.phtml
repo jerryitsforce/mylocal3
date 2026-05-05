@@ -1,0 +1,66 @@
+<?php
+/**
+ * @var $block \Branch8\Marketplace\Block\Adminhtml\Customer\Edit\Tab\AssignCategory
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+<div class="admin__fieldset-wrapper opened" id="seller-category-tree">
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset">
+            <div class="admin__field field">
+                <label class="label admin__field-label"><span><?= __('Assign Category') ?></span></label>
+                <div class="admin__field-control control">
+                    <div id="assign-category-select" class="admin__field" data-bind="scope:'assignCategory'" data-index="index">
+                        <!-- ko foreach: elems() -->
+                        <input name="seller_category_ids" data-bind="value: value" id="category_id" data-form-part="customer_form" type="hidden"/>
+                        <!-- ko template: elementTmpl --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "assignCategory": {
+                        "component": "uiComponent",
+                        "children": {
+                            "select_category": {
+                                "component": "Branch8_SellerContactInformation/js/components/new-category",
+                                "config": {
+                                    "filterOptions": true,
+                                    "disableLabel": true,
+                                    "chipsEnabled": true,
+                                    "levelsVisibility": "1",
+                                    "elementTmpl": "ui/grid/filters/elements/ui-select",
+                                    "options": <?= json_encode($this->getCategoriesTree()) ?>,
+                                    "value": <?= json_encode($escaper->escapeHtml($block->getSellerAllowedCategory())); ?>,
+                                    "listens": {
+                                        "index=create_category:responseData": "setParsed",
+                                        "newOption": "toggleOptionSelected"
+                                    },
+                                    "config": {
+                                        "dataScope": "select_category",
+                                        "sortOrder": 10
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script>
+    require([
+        "jquery"
+    ], function(jQuery) {
+        jQuery("#seller-category-tree").applyBindings();
+        jQuery("#seller-category-tree").trigger('contentUpdated');
+    });
+</script>

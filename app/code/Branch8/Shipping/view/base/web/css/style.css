@@ -1,0 +1,69 @@
+h1.modal-title {
+    text-align: center;
+}
+
+.tracking-error {
+    color: red;
+    display: none;
+    margin-bottom: 10px;
+}
+
+.tracking-success {
+    color: green;
+    display: none;
+    margin-bottom: 10px;
+}
+
+#tracking-popup {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#tracking-popup table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #f9f9f9;
+    overflow: hidden;
+    margin: auto;
+}
+
+#tracking-popup table thead {
+    background: #333;
+    color: #fff;
+}
+
+#tracking-popup table thead th {
+    padding: 10px;
+    font-weight: bold;
+    text-align: left;
+    border: 1px solid #666;
+}
+
+#tracking-popup th, #tracking-popup td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#tracking-popup th:first-child,
+#tracking-popup td:first-child {
+    border-right: none;
+}
+
+#tracking-popup .logistics-provider-name-col {
+    border-left: none;
+}
+
+
+#tracking-popup select,
+#tracking-popup input {
+    width: calc(100% - 1px);
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}

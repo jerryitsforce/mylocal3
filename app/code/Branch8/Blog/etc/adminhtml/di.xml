@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Ui\Model\Export\MetadataProvider">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="branch8_blog_post_listing" xsi:type="array">
+                    <item name="created_at" xsi:type="string">created_at</item>
+                    <item name="updated_at" xsi:type="string">updated_at</item>
+                    <item name="publish_date" xsi:type="string">publish_date</item>
+                </item>
+                <item name="branch8_blog_tag_listing" xsi:type="array">
+                    <item name="created_at" xsi:type="string">created_at</item>
+                    <item name="updated_at" xsi:type="string">updated_at</item>
+                </item>
+                <item name="branch8_blog_topic_listing" xsi:type="array">
+                    <item name="created_at" xsi:type="string">created_at</item>
+                    <item name="updated_at" xsi:type="string">updated_at</item>
+                </item>
+                <item name="branch8_blog_comment_listing" xsi:type="array">
+                    <item name="created_at" xsi:type="string">created_at</item>
+                </item>
+                <item name="branch8_blog_author_listing" xsi:type="array">
+                    <item name="created_at" xsi:type="string">created_at</item>
+                    <item name="updated_at" xsi:type="string">updated_at</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\ResourceModel\Product\Collection">
+        <plugin name="blog-post-product-sort" type="Branch8\Blog\Plugin\Catalog\AttributeSort"/>
+    </type>
+
+
+</config>

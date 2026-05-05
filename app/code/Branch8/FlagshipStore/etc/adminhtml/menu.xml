@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Menu/etc/menu_configuration.xsd">
+    <menu>
+        <add id="Branch8_FlagshipStore::manage_store"
+             title="Flagship Store"
+             translate="title"
+             module="Branch8_FlagshipStore"
+             sortOrder="10"
+             action="flagshipstore/store/index"
+             parent="Branch8_MarketPlaceParentOrderAdminUi::parent_orders_general"
+             resource="Branch8_FlagshipStore::manage_store"
+        />
+    </menu>
+</config>

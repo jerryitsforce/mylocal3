@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <email_notification>
+            <order_daily_notification_to_seller>
+                <enabled>1</enabled>
+                <template>email_notification_order_daily_notification_to_seller_template</template>
+                <scheduler>0 7 * * *</scheduler>
+                <english_header>1</english_header>
+                <file_prefix>怡業_訂單待出貨及退貨申請中列表</file_prefix>
+            </order_daily_notification_to_seller>
+            <return_report_settings>
+                <enabled>1</enabled>
+                <template>email_notification_return_report_settings_template</template>
+                <emails>stevenwei@hotaiconnected.com.tw;chrischou@hotaiconnected.com.tw;ELAINELAI@hotaiconnected.com.tw</emails>
+                <scheduler>0 7 * * *</scheduler>
+                <file_prefix>退貨_換貨_</file_prefix>
+            </return_report_settings>
+        </email_notification>
+    </default>
+</config>

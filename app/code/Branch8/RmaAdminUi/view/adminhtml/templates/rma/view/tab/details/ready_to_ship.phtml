@@ -1,0 +1,111 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $helper \Branch8\Rma\Helper\Data
+ */
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $helper \Branch8\Rma\Helper\Data
+ * @var  $b8salesConfigHelper \Branch8\Sales\Helper\Config
+ */
+$rmaDetails = $block->getRmaDetails();
+$rmaId = $rmaDetails->getId();
+$rmaModel = $block->getRmaModel();
+$helper = $this->helper(\Branch8\Rma\Helper\Data::class);
+$rmaItemId = $helper->getRmaItems($rmaId)->getItemId();
+$isTicket = $rmaModel->isTicket($rmaItemId);
+$status = $rmaDetails->getStatus();
+$finalStatus = $block->getFinalStatus();
+$allStatus = $rmaModel->getAllNextStatusOptions($status, $isTicket, $rmaDetails->getIsReplaceAgain());
+$reasonsToDecline = $rmaModel->getAllReasonsForDecline();
+$declineReasonId = $rmaDetails->getDeclineReasonId();
+$sellerName = $helper->getCustomerName($rmaId);
+$readyToShip = $rmaModel->isReadyToBeShipped($status);
+$b8salesConfigHelper = $this->helper(\Branch8\Sales\Helper\Config::class);
+$canShowShippingForm = $rmaModel->canShowShippingForm($rmaDetails);
+?>
+<?php if ($readyToShip && $canShowShippingForm): ?>
+    <div class="wk-mprma-container wk-mprma-view">
+        <div class="wk-title">
+            <?= $escaper->escapeHtml(__("Shipping Number:")); ?>
+        </div>
+        <form method="post"
+              action="<?= $escaper->escapeUrl($block->getUrl('mprmasystem/rma/shipping')); ?>"
+              id="wk_rma_close_shipping_form" class="form-inline" enctype="multipart/form-data"
+              data-mage-init='{"validation":{}}'>
+            <fieldset class="fieldset wk-mprma-fieldset wk-close-filedset">
+                <div class="field">
+                    <?php if ($finalStatus == 0): ?>
+                        <input type="hidden" value="<?= $escaper->escapeHtml($helper->encrypt($rmaId)); ?>"
+                               name="rma_id">
+                        <input name="form_key" type="hidden" value="<?= $block->getFormKey() ?>"/>
+                        <div class="admin__field field field-changed_status required">
+                            <label for="shipping_carrier"
+                                   class="label admin__field-label">
+                                <span><?= __('Carrier') ?></span>
+                            </label>
+                            <div class="admin__field-control control wk-mprma-shipping-tracking">
+                                <select name="shipping_carrier"
+                                        id="shipping_carrier"
+                                        class="select admin__control-select number-title required-entry wk-mprma-shipping-tracking-carrier">
+                                    <option value=""><?= $escaper->escapeHtml(__('-- Please Select --')) ?></option>
+                                    <?php foreach ($b8salesConfigHelper->getLogisticsCompanies() as $name => $url): ?>
+                                        <option value="<?= $escaper->escapeHtml($name) ?>"
+                                                data-url="<?= $escaper->escapeHtml($url) ?>">
+                                            <?= $escaper->escapeHtml($name) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                <input name="logistics_provider_name" id="logistics_provider_name"
+                                       class="input-text admin__control-textarea validate-no-html-tags wk-mprma-shipping-tracking-logistics-name"/>
+                            </div>
+                        </div>
+                        <div class="admin__field field field-decline_reason_detail required">
+                            <label for="shipping_number"
+                                   class="label admin__field-label">
+                                <span><?= __('Tracking number') ?></span>
+                            </label>
+                            <div class="control">
+                                <input name="shipping_number" data-validate="{required:true}"
+                                       id="shipping_number"
+                                       class="wk-rma-msg input-text required-entry
+                                    validate-no-html-tags select admin__control-textarea"
+                                />
+                            </div>
+                        </div>
+                        <div class="wk-action-btn">
+                            <button title="Save" class="action save primary wk-save" type="submit">
+                                <span><?= $escaper->escapeHtml(__("Save")); ?></span>
+                            </button>
+                        </div>
+
+                    <?php else: ?>
+                        <?= $escaper->escapeHtml($helper->getCloseRmaLabel($finalStatus, $sellerName)); ?>
+                    <?php endif; ?>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($) {
+        $(document).ready(function() {
+            $('#shipping_carrier.wk-mprma-shipping-tracking-carrier').on('change', function() {
+                if ($(this).val() === '其他：自行填寫名稱') {
+                    $('.wk-mprma-shipping-tracking-logistics-name').show().addClass('required-entry');
+                } else {
+                    $('.wk-mprma-shipping-tracking-logistics-name').hide().removeClass('required-entry');
+                }
+            });
+        });
+    });
+</script>

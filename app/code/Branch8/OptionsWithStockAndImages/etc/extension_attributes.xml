@@ -1,0 +1,11 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Catalog\Api\Data\ProductInterface">
+        <attribute code="variation" type="Branch8\OptionsWithStockAndImages\Api\Data\B8VariationsInterface[]" />
+        <attribute code="variations" type="Branch8\OptionsWithStockAndImages\Api\Data\B8VariationsInterface[]" />
+        <attribute code="swatch" type="Branch8\OptionsWithStockAndImages\Api\Data\B8SwatchInterface[]" />
+        <attribute code="normalize_variation_map" type="string[]" />
+    </extension_attributes>
+    <extension_attributes for="Magento\Catalog\Api\Data\ProductCustomOptionInterface">
+        <attribute code="visible" type="Branch8\OptionsWithStockAndImages\Api\Data\B8VisibleInterface[]" />
+    </extension_attributes>
+</config>

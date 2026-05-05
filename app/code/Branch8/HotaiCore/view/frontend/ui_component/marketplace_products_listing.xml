@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top"/>
+    <columns name="products_columns">
+        <actionsColumn name="hotai_core_import_action" class="Branch8\HotaiCore\Ui\Component\Listing\Columns\SellerImport">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_HotaiCore/js/grid/columns/import</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">HotaiCore Import</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_product_change_log" resource="default" engine="innodb" comment="Product Change Log">
+        <column xsi:type="int" name="log_id" unsigned="false" nullable="false" identity="true" comment="Log ID"/>
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" comment="Product ID"/>
+        <column xsi:type="varchar" name="action" length="255" nullable="false" comment="Action"/>
+        <column xsi:type="text" name="post_data" nullable="true" comment="Post Data"/>
+        <column xsi:type="text" name="before_values" nullable="true" comment="Before Values"/>
+        <column xsi:type="text" name="after_values" nullable="true" comment="After Values"/>
+        <column xsi:type="int" name="user_type" unsigned="true" nullable="true" identity="false" comment="User Type (Admin/Seller/System)"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="true" identity="false" comment="User ID"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="text" name="debug_backtrace" nullable="true" comment="Debug Backtrace for Developer Debugging"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+        <index referenceId="BRANCH8_PRODUCT_CHANGE_LOG_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+    <table name="branch8_product_change_log_archive" resource="default" engine="innodb" comment="Product Change Log Archive">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="entity ID"/>
+        <column xsi:type="int" name="log_id" unsigned="false" nullable="false" identity="false" comment="Log ID"/>
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" comment="Product ID"/>
+        <column xsi:type="varchar" name="action" length="255" nullable="false" comment="Action"/>
+        <column xsi:type="text" name="post_data" nullable="true" comment="Post Data"/>
+        <column xsi:type="text" name="before_values" nullable="true" comment="Before Values"/>
+        <column xsi:type="text" name="after_values" nullable="true" comment="After Values"/>
+        <column xsi:type="int" name="user_type" unsigned="true" nullable="true" identity="false" comment="User Type (Admin/Seller/System)"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="true" identity="false" comment="User ID"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="text" name="debug_backtrace" nullable="true" comment="Debug Backtrace for Developer Debugging"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="UNIQUE_LOG_ID">
+            <column name="log_id"/>
+        </constraint>
+        <index referenceId="BRANCH8_PRODUCT_CHANGE_LOG_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+</schema>

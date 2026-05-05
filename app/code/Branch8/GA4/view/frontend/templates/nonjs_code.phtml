@@ -1,0 +1,26 @@
+<?php
+/** @var \Branch8\GA4\Block\Core $block  */
+/** @var \Magento\Framework\Escaper $escaper */
+
+/** @var \Branch8\GA4\ViewModel\Ga4ViewModel $viewModel */
+$viewModel = $block->getData('view_model');
+?>
+<!-- DON'T REMOVE line bellow, used to bind ga4push.js-->
+<!-- ##ga4_snippet_scripts## -->
+<!-- DON'T REMOVE line above, used to bind ga4push.js-->
+
+<?php if ($viewModel->isEnabled() && $block->isAllowedPage() && $viewModel->getGtmContainerId()) : ?>
+    <!-- GOOGLE TAG MANAGER -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=<?= $block->escapeHtmlAttr($viewModel->getGtmContainerId()) ?>"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- END GOOGLE TAG MANAGER -->
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8GA4": {}
+        }
+    }
+</script>

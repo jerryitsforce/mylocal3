@@ -1,0 +1,79 @@
+<table class="data-grid data-grid-draggable" data-role="grid">
+    <thead>
+        <tr>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">#</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Batch code</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Total Serial</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Total Mapped</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Used Serial</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Use Start date</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Use End date</span>
+            </th>
+            <th class="data-grid-th" >
+                <span class="data-grid-cell-content">Action</span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php
+    $obj = \Magento\Framework\App\ObjectManager::getInstance();
+    $timezone = $obj->get(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::class);
+        $batchCodes = $this->getData('batch_code');
+        if(!empty($batchCodes)){
+            $cnt = 0;
+            foreach($batchCodes as $key => $_code){
+                $cnt ++;
+        ?>
+        <tr class="popup-row-batch">
+            <td>
+                <div class="data-grid-cell-content"><?= $cnt;?></div>
+            </td>
+                <td>
+                    <div class="data-grid-cell-content"><?= $_code['batch_code'];?></div>
+                </td>
+            <td>
+                <div class="data-grid-cell-content"><?= $_code['total_serial'];?></div>
+            </td>
+            <td>
+                <div class="data-grid-cell-content"><?= $_code['mapped'];?></div>
+            </td>
+            <td>
+                <div class="data-grid-cell-content"><?= $_code['used'];?></div>
+            </td>
+            <td>
+                <div class="data-grid-cell-content"><?= $timezone->date($_code['start_date'])->format('Y-m-d H:i:s');?></div>
+            </td>
+            <td>
+                <div class="data-grid-cell-content"><?= $timezone->date($_code['end_date'])->format('Y-m-d H:i:s');?></div>
+            </td>
+            <td>
+                <?php if((int)$_code['total_serial'] - (int)$_code['mapped']){?>
+                    <div class="data-grid-cell-content"><a href="#" class="delete_batch_code" data-del='<?php echo json_encode(['event_id' => $this->getData('event_id'), 'batch_code' => $_code['batch_code']]);?>'>Delete Imported Serials</a></div>
+                <?php } ?>
+            </td>
+        </tr>
+        <?php
+            }
+    }else{?>
+         <tr>
+             <td colspan="8">No batch code found</td>
+         </tr>
+    <?php
+        }
+    ?>
+
+    </tbody>
+</table>

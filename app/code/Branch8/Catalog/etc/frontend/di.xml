@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <plugin name="branch8_default_filter_is_hidden" type="Branch8\Catalog\Plugin\Marketplace\Ui\DataProvider\Product\ProductDataProvider" sortOrder="1" disabled="false"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\FilterApplierInterface">
+        <plugin name="branch8_seller_productlist_filter_ishidden"
+                type="Branch8\MarketplaceProduct\Plugin\UiComponent\DataProvider\IsHiddenFilterApplier"
+                sortOrder="1"/>
+    </type>
+    <type name="Magento\Framework\App\FrontController">
+        <plugin name="branch8_custom_pdp_url" type="Branch8\Catalog\Plugin\PdpUrl" sortOrder="1" disabled="false"/>
+    </type>
+</config>

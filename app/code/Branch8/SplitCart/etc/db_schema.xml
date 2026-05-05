@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote_item">
+        <!--https://trello.com/c/2bmBPjYQ/633-bugshopping-cart-should-not-mark-all-products-as-checked-when-user-unchecked-all-->
+        <!-- set default 1 -->
+        <column xsi:type="smallint" name="available_to_checkout" default="1"/>
+    </table>
+
+</schema>

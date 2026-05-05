@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="customer_entity_datetime">
+        <column xsi:type="bigint" name="value_id" unsigned="false" nullable="false" identity="true"
+                comment="Value ID"/>
+    </table>
+    <table name="url_rewrite">
+        <column xsi:type="bigint" name="url_rewrite_id" unsigned="false" nullable="false" identity="true"
+                comment="Rewrite ID"/>
+    </table>
+    <table name="catalog_url_rewrite_product_category">
+        <column xsi:type="bigint" name="url_rewrite_id" unsigned="false" nullable="false" identity="false"
+                comment="url_rewrite_id"/>
+    </table>
+
+</schema>

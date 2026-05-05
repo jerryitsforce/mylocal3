@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Tigren\SplitCart\Controller\Cart\UpdatePost"
+                type="Branch8\SplitCart\Override\Controller\Cart\UpdatePost" />
+
+    <type name="Magento\Checkout\Block\Onepage\Link">
+        <plugin name="Magento\Checkout\Block\Onepage\Link" disabled="true" />
+    </type>
+
+    <preference for="Tigren\SplitCart\Plugin\Magento\Quote\Model\Quote"
+                type="Branch8\SplitCart\Override\Plugin\Magento\Quote\Model\Quote" />
+
+    <preference for="Magento\Checkout\Block\Cart\Grid" type="Branch8\SplitCart\Block\Cart\Grid" />
+
+    <preference for="Tigren\SplitCart\Plugin\Magento\Checkout\Block\Cart\Item\Renderer"
+                type="Branch8\SplitCart\Override\Plugin\Magento\Checkout\Block\Cart\Item\Renderer"/>
+
+    <preference for="Tigren\SplitCart\Plugin\Magento\Checkout\Block\Cart\Grid"
+                type="Branch8\SplitCart\Override\Plugin\Magento\Checkout\Block\Cart\Grid"/>
+
+</config>

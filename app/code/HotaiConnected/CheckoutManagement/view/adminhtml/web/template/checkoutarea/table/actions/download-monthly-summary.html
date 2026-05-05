@@ -1,0 +1,65 @@
+<!--
+/**
+ * Download Monthly Summary Popup Content for Magento_Ui/js/modal/confirm
+ * 使用 HotaiConnected_UiShared::css/components/_ui-modal-form.less 的 BEM 類別
+ */
+-->
+<form id="download-monthly-summary-form" class="ui-modal-form__body download-monthly-summary-popup__form">
+
+    <!-- 結帳日期 -->
+    <div class="ui-modal-form__item download-monthly-summary-popup__date-range">
+        <label class="ui-modal-form__label required">
+            <span><%- $t('Order Checkout Number Modification Date (From-To)') %></span>
+        </label>
+        <div class="ui-modal-form__content" data-type="date-range">
+            <div class="date-input-group">
+                <label for="monthly_summary_date_from" class="date-label">
+                    <span><%- $t('From:') %></span>
+                </label>
+                <div>
+                    <input type="text"
+                       id="monthly_summary_date_from"
+                       name="monthly_summary_date_from"
+                       class="form-control date-input"
+                       readonly
+                       required
+                       data-validate="{required: true}"
+                       data-msg-required="<%- $t('This is a required field.') %>">
+                </div>
+            </div>
+            <div class="date-input-group">
+                <label for="monthly_summary_date_to" class="date-label">
+                    <span><%- $t('To:') %></span>
+                </label>
+                <div>
+                    <input type="text"
+                       id="monthly_summary_date_to"
+                       name="monthly_summary_date_to"
+                       class="form-control date-input"
+                       readonly
+                       required
+                       data-validate="{required: true}"
+                       data-msg-required="<%- $t('This is a required field.') %>">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 下載按鈕 -->
+    <div class="ui-modal-form__item download-monthly-summary-popup__download">
+        <div class="d-flex">
+            <label class="ui-modal-form__label">
+                <span><%- $t('Download') %></span>:
+            </label>
+            <div class="ui-modal-form__content">
+                <button id="download-monthly-summary-button" class="action-secondary" type="button" disabled>
+                    <i class="icon icon-download"></i>
+                    <span><%- $t('Download') %></span>
+                </button>
+            </div>
+        </div>
+        <small class="error-msg">
+            <span></span>
+        </small>
+    </div>
+</form>

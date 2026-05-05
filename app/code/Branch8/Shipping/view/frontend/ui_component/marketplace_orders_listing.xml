@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="orders_columns">
+        <column name="add_shipment_tracking" class="Branch8\Shipping\Ui\Component\Listing\Columns\ShipmentTrackingAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Manage Logistics Tracking Number</item>
+                    <item name="component" xsi:type="string">Branch8_Shipping/js/grid/columns/shipment/tracking</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+            <settings>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+    <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <route url="/V1/delete/creditcard" method="POST">
+        <service class="Branch8\HotaiPay\Api\CreditCardAjaxInterface" method="deleteFromAjax"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/edit/creditcard/aliasname" method="POST">
+        <service class="Branch8\HotaiPay\Api\CreditCardAjaxInterface" method="editFromAjax"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

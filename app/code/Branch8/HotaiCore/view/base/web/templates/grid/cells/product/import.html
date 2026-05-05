@@ -1,0 +1,102 @@
+<form id="hotai-core-download-sample-form-<%-productid%>" class="hotai-core-download-sample-form" target="_blank" method="post" enctype="multipart/form-data" action="<%-downloadsampleaction%>" style="margin-bottom: 30px;">
+    <input name="form_key" type="hidden" value="<%-downloadsampleformkey%>">
+    <input name="hotai_core_import_template" type="hidden" value="">
+    <button type="submit" class="btn btn-primary"><span>下載範例文件</span></button>
+</form>
+
+<form id="hotai-core-import-form-<%-productid%>" class="hotai-core-import-form" target="_blank" method="post" enctype="multipart/form-data" action="<%-formaction%>">
+    <div class="modal-body">
+        <div class="bootbox-body">
+            <div style="margin-bottom: 10px;">
+                <div class="input_container" style="margin-bottom: 5px;">
+                    <label for="batch_code">貨號:</label><br>
+                    <input type="text" name="batch_code" id="batch_code" required>
+                </div>
+                <div class="input_container" style="margin-bottom: 5px;">
+                    <label for="sale_start_time">序號啟用日:</label><br>
+                    <input type="date" name="sale_start_time" id="sale_start_time" required>
+                </div>
+                <div class="input_container" style="margin-bottom: 5px;">
+                    <label for="sale_end_time">序號下架日:</label><br>
+                    <input type="date" name="sale_end_time" id="sale_end_time" required>
+                </div>
+                <div class="input_container" style="margin-bottom: 5px;">
+                    <label for="use_start_time">核銷起始日:</label><br>
+                    <input type="date" name="use_start_time" id="use_start_time" required>
+                </div>
+
+                <label for="notify_limit_type">核銷結束日:</label>
+                <select name="notify_limit_type" id="notify_limit_type" required>
+                    <option value="1">時間</option>
+                    <option value="2">天數</option>
+                </select>
+
+                <div class="input_container use_end_time" style="margin-bottom: 5px; display: none;">
+                    <label for="use_end_time"></label><br>
+                    <input type="date" name="use_end_time" id="use_end_time">
+                </div>
+                <div class="input_container due_days" style="margin-bottom: 5px; display: none;">
+                    <label for="due_days"></label><br>
+                    <input type="number" name="due_days" id="due_days" min="0">
+                </div>
+            </div>
+
+            <div class="import-mode-block" style="border: 1px solid #e3e3e3; padding: 10px; margin-bottom: 10px;">
+                <div style="margin-bottom: 10px;">
+                    <label style="margin-right: 10px;">
+                        <input type="radio" name="import_mode" value="manual" checked>
+                        手動檔案匯入
+                    </label>
+                    <label>
+                        <input type="radio" name="import_mode" value="auto">
+                        自動生成匯入
+                    </label>
+                </div>
+
+                <div class="manual-import-section input_container" style="margin-bottom: 5px;">
+                    <label for="upload">匯入檔案:</label><br>
+                    <input type="file" name="file" id="upload">
+                </div>
+
+                <div class="auto-import-section" style="margin-bottom: 5px; display: none;">
+                    <div class="input_container" style="margin-bottom: 5px;">
+                        <label for="auto_prefix">固定開頭 (Prefix):</label><br>
+                        <input type="text" name="auto_prefix" id="auto_prefix" maxlength="20">
+                    </div>
+
+                    <div class="input_container" style="margin-bottom: 5px;">
+                        <label for="auto_serial_length">序號總長度(6-20, 包含固定開頭):</label><br>
+                        <input type="number" name="auto_serial_length" id="auto_serial_length" min="6" max="20">
+                    </div>
+
+                    <div class="input_container" style="margin-bottom: 5px;">
+                        <label for="auto_char_type">字元組成:</label><br>
+                        <select name="auto_char_type" id="auto_char_type">
+                            <option value="alnum">英數混和</option>
+                            <option value="num">純數字</option>
+                            <option value="alpha">純英文字母</option>
+                        </select>
+                    </div>
+
+                    <div class="input_container" style="margin-bottom: 5px;">
+                        <label for="auto_group_count">生成組數:</label><br>
+                        <input type="number" name="auto_group_count" id="auto_group_count" min="0" max="100000">
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="entity_id" value="<%-productid%>">
+            <input name="form_key" type="hidden" value="<%-formkey%>">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <span class="error"></span>
+        <button type="reset" class="btn btn-default">
+            <span><%-cancellabel%></span>
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <span><%-submitlabel%></span></button>
+        <span class="clear"></span>
+    </div>
+</form>
+<br>

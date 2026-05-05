@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Sprite Foam Roller</name>
+    <description>A roller for training</description>
+    <short_description>A roller</short_description>
+    <sku>bundle-roller</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>19</price>
+    <special_price>18</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>1.jpg,2.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Sprite Foam Yoga Brick</name>
+    <description>A brick for training</description>
+    <short_description>A roller</short_description>
+    <sku>bundle-brick</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>5</price>
+    <special_price>4</special_price>
+    <special_from_date>2017-05-25</special_from_date>
+    <special_to_date>2018-05-27</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>3.jpg,4.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Endeavor Daytrip Backpack</name>
+    <description>A backpack for training gear</description>
+    <short_description>A backpack</short_description>
+    <sku>bundle-backpack1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>33</price>
+    <special_price>32</special_price>
+    <special_from_date>2017-05-24</special_from_date>
+    <special_to_date>2018-05-26</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>5.jpg,6.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Fusion Backpack</name>
+    <description>A backpack for training gear</description>
+    <short_description>A backpack</short_description>
+    <sku>bundle-backpack2</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>59</price>
+    <special_price>58</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>1.jpg,6.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Harmony Lumaflex&amp;trade, Strength Band Kit</name>
+    <description>A band for training</description>
+    <short_description>A band</short_description>
+    <sku>bundle-band1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>22</price>
+    <special_price>20</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Quest Lumaflex&amp;trade, Band</name>
+    <description>A band for training</description>
+    <short_description>A band</short_description>
+    <sku>bundle-band2</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>19</price>
+    <special_price>18</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Pursuit Lumaflex&amp;trade, Tone Band</name>
+    <description>A band for training</description>
+    <short_description>A band</short_description>
+    <sku>bundle-band3</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>16</price>
+    <special_price>15</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Go-Get&apos;r Pushup Grips</name>
+    <description>Grips for training</description>
+    <short_description>Grips</short_description>
+    <sku>bundle-grips1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>19</price>
+    <special_price>18</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Power Pushup Grips</name>
+    <description>Grips for training</description>
+    <short_description>Grips</short_description>
+    <sku>bundle-grips2</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>15</price>
+    <special_price>14</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values/>
+    <bundle_price_type/>
+    <bundle_price_view/>
+    <bundle_sku_type/>
+    <bundle_weight_type/>
+    <bundle_shipment_type/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>bundle</type>
+    <category>Men,Women</category>
+    <name>Training Bundle (Dynamic price enabled)</name>
+    <description>This is a bundle product with enabled dynamic price</description>
+    <short_description>Bundle with enabled Dynamic Price</short_description>
+    <sku>bundle-dynamic-enabled</sku>
+    <visibility>Catalog, Search</visibility>
+    <price></price>
+    <special_price></special_price>
+    <special_from_date></special_from_date>
+    <special_to_date></special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight/>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values>name=Pushup grips,type=select,required=1,sku=bundle-grips1,default=0,default_qty=1|name=Pushup grips,type=select,required=1,sku=bundle-grips2,default=0,default_qty=1|name=Tone band,type=radio,required=1,sku=bundle-band1,default=0,default_qty=1|name=Tone band,type=radio,required=1,sku=bundle-band2,default=0,default_qty=1|name=Tone band,type=radio,required=1,sku=bundle-band3,default=0,default_qty=1|name=Backpack,type=checkbox,required=1,sku=bundle-backpack1,default=0,default_qty=1|name=Backpack,type=checkbox,required=1,sku=bundle-backpack1,default=0,default_qty=1|name=Yoga equipment,type=multiselect,required=1,sku=bundle-brick,default=0,default_qty=1|name=Yoga equipment,type=multiselect,required=1,sku=bundle-roller,default=0,default_qty=1</bundle_values>
+    <bundle_price_type>Dynamic</bundle_price_type>
+    <bundle_price_view>Price range</bundle_price_view>
+    <bundle_sku_type>Dynamic</bundle_sku_type>
+    <bundle_weight_type>Dynamic</bundle_weight_type>
+    <bundle_shipment_type>together</bundle_shipment_type>
+  </product>
+  <product>
+    <status>1</status>
+    <type>bundle</type>
+    <category>Men,Women</category>
+    <name>Training Bundle (Dynamic price disabled)</name>
+    <description>This is a bundle product with disabled dynamic price</description>
+    <short_description>Bundle with disabled Dynamic Price</short_description>
+    <sku>bundle-dynamic-disabled</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>123</price>
+    <special_price>120</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>0</stock>
+    <weight/>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <bundle_values>name=Pushup grips,type=select,required=1,sku=bundle-grips1,price=10.0000,default=0,default_qty=1,price_type=fixed|name=Pushup grips,type=select,required=1,sku=bundle-grips2,price=10.0000,default=0,default_qty=1,price_type=fixed|name=Tone band,type=radio,required=1,sku=bundle-band1,price=15.0000,default=0,default_qty=1,price_type=percent|name=Tone band,type=radio,required=1,sku=bundle-band2,price=15.0000,default=0,default_qty=1,price_type=percent|name=Tone band,type=radio,required=1,sku=bundle-band3,price=15.0000,default=0,default_qty=1,price_type=percent|name=Backpack,type=checkbox,required=1,sku=bundle-backpack1,price=20.0000,default=0,default_qty=1,price_type=fixed|name=Backpack,type=checkbox,required=1,sku=bundle-backpack1,price=20.0000,default=0,default_qty=1,price_type=fixed|name=Yoga equipment,type=multiselect,required=1,sku=bundle-brick,price=5.0000,default=0,default_qty=1,price_type=percent|name=Yoga equipment,type=multiselect,required=1,sku=bundle-roller,price=5.0000,default=0,default_qty=1,price_type=percent</bundle_values>
+    <bundle_price_type>Fixed</bundle_price_type>
+    <bundle_price_view>As low as</bundle_price_view>
+    <bundle_sku_type>Fixed</bundle_sku_type>
+    <bundle_weight_type>Fixed</bundle_weight_type>
+    <bundle_shipment_type>separately</bundle_shipment_type>
+  </product>
+</node>

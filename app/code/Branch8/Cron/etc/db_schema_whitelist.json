@@ -1,0 +1,20 @@
+{
+    "cron_manual_execution": {
+        "column": {
+            "cron_manual_execution_id": true,
+            "executor": true,
+            "job_code": true,
+            "status": true,
+            "executed_at": true,
+            "finished_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "cron_schedule": {
+        "index": {
+            "CRON_SCHEDULE_JOB_CODE_SCHEDULED_AT": true
+        }
+    }
+}

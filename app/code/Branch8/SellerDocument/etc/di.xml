@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Branch8\SellerDocument\Api\FileRepositoryInterface" type="Branch8\SellerDocument\Model\FileRepository"/>
+	<preference for="Branch8\SellerDocument\Api\Data\FileInterface" type="Branch8\SellerDocument\Model\File"/>
+	<preference for="Branch8\SellerDocument\Api\Data\FileSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Branch8\SellerDocument\Model\ResourceModel\File\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">branch8_sellerdocument_file</argument>
+			<argument name="resourceModel" xsi:type="string">Branch8\SellerDocument\Model\ResourceModel\File\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="branch8_sellerdocument_file_listing_data_source" xsi:type="string">Branch8\SellerDocument\Model\ResourceModel\File\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

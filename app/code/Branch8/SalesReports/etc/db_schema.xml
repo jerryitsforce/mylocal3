@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="sales" engine="innodb" comment="Coupon Aggregated">
+        <column xsi:type="varchar" name="coupon_price_rule" nullable="true" length="1024"
+                comment="Rule Type"/>
+        <column xsi:type="int" name="coupon_rule_id" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Coupon Rule Id"/>
+        <index referenceId="SALES_ORDER_COUPON_RULE_ID" indexType="btree">
+            <column name="coupon_rule_id"/>
+        </index>
+
+    </table>
+    <table name="salesrule_coupon_aggregated" resource="sales" engine="innodb" comment="Coupon Aggregated">
+        <column xsi:type="int" name="cancellation_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Cancellation Orders"/>
+        <column xsi:type="int" name="overall_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Overall Orders"/>
+        <column xsi:type="decimal" name="overall_suggested_retail_price" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Suggested Retail Price"/>
+        <column xsi:type="decimal" name="overall_product_selling_price" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Product Selling Price"/>
+        <column xsi:type="decimal" name="suggested_retail_price_discounted" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Suggested Retail Price (Discounted)"/>
+        <column xsi:type="decimal" name="product_selling_price_discounted" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Product Selling Price (Discounted)"/>
+        <column xsi:type="decimal" name="vendor_share" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Vendor Share"/>
+        <column xsi:type="decimal" name="platform_share" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Platform Share"/>
+        <column xsi:type="int" name="complete_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Complete Orders"/>
+        <column xsi:type="text" name="order_ids"
+                nullable="true" comment="Order Ids"/>
+        <column xsi:type="varchar" name="coupon_price_rule" nullable="true" length="1024"
+                comment="Rule Type"/>
+        <column xsi:type="int" name="coupon_rule_id" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Coupon Rule Id"/>
+        <index referenceId="SALESRULE_COUPON_AGGREGATED_COUPON_RULE_ID" indexType="btree">
+            <column name="coupon_rule_id"/>
+        </index>
+        <index referenceId="SALESRULE_COUPON_AGGREGATED_COUPON_COUPON_CODE" indexType="btree">
+            <column name="coupon_code"/>
+        </index>
+    </table>
+    <table name="salesrule_coupon_aggregated_updated" resource="sales" engine="innodb"
+           comment="Salesrule Coupon Aggregated Updated">
+
+        <column xsi:type="int" name="overall_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Overall Orders"/>
+        <column xsi:type="int" name="cancellation_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Cancellation Orders"/>
+        <column xsi:type="int" name="complete_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Complete Orders"/>
+        <column xsi:type="decimal" name="overall_suggested_retail_price" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Suggested Retail Price"/>
+        <column xsi:type="decimal" name="overall_product_selling_price" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Product Selling Price"/>
+        <column xsi:type="decimal" name="suggested_retail_price_discounted" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Suggested Retail Price (Discounted)"/>
+        <column xsi:type="decimal" name="product_selling_price_discounted" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Product Selling Price (Discounted)"/>
+        <column xsi:type="decimal" name="vendor_share" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Vendor Share"/>
+        <column xsi:type="decimal" name="platform_share" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Platform Share"/>
+        <column xsi:type="text" name="order_ids"
+                nullable="true" comment="Order Ids"/>
+        <column xsi:type="varchar" name="coupon_rule_name" nullable="true" length="255"
+                comment="Coupon Sales Rule Name"/>
+        <column xsi:type="varchar" name="coupon_price_rule" nullable="true" length="1024"
+                comment="Rule Type"/>
+        <column xsi:type="int" name="coupon_rule_id" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Coupon Rule Id"/>
+        <index referenceId="SALESRULE_COUPON_AGGREGATED_UPDATED_COUPON_RULE_ID" indexType="btree">
+            <column name="coupon_rule_id"/>
+        </index>
+        <index referenceId="SALESRULE_COUPON_AGGREGATED_UPDATED_COUPON_CODE" indexType="btree">
+            <column name="coupon_code"/>
+        </index>
+    </table>
+    <table name="salesrule_coupon_aggregated_order" resource="default" engine="innodb"
+           comment="Coupon Aggregated Order">
+        <column xsi:type="int" name="overall_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Overall Orders"/>
+        <column xsi:type="int" name="cancellation_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Cancellation Orders"/>
+        <column xsi:type="int" name="complete_orders" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Complete Orders"/>
+        <column xsi:type="decimal" name="overall_suggested_retail_price" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Suggested Retail Price"/>
+        <column xsi:type="decimal" name="overall_product_selling_price" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Product Selling Price"/>
+        <column xsi:type="decimal" name="suggested_retail_price_discounted" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Suggested Retail Price (Discounted)"/>
+        <column xsi:type="decimal" name="product_selling_price_discounted" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Product Selling Price (Discounted)"/>
+        <column xsi:type="decimal" name="vendor_share" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Vendor Share"/>
+        <column xsi:type="decimal" name="platform_share" scale="4" precision="12" unsigned="false"
+                nullable="false"
+                default="0" comment="Platform Share"/>
+        <column xsi:type="text" name="order_ids"
+                nullable="true" comment="Order Ids"/>
+        <column xsi:type="varchar" name="coupon_price_rule" nullable="true" length="1024"
+                comment="Rule Type"/>
+        <column xsi:type="int" name="coupon_rule_id" unsigned="false" nullable="true" identity="false"
+                default="0" comment="Coupon Rule Id"/>
+        <index referenceId="SALESRULE_COUPON_AGGREGATED_ORDER_COUPON_RULE_ID" indexType="btree">
+            <column name="coupon_rule_id"/>
+        </index>
+        <index referenceId="SALESRULE_COUPON_AGGREGATED_ORDER_COUPON_CODE" indexType="btree">
+            <column name="coupon_code"/>
+        </index>
+    </table>
+</schema>

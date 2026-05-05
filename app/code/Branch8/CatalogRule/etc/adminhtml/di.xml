@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\CatalogRuleStaging\Controller\Adminhtml\Update\Save">
+		<plugin name="b8_catalog_rule_save_schedule" type="Branch8\CatalogRule\Plugin\Staging\Save" sortOrder="10" disabled="false"/>
+	</type>
+    <type name="Magento\CatalogRule\Controller\Adminhtml\Promo\Catalog\Save">
+		<plugin name="b8_catalog_rule_save_schedule" type="Branch8\CatalogRule\Plugin\Promo\Catalog\Save" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Branch8\CatalogRule\Helper\Approve">
+        <arguments>
+            <argument name="stagingUpdateSave" xsi:type="object">catalogRuleUpdateSave</argument>
+        </arguments>
+    </type>
+	<type name="Magento\CatalogRule\Controller\Adminhtml\Promo\Catalog\Edit">
+		<plugin name="b8_catalog_rule_validate_edit" type="Branch8\CatalogRule\Plugin\Promo\Catalog\Edit" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Framework\Data\Collection\AbstractDb">
+    	<plugin name="b8_catalog_rule_grid_join_approval"
+            type="Branch8\CatalogRule\Plugin\PromoRuleApprovalStatus" />
+	</type>
+	<type name="Magento\CatalogRule\Model\Rule\DataProvider">
+    	<plugin name="b8_catalog_rule_after_get_data"
+            type="Branch8\CatalogRule\Plugin\DataProvider" />
+	</type>
+	<preference for="Magento\Banner\Block\Adminhtml\Promo\Catalogrule\Edit\Tab\Banners\Grid"
+                type="Branch8\CatalogRule\Rewrite\Block\Adminhtml\Promo\Catalogrule\Edit\Tab\Banners\Grid"/>
+	
+	<type name="Magento\CatalogRule\Block\Adminhtml\Edit\DeleteButton">
+    	<plugin name="b8_catalog_rule_hide_delete"
+            type="Branch8\CatalogRule\Plugin\Block\Edit\DeleteButton" />
+	</type>
+	<type name="Magento\CatalogRule\Block\Adminhtml\Edit\SaveAndApplyButton">
+    	<plugin name="b8_catalog_rule_hide_save_and_apply"
+            type="Branch8\CatalogRule\Plugin\Block\Edit\SaveAndApplyButton" />
+	</type>
+	<type name="Magento\CatalogRule\Block\Adminhtml\Edit\SaveAndContinueButton">
+    	<plugin name="b8_catalog_rule_hide_save_and_continue"
+            type="Branch8\CatalogRule\Plugin\Block\Edit\SaveAndContinueButton" />
+	</type>
+	<type name="Magento\CatalogRule\Block\Adminhtml\Edit\ResetButton">
+    	<plugin name="b8_catalog_rule_hide_reset"
+            type="Branch8\CatalogRule\Plugin\Block\Edit\ResetButton" />
+	</type>
+	<type name="Magento\CatalogRule\Block\Adminhtml\Edit\SaveButton">
+    	<plugin name="b8_catalog_rule_hide_save"
+            type="Branch8\CatalogRule\Plugin\Block\Edit\SaveButton" />
+	</type>
+	<preference for="Magento\CatalogRule\Block\Adminhtml\Promo\Catalog\Edit\Tab\Conditions"
+                type="Branch8\CatalogRule\Rewrite\Block\Adminhtml\Promo\Catalogrule\Edit\Tab\Conditions"/>
+	<preference for="Magento\CatalogRule\Controller\Adminhtml\Promo\Catalog\Delete"
+                type="Branch8\CatalogRule\Rewrite\Controller\Adminhtml\Promo\Catalog\Delete"/>
+	<type name="Magento\CatalogRule\Model\Rule">
+	<plugin name="catalogConditionFieldsetIdResolver" 
+		type="Branch8\CatalogRule\Plugin\ConditionFieldsetIdResolver"/>
+    </type>
+</config>

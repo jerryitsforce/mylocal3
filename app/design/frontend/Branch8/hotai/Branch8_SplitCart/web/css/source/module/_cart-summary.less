@@ -1,0 +1,109 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+  ._block-content-loading {
+    >*:not(.loading-mask) {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .loading-mask {
+      background: none;
+    }
+  }
+
+  .cart-totals {
+
+    .totals.shipping.excl,
+    .totals.sub.excl,
+    tbody tr.totals-tax,
+    tbody tr.item-selected,
+    tbody tr.total-rules {
+      display: none;
+    }
+  }
+
+  .cart-qty-notify {
+    &:extend(.abs-caption1 all);
+    border: var(--border-common);
+    background: var(--color-white);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    box-sizing: border-box;
+    color: var(--color-gray-solid1);
+    margin-bottom: 16px;
+    border-radius: var(--CardM);
+    display: none;
+
+    p {
+      color: var(--color-gray-solid1);
+      margin: 0;
+    }
+  }
+
+  .cart-qty-notify-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 4px 0;
+    padding-left: 28px;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &::after {
+      &:extend(.abs-hotai-icon all);
+      content: var(--icon-next1);
+      position: absolute;
+      right: -3px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 24px;
+      line-height: 1;
+      color: var(--color-black-solid1);
+    }
+  }
+
+  .cart-qty-notify-msg {
+    &:extend(.abs-body-text-medium all);
+    color: var(--color-black-solid1);
+
+    &::before {
+      &:extend(.abs-hotai-icon all);
+      content: var(--icon-cart-fill1);
+      margin-right: 8px;
+      font-size: 14px;
+      line-height: 1;
+      color: var(--color-yellow);
+      position: absolute;
+      left: 2px;
+      top: 5px;
+    }
+  }
+
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+  .cart-qty-notify-msg {
+    &:extend(.abs-body-text-medium all);
+  }
+}
+
+
+//
+//  Desktop (1280px and up)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+  .cart-qty-notify-msg {
+    &:extend(.abs-body-text-medium all);
+  }
+}

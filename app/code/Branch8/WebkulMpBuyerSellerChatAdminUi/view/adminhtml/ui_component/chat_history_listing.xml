@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <columns name="chat_history_columns">
+       <!-- <settings>
+            <editorConfig>
+                <param name="clientConfig" xsi:type="array">
+                    <item name="saveUrl" xsi:type="url" path="mpchatsystem/message/inlineEdit"/>
+                    <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                </param>
+                <param name="indexField" xsi:type="string">entity_id</param>
+                <param name="enabled" xsi:type="boolean">true</param>
+                <param name="selectProvider" xsi:type="string">chat_history_listing.chat_history_listing.chat_history_columns.ids</param>
+            </editorConfig>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">chat_history_listing.chat_history_listing.chat_history_columns_editor</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>-->
+        <column name="entity_id" sortOrder="20">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="unique_id" sortOrder="30">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Message Code</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="message_type" component="Magento_Ui/js/grid/columns/select" sortOrder="190">
+            <settings>
+                <options class="Branch8\WebkulMpBuyerSellerChatAdminUi\Model\Config\Source\MessageTypeOptions"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>false</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Message Type</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="message"
+                class="Branch8\WebkulMpBuyerSellerChatAdminUi\Ui\Component\Listing\Columns\Message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Message</item>
+                    <item name="component" xsi:type="string">Branch8_WebkulMpBuyerSellerChatAdminUi/js/grid/columns/message</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="filter" xsi:type="string">text</item>
+                </item>
+            </argument>
+            <settings>
+                <filter/>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="date"  class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Dated on</item>
+                    <item name="sortOrder" xsi:type="number">4</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

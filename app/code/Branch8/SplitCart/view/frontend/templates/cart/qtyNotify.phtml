@@ -1,0 +1,18 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**  @var $block \Branch8\SplitCart\Block\Cart\ReminderItems */
+?>
+<?php 
+$qty = 1;
+$productName = 'travel product';
+?>
+<div class="cart-qty-notify">
+  <a href="<?= $block->getHotaiGoTravelUrl() ?>" class="cart-qty-notify-link">
+    <p class="cart-qty-notify-msg"><?= __('你尚有%1件 旅遊商品 尚未結帳', $qty) ?></p>
+    <p><?= __("提醒你！此動作將前往HOTAI購旅遊館") ?></p>
+  </a>
+</div>

@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+$loaderUrl = $block->escapeJs(
+    $block->escapeUrl($block->getViewFileUrl('images/loader-1.gif'))
+);
+?>
+<div data-role="view-ticket-form" data-bind="scope:'ticketCreateForm'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
+    <script type="text/x-magento-init">
+        {
+            "[data-role='view-ticket-form']": {
+                "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+        },
+        "*": {
+            "Magento_Ui/js/block-loader": "<?= $loaderUrl ?>"
+        }
+    }
+    </script>
+</div>

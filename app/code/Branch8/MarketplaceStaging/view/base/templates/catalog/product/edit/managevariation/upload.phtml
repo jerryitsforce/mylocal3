@@ -1,0 +1,10 @@
+<?php
+?>
+<script id="new-uploaded-image-template" type="text/x-magento-template">
+    <div class="wk-img-box data-grid-file-uploader-inner">
+        <span class="wkosi-image-delete"></span>
+        <input class="wkv-file" type="hidden" name="wkvariation[<%- data.id %>][file][<%- data.imageIndex %>]"
+               value="<%- data.response.file %>">
+        <img class="file-uploader-image" src="<%- data.response.url %>" alt="<%- data.response.name %>">
+    </div>
+</script>

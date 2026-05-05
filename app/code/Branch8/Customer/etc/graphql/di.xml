@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Model\Data\Customer">
+        <plugin name="b8_graphql_custom_set_get_email"
+                type="Branch8\Customer\Plugin\BuyerSellerEmail"
+                sortOrder="10"/>
+    </type>
+</config>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_after_edit_old_parent_order">
+        <observer name="cancel_parent_order_when_edit_order"
+                  instance="Branch8\MarketPlaceParentOrderAdminUi\Observer\CancelOldParentOrder" />
+    </event>
+</config>

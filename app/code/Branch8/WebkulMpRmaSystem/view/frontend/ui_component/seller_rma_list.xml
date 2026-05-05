@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Branch8 override for Webkul_MpRmaSystem seller_rma_list UI component.
+ *
+ * Configures the bookmark save/delete URLs to use the Webkul Marketplace
+ * frontend bookmark controllers instead of the default Magento admin-only
+ * `mui/bookmark/save` endpoint, which would result in 404 errors on the
+ * frontend seller RMA listing page.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="marketplace/mui_bookmark/save"/>
+                        <item name="deleteUrl" xsi:type="url" path="marketplace/mui_bookmark/delete"/>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+    </listingToolbar>
+</listing>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/crontab.xsd">
+    <group id="b8_cron_group">
+        <job name="branch8_role_delegate_process" instance="Branch8\RoleDelegate\Cron\ProcessDelegation"
+             method="execute">
+            <schedule>0 5,17 * * *</schedule>
+        </job>
+    </group>
+</config>

@@ -1,0 +1,36 @@
+{
+    "manual_invoice": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "invoice_number": true,
+            "invoice_created_at": true,
+            "random_code": true,
+            "invoice_type": true,
+            "invoice_status": true,
+            "trans_no": true,
+            "company_name": true,
+            "invoice_customer_identifier": true,
+            "created_at": true,
+            "updated_at": true,
+            "updated_by": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MANUAL_INVOICE_ORDER_ID_SALES_ORDER_ENTITY_ID": true,
+            "MANUAL_INVOICE_UPDATED_BY_ADMIN_USER_USER_ID": true
+        },
+        "index": {
+            "MANUAL_INVOICE_ORDER_ID": true,
+            "MANUAL_INVOICE_UPDATED_BY": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "is_manual_invoice": true
+        },
+        "index": {
+            "SALES_ORDER_IS_MANUAL_INVOICE": true
+        }
+    }
+}

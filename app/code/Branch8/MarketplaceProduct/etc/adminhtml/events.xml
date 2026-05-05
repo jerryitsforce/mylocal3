@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="mp_approve_product">
+        <observer name="branch8_update_updated_user" instance="Branch8\MarketplaceProduct\Observer\TrackUpdatedUser" />
+    </event>
+</config>

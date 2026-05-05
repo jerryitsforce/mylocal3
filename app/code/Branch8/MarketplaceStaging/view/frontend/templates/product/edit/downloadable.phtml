@@ -1,0 +1,64 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php
+/**
+ * @var $block \Branch8\MarketplaceStaging\Block\Product\Edit\Downloadable
+ */
+?>
+<?php
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getHelper();
+$productType = $block->getRequest()->getParam('type');
+if ($block->getSellerProduct()->getId()) {
+    $productType = $block->getSellerProduct()->getTypeId();
+}
+$type = 'downloadable';
+$allowedtypes=explode(',', $helper->getAllowedProductType());
+if (in_array($type, $allowedtypes) && ($productType == 'downloadable' || $productType == 'simple'
+ || $productType == 'virtual')) { ?>
+    <div id="staging_downloadable_items-wrapper" data-tab="staging_downloadable_items"
+     class="field" data-collapsible="true" role="tablist">
+        <label class="label"><?= $block->escapeHtml(__('Downloadable Information')) ?>:</label>
+        <div id="staging_downloadable_items-content" data-role="content" class="fieldset-wrapper-content"
+         role="tabpanel" aria-hidden="false" style="display: block;">
+            <div data-tab-type="tab_content_downloadableInfo" id="staging_downloadable_items_content"
+            data-ui-id="downloadable-items-tab-content-downloadable-items">
+                <div id="alert_messages_block"><?= $block->getMessageHtml() ?></div>
+                <div class="field field-option field-is-stage-downloadable">
+                    <input type="checkbox" data-action="change-type-product-staging-downloadable"  class="control-checkbox"
+                           name="is_downloadable" id="is-stage-downloadable" checked />
+                    <label class="field-label" for="is-stage-downloadable">
+                        <span><?= /* @noEscape */ __('Is this downloadable Product?'); ?></span>
+                    </label>
+                </div>
+                <div class="entry-edit" id="product_info_tabs_staging_downloadable_items">
+                    <?= $block->getChildHtml() ?>
+                </div>
+                <div style="display:none">
+                    <div id="custom-advice-container"></div>
+                </div>
+            </div>
+            <script type="text/x-magento-init">
+                {
+                    "*": {
+                        "Branch8_MarketplaceStaging/js/downloadable-type-handler": {
+                            "isDownloadable": "true",
+                            "tabId": "staging_downloadable_items"
+                        }
+                    }
+                }
+            </script>
+
+        </div>
+    </div>
+    <?php
+}?>

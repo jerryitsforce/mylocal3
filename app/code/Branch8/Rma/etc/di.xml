@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Branch8\Rma\Api\MarketplaceRmaStatusHistoryRepositoryInterface" type="Branch8\Rma\Model\MarketplaceRmaStatusHistoryRepository"/>
+	<preference for="Branch8\Rma\Api\Data\MarketplaceRmaStatusHistoryInterface" type="Branch8\Rma\Model\MarketplaceRmaStatusHistory"/>
+	<preference for="Branch8\Rma\Api\Data\MarketplaceRmaStatusHistorySearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Webkul\MpRmaSystem\Model\Rma\Source\RmaStatus" type="Branch8\Rma\Model\Rma\Source\RmaStatus"/>
+    <type name="Webkul\MpRmaSystem\Model\ResourceModel\Details">
+        <plugin name="Branch8_Rma::adjust_rma_product_details"
+                type="Branch8\Rma\Plugin\AdjustRmaProductDetails"
+        />
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="seller_rma_list_data_source" xsi:type="string">Branch8\Rma\Model\ResourceModel\Grid\FrontendGrid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Rma\Model\ResourceModel\Grid\FrontendGrid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_rma_details</argument>
+            <argument name="eventPrefix" xsi:type="string">seller_mprmasystem_items_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">seller_items_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Webkul\MpRmaSystem\Model\ResourceModel\Details</argument>
+        </arguments>
+    </type>
+</config>

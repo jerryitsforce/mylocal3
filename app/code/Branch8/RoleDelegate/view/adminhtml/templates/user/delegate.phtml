@@ -1,0 +1,56 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Backend\Block\Widget\Form */
+?>
+<?php /* @todo replace .form-inline with better class name */?>
+<?php /* ToDo UI: check if we need this wrapper in the process of global forms refactoring */ ?>
+
+<div class="entry-edit form-inline">
+    <?= $block->getFormHtml() ?>
+</div>
+<?= $block->getChildHtml('form_after') ?>
+
+<?= $block->getGridHtml() ?>
+
+<script>
+    require([
+        'jquery',
+        'mage/validation'
+    ], function ($) {
+        var delegateUser = $('#user_delegate_user_id');
+        var startDate = $('#user_delegate_start_date');
+        var endDate = $('#user_delegate_end_date');
+
+        function updateRequired() {
+            var isAnyFilled = delegateUser.val() || startDate.val() || endDate.val();
+
+            if (isAnyFilled) {
+                delegateUser.addClass('required-entry');
+                startDate.addClass('required-entry');
+                endDate.addClass('required-entry');
+                $('label[for="user_delegate_user_id"]').addClass('required');
+                $('label[for="user_delegate_start_date"]').addClass('required');
+                $('label[for="user_delegate_end_date"]').addClass('required');
+            } else {
+                delegateUser.removeClass('required-entry');
+                startDate.removeClass('required-entry');
+                endDate.removeClass('required-entry');
+                $('label[for="user_delegate_user_id"]').removeClass('required');
+                $('label[for="user_delegate_start_date"]').removeClass('required');
+                $('label[for="user_delegate_end_date"]').removeClass('required');
+            }
+        }
+
+        // Delay event listener attachment to skip initial programmatic change events
+        setTimeout(function() {
+            delegateUser.on('change', updateRequired);
+            startDate.on('change', updateRequired);
+            endDate.on('change', updateRequired);
+        }, 1000);
+    });
+
+</script>

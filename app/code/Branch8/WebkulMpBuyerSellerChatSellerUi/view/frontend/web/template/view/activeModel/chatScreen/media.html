@@ -1,0 +1,14 @@
+<img class="attachment-img"
+     width="23" height="23"
+     data-bind="
+     attr: {src: window.chatboxCoreConfig.attachmentImage},
+     click: showFileUploader"
+/>
+<div class="added-attachment" style="display: none">
+    <div class="dropdown-menu dropdown-menu-right fileUpload" role="menu">
+        <!-- ko foreach: getRegion('fileUpload') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </div>
+</div>
+

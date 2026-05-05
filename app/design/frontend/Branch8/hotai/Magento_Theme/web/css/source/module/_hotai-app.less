@@ -1,0 +1,280 @@
+& when (@media-common = true) {
+    .hotai-app {
+        #notice-cookie-block {
+            display: none !important;
+        }
+        .page-main {
+            -webkit-flex-grow: 0;
+            flex-grow: 0;
+        }
+
+        .page-wrapper {
+            padding-top: 0 !important;
+        }
+
+        .page-header {
+            display: none;
+        }
+
+        .nav-open & {
+            .page-header {
+                display: block;
+            }
+        }
+        .search-open & {
+            .page-header {
+                display: block;
+            }
+
+            .page-wrapper {
+                right: 0 !important;
+                transition: none !important;
+            }
+        }
+
+        .search-open &,
+        .search-before-open & {
+            .page-wrapper {
+                transition: none !important;
+                right: 0 !important;
+            }
+        }
+
+        //.search-open.search-before-open & {
+        //    background-color: transparent !important;
+        //}
+
+        .block-search {
+            #search {
+                height: 0 !important;
+                width: 0 !important;
+                border: none !important;
+            }
+
+            .action.clear {
+                display: none !important;
+            }
+
+            .action.search{
+                display: none !important;
+            }
+
+            .action.close-btn {
+                display: none !important;
+            }
+
+            #search_mini_form {
+                height: 0 !important;
+            }
+
+            .control {
+                border-bottom: none !important;
+            }
+
+            .block-content {
+                #hide-nav-button {
+                    display: none !important;
+                }
+            }
+
+            .search-autocomplete {
+                height: 100vh !important;
+                .popover-container {
+                    height: 100vh !important;
+                }
+            }
+        }
+
+        .navigation.loaded-menu {
+            margin-top: -50px;
+        }
+
+        &:not(.catalog-product-view) {
+            .header-right {
+                display: none !important;
+            }
+
+            .page-title-wrapper {
+                .page-title {
+                    display: none !important;
+                }
+            }
+        }
+
+        &.sales-parentorder-history,
+        &.customer-address-index,
+        &.member-info-detail,
+        &.hotai_auth-groupapps-index {
+            .page-title-wrapper {
+                padding-bottom: 16px;
+            }
+        }
+
+        &.sales-parentorder-history {
+
+            .order-box.no-order{
+                min-height: ~'calc(100vh - 171px)'; // 100 + 65 + 6
+            }
+
+            .order-box.no-result {
+                min-height:  ~'calc(100vh - 100px)';
+            }
+
+            .order-management-header.has-filter {
+                margin-top: -16px;
+                .order-header-top {
+                    display: none;
+                }
+            }
+
+            .order-management-header.has-search:not(.has-filter) {
+                display: none;
+            }
+
+            .order-list.has-search:not(.has-filter) {
+                margin-top: -16px;
+            }
+
+            .order-results.has-search:not(.has-filter) {
+                margin-top: -16px;
+            }
+
+        }
+
+
+        &.member-ticket-index {
+            .ticket-list.empty {
+                height: ~'calc(100vh - 63px - 78px - 36px - 48px)';
+            }
+        }
+
+        &.checkout-cart-index {
+            .page-title-wrapper {
+                padding-bottom: 0;
+            }
+        }
+
+        &.cms-home:not(.page-loaded) {
+            .pagebuilder-slider:first-of-type {
+                .co-loading-ajax:first-of-type::before {
+                    display: none;
+                }
+            }
+        }
+
+        //&.wishlist-index-index {
+        //    .page-title-wrapper {
+        //        padding-bottom: 0;
+        //
+        //        .page-title {
+        //            display: block !important;
+        //        }
+        //
+        //    }
+        //
+        //    .wishlist-toolbar {
+        //        .backward::before {
+        //            content: '' !important;
+        //        }
+        //    }
+        //}
+        //
+        //&.member-browsinghistory-index {
+        //    .page-title-wrapper {
+        //        padding-bottom: 0;
+        //
+        //        .page-title {
+        //            display: block !important;
+        //        }
+        //
+        //    }
+        //
+        //    .browsing-history-heading {
+        //        .backward::before {
+        //            content: '' !important;
+        //        }
+        //    }
+        //}
+
+        .header-right {
+            .minicart-wrapper {
+                display: none !important;
+            }
+        }
+
+
+        .page-footer {
+            display: none !important;
+        }
+
+        .breadcrumbs {
+            display: none !important;
+        }
+
+        .loading-mask {
+            display: none !important;
+        }
+        .page-loading-mask {
+            display: none !important;
+        }
+
+        //cart page
+        .cart-container {
+            #wrap_items_grid {
+                padding-bottom: 200px;
+            }
+        }
+
+        //slide modals
+        .modal-popup.modal-slide {
+            .modal-inner-wrap {
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out !important;
+            }
+
+            &._show {
+                .modal-inner-wrap {
+                    opacity: 1;
+                }
+            }
+        }
+
+        //checkout
+        &.checkout-index-index {
+            .checkout-header {
+                display: none !important;
+            }
+
+            .opc-section.order-note {
+                padding-bottom: 300px !important;
+            }
+        }
+
+
+        &.catalog-category-view {
+            .breadcrumbs ~ main.page-main {
+                padding-top: 15px;
+            }
+        }
+
+        &.cms-index-index .spin-trigger-wrapper {
+            bottom: 182px;
+        }
+
+        // &.checkout-cart-index .spin-trigger-wrapper {
+        //     bottom: 126px;
+        // }
+
+        // &.checkout-index-index .spin-trigger-wrapper {
+        //     bottom: 204px;
+        // }
+
+        .point-floating-button {
+            bottom: 98px !important;
+        }
+
+        .back-to-top {
+            bottom: 30px !important;
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var Magento\Customer\Block\Account\Customer $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php if ($block->customerLoggedIn()) : ?>
+    <a class="nav-item nav-order-history" href="/sales/parentOrder/history/">
+        <span class="text"><?= $block->escapeHtml(__('訂單管理')) ?></span>
+    </a>
+<?php endif; ?>

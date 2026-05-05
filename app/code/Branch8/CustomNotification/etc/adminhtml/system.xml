@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="magenest_notification_box" translate="label" type="button" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="notification_box" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status_notification" translate="label" type="multiselect" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Order Status for Notification</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+                <field id="one_id_group" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>One ID Group</label>
+                </field>
+            </group>
+            <group id="web_push_notification" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="days_to_keep" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Days to Keep Old Notification Send</label>
+                    <validate>validate-number validate-greater-than-zero required-entry</validate>
+                    <comment>Delete notification entries older than this number of days</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

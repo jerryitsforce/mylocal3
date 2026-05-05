@@ -1,0 +1,259 @@
+{
+    "spintowin_reports": {
+        "column": {
+            "segment_type": true,
+            "reward_point": true,
+            "point_expire_date": true,
+            "reward_serial_number": true,
+            "serial_number_id": true,
+            "reward_sku": true,
+            "log": true,
+            "is_send_mail": true,
+            "rule_id": true,
+            "pool_id": true,
+            "customer_id": true,
+            "is_apply_consolation": true,
+            "created_at": true,
+            "coupon_expired_date": true,
+            "segment_heading": true,
+            "physical_image": true,
+            "coupon_image": true,
+            "physical_expire_date": true,
+            "rule_name": true,
+            "pool_name": true,
+            "reward_point_account": true,
+            "point_bu_no": true,
+            "point_rs_no": true,
+            "redeem_trace_no": true,
+            "prize_trace_no": true
+        },
+        "index": {
+            "SPINTOWIN_REPORTS_IS_SEND_MAIL": true,
+            "SPINTOWIN_REPORTS_SPIN_ID": true,
+            "SPINTOWIN_REPORTS_RULE_ID": true,
+            "SPINTOWIN_REPORTS_POOL_ID": true,
+            "SPINTOWIN_REPORTS_CUSTOMER_ID": true,
+            "SPINTOWIN_REPORTS_IS_APPLY_CONSOLATION": true
+        }
+    },
+    "spintowin_info": {
+        "column": {
+            "spin_type": true,
+            "x_times": true,
+            "allow_redeem_point": true,
+            "point_to_drawn": true,
+            "redeem_point_to_drawn_limit_per_day": true,
+            "float_button": true,
+            "spin_description": true,
+            "name2": true,
+            "slow_stock_alert_email": true,
+            "title": true,
+            "title2": true,
+            "total_draws": true,
+            "num_of_participiants": true,
+            "points_redeemed": true
+        }
+    },
+    "spintowin_segments": {
+        "column": {
+            "rule_id": true,
+            "pool_id": true,
+            "sku": true,
+            "reward_point": true,
+            "point_expire_date": true,
+            "stock_reminder": true,
+            "threshold": true,
+            "product_name": true,
+            "product_url": true,
+            "physical_expire_date": true,
+            "physical_image": true,
+            "coupon_image": true,
+            "coupon_expired_date": true,
+            "is_publish": true,
+            "reward_point_account": true,
+            "point_bu_no": true,
+            "point_rs_no": true
+        }
+    },
+    "spintowin_consolation": {
+        "column": {
+            "consolation_id": true,
+            "spin_id": true,
+            "is_active": true,
+            "consolation_fail_times": true,
+            "consolation_type": true,
+            "rule_id": true,
+            "pool_id": true,
+            "sku": true,
+            "reward_point": true,
+            "point_expire_date": true,
+            "consolation_title": true,
+            "consolation_description": true,
+            "product_name": true,
+            "product_url": true,
+            "physical_expire_date": true,
+            "consolation_physical_image": true,
+            "consolation_coupon_image": true,
+            "coupon_expired_date": true,
+            "reward_point_account": true,
+            "point_bu_no": true,
+            "point_rs_no": true
+        },
+        "index": {
+            "SPINTOWIN_CONSOLATION_SPIN_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "spintowin_redemption": {
+        "column": {
+            "redemption_id": true,
+            "spin_id": true,
+            "customer_id": true,
+            "created_at": true,
+            "point": true,
+            "chance_qty": true,
+            "is_used": true,
+            "ip": true,
+            "trace_no": true
+        },
+        "index": {
+            "SPINTOWIN_REDEMPTION_SPIN_ID": true,
+            "SPINTOWIN_REDEMPTION_CUSTOMER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "customer_ticket": {
+        "constraint": {
+            "UNQ_E0ECC6F2613C272317D1490555AE1D80": true
+        }
+    },
+    "spintowin_consolation_reports": {
+        "column": {
+            "consolation_report_id": true,
+            "spin_id": true,
+            "customer_id": true,
+            "rule_id": true,
+            "pool_id": true,
+            "consolation_type": true,
+            "coupon": true,
+            "serial_number": true,
+            "serial_number_id": true,
+            "sku": true,
+            "reward_point": true,
+            "point_expire_date": true,
+            "created_at": true,
+            "prize_report_id": true,
+            "consolation_title": true,
+            "consolation_heading": true,
+            "consolation_id": true,
+            "coupon_expired_date": true,
+            "physical_expire_date": true,
+            "physical_image": true,
+            "coupon_image": true,
+            "consolation_description": true,
+            "consolation_pool_name": true,
+            "consolation_rule_name": true,
+            "reward_point_account": true,
+            "point_bu_no": true,
+            "point_rs_no": true,
+            "prize_trace_no": true
+        },
+        "index": {
+            "SPINTOWIN_CONSOLATION_REPORTS_CONSOLATION_ID": true,
+            "SPINTOWIN_CONSOLATION_REPORTS_SPIN_ID": true,
+            "SPINTOWIN_CONSOLATION_REPORTS_RULE_ID": true,
+            "SPINTOWIN_CONSOLATION_REPORTS_POOL_ID": true,
+            "SPINTOWIN_CONSOLATION_REPORTS_CUSTOMER_ID": true,
+            "SPINTOWIN_CONSOLATION_REPORTS_PRIZE_REPORT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "spintowin_layout": {
+        "column": {
+            "page_url": true,
+            "desktop_background_image": true,
+            "mobile_background_image": true,
+            "base_frame_color1": true,
+            "base_frame_color2": true,
+            "base_frame_color3": true,
+            "main_color_of_the_roulette": true,
+            "main_text_color_of_the_roulette": true,
+            "secondary_color_of_the_roulette": true,
+            "secondary_text_color_of_the_roulette": true,
+            "main_color_win_record": true,
+            "page_title": true,
+            "hint_title": true,
+            "hint_text": true,
+            "page_title2": true
+        }
+    },
+    "spintowin_award_address": {
+        "column": {
+            "address_id": true,
+            "spin_id": true,
+            "customer_id": true,
+            "name": true,
+            "phone_number": true,
+            "street": true,
+            "region": true,
+            "region_id": true,
+            "city": true,
+            "city_id": true,
+            "country": true,
+            "updated_at": true,
+            "segment_report_id": true
+        },
+        "index": {
+            "SPINTOWIN_AWARD_ADDRESS_SPIN_ID": true,
+            "SPINTOWIN_AWARD_ADDRESS_CUSTOMER_ID": true,
+            "SPINTOWIN_AWARD_ADDRESS_SEGMENT_REPORT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "SPINTOWIN_AWARD_ADDRESS_SPIN_ID_CUSTOMER_ID": true,
+            "SPINTOWIN_AWARD_ADDRESS_SPIN_ID_CUSTOMER_ID_SEGMENT_REPORT_ID": true
+        }
+    },
+    "magenest_customer_notification": {
+        "column": {
+            "segment_report_id": true
+        },
+        "index": {
+            "MAGENEST_CUSTOMER_NOTIFICATION_SEGMENT_REPORT_ID": true
+        }
+    },
+    "magenest_notification_queue": {
+        "column": {
+            "segment_report_id": true
+        },
+        "index": {
+            "MAGENEST_NOTIFICATION_QUEUE_SEGMENT_REPORT_ID": true
+        }
+    },
+    "spintowin_draft": {
+        "column": {
+            "draft_id": true,
+            "spin_id": true,
+            "data": true,
+            "updated_at": true,
+            "segment_deleted": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "SPINTOWIN_DRAFT_SPIN_ID": true
+        }
+    },
+    "spintowin_button": {
+        "column": {
+            "display_scope": true,
+            "specify_page": true,
+            "button_size": true
+        }
+    }
+}

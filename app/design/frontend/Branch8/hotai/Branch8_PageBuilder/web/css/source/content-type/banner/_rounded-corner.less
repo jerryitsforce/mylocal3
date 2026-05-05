@@ -1,0 +1,214 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .font-second{
+    font-family: @font-family__secondary;
+  }
+  .pagebuilder-banner-rounded-corner{
+    display: flex;
+    padding: 0 !important;
+    background: none !important;
+    width: 100%;
+
+    .pagebuilder-banner-content{
+      background-image: none !important;
+      min-height: 0 !important;
+      border: none !important;
+      border: none !important;
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+      padding: 8px 16px;
+    }
+
+    .pagebuilder-banner-wrapper{
+      position: relative;
+      max-width: 65%;
+      min-width: 120px;
+      padding: 0 !important;
+      border: none !important;
+      background-color: transparent !important;
+      min-height: 0 !important;
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+
+      img{
+        display: inline-block;
+        vertical-align: middle;
+        visibility: hidden;
+      }
+    }
+
+    .rounded-corner{
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      height: 40%;
+
+
+      svg{
+        height: 100%;
+        width: auto;
+      }
+    }
+
+    .pagebuilder-banner-content{
+      flex: 1;
+      display: flex;
+    }
+
+    .pagebuilder-overlay{
+      flex: 1;
+    }
+
+    &.align-center{
+      .pagebuilder-banner-content{
+        justify-content: center;
+      }
+    }
+
+    &.align-right{
+      .pagebuilder-banner-content{
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  [data-appearance="rounded-corner"]{
+    &.align-middle{
+        .pagebuilder-banner-content{
+            align-items: center;
+        }
+    }
+
+    &.align-bottom{
+        .pagebuilder-banner-content{
+            align-items: flex-end;
+        }
+    }
+
+    .pagebuilder-banner-content{
+      color: #ffffff;
+      &:extend(.abs-caption2 all);
+      
+      h5, a{
+        color: #ffffff;
+      }
+
+      h2, h3, h4, h5, h6{
+        margin-top: 0;
+        margin-bottom: 12px;
+        letter-spacing: 2px;
+      }
+
+      .tag{
+        border: 1px solid #ffffff;
+        font-size: 1.2rem;
+        line-height: 1.5;
+        padding: 0 6px;
+        display: inline-block;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        text-decoration: none;
+      }
+
+      button.pagebuilder-banner-button{
+        color: #ffffff;
+        margin: 0;
+
+        &:hover{
+          color: #ffffff;
+          border-color: #ffffff;
+        }
+      }
+    }
+  }
+
+  [data-content-type="banner"]{
+    .pagebuilder-banner-content{
+      h2, h3, h4, h5, h6{
+        margin-top: 0;
+      }
+    }
+  }
+
+  #html-body [data-appearance="rounded-corner"]{
+    .pagebuilder-banner-content{
+      button.pagebuilder-banner-button{
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+}
+
+//
+//  Mobile (style-m.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
+  .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+    padding: 10px 24px;
+  }
+}
+
+//
+//  Desktop (style-l.css)
+//  _____________________________________________
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = (@screen__m)) {
+  #html-body [data-appearance="rounded-corner"]{
+    &.pagebuilder-desktop-normal-appearance{
+      position: relative;
+      .pagebuilder-banner-rounded-corner{
+        .rounded-corner{
+          display: none;
+        }
+        .pagebuilder-banner-wrapper{
+          max-width: 100%;
+          width: 100%;
+          border-top-left-radius: inherit !important;
+          border-bottom-left-radius: inherit !important;
+        }
+
+        .pagebuilder-banner-content{
+          position: absolute;
+          z-index: 1;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 0;
+          background: linear-gradient(180deg, rgba(242, 242, 242, 0) 47.65%, rgba(242, 242, 242, 0.71) 67.81%, #F2F2F2 100%) !important;
+          border-radius: inherit !important
+        }
+      }
+    }
+  }
+
+  [data-appearance="rounded-corner"]{
+    .pagebuilder-banner-content{
+      &:extend(.abs-tb-caption1 all);
+    }
+  }
+}
+// 1280px
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = (@screen__sl)) {
+  .pagebuilder-banner-rounded-corner{
+    .pagebuilder-banner-content{
+      padding: 30px;
+    }
+  }
+}

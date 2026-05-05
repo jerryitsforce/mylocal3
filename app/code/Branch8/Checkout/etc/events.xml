@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="controller_action_predispatch_checkout_index_index">
+		<observer name="branch8_checkout_observer_controller_actionpredispatchcheckoutindexindex_controller_action_predispatch_checkout_index_index" instance="Branch8\Checkout\Observer\Controller\ActionPredispatchCheckoutIndexIndex"/>
+	</event>
+	<event name="checkout_cart_product_add_after">
+		<observer name="branch8_addtocart_tracking_category" instance="Branch8\Checkout\Observer\TrackingCategory"/>
+		<observer name="fullpoint_virtual_product_checkout"
+			instance="Branch8\Checkout\Observer\FullpointVirtualCheckoutCartAddAfter" />
+	</event>
+	<event name="checkout_cart_product_add_before">
+		<observer name="branch8_addtocart_seller_product_shippingmethod_validates" 
+			instance="Branch8\Checkout\Observer\ValidateShippingMethod"/>
+		<observer name="fullpoint_virtual_product_checkout"
+			instance="Branch8\Checkout\Observer\FullpointVirtualCheckoutCartAddBefore" />
+	</event>
+	<event name="sales_quote_item_save_after">
+		<observer name="fullpoint_checkout_process_add_cart_after" instance="Branch8\Checkout\Observer\FullpointVirtualQuoteItemSaveAfter"/>
+	</event>
+
+	<event name="controller_action_predispatch_checkout_cart_updateItemOptions">
+		<observer name="branch8_predispatch_checkout_index_index_get_available_checkout" instance="Branch8\Checkout\Observer\GetAvailableCheckout"/>
+	</event>
+	<event name="controller_action_predispatch_checkout_cart_quickCartUpdateItemOptions">
+		<observer name="branch8_predispatch_checkout_index_index_get_available_checkout" instance="Branch8\Checkout\Observer\GetAvailableCheckout"/>
+	</event>
+	<event name="checkout_cart_update_item_complete">
+		<observer name="branch8_check_shipping_method_set_available_checkout" instance="Branch8\Checkout\Observer\ValidateItemShippingMethod"/>
+	</event>
+	<event name="before_submit_master_quote">
+		<observer name="branch8_check_hotai_token_before_checkout" instance="Branch8\Checkout\Observer\ValidateHotaiToken"/>
+		<observer name="branch8_validate_hotaipay_grand_total" instance="Branch8\Checkout\Observer\HotaiPayGrandTotal"/>
+	</event>
+	<event name="checkout_submit_all_after">
+		<!-- <observer name="b8_record_product_special_price_to_order_item"
+				  instance="Branch8\Checkout\Observer\AddProductSpecilPrice" /> -->
+		<observer name="b8_record_product_catalogrule"
+				  instance="Branch8\Checkout\Observer\AddProductCatalogRule" />
+		<observer name="b8_log_checkout_addresses" instance="Branch8\Checkout\Observer\LogCheckoutAddresses" />
+	</event>
+	<event name="marketplace_mpsplitorder_submit_after">
+		<observer name="branch8_update_virtual_billing_name"
+				  instance="Branch8\Checkout\Observer\VirtualOrderUpdateBillingName" />
+	</event>
+	<!-- <event name="checkout_cart_save_after">
+		<observer name="checkout_cart_save_after_update_directly_checkout"
+				  instance="Branch8\Checkout\Observer\VirtualOrderUpdateBillingName" />
+	</event> -->
+</config>

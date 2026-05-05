@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="checkout" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="placeholder_address" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Placeholder Address</label>
+                <field id="firstname" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Firstname</label>
+                </field>
+                <field id="lastname" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Lastname</label>
+                </field>
+                <field id="telephone" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Phone</label>
+                </field>
+                <field id="region_id" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Region</label>
+                    <source_model>Branch8\Checkout\Model\Config\Source\TaiwanCity</source_model>
+                </field>
+                <field id="city" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>City</label>
+                </field>
+                <field id="street" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Street</label>
+                </field>
+            </group>
+            <group id="advance" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Advance checkout</label>
+                <field id="buy_now_full_point_enable" translate="Advance Buy now for Full Point" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Advance Buy now for Full Point</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_checkout" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Checkout</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\Checkout\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

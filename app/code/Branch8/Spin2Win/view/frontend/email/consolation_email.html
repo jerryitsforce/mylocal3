@@ -1,0 +1,65 @@
+<!--@subject {{var subject}}  @-->
+<!--@vars {
+"var this.getUrl($store, 'customer/account/')":"Customer Account URL",
+"var customer.email":"Customer Email",
+"var customer.name":"Customer Name",
+"var subject":"Subject",
+"var name":"Name",
+"var segmentlabel":"Segment label",
+"var coupon|raw":"Coupon",
+"var heading|raw":"Heading",
+"var description|raw":"Description",
+} @-->
+
+{{template config_path="design/email/header_template"}}
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %name," name=$name}}</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <p>{{trans 'You have won consolation in Spin to Win.'}}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table class="">
+                {{if type == 1}}
+                    <tr>
+                        <td style=" width: 200px; ">{{trans 'Coupon Code'}}</td>
+                        <td>{{var coupon|raw}}</td>
+                    </tr>
+                {{/if}}
+                {{if type == 2}}
+                    <tr>
+                        <td style=" width: 200px; ">{{trans 'Ticket serial number'}}</td>
+                        <td>{{var serial|raw}}</td>
+                    </tr>
+                {{/if}}
+                {{if type == 3}}
+                    <tr>
+                        <td style=" width: 200px; ">{{trans 'Product'}}</td>
+                        <td>{{var product_infor|raw}}</td>
+                    </tr>
+                {{/if}}
+                {{if type == 4}}
+                    <tr>
+                        <td style=" width: 200px; ">{{trans 'Reward point'}}</td>
+                        <td>{{var point|raw}}</td>
+                    </tr>
+                {{/if}}
+                <tr>
+                    <td style=" width: 200px; ">{{trans 'Heading'}}</td>
+                    <td>{{var heading|raw}}</td>
+                </tr>
+                <tr>
+                    <td style=" width: 200px; ">{{trans 'Description'}}</td>
+                    <td>{{var description|raw}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{template config_path="design/email/footer_template"}}

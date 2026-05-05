@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!--    table notification -->
+    <table name="magenest_notification" resource="default" engine="innodb" comment="notification">
+        <column xsi:type="varchar" name="customer_levels" nullable="true" length="255" comment="customer_levels"/>
+        <column xsi:type="text" name="content" nullable="true" comment="notification type"/>
+        <column xsi:type="text" name="url_key" nullable="true" comment="url key"/>
+        <column xsi:type="varchar" name="condition" nullable="true" length="1024" comment="condition"/>
+        <column xsi:type="longtext" name="oneid_list" nullable="true" comment="OneID designated member list"/>
+        <column xsi:type="varchar" name="target_type" nullable="true" comment="Target type: group/oneid/mixed"
+                default="group" length="124"/>
+        <column xsi:type="int" name="oneid_import_history" unsigned="true" nullable="false" identity="false"
+                comment="Import History Id"/>
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_TARGET_TYPE" indexType="btree">
+            <column name="target_type"/>
+        </index>
+    </table>
+    <table name="magenest_notification_customer_index" resource="default" engine="innodb" comment="notification">
+        <column xsi:type="int" name="notification_id" padding="10" unsigned="true" nullable="false"
+                comment="notification Id"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false"
+                comment="Entity ID"/>
+        <index referenceId="MAGENEST_NOTIFICATION_CUSTOMER_INDEX_NOTIFICATION_ID" indexType="btree">
+            <column name="notification_id"/>
+        </index>
+        <constraint xsi:type="unique"
+                    referenceId="MAGENEST_NOTIFICATION_CUSTOMER_INDEX_NOTIFICATION_ID_CUSTOMER_ID_UNIQUE">
+            <column name="notification_id"/>
+            <column name="customer_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGENEST_NOTIFICATION_CUSTOMER_INDEX_NOTIFICATION_ID_FK"
+                    table="magenest_notification_customer_index"
+                    column="notification_id"
+                    referenceTable="magenest_notification"
+                    referenceColumn="id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="MAGENEST_NOTIFICATION_CUSTOMER_INDEX_CUSTOMER_ID_FK"
+                    table="magenest_notification_customer_index"
+                    column="customer_id"
+                    referenceTable="customer_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+    </table>
+    <table name="magenest_notification_oneid_import_history" resource="default" engine="innodb"
+           comment="Import OneId List Status">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="History"/>
+        <column xsi:type="int" name="notification_id" padding="10" unsigned="true" nullable="true"
+                comment="notification Id"/>
+        <column xsi:type="timestamp" name="started_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Started at"/>
+        <column xsi:type="longtext" name="imported_file" nullable="true"  comment="Imported file"/>
+        <column xsi:type="longtext" name="import_data" nullable="true" comment="Import Data"/>
+
+        <column xsi:type="varchar" name="summary" length="1024" nullable="true" comment="Summary"/>
+        <column xsi:type="longtext" name="oneid_list" nullable="true" comment="OneID designated member list"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MAGENEST_NOTIFICATION_ONEID_IMPORT_HISTORY_NOTIFICATION_ID_FK"
+                    table="magenest_notification_oneid_import_history"
+                    column="notification_id"
+                    referenceTable="magenest_notification"
+                    referenceColumn="id"
+                    onDelete="CASCADE"/>
+    </table>
+    <table name="magenest_customer_notification" resource="default" engine="innodb" comment="notification for customer">
+        <column xsi:type="varchar" name="order_id" nullable="true" comment="order id"/>
+        <column xsi:type="varchar" name="condition" nullable="true" length="1024" comment="condition"/>
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_NOTIFICATION_ID" indexType="btree">
+            <column name="notification_id"/>
+        </index>
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+
+
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_NOTIFICATION_TYPE" indexType="btree">
+            <column name="notification_type"/>
+        </index>
+    </table>
+    <table name="magenest_notification_queue" resource="default" engine="innodb" comment="notification queue">
+        <column xsi:type="varchar" name="order_id" nullable="true" comment="order id"/>
+    </table>
+    <table name="magenest_notification_type" resource="default" engine="innodb" comment="notification">
+        <column xsi:type="boolean" name="is_personal" nullable="true" comment="is personal"/>
+    </table>
+</schema>

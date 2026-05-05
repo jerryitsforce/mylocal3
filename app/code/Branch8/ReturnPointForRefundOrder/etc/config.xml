@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_returnpointforrefundorder>
+                <log_file>return_point_cron</log_file>
+            </branch8_returnpointforrefundorder>
+        </branch8_debug>
+    </default>
+</config>

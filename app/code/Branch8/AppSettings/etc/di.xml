@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\AppSettings\Api\AppVersionControlInterface" type="Branch8\AppSettings\Model\AppVersionControl"/>
+    <preference for="Branch8\AppSettings\Api\Data\AppVersionInterface" type="Branch8\AppSettings\Model\Data\AppVersion"/>
+    <preference for="Branch8\AppSettings\Api\Data\VersionInterface" type="Branch8\AppSettings\Model\Data\Version"/>
+</config>

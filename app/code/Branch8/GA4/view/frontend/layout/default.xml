@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <referenceContainer name="head.additional">
+            <block ifconfig="google/gtag/branch8_ga4/active" class="Branch8\GA4\Block\Core"
+                   name="branch8_gtmga4_head" before="-" template="Branch8_GA4::gtm_head.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">\Branch8\GA4\ViewModel\Ga4ViewModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <referenceContainer name="before.body.end">
+            <block ifconfig="google/gtag/branch8_ga4/active"
+                   name="gtmga4.nonjs.code"
+                   class="Branch8\GA4\Block\Core"
+                   template="Branch8_GA4::nonjs_code.phtml"
+                   after="-"
+            >
+                <arguments>
+                    <argument name="view_model" xsi:type="object">\Branch8\GA4\ViewModel\Ga4ViewModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

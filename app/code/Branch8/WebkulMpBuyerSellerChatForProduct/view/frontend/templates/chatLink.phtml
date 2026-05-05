@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $viewModel \Branch8\WebkulMpBuyerSellerChatForProduct\ViewModel\ChatConfig
+ * @var $escaper \Magento\Framework\Escaper
+ */
+$viewModel = $block->getViewModel();
+$product = $block->getProduct();
+if (!$product || !$json = $viewModel->getChatData($product)) {
+    return '';
+}
+?>
+<button onclick="javascript:void(0)"
+        data-chat='<?= $escaper->escapeHtmlAttr($json) ?>'
+        class="action trigger-load-chat"
+        data-role="chat-with-seller"
+        style="display: none"
+>
+    <span class="button-text"><?= $escaper->escapeHtml(__('Chat')) ?></span>
+    <span class="loader"></span>
+</button>
+

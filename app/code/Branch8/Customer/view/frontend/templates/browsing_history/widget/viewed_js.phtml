@@ -1,0 +1,71 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @deprecated
+ */
+
+/**
+ * @var $block \Magento\Reports\Block\Product\Viewed
+ */
+?>
+<?php
+if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedProducts()->getSize())) {
+    $type = 'widget-viewed';
+    $mode = 'grid';
+
+    $type = $type . '-' . $mode;
+
+    $image = 'recently_viewed_products_grid_content_widget';
+    $title = __('Recently Viewed');
+    $items = $block->getRecentlyViewedProducts();
+    $_helper = $this->helper(\Magento\Catalog\Helper\Output::class);
+
+    $showDetails = false;
+    $showWishlist = false;
+    $showCompare = false;
+    $showCart = false;
+}
+?>
+
+<div class="block widget block-viewed-products-<?= $block->escapeHtmlAttr($mode) ?>" data-bind="scope: 'browsingHistoryProducts'" data-role="browsinghistory">
+    <div class="block-title">
+        <h3 role="heading" aria-level="2"><?= $block->getTitle() ?></h3>
+        <?php if($block->getButtonLabel()) :?>
+            <a href="/member/browsinghistory/" class="action secondary btn-view-more">
+                <span><?= $block->getButtonLabel() ?></span>
+            </a>
+        <?php endif; ?>
+    </div>
+    <!-- ko if: browsingHistoryProducts().count -->
+    <div class="block-content">
+        <div class="products-<?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($mode) ?>">
+            <ol class="product-items <?= $block->escapeHtmlAttr($type) ?>" data-bind="foreach: browsingHistoryProducts().items">
+                <li class="product-item">
+                    <div class="product-item-info">
+                        <a data-bind="attr: {href: canonical_url}" class="product-item-photo">
+                            <span class="product-image-container" style="width: 372px;">
+                                <span class="product-image-wrapper" style="padding-bottom: 100%;">
+                                    <img data-bind="attr: {src: image}" class="product-image-photo" loading="lazy" width="372" height="372">
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+{"[data-role=browsinghistory]": {"Magento_Ui/js/core/app": {
+    "components": {
+        "browsingHistoryProducts": {
+            "component": "Branch8_Customer/js/browsing-history-products"
+        }
+    }
+}}}
+</script>

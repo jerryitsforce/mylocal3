@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="product_discussion_seller_email_reply_template"
+              label="Notify Customer When Seller Reply" file="seller_reply.html"
+              type="html" module="Branch8_MarketPlaceProductDiscussionSeller" area="frontend"/>
+</config>

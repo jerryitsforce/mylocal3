@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="cms_custom_recently_views" class="Branch8\Customer\Block\BrowsingHistory\Index" ttl="86400">
+        <label translate="true">Browsing History</label>
+        <description translate="true">Browsing History Products</description>
+        <parameters>
+            <parameter name="title" xsi:type="text" visible="true" sort_order="10">
+                <label translate="true">Title</label>
+            </parameter>
+            <parameter name="button_label" xsi:type="text" visible="true" sort_order="20">
+                <label translate="true">Button Label</label>
+            </parameter>
+            <parameter name="template_type" xsi:type="select" visible="true" required="true" sort_order="30">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="Branch8_Customer::browsing_history/widget/viewed_carousel.phtml" selected="true">
+                        <label translate="true">Browsing History Carousel Template</label>
+                    </option>
+                    <option name="grid" value="Branch8_Customer::browsing_history/widget/viewed_grid.phtml">
+                        <label translate="true">Browsing History Grid Template</label>
+                    </option>
+                    <option name="search" value="Branch8_Customer::browsing_history/widget/viewed_grid_search_autocomplete.phtml">
+                        <label translate="true">Browsing History Search Autocomplete Template</label>
+                    </option>
+                    <option name="js" value="Branch8_Customer::browsing_history/widget/viewed_js.phtml">
+                        <label translate="true">Browsing History JS Template</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="limit" xsi:type="text" visible="true" sort_order="40">
+                <label translate="true">Product Limit</label>
+            </parameter>
+            <parameter name="cache_lifetime" xsi:type="text" visible="true" sort_order="50">
+                <label translate="true">Cache Lifetime (Seconds)</label>
+                <description translate="true">86400 by default, if not set. To refresh instantly, clear the Blocks HTML Output cache.</description>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

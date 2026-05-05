@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\MarketPlaceSeller\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceSeller\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">marketplace_seller</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\MarketPlaceSeller\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="Branch8_MarketPlaceSeller::convert_quote_item_to_order_item"
+                type="Branch8\MarketPlaceSeller\Plugin\ConvertQuoteItemToOrderItem"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="seller_login_logout_listing_data_source" xsi:type="string">SellerLoginLogoutCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="SellerLoginLogoutCollection" type="Branch8\MarketPlaceSeller\Ui\DataProvider\Seller\LoginLogout\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch_custom_customer_log</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\HotaiAuth\Model\ResourceModel\SellerLoginLogout</argument>
+        </arguments>
+    </virtualType>
+</config>

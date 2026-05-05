@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">編輯信用卡</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="page.top">
+            <container name="customer.custom.breadcrumb" htmlTag="div" htmlClass="customer-custom-breadcrumb">
+                <block name="customer.custom.breadcrumb.item" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiPay::hotaipay/custom_breadcrumbs.phtml"/>
+            </container>
+        </referenceContainer>
+		<referenceContainer name="content">
+			<block name="hotaipay.edit" class="Branch8\HotaiPay\Block\CreditCard\Edit" cacheable="false" template="Branch8_HotaiPay::hotaipay/edit.phtml">
+				<block name="hotaipay.popup.delete.card" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiPay::hotaipay/popup/confirm_delete.phtml"/>
+            </block>
+		</referenceContainer>
+    </body>
+</page>

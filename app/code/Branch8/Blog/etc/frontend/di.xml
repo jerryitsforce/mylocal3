@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\App\RouterList">
+        <arguments>
+            <argument name="routerList" xsi:type="array">
+                <item name="blog" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Blog\Controller\Router</item>
+                    <item name="disable" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="string">60</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <!--Plugin List-->
+    <type name="Magento\Theme\Block\Html\Topmenu">
+        <plugin name="blog-topmenu" type="Branch8\Blog\Plugin\Topmenu"/>
+    </type>
+    <type name="Magento\Framework\View\Element\Html\Links">
+        <plugin name="blog-customer-nav" type="Branch8\Blog\Plugin\Customer\LinkMenu"/>
+    </type>
+</config>

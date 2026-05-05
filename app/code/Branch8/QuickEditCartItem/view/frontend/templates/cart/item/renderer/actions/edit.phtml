@@ -1,0 +1,19 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer\Actions\Edit */
+$viewModel = $block->getViewModel() ? $block->getViewModel() : Magento\Framework\App\ObjectManager::getInstance()->get(
+    \Branch8\QuickEditCartItem\ViewModel\Cart::class
+);
+?>
+<?php if ($block->isProductVisibleInSiteVisibility()) : ?>
+    <a class="action quick-edit-cart-item action-edit"
+       href="javascript:void(0)"
+       data-url="<?= $block->escapeUrl($viewModel->getConfigureUrl($block->getItem())) ?>"
+       title="<?= $block->escapeHtmlAttr(__('Edit item parameters')) ?>">
+        <span><?= $block->escapeHtml(__('Edit')) ?></span>
+    </a>
+<?php endif ?>

@@ -1,0 +1,480 @@
+<?xml version="1.0" ?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <dataSource name="notification_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="submit_url" path="*/*/save" xsi:type="url"/>
+                    <item name="validate_url" path="*/ajax/validate" xsi:type="url"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Branch8_CustomNotification/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+
+    <fieldset name="general">
+    <!--   New custom field     -->
+        <field name="content" sortOrder="50" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="wysiwygConfigData" xsi:type="array">
+                        <item name="sortOrder" xsi:type="number">45</item>
+                        <item name="height" xsi:type="string">500px</item>
+                        <item name="add_images" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <label>Content</label>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <rows>8</rows>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+        <field name="notification_type">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magenest\NotificationBox\Ui\Component\NotificationType\CustomerNotificationType</item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_CustomNotification/js/form/element/changeNotificationType</item>
+                    <item name="elementTmpl" xsi:type="string">Magenest_NotificationBox/form/element/changeNotificationType</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">Notification Type</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">name</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <item name="dataScope" xsi:type="string">notification_type</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>order_status_update</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>review_reminders</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>abandoned_cart_reminds</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>4</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="4">
+                            <value>5</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="5">
+                            <value>6</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="6">
+                            <value>7</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="7">
+                            <value>8</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="8">
+                            <value>9</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="9">
+                            <value>10</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="10">
+                            <value>return_exchange</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="11">
+                            <value>news</value>
+                            <actions>
+                                <action name="0">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status_review</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.order_status</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.set_abandoned_cart_time</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.url_key</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="4">
+                                    <target>magenest_notification_newaction.magenest_notification_newaction.general.redirect_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+        </field>
+
+        <field name="customer_levels"
+               component="Branch8_CustomNotification/js/form/element/customerLevels"
+               class="Branch8\CustomNotification\Ui\Component\Form\Element\DataType\CustomerLevel"
+               formElement="multiselect"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\CustomNotification\Ui\Component\Notification\Levels</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Customer Levels</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="sortOrder" xsi:type="number">61</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="template" xsi:type="string">Branch8_CustomNotification/form/element/uploader/customerLevel</item>
+                    <item name="listens" xsi:type="array">
+                        <item name="${ $.provider }:data.notification_type" xsi:type="string">notifiTypeChange</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="oneid_uploader"
+               component="Branch8_CustomNotification/js/form/element/oneIdUploader"
+               formElement="fileUploader"
+               class="Branch8\CustomNotification\Ui\Component\Form\Element\DataType\OneIdUploader"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="template" xsi:type="string">Branch8_CustomNotification/form/element/uploader/uploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/image</item>
+                    <item name="sortOrder" xsi:type="number">62</item>
+                    <item name="notice" xsi:type="string" translate="true"><![CDATA[Only csv,xls,xlsx allows]]></item>
+                    <item name="listens" xsi:type="array">
+                        <item name="${ $.provider }:data.customer_levels" xsi:type="string">customerLevelChange</item>
+                    </item>
+
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">OneId Upload</label>
+            </settings>
+            <formElements>
+                <fileUploader>
+                    <settings>
+                        <maxFileSize>10485760</maxFileSize>
+                        <previewTmpl>ui/form/element/uploader/preview</previewTmpl>
+                        <placeholderType>document</placeholderType>
+                        <allowedExtensions>csv xls xlsx</allowedExtensions>
+                        <uploaderConfig>
+                            <param xsi:type="string" name="url">notibox/ajax/UploadOneIdList</param>
+                        </uploaderConfig>
+                    </settings>
+                </fileUploader>
+            </formElements>
+        </field>
+        <field name="oneid_import_history" formElement="hidden">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">One Import History</item>
+                    <item name="source" xsi:type="string">name</item>
+                    <item name="sortOrder" xsi:type="number">63</item>
+                    <item name="dataScope" xsi:type="string">oneid_import_history</item>
+                </item>
+            </argument>
+        </field>
+        <field name="url_key">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" translate="true" xsi:type="string">Url Key</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">name</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                    <item name="dataScope" xsi:type="string">url_key</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="order_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\CustomNotification\Ui\Component\Notification\OrderStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Send notification when the order status obtain</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="formElement" xsi:type="string">multiselect</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="sortOrder" xsi:type="number">100</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <!--   Disabled field     -->
+        <field name="customer_group">
+            <settings>
+                <visible>false</visible>
+            </settings>
+        </field>
+    </fieldset>
+</form>

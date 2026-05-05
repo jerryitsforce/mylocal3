@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_parent_order_detail_save_after">
+        <observer name="ars_first_purchase" instance="Branch8\RewardSystem\Observer\FirstPurchase" />
+    </event>
+    <event name="customer_save_after">
+        <observer name="ars_level_change_save_customer" instance="Branch8\RewardSystem\Observer\CustomerSaveAfter" />
+    </event>
+    <event name="branch8_customer_level_change">
+        <observer name="ars_level_change" instance="Branch8\RewardSystem\Observer\CronChangeLevel" />
+    </event>
+</config>

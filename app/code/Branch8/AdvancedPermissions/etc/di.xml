@@ -1,0 +1,274 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\SellerCustomer\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\SellerCustomer\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\Seller\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\Seller\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\Product\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\Product\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\ProductVersion\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\ProductVersion\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\MassUploadProfile\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\MassUploadProfile\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\Order\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\Order\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\RelatedOrder\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\RelatedOrder\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\Block\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\Block\Collection\StandardRestrict"/>
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\ParentOrder\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\ParentOrder\Collection\StandardRestrict"/>
+
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\Branch8WebkulMpBuyerSellerChatAdminUi\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\Branch8WebkulMpBuyerSellerChatAdminUi\Collection\StandardRestrict"/>
+
+    <preference for="Branch8\AdvancedPermissions\Model\Restriction\Branch8WebkulMpBuyerSellerChatAdminUi\ChatHistory\Collection\RestrictInterface"
+                type="Branch8\AdvancedPermissions\Model\Restriction\Branch8WebkulMpBuyerSellerChatAdminUi\ChatHistory\Collection\StandardRestrict"/>
+
+    <virtualType name="RoleRuleAssociatedEntityMap" type="Magento\Framework\DataObject">
+        <arguments>
+            <argument name="data" xsi:type="array">
+                <item name="sellers" xsi:type="array">
+                    <item name="column" xsi:type="string">seller_id</item>
+                    <item name="table" xsi:type="string">amasty_amrolepermissions_rule_seller</item>
+                    <item name="modeValue" xsi:type="const">\Branch8\AdvancedPermissions\Block\Adminhtml\Role\Tab\Seller::MODE_SELECTED</item>
+                    <item name="modeColumn" xsi:type="string">seller_access_mode</item>
+                </item>
+            </argument>
+            <argument name="data" xsi:type="array">
+                <item name="blocks" xsi:type="array">
+                    <item name="column" xsi:type="string">block_id</item>
+                    <item name="table" xsi:type="string">amasty_amrolepermissions_rule_block</item>
+                    <item name="modeValue" xsi:type="const">\Branch8\AdvancedPermissions\Block\Adminhtml\Role\Tab\Block::MODE_SELECTED</item>
+                    <item name="modeColumn" xsi:type="string">block_access_mode</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Amasty\Rolepermissions\Model\Rule">
+        <plugin name="Branch8_AdvancedPermissions::ModelRule"
+                type="Branch8\AdvancedPermissions\Plugin\AmastyRolepermissions\Model\Rule" />
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="customer_listing_data_source" xsi:type="string">Branch8\AdvancedPermissions\Model\ResourceModel\Customer\Grid\Collection</item>
+                <item name="sales_order_grid_data_source" xsi:type="string">Branch8\AdvancedPermissions\Model\ResourceModel\Order\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Cms\Model\ResourceModel\Block\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictBlockLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Block\Model\ResourceModel\Block\GridCollection\RestrictLoading" />
+    </type>
+    <type name="Magento\Cms\Model\ResourceModel\Block\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictBlockGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Block\Model\ResourceModel\Block\GridCollection\RestrictGettingIds" />
+    </type>
+
+    <type name="Magento\Customer\Model\ResourceModel\Customer\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictCustomerLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Customer\Model\ResourceModel\Customer\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictCustomerGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Customer\Model\ResourceModel\Customer\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Customer\Model\ResourceModel\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictCustomerGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Customer\Model\ResourceModel\Customer\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictCustomerGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Customer\Model\ResourceModel\Customer\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Branch8\AdvancedPermissions\Model\ResourceModel\Customer\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictCustomerGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Customer\Model\ResourceModel\Customer\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictCustomerGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Customer\Model\ResourceModel\Customer\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\Marketplace\Model\ResourceModel\Seller\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictSellerLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictSellerGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\Marketplace\Model\ResourceModel\Saleslist\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictSaleslistLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictSaleslistGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\Marketplace\Model\ResourceModel\Saleperpartner\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictSaleperpartnerLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictSaleperpartnerGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\Marketplace\Model\ResourceModel\Product\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictSellerProductLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\Product\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictSellerProductGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\Product\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\Marketplace\Model\ResourceModel\Orders\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictSellerOrdersLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictSellerOrdersGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\RestrictGettingIds" />
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\ProductVersion\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictProductVersionLoading"
+                type="Branch8\AdvancedPermissions\Plugin\ProductVersion\Model\ResourceModel\ProductVersion\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictProductVersionGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\ProductVersion\Model\ResourceModel\ProductVersion\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\ResourceModel\ProductVersion\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictProductVersionGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\ProductVersion\Model\ResourceModel\ProductVersion\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictProductVersionGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\ProductVersion\Model\ResourceModel\ProductVersion\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\MpMassUpload\Model\ResourceModel\Profile\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictMassUploadProfileLoading"
+                type="Branch8\AdvancedPermissions\Plugin\MassUpload\Model\ResourceModel\Profile\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictProductVersionGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\MassUpload\Model\ResourceModel\Profile\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\MpMassUpload\Model\ResourceModel\Profile\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictMassUploadProfileGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\MassUpload\Model\ResourceModel\Profile\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictProductVersionGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\MassUpload\Model\ResourceModel\Profile\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictOrderLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Order\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictOrderVersionGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Order\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictOrderGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Order\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictOrderGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Order\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Invoice\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictInvoiceLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Invoice\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictInvoiceGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Invoice\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <plugin name="Branch8_AdvancedPermissions::RestrictInvoiceGridLoading" type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Invoice\GridCollection\RestrictLoading" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Shipment\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictShipmentLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Shipment\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictShipmentGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Shipment\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Shipment\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictShipmentGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Shipment\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictShipmentGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Shipment\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Creditmemo\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictCreditmemoLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Creditmemo\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictCreditmemoGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Creditmemo\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Creditmemo\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictCreditmemoGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Creditmemo\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictCreditmemoGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Creditmemo\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Rma\Model\ResourceModel\Rma\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictRmaLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Rma\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictRmaGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Rma\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Rma\Model\ResourceModel\Rma\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictRmaGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Rma\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictRmaGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\Rma\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Order\Payment\Transaction\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictPaymentTransactionLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\PaymentTransaction\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictPaymentTransactionGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\PaymentTransaction\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Magento\Sales\Model\ResourceModel\Transaction\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictPaymentTransactionGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\PaymentTransaction\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictPaymentTransactionGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\Sales\Model\ResourceModel\PaymentTransaction\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\ResourceModel\PreorderItems\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictPreorderItemsLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\PreorderItems\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictPreorderItemsGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\PreorderItems\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\ResourceModel\PreorderItems\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictPreorderItemsGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\PreorderItems\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictPreorderItemsGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Model\ResourceModel\PreorderItems\GridCollection\RestrictGettingIds" />
+    </type>
+
+    <type name="Webkul\MpRmaSystem\Model\ResourceModel\Details\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictWebkulRmaDetailsLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulRmaSystem\Model\ResourceModel\Details\Collection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictWebkulRmaDetailsGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulRmaSystem\Model\ResourceModel\Details\Collection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\MpRmaSystem\Model\ResourceModel\Details\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictWebkulRmaDetailsGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulRmaSystem\Model\ResourceModel\Details\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictWebkulRmaDetailsGridGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulRmaSystem\Model\ResourceModel\Details\GridCollection\RestrictGettingIds" />
+    </type>
+    <type name="Webkul\MpRmaSystem\Model\Details">
+        <plugin name="Branch8_AdvancedPermissions::RestrictWebkulRmaDetails"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulRmaSystem\Model\Details\RestrictAccess" />
+    </type>
+
+
+    <type name="Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\ParentOrder\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictParentOrderGridLoading"
+                type="Branch8\AdvancedPermissions\Plugin\MarketplaceParentOrder\Model\ResourceModel\ParentOrder\GridCollection\RestrictLoading" />
+        <plugin name="Branch8_AdvancedPermissions::RestrictParentOrderGridLoadingGettingIds"
+                type="Branch8\AdvancedPermissions\Plugin\MarketplaceParentOrder\Model\ResourceModel\ParentOrder\GridCollection\RestrictGettingIds" />
+    </type>
+
+    <type name="Branch8\WebkulMpBuyerSellerChatAdminUi\Model\Model\ResourceModel\Profiles\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictChatProfileLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Branch8WebkulMpBuyerSellerChatAdminUi\Model\ResourceModel\Collection\RestrictLoading" />
+    </type>
+    <type name="Branch8\WebkulMpBuyerSellerChatAdminUi\Model\Model\ResourceModel\Message\Grid\Collection">
+        <plugin name="Branch8_AdvancedPermissions::RestrictChatHistoryLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Branch8WebkulMpBuyerSellerChatAdminUi\Model\ResourceModel\ChatHistory\Collection\RestrictLoading" />
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="total_invoiced" xsi:type="string">sales_order.total_invoiced</item>
+                <item name="point_used_total" xsi:type="string">sales_order.point_used_total</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>

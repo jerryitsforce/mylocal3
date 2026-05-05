@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch_checkout_cart_index">
+        <observer name="b8_predispatch_shopping_cart_page" instance="Branch8\Checkout\Observer\Controller\PredispatchCheckoutCart" />
+    </event>
+    <event name="controller_action_postdispatch">
+        <observer name="b8_set_full_controller_action" instance="Branch8\Checkout\Observer\Controller\SetFullControllerAction" />
+    </event>
+    <event name="customer_logout">
+        <observer name="unsetAll" disabled="true" />
+        <observer name="b8UnsetAll" instance="Branch8\Checkout\Observer\UnsetAllObserver" />
+    </event>
+</config>

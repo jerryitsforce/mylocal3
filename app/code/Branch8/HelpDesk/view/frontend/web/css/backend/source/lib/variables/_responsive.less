@@ -1,0 +1,33 @@
+// /**
+//  * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Responsive variables
+//  _____________________________________________
+
+@use-flex: true; // Use flexbox [true|false]
+@responsive: true; // Theme is responsive [true|false]
+
+@screen__xxs: 320px;
+@screen__xs: 480px;
+@screen__s: 640px;
+@screen__m: 768px;
+@screen__l: 1024px;
+@screen__xl: 1440px;
+
+
+// 共用 RWD 斷點 mixins（使用 @screen__* 變數）
+.rwd(@breakpoint, @rules) when (isnumber(@breakpoint)) {
+    @media only screen and (min-width: @breakpoint) {
+        & { @rules(); }
+    }
+}
+
+.rwd-xxs(@rules) { .rwd(@screen__xxs, @rules); }
+.rwd-xs(@rules)  { .rwd(@screen__xs,  @rules); }
+.rwd-s(@rules)   { .rwd(@screen__s,   @rules); }
+.rwd-m(@rules)   { .rwd(@screen__m,   @rules); }
+.rwd-l(@rules)   { .rwd(@screen__l,   @rules); }
+.rwd-xl(@rules)  { .rwd(@screen__xl,  @rules); }

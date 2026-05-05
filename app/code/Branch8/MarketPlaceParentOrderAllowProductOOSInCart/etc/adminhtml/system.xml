@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="marketplace" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1">
+            <group id="mpsplitorder" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1">
+                <group id="parent_order_configuration" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Parent Order Configuration</label>
+                    <group id="reorder" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Re-Order</label>
+                        <field id="allow_reorder_product_oos" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allow Reorder OOS product</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>parent_order/parent_order_configuration/allow_reorder_product_oos</config_path>
+                        </field>
+                    </group>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

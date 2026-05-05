@@ -1,0 +1,197 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Luma theme variables
+//  _____________________________________________
+
+//
+//  Responsive variables
+//  _____________________________________________
+@screen__xxs: 320px;
+@screen__xs: 480px;
+@screen__s: 640px;
+@screen__m: 768px;
+@screen__l: 1024px;
+@screen__ml: 1220px;
+@screen__sl: 1280px;
+@screen__xl: 1360px;
+@screen__xxl: 1440px;
+
+//
+//  Layout variables
+//  _____________________________________________
+
+@layout__max-width: 1160px;
+@layout__max-width_xl: 1220px;
+@layout__max-width_m: 704px;
+@layout__width-xs-indent: 16px;
+@layout__width-s-indent: 48px;
+
+//
+//  Typography
+//  ---------------------------------------------
+
+//  Fonts
+@font-family-name__base: 'Noto Sans TC';
+@font-family__base: @font-family-name__base, @font-family__sans-serif;
+
+@font-family-name__secondary: 'Outfit';
+@font-family__secondary: @font-family-name__secondary, @font-family__sans-serif;
+
+//  Sizes
+@font-size__xl: ceil(1.5 * @font-size__base); // 21px
+@font-size__l: ceil(1.25 * @font-size__base); // 18px
+@font-size__s: ceil(.85 * @font-size__base); // 12px
+@font-size__xs: floor(.75 * @font-size__base); // 11px
+
+//  Line heights
+@line-height__base: 1.57142857142857;
+@line-height__computed: floor(@font-size__base * @line-height__base);
+@line-height__xl: 1.7;
+@line-height__l: 1.5;
+@line-height__s: 1.5;
+
+//
+//  Headings
+//  ---------------------------------------------
+
+@heading__font-family__base: false;
+@heading__font-weight__base: @font-weight__bold;
+@heading__line-height__base: 1.5;
+@heading__color__base: #231815;
+
+@h1__font-size: ceil((@font-size__base * 2.57)); // 36px
+@h1__line-height: 1.3888889;
+@h1__font-size-desktop: ceil((@font-size__base * 3.42)); // 48px
+
+@h2__font-size: ceil((@font-size__base * 1.71)); // 24px
+@h2__line-height: 1.4166666667;
+@h2__font-size-desktop: ceil((@font-size__base * 2.28)); // 32px
+
+@h3__font-size: ceil((@font-size__base * 1.57)); // 22px
+@h3__line-height: 1.45454545455;
+@h3__font-size-desktop: ceil((@font-size__base * 2)); // 28px
+
+@h4__font-size: ceil((@font-size__base * 1.42)); // 20px
+@h4__font-size-desktop: ceil((@font-size__base * 1.57)); // 22px
+
+@h5__font-size: ceil((@font-size__base * 1.28)); // 18px
+@h5__line-height: 1.5555555556;
+@h5__font-size-desktop: ceil((@font-size__base * 1.42)); // 20px
+
+@h6__font-size: ceil((@font-size__base * 1.14)); // 16px
+@h6__font-style: @heading__font-style__base;
+@h6__font-size-desktop: ceil((@font-size__base * 1.28)); // 18px
+
+//
+//  Color nesting
+//  ---------------------------------------------
+
+@page__background-color: @color-white;
+
+@theme__color__primary: #C5171E;
+@theme__color__primary-alt: #DE271F;
+@theme__color__secondary: @color-orange-red1;
+
+@primary__color: #231815;
+@primary__color__dark: darken(@primary__color, 35%); // #000
+@primary__color__darker: darken(@primary__color, 13.5%); // #111
+@primary__color__lighter: lighten(@primary__color, 29%); // #7d7d7d
+@primary__color__light: lighten(@primary__color, 45%); // #a6a6a6
+
+@secondary__color: #66666A;
+@secondary__color__light: #999999;
+
+@page__background-color: @color-white;
+@panel__background-color: darken(@page__background-color, 6%);
+
+@active__color: @theme__color__primary-alt;
+@error__color: @color-red10;
+@active__background-color: @primary__color;
+
+@schema__color__overlay__background-color: rgba(35, 24, 21, .4);
+@scheme__box-shadow: 0 0 10px 2px rgba(35, 24, 21, .04);
+
+@pager-icon__previous-content: '\e925';
+@pager-icon__next-content: '\e926';
+
+//
+//  Icons
+//  ---------------------------------------------
+
+@icon-success: '\e92f';
+@icon-error: '\e92c';
+@icon-notice: '\e92b';
+@icon-warning: '\e929';
+@icon-edit: '\e601';
+@icon-print: '\e624';
+@icon-star-empty: '\e625';
+@icon-download: '\e626';
+@icon-private: '\e629';
+@icon-present: '\e62a';
+@icon-gift-registry: '\e62b';
+@icon-cart-plus: '\e901';
+@icon-cart: '\e90e';
+@icon-search: '\e91e';
+@icon-notification: '\e91b';
+@icon-down: '\e947';
+@icon-up: '\e946';
+@icon-menu: '\e609';
+@icon-user: '\e921';
+@icon-next: '\e91a';
+@icon-prev: '\e91d';
+@icon-edit: '\e939';
+@icon-delete: '\e912';
+@icon-filter: '\e938';
+
+@icon-calendar__font-size: 23px;
+@icon-calendar: "\e93d";
+
+@icon-order: '\e91c';
+@icon-point: '\e936';
+@icon-ticket: '\e91f';
+@icon-wishlist: '\e917';
+@icon-wishlist-full: '\e943';
+@icon-viewed: '\e941';
+@icon-notify: '\e91b';
+
+@icon-user: '\e921';
+@icon-address: '\e93b';
+@icon-hotai-pay: '\e93e';
+@icon-member: '\e93f';
+
+@icon-faq: '\e933';
+@icon-customer: '\e937';
+@icon-services: '\e93a';
+@icon-arrow-right: "\e903";
+
+//
+//  Border Radius
+//  ---------------------------------------------
+@border-radius__circle: 100px;
+@border-radius__popover: 20px;
+@border-radius__l: 36px;
+@border-radius__m: 24px;
+@border-radius__card_m: 16px;
+@border-radius__card_s: 12px;
+@border-radius__btn: 8px;
+@border-radius__tag_l: 8px;
+@border-radius__tag_s: 4px;
+
+//
+//  Sidebar
+//  ---------------------------------------------
+
+@sidebar__background-color: @color-white-smoke; // Used in cart sidebar, Checkout sidebar, Tier Prices, My account navigation, Rating block background
+
+//
+//  Sidebar blocks
+//  ---------------------------------------------
+
+@block-items__counter__color: @color-gray43;
+
+// Magento 2.4.7 p9 Upgrade Fix
+@checkout-shipping-address__max-width: 600px;

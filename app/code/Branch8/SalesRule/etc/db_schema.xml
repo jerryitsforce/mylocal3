@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="salesrule" resource="default" comment="CatalogRule">
+        <column xsi:type="boolean" name="display_on_frontend" nullable="true" default="true" comment="Show On Pdp"/>
+        <column xsi:type="text" name="feedback_content" nullable="true" comment="Feedback Content"/>
+    </table>
+</schema>

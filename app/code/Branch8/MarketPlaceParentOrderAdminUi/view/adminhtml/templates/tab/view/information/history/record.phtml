@@ -1,0 +1,39 @@
+<?php
+/**
+ * @var $block \Magento\Backend\Block\Template:
+ * @var $item
+ */
+$item = $block->getItem();
+?>
+<li class="note-list-item">
+            <span class="note-list-date">
+                <?= $block->formatDate($item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+            </span>
+    <span class="note-list-time">
+                <?= $block->formatTime($item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+            </span>
+    <span class="note-list-status">
+                    <?= $block->escapeHtml($item->getStatusLabel()) ?>
+                </span>
+    <span class="note-list-customer">
+                     <?= $block->escapeHtml(__('Customer')) ?>
+        <?php if ($block->isCustomerNotificationNotApplicable($item)): ?>
+            <span class="note-list-customer-notapplicable">
+                        <?= $block->escapeHtml(__('Notification Not Applicable')) ?>
+                        </span>
+        <?php elseif ($item->getIsCustomerNotified()): ?>
+            <span class="note-list-customer-notified">
+                            <?= $block->escapeHtml(__('Notified')) ?>
+                        </span>
+        <?php else: ?>
+            <span class="note-list-customer-not-notified">
+                            <?= $block->escapeHtml(__('Not Notified')) ?>
+                        </span>
+        <?php endif; ?>
+                </span>
+    <?php if ($item->getComment()): ?>
+        <div class="note-list-comment">
+            <?= $block->escapeHtml($item->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+        </div>
+    <?php endif; ?>
+</li>

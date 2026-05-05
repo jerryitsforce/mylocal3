@@ -1,0 +1,151 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route url="/V1/reconciliation" method="POST">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="postReconciliation"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/reconciliation" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="getReconciliation"/>
+		<resources>
+            <resource ref="anonymous"/>
+        </resources>
+	</route>
+	<route url="/V1/reconciliation/status" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="getStatus"/>
+		<resources>
+            <resource ref="anonymous"/>
+        </resources>
+	</route>
+	<route url="/V1/reconciliation/sellers" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\SellerInterface" method="getSellers"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/reconciliation/ecpay-seller-revenue-detail" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="downloadEcpaySellerRevenueDetail"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/reconciliation/delete" method="POST">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="deleteReconciliation"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/reconciliation/ecpay-seller-revenue-summarize" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\SellerRevenueSummarizeInterface" method="getSellerRevenueSummarize"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/reconciliation/ecpay-seller-revenue-summarize/all" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\SellerRevenueSummarizeInterface" method="getSellerRevenueSummarizeAll"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/reconciliation/sellers" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="updateSettlementStatus"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/reconciliation/invoices" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="addInvoices"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/reconciliation/invoices" method="PUT">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="updateInvoices"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/reconciliation/invoices" method="DELETE">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="deleteInvoice"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/reconciliation/exception-auth" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="exceptionAuth"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/reconciliation/exception-auth" method="GET">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="getExceptionAuth"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/exception-auth" method="GET">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="listExceptionAuth"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/exception-auth" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="setExceptionAuthStatus"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/exception-auth/export" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="exportExceptionAuth"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+	<route url="/V1/reconciliation/ticket/export" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="exportTicket"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+
+	<route url="/V1/reconciliation/ticket/list" method="GET">
+		<service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="listTicket"/>
+		<resources>
+			<resource ref="anonymous"/>
+		</resources>
+	</route>
+	<route url="/V1/ecpay-order-logs/list" method="GET">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="listOrder"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/ecpay-order-logs/export" method="GET">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="exportOrder"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/marketplace/reconciliation" method="GET">
+        <service class="HotaiConnected\FinancialReconciliation\Api\MarketPlaceReconciliationManagementInterface" method="getCustomerReconciliation"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/marketplace/reconciliation/ecpay-seller-revenue-detail/:id" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\MarketPlaceReconciliationManagementInterface" method="downloadCustomerEcpaySellerRevenueDetail"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V1/reconciliation/ecpay-seller-revenue-jobs" method="POST">
+        <service class="HotaiConnected\FinancialReconciliation\Api\ReconciliationManagementInterface" method="exportEcpaySellerRevenueJobs"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

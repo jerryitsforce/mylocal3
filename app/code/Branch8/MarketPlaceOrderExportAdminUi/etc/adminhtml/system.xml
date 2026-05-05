@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+        <section id="order_export" sortOrder="10" showInWebsite="0" showInStore="1" showInDefault="0" translate="label">
+            <label>Order Export</label>
+            <tab>branch8</tab>
+            <resource>Branch8_MarketPlaceOrderExportRabbitMQ::config_order_export</resource>
+            <group id="optimize" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+                <label>Optimize</label>
+                <field id="use_writer2" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Use Writer 2</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="use_stream" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Use Stream</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="use_redis_to_cache_excel_cells" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Use Cache Excel Cells</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Cache Excel cells to redis instead memory prevent memory exhaust,
+                        see this document https://phpspreadsheet.readthedocs.io/en/latest/topics/memory_saving/</comment>
+                </field>
+                <field id="cache_redis_host" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Redis Host </label>
+                    <comment>Cache Excel cells to redis instead memory prevent memory exhaust</comment>
+                </field>
+                <field id="cache_redis_port" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Redis Port </label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

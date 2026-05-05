@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.cart.empty">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_SplitCart::cart/noItems.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.form">
+            <block class="Magento\Framework\View\Element\Template" name="cart_tabs" template="Branch8_SplitCart::cart/tabs.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="shipping_info" template="Branch8_SplitCart::cart/shipping_info.phtml"/>
+            <arguments>
+                <argument name="limit_purchased_view_model" xsi:type="object">Branch8\LimitPurchased\ViewModel\Cart\LimitPurchased</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="checkout.cart.coupon" remove="true"/>
+        <referenceBlock name="marketplace_seller_cart_item" remove="true"/>
+
+        <referenceContainer name="cart.summary">
+          <block class="Branch8\SplitCart\Block\Cart\ReminderItems" name="cart_qty_notify" template="Branch8_SplitCart::cart/qtyNotify.phtml"  before="-"/>
+          <block class="Magento\Checkout\Block\Cart\Coupon" name="checkout.splitcart.coupon" as="splitcart_coupon" template="Magento_Checkout::cart/coupon.phtml" before="checkout.cart.summary.title"/>
+        </referenceContainer>
+
+        <referenceBlock name="breadcrumbs">
+          <action method="addCrumb">
+              <argument name="crumbName" xsi:type="string" translate="true">Home</argument>
+              <argument name="crumbInfo" xsi:type="array">
+                  <item name="label" xsi:type="string" translate="true">Home</item>
+                  <item name="title" xsi:type="string" translate="true">Go to Home Page</item>
+                  <item name="link" xsi:type="string">/</item>
+              </argument>
+          </action>
+          <action method="addCrumb">
+              <argument name="crumbName" xsi:type="string" translate="true">Shopping Cart</argument>
+              <argument name="crumbInfo" xsi:type="array">
+                  <item name="label" xsi:type="string" translate="true">Shopping Cart</item>
+                  <item name="title" xsi:type="string" translate="true">Go to Shopping Cart</item>
+              </argument>
+          </action>
+          </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="cart_hotai_point_popup"
+                   after="-"
+                   template="Branch8_SplitCart::cart/remind_point_popup.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="cart_confirm_delete_popup"
+                   after="-"
+                   template="Branch8_SplitCart::cart/confirm_delete_popup.phtml"/>
+            <block class="Magento\Framework\View\Element\Template" name="cart_remind_popup"
+                   after="-"
+                   template="Branch8_SplitCart::cart/remind_popup.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

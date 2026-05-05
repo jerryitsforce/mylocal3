@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+    <update handle="1column" />
+    <referenceContainer name="columns.top">
+        <block class="Magento\Catalog\Block\Category\View" name="category.cms.block" template="Magento_Catalog::category/cms-block.phtml" after="-"/>
+    </referenceContainer>
+    <referenceContainer name="page.top">
+        <container name="category.view.page.top" htmlTag="div" htmlClass="category-view"/>
+            <!-- <block class="Magento\Catalog\Block\Category\View" name="category.name.page.top" template="Magento_Catalog::category/name.phtml"/> -->
+    </referenceContainer>
+    <referenceContainer name="page.wrapper">
+        <block class="Magento\Framework\View\Element\Template" name="landing.script" template="Magento_Catalog::category/script.phtml" after="footer-container"/>
+    </referenceContainer>
+    <!-- <move element="category.image" destination="category.view.page.top" before="-" /> -->
+    <move element="category.description" destination="category.view.page.top" after="category.name.page.top" />
+    <referenceContainer name="category.view.container" remove="true" />
+    <referenceContainer name="columns">
+        <referenceBlock name="product_recommendations_category_below_content" remove="true" />
+        <referenceBlock name="product_recommendations_category_before_content" remove="true" />
+    </referenceContainer>
+</layout>

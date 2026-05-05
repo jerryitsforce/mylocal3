@@ -1,0 +1,83 @@
+<?php
+/** @var  $block \Magenest\NotificationBox\Block\Customer\Tab\Notification */
+
+$block->redirectIfNotLoggedIn();
+$unread = $block->getUnreadNotification();
+$allCustomerNotification = $block->getNotificationByCondition(null);
+$allNotificationType = $block->getAllNotificationType();
+$isActive = $block->getIsActive();
+?>
+
+<form action="">
+    <div class="table-wrapper mgn-notification-wrapper">
+        <table class="data table mgn-notification-table" id="my-notification-table">
+            <div class="tab-container">
+                <div class="tab-full <?= ($isActive == 1) ? 'active' : '' ?>">
+                    <input type="button"
+                           value="Notification"
+                           class="category-notification-btn <?= ($block->getFilteredNotificationTypes() == 1) ? 'is_filter' : '' ?>"
+                           id='filter-1'>
+                </div>
+                <div class="tab-full <?= ($isActive == 2) ? 'active' : '' ?>">
+                    <input type="button"
+                           value="News"
+                           class="category-notification-btn <?= ($block->getFilteredNotificationTypes() == 2) ? 'is_filter' : '' ?>"
+                           id='filter-2'>
+                </div>
+            </div>
+            <tbody>
+            <?php if ($allCustomerNotification && count($allCustomerNotification)): ?>
+                <?php foreach ($allCustomerNotification as $notification): ?>
+                    <?php $url = $block->getDetailUrl($notification); ?>
+                    <tr style="background-color: <?= $notification['status'] ? 'transparent' : $unread ?>"
+                        id="<?= $notification['entity_id'] ?>">
+                        <td class="col marking-notification">
+                            <?php if ($notification['star'] == \Magenest\NotificationBox\Model\CustomerNotification::STAR):
+                                $markingClass = 'active';
+                            else:
+                                $markingClass = '';
+                            endif; ?>
+                            <span id="<?= $notification['star'] ?>"
+                                  class="marking-important <?= $markingClass ?>"></span>
+                        </td>
+
+                        <td class="col notification-image">
+                            <span class="notification-type-img"
+                                  style="background-image: url('<?= $notification['icon'] ?>')"></span></td>
+
+                        <td class="col notification-type">
+                            <?php echo $notification['notification_type'] ?></td>
+
+                        <td class="col description"><?= $notification['full_description'] ?></td>
+
+                        <td class="col created-at"><?php echo date('Y-m-d',
+                                strtotime($notification['created_at'])); ?></td>
+                        <td class="col description">
+                            <a class="mp-read-more" href="<?= $block->escapeUrl($block->getUrl('notibox/handleNotification/viewNotification', ['id' => $notification['entity_id']])) ?>"
+                               title="<?= $block->escapeHtmlAttr(__('View')) ?>">
+                                <?= $block->escapeHtml(__('View')) ?>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="message info empty"><span><?php echo __('No any notification.'); ?></span></div>
+            <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+</form>
+<?php if ($block->getPagerHtml()): ?>
+    <div class="order-products-toolbar toolbar bottom"><?php echo $block->getPagerHtml(); ?></div>
+<?php endif ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_CustomNotification/js/tab/notification": {
+                    "baseUrl":"<?= $block->getUrl('notification') ?>"
+                }
+            }
+        }
+</script>
+
+

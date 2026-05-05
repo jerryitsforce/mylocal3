@@ -1,0 +1,197 @@
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">hifi_sales_report_record_listing.hifi_sales_report_record_listing_data_source</item>
+            <item name="deps" xsi:type="string">hifi_sales_report_record_listing.hifi_sales_report_record_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">hifi_sales_report_record_listing_columns</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/create/form"/>
+                <class>primary</class>
+                <label translate="true">Add New Sales Report Record</label>
+                <aclResource>Branch8_HifiSalesReport::create_record</aclResource>
+            </button>
+        </buttons>
+        <spinner>hifi_sales_report_record_listing_columns</spinner>
+        <deps>
+            <dep>hifi_sales_report_record_listing.hifi_sales_report_record_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="hifi_sales_report_record_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="name" xsi:type="string">hifi_sales_report_record_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">record_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">record_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <columnsControls name="columns_controls"/>
+        <paging name="listing_paging"/>
+        <!-- <filters name="listing_filters"> -->
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                    <item name="observers" xsi:type="array">
+                        <item name="filters" xsi:type="object">Magento\Catalog\Ui\Component\Listing\Filters</item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+    </listingToolbar>
+    <columns name="hifi_sales_report_record_listing_columns">
+        <column name="record_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Hifi ID</item>
+                </item>
+            </argument>
+        </column>
+        <column name="invoice_change_start_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- <item name="dateFormat" xsi:type="string">yyyy-MM-dd HH:mm:ss</item> -->
+                    <item name="timezone" xsi:type="string">false</item>
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Invoice Change Start Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="invoice_change_end_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- <item name="dateFormat" xsi:type="string">yyyy-MM-dd HH:mm:ss</item> -->
+                    <item name="timezone" xsi:type="string">false</item>
+                    <!-- <item name="filter" xsi:type="string">dateRange</item> -->
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Invoice Change End Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="collecting_method">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\HifiSalesReport\Model\HifiSalesReportRecord\Source\CollectingMethod</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Collecting Method</item>
+                </item>
+            </argument>
+        </column>
+        <column name="closing_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="timezone" xsi:type="string">false</item>
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Closing Date</item>
+                </item>
+            </argument>
+        </column>
+        <!-- <column name="transfer_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\HifiSalesReport\Model\HifiSalesReportRecord\Source\TransferStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Transfer Status</item>
+                </item>
+            </argument>
+        </column> -->
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Created Date</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\ShowCreatorAdmin" name="show_admin">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <!-- <item name="filter" xsi:type="string">text</item> -->
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="label" xsi:type="string" translate="true">Creator Admin</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\QuickView" name="sales_report_quick_view">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="label" xsi:type="string" translate="true">Hifi Quick View</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\DownloadMainFile" name="download_sales_report_main_file">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="label" xsi:type="string" translate="true">Download Sales Report Main File</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\DownloadDetailFile" name="download_sales_report_detail_file">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="label" xsi:type="string" translate="true">Download Sales Report Detail File</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\DownloadCheckFile" name="download_check_file">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="label" xsi:type="string" translate="true">Download Check File</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\UploadFile" name="upload_file">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_HifiSalesReport/js/grid/columns/upload_file</item>
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Upload File</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn class="Branch8\HifiSalesReport\Ui\Component\Listing\Column\Delete" name="delete">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="label" xsi:type="string" translate="true">Delete</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

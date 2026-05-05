@@ -1,0 +1,103 @@
+<?php
+use Magento\Framework\App\Action\Action;
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2023 Amasty
+ * @package One Step Checkout Thank you Page 2 for Magento 2 (System)
+ */
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\ProductList
+ * @var $escaper Magento\Framework\Escaper
+ */
+$_productCollection = $block->getLoadProducts();
+if ($_productCollection->getSize() <= 0) {
+    return;
+}
+?>
+<div class="block block-products-list block-cart-items">
+    <?php $_helper = $this->helper('Magento\Catalog\Helper\Output'); ?>
+    <?php
+    $viewMode = 'grid';
+    $image = 'category_page_grid';
+    $showDescription = false;
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    $pos = $block->getPositioned();
+    $position = '';
+    $formKey = $block->getFormKey();
+    $preorderHelper = $this->helper(\Webkul\MarketplacePreorder\Helper\Data::class);
+    $vipHelper = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+    ?>
+    <style>
+        .products-grid .product-item-inner{
+            margin:unset;
+        }
+    </style>
+    <?php $count = 1; ?>
+    <div class="block-title">
+        <h6><?= $escaper->escapeHtml(__('Don’t keep the good stuff waiting too long, take it home quickly!')) ?></h6>
+    </div>
+    <div class="block-content">
+        <div class="grid products-grid products-grid-carousel <?php /* @escapeNotVerified */ echo $viewMode; ?> products-<?php /* @escapeNotVerified */ echo $viewMode; ?>">
+            <?php $iterator = 1; ?>
+            <div class="items product-items" >
+                <?php $prdCount = 0; ?>
+                <?php foreach($_productCollection as $_product):
+                    ?>
+                    <div class="item product product-item">
+                        <div class="product-item-info item" data-container="product-grid">
+                            <?php
+                            $productImage = $block->getImage($_product, $image);
+                            if ($pos != null) {
+                                $position = ' style="left:' . $productImage->getWidth() . 'px;'
+                                    . 'top:' . $productImage->getHeight() . 'px;"';
+                            }
+                            ?>
+                            <?php // Product Image ?>
+                            <a href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>" class="product-item-photo" tabindex="-1">
+                                <span class="product-image-container">
+                                    <span class="product-image-wrapper" style="padding-bottom: <?= $productImage->getHeight()/$productImage->getWidth() * 100 ?>%">
+                                        <img class="product-image-photo" width="<?= $productImage->getWidth()?>" height="<?= $productImage->getHeight()?>" src="<?= $escaper->escapeHtml($block->getImageUrl($_product)) ?>" alt="<?= $escaper->escapeHtml($_product->getName()) ?>" />
+                                    </span>
+                                </span>
+                            </a>
+                            <div class="product details product-item-details">
+                                <?php $_productNameStripped = $block->stripTags($_product->getName(), null, true); ?>
+                                <strong class="product name product-item-name">
+                                    <?php
+                                    $isPreorder = $preorderHelper->isPreorder($_product->getId());
+                                    $isVip = $vipHelper->isProductInVipCategory($_product);
+                                    if($isVip || $isPreorder){
+                                        if($isVip){
+                                            echo '<span class="vip-label">'.$block->escapeHtml(__("VIP")).'</span>';
+                                        }
+                                        if($isPreorder){
+                                            echo '<span class="product-badge preorder">'.$block->escapeHtml(__('Preorder')).'</span>';
+                                        }
+                                    }
+                                    ?>
+                                    <a class="product-item-link"
+                                       href="<?php /* @escapeNotVerified */ echo $_product->getProductUrl() ?>">
+                                        <?php /* @escapeNotVerified */ echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                                    </a>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="actions-toolbar">
+            <a class="action secondary" href="<?= $block->getUrl('checkout/cart'); ?>">
+                <span><?= $escaper->escapeHtml(__('Return to cart')) ?></span>
+            </a>
+        </div>
+    </div>
+    <?php $count++; ?>
+    <script>
+        require(['jquery', 'slickSlider'], function($) {
+            $(".products-grid-carousel .product-items").slickSlider({
+                template: 'slick6Products'
+            });
+        });
+    </script>
+</div>

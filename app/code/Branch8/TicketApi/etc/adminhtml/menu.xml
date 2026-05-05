@@ -1,0 +1,12 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_TicketApi::menu" sortOrder="10" title="Branch8 Ticket API" module="Branch8_TicketApi"
+             resource="Branch8_TicketApi::menu"/>
+        <add id="Branch8_TicketApi::brand_listing" title="Brand" module="Branch8_TicketApi" sortOrder="20"
+             parent="Branch8_TicketApi::menu" action="ticket_api/brand/listing"
+             resource="Branch8_TicketApi::brand_listing"/>
+        <add id="Branch8_TicketApi::merchant_listing" title="Merchant" module="Branch8_TicketApi" sortOrder="30"
+             parent="Branch8_TicketApi::menu" action="ticket_api/merchant/listing"
+             resource="Branch8_TicketApi::merchant_listing"/>
+    </menu>
+</config>

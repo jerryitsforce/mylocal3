@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_order_export_profile" resource="default" engine="innodb"
+           comment="branch8 Order Export Profile">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="profile_type" nullable="false" length="32" comment="ADMIN|SELLER"/>
+        <column xsi:type="varchar" name="receiver_email" nullable="false" length="32" comment="Receiver Email"/>
+        <column xsi:type="varchar" name="receiver_name" nullable="false" length="1024" comment="Receiver Name"/>
+        <column xsi:type="longblob" name="order_ids" nullable="false" comment="Order Ids"/>
+        <column xsi:type="varchar" name="status" nullable="false" length="64" comment="Status" default="pending"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" identity="false" default="0"
+                comment="User ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" identity="false" default="0"
+                comment="Seller ID"/>
+        <column xsi:type="smallint" name="email_sent" unsigned="true" nullable="true" identity="false" default="0"
+                comment="Email Sent"/>
+        <column xsi:type="text" name="meta" nullable="true" comment="Meta"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="datetime" name="publish_at" on_update="false" nullable="false" default="0"/>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_USER_ID" indexType="btree">
+            <column name="user_id"/>
+        </index>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_MAIL_SENT" indexType="btree">
+            <column name="email_sent"/>
+        </index>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_FULLTEXT" indexType="fulltext">
+            <column name="receiver_email"/>
+            <column name="receiver_name"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <table name="branch8_order_export_profile_batches" resource="default" engine="innodb"
+           comment="branch8 Order Export Profile">
+        <column xsi:type="int" name="batch_id" unsigned="true" nullable="false" identity="true"
+                comment="Batch ID"/>
+        <column xsi:type="int" name="parent_id" unsigned="true" nullable="false" identity="false"
+                comment="Batch ID"/>
+        <column xsi:type="varchar" name="batch_status" nullable="false" length="64" comment="Status" default="pending"/>
+        <column xsi:type="longblob" name="order_ids" nullable="false" comment="Order Ids"/>
+        <column xsi:type="datetime" name="executed_at" on_update="false" nullable="false" default="0"/>
+        <column xsi:type="datetime" name="complete_at" on_update="false" nullable="false" default="0"/>
+        <column xsi:type="varchar" name="file_path" nullable="false" length="1024" comment="file path"/>
+        <column xsi:type="varchar" name="queuid" nullable="false" length="512" comment="file path"/>
+
+        <column xsi:type="int" name="phpid" unsigned="true" nullable="true" identity="false"
+                comment="PHP PROCESS ID"/>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_BATCHES_PID" indexType="btree">
+            <column name="phpid"/>
+        </index>
+        <index referenceId="BRANCH8_ORDER_EXPORT_PROFILE_STATUS" indexType="btree">
+            <column name="batch_status"/>
+        </index>
+        <constraint xsi:type="foreign" referenceId="BRANCH8_ORDER_EXPORT_PROFILE_PROFILE_ID"
+                    table="branch8_order_export_profile_batches"
+                    column="parent_id"
+                    referenceTable="branch8_order_export_profile"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="batch_id"/>
+        </constraint>
+    </table>
+    <table name="branch8_order_notification_profile" resource="default" engine="innodb"
+           comment="Branch8 Order Notification Profile">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="profile_type" nullable="false" length="32" comment="ADMIN|SELLER"/>
+        <column xsi:type="varchar" name="receiver_email" nullable="false" length="32" comment="Receiver Email"/>
+        <column xsi:type="varchar" name="receiver_name" nullable="false" length="1024" comment="Receiver Name"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" identity="false" default="0" comment="User ID"/>
+        <column xsi:type="int" name="seller_id" nullable="false" identity="false" default="0"  comment="Seller Id"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="datetime" name="publish_at" on_update="false" nullable="false" default="0"/>
+        <column xsi:type="datetime" name="executed_at" on_update="false" nullable="false" default="0"/>
+        <column xsi:type="varchar" name="file_path" nullable="false" length="1024" comment="file path"/>
+        <index referenceId="BRANCH8_ORDER_NOTIFICATION_PROFILE_USER_ID" indexType="btree">
+            <column name="user_id"/>
+        </index>
+        <index referenceId="BRANCH8_ORDER_NOTIFICATION_PROFILE_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

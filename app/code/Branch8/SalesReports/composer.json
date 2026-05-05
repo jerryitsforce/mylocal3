@@ -1,0 +1,17 @@
+{
+  "name": "branch8/module-sales-reports",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\SalesReports\\": ""
+    }
+  }
+}

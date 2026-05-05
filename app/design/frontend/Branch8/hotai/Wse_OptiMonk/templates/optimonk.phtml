@@ -1,0 +1,40 @@
+<?php
+/**
+ * OptiMonk - Entry Code - Magento 2 Module
+ *
+ * Copyright (C) 2016 OptiMonk
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
+ *
+ * @author      Tibor Berna
+ * @since       2016-07-29
+ */
+?>
+<?php /** @var $block \Wse\OptiMonk\Block\OptiMonk
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */ ?>
+<!-- OptiMonk EntryCode -->
+<?php
+$scriptString = <<<script
+    document.querySelector('html').addEventListener('optimonk#ready', function () {
+        OptiMonk.ajax.get("//" + window.location.host + "/optimonk/cart/index/", OptiMonk.addResponseToHead)
+    });
+    (function(e,a){
+        var t,r=e.getElementsByTagName("head")[0],c=e.location.protocol;
+        t=e.createElement("script");t.type="text/javascript";
+        t.charset="utf-8";t.async=!0;t.defer=!0;
+        t.src=c+"//front.optimonk.com/public/"+a+"/js/preload.js";r.appendChild(t);
+    })(document,"{$block->getAccountId()}");
+
+    script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptString, false) ?>

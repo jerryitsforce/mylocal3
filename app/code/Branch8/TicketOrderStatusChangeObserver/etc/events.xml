@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="check_ticket_order_for_use_api_handle">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_for_use_api_handle" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrder" />
+    </event>
+    <event name="check_ticket_order_for_cancel_api_handle">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_for_cancel_api_handle" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrder" />
+    </event>
+    <event name="check_ticket_order_for_over_due_cron">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_for_over_due_cron" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrder" />
+    </event>
+    <event name="check_ticket_order_all_complete_manually">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_all_complete_manually" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrder" />
+    </event>
+    <event name="check_ticket_order_not_all_complete_manually">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_not_all_complete_manually" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrder" />
+    </event>
+
+    <event name="sales_order_creditmemo_refund">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_for_refund" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrderForRefund"/>
+    </event>
+    <event name="creditmemo_financial_review_done">
+        <observer name="ticket_order_status_change_observer_check_ticket_order_after_financial_review_done" instance="Branch8\TicketOrderStatusChangeObserver\Observer\CheckTicketOrderAfterFinancialReviewDone"/>
+    </event>
+    <event name="ecpay_inovice_ticket_item_arrived_check">
+        <observer name="ticket_order_status_change_observer_ticket_item_arrived_check" instance="Branch8\TicketOrderStatusChangeObserver\Observer\TicketItemArrivedChecker"/>
+    </event>
+</config>

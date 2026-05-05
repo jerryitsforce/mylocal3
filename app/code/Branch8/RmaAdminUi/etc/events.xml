@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="mprmasystem_details_delete_after">
+        <observer name="branch8_rmaAdminUi_RmaIndexGridRemove_observer"
+                  instance="Branch8\RmaAdminUi\Observer\RmaIndexGridRemoveObserver"/>
+    </event>
+    <event name="mprmasystem_details_save_commit_after">
+        <observer name="branch8_rmaAdminUi_RmaIndexGridSync_observer"
+                  instance="Branch8\RmaAdminUi\Observer\RmaIndexGridSyncObserver"/>
+    </event>
+</config>

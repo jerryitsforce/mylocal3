@@ -1,0 +1,150 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $helper \Branch8\Rma\Helper\Data
+ */
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $helper \Branch8\Rma\Helper\Data
+ * @var  $b8salesConfigHelper \Branch8\Sales\Helper\Config
+ */
+$rmaDetails = $block->getRmaDetails();
+$rmaId = $rmaDetails->getId();
+$rmaModel = $block->getRmaModel();
+$helper = $this->helper(\Branch8\Rma\Helper\Data::class);
+$rmaItemId = $helper->getRmaItems($rmaId)->getItemId();
+$isTicket = $rmaModel->isTicket($rmaItemId);
+$canReturnStock = true;
+$status = $rmaDetails->getStatus();
+$finalStatus = $block->getFinalStatus();
+$allStatus = $rmaModel->getAllNextStatusOptions($status, $isTicket, $rmaDetails->getIsReplaceAgain());
+$reasonsToDecline = $rmaModel->getAllReasonsForDecline();
+$declineReasonId = $rmaDetails->getDeclineReasonId();
+$sellerName = $helper->getCustomerName($rmaId);
+$readyToShip = $rmaModel->isReadyToBeShipped($status);
+$b8salesConfigHelper = $this->helper(\Branch8\Sales\Helper\Config::class);
+$orderId = $rmaDetails->getOrderId();
+$sellerId = $rmaDetails->getSellerId();
+$invoiceId = $helper->getMpOrder($orderId, $sellerId)->getInvoiceId();
+$order = $helper->getOrder($orderId);
+$canRefundStatus = $rmaModel->canRefund($status);
+$rmaRefundQty = $helper->getRmaItems($rmaId)->getQty();
+$shippingMethod = $order->getShippingMethod();
+$invoice = $helper->getInvoiceData($invoiceId);
+$totalRefundableShippingFee = (int) $order->getShippingInclTax() - (int)$order->getShippingRefunded() - (int)$order->getShippingTaxRefunded();
+
+
+?>
+<?php if ($canRefundStatus): ?>
+    <div class="wk-mprma-container wk-mprma-view">
+        <div class="wk-title">
+            <?= $escaper->escapeHtml(__("Refund Amount")); ?>
+        </div>
+        <form method="post"
+              action="<?= $escaper->escapeUrl($block->getUrl('reqrma/rma/refund')); ?>"
+              id="wk_rma_refund_form" class="form-inline" enctype="multipart/form-data"
+              data-mage-init='{"validation":{}}'>
+            <fieldset class="fieldset wk-mprma-fieldset wk-close-filedset">
+                <div class="field">
+                    <?php if ($finalStatus == 0): ?>
+                        <input type="hidden" value="<?= $escaper->escapeHtml($helper->encrypt($rmaId)); ?>"
+                               name="rma_id">
+                        <input type="hidden" value="1" class="payment_status" name="do_offline">
+                        <input type="hidden" name="invoice_id" value="<?= $escaper->escapeHtml($invoiceId); ?>">
+                        <input type="hidden" name="id" value="<?= $orderId ?>">
+                        <input type="hidden" name="creditmemo[adjustment_positive]" value="0">
+                        <input type="hidden" name="creditmemo[adjustment_negative]" value="0">
+                        <input type="hidden" name="totalShippingAmount" value="<?= $totalRefundableShippingFee ?>"/>
+                        <input type="hidden" name="creditmemo[items][<?= $escaper->escapeHtml($rmaItemId); ?>][qty]"
+                               value="<?= $escaper->escapeHtml($rmaRefundQty); ?>"/>
+                        <input name="form_key" type="hidden" value="<?= $block->getFormKey() ?>"/>
+                        <div class="admin__field field field-changed_status  required">
+                            <div class="admin__field-control control">
+                                <select id="payment_type" name="payment_type"
+                                        class="select admin__control-select number-title required-entry">
+                                    <option value="1"><?= $escaper->escapeHtml(__("Full Amount")); ?></option>
+                                    <option value="2"><?= $escaper->escapeHtml(__("Partial Amount")); ?></option>
+                                </select>
+                                <div class="wk-partial-amount">
+                                    <input type="text" value="0" id="partial_amount"
+                                           name="partial_amount" data-validate="{required:true}"
+                                           class="input-text required-entry">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="admin__field field field-decline_reason_detail required">
+                            <label for="shipping_number">
+                            <span class="wk-refund-label">
+                                <?= $escaper->escapeHtml(__("Total Refundable Amount")); ?> :
+                            </span>
+                                <span class="wk-refund-amount"></span>
+                                <?php if ($shippingMethod == "mpfixrate_mpfixrate") { ?>
+                                    <span><?= $escaper->escapeHtml(__("+ Shipping")); ?></span>
+                                <?php } ?>
+                            </label>
+
+                        </div>
+                        <div class="admin__field field field-decline_reason_detail required">
+                              <span class="wk-refund-label">
+                                <?= $escaper->escapeHtml(__("Total Refundable Point")); ?> :
+                            </span>
+                            <span class="wk-refund-point"></span>
+
+                        </div>
+                        <?php if (!$isTicket && $canReturnStock): ?>
+                            <div class="admin__field field field-decline_reason_detail required">
+                              <span class="wk-refund-label">
+                                <?= $escaper->escapeHtml(__("Return to Stock")); ?> :
+                            </span>
+                                <span class=""><input type="checkbox" name="back_to_stock" value="1"></span>
+                            </div>
+                        <?php endif ?>
+                        <div class="wk-action-btn">
+                            <button title="Refund Offline"
+                                    class="action save primary wk-refund"
+                                    id="wk-refund-offline" type="submit">
+                                <span><?= $escaper->escapeHtml(__("Refund Offline")); ?></span>
+                            </button>
+                            <?php if ($invoice && $invoice->getTransactionId()) { ?>
+                                <div class="wk-action-btn">
+                                    <button title="Refund Online"
+                                            class="action save primary wk-refund"
+                                            id="wk-refund-online" type="submit">
+                                        <span><?= $escaper->escapeHtml(__("Refund")); ?></span>
+                                    </button>
+                                </div>
+                            <?php } ?>
+                        </div>
+
+                    <?php else: ?>
+                        <?= $escaper->escapeHtml($helper->getCloseRmaLabel($finalStatus, $sellerName)); ?>
+                    <?php endif; ?>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <?php
+    $scriptString = <<<script
+
+    require([
+        "jquery",
+        "prototype"
+    ], function(jQuery){
+
+    //<![CDATA[
+        jQuery('#wk_rma_refund_form').on('submit', function(e){
+            jQuery(this).find(":submit").attr('disabled', 'disabled');
+        });
+    //]]>
+
+    });
+    script;
+    ?>
+    <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<?php endif; ?>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" label="Customer My Account (All Pages)" design_abstraction="custom">
+    <body>
+        <referenceBlock name="breadcrumbs">
+          <action method="addCrumb">
+              <argument name="crumbName" xsi:type="string" translate="true">會員資料</argument>
+              <argument name="crumbInfo" xsi:type="array">
+                  <item name="label" xsi:type="string" translate="true">會員資料</item>
+                  <item name="title" xsi:type="string" translate="true">會員資料</item>
+                  <item name="link" xsi:type="string">/customer/account</item>
+              </argument>
+          </action>
+        </referenceBlock>
+    </body>
+</page>

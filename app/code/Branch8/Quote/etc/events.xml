@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_item_qty_set_after">
+        <observer name="b8_set_available_checkout_if_update_cart_qty" instance="Branch8\Quote\Observer\QtySetAfter" />
+    </event>
+    <event name="sales_quote_item_save_before">
+        <observer name="branch8_quote_track_special_price" instance="Branch8\Quote\Observer\TrackSpecialPrice" />
+    </event>
+</config>

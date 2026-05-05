@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Mageplaza_Core::css/owl.carousel.css"/>
+        <css src="Mageplaza_Core::css/owl.theme.css"/>
+    </head>
+    <body>
+        <referenceBlock name="product.info.details">
+            <block class="Branch8\Blog\Block\Post\RelatedPost" name="related-post-tab" template="Branch8_Blog::post/related_post.phtml" group="detailed_info" ifconfig="blog/product_post/product_detail/enable_post"/>
+        </referenceBlock>
+    </body>
+</page>

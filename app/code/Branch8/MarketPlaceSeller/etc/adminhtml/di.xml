@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Webkul\Marketplace\Block\Adminhtml\Customer\Edit\RemoveSellerTab">
+        <plugin name="hide_delete_seller_tab"
+                type="Branch8\MarketPlaceSeller\Plugin\HideDeleteSellerTab"/>
+    </type>
+    <preference for="Webkul\Marketplace\Model\ResourceModel\Saleslist\Grid\Collection"
+                type="Branch8\MarketPlaceSeller\Override\Model\ResourceModel\Saleslist\Grid\Collection"/>
+
+
+</config>

@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/system_file.xsd">
+    <system>
+        <section id="app_settings" translate="label" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="0">
+            <label>APP Settings</label>
+            <tab>branch8</tab>
+            <resource>Branch8_AppSettings::config</resource>
+
+            <group id="versioning" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1">
+                <label>App Version Control</label>
+                <field id="android_version" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>[Android] Version</label>
+                    <frontend_model>Branch8\AppSettings\Block\Adminhtml\Form\Field\AndroidVersion</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="android_min_supported_version" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1">
+                    <label>[Android] Min Supported Version</label>
+                    <frontend_model>Branch8\AppSettings\Block\Adminhtml\Form\Field\AndroidVersion</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="ios_version" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>[iOS] Version</label>
+                    <frontend_model>Branch8\AppSettings\Block\Adminhtml\Form\Field\IOSVersion</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="ios_min_supported_version" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1">
+                    <label>[iOS] Min Supported Version</label>
+                    <frontend_model>Branch8\AppSettings\Block\Adminhtml\Form\Field\IOSVersion</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="update_message" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Update Message</label>
+                </field>
+            </group>
+
+            <group id="firebase" translate="label" sortOrder="20" showInDefault="1">
+                <label>Firebase Settings</label>
+
+                <field id="environment" translate="label" type="select" sortOrder="10" showInDefault="1">
+                    <label>Environment</label>
+                    <source_model>Branch8\AppSettings\Model\Config\Source\Environment</source_model>
+                </field>
+
+                <field id="project_id" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Project ID</label>
+                    <comment>Your Firebase Project ID (e.g. my-project)</comment>
+                </field>
+
+                <field id="service_account_credential_json"
+                       translate="label comment"
+                       type="textarea"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Service Account Credentials JSON</label>
+                    <comment>Paste the full content of your service account credentials json here</comment>
+                </field>
+            </group>
+
+            <group id="developer" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1">
+                <label>Developer</label>
+                <field id="enable_debugger" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>Enable Debugger</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+
+
+        <section id="hotai_auth" >
+            <tab>branch8</tab>
+            <group id="hotai_app" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="31" translate="label">
+                <label>Hotai App</label>
+                <field id="api_domain" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                </field>
+                <field id="api_redirect_uri" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Redirect Uri</label>
+                </field>
+                <field id="app_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP ID</label>
+                </field>
+                <field id="app_key" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP Key</label>
+                </field>
+                <field id="client_id" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                </field>
+                <field id="client_secret" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                </field>
+                <field id="aes_key" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES Key</label>
+                </field>
+                <field id="aes_iv" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES IV</label>
+                </field>
+                <field id="app_version" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP Version</label>
+                </field>
+                <field id="api_version" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Version</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

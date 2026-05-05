@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- <event name="branch8_split_order_item_success">
+        <observer name="branch8_save_custom_data_to_order" instance="Branch8\OneStepCheckout\Observer\SaveCustomDataToOrder" />
+    </event> -->
+</config>

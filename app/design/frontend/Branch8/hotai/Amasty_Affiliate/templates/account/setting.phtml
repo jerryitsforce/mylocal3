@@ -1,0 +1,150 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Affiliate for Magento 2
+ */
+/**
+ * @var $block Amasty\Affiliate\Block\Account\Setting
+ * @var $escaper Magento\Framework\Escaper
+ */
+?>
+<?php if (!$block->getAccount()->getIsAffiliateActive() && $block->getAccount()->getAccountId()): ?>
+    <div class="message info empty">
+        <span>
+            <?= $escaper->escapeHtml(
+                __("Your account has been disabled by store administrator. Please contact us for details.")
+            ); ?>
+        </span>
+    </div>
+<?php else: ?>
+    <form
+            class="form"
+            action="<?= $escaper->escapeUrl($block->getUrl('amasty_affiliate/account/editPost')) ?>"
+            method="post"
+            id="form-validate"
+            enctype="multipart/form-data"
+            data-hasrequired="<?= $escaper->escapeHtml(__('* Required Fields')) ?>"
+            autocomplete="off"
+    >
+        <fieldset class="fieldset">
+            <?= $block->getBlockHtml('formkey')?>
+            <legend class="legend"><span><?= $escaper->escapeHtml(__('Affiliate Settings')) ?></span></legend><br>
+            <?php if ($block->getAccount()->getReferringCode()): ?>
+                 <div class="field referring_code">
+                    <label for="referring-code" class="label">
+                        <span><?= $escaper->escapeHtml(__('My Affiliate Code')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input
+                                value="<?= $escaper->escapeHtml($block->getAccount()->getReferringCode()) ?>"
+                                class="input-text"
+                                type="text"
+                                name="referring_code"
+                                id="referring-code"
+                                disabled="disabled"
+                                title="<?= $escaper->escapeHtml(__('My Affiliate Code')) ?>"
+                        >
+                        <div class="field-tooltip">
+                            <span class="field-tooltip-action"
+                                  data-amaffiliate-js="tooltip"
+                                  title="<?= $escaper->escapeHtmlAttr(__('This affiliate code will be used in the referral links.')) ?>"></span>
+                        </div>
+
+                        <script>
+                            require([
+                                'jquery',
+                                'Amasty_Affiliate/vendor/tooltipster/js/tooltipster.min'
+                            ], function($, tooltipster){
+                                function isTouchDevice () {
+                                    return ('ontouchstart' in window)
+                                        || (navigator.maxTouchPoints > 0)
+                                        || (navigator.msMaxTouchPoints > 0);
+                                }
+
+                                var tooltipTrigger = isTouchDevice() ? 'click' : 'hover';
+
+                                $(document).ready(function() {
+                                    $('[data-amaffiliate-js="tooltip"]').tooltipster({
+                                        position: 'right',
+                                        contentAsHtml: true,
+                                        interactive: true,
+                                        trigger: tooltipTrigger
+                                    });
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="field referring_website">
+                <label for="referring-website" class="label">
+                    <span><?= $escaper->escapeHtml(__('Referring Website')) ?></span>
+                </label>
+                <div class="control">
+                    <input
+                            value="<?= $escaper->escapeHtml($block->getAccount()->getReferringWebsite()) ?>"
+                            class="input-text"
+                            type="text"
+                            name="referring_website"
+                            id="referring-website"
+                            title="<?= $escaper->escapeHtml(__('Referring Website')) ?>"
+                    >
+                </div>
+            </div>
+            <div class="field paypal_email">
+                <label for="paypal-email" class="label">
+                    <span><?= $escaper->escapeHtml(__('Paypal Email')) ?></span>
+                </label>
+                <div class="control">
+                    <input
+                            value="<?= $escaper->escapeHtml($block->getAccount()->getPaypalEmail()) ?>"
+                            class="input-text"
+                            type="text"
+                            name="paypal_email"
+                            id="paypal-email"
+                            title="<?= $escaper->escapeHtml(__('Paypal Email')) ?>"
+                    >
+                </div>
+            </div>
+            <div class="field choice">
+                <input
+                    <?= $escaper->escapeHtml($block->checkSubscribe()) ?>
+                        class="checkbox"
+                        type="checkbox"
+                        name="receive_notifications"
+                        id="receive-notifications"
+                        style="display: inline-block;"
+                        title="<?= $escaper->escapeHtml(__('Subscribe to Email Notifications')) ?>"
+                />
+                <label class="label" for="receive-notifications">
+                    <span><?= $escaper->escapeHtml(__('Subscribe to Email Notifications')) ?></span>
+                </label>
+            </div>
+            <div class="field choice required">
+                <input
+                    <?= $escaper->escapeHtml($block->checkConditions()) ?>
+                        required class="checkbox"
+                        type="checkbox"
+                        name="accepted_terms_conditions"
+                        id="accepted-terms-conditions"
+                        style="display: inline-block;"
+                        title="<?= $escaper->escapeHtml(__('Accept Terms and Conditions')) ?>"
+                />
+                <label value="1" class="label" for="accepted-terms-conditions">
+                    <a href="<?= $escaper->escapeHtml($block->getTermsUrl()) ?>">
+                        <?= $escaper->escapeHtml($block->getConditionsCheckboxText()) ?>
+                    </a>
+                </label>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action save primary" title="<?= $escaper->escapeHtml(__('Save')) ?>">
+                        <span><?= $escaper->escapeHtml(__('Save')) ?></span>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+<?php endif; ?>
+

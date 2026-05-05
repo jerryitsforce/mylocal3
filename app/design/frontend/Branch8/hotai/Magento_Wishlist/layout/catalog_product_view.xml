@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.addtocart">
+            <block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="product.view.addto.wishlist"
+                template="Magento_Wishlist::catalog/product/view/addto/wishlist.phtml" />
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart.additional">
+            <block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="product.additional.view.addto.wishlist"
+                template="Magento_Wishlist::catalog/product/view/addto/wishlist.phtml" />
+        </referenceBlock>
+        <referenceBlock name="product.bottom.bar">
+            <block class="Magento\Wishlist\Block\Catalog\Product\View\AddTo\Wishlist" name="product.bottom.bar.addto.wishlist"
+                template="Magento_Wishlist::catalog/product/view/addto/wishlist.phtml" />
+        </referenceBlock>
+    </body>
+</page>

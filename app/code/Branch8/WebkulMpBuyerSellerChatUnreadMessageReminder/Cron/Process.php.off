@@ -1,0 +1,52 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron;
+
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Exception\LockException;
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\Config;
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\ProcessQueue;
+use Psr\Log\LoggerInterface;
+
+class Process
+{
+    /**
+     * @var ProcessQueue
+     */
+    private $processQueue;
+    /**
+     * @var Config
+     */
+    private $config;
+
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    public function __construct(
+        ProcessQueue         $queue,
+        Config          $config,
+        LoggerInterface $logger
+    )
+    {
+        $this->processQueue = $queue;
+        $this->config = $config;
+        $this->logger = $logger;
+    }
+
+    /**
+     * @return void
+     */
+    public function execute()
+    {
+        if (!$this->config->isEnable()) {
+            return;
+        }
+        try {
+            $this->processQueue->process();
+        } catch (LockException $e) {
+            $this->logger->info(__('Can\'t get a file lock for queue processing process: %1', $e->getMessage()));
+        }
+    }
+}

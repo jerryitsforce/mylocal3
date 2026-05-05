@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Branch8_Catalog::js/fullpoint.js"/>
+    </head>
+    <body>
+        <referenceBlock name="breadcrumbs">
+            <arguments>
+                <argument name="viewModel" xsi:type="object">Branch8\Catalog\ViewModel\Product\Breadcrumbs</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="product.info">
+            <block class="Magento\Catalog\Block\Product\View" name="product.check.fullpoint" as="form_bottom_check_fullpoint" template="Branch8_Catalog::product/view/fullpoint.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

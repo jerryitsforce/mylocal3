@@ -1,0 +1,17 @@
+{
+  "name": "branch8/module-seller-information-product-data-export",
+  "version": "1.0.0",
+  "description": "Export Product Seller Information To LiveSearch",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\SellerInformationProductDataExport\\": ""
+    }
+  }
+}

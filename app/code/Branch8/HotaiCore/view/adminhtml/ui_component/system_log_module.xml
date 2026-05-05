@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">logModulesProvider</item>
+        </item>
+    </argument>
+    <dataSource name="logModulesProvider">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="name" xsi:type="string">logModulesProvider</argument>
+        </argument>
+    </dataSource>
+    <container name="logModules">
+        <dynamicRows name="rows">
+            <settings>
+                <addButtonLabel>Add Module</addButtonLabel>
+                <componentType>dynamicRows</componentType>
+            </settings>
+            <!-- Module select -->
+            <column name="module">
+                <settings>
+                    <label>Module</label>
+                    <componentType>field</componentType>
+                    <formElement>select</formElement>
+                    <dataType>text</dataType>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Branch8\HotaiCore\Model\Config\Source\LogModules\Modules"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </column>
+            <!-- Levels -->
+            <column name="levels">
+                <settings>
+                    <label>Log Levels</label>
+                    <componentType>field</componentType>
+                    <formElement>multiselect</formElement>
+                </settings>
+                <formElements>
+                    <multiselect>
+                        <settings>
+                            <options>
+                                <option name="error" xsi:type="array">
+                                    <item name="label" xsi:type="string">Error</item>
+                                    <item name="value" xsi:type="string">error</item>
+                                </option>
+                                <option name="warning" xsi:type="array">
+                                    <item name="label" xsi:type="string">Warning</item>
+                                    <item name="value" xsi:type="string">warning</item>
+                                </option>
+                                <option name="info" xsi:type="array">
+                                    <item name="label" xsi:type="string">Info</item>
+                                    <item name="value" xsi:type="string">info</item>
+                                </option>
+                                <option name="debug" xsi:type="array">
+                                    <item name="label" xsi:type="string">Debug</item>
+                                    <item name="value" xsi:type="string">debug</item>
+                                </option>
+                            </options>
+                        </settings>
+                    </multiselect>
+                </formElements>
+            </column>
+
+            <!-- Delete -->
+            <actionDelete name="delete"/>
+        </dynamicRows>
+    </container>
+</listing>

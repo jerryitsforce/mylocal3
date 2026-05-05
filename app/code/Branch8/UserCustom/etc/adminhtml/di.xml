@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\User\Block\User\Edit\Tabs">
+        <plugin sortOrder="1" name="add_user_permission_tabs" type="Branch8\UserCustom\Plugin\AddTabToAdminUserEdit"/>
+    </type>
+    <preference for="Magento\User\Controller\Adminhtml\User\Save"
+                type="Branch8\UserCustom\Controller\Adminhtml\User\Save"/>
+    <preference for="Magento\Cms\Model\ResourceModel\Page\Grid\Collection"
+                type="Branch8\UserCustom\Model\ResourceModel\Page\Grid\Collection"/>
+</config>

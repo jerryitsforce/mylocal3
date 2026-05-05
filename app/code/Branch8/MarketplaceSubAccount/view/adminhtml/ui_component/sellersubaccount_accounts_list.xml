@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <container name="listing_top">
+        <massaction name="listing_massaction">
+            <!-- Mass actions which you want to add in your grid-->
+            <action name="delete" class="Branch8\MarketplaceSubAccount\Ui\Component\Action\MassDelete">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="urlPath" xsi:type="string">sellersubaccount/account/massDelete</item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+    </container>
+
+</listing>

@@ -1,0 +1,33 @@
+<div class="totals point-apply">
+    <div class="point-left">
+        <span class="point-title" data-bind="i18n: pointTitle"></span>
+        <div class="point-info">
+            <span data-bind="i18n: pointInfor"></span>
+            <span class="point-tooltip">
+                <i class="tooltip-toggle"></i>
+                <span class="tooltip-content">
+                    <span class="tooltip-text" data-bind="i18n: $t('%1 point = 1 yuan').replace('%1', 1)"></span>
+                </span>
+            </span>
+        </div>
+        <div class="point-data">
+            <span class="point-limit" data-bind="i18n: pointLimit"></span>
+            <span class="point-range" data-bind="text: getPointRange()"></span>
+            <span class="point-unit" data-bind="i18n: pointTxt"></span>
+        </div>
+        <div class="point-available">
+            (<span data-bind="i18n: $t('You currently have %1 points available.').replace('%1', getCustomerPoint())"></span>)
+        </div>
+    </div>
+    <div class="point-right">
+        <div class="apply-point">
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" id="point_input" placeholder="0"
+                   data-bind='attr: {"data-placeholder": "0", max: getCustomerPointRaw() }, value: pointToUse, valueUpdate: "afterkeydown", class: "input-text required-entry validate-digits " + messageClass()'/>
+            <!-- <button class="point-btn" data-bind="click: applyPoint, visible: isAllowSubmit() && !hasError()"><span data-bind="i18n: '使用'"></span></button> -->
+            <button class="point-btn-reset" data-bind="click: resetPoint, visible: pointToUse && hasError()"><span data-bind="i18n: '移除'"></span></button>
+            <span data-bind='attr: { class:  "status"}'></span>
+            <span data-bind="i18n: pointTxt"></span>
+        </div>
+        <div class="mage-error" data-bind="i18n: messageText"></div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root" label="Root">
+        <block class="Branch8\AdvancedPermissions\Block\Adminhtml\Role\Tab\Block\Grid" name="amrolepermissions.allowed_blocks.grid" />
+    </container>
+</layout>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V2/customer/start-new-conversation/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChatCustomerUi\Api\CustomerStarNewConversationInterface"
+                 method="startWith"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/customer/load-chat-profile/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChatCustomerUi\Api\CustomerLoadChatProfileInterface"
+                 method="load"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+</routes>

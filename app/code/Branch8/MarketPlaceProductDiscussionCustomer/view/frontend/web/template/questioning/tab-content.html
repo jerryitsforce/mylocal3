@@ -1,0 +1,66 @@
+<div class="thread-tab-content-wrap">
+
+    <div class="cus-thread-container cus-thread-list " data-bind="foreach: items">
+        <div class="cus-thread-item">
+            <!-- ko if:(product) -->
+            <div class="thread-product-top">
+                <div class="thread-product-info">
+                    <div class="thread-product-img">
+                        <a data-bind="attr:{href:product.url}">
+                            <img
+                                width="135"
+                                height="135"
+                                data-bind="attr: { src: product.imageUrl }"
+                            />
+                        </a>
+                    </div>
+                    <div class="thread-product-desc">
+                        <h2 class="thread-product-name">
+                            <a data-bind="attr:{href:product.url}, text:product.name"></a>
+                        </h2>
+                        <div class="thread-product-spec" data-bind="html:product_spec"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+            <div class="thread-item">
+                <div class="thread-question-wrap">
+                    <button class="thread-delete-btn" data-bind="click:$parents[0].deleteThread.bind($parents[0])"><span data-bind="text: $t('Delete')"></span></button>
+                    <div class="thread-badge-icon" data-bind="css: {'my-thread': is_my_thread}"><span data-bind="text: $t('Q.')"></span></div>
+                    <div class="thread-question">
+                        <!-- ko if: is_my_thread -->
+                        <div class="thread-badge" data-bind="text: $t('我的提問')"></div>
+                        <!-- /ko -->
+
+                        <h4 class="thread-title" data-bind="html: content"></h4>
+                        <div class="thread-date" >
+                            <span data-bind="text: created_at"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="thread-replies">
+                    <!-- ko if: has_messages -->
+                    <div class="thread-messages" data-bind="foreach: messages">
+                        <div class="thread-message">
+                            <div class="thread-message-content" data-bind="html: message"></div>
+                            <div class="thread-message-date" data-bind="text: created_at"></div>
+                        </div>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko ifnot: has_messages -->
+                    <div class="thread-no-message" data-bind="text: $t('The seller has not yet replied to your message')"></div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="thread-pager">
+        <!-- ko foreach: getRegion(name+'.'+'paging') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!-- /ko -->
+    </div>
+    <div class="cus-thread-container cus-no-thread-item" data-bind="visible: items().length == 0">
+        <span class="cus-no-thread-icon"></span>
+        <div class="cus-no-thread-message" data-bind="text: $t('沒有相關問答')"></div>
+    </div>
+</div>

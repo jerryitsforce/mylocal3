@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Webkul\Marketplace\Ui\DataProvider\Product\Form\Modifier\AssignSeller">
+		<plugin name="Branch8_Catalog_Plugin_Webkul_Marketplace_Ui_DataProvider_Product_Form_Modifier_AssignSeller" type="Branch8\Catalog\Plugin\Webkul\Marketplace\Ui\DataProvider\Product\Form\Modifier\AssignSeller" sortOrder="10" disabled="false"/>
+	</type>
+	<preference for="Magento\Search\Block\Adminhtml\Term\Edit\Form" type="Branch8\Catalog\Rewrite\Magento\Search\Block\Adminhtml\Term\Edit\Form"/>
+    <type name="Magento\CatalogUrlRewrite\Model\ProductUrlPathGenerator">
+        <plugin name="b8_catalogurlrewrite_model_product_url_path_generator_plugin" type="Branch8\Catalog\Plugin\Magento\CatalogUrlRewrite\Model\ProductUrlPathGeneratorPlugin"/>
+    </type>
+    <type name="Magento\Catalog\Api\ProductRepositoryInterface">
+        <plugin name="b8_add_seller_id_field_to_product_api" type="Branch8\Catalog\Plugin\Magento\Catalog\Api\ProductRepositoryPlugin"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter">
+        <plugin name="b8_catalog_fulltext_filter_plugin" type="Branch8\Catalog\Plugin\Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter"/>
+    </type>
+    <preference for="Webkul\MarketplacePreorder\Pricing\Render\FinalPriceBox" type="Branch8\Catalog\Pricing\Render\FinalPriceBox"/>
+    <preference for="Branch8\Catalog\Api\ProductInterface" type="Branch8\Catalog\Model\Api\ProductRepository"/>
+    <preference for="Branch8\Catalog\Api\WishlistRequestInterface" type="Branch8\Catalog\Model\Api\WishlistRequest"/>
+    <preference for="Branch8\Catalog\Api\WishlistResponseInterface" type="Branch8\Catalog\Model\Api\WishlistResponse"/>
+    <preference for="Branch8\Catalog\Api\ViewedRequestInterface" type="Branch8\Catalog\Model\Api\ViewedRequest"/>
+    <preference for="Branch8\Catalog\Api\ViewedResponseInterface" type="Branch8\Catalog\Model\Api\ViewedResponse"/>
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="check_salable_qty" type="Branch8\Catalog\Plugin\Magento\Catalog\Model\Product" sortOrder="0" />
+    </type>
+    <type name="Magento\ImportExport\Model\Source\Import\Behavior\Basic">
+        <plugin name="b8_translate_import_behaviour" type="Branch8\Catalog\Plugin\Magento\ImportExport\Model\BehaviorBasic" sortOrder="0" />
+    </type>
+    <virtualType name="Branch8\Catalog\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8_catalog.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8CatalogLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Branch8\Catalog\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\Catalog\Ui\Component\Product\Form\Brand\Options">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8CatalogLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Url">
+        <plugin name="update_pdp_url" type="Branch8\Catalog\Rewrite\Model\Product\Url" sortOrder="0" />
+    </type>
+    <type name="Branch8\Catalog\Rewrite\Model\Product\Url">
+        <arguments>
+            <argument name="urlFinder" xsi:type="object">Magento\CatalogUrlRewrite\Model\Storage\DbStorage</argument>
+        </arguments>
+    </type>
+    <type name="Magento\CatalogUrlRewriteDataExporter\Model\Query\ProductUrlRewritesQuery">
+        <plugin name="branch8_update_product_url_rewrite_live_search" type="Branch8\Catalog\Plugin\Magento\CatalogUrlRewriteDataExporter\Model\Query\ProductUrlRewritesQuery" sortOrder="0" />
+    </type>
+    <type name="Magento\CatalogUrlRewriteDataExporter\Model\Query\ProductUrlQuery">
+        <plugin name="branch8_update_product_url_live_search" type="Branch8\Catalog\Plugin\Magento\CatalogUrlRewriteDataExporter\Model\Query\ProductUrlQuery" sortOrder="0" />
+    </type>
+    <preference for="Magento\Catalog\Block\Product\View\Options" type="Branch8\Catalog\Rewrite\Magento\Catalog\Block\Product\View\Options"/>
+
+    <type name="Magento\Sitemap\Model\ResourceModel\Catalog\Product">
+        <plugin name="branch8_update_product_url_for_sitemap" type="Branch8\Catalog\Plugin\Magento\Sitemap\Model\ResourceModel\Catalog\Product" sortOrder="0" />
+    </type>
+    <type name="Magento\Catalog\Model\Product\Action">
+        <plugin name="branch8_force_save_attribute_store0" type="Branch8\Catalog\Plugin\ForceSaveProductStore0" sortOrder="0" />
+    </type>
+    <type name="Magento\CatalogWidget\Block\Product\ProductsList">
+        <plugin name="branch8_force_pagebuilder_product_list_cache_params" type="Branch8\Catalog\Plugin\Magento\CatalogWidget\Block\Product\ProductsList" sortOrder="0"/>
+    </type>
+    <type name="Magento\Catalog\Model\CategoryRepository">
+		<plugin name="Branch8_Catalog_Plugin_Magento_Catalog_Model_CategoryRepository" type="Branch8\Catalog\Plugin\Magento\Catalog\Model\CategoryRepositoryPlugin" sortOrder="10"/>
+	</type>
+    <type name="Branch8\Catalog\Model\ResourceModel\Product\History\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_product_change_history</argument>
+            <argument name="eventPrefix" xsi:type="string">b8product_change_history</argument>
+            <argument name="eventObject" xsi:type="string">b8product_change_history_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Catalog\Model\ResourceModel\ProductChangeHistory</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="product_status_history_listing_data_source" xsi:type="string">Branch8\Catalog\Model\ResourceModel\Product\History\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Catalog\Observer\TrackingProductStatusChange">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8CatalogLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Catalog\Cron\CleanProductChangeHistory">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8CatalogLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogDataExporter\Model\Provider\Product\Attributes">
+        <plugin name="Branch8_Catalog::addCreatedAtTimeStamp"
+                type="Branch8\Catalog\Plugin\Magento\CatalogDataExporter\Model\Provider\Product\AddCreatedTimestamp"/>
+    </type>
+    <type name="Magento\CatalogDataExporter\Model\Provider\Product\Attributes">
+        <plugin name="Branch8_Catalog::addMageId"
+                type="Branch8\Catalog\Plugin\Magento\CatalogDataExporter\Model\Provider\Product\AddMageId"/>
+    </type>
+  <!--  <type name="Magento\CatalogDataExporter\Model\Provider\Product\Attributes">
+        <plugin name="Branch8_Catalog::addTotalSale"
+                type="Branch8\Catalog\Plugin\Magento\CatalogDataExporter\Model\Provider\Product\AddTotalSale"/>
+    </type>-->
+    <type name="Magento\CatalogDataExporter\Model\Provider\ProductMetadata">
+        <plugin name="Branch8_Catalog::addCreatedAtTimeStamp"
+                type="Branch8\Catalog\Plugin\Magento\CatalogDataExporter\Model\Provider\ProductMetadataPlugin"/>
+    </type>
+
+    <type name="Magento\MediaContent\Model\ExtractAssetsFromContent">
+        <plugin name="branch8_extract_assets_from_content" type="Branch8\Catalog\Plugin\Magento\MediaContent\Model\ExtractAssetsFromContent" sortOrder="0"/>
+    </type>
+    <type name="Magento\MediaGallery\Model\Asset\Command\GetByPath">
+        <plugin name="branch8_get_by_path_asset_plugin" type="Branch8\Catalog\Plugin\Magento\MediaGallery\Model\Asset\Command\GetByPath" sortOrder="0"/>
+    </type>
+    <type name="Magento\CatalogImportExport\Model\Import\Product">
+        <plugin name="validate_weight_import" type="Branch8\Catalog\Plugin\ProductImportValidator" />
+    </type>
+    <type name="Magento\InventorySalesApi\Api\GetProductSalableQtyInterface">
+        <plugin name="branch8_inventory_salable_qty_memoization" type="Branch8\Catalog\Plugin\Inventory\InventorySalableQtyPlugin" />
+    </type>
+</config>

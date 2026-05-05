@@ -1,0 +1,100 @@
+<?php
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Block\Onepage\ThankYou
+ */
+
+// 是否顯示
+$isShow = $block->isShow();
+if ($isShow) {
+    // 訂單資訊
+    $detail = $block->getDetail();
+    $parentOrder = $block->getOrder();
+    $grandTotal = $block->getGrandTotal();
+    $paymentInfo = $block->getPaymentHtml();
+}
+?>
+
+<?php if ($isShow) : ?>
+    <?php if ($detail->getStatus() !== 'canceled' && $detail->getStatus() !== 'closed') : ?>
+        <!-- 交易成功 -->
+        <div class="checkout-success">
+            <h1><?= $block->escapeHtml(__('Thank you for your purchase!')) ?></h1>
+            <!-- 訂單資訊 -->
+            <div class="block-ecpay-thankyou">
+                <div class="block-title"><strong><?= $block->escapeHtml(__('Order Information')) ?></strong></div>
+                <div class="block-content">
+                    <div class="box">
+                        <div class="box-content">
+                            <p>
+                                <?= $block->escapeHtml(__('Order ID')) ?>：<?= $detail->getIncrementId(); ?><br>
+                                <?= $block->escapeHtml(__('Order Date')) ?>
+                                ：<?= $block->formatDate($detail->getCreatedAt()); ?><br>
+                                <?= $block->escapeHtml(__('Grand Total')) ?>
+                                ：<?= $parentOrder->formatPrice($grandTotal->getValue()); ?><br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /訂單資訊 -->
+            <!-- 付款資訊 -->
+            <div class="block-ecpay-thankyou">
+                <div class="block-title"><strong><?= $block->escapeHtml(__('Payment Information')) ?></strong></div>
+                <div class="block-content">
+                    <div class="box">
+                        <div class="box-content">
+                            <?= $block->getPaymentHtml() ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /付款資訊 -->
+
+            <!-- 運送資訊 -->
+            <div class="block-ecpay-thankyou">
+                <div class="block-title"><strong><?= $block->escapeHtml(__('Shipping Information')) ?></strong></div>
+                <div class="block-content">
+                    <div class="box">
+                        <div class="box-content">
+                            <p>
+                                <?= $block->escapeHtml(__('Shipping Method')) ?>
+                                ：<?= $block->getDetail()->getShippingDescription() ?><br>
+                                <?php if ($detail->getData('is_ecpay_cvs_logistics') === 'Y') : ?>
+                                    <?= $block->escapeHtml(__('CVS Store ID')) ?>：<?= $block->getDetail()->getData('cvs_store_id') ?>
+                                    <br>
+                                    <?= $block->escapeHtml(__('CVS Store Name')) ?>：<?= $block->getDetail()->getData('cvs_store_name') ?>
+                                    <br>
+                                    <?= $block->escapeHtml(__('CVS Store Address')) ?>：<?= $block->getDetail()->getData('cvs_store_address') ?>
+                                    <br>
+                                <?php endif; ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /運送資訊 -->
+
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <a class="action primary continue"
+                       href="<?= $block->escapeUrl($block->getContinueUrl()) ?>"><span><?= $block->escapeHtml(__('Continue Shopping')) ?></span></a>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
+        <!-- 交易失敗 -->
+        <h1><?= $block->escapeHtml(__('Payment failed.')) ?></h1>
+
+        <?php if ($detail->getIncrementId()) : ?>
+            <p><?= $block->escapeHtml(__('Order #') . $detail->getIncrementId()) ?></p>
+        <?php endif ?>
+        <?php if ($error = $block->getErrorMessage()) : ?>
+            <p><?= $block->escapeHtml($error) ?></p>
+        <?php endif ?>
+        <p><?= $block->escapeHtml(
+                __('Click <a href="%1">here</a> to continue shopping.', $block->escapeUrl($block->getContinueUrl())),
+                ['a']
+            ) ?>
+        </p>
+    <?php endif; ?>
+<?php endif ?>

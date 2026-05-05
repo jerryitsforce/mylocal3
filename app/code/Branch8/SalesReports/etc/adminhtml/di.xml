@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Reports\Block\Adminhtml\Sales\Coupons\Grid"
+                type="Branch8\SalesReports\Override\Magento\Reports\Block\Adminhtml\Sales\Coupons\Grid"/>
+    <preference for="Magento\Sales\Block\Adminhtml\Report\Filter\Form\Coupon"
+                type="Branch8\SalesReports\Override\Magento\Sales\Block\Adminhtml\Report\Filter\Form\Coupon"/>
+    <type name="Magento\Reports\Controller\Adminhtml\Report\Statistics">
+        <arguments>
+            <argument name="reportTypes" xsi:type="array">
+                <item name="coupons" xsi:type="string">Branch8\SalesReports\Model\ResourceModel\Report\Rule</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="saleRuleCouponNameOptions" type="Branch8\SalesReports\Block\Adminhtml\BasicDropdown">
+        <arguments>
+            <argument name="getOptions" xsi:type="object">Branch8\SalesReports\Model\Actions\GetCouponNameOptions</argument>
+            <argument name="data" xsi:type="array">
+                <item name="prefix_name" xsi:type="string">saleRuleCouponOptions</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="saleRuleCouponCodeOptions" type="Branch8\SalesReports\Block\Adminhtml\BasicDropdown">
+        <arguments>
+            <argument name="getOptions" xsi:type="object">Branch8\SalesReports\Model\Actions\GetCouponCodeOptions</argument>
+            <argument name="data" xsi:type="array">
+                <item name="prefix_name" xsi:type="string">saleRuleCouponOptions</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>

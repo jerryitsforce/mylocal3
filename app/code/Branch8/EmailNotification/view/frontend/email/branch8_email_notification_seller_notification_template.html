@@ -1,0 +1,68 @@
+<!--@subject {{trans "HOTAI 購商城低於安全庫存商品提醒"}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<style>
+    .container-flex {
+        display: flex;
+        width: 100%;
+        /* height: 300px; */
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    .left-flex,
+    .right-flex {
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+</style>
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">您好，提醒您以下商品低於安全庫存。</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+        </td>
+    </tr>
+    <tr class="email-information">
+    </tr>
+</table>
+
+<div class="container-flex">
+    <div class="left-flex">
+        <p style="font-weight: bold; margin-bottom: 10px;">低庫存商品：</p>
+        <table class="query-details" style="border-collapse: collapse; width: 100%;">
+            <!-- Table header row -->
+            <thead>
+                <tr style="background-color: #f5f5f5;">
+                    <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">SKU</th>
+                    <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">商品名稱</th>
+                    <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">庫存數量</th>
+                    <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">安全庫存量</th>
+                </tr>
+            </thead>
+            <!-- Table body with product data -->
+            <tbody>
+                {{for product in products}}
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{var product.sku}}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{{var product.product_name}}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{var product.stock}}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{var product.low_stock_qty}}</td>
+                </tr>
+                {{/for}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <p>HOTAI購商城自動信件，請勿直接回覆此信</p>
+</div>
+
+{{template config_path="design/email/footer_template"}}

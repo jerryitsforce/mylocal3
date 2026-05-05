@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget class="Branch8\PromotionPage\Widget\CategoryList" id="sub_category_event_page">
+        <label>Event Category</label>
+        <description>Show Event Category</description>
+        <parameters>
+            <parameter name="page_size" xsi:type="text" required="true" visible="true">
+                <label translate="true">Number of Category per Page</label>
+                <description translate="true">
+                    <![CDATA[The default is 9 and cannot be less than 3.]]>
+                </description>
+                <value>9</value>
+            </parameter>
+        </parameters>
+    </widget>
+
+</widgets>

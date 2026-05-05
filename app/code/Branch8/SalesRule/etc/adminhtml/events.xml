@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="salesrule_rule_condition_combine">
+        <observer name="branch8_salesrule_add_first_purchase_order"
+                  instance="Branch8\SalesRule\Observer\AddFirstPurchaseOrderSalesRuleCombineObserver"/>
+    </event>
+</config>

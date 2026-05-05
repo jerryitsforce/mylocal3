@@ -1,0 +1,27 @@
+{
+    "name": "hotaiconnected/module-ui-shared",
+    "description": "HotaiConnected UI Shared - Common UI components, utilities and third-party libraries for frontend",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "HotaiConnected",
+            "email": "dev@hotaiconnected.com"
+        }
+    ],
+    "require": {
+        "php": "~7.4.0||~8.1.0||~8.2.0",
+        "magento/framework": "*",
+        "magento/module-backend": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "HotaiConnected\\UiShared\\": ""
+        }
+    }
+}
+

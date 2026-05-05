@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_MarketPlaceProductDiscussion::discussion"
+             title="Q&amp;A"
+             module="Branch8_MarketPlaceProductDiscussion"
+             sortOrder="20"
+             resource="Branch8_MarketPlaceProductDiscussion::manage"
+             parent="Magento_Catalog::catalog"/>
+        <add id="Branch8_MarketPlaceProductDiscussion::thread"
+             title="Thread"
+             sortOrder="30"
+             module="Branch8_MarketPlaceProductDiscussion"
+             translate="title"
+             parent="Branch8_MarketPlaceProductDiscussion::discussion"
+             resource="Branch8_MarketPlaceProductDiscussion::manage"
+             action="catalog/product_discussions/index"/>
+    </menu>
+</config>

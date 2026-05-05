@@ -1,0 +1,59 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\Index $block
+ */
+?>
+<?php
+$params = $block->getOriginalParams();
+$response = $block->getErrorResponse();
+?>
+<?php if(isset($params['StatusDesc'])): ?>
+  <?php if(strtoupper($params['StatusDesc']) != 'SUCCESS'): ?>
+    <div id="modal-card-binding-failed" class="modal-hide">
+      <div class="modal-custom-content">
+        <?php if(str_contains($params['StatusDesc'], '8:W1')):?>
+          <p><?= $block->escapeHtml(__('發卡行未參加身分驗證機制，請改以其他發卡行之卡片進行身分驗證與綁訂。')) ?></p>
+        <?php elseif(str_contains($params['StatusDesc'], '8:W2')):?>
+          <p><?= $block->escapeHtml(__('身分驗證失敗，請確認該手機號碼與您留存在發卡行之手機號碼一致。')) ?></p>
+        <?php else:?>
+          <p><?= $block->escapeHtml(__($params['StatusDesc'])) ?></p>
+          <!-- <p><?= $block->escapeHtml(__('信用卡綁定失敗，再麻煩重新嘗試或前往會員中心再重新操作。')) ?></p> -->
+        <?php endif;?>  
+      </div>
+    </div>
+    
+    <script type="text/x-magento-init">
+      {
+        "*": {
+            "b8CheckoutSetupCardFail": {}
+        }
+    }
+    </script>
+  <?php endif; ?>
+<?php endif; ?>
+
+<?php if(isset($response['StatusDesc'])): ?>
+  <?php if(strtoupper($response['StatusDesc']) != 'SUCCESS'): ?>
+    <div id="modal-card-binding-failed" class="modal-hide">
+      <div class="modal-custom-content">
+        <?php if(str_contains($response['StatusDesc'], '8:W1')):?>
+          <p><?= $block->escapeHtml(__('發卡行未參加身分驗證機制，請改以其他發卡行之卡片進行身分驗證與綁訂。')) ?></p>
+        <?php elseif(str_contains($response['StatusDesc'], '8:W2')):?>
+          <p><?= $block->escapeHtml(__('身分驗證失敗，請確認該手機號碼與您留存在發卡行之手機號碼一致。')) ?></p>
+        <?php else:?>
+          <p><?= $block->escapeHtml(__($response['StatusDesc'])) ?></p>
+        <?php endif;?>  
+      </div>
+    </div>
+    
+    <script type="text/x-magento-init">
+      {
+        "*": {
+            "b8CheckoutSetupCardFail": {}
+        }
+    }
+    </script>
+  <?php endif; ?>
+<?php endif; ?>
+
+<?php $block->unsetResponse(); ?>

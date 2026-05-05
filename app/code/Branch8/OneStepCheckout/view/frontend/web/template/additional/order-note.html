@@ -1,0 +1,37 @@
+<div class="opc-section order-note">
+    <h3 class="step-title amcheckout-title"
+       data-amcheckout-js="step-title"
+       data-bind="i18n: 'Order Note'"
+       data-role="title"></h3>
+    <div id="checkout-step-order-note"
+       class="step-content amcheckout-content"
+       data-amcheckout-js="step-content"
+       data-role="content"
+       data-bind="mageInit: {'checkoutCollapsibleSteps': {}}">
+        <div class="amcheckout-wrapper">
+            <form  id="order-note-form" class="form form-order-note" data-bind="mageInit: {'validation': {}}">
+                <div class="fieldset">
+                    <div class="field">
+                        <div class="control">
+                            <textarea class="textarea" 
+                            data-validate="{'validate-fullwidth-special': true, maxlength: 300}"
+                            data-bind="
+                                value: value,
+                                valueUpdate: valueUpdate,
+                                hasFocus: focused,
+                                attr: {
+                                    name: inputName,
+                                    cols: cols,
+                                    rows: rows,
+                                    'aria-describedby': noticeId,
+                                    placeholder: $t('限300字元(非必填)'),
+                                    id: uid,
+                                    disabled: disabled
+                                }"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

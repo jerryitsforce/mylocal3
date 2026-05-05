@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- HotaiPay_Command -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="HotaiPayConsole" xsi:type="object">Branch8\HotaiPay\Console\Command\Test</item>
+			</argument>
+		</arguments>
+	</virtualType>
+    <!-- HotaiPay Command Logger -->
+    <virtualType name="Branch8\HotaiPay\Logger\Command\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">HotaiPay_Command</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\HotaiPay\Logger\Command\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\HotaiPay\Logger\Command\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <!-- HotaiPay APi Logger -->
+    <virtualType name="Branch8\HotaiPay\Logger\Api\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">HotaiPay_Api</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\HotaiPay\Logger\Api\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\HotaiPay\Logger\Api\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <!-- HotaiPay Payment Logger -->
+    <virtualType name="Branch8\HotaiPay\Logger\Payment\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">HotaiPay_Payment</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\HotaiPay\Logger\Payment\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\HotaiPay\Logger\Payment\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <!-- HotaiPay Cron Logger -->
+    <virtualType name="Branch8\HotaiPay\Logger\Cron\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">HotaiPay_Cron</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\HotaiPay\Logger\Cron\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\HotaiPay\Logger\Cron\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <preference for="Branch8\HotaiPay\Api\CreditcardRepositoryInterface" type="Branch8\HotaiPay\Model\CreditcardRepository"/>
+	<preference for="Branch8\HotaiPay\Api\Data\CreditcardInterface" type="Branch8\HotaiPay\Model\Creditcard"/>
+	<preference for="Branch8\HotaiPay\Api\Data\CreditcardSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <virtualType name="HotaiPayPaymentLog" type="Branch8\HotaiPay\Model\Api\Payment"></virtualType>
+    <virtualType name="HotaiPayApiLog" type="Branch8\HotaiPay\Model\Api\AbstractModel"></virtualType>
+    <virtualType name="HotaiPayPaymentResponseLog" type="Branch8\HotaiPay\Controller\Payment\Response"></virtualType>
+    <virtualType name="HotaiPayPaymentCheckoutLog" type="Branch8\HotaiPay\Controller\Payment\Checkout"></virtualType>
+    <virtualType name="HotaiPayOrderManagementLog" type="Branch8\HotaiPay\Helper\Order\OrderManagement"></virtualType>
+    <virtualType name="HotaiPayPaymentUpdateLog" type="Branch8\HotaiPay\Model\Payment\Update"></virtualType>
+    <preference for="Branch8\HotaiPay\Api\MessageRepositoryInterface" type="Branch8\HotaiPay\Model\MessageRepository"/>
+	<preference for="Branch8\HotaiPay\Api\Data\MessageInterface" type="Branch8\HotaiPay\Model\Message"/>
+	<preference for="Branch8\HotaiPay\Api\Data\MessageSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Branch8\HotaiPay\Api\CreditCardAjaxInterface" type="Branch8\HotaiPay\Model\CreditCard\Ajax"/>
+</config>

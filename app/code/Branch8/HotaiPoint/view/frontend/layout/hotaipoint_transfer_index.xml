@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <css src="Branch8_HotaiPoint::css/hotai-point-transfer.css"/>
+    </head>
+    <body>
+        <attribute name="class" value="hotaipoint-form-page"/>
+        <referenceContainer name="sidebar.main" remove="true"/>
+        <referenceContainer name="page.top">
+            <container name="hotaipoint.customer.custom.breadcrumb" htmlTag="div" htmlClass="custom-breadcrumb">
+                <block name="hotaipoint.customer.custom.breadcrumb.item" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiPoint::custom_breadcrumbs.phtml"/>
+            </container>
+        </referenceContainer>
+        <!-- HotaiPoint LOGO -->
+        <referenceBlock name="page.main.title">
+            <block class="Branch8\HotaiPoint\Block\Logo" name="branch8_hotai_point_transfer_logo" />
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Branch8\HotaiPoint\Block\Transfer\Index" name="branch8_hotai_point_transfer_index" template="Branch8_HotaiPoint::transfer/index.phtml" cacheable="false">
+                <block class="Magento\Framework\View\Element\Template" name="branch8_hotai_point_transfer_limit_popup" template="Branch8_HotaiPoint::transfer/popup/limit.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="branch8_hotai_point_transfer_sms_limit_popup" template="Branch8_HotaiPoint::transfer/popup/sms_limit.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="branch8_hotai_point_transfer_confirm_popup" template="Branch8_HotaiPoint::transfer/popup/confirm.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
+        <column xsi:type="int" name="parent_order_id"
+                unsigned="true"
+                nullable="true" identity="false"
+                comment="Parent Order ID"/>
+        <column xsi:type="varchar" name="parent_increment_id"
+                nullable="true" length="50" comment="Parent Increment ID"/>
+        <column xsi:type="varchar" name="rma_status"
+                nullable="true" length="128" comment="RMA Status"/>
+    </table>
+</schema>

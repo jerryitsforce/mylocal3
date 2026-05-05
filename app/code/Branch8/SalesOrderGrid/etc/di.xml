@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="joins" xsi:type="array">
+                <item name="sales_order_search_data_index" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_order_search_data_index</item>
+                    <item name="origin_column" xsi:type="string">entity_id</item>
+                    <item name="target_column" xsi:type="string">order_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <item name="subtotal_incl_tax" xsi:type="string">sales_order.subtotal_incl_tax</item>
+                <item name="shipping_incl_tax" xsi:type="string">sales_order.shipping_incl_tax</item>
+                <item name="shipping_method" xsi:type="string">sales_order.shipping_method</item>
+                <item name="all_item_skus" xsi:type="string">sales_order_search_data_index.all_item_skus</item>
+                <item name="all_items_cost" xsi:type="string">sales_order_search_data_index.all_items_cost</item>
+                <item name="all_items_commission_percent" xsi:type="string">sales_order_search_data_index.all_items_commission_percent</item>
+                <item name="customer_phone_number" xsi:type="string">sales_order.customer_phone_number</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <preference for="Webkul\Marketplace\Ui\Component\Listing\Columns\Frontend\OrderHistoryProDetails" type="Branch8\SalesOrderGrid\Override\Marketplace\Seller\OrderGrid\OrderHistoryProDetails" />
+</config>

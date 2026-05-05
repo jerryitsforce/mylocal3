@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote">
+        <column xsi:type="decimal" name="point_used_total" scale="4" unsigned="false" nullable="true" comment="Total Point Used "/>
+
+        <column xsi:type="decimal" name="point_discount_total" scale="4" unsigned="false" nullable="true" comment="Total Point Discount"/>
+    </table>
+
+    <table name="quote_item">
+        <column xsi:type="decimal" name="row_total_point_used" scale="4" unsigned="false" nullable="true" comment="Row Total Point Used"/>
+
+        <column xsi:type="decimal" name="row_total_point_discount" scale="4" unsigned="false" nullable="true" comment="Row Total Point Discount"/>
+
+        <column xsi:type="decimal" name="price_incl_tax_before_point_discount" scale="4" unsigned="false" nullable="true" comment="Price Incl Tax Before Point Discount"/>
+
+        <column xsi:type="decimal" name="base_price_incl_tax_before_point_discount" scale="4" unsigned="false" nullable="true" comment="Base Price Incl Tax Before Point Discount"/>
+    </table>
+
+    <table name="sales_order">
+        <column xsi:type="decimal" name="point_used_total" scale="4" unsigned="false" nullable="true" comment="Total Point Used"/>
+
+        <column xsi:type="decimal" name="point_discount_total" scale="4" unsigned="false" nullable="true" comment="Total Point Discount"/>
+    </table>
+
+    <table name="sales_order_item">
+        <column xsi:type="decimal" name="row_total_point_used" scale="4" unsigned="false" nullable="true" comment="Row Total Point Used"/>
+
+        <column xsi:type="decimal" name="row_total_point_discount" scale="4" unsigned="false" nullable="true" comment="Row Total Point Discount"/>
+    </table>
+
+    <table name="sales_invoice">
+        <column xsi:type="decimal" name="point_used_total" scale="4" unsigned="false" nullable="true" comment="Total Point Used "/>
+    </table>
+</schema>

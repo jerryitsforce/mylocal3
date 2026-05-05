@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="sellersubaccount" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>webkul</tab>
+            <resource>Webkul_SellerSubAccount::config_sellersubaccount</resource>
+            <group id="general_settings">
+                <field id="sub_account_group" translate="label comment" sortOrder="5" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sub Account Group</label>
+                    <source_model>Magento\Customer\Model\Config\Source\Group</source_model>
+                    <config_path>sellersubaccount/general_settings/sub_account_group</config_path>
+                </field>
+            </group>
+            <!-- create group for fields in section -->
+            <group id="email_setting" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Templates</label>
+                <field id="new_sub_email_without_password" translate="label comment" sortOrder="1" type="select" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>New Sub Account Email</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <config_path>sellersubaccount/email_setting/new_sub_email_without_password</config_path>
+                </field>
+                <!-- email to old sub account email when update email -->
+                <field id="enable_sub_account_before_changed" translate="label" type="select" sortOrder="37" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Email To Old Sub Account(Before Change Email)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sub_account_before_changed" translate="label comment" type="select" sortOrder="38" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Old Sub Account Template(Before Change Email)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_sub_account_before_changed">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <class>separator-top</class>
+            <label>Debug Log</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiCore::debug_log</resource>
+            <group id="branch8_marketplacesubaccount" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_MarketplaceSubAccount</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\MarketplaceSubAccount\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

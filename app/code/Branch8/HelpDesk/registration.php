@@ -1,0 +1,6 @@
+<?php
+\Magento\Framework\Component\ComponentRegistrar::register(
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'Branch8_HelpDesk',
+    __DIR__
+);

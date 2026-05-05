@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Inject certification block below the product description -->
+        <referenceContainer name="content">
+            <block class="Branch8\ProductCertification\Block\Product\Certification"
+                   name="product.certification"
+                   template="Branch8_ProductCertification::certification.phtml"
+                   after="product.info.description"/>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,26 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\GA4\Block\Checkout
+ * @var $quote \Magento\Quote\Model\Quote
+ */
+$quote = $block->getQuote();
+?>
+<?php if ($block->isEnabled() && $quote) : ?>
+    <?php $products = $block->getProducts();
+    $ecommerce = [
+        'items' => $products,
+        'value' => $block->getGa4Total(),
+        'currency' => $block->getCurrencyCode(),
+        'coupon' => $quote->getCouponCode() ?: ''
+    ];
+    $event = [
+        'event' => 'begin_checkout',
+        'ecommerce' => $ecommerce,
+    ];
+    ?>
+
+    <?php
+    $block->setDataLayerOption('begin_checkout', $event);
+    ?>
+<?php endif; ?>

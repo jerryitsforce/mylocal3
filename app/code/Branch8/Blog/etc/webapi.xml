@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/blog/post" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getAllPost"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/monthly" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getMonthlyArchive"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/monthly/:monthly/:year" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostMonthlyArchive"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/config" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getConfig"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/view/:post_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostView"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/author/name/:author_name" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostViewByAuthorName"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/tag/name/:tag_name" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostByTagName"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/product/:post_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getProductByPost"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/related/:post_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostRelated"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/comment/add/:post_id" method="POST">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="addCommentInPost"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/comment" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getAllComment"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/comment/view/:commentId" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getCommentView"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/comment/list" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getCommentList"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/author/id/:author_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostViewByAuthorId"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/comment/:post_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostComment"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/like/:post_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostLike"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/list" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostList"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/create" method="POST">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="createPost"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/delete/:post_id" method="DELETE">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="deletePost"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/update/:post_id" method="PUT">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="updatePost"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/tag" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getAllTag"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/tag/view/:tag_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getTagView"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/tag/list" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getTagList"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/tag/create" method="POST">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="createTag"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/tag/delete/:tag_id" method="DELETE">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="deleteTag"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/tag/update/:tag_id" method="PUT">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="updateTag"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getAllTopic"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic/view/:topic_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getTopicView"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic/list" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getTopicList"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic/post/:topicId" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostsByTopic"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic/create" method="POST">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="createTopic"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic/delete/:topic_id" method="DELETE">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="deleteTopic"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/topic/update/:topic_id" method="PUT">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="updateTopic"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getAllCategory"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/view/:category_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getCategoryView"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/post/id/:category_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostsByCategoryId"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/post/category/:post_id" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getCategoriesByPostId"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/post/key/:category_key" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getPostsByCategory"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/list" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getCategoryList"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/create" method="POST">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="createCategory"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/delete/:category_id" method="DELETE">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="deleteCategory"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/category/update/:category_id" method="PUT">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="updateCategory"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/author" method="GET">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="getAuthorList"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/author/create" method="POST">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="createAuthor"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/author/delete/:author_id" method="DELETE">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="deleteAuthor"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+    <route url="/V1/blog/author/update/:author_id" method="PUT">
+        <service class="Branch8\Blog\Api\BlogRepositoryInterface" method="updateAuthor"/>
+        <resources>
+            <resource ref="Branch8_Blog::blog" />
+        </resources>
+    </route>
+</routes>

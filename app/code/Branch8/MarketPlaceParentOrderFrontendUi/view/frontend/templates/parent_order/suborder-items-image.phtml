@@ -1,0 +1,36 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Items;
+
+/** @var Items $block */
+$listItemsWithSeller = $block->getItems();
+$placeHolderImage = $block->getPlaceHoderImage();
+?>
+
+<div class="suborder-product-image-container">
+    <?php foreach ($listItemsWithSeller as $key => $items): ?>
+        <?php foreach ($items as $item): ?>
+            <?php if ($item->getParentItem()):
+                continue;
+            endif; ?>
+            <?php
+            $product = $item->getProduct();
+            if($product && $product->getData('flagship_store_process_seller_id')){
+                continue;
+            }
+            $productImage = $placeHolderImage;
+            if ($product) {
+                $productImage = $block->getProductImageUrl($product);
+            }
+            ?>
+            <div class="product-image">
+                <img src="<?= $productImage ?>"
+                     alt="<?= $block->escapeHtml($item->getName()) ?>">
+            </div>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+</div>

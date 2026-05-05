@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2025 Branch8. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="branch8_shipping_subsidy_copy_to_order" instance="Branch8\ShippingSubsidy\Observer\CopyShippingSubsidyToOrder"/>
+    </event>
+</config>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <settings>
+        <buttons>
+            <button name="add">
+                <url path="*/*/new"/>
+                <class>primary</class>
+                <label translate="true">Add New RMA</label>
+            </button>
+        </buttons>
+        <spinner>mprmasystem_details_columns</spinner>
+        <deps>
+            <dep>mprmasystem_details_list.mprmasystem_details_list_data_source</dep>
+        </deps>
+    </settings>
+    <container name="listing_top">
+        <filters name="listing_filters" component="Branch8_SalesOrderGrid/js/grid/filters/filters">
+            <filterSelect
+                name="seller_id"
+                provider="${ $.parentName }"
+                sortOrder="10"
+                component="Branch8_SalesOrderGrid/js/form/element/ui-select"
+                template="ui/grid/filters/elements/ui-select"
+            >
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="showPath" xsi:type="boolean">false</item>
+                        <item name="identityColumn" xsi:type="string">entity_id</item>
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="searchOptions" xsi:type="boolean">true</item>
+                        <item name="selectedPlaceholders" xsi:type="array">
+                            <item name="defaultPlaceholder" xsi:type="string" translate="true">Please enter Seller Name</item>
+                        </item>
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Please enter Seller Name</item>
+                        <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Seller</item>
+                        <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                        <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                        <item name="searchUrl" xsi:type="url" path="mprmasystem/rma/SearchSellerOptions" />
+                        <item name="validationUrl" xsi:type="url" path="mprmasystem/rma/GetSellerSelected"/>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Seller\Options"/>
+                    <caption translate="true">Please enter Seller Name</caption>
+                    <label translate="true">[GRID]Seller Name</label>
+                    <dataScope>seller_id</dataScope>
+                </settings>
+            </filterSelect>
+            <filterSelect
+                name="sale_person_id"
+                provider="${ $.parentName }"
+                sortOrder="10"
+                component="Branch8_SalesOrderGrid/js/form/element/ui-select"
+                template="ui/grid/filters/elements/ui-select"
+            >
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="showPath" xsi:type="boolean">false</item>
+                        <item name="identityColumn" xsi:type="string">entity_id</item>
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="searchOptions" xsi:type="boolean">true</item>
+                        <item name="filterPlaceholder" xsi:type="string"  translate="true">Please enter Sale Person</item>
+                        <item name="selectedPlaceholders" xsi:type="array">
+                            <item name="defaultPlaceholder" xsi:type="string" translate="true">Please enter Sale Person</item>
+                        </item>
+                        <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Saleperson</item>
+                        <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                        <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                        <item name="searchUrl" xsi:type="url" path="mprmasystem/rma/SearchSalePersonOptions" />
+                        <item name="validationUrl" xsi:type="url" path="mprmasystem/rma/GetSalePersonsSelected"/>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\AdvancedPermissions\Model\Options\Salesperson"/>
+                    <caption translate="true">– Please Select Salesperson –</caption>
+                    <label translate="true">Salesperson</label>
+                    <dataScope>sale_person_id</dataScope>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="massApprove">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to do this action ?</message>
+                    </confirm>
+                    <url path="mprmasystem/finance/massApprove"/>
+                    <type>massApprove</type>
+                    <label translate="true">Approve Finance</label>
+                </settings>
+            </action>
+            <action name="massReject">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to do this action ?</message>
+                    </confirm>
+                    <url path="mprmasystem/finance/massReject"/>
+                    <type>massReject</type>
+                    <label translate="true">Reject Finance</label>
+                </settings>
+            </action>
+        </massaction>
+
+    </container>
+
+    <dataSource name="mprmasystem_details_list_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\RmaAdminUi\Ui\Listing\DataProvider</argument>
+        </argument>
+    </dataSource>
+    <columns name="mprmasystem_details_columns">
+        <column name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter RMA ID</item>
+                    <item name="label" xsi:type="string" translate="true">[GRID]RMA Id</item>
+                </item>
+            </argument>
+        </column>
+        <column name="status" component="Branch8_RmaAdminUi/js/product/list/columns/statusText">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select RMA Status</item>
+                    <item name="filterType" xsi:type="string">multiselect</item>
+                    <item name="selectedPlaceholders" xsi:type="array">
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Please select RMA Status</item>
+                    </item>
+                    <item name="bodyTmpl" xsi:type="string">Branch8_RmaAdminUi/ui/grid/cells/statusText</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <label translate="true">[GRID]Rma Status</label>
+                <dataType>select</dataType>
+            </settings>
+        </column>
+        <column name="order_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Select...</item>
+                    <item name="selectedPlaceholders" xsi:type="array">
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Select...</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <label translate="true">[GRID]Shipping Status</label>
+                <dataType>select</dataType>
+            </settings>
+        </column>
+        <column name="rma_order_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Select...</item>
+                    <item name="selectedPlaceholders" xsi:type="array">
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Select...</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <label translate="true">[GRID]Order Status</label>
+                <dataType>select</dataType>
+                <options class="Branch8\RmaAdminUi\Ui\Component\Listing\Column\RmaOrderStatus\Options"/>
+            </settings>
+        </column>
+        <column name="order_ref">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter order ref</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+              <!--  <options class="Branch8\RmaAdminUi\Ui\Component\Listing\Column\ResolutionType\Options"/>-->
+                <label translate="true">[GRID]Order ref</label>
+            </settings>
+        </column>
+        <column name="resolution_type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select resolution type</item>
+                    <item name="selectedPlaceholders" xsi:type="array">
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Please select resolution type</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <options class="Branch8\RmaAdminUi\Ui\Component\Listing\Column\ResolutionType\Options"/>
+                <label translate="true">[GRID]Resolution Type</label>
+                <dataType>select</dataType>
+            </settings>
+        </column>
+        <column name="customer_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Customer Name</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">[GRID]Customer Name</label>
+            </settings>
+        </column>
+        <column name="product_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Product Name</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">[GRID]Product Name</label>
+            </settings>
+        </column>
+        <column name="product_sku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Product SKU</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">[GRID]Product Sku</label>
+            </settings>
+        </column>
+        <column name="supplier_sku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Supplier SKU</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">[GRID]Supplier Sku</label>
+            </settings>
+        </column>
+        <column name="salesperson">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Sale Person</item>
+                </item>
+            </argument>
+            <settings>
+                <filter/>
+                <dataType>text</dataType>
+                <label translate="true">Salesperson</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="rma_phone">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Phone Number</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">[GRID]Phone Number</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="order_created_at" class="Magento\Ui\Component\Listing\Columns\Date"
+                component="Magento_Ui/js/grid/columns/date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order purchase date</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">[GRID]Order Purchase Date</label>
+            </settings>
+        </column>
+        <column name="shipping_method" component="Magento_Ui/js/grid/columns/select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select Logistics method</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <options class="Branch8\AdvancedPermissions\Model\Options\ShippingMethod"/>
+                <dataType>select</dataType>
+                <label translate="true">Shipping Method</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+    </columns>
+</listing>

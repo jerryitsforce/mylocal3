@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2013-2017 GiaPhuGroup, Ltd. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>My Ticket</title>
+    </head>
+    <update handle="customer_account"/>
+    <referenceContainer name="content">
+        <block class="PHPCuong\Faq\Block\Faq\Account\Faq" name="faq.faq.view" template="PHPCuong_Faq::faq/account/view.phtml" cacheable="false" />
+    </referenceContainer>
+    <referenceBlock name="catalog.compare.sidebar" remove="true"/>
+    <referenceBlock name="catalog.compare.link" remove="true"/>
+    <referenceBlock name="related.product.addto.compare" remove="true"/>
+    <referenceBlock name="category.product.addto.compare" remove="true"/>
+    <referenceBlock name="view.addto.compare" remove="true" />
+    <referenceBlock name="multiple-wishlist_sidebar" remove="true" />
+</page>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Webkul\MarketplacePreorder\Helper\Data">
+        <plugin name="branch8_preorder_modify_condition_preorder" type="Branch8\Preorder\Plugin\Webkul\Preorder\Helper\Data" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\Source\PreorderType">
+        <plugin name="branch8_preorder_turnoff_percent_payment" type="Branch8\Preorder\Plugin\Webkul\Preorder\Model\Source\PreorderType" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\Source\PreorderAction">
+        <plugin name="branch8_preorder_limit_type" type="Branch8\Preorder\Plugin\Webkul\Preorder\Model\Source\PreorderAction" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\Source\PreorderQty">
+        <plugin name="branch8_preorder_limit_qty" type="Branch8\Preorder\Plugin\Webkul\Preorder\Model\Source\PreorderQty" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\Source\PreorderSpecification">
+        <plugin name="branch8_preorder_limit_qty" type="Branch8\Preorder\Plugin\Webkul\Preorder\Model\Source\PreorderSpecification" sortOrder="10" disabled="false"  />
+    </type>
+    <preference for="Webkul\MarketplacePreorder\Cron\InStock"
+                type="Branch8\Preorder\Cron\InStock" />
+    <preference for="Webkul\MarketplacePreorder\Observer\BeforeSaveProduct"
+                type="Branch8\Preorder\Override\BeforeSaveProduct" />
+
+    <preference for="Webkul\MarketplacePreorder\Model\ResourceModel\PreorderItems\Grid\Collection"
+                type="Branch8\Preorder\Override\Model\ResourceModel\PreorderItems\Grid\Collection" />
+
+    <preference for="Webkul\MarketplacePreorder\Helper\Email"
+                type="Branch8\Preorder\Helper\Email" />
+    <type name="Magento\Catalog\Model\Layer">
+        <plugin name="preorder-listing" disabled="true" />
+    </type>
+
+    <type name="Webkul\MarketplacePreorder\Observer\AfterPlaceOrder">
+        <plugin name="branch8_add_preorder_message" type="Branch8\Preorder\Plugin\Webkul\Observer\PreorderSetData" sortOrder="10" disabled="false"  />
+    </type>
+
+    <type name="Webkul\MarketplacePreorder\Helper\CompleteProduct">
+        <plugin name="branch8_add_complete_product" type="Branch8\Preorder\Plugin\Webkul\Preorder\Helper\CompleteProduct" sortOrder="10" disabled="false"  />
+    </type>
+
+    <type name="Webkul\MarketplacePreorder\Observer\AfterSaveProduct">
+        <plugin name="branch8_add_preorder_message" type="Branch8\Preorder\Plugin\Webkul\Observer\AfterSaveProduct" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
+        <plugin name="preorder-quantity-validate" disabled="true" />
+        <plugin name="b8preorder-quantity-validate"  type="Branch8\Preorder\Plugin\QuantityValidator" sortOrder="1"/>
+    </type>
+    <type name="Webkul\MarketplacePreorder\Block\ManagePreorders">
+        <plugin name="b8_fix_get_preorder_product_at_preorder_grid" type="Branch8\Preorder\Plugin\Webkul\Preorder\Block\ManagePreorders" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\MarketplacePreorder\Model\IsProductSalableForRequestedQtyCondition\IsAnySourceItemInStockCondition">
+        <plugin name="b8_optimize_preorder_validate_stock_item" type="Branch8\Preorder\Plugin\Webkul\Preorder\Model\IsProductSalableForRequestedQtyCondition\IsAnySourceItemInStockCondition" sortOrder="10" disabled="false" />
+    </type>
+</config>

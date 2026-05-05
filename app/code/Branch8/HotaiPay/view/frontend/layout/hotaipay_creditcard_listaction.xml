@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+            <argument translate="true" name="title" xsi:type="string">支付管理</argument>
+            </action>
+        </referenceBlock>
+		<referenceContainer name="content">
+			<block name="hotaipay.index" class="Branch8\Customer\Block\Hotaipay\Index" cacheable="false" template="Branch8_HotaiPay::hotaipay/index.phtml">
+				<block name="hotaipay.popup.card.binding.complete" class="Branch8\Customer\Block\Hotaipay\PopupComplete" template="Branch8_HotaiPay::hotaipay/popup/card_binding_completed.phtml"/>
+				<block name="hotaipay.popup.quick.card" class="Branch8\HotaiPay\Block\CreditCard\ListAction" template="Branch8_HotaiPay::hotaipay/popup/quick_card.phtml"/>
+				<block name="hotaipay.popup.card.binding.fail" class="Branch8\Customer\Block\Hotaipay\Index" template="Branch8_HotaiPay::hotaipay/popup/card_binding_failed.phtml"/>
+				<block name="hotaipay.popup.reminder.guide" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiPay::hotaipay/popup/reminder_guide.phtml"/>
+				<block name="hotaipay.popup.delete.card" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiPay::hotaipay/popup/confirm_delete.phtml"/>
+			</block>
+            <!-- <block 
+                class="Branch8\HotaiPay\Block\CreditCard\ListAction" 
+                name="hotaipay.cards.list" 
+                template="Branch8_HotaiPay::CreditCard/ListAction.phtml"
+                cacheable="false">
+            </block> -->
+            <!-- <container name="message.pop.up">
+                <block 
+                    class="Branch8\HotaiPay\Block\CreditCard\ListAction" 
+                    name="hotaipay.pop.message" 
+                    template="Branch8_HotaiPay::CreditCard/PopMsg.phtml"
+                    cacheable="false">
+                </block>
+            </container> -->
+		</referenceContainer>
+    </body>
+</page>

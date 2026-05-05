@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2025 Branch8. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Api\CustomerRepositoryInterface">
+        <plugin name="branch8_shipping_subsidy_load_extension" type="Branch8\ShippingSubsidy\Plugin\Customer\LoadShippingSubsidyExtension" sortOrder="10"/>
+        <plugin name="branch8_shipping_subsidy_save" type="Branch8\ShippingSubsidy\Plugin\Customer\SaveShippingSubsidy" sortOrder="20"/>
+    </type>
+    <type name="Magento\Customer\Model\Customer\DataProvider">
+        <plugin name="branch8_shipping_subsidy_load" type="Branch8\ShippingSubsidy\Plugin\Customer\Model\DataProviderPlugin" sortOrder="10"/>
+    </type>
+    <type name="Magento\Customer\Model\Customer\DataProviderWithDefaultAddresses">
+        <plugin name="branch8_shipping_subsidy_load" type="Branch8\ShippingSubsidy\Plugin\Customer\Model\DataProviderPlugin" sortOrder="10"/>
+    </type>
+    <preference for="Branch8\ShippingSubsidy\Api\Data\ShippingSubsidyInterface"
+                type="Branch8\ShippingSubsidy\Model\Data\ShippingSubsidy"/>
+</config>

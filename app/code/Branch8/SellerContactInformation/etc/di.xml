@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\Marketplace\Block\Adminhtml\Customer\Edit\Tabs" type="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\Tabs"/>
+    <preference for="Webkul\Marketplace\Block\Adminhtml\Customer\Edit\PaymentInfoTab"
+                type="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\PaymentInfoTab"/>
+    <preference for="Webkul\Marketplace\Block\Adminhtml\Customer\Edit\Tab\PaymentInfo"
+                type="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\Tab\PaymentInfo"/>
+    <preference for="Webkul\Marketplace\Block\Adminhtml\Customer\Edit\CommissionTab"
+                type="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\CommissionTab"/>
+    <preference for="Webkul\Marketplace\Block\Adminhtml\Customer\Edit\Tab\Commission"
+                type="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\Tab\Commission"/>
+
+    <preference for="Webkul\Marketplace\Model\ResourceModel\Seller\Grid\Collection"
+                type="Branch8\SellerContactInformation\Model\ResourceModel\Seller\Grid\Collection"/>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+        <item name="importSeller" xsi:type="object">Branch8\SellerContactInformation\Console\Command\ImportSeller</item>
+        <item name="importAdminUser" xsi:type="object">Branch8\SellerContactInformation\Console\Command\ImportAdminUser</item>
+			</argument>
+		</arguments>
+	</type>
+    <type name="Magento\Ui\Model\Export\MetadataProvider">
+        <plugin name="export_seller_contact_information" type="Branch8\SellerContactInformation\Plugin\ExportRowDataModification" sortOrder="1" disabled="false"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="seller_contract_history_data_source" xsi:type="string">SellerContractHistoryCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="SellerContractHistoryCollection" type="Branch8\SellerContactInformation\DataProvider\History\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">seller_contract_logs</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\SellerContactInformation\Model\ResourceModel\ContractLog</argument>
+        </arguments>
+    </virtualType>
+</config>

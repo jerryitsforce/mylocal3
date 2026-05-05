@@ -1,0 +1,181 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @deprecated
+ */
+use Magento\Framework\App\Action\Action;
+/**
+ * @var $block \Branch8\Customer\Block\BrowsingHistory\Index
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="block-dashboard-info-demo member-browsing-history" data-role="browsing-history">
+<?php
+
+$headerTotalRecords = $block->getRecentlyViewedProducts()?->getSize();
+
+
+$title = __('Browsing History');
+if ($exist = ($block->getRecentlyViewedProducts() && $headerTotalRecords)) {
+    $type = 'widget-viewed';
+    $mode = 'grid';
+    $type = $type . '-' . $mode;
+    $image = 'recently_viewed_products_grid_content_widget';
+    $items = $block->getRecentlyViewedProducts();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    $rating = 'short';
+    $description = ($mode == 'list') ? true : false;
+}
+?>
+<?php if ($exist) : ?>
+    <div class="block widget block-viewed-products-<?= $block->escapeHtmlAttr($mode) ?>">
+        <div class="block-title">
+            <strong role="heading" aria-level="2"><?= $block->escapeHtml($title) ?></strong>
+        </div>
+        <div class="block-content">
+            <?= '<!-- ' . $block->escapeHtml($image) . '-->' ?>
+            <div class="browsing-history-heading">
+                <span class="browsing-history-total">
+                    <?php echo $block->escapeHtml(__("Total %1 records", $block->getItemsCollection()->getSize()))?>
+                </span>
+                <strong class="backward"></strong>
+                <strong role="heading" aria-level="2">
+                    <?= $block->escapeHtml($title)  ?>(<?= $headerTotalRecords ?>)
+                </strong>
+                <input hidden id="header-total-records" value="<?= $headerTotalRecords ?>"/>
+                <button class="browsing-history-remove-all"type="button">
+                    <span><?php echo $block->escapeHtml(__("Delete All"))?></span>
+                </button>
+            </div>
+            <div class="products-<?= $block->escapeHtmlAttr($mode) ?> <?= $block->escapeHtmlAttr($mode) ?>">
+                <ol class="product-items <?= $block->escapeHtmlAttr($type) ?>">
+                    <?php $i = 0; foreach ($items as $_item) : ?>
+                        <?php $i++; ?>
+                        <li class="product-item <?= ($i === 1) ? 'page-first-item-1' : '' ?>" data-page="1">
+                            <div class="product-item-remove" product-id="<?php echo $_item->getProductId()?>"></div>
+                            <div class="product-item-info">
+                                <a href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-photo">
+                                    <?= $block->getImage($_item, $image)->toHtml() ?>
+                                </a>
+                                <div class="product-item-details">
+                                    <strong class="product-item-name" data-item="<?php echo $_item->getId();?>">
+                                        <a title="<?= $block->escapeHtmlAttr($_item->getName()) ?>"
+                                           href="<?= $block->escapeUrl($block->getProductUrl($_item)) ?>" class="product-item-link">
+                                            <?= $block->escapeHtml($_item->getName()) ?>
+                                        </a>
+                                    </strong>
+                                    <?= /* @noEscape */ $block->getProductPriceHtml(
+                                        $_item,
+                                        \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE,
+                                        \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,
+                                        [
+                                            'price_id_suffix' => '-' . $type
+                                        ]
+                                    ) ?>
+                                    <?php if ($rating) : ?>
+                                        <?= $block->getReviewsSummaryHtml($_item, $rating) ?>
+                                    <?php endif; ?>
+                                    <?php if ($showWishlist || $showCompare || $showCart): ?>
+                                        <div class="product-item-inner">
+                                            <div class="product-item-actions">
+                                                <?php if ($showCart): ?>
+                                                    <div class="actions-primary">
+                                                        <?php if ($_item->isSaleable()): ?>
+                                                            <?php $postParams = $block->getAddToCartPostParams($_item); ?>
+                                                            <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($_item->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                                                                <input type="hidden" name="product" value="<?= $block->escapeHtmlAttr($postParams['data']['product']) ?>">
+                                                                <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                                <?= $block->getBlockHtml('formkey') ?>
+                                                                <button type="submit"
+                                                                        title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                        class="action tocart primary">
+                                                                    <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                                </button>
+                                                            </form>
+                                                            <script type="text/x-magento-init">
+                                                            {
+                                                                "[data-role=tocart-form], .form.map.checkout": {
+                                                                    "catalogAddToCart": {
+                                                                        "product_sku": "<?= $escaper->escapeJs($_item->getSku()); ?>"
+                                                                }
+                                                            }
+                                                        }
+                                                        </script>
+                                                        <?php else: ?>
+                                                        <?php if ($_item->getIsSalable()): ?>
+                                                            <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                                                        <?php else: ?>
+                                                            <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                                                        <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <?php if ($showWishlist || $showCompare): ?>
+                                                    <div class="actions-secondary" data-role="add-to-links">
+                                                        <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist): ?>
+                                                            <a href="#"
+                                                               data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($_item) ?>' class="action towishlist" data-action="add-to-wishlist" title="<?= $block->escapeHtmlAttr(__('Add to Wish List')) ?>">
+                                                                <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                        <?php if ($block->getAddToCompareUrl() && $showCompare): ?>
+                                                            <?php $compareHelper = $this->helper(\Magento\Catalog\Helper\Product\Compare::class);?>
+                                                            <a href="#" class="action tocompare" data-post='<?= /* @noEscape */ $compareHelper->getPostDataParams($_item) ?>' title="<?= $block->escapeHtmlAttr(__('Add to Compare')) ?>">
+                                                                <span><?= $block->escapeHtml(__('Add to Compare')) ?></span>
+                                                            </a>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </li>
+                    <?php endforeach ?>
+                </ol>
+            </div>
+            <?= $block->getLayout()->getBlock("recently.viewed.pager")->toHtml(); ?>
+            <?php if($items->getCurPage() < $items->getLastPageNumber()): ?>
+                <button class="browsing-history-load-more" type="button" data-event-page="1" data-last-page="<?= $items->getLastPageNumber()?>">
+                    <span><?php echo $block->escapeHtml(__("Load More"))?></span>
+                </button>
+            <?php endif;?>
+        </div>
+    </div>
+<?php else: ?>
+    <div class="block-title">
+        <strong role="heading" aria-level="2"><?= $block->escapeHtml($title) ?></strong>
+    </div>
+    <div class="block-content">
+        <div class="browsing-history-heading">
+            <span class="browsing-history-total">
+                <?php echo $block->escapeHtml(__("Total %1 records", $block->getItemsCollection()->getSize()))?>
+            </span>
+            <strong class="backward"></strong>
+            <strong role="heading" aria-level="2">
+                <?= $block->escapeHtml($title)  ?>(<?= $headerTotalRecords ?>)
+            </strong>
+            <input hidden id="header-total-records" value="<?= $headerTotalRecords ?>"/>
+        </div>
+    </div>
+    <div class="empty">
+        <img src="<?= $this->getViewFileUrl('images/search-circle.png');?>"/>
+        <span class="notice"><?= __('目前無任何瀏覽紀錄喔！') ?></span>
+    </div>
+<?php endif;?>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_Customer/js/browsing-history": {}
+        }
+    }
+</script>

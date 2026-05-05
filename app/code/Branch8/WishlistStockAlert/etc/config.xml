@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <wishlist_stock_alert>
+            <general>
+                <enabled>0</enabled>
+                <cron_path_generate>0 5 * * *</cron_path_generate>
+                <cron_path_process>0 8 * * *</cron_path_process>
+                <cron_path_clean>30 2 * * *</cron_path_clean>
+                <process_queue_type>cron</process_queue_type>
+                <email_template>wishlist_stock_alert_general_email_template</email_template>
+            </general>
+        </wishlist_stock_alert>
+        <branch8_debug>
+            <branch8_wishliststockalert>
+                <log_file>system,exception,branch8_wishlist_alert_stock</log_file>
+            </branch8_wishliststockalert>
+        </branch8_debug>
+    </default>
+</config>

@@ -1,0 +1,196 @@
+<div class="page-approval-wrapper" >
+    
+    <div class="current-rule-wrapper">
+        <div><h2>Current rule</h2></div>
+        <?php 
+            $apprModel = $this->getData('apprModel');
+            if($apprModel->getPostType() != \Branch8\CatalogRule\Model\Config\Source\ApproveType::TYPE_NEW){
+                echo $block->getChildHtml('catalog_rule_form_old'); 
+            } 
+        ?>
+    </div>
+    <div id="new-rule-wrapper">
+
+    </div>
+    
+</div>
+
+<script>
+    require([
+        'jquery', 
+        'plugins/DOMPurify', 
+        'Magento_Ui/js/modal/modal',
+        'mage/mage'
+    ], function ($, DOMPurify, modal) {
+        var isDisableDropdown = false;
+        $.ajax({
+            url: '<?php echo $this->getUrl('promocatalog/approval/detailApproval', ['id' => $this->getRequest()->getParam('id'), 'approval_id' => $this->getRequest()->getParam('approval_id')]);?>',
+            async: true,
+            success: function (response) {
+                $('#new-rule-wrapper').html(response);
+                $('#new-rule-wrapper').first().trigger('contentUpdated');
+                $('#rule_new_version').applyBindings();
+                $('body').trigger('processStart');
+                /** highlight diff */
+                var setDiff = setInterval(function(){
+                    if($('#related_catalogrule_banners_grid').html() == ''){
+                        return;
+                    }
+                    /** Rule Information */
+                    var isInforChange = false;
+                    $('body #new-rule-wrapper [data-index="rule_information"] .admin__field').each(function(k, elm){
+                        let valueTag = $(elm).find('input, textarea, select');
+                        let tagName = valueTag.attr('name');
+                        if(tagName == undefined){
+                            return;
+                        }
+                        if(tagName == 'rule_id' || tagName == 'from_date'){
+                            return;
+                        }
+                        let newVal = valueTag.val();
+                        let oldVal = $('.current-rule-wrapper [name="'+tagName+'"]').val();
+                        if(tagName == 'website_ids' || tagName == 'customer_group_ids'){
+                            
+                            if(JSON.stringify(oldVal) != JSON.stringify(newVal)){
+                                isInforChange = true;
+                            }else{
+                                $(elm).addClass('hidden');
+                                $('.current-rule-wrapper .admin__field[data-index="'+tagName+'"]').addClass('hidden');
+                            }
+                        }else{
+                            if(oldVal != newVal){
+                                isInforChange = true;
+                            }else{
+                                $(elm).addClass('hidden');
+                                $('.current-rule-wrapper .admin__field[data-index="'+tagName+'"]').addClass('hidden');
+                            }
+                        }
+                        
+                    });
+                    <?php 
+                    if($apprModel->getPostType() != \Branch8\CatalogRule\Model\Config\Source\ApproveType::TYPE_NEW){?>
+                        if(typeof newSellerIds == "undefined"){
+                            window.location.reload();
+                            clearInterval(setDiff);
+                        }
+                        if(newSellerIds != ruleSellerIds){
+                            isInforChange = true;
+                        }else{
+                            $('.current-rule-wrapper .admin__field[data-index="seller_ids"]').addClass('hidden');
+                            $('#rule_new_version .admin__field[data-index="seller_ids"]').addClass('hidden');
+                        }
+                    <?php }?>
+                    if(!isInforChange){
+                        $('#rule_new_version [data-index="rule_information"]').addClass('hidden');
+                        $('.current-rule-wrapper [data-index="rule_information"]').addClass('hidden');
+                    }else{
+                        $('#rule_new_version [data-index="rule_information"]').removeClass('hidden');
+                        $('.current-rule-wrapper [data-index="rule_information"]').removeClass('hidden');
+                    }
+                    
+                    /** Action */
+                    var isActionChange = false;
+                    $('body #new-rule-wrapper [data-index="actions"] .admin__field').each(function(k, elm){
+                        let valueTag = $(elm).find('input, textarea, select');
+                        let tagName = valueTag.attr('name');
+                        if(tagName == 'rule_id'){
+                            return;
+                        }
+                        let newVal = valueTag.val();
+                        let oldVal = $('.current-rule-wrapper [name="'+tagName+'"]').val();
+                        if(oldVal == newVal){
+                            $(elm).addClass('hidden');
+                            $('.current-rule-wrapper .admin__field[data-index="'+tagName+'"]').addClass('hidden');
+                        }else{
+                            isActionChange = true;
+                        }
+                        if(!isActionChange){
+                            $('#rule_new_version [data-index="actions"]').addClass('hidden');
+                            $('.current-rule-wrapper [data-index="actions"]').addClass('hidden');
+                        }else{
+                            $('#rule_new_version [data-index="actions"]').removeClass('hidden');
+                            $('.current-rule-wrapper [data-index="actions"]').removeClass('hidden');
+                        }
+                    });
+                    /** Banners */
+                    
+                    var bannerDiff1 = ruleBanners.filter(item => !newBanners.includes(item)); 
+                    var bannerDiff2 = newBanners.filter(item => !ruleBanners.includes(item)); 
+                    if(!bannerDiff1.length && !bannerDiff2.length){
+                        $('#rule_new_version [data-index="catalogrule.related.banners.content"]').addClass('hidden');
+                        $('.current-rule-wrapper [data-index="catalogrule.related.banners.content"]').addClass('hidden');
+                    }else{
+                        $('#rule_new_version [data-index="catalogrule.related.banners.content"]').removeClass('hidden');
+                        $('.current-rule-wrapper [data-index="catalogrule.related.banners.content"]').removeClass('hidden');
+                    }
+
+                    /** Condition tab */
+                    var condition1Html = $('.current-rule-wrapper [data-index="block_promo_catalog_edit_tab_conditions"]').html();
+                    var condition2Html = $('#rule_new_version [data-index="block_promo_catalog_edit_tab_conditions"]').html();
+                    var condition1 = condition1Html.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gi, "");
+                    condition1 = $(condition1).text();
+                    var condition2 = condition2Html.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gi, "");
+                    condition2 = $(condition2).text();
+                    
+                    if(condition1 == condition2){
+                        $('[data-index="block_promo_catalog_edit_tab_conditions"]').addClass('hidden');
+                    }else{
+                        $('[data-index="block_promo_catalog_edit_tab_conditions"]').removeClass('hidden');
+                    }
+
+                    /** open Information tab, close other tab */
+                    clearInterval(setDiff);
+                    $('body').trigger('processStop');
+                    isDisableDropdown = true;
+                }, 500);
+                
+            }
+        });
+        $('#reject').click(function(){
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Reject Catalog rule change',
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: 'modal-close',
+                    click: function (){
+                        this.closeModal();
+                    }
+                },{
+                    text: $.mage.__('Send'),
+                    class: 'modal-close',
+                    click: function (){
+                        if($('#reject_reason').val().trim() == ''){
+                            alert($.mage.__('Please input the message.'));
+                            return;
+                        }
+                        $('#reject_form').submit();
+                    }
+                }]
+            };
+            modal(options, $('#reject_modal'));
+            $("#reject_modal").modal("openModal");
+        });
+        $('#approve').click(function(){
+            window.location.href="<?php echo $this->getUrl('promocatalog/approval/approve', ['approval_id' => $this->getRequest()->getParam('approval_id')]);?>";
+        });
+        var intCheckOption = setInterval(function(){
+            if(!isDisableDropdown){
+                return;
+            }
+            $.each($('.admin__control-multiselect option'), function(k, elm){
+            $(elm).attr('disabled', 'disabled');
+        });
+        }, 1000);
+        
+    });
+</script>
+<div style="display:none" id="reject_modal">
+    <form id="reject_form" action="<?php echo $this->getUrl('promocatalog/approval/reject');?>" method="post">
+        Message <textarea id="reject_reason" name="reject_reason" ></textarea>
+        <input name="form_key" type="hidden" value="<?php echo $this->getFormKey();?>" />
+        <input type="hidden" value="<?php echo $this->getRequest()->getParam('approval_id');?>" name='approval_id' />
+    </form>
+</div>

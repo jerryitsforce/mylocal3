@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <css src="Branch8_HotaiPoint::css/hotai-point-scanner.css"/>
+    </head>
+    <body>
+        <attribute name="class" value="hotaipoint-form-page"/>
+        <referenceContainer name="sidebar.main" remove="true"/>
+        <referenceContainer name="page.top">
+            <container name="hotaipoint.customer.custom.breadcrumb" htmlTag="div" htmlClass="custom-breadcrumb">
+                <block name="hotaipoint.customer.custom.breadcrumb.item" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiPoint::custom_breadcrumbs.phtml"/>
+            </container>
+        </referenceContainer>
+        <!-- HotaiPoint LOGO -->
+        <referenceBlock name="page.main.title">
+            <block class="Branch8\HotaiPoint\Block\Logo" name="branch8_hotai_point_registration_logo" />
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Branch8\HotaiPoint\Block\Registration\Index" name="branch8_hotai_point_registration_index" template="Branch8_HotaiPoint::registration/index.phtml" cacheable="false" />
+        </referenceContainer>
+    </body>
+</page>

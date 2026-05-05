@@ -1,0 +1,49 @@
+<style>
+.field-trigger_html.no-label .control{
+    margin-left: 0px !important;
+    
+}
+.field-trigger_html > .admin__field-control.control{
+    width: 100% !important;
+}
+#event_trigger_html{
+    width: 100%;
+}
+</style>
+<?php
+$triggerType = $this->getTriggerType();
+$conditions = $this->getConditions();
+
+?>
+<div id="wrap_triggers">
+    <div class="trigger-labels">
+        <!-- <label for="trigger_or">
+            <input id='trigger_or' type="radio" name="triggerType" <?php echo ($this->getTriggerType() == \Branch8\RewardSystem\Model\Config\Source\TriggerType::TYPE_OR) ? 'checked' : '';?>
+                value="<?php echo \Branch8\RewardSystem\Model\Config\Source\TriggerType::TYPE_OR;?>" />
+            <?php echo __('Meet any of the conditions');?>
+        </label> -->
+        <label for="trigger_and" class="hidden">
+            <input  id="trigger_and" type="radio" name="triggerType" <?php echo ($this->getTriggerType() == \Branch8\RewardSystem\Model\Config\Source\TriggerType::TYPE_AND) ? 'checked' : '';?>
+                value="<?php echo \Branch8\RewardSystem\Model\Config\Source\TriggerType::TYPE_AND;?>" />
+            <?php echo __('Meet all conditions');?>
+        </label>
+    </div>
+    <div id="condition_details">
+        <?php
+        foreach($conditions as $condKey => $_condition){
+            $conditionBlock = $this->getLayout()->createBlock(\Branch8\RewardSystem\Block\Adminhtml\Event\Edit\Tab\TriggerCondition::class)
+                ->setData('condVal', $_condition)
+                ->setData('condKey', $condKey);
+            echo $conditionBlock->toHtml();
+        }
+        $newConditionBlock = $this->getLayout()->createBlock(\Branch8\RewardSystem\Block\Adminhtml\Event\Edit\Tab\TriggerCondition::class)->setData([]);
+        $newConditionBlockText = json_encode($newConditionBlock->toHtml());
+        ?>
+    </div>
+    <script>
+        var newConditionBlock = <?php echo $newConditionBlockText;?>;
+    </script>
+    <div>
+        <button id="add_condition" type="button"><?php echo __('Add new condition');?></button>
+    </div>
+</div>

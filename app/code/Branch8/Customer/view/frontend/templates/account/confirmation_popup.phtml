@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+?>
+<div id="modal-customer-confimation" class="modal-hide">
+  <div class="modal-custom-content">
+    <p><?= $block->escapeHtml(__('尚未儲存資料，確定離開此頁面嗎？')) ?></p>
+  </div>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8ConfirmationPopup": {
+          "modalId": "modal-customer-confimation"
+        }
+    }
+}
+</script>

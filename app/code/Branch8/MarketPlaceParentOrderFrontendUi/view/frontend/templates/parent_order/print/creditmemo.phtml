@@ -1,0 +1,97 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\PrintOrder\Creditmemo
+ * @var $creditmemo \Magento\Sales\Model\Order\Creditmemo
+ */
+?>
+<?php $order = $block->getOrder() ?>
+<?php $creditmemo = $block->getCreditmemo() ?>
+<?php if ($creditmemo) : ?>
+    <?php $creditmemos = [$creditmemo]; ?>
+<?php else : ?>
+    <?php $creditmemos = $order->getCreditmemosCollection() ?>
+<?php endif; ?>
+<div class="order-details-items creditmemo">
+    <?php foreach ($creditmemos as $creditmemo) : ?>
+
+        <div class="order-title">
+            <strong><?= $block->escapeHtml(
+                    __('Refund #%1', $creditmemo->getIncrementId())) ?>
+            </strong>
+        </div>
+        <div class="table-wrapper order-items-creditmemo">
+            <table class="data table table-order-items creditmemo"
+                   id="my-refund-table-<?= (int)$creditmemo->getId() ?>">
+                <caption class="table-caption"><?= $block->escapeHtml(__('Items Refunded')) ?></caption>
+                <thead>
+                <tr>
+                    <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                    <th class="col sku"><?= $block->escapeHtml(__('SKU')) ?></th>
+                    <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
+                    <th class="col qty"><?= $block->escapeHtml(__('Qty')) ?></th>
+                    <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                    <th class="col discount"><?= $block->escapeHtml(__('Discount Amount')) ?></th>
+                    <th class="col rowtotal"><?= $block->escapeHtml(__('Row Total')) ?></th>
+                </tr>
+                </thead>
+                <?php $_items = $creditmemo->getAllItems(); ?>
+                <?php foreach ($_items as $_item) : ?>
+                    <?php if (!$_item->getOrderItem()->getParentItem()) : ?>
+                        <tbody>
+                        <?= $block->getItemHtml($_item) ?>
+                        </tbody>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <tfoot>
+                <?= $block->getTotalsHtml($creditmemo) ?>
+                </tfoot>
+            </table>
+        </div>
+    <?php endforeach; ?>
+    <div class="block block-order-details-view">
+        <div class="block-title">
+            <strong><?= $block->escapeHtml(__('Order Information')) ?></strong>
+        </div>
+        <div class="block-content">
+            <?php if (!$order->getIsVirtual()) : ?>
+                <div class="box box-order-shipping-address">
+                    <div class="box-title">
+                        <strong><?= $block->escapeHtml(__('Shipping Address')) ?></strong>
+                    </div>
+                    <div class="box-content">
+                        <address><?= $block->formatAddress($order->getShippingAddress()) ?></address>
+                    </div>
+                </div>
+                <div class="box box-order-shipping-method">
+                    <div class="box-title">
+                        <strong><?= $block->escapeHtml(__('Shipping Method')) ?></strong>
+                    </div>
+                    <div class="box-content">
+                        <?= $block->escapeHtml($order->getDetail()->getShippingDescription()) ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="box box-order-billing-address">
+                <div class="box-title">
+                    <strong><?= $block->escapeHtml(__('Billing Address')) ?></strong>
+                </div>
+                <div class="box-content">
+                    <?php $_billing = $creditmemo->getbillingAddress() ?>
+                    <address><?= $block->formatAddress($order->getBillingAddress()) ?></address>
+                </div>
+            </div>
+            <div class="box box-order-billing-method">
+                <div class="box-title">
+                    <strong><?= $block->escapeHtml(__('Payment Method')) ?></strong>
+                </div>
+                <div class="box-content">
+                    <?= $block->getPaymentInfoHtml() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

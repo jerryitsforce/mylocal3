@@ -1,0 +1,73 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var Magento\Customer\Block\Account\Customer $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$b8CustomerHelper = $this->helper(\Branch8\Customer\Helper\Data::class);
+$vipHelper = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+$subAccountHelper = $this->helper(\Webkul\SellerSubAccount\Helper\Data::class);
+?>
+<li class="dropdown customer-welcome customer-account" data-bind="scope: 'customer'" style="display: none;" id="header-customer-logged">
+    <!-- ko if: isLogin() -->
+    <span class="action customer-name dropdown-toggle"
+        data-bind="style: customer().icon ?  { 'background-image': 'url(' + customer().icon + ')' } : {} "
+        data-href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>">
+        <!-- ko if: customer() && customer().fullname  -->
+        <span class="text abs-visually-hidden-mobile-m"
+                data-bind="text: new String('<?= $escaper->escapeHtml(__('%1', '%1')) ?>').
+                replace('%1', customer().fullname)">
+        </span>
+        <!-- /ko -->
+        <span class="text abs-visually-hidden-desktop">
+            <?= $block->escapeHtml(__('Member Center')) ?>
+        </span>
+        <button type="button"
+                class="action switch"
+                tabindex="-1"
+                data-action="customer-menu-toggle">
+            <span><?= $block->escapeHtml(__('Change')) ?></span>
+        </button>
+    </span>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "customer": {
+                        "component": "Magento_Customer/js/view/customer"
+                    }
+                }
+            }
+        }
+    }
+    </script>
+    <?php if ($block->getChildHtml()) :?>
+        <div class="customer-menu dropdown-list dropdown-center" data-target="dropdown">
+            <div class="customer-info">
+                <!-- ko if: customer().icon -->
+                <div class="member-ico">
+                    <img data-bind="attr:{src: customer().icon, alt: customer().label}" />
+                </div>
+                <!-- /ko -->
+                <!-- ko if: customer() && customer().fullname  -->
+                <div class="welcome">
+                    <p data-bind="html: customer().greeting"></p>
+                    <span class="name"
+                            data-bind="text: new String('<?= $escaper->escapeHtml(__('%1', '%1')) ?>').
+                    replace('%1', customer().fullname)">
+                    </span>
+                    <a href="<?= $block->escapeUrl($block->getUrl('member/level/index/')) ?>" data-bind="text: customer().label" class="member-level"></a>
+                </div>
+                <!-- /ko -->
+            </div>
+            <?= $block->getChildHtml() ?>
+        </div>
+    <?php endif; ?>
+    <!-- /ko -->
+</li>
+

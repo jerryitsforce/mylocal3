@@ -1,0 +1,97 @@
+<?php
+
+use Branch8\MarketplaceProduct\Api\Data\ProductVersionInterface;
+use Webkul\Marketplace\Model\Product;
+use Branch8\MarketplaceStaging\Model\Product\Source\CreatedFrom;
+
+/**
+ * @var \Branch8\MarketplaceProduct\Block\Adminhtml\Product\ChangeLog $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+$logEntry = $block->getLogEntry();
+$count = 1;
+?>
+<?php foreach ($logEntry as $logDetail):?>
+<?php
+
+$additionalInfo = (string)$logDetail[ProductVersionInterface::ADDITIONAL_INFORMATION];
+
+$changedFields = !empty($additionalInfo)
+    ? count((array)$block->getSerializer()->unserialize($additionalInfo)) : 0;
+$reviewerId = $logDetail[ProductVersionInterface::REVIEWER_ID];
+$status = (int)$logDetail[ProductVersionInterface::STATUS];
+?>
+<div class="entry-edit form-inline">
+    <section class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title">
+                <?= $block->escapeHtml(__('Log Entry #%1', $logDetail[ProductVersionInterface::ID] ?? null)) ?>
+                <?php if (in_array($logDetail[ProductVersionInterface::CREATED_FROM], [CreatedFrom::CREATED_FROM_SCHEDULE, CreatedFrom::CREATED_FROM_SCHEDULE_IMPORTED])) : ?>
+                    - <?= $block->escapeHtml(__('Schedule %1', $count)) ?>
+                <?php $count++; endif; ?>
+            </span>
+        </div>
+
+        <div id="log_details_fieldset" class="field log-details">
+            <table class="admin__table-secondary">
+                <colgroup>
+                    <col width="25%"/><col/>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <th><?= $escaper->escapeHtml(__('Product Name')) ?></th>
+                    <td><?= $escaper->escapeHtml($block->getProductName($logDetail)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $escaper->escapeHtml(__('Edit Time')) ?></th>
+                    <td><?= $escaper->escapeHtml($block->formatDatetime((string)$logDetail[ProductVersionInterface::CREATED_AT])) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $escaper->escapeHtml(__('Changed Fields')) ?></th>
+                    <td><?= $escaper->escapeHtml($changedFields) ?></td>
+                </tr>
+                <?php if ($reviewerId && $status !== 0) : ?>
+                    <?php $assertionText = ($status === Product::STATUS_ENABLED) ? 'Approved' : 'Denied' ?>
+                    <tr>
+                        <th><?= $escaper->escapeHtml(__('%1 By', $assertionText)) ?></th>
+                        <td><?= $escaper->escapeHtml($block->getAdminUserById((int)$reviewerId)) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $escaper->escapeHtml(__('%1 At', $assertionText)) ?></th>
+                        <td><?= $escaper->escapeHtml($block->formatDatetime((string)$logDetail[ProductVersionInterface::UPDATED_AT])) ?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php if (in_array($logDetail[ProductVersionInterface::CREATED_FROM], [CreatedFrom::CREATED_FROM_SCHEDULE, CreatedFrom::CREATED_FROM_SCHEDULE_IMPORTED])) : ?>
+                    <tr>
+                        <th><?= $escaper->escapeHtml(__('Start Date')) ?></th>
+                        <td><?= $escaper->escapeHtml($logDetail[ProductVersionInterface::SCHEDULE_START_TIME] ? $block->formatDatetime($logDetail[ProductVersionInterface::SCHEDULE_START_TIME]) : '-') ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $escaper->escapeHtml(__('End Date')) ?></th>
+                        <td><?= $escaper->escapeHtml($logDetail[ProductVersionInterface::SCHEDULE_END_TIME] ? $block->formatDatetime($logDetail[ProductVersionInterface::SCHEDULE_END_TIME]) : '-') ?></td>
+                    </tr>
+                <?php endif; ?>
+                <tr>
+                    <th><?= $escaper->escapeHtml(__('Created From')) ?></th>
+                    <td><?= $escaper->escapeHtml($block->getCreatedFromLabel($logDetail[ProductVersionInterface::CREATED_FROM])) ?></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <?php if ($changedFields > 0) : ?>
+        <section class="admin__page-section">
+            <div class="admin__page-section-title">
+                <span class="title"><?= $escaper->escapeHtml(__('Related Changes')) ?></span>
+            </div>
+
+            <div class="field log-details-grid">
+                <?= $block->getChildBlock('changelog_grid')->setData('log_detail', $logDetail)->toHtml() ?>
+            </div>
+        </section>
+    <?php endif; ?>
+</div>
+<?php endforeach;?>

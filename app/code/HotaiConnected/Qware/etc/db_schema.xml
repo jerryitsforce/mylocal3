@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="qware_ticket_record" resource="default" engine="innodb" comment="安源(Qware)票卷紀錄表">
+        <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+        <column xsi:type="varchar" name="qware_order_number" length="30" nullable="false" comment="下單API當下設定安源規範的訂單編號規則" />
+        <column xsi:type="varchar" name="qware_product_guid" length="255" nullable="false" comment="下單的商品Guid" />
+        <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="false" comment="此安源票券歸屬的Magento商品ID" />
+        <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="false" comment="此安源票券歸屬的sales order item ID" />
+        
+        <column xsi:type="varchar" name="qware_sn" length="255" nullable="false" comment="下單API得到的SN" />
+        <column xsi:type="varchar" name="qware_vendor_sn" length="255" nullable="false" comment="下單API得到的Vendor SN" />
+        <column xsi:type="varchar" name="qware_url" length="255" nullable="false" comment="安源網券連結" />
+        <column xsi:type="varchar" name="qware_pwd" length="255" nullable="false" comment="安源網券密碼" />
+        <column xsi:type="datetime" name="qware_generate_date" on_update="false" nullable="false" comment="安源網券資料取得日, 若訂單為202後續job查詢訂單，則以查詢訂單當下紀錄" />
+        <column xsi:type="int" name="status" nullable="false" default="0" comment="當前流程狀態(-1: 已退貨, 0: 初始API匯入, 1: 已使用, 2: 已取消)" />
+        
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At (on update current_timestamp())" />
+        <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+        
+        <column xsi:type="varchar" name="used_transaction_no" length="255" nullable="true" comment="主動通知串接的NotificationId 通知編號" />
+        <column xsi:type="int" name="notification_type" nullable="true" comment="主動通知串接的通知類型1 = 一般兌換/取消兌換通知, 10= i禮贈/商品卡兌換通知" />
+        <column xsi:type="int" name="qware_type" nullable="true" comment="主動通知串接的類型, 1:商品 2:現金" />
+        <column xsi:type="int" name="qware_qty" nullable="true" comment="主動通知串接的兌換數量, 1:表兌換數量, Type=2:表兌換金額" />
+        <column xsi:type="varchar" name="branch_code" length="20" nullable="true" comment="主動通知串接的BranchCode" />
+        <column xsi:type="varchar" name="branch_name" length="50" nullable="true" comment="主動通知串接的BranchName" />
+        <column xsi:type="varchar" name="pos_code" length="20" nullable="true" comment="主動通知串接的PosCode" />
+        
+        <column xsi:type="varchar" name="last_amt" length="6" nullable="true" comment="主動通知串接的LastAmt, 不足前補0,例:000001" />
+        <column xsi:type="datetime" name="used_date" on_update="false" nullable="true" comment="主動通知串接的TradeTime" />
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="record_id" />
+        </constraint>
+        
+        <index referenceId="INDEX_QWARE_SN" indexType="btree">
+            <column name="qware_sn"/>
+        </index>
+        <index referenceId="INDEX_QWARE_ORDER_NUMBER" indexType="btree">
+            <column name="qware_order_number"/>
+        </index>
+        <index referenceId="INDEX_QWARE_PRODUCT_GUID" indexType="btree">
+            <column name="qware_product_guid"/>
+        </index>
+        <index referenceId="INDEX_BELONG_TO_PRODUCT_ID" indexType="btree">
+            <column name="belong_to_product_id"/>
+        </index>
+        <index referenceId="INDEX_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+</schema>

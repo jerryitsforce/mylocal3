@@ -1,0 +1,14 @@
+<!--@subject {{trans "Successful Refund Notification"}} @-->
+
+<!--@vars {
+"var incrementId":"incrementId",
+"var customerName":"customer name"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+Dear {{trans "%customerName" customerName=$customerName}},
+<br>
+Successful refund of Order {{trans "#%incrementId" incrementId=$incrementId}}.
+
+{{template config_path="design/email/footer_template"}}

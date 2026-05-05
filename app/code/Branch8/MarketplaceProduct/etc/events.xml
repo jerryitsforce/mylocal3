@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_save_after">
+        <observer name="webkul_marketplace_catalog_product_save_after_observer" disabled="true"/>
+        <observer name="b8_webkul_marketplace_catalog_product_save_after_observer" instance="Branch8\MarketplaceProduct\Observer\CatalogProductSaveAfterObserver" />
+        <observer name="Branch8_MarketplaceProduct::product_initial_information_observer"
+                  instance="Branch8\MarketplaceProduct\Observer\ProductInitialInformationObserver"/>
+    </event>
+    <event name="entity_manager_save_after">
+        <observer name="Branch8_MarketplaceProduct::product_schedule_save_after_observer"
+                  instance="Branch8\MarketplaceProduct\Observer\ProductScheduleSaveAfterObserver"/>
+    </event>
+    <event name="adminhtml_customer_save_after">
+        <observer name="webkul_marketplace_adminhtml_customer_save_after_observer" disabled="true" />
+        <observer name="b8_webkul_marketplace_adminhtml_customer_save_after_observer"
+                  instance="Branch8\MarketplaceProduct\Observer\AdminhtmlCustomerSaveAfterObserver" />
+    </event>
+    <event name="mp_approve_product">
+        <observer name="branch8_update_first_enabled_date" instance="Branch8\MarketplaceProduct\Observer\FirstEnabledDateObserver" />
+    </event>
+</config>

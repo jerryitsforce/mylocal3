@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <amasty_groupcat>
+            <general>
+                <optimize_collection_loading>1</optimize_collection_loading>
+            </general>
+        </amasty_groupcat>
+        <branch8_debug>
+            <branch8_restrictedproduct>
+                <log_types>allow_customer_groups.log,system.log,exception.log</log_types>
+            </branch8_restrictedproduct>
+        </branch8_debug>
+    </default>
+</config>

@@ -1,0 +1,82 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+namespace Branch8\BrandManagement\Controller\Adminhtml\Brand;
+
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\ResultFactory;
+use Branch8\BrandManagement\Model\ImageUploader;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Slider Image Uploader Controller
+ * Handles slider image upload to temporary directory
+ */
+class SliderImageUploader extends Action
+{
+    /**
+     * @var ImageUploader
+     */
+    protected $imageUploader;
+
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
+     * Constructor
+     *
+     * @param Context $context
+     * @param ImageUploader $imageUploader
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        Context $context,
+        ImageUploader $imageUploader,
+        LoggerInterface $logger
+    ) {
+        parent::__construct($context);
+        $this->imageUploader = $imageUploader;
+        $this->logger = $logger;
+    }
+
+    /**
+     * Check admin permissions
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return $this->_authorization->isAllowed('Branch8_BrandManagement::brand_management');
+    }
+
+    /**
+     * Execute action
+     *
+     * @return \Magento\Framework\Controller\ResultInterface
+     */
+    public function execute()
+    {
+        try {
+            $result = $this->imageUploader->saveFileToTmpDir('slider_image');
+            $result['cookie'] = [
+                'name' => $this->_getSession()->getName(),
+                'value' => $this->_getSession()->getSessionId(),
+                'lifetime' => $this->_getSession()->getCookieLifetime(),
+                'path' => $this->_getSession()->getCookiePath(),
+                'domain' => $this->_getSession()->getCookieDomain(),
+            ];
+        } catch (\Exception $e) {
+            $this->logger->error($e);
+            $result = ['error' => $e->getMessage(), 'errorcode' => $e->getCode()];
+        }
+        
+        return $this->resultFactory->create(ResultFactory::TYPE_JSON)->setData($result);
+    }
+}
+

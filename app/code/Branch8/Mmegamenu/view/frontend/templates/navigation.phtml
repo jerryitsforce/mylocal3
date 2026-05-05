@@ -1,0 +1,5 @@
+<?php /** @var \Branch8\Mmegamenu\Helper\Generator $helperGenerator */ ?>
+<?php $helperGenerator = $this->helper('Branch8\Mmegamenu\Helper\Generator') ?>
+<?php $html = $helperGenerator->getMenuCacheHtml(1); ?>
+
+<?= /* @noEscape */ $helperGenerator->filter($html); ?>

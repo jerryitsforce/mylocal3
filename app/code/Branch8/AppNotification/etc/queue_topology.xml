@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="send.app.notification.exchange" type="topic" connection="amqp">
+        <binding id="sendAppNotification" topic="send.app.notification" destination="send_app_notification" destinationType="queue"/>
+    </exchange>
+</config>

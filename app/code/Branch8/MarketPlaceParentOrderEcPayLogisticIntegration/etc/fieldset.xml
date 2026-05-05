@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="sales_order_detail_copy_parent_order">
+            <field name="ecpay_invoice_carruer_type">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_customer_identifier">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_customer_company">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_love_code">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_carruer_num">
+                <aspect name="to_parent_order"/>
+            </field>
+        </fieldset>
+    </scope>
+</config>

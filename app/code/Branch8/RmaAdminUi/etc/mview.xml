@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="marketplace_rma_grid" class="Branch8\RmaAdminUi\Model\Indexer\RmaFlatData" group="indexer">
+        <subscriptions>
+            <table name="marketplace_rma_details" entity_column="id" />
+        </subscriptions>
+    </view>
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Branch8_DataFeedManager">
+        <sequence>
+            <module name="Wyomind_DataFeedManager"/>
+            <module name="Amasty_Groupcat"/>
+        </sequence>
+    </module>
+</config>

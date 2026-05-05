@@ -1,0 +1,34 @@
+<!-- ko if: hasItems -->
+<ul class="thread-item-list">
+    <!-- ko foreach: threads -->
+    <li class="thread-item" data-bind="attr: {'data-thread-id': id}">
+        <div class="thread-question-wrap">
+            <div class="thread-badge-icon" data-bind="css: {'my-thread': is_my_thread}"><span data-bind="text: $t('Q.')"></span></div>
+            <div class="thread-question">
+                <!-- ko if: is_my_thread -->
+                <div class="thread-badge" data-bind="text: $t('我的提問')"></div>
+                <!-- /ko -->
+                <div class="thread-spec" data-bind="html: product_spec"></div>
+                <h4 class="thread-title" data-bind="html: content"></h4>
+                <div class="thread-date" >
+                    <span data-bind="text: created_at"></span>
+                </div>
+            </div>
+        </div>
+        <div class="thread-replies">
+            <!-- ko if: has_messages -->
+            <div class="thread-messages" data-bind="foreach: messages">
+                <div class="thread-message" data-bind="css: author_type">
+                    <div class="thread-message-content" data-bind="html: message"></div>
+                    <div class="thread-message-date" data-bind="text: created_at"></div>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: !has_messages && is_my_thread -->
+            <div class="thread-no-message" data-bind="text: $t('The seller has not yet replied to your message')"></div>
+            <!-- /ko -->
+         </div>
+    </li>
+    <!-- /ko -->
+</ul>
+<!-- /ko -->

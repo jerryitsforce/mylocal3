@@ -1,0 +1,157 @@
+{
+    "branch8_rewardsystem_event": {
+        "column": {
+            "entity_id": true,
+            "title": true,
+            "status": true,
+            "description": true,
+            "trigger_condition": true,
+            "reward_type": true,
+            "reward_rule_id": true,
+            "reward_pool_id": true,
+            "reward_pool_batch_code": true,
+            "created_at": true,
+            "start_date": true,
+            "end_date": true,
+            "updated_at": true,
+            "user_limit_type": true,
+            "user_limit": true,
+            "event_limit_type": true,
+            "event_limit": true,
+            "reward_cnt": true,
+            "notification_title": true,
+            "notification_content": true,
+            "user_limit_daily": true,
+            "user_limit_total": true,
+            "event_limit_daily": true,
+            "event_limit_total": true
+        },
+        "index": {
+            "BRANCH8_REWARDSYSTEM_EVENT_STATUS": true,
+            "BRANCH8_REWARDSYSTEM_EVENT_REWARD_TYPE": true,
+            "BRANCH8_REWARDSYSTEM_EVENT_START_DATE": true,
+            "BRANCH8_REWARDSYSTEM_EVENT_END_DATE": true,
+            "BRANCH8_REWARDSYSTEM_EVENT_TTL_DESCRIPTION_NTFC_TTL_NTFC_CONTENT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_rewardsystem_api_call": {
+        "column": {
+            "entity_id": true,
+            "event_id": true,
+            "customer_identify": true,
+            "api_key": true,
+            "partner_identify": true,
+            "created_at": true,
+            "report_id": true
+        },
+        "index": {
+            "BRANCH8_REWARDSYSTEM_API_CALL_EVENT_ID": true,
+            "BRANCH8_REWARDSYSTEM_API_CALL_CUSTOMER_IDENTIFY": true,
+            "BRANCH8_REWARDSYSTEM_API_CALL_REPORT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_F3008ED22383A602DC98C2DC733E2156": true,
+            "UNQ_15E8D147D46361699B43C6694B451CF9": true
+        }
+    },
+    "branch8_rewardsystem_visit_url": {
+        "column": {
+            "entity_id": true,
+            "event_id": true,
+            "url": true,
+            "customer_id": true,
+            "created_at": true,
+            "report_id": true
+        },
+        "index": {
+            "BRANCH8_REWARDSYSTEM_VISIT_URL_EVENT_ID": true,
+            "BRANCH8_REWARDSYSTEM_VISIT_URL_CUSTOMER_ID": true,
+            "BRANCH8_REWARDSYSTEM_VISIT_URL_REPORT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_REWARDSYSTEM_VISIT_URL_EVENT_ID_CUSTOMER_ID_URL": true,
+            "BRANCH8_REWARDSYSTEM_VISIT_URL_EVENT_ID_CSTR_ID_URL_REPORT_ID": true
+        }
+    },
+    "branch8_rewardsystem_first_purchase": {
+        "column": {
+            "entity_id": true,
+            "event_id": true,
+            "customer_id": true,
+            "parent_order_id": true,
+            "created_at": true,
+            "report_id": true
+        },
+        "index": {
+            "BRANCH8_REWARDSYSTEM_FIRST_PURCHASE_EVENT_ID": true,
+            "BRANCH8_REWARDSYSTEM_FIRST_PURCHASE_CUSTOMER_ID": true,
+            "BRANCH8_REWARDSYSTEM_FIRST_PURCHASE_REPORT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_REWARDSYSTEM_FIRST_PURCHASE_EVENT_ID_CUSTOMER_ID": true
+        }
+    },
+    "branch8_rewardsystem_level_change": {
+        "column": {
+            "entity_id": true,
+            "event_id": true,
+            "customer_id": true,
+            "from_level": true,
+            "to_level": true,
+            "created_at": true,
+            "report_id": true
+        },
+        "index": {
+            "BRANCH8_REWARDSYSTEM_LEVEL_CHANGE_EVENT_ID": true,
+            "BRANCH8_REWARDSYSTEM_LEVEL_CHANGE_CUSTOMER_ID": true,
+            "BRANCH8_REWARDSYSTEM_LEVEL_CHANGE_REPORT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_REWARDSYSTEM_LEVEL_CHANGE_EVENT_ID_CUSTOMER_ID_TO_LEVEL": true,
+            "UNQ_5E9171606DB34A3C8536362C0F02B250": true
+        }
+    },
+    "branch8_rewardsystem_report": {
+        "column": {
+            "entity_id": true,
+            "customer_id": true,
+            "event_id": true,
+            "reward_type": true,
+            "reward_rule_id": true,
+            "reward_pool_id": true,
+            "reward_pool_batch_code": true,
+            "reward_pool_serial": true,
+            "reward_coupon": true,
+            "trigger_condition": true,
+            "status": true,
+            "fail_reason": true,
+            "created_at": true
+        },
+        "index": {
+            "BRANCH8_REWARDSYSTEM_REPORT_EVENT_ID": true,
+            "BRANCH8_REWARDSYSTEM_REPORT_CUSTOMER_ID": true,
+            "BRANCH8_REWARDSYSTEM_REPORT_REWARD_COUPON": true,
+            "BRANCH8_REWARDSYSTEM_REPORT_REWARD_POOL_SERIAL": true,
+            "BRANCH8_REWARDSYSTEM_REPORT_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "magenest_customer_notification": {
+        "column": {
+            "ars_report_id": true,
+            "detail_description": true
+        },
+        "index": {
+            "MAGENEST_CUSTOMER_NOTIFICATION_ARS_REPORT_ID": true
+        }
+    }
+}

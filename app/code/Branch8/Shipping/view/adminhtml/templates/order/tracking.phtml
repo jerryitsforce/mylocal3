@@ -1,0 +1,192 @@
+<?php
+// phpcs:disable PHPCompatibility.Miscellaneous.RemovedAlternativePHPTags.MaybeASPOpenTagFound
+/**
+ * @var \Magento\Shipping\Block\Adminhtml\Order\Tracking $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Branch8\Sales\Helper\Config $b8salesConfigHelper
+ */
+$b8salesConfigHelper = $this->helper(\Branch8\Sales\Helper\Config::class);
+?>
+<?php $scriptString = <<<script
+
+require(['prototype'], function(){
+
+    //<![CDATA[
+    var trackingControl;
+    trackingControl = {
+        index : 0,
+        add : function () {
+            this.index++;
+            var data = {index:this.index};
+            Element.insert($('track_row_container'), {
+                bottom: this.template({
+                    data: data
+                })
+            });
+
+            $('trackingT' + this.index).disabled = false;
+            $('trackingP' + this.index).disabled = false;
+            $('trackingN' + this.index).disabled = false;
+
+            var self = this;
+            $('trackingT' + this.index).addEventListener('change', function(event) {
+                var selectedOption = event.target.options[event.target.selectedIndex];
+                var selectedUrl = selectedOption.getAttribute('data-url');
+                document.getElementById('trackingL' + self.index).value = selectedUrl;
+
+                var selectedValue = selectedOption.value;
+                var trackingElement = document.getElementById('trackingP' + self.index);
+                var trackingErrorLabel = document.getElementById('trackingP' + self.index + '-error');
+                if (selectedValue === '其他：自行填寫名稱') {
+                    trackingElement.style.display = 'block';
+                    if (!trackingElement.classList.contains('required-entry')) {
+                        trackingElement.classList.add('required-entry');
+                    }
+                } else {
+                    trackingElement.style.display = 'none';
+                    if (trackingElement.classList.contains('required-entry')) {
+                        trackingElement.classList.remove('required-entry');
+                    }
+                     if (trackingErrorLabel) {
+                        trackingErrorLabel.remove();
+                        trackingElement.style.backgroundColor = '';
+                    }
+                }
+            });
+
+            this.bindCurrierOnchange();
+        },
+        deleteRow : function(event) {
+            var row = Event.findElement(event, 'tr');
+            if (row) {
+                row.parentNode.removeChild(row)
+            }
+        },
+        bindCurrierOnchange : function() {
+            var elems = $('tracking_numbers_table').select('.select');
+            elems.each(function (elem) {
+                if (!elem.onchangeBound) {
+                    elem.onchangeBound = true;
+                    elem.valueInput = $(elem.parentNode.parentNode).select('.number-title')[0];
+                    elem.observe('change', this.currierOnchange);
+                }
+            }.bind(this));
+        },
+        currierOnchange : function(event) {
+            var elem = Event.element(event);
+            var option = elem.options[elem.selectedIndex];
+            if (option.value && option.value != 'custom') {
+                elem.valueInput.value = option.text;
+            }
+            else {
+                elem.valueInput.value = '';
+            }
+        }
+    };
+
+    window.trackingControl = trackingControl;
+    //]]>
+
+});
+
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+
+<script id="track_row_template" type="text/x-magento-template">
+    <tr>
+        <td class="col-carrier">
+            <input class="input-text admin__control-text" type="hidden" name="tracking[<%- data.index %>][carrier_code]"
+                   id="trackingC<%- data.index %>" value="custom"/>
+        </td>
+        <td class="col-title">
+            <select name="tracking[<%- data.index %>][title]"
+                    id="trackingT<%- data.index %>"
+                    class="select admin__control-select number-title required-entry"
+                    disabled="disabled">
+                <option value=""><?= $escaper->escapeHtml(__('-- Please Select --'))?></option>
+                <?php foreach ($b8salesConfigHelper->getLogisticsCompanies() as $name => $url):?>
+                    <option value="<?= $escaper->escapeHtml($name) ?>" data-url="<?= $escaper->escapeHtml($url) ?>">
+                        <?= $escaper->escapeHtml($name) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <input class="input-text admin__control-text" type="hidden"
+                   name="tracking[<%- data.index %>][logistics_company_url]" id="trackingL<%- data.index %>"/>
+        </td>
+        <td class="col-lcname" style="margin-left: 10px;">
+            <input class="input-text admin__control-text"
+                   type="text"
+                   name="tracking[<%- data.index %>][logistics_name]"
+                   id="trackingP<%- data.index %>"
+                   value=""
+                   disabled="disabled"
+                   style="display:none;"/>
+        </td>
+        <td class="col-number">
+            <input class="input-text admin__control-text required-entry"
+                   type="text"
+                   name="tracking[<%- data.index %>][number]"
+                   id="trackingN<%- data.index %>"
+                   value=""
+                   disabled="disabled" />
+        </td>
+        <td class="col-delete">
+            <button
+                type="button"
+                class="action-default action-delete"
+                onclick="trackingControl.deleteRow(event);return false">
+                <span><?= $block->escapeHtml(__('Delete')) ?></span>
+            </button>
+        </td>
+    </tr>
+</script>
+
+<div class="admin__control-table-wrapper">
+    <table class="data-table admin__control-table" id="tracking_numbers_table">
+        <thead>
+        <tr class="headings">
+            <th class="col-carrier"><?= $block->escapeHtml(__('Carrier')) ?></th>
+            <th class="col-title"><?= $block->escapeHtml(__('Carrier')) ?></th>
+            <th class="col-lcname"></th>
+            <th class="col-number"><?= $block->escapeHtml(__('Number')) ?></th>
+            <th class="col-delete"><?= $block->escapeHtml(__('Action')) ?></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td colspan="4" class="col-actions-add"><?= $block->getChildHtml('add_button') ?></td>
+        </tr>
+        </tfoot>
+        <tbody id="track_row_container">
+        </tbody>
+    </table>
+</div>
+<?php $scriptString = <<<script
+
+require([
+    'mage/template',
+    'prototype'
+], function (mageTemplate) {
+
+    //<![CDATA[
+    trackingControl.template = mageTemplate('#track_row_template');
+    //]]>
+
+});
+
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+
+<style>
+    #tracking_numbers_table td:nth-child(1):not(.col-actions-add),
+    #tracking_numbers_table th:nth-child(1):not(.col-actions-add) {
+        display: none;
+    }
+    #tracking_numbers_table td:nth-child(2),
+    #tracking_numbers_table th:nth-child(2) {
+        padding-left: 20px;
+    }
+</style>

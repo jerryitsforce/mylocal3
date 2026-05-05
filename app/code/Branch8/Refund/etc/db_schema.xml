@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="sales_refund" resource="default" engine="innodb" comment="Sales Refund Table">
+		<column xsi:type="int" name="sales_refund_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="sales_refund_id"/>
+		</constraint>
+		<column xsi:type="varchar" name="increment_id" nullable="true" length="50" comment="Increment ID"/>
+		<column xsi:type="int" name="parent_order_id"  nullable="false" comment="Parent Order Id"/>
+		<column xsi:type="int" name="parent_order_amount"  nullable="false" comment="Parent Order Amount"/>
+		<column xsi:type="int" name="refund_amount"  nullable="false" comment="Refund Amount"/>
+		<column xsi:type="int" name="refund_point"  nullable="false" comment="Refund Point" disabled="true"/>
+		<column xsi:type="int" name="refunded_amount"  nullable="false" comment="Refunded Amount"/>
+		<column xsi:type="int" name="refunded_point"  nullable="false" comment="Refunded Point" disabled="true"/>
+		<column xsi:type="int" name="status"  nullable="false" comment="Refund Status"/>
+		<column xsi:type="varchar" name="request_payload" nullable="true" comment="Refund Request Payload"/>
+		<column xsi:type="int" name="type"  nullable="false" comment="Refund Type"/>
+		<column xsi:type="int" name="memo_id"  nullable="true" comment="Memo Id"/>
+		<column xsi:type="text" name="response_information" nullable="true" comment="Order Inquiry Information"/>
+		<column xsi:type="varchar" name="api_name" nullable="true" length="32" comment="Refund Api Name" disabled="true"/>
+		<column xsi:type="boolean" name="is_refunded" nullable="false" default="false" comment="Is Successful Refunded"/>
+		<column xsi:type="boolean" name="is_triggered" nullable="false" default="false" comment="Is Triggered"/>
+		<column xsi:type="int" name="refund_triggered_retry_count"  nullable="false" comment="Refund Triggered Retry Count"/>
+		<column xsi:type="timestamp" name="triggered_at" on_update="false" nullable="true" comment="Triggered At"/>
+		<column xsi:type="boolean" name="is_notified_admin" nullable="false" default="false" comment="Is Notify Admin"/>
+		<column xsi:type="boolean" name="is_financial_reviewing" nullable="false" default="false" comment="Is Financial Reviewing" disabled="true"/>
+		<column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+		<column xsi:type="timestamp" name="updated_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+		<column xsi:type="timestamp" name="refunded_at" on_update="false" nullable="true" comment="Refunded At"/>
+	</table>
+	<table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="boolean" name="has_refund" nullable="false" comment="Order Has Item Refunding Record"/>
+    </table>
+</schema>

@@ -1,0 +1,202 @@
+<?php
+use Branch8\Spin2Win\Model\Config\Source\FloatButtonPage;
+$helper = $block->spinHelper();
+?>
+<form>
+</form>
+
+<?php
+$spinButton = $block->getButton();
+$draftHelper = $this->helper(\Branch8\Spin2Win\Helper\Draft::class);
+$spinId = $spinButton->getSpinId();
+if($spinId){
+    $buttonDraft = $draftHelper->getDraftByType($spinId, 'button');
+    if($buttonDraft){
+        $buttonData = array_merge($spinButton->getData(), $buttonDraft);
+        $spinButton->setData($buttonData);
+    }
+}
+?>
+<div class="spin-content-buttonform admin__scope-old">
+    <fieldset class="fieldset admin__fieldset <?php echo $spinButton->getShow() ? 'show' : 'hide'; ?>">
+        <legend class="legend">
+            <span><?= /* @noEscape */ __('Spin to Win Button') ?></span>
+        </legend>
+        <div class="spin-content-buttonform-container">
+            <div class="spin-content-buttonform-edit">
+                <form data-mage-init='{"validation":{}}' class="spin-form"
+                action="<?= /* @noEscape */ $block->getUrl('spintowin/manage/savebutton') ?>"
+                enctype="multipart/form-data" method="post" id="spinbuttonformedit">
+                    <input type="hidden" value="<?= /* @noEscape */ $spinButton->getId() ?>" name="entity_id" />
+                    <?= /* @noEscape */ $block->getBlockHtml('formkey') ?>
+                    <fieldset class="fieldset admin__fieldset">
+                        <div class="field admin__field field-attribute_label required _required">
+                            <label class="label" for="buttonform_show">
+                                <span><?= /* @noEscape */ __('Show Spin to Win Button') ?></span>
+                            </label>
+                            <div class="control">
+                                <select id="buttonform_show" name="show" type="text" class="input-text required-entry">
+                                    <option <?= /* @noEscape */ $spinButton->getShow() ? 'selected' : ''; ?> value="1">
+                                    <?= /* @noEscape */ __('Yes') ?></option>
+                                    <option <?= /* @noEscape */ $spinButton->getId()
+                                    && !$spinButton->getShow() ? 'selected' : ''; ?> value="0">
+                                    <?= /* @noEscape */ __('No') ?></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field admin__field field-attribute_label">
+                            <label class="label" for="buttonform_show">
+                                <span><?= /* @noEscape */ __('Display Scope') ?></span>
+                            </label>
+                            <div class="admin__field-control control">
+                                <div class="admin__field admin__field-option">
+                                    <input type="radio" name="display_scope"  value="<?php echo FloatButtonPage::HOME_PAGE;?>" class="admin__control-radio" id="display_scope_home" <?php echo ($spinButton->getDisplayScope() == FloatButtonPage::HOME_PAGE || !$spinButton->getDisplayScope()) ? 'checked' : '' ;?>>
+                                    <label class="admin__field-label" for="display_scope_home"><span><?php echo __('Only home page');?></span></label>
+                                </div>
+                                <div class="admin__field admin__field-option">
+                                    <input type="radio" name="display_scope" value="<?php echo FloatButtonPage::HOME_AND_SPECIFY_PAGE;?>" class="admin__control-radio" id="display_scope_home_special" <?php echo ($spinButton->getDisplayScope() == FloatButtonPage::HOME_AND_SPECIFY_PAGE) ? 'checked' :'' ;?>>
+                                    <label class="admin__field-label" for="display_scope_home_special"><span><?php echo __('Home page and Specified page');?></span></label>
+                                </div>                            
+                            </div>
+                            <div class="display_scope_home_special_input" id="display_scope_home_special_input" style="<?php echo ($spinButton->getDisplayScope() == FloatButtonPage::HOME_AND_SPECIFY_PAGE) ? 'display: block;' :'display: none;'; ?>">
+                                <!-- <label><?php echo __('Unlimited');?> <input type="radio" name="display_scope" <?php echo ($spinButton->getDisplayScope() == FloatButtonPage::UNLIMIT_PAGE) ? 'checked' :'' ;?>  value="<?php echo FloatButtonPage::UNLIMIT_PAGE;?>" /> </label>
+                                <label><?php echo __('Only home page');?> <input type="radio" name="display_scope" <?php echo ($spinButton->getDisplayScope() == FloatButtonPage::HOME_PAGE) ? 'checked' :'' ;?>  value="<?php echo FloatButtonPage::HOME_PAGE;?>" /> </label>
+                                <label><?php echo __('Home page and Specified page');?> <input type="radio" name="display_scope" <?php echo ($spinButton->getDisplayScope() == FloatButtonPage::HOME_AND_SPECIFY_PAGE) ? 'checked' :'' ;?>  value="<?php echo FloatButtonPage::HOME_AND_SPECIFY_PAGE;?>" /> </label> -->
+                                <div class="field admin__field field-attribute_label">
+                                    <label class="admin__field-label" for="specify_page-note">
+                                        <span><?= /* @noEscape */ __('Specified page paths (comma separated)') ?></span>
+                                    </label>
+                                    <div class="admin__field-control control">
+                                        <input type="text" class="input-text" value="<?php echo $spinButton->getSpecifyPage();?>" name="specify_page" placeholder="/event/summer-sale/, /event/anniversary/"  />
+                                    <div class="note admin__field-note"><?= __('「/」為 base URL，例如 /checkout/cart/')?></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="border-line" />
+                        <div class="field admin__field  field-attribute_label required _required">
+                            <label class="label" for="buttonform_image">
+                                <span><?= /* @noEscape */ __('Floating Button Image') ?></span>
+                            </label>
+                            <div class="control">
+                                <input type="file" id="buttonform_image" name="image"
+                                 value="" class="input-text spin-files" data-spin-bind-image="buttonform_image_preview"
+                                data-upload-id="buttonform_image_hidden"
+                                data-upload-url="<?= /* @noEscape */ $block->getUploadUrl(); ?>" />
+                                <input type="hidden" id="buttonform_image_hidden" name="image"
+                                value="<?= /* @noEscape */ $spinButton->getImage() ?>"
+                                class="required-entry" />
+                                <div class="spin-image-preview-container">
+                                    <img src="<?= /* @noEscape */ ($spinButton->getImage() ?
+                                    $block->getMediaUrl($spinButton->getImage()) : '') ?>"
+                                    class="spin-image spin-image-preview">
+                                    <span class="spin-image-delete" data-delete="buttonform_image"></span>
+                                </div>
+                                <div class="spin-buttonform-button-images">
+                                    <?php
+                                    $spintowinButtonImage = $helper->getSpintowinButtonImage();
+                                    foreach ($spintowinButtonImage as $key => $val) { ?>
+                                        <img src="<?= /* @noEscape */ $block->getMediaUrl($val) ?>"
+                                        class="spin-image spin-buttonform-button-image"
+                                        data-spin-src="<?= /* @noEscape */ $val ?>" />
+                                    <?php } ?>
+                                </div>
+                                <button type="button" class="spin-button spin-upload-button spin-files-button"
+                                data-triggerid="buttonform_image"><?php echo __('Browse Files...');?></button>
+                                <div class="note admin__field-note" id="buttonform_image-note">
+                                <?= /* @noEscape */ __('上傳的圖片將自動依比例縮放為 1:1 顯示。')?></div>
+                            </div>
+                        </div>
+                        <hr class="border-line" />
+                        <div class="field admin__field">
+                            <label class="label" for="buttonform_size">
+                                <span><?= /* @noEscape */ __('Floating Button Size') ?></span>
+                            </label>
+                            <div class="control admin__control-group">
+                                <?php 
+                                $floatBtnSize = $spinButton->getButtonSize();
+                                if(!$floatBtnSize){
+                                    $floatBtnSize = [
+                                        'desktop_width' => '',
+                                        'desktop_height' => '',
+                                        'mobile_width' => '',
+                                        'mobile_height' => ''
+                                    ];
+                                }else{
+                                    $floatBtnSize = json_decode($floatBtnSize, true);
+                                }
+                                ?>
+                                <div class="admin__field-group">
+                                    <div class="admin__field-group-label"><?= __('Desktop')?></div>
+                                    <div class="admin__field-group-control">
+                                        <span class="admin__field-group-control__label">Width</span> <input type="text" name="desktop_width" class="input-text" value="<?php echo $floatBtnSize['desktop_width'];?>" /> <span class="admin__field-group-control__unit">px</span> 
+                                    </div>
+                                    <div class="admin__field-group-control">
+                                        <span class="admin__field-group-control__label">Height</span> <input type="text" name="desktop_height" class="input-text"  value="<?php echo $floatBtnSize['desktop_height'];?>" /> <span class="admin__field-group-control__unit">px</span> 
+                                    </div>  
+                                </div>
+                                <div class="admin__field-group">
+                                    <div class="admin__field-group-label"><?= __('Mobile')?></div>
+                                    <div class="admin__field-group-control">
+                                        <span class="admin__field-group-control__label">Width</span> <input type="text" name="mobile_width" class="input-text" value="<?php echo $floatBtnSize['mobile_width'];?>" /> <span class="admin__field-group-control__unit">px</span> 
+                                    </div>
+                                    <div class="admin__field-group-control">
+                                        <span class="admin__field-group-control__label">Height</span> <input type="text" name="mobile_height" class="input-text"  value="<?php echo $floatBtnSize['mobile_height'];?>" /> <span class="admin__field-group-control__unit">px</span> 
+                                    </div>  
+                                </div>
+                                <!-- <table>
+                                    <tr>
+                                        <th>Desktop</th>
+                                        <th>Mobile</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Width <input type="text" name="desktop_width" class="input-text" value="<?php echo $floatBtnSize['desktop_width'];?>" /> px Height <input type="text" name="desktop_height" class="input-text"  value="<?php echo $floatBtnSize['desktop_height'];?>" /> px</td>
+                                        <td>Width <input type="text" name="mobile_width" class="input-text" value="<?php echo $floatBtnSize['mobile_width'];?>" /> px Height <input type="text" name="mobile_height" class="input-text"  value="<?php echo $floatBtnSize['mobile_height'];?>" /> px</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">前台將自動等比例縮放圖片，不受原始上傳尺寸影響。</td>
+                                    </tr>
+                                </table> -->
+                            </div>
+                            <div class="note admin__field-note"><?= __('前台將自動等比例縮放圖片，不受原始上傳尺寸影響。')?></div>
+                        </div>
+                        <hr class="border-line" />
+                        <div class="field admin__field  field-attribute_label  required _required">
+                            <label class="label" for="buttonform_label">
+                                <span><?= /* @noEscape */ __('Floating Button Label') ?></span>
+                            </label>
+                            <div class="control">
+                                <input type="text" id="buttonform_label"
+                                name="label" value="<?= /* @noEscape */ $spinButton->getLabel() ?>"
+                                class="input-text spin-bind-text required-entry validate-no-html-tags"
+                                data-spin-bind="spin-buttonform-button-text-preview" />
+                            </div>
+                        </div>
+                        <button title="<?= /* @noEscape */ __('Update Button') ?>"
+                        type="button" id="update-spinbuttonform" class="action-default save spin-save spin-save-ajax"
+                        data-spin-bind-form="spinbuttonformedit">
+                            <span><?= /* @noEscape */ __('Update Button') ?></span>
+                            <span class="admin__page-nav-item-messages">
+                                <span class="admin__page-nav-item-message _changed">
+                                    <span class="admin__page-nav-item-message-icon"></span>
+                                    <span class="admin__page-nav-item-message-tooltip"
+                                    data-bind="i18n:'Changes have been made to this section that have not been saved.'">
+                                    </span>
+                                </span>
+                            </span>
+                        </button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "trigger": {}
+        }
+    }
+</script>

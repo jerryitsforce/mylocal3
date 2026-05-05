@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Ecpay\General\Model\ResourceModel\Plugin\Sales\Order\Authorization"
+                type="Branch8\Sales\Model\ResourceModel\Plugin\Sales\Order\Authorization"/>
+    <preference for="Magento\Sales\Model\Order\ShipmentDocumentFactory"
+                type="Branch8\Sales\Rewrite\Model\Order\ShipmentDocumentFactory"/>
+    <preference for="Magento\Sales\Model\Order\Payment"
+                type="Branch8\Sales\Rewrite\Model\Order\Payment"/>
+    <virtualType name="Magento\Framework\Console\CommandList">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+                <item name="ExecuteOrderStatusCronCheck" xsi:type="object">Branch8\Sales\Console\Command\CronOrderStatusUpdate</item>
+                <item name="CreateMagentoInvoiceForEcpayInvoiceDoneOrder" xsi:type="object">Branch8\Sales\Console\Command\CreateMagentoInvoiceForEcpayInvoiceDoneOrder</item>
+                <item name="FillInPostcodeForOldOrderAddress" xsi:type="object">Branch8\Sales\Console\Command\FillInPostcodeForOldOrderAddress</item>
+                <item name="FillInPostcodeForOldParentOrderAddress" xsi:type="object">Branch8\Sales\Console\Command\FillInPostcodeForOldParentOrderAddress</item>
+                <item name="FillInPostcodeForOldRmaAddress" xsi:type="object">Branch8\Sales\Console\Command\FillInPostcodeForOldRmaAddress</item>
+			</argument>
+		</arguments>
+	</virtualType>
+	<!-- Logger -->
+	<virtualType name="Branch8\Sales\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">Sales</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\Sales\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\Sales\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
+    <type name="Webkul\Marketplace\Block\Order\View">
+        <plugin name="Branch8_Sales::marketplace_block_order_view_plugin"
+                type="Branch8\Sales\Plugin\Marketplace\Block\Order\View"/>
+    </type>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="Branch8_Sales::order_plugin"
+                type="Branch8\Sales\Plugin\Magento\Order"/>
+    </type>
+
+    <type name="Magento\Sales\Model\ResourceModel\Order\Handler\State">
+        <plugin name="Branch8_Sales::keep_status_as_processing"
+                type="Branch8\Sales\Plugin\Magento\Sales\Model\ResourceModel\Order\Handler\StatePlugin"/>
+    </type>
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="Branch8_Sales::custom_get_custom_shipping_description"
+                type="Branch8\Sales\Plugin\Magento\Sales\Model\CustomShippingDescription"/>
+    </type>
+
+    <type name="Webkul\Marketplace\Helper\Orders">
+        <plugin name="Branch8_Sales::fix-cancel-not-deduction"
+                type="Branch8\Sales\Plugin\Webkul\Marketplace\Helper\OrdersPlugin"/>
+    </type>
+    <virtualType name="AndyDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/andy.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AndyDebugLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">AndyDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\Sales\Helper\Order\UpdateOrderStatus">
+        <arguments>
+            <argument name="logger" xsi:type="object">AndyDebugLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Mail\TemplateInterface">
+        <plugin name="Branch8_Sales::add-email-subject-prefix"
+                type="Branch8\Sales\Plugin\Framework\Mail\TemplatePlugin"/>
+    </type>
+    <preference for="Magento\Sales\Model\Order\Creditmemo\Total\Shipping"
+                type="Branch8\Sales\Rewrite\Model\Order\Creditmemo\Total\Shipping"/>
+    <preference for="Magento\Sales\Model\Order\Creditmemo\Total\Tax"
+                type="Branch8\Sales\Rewrite\Model\Order\Creditmemo\Total\Tax"/>
+    <preference for="Magento\Sales\Model\Order\Creditmemo\Total\Subtotal"
+                type="Branch8\Sales\Rewrite\Model\Order\Creditmemo\Total\Subtotal"/>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="quote_id" xsi:type="string">sales_order.quote_id</item>
+                <item name="is_virtual" xsi:type="string">sales_order.is_virtual</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <!-- Add Tooltip For Maximum Qty Discount is Applied To field -->
+    <type name="Magento\SalesRule\Model\Rule\Metadata\ValueProvider">
+        <plugin name="Amasty_RulesPro::SalesRule_ValueProvider" disabled="true" />
+        <plugin name="Branch8_Sales::SalesRule_ValueProvider" type="Branch8\Sales\Plugin\SalesRule\Model\Rule\Metadata\ValueProvider" />
+    </type>
+    <type name="Elgentos\InventoryLog\Observer\RefundOrderInventoryObserver">
+		<plugin name="Branch8_Sales_Plugin_Elgentos_InventoryLog_Observer_RefundOrderInventoryObserver" type="Branch8\Sales\Plugin\Elgentos\InventoryLog\Observer\RefundOrderInventoryObserver" sortOrder="10" disabled="false"/>
+	</type>
+    <type name="Elgentos\InventoryLog\Observer\CheckoutAllSubmitAfter">
+		<plugin name="Branch8_Sales_Plugin_Elgentos_InventoryLog_Observer_CheckoutAllSubmitAfter" type="Branch8\Sales\Plugin\Elgentos\InventoryLog\Observer\CheckoutAllSubmitAfter" sortOrder="10" disabled="false"/>
+	</type>
+    <type name="Branch8\Sales\Model\Actions\ResyncOrdersToGrid">
+        <arguments>
+            <argument name="grid" xsi:type="object">Magento\Sales\Model\ResourceModel\Order\Grid</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_order_history_grid_data_source" xsi:type="string">Branch8\Sales\Model\ResourceModel\Order\History\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

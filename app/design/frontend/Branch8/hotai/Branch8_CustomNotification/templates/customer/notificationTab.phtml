@@ -1,0 +1,126 @@
+<?php
+/** @var  $block \Magenest\NotificationBox\Block\Customer\Tab\Notification */
+
+$block->redirectIfNotLoggedIn();
+$unread = $block->getUnreadNotification();
+$allCustomerNotification = $block->getNotificationByCondition(null);
+$isActive = $block->getIsActive();
+$guideline_icon = $block->escapeUrl($block
+    ->getViewFileUrl('Branch8_CustomNotification::images/guideline.svg'));
+$helper = $this->helper(\Magenest\NotificationBox\Helper\Helper::class);
+$listSize = 0;
+if ($isActive == 'all' || $isActive == 1) {
+    $listSize = $block->getCountAll();
+} elseif ($isActive == 2) {
+    $listSize = $block->getCountPersonal();
+}
+?>
+
+<form action="">
+    <div class="table-wrapper mgn-notification-wrapper">
+        <div class="data mgn-notification-table" id="my-notification-table">
+            <div class="tab-container">
+                <div class="tab-full <?= ($isActive == 'all' || $isActive == 1) ? 'active' : '' ?>">
+                    <input type="button" value="<?= $block->escapeHtml(__("全部")) ?>"
+                        class="category-notification-btn <?= ($block->getFilteredNotificationTypes() == 'all' || $block->getFilteredNotificationTypes() == 1) ? 'is_filter' : '' ?>"
+                        id='filter-1'>
+                    <span class="number"><?= $block->getCountAll() ?></span>
+                </div>
+                <div class="tab-full <?= ($isActive == 2) ? 'active' : '' ?>">
+                    <input type="button" value="<?= $block->escapeHtml(__("個人通知")) ?>"
+                        class="category-notification-btn <?= ($block->getFilteredNotificationTypes() == 2) ? 'is_filter' : '' ?>"
+                        id='filter-2'>
+                    <span class="number"><?= $block->getCountPersonal() ?></span>
+                    <!-- Dynamic count for 'Personal Notifications' -->
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="table">
+                    <div class="table-body">
+                        <?php if ($allCustomerNotification && count($allCustomerNotification)): ?>
+                            <?php foreach ($allCustomerNotification as $notification): ?>
+                                <?php
+                                $image = $notification['icon'];
+                                $arrow_icon = $block->escapeUrl($block
+                                    ->getViewFileUrl('Branch8_CustomNotification::images/swiper.svg'));
+                                ?>
+                                <div id="<?= $notification['entity_id'] ?>" class="table-row">
+                                    <div class="table-column status">
+                                        <?php if (!$notification['status']): ?>
+                                            <span class="dot">
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="table-column image">
+                                        <img title="<?= $block->escapeHtml(__('移除')) ?>"
+                                            alt="<?= $block->escapeHtml(__('移除')) ?>" src="<?= $image ?>" />
+                                    </div>
+
+                                    <div class="table-column description">
+                                        <div class="title">
+                                            <span class="desc">
+                                                <?php echo $notification['full_description'] ?>
+                                            </span>
+                                        </div>
+                                        <?php if (isset($notification['content']) && $notification['notification_type_id'] === 'seller_reply_to_customer_discussion'): ?>
+                                            <div class="content">
+                                            <span class="desc">
+                                                <?php echo $notification['content'] ?>
+                                            </span>
+                                            </div>
+                                        <?php endif ?>
+                                        <div class="date">
+                                            <?php echo $helper->showTime($notification['created_at']); ?>
+                                        </div>
+                                    </div>
+                                    <div class="table-column actions">
+                                        <a href="<?= $block->escapeUrl($block->getUrl('notibox/handleNotification/viewNotification', ['id' => $notification['entity_id']])) ?>"
+                                            class="action">
+                                            <img src="<?= $arrow_icon ?>" title="<?= $block->escapeHtml(__('移除')) ?>"
+                                                alt="<?= $block->escapeHtml(__('移除')) ?>" />
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="info empty">
+                                <div class="center">
+                                    <div class="icon">
+                                        <img src="<?= $guideline_icon ?>" title="<?= $block->escapeHtml(__('目前尚無任何通知喔！')) ?>"
+                                        alt="<?= $block->escapeHtml(__('目前尚無任何通知喔！')) ?>" />
+                                    </div>
+                                    <div class="text"><?php echo __('目前尚無任何通知喔！'); ?></div>
+                                </div>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<?php if ($block->getPagerHtml()): ?>
+    <div class="mgn-notification-pager toolbar bottom">
+        <div class="paging-container">
+            <?php echo $block->getPagerHtml(); ?>
+        </div>
+        <?php if ($listSize > $block->getPageLimit()): ?>
+        <div class="load-more-container">
+            <button id="load-more" class="action secondary action-secondary action-loadmore" data-noti-page="1">
+                <span><?= __("...") ?></span></button>
+        </div>
+        <?php endif ?>
+    </div>
+<?php endif ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_CustomNotification/js/tab/notification": {
+                    "baseUrl":"<?= $block->getUrl('notification/customer/notification') ?>",
+                    "pageSize": <?= $block->getPageSize() ?>,
+                    "url": "<?= $block->getUrl('notification/ajax/loadmore') ?>"
+                }
+            }
+        }
+</script>

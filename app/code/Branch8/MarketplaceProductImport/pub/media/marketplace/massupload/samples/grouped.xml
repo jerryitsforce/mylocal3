@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>A bag</name>
+    <description>&lt;p&gt;A quite nice bag to hold your training gear.&lt;/p&gt;</description>
+    <short_description>&lt;p&gt;A bag for training&lt;/p&gt;</short_description>
+    <sku>training_bag1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>50</price>
+    <special_price>40</special_price>
+    <special_from_date>2017-05-26</special_from_date>
+    <special_to_date>2018-05-28</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>1.jpg,2.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <associated_skus/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Pushup Grips</name>
+    <description>&lt;p&gt;Simple pushup grips.&lt;/p&gt;</description>
+    <short_description>&lt;p&gt;Nice grips to train pushups.&lt;/p&gt;</short_description>
+    <sku>training_grips1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>15</price>
+    <special_price>10</special_price>
+    <special_from_date>2017-05-25</special_from_date>
+    <special_to_date>2018-05-27</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>3.jpg,4.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <associated_skus/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>simple</type>
+    <category>Men,Women</category>
+    <name>Tone Band</name>
+    <description>&lt;p&gt;A tone band.&lt;/p&gt;</description>
+    <short_description>&lt;p&gt;A band for cardio training.&lt;/p&gt;</short_description>
+    <sku>training_band1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price>10</price>
+    <special_price>8</special_price>
+    <special_from_date>2017-05-24</special_from_date>
+    <special_to_date>2018-05-26</special_to_date>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>100</stock>
+    <weight>1</weight>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images>5.jpg,6.jpg</images>
+    <point_money_config_type>Only money</point_money_config_type>
+    <associated_skus/>
+  </product>
+  <product>
+    <status>1</status>
+    <type>grouped</type>
+    <category>Men,Women</category>
+    <name>Training Kit</name>
+    <description>&lt;p&gt;A starter training kit.&lt;/p&gt;</description>
+    <short_description>&lt;p&gt;A kit for training.&lt;/p&gt;</short_description>
+    <sku>training1</sku>
+    <visibility>Catalog, Search</visibility>
+    <price/>
+    <special_price/>
+    <special_from_date/>
+    <special_to_date/>
+    <tax_class_id>Taxable Goods</tax_class_id>
+    <is_in_stock>In Stock</is_in_stock>
+    <stock>0</stock>
+    <weight/>
+    <meta_title>Test Meta title</meta_title>
+    <meta_keyword>Test Meta Keyword</meta_keyword>
+    <meta_description>Test Meta Description</meta_description>
+    <images/>
+    <point_money_config_type>Only money</point_money_config_type>
+    <associated_skus>training_bag1=5,training_grips1=10,training_band1=15</associated_skus>
+  </product>
+</node>

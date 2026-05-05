@@ -1,0 +1,22 @@
+<!-- ko if: isShippingMethodSelected()-->
+    <!-- ko if: (visible())-->
+    <div class="shipping-address-listing">
+        <form>
+            <div class="shipping-address-items">
+                <table class="table-shipping-address-list" data-bind="afterRender: $parent.onAfterRender">
+                    <tbody>
+                    <!-- ko foreach: { data: elems, as: 'element', afterRender: $parent.onAfterRenderAddressItem($parent)} -->
+                        <!-- ko template: element.getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                     </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <!-- /ko -->
+    <!-- ko ifnot: (visible())-->
+        <div class="shipping-address-listing shipping-address-listing-no-item">
+            <span translate="'Frequent recipients have not been set yet'"></span>
+        </div>
+    <!-- /ko -->
+<!-- /ko -->

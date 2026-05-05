@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Branch8_Marketplace::js/order_history.js"/>
+        <css src="Branch8_Marketplace::css/order_history.css"/>
+    </head>
+    <body>
+        <referenceContainer name="seller.content">
+            <block class="Magento\Framework\View\Element\Template" name="sales.import.tracking.number" template="Branch8_Marketplace::order/import_tracking_number.phtml" before="marketplace_orders_listing" />
+            <block class="Magento\Framework\View\Element\Template" name="popup.order.items" template="Branch8_Marketplace::order/items_wrap.phtml" after="marketplace_orders_listing" />
+        </referenceContainer>
+    </body>
+</page>

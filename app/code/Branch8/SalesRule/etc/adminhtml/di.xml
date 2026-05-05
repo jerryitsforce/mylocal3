@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="SellerAttributeDropdownBlock" type="Branch8\SalesRule\Block\AttributeDropDown">
+        <arguments>
+            <argument name="getoptions" xsi:type="object">Branch8\SalesRule\Model\Actions\GetSellerOptions</argument>
+            <argument name="data" xsi:type="array">
+                <item name="prefix_name" xsi:type="string">cartRuleSeller</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BrandAttributeDropdownBlock" type="Branch8\SalesRule\Block\AttributeDropDown">
+        <arguments>
+            <argument name="getoptions" xsi:type="object">Branch8\SalesRule\Model\Actions\GetBrandOptions</argument>
+            <argument name="data" xsi:type="array">
+                <item name="prefix_name" xsi:type="string">cartRuleSeller</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="FlagshipStoreAttributeDropdownBlock" type="Branch8\SalesRule\Block\AttributeDropDown">
+        <arguments>
+            <argument name="getoptions" xsi:type="object">Branch8\SalesRule\Model\Actions\GetFlagshipStoreOptions</argument>
+            <argument name="data" xsi:type="array">
+                <item name="prefix_name" xsi:type="string">cartRuleSeller</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

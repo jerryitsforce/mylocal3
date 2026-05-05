@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="B8WishlistAlertStockLog" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8_wishlist_alert_stock.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="B8WishlistAlertStockLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">B8WishlistAlertStockLog</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\WishlistStockAlert\Model\ProcessQueueType\Rabbitmq\Consumer">
+        <arguments>
+            <argument name="logger" xsi:type="object">B8WishlistAlertStockLogger</argument>
+        </arguments>
+    </type>
+    <preference for="Branch8\WishlistStockAlert\Api\StockAlertRepositoryInterface"
+                type="Branch8\WishlistStockAlert\Model\StockAlertRepository"/>
+    <preference for="Branch8\WishlistStockAlert\Api\Data\StockAlertInterface"
+                type="Branch8\WishlistStockAlert\Model\StockAlert"/>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="wishlist_alert_email_queue_listing_data_source" xsi:type="string">Branch8\WishlistStockAlert\Model\ResourceModel\Queue\Grid</item>
+                <item name="wishlist_alert_item_listing_data_source" xsi:type="string">Branch8\WishlistStockAlert\Model\ResourceModel\StockAlert\Grid</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\WishlistStockAlert\Model\ResourceModel\Queue\Grid">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mainTable" xsi:type="string">branch8_wishlist_stock_alert_email_queue</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\WishlistStockAlert\Model\ResourceModel\Queue\Grid">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mainTable" xsi:type="string">branch8_wishlist_stock_alert_email_queue</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Wishlist\Model\ResourceModel\Item\Collection">
+        <plugin name="branch8_wishliststockalert_add_combo"
+                type="Branch8\WishlistStockAlert\Plugin\Magento\Wishlist\Model\ResourceModel\Item\CollectionPlugin"
+                sortOrder="10"/>
+    </type>
+</config>

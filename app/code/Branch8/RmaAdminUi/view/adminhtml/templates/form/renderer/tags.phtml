@@ -1,0 +1,46 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/**
+ * @var \Branch8\RmaAdminUi\Block\Adminhtml\Form\Renderer\Tags $block
+ */
+// phpcs:disable Magento2.Files.LineLength]
+?>
+
+<div class="field field-rate admin__field">
+    <label class="admin__field-label label" for="rate_value">
+        <span><?= $block->escapeHtml($block->getElement()->getLabel()) ?></span>
+    </label>
+    <div class="admin__field-control control">
+        <div class="boundary boundary-lower">
+            <input type="text" class="admin__control-text"
+                   id="tags" name="tags"
+                   value="<?= $block->escapeHtmlAttr($block->getValue()) ?>"/>
+        </div>
+        <div class="note admin__field-note" id="status-note">
+            <?=__('Now we will use tags to filter reasons for particular context
+                    <ul>
+                    <li><b>Frontend</b> - display on frontend</li>
+                    <li><b>Backend</b> - display on backend</li>
+                    <li><b>Seller</b> - display for seller</li>
+                    <li><b>Buyer</b> - display for buyer</li>
+                    <li><b>RMA Declination Reason</b> - display for RMA cancel reason </li>
+                    </ul>'
+            )
+            ?>
+        </div>
+    </div>
+</div>
+<?php $scriptString = <<<script
+require([
+'jquery',
+    'Branch8_RmaAdminUi/js/jquery.taginput',
+], function($,tags){
+$('#tags').tagsInput();
+});
+script;
+?>
+<?= /* @noEscape */
+$secureRenderer->renderTag('script', [], $scriptString, false); ?>

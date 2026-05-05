@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="wishlist_price_change_alert_email_template" label="Wishlist price change" file="wishlist_price_change.html" type="html" module="Branch8_Wishlist" area="frontend"/>
+</config>

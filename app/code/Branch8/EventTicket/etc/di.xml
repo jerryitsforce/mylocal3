@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="ticket_event_listing_data_source" xsi:type="string">TicketEventCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="TicketEventCollection" type="Branch8\EventTicket\Ui\DataProvider\TicketEvent\Listing\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ticket_event</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\EventTicket\Model\ResourceModel\TicketEvent</argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\EventTicket\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">tmp</argument>
+            <argument name="basePath" xsi:type="string">event_ticket</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportExport\Model\Import\SampleFileProvider">
+        <arguments>
+            <argument name="samples" xsi:type="array">
+                <item name="import_one_id_map_ticket_serial" xsi:type="string">Branch8_EventTicket</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

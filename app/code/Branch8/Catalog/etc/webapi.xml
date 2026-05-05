@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+        <route url="/V1/catalog/product/viewed" method="POST">
+            <service class="Branch8\Catalog\Api\ProductInterface" method="addViewedProduct" />
+            <resources>
+                <resource ref="Branch8_Catalog::add_viewed_product" />
+            </resources>
+        </route>
+    <route url="/V1/catalog/product/addWishlist" method="POST">
+        <service class="Branch8\Catalog\Api\ProductInterface" method="addWishlist" />
+        <resources>
+            <resource ref="Branch8_Catalog::add_wishlist_product" />
+        </resources>
+    </route>
+</routes>

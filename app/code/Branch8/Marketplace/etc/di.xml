@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\MpBundleProduct\Observer\SalesOrderPlaceAfter" type="Branch8\Marketplace\Override\MpBundleProduct\Observer\SalesOrderPlaceAfter" />
+    <type name="Webkul\Marketplace\Helper\Notification">
+        <plugin name="branch8_add_new_notification_custom" type="Branch8\Marketplace\Plugin\MarketplaceCustomNotification" sortOrder="10" disabled="false"  />
+    </type>
+    <preference for="Webkul\Marketplace\Block\Page\Notifications" type="Branch8\Marketplace\Block\Page\Notifications" />
+    <type name="Webkul\Marketplace\Model\Notification">
+        <plugin name="branch8_add_new_notify_type_custom" type="Branch8\Marketplace\Plugin\AddCustomNotifyType" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\Marketplace\Ui\Component\Listing\Columns\Frontend\NotificationInfo">
+        <plugin name="branch8_add_get_custom_notification_infor" type="Branch8\Marketplace\Plugin\NotificationInfo" sortOrder="10" disabled="false"  />
+    </type>
+    <preference for="Webkul\Marketplace\Block\Order\View" type="Branch8\Marketplace\Block\Order\View" />
+    <preference for="Webkul\Marketplace\Helper\Email" type="Branch8\Marketplace\Helper\Email"/>
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="fix-missing-record-marketplace-salelist" xsi:type="object">Branch8\Marketplace\Console\Command\FixMissingRecordMarketPlaceSaleList</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Webkul\Marketplace\Controller\Seller\Collection">
+        <plugin name="branch8_redirect_to_profile_page" type="Branch8\Marketplace\Plugin\RedirectCollectionToProfile" sortOrder="10" disabled="false"  />
+    </type>
+    <type name="Webkul\Marketplace\Helper\Data">
+        <plugin name="branch8_get_seller_information"
+                type="Branch8\Marketplace\Plugin\Webkul\Marketplace\Helper\Data" sortOrder="1"/>
+    </type>
+
+    <virtualType name="Seller2FaUrlReader" type="Magento\Framework\Config\Reader\Filesystem">
+        <arguments>
+            <argument name="converter" xsi:type="object">Branch8\Marketplace\Model\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Branch8\Marketplace\Model\Config\SchemaLocator</argument>
+            <argument name="fileName" xsi:type="string">seller_2fa.xml</argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\Marketplace\Model\Config\Data">
+        <arguments>
+            <argument name="reader" xsi:type="object">Seller2FaUrlReader</argument>
+            <argument name="cacheId" xsi:type="string">seller_2fa_urls_list_cache</argument>
+        </arguments>
+    </type>
+</config>

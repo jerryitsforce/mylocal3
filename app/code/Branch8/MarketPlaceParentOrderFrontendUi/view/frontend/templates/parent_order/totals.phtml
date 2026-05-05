@@ -1,0 +1,29 @@
+<?php /**
+ * @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Totals
+ * @see \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Totals
+ */
+
+?>
+<?php foreach ($block->getTotals() as $_code => $_total) : ?>
+    <?php if (!$block->shouldDisplay($_total)) continue; ?>
+    <?php if ($_total->getBlockName()) : ?>
+        <?= $block->getChildHtml($_total->getBlockName(), false) ?>
+    <?php else : ?>
+        <tr class="<?= $block->escapeHtmlAttr($_code) ?>">
+            <th <?= $block->getLabelProperties() ?> scope="row">
+                <?php if ($_total->getStrong()) : ?>
+                    <strong><?= $block->escapeHtml($_total->getLabel()) ?></strong>
+                <?php else : ?>
+                    <?= $block->escapeHtml($_total->getLabel()) ?>
+                <?php endif ?>
+            </th>
+            <td <?= $block->getValueProperties() ?> data-th="<?= $block->escapeHtmlAttr($_total->getLabel()) ?>">
+                <?php if ($_total->getStrong()) : ?>
+                    <strong><?= $block->formatValue($_total) ?></strong>
+                <?php else : ?>
+                    <?= $block->formatValue($_total) ?>
+                <?php endif ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+<?php endforeach ?>

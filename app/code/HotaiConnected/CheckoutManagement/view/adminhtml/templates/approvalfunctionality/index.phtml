@@ -1,0 +1,68 @@
+<?php
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var $block \Magento\Backend\Block\Template */
+
+// 從 Block 取得 filtersData 和 batchActions（由 Controller 設定）
+$filtersData = $block->getData('filters_data') ?: [];
+$batchActions = $block->getData('batch_actions') ?: [];
+?>
+<div class="approval-functionality fade-up-initial">
+    <!-- 空白頁面內容將在此處添加 -->
+
+    <!-- <div class="approval-functionality__top-actions page-main-actions">
+        <div class="page-actions">
+            <div class="page-actions-buttons">
+                <button type="button" class="action-primary">
+                    <span> btn text </span>
+                </button>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Magento 標準篩選器區塊（共用模板） -->
+    <?php
+    // 將 filtersData 傳遞給子 block
+    $sharedFiltersBlock = $block->getChildBlock('shared.filters');
+    if ($sharedFiltersBlock) {
+        $sharedFiltersBlock->setData('filters_data', $filtersData);
+    }
+    echo $block->getChildHtml('shared.filters');
+    ?>
+
+    <div class="approval-functionality__table">
+        <!-- 批量操作選擇器 -->
+        <div class="approval-functionality__table__actions">
+            <?php if(is_array($batchActions) && count($batchActions) > 0): ?>
+            <select id="batch-action-select" name="batch_action" class="admin__control-select">
+                <option value=""><?= __('Select Options') ?></option>
+                <?php foreach ($batchActions as $action): ?>
+                    <option value="<?= $block->escapeHtmlAttr($action['value']) ?>">
+                        <?= $block->escapeHtml($action['label']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <?php endif; ?>
+        </div>
+        
+        <!-- Tabulator 表格容器（遠端分頁模式）-->
+        <div id="tabulator-grid"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'hotaiLoadingMask',
+        'HotaiConnected_CheckoutManagement/js/approvalfunctionality/index'
+    ], function ($, loadingMask, approvalFunctionalityIndex) {
+        // 初始化載入動畫
+        loadingMask.init();
+        
+        // 初始化模組
+        approvalFunctionalityIndex.initialize();
+    });
+</script>
+

@@ -1,0 +1,21 @@
+{
+  "name": "branch8/module-hotai-auth",
+  "version": "1.0.0",
+  "description": "Hotai Auth Integration",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*",
+    "magento/module-customer": "103.0.*"
+  },
+  "license": [
+    "Branch8"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\HotaiAuth\\": ""
+    }
+  }
+}

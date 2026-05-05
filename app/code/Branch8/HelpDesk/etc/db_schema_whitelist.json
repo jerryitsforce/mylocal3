@@ -1,0 +1,143 @@
+{
+    "branch8_helpdesk_ticket": {
+        "column": {
+            "ticket_id": true,
+            "title": true,
+            "code": true,
+            "category_id": true,
+            "sku": true,
+            "order": true,
+            "user_id": true,
+            "create_by": true,
+            "user_email": true,
+            "user_name": true,
+            "customer_id": true,
+            "customer_email": true,
+            "customer_name": true,
+            "phone": true,
+            "team_id": true,
+            "priority": true,
+            "content": true,
+            "status": true,
+            "last_reply_name": true,
+            "last_reply_date": true,
+            "created_at": true,
+            "updated_at": true,
+            "attachment_ids": true,
+            "frontend_status": true
+        },
+        "index": {
+            "BRANCH8_HELPDESK_TICKET_CUSTOMER_NAME": true,
+            "BRANCH8_HELPDESK_TICKET_TITLE": true,
+            "BRANCH8_HELPDESK_TICKET_PHONE": true,
+            "BRANCH8_HELPDESK_TICKET_CUSTOMER_EMAIL": true,
+            "BRANCH8_HELPDESK_TICKET_CODE_TITLE": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_HELPDESK_TICKET_CODE": true,
+            "BRANCH8_HELPDESK_TICKET_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true,
+            "BRANCH8_HELPDESK_TICKET_CTGR_ID_BRANCH8_HELPDESK_CTGR_CTGR_ID": true,
+            "BRANCH8_HELPDESK_TICKET_TEAM_ID_BRANCH8_HELPDESK_TEAM_TEAM_ID": true,
+            "BRANCH8_HELPDESK_TICKET_USER_ID_ADMIN_USER_USER_ID": true,
+            "BRANCH8_HELPDESK_TICKET_CREATE_BY_ADMIN_USER_USER_ID": true
+        }
+    },
+    "branch8_helpdesk_message": {
+        "column": {
+            "message_id": true,
+            "ticket_id": true,
+            "user_id": true,
+            "user_email": true,
+            "user_name": true,
+            "customer_id": true,
+            "customer_email": true,
+            "customer_name": true,
+            "remote_ip": true,
+            "belong_to": true,
+            "content": true,
+            "is_read": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_HELPDESK_MESSAGE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true,
+            "BRANCH8_HELPDESK_MESSAGE_USER_ID_ADMIN_USER_USER_ID": true,
+            "FK_07E3F38AC11E37102E4CD1773BBD8984": true
+        }
+    },
+    "branch8_helpdesk_attachment": {
+        "column": {
+            "attachment_id": true,
+            "message_id": true,
+            "name": true,
+            "path": true,
+            "type": true,
+            "meta": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_F2962710C81B260438D293007CE739A8": true
+        }
+    },
+    "branch8_helpdesk_category": {
+        "column": {
+            "category_id": true,
+            "created_at": true,
+            "updated_at": true,
+            "position": true,
+            "is_active": true,
+            "title": true,
+            "description": true
+        },
+        "index": {
+            "BRANCH8_HELPDESK_CATEGORY_TITLE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_helpdesk_category_store": {
+        "column": {
+            "entity_id": true,
+            "category_id": true,
+            "store_id": true
+        },
+        "constraint": {
+            "BRANCH8_HELPDESK_CATEGORY_STORE_CATEGORY_ID_STORE_ID": true,
+            "PRIMARY": true,
+            "FK_C819347734807C7D9F0028781E0D7EEC": true,
+            "BRANCH8_HELPDESK_CATEGORY_STORE_STORE_ID_STORE_STORE_ID": true
+        }
+    },
+    "branch8_helpdesk_team": {
+        "column": {
+            "team_id": true,
+            "name": true,
+            "is_active": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "BRANCH8_HELPDESK_TEAM_NAME": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_helpdesk_team_user": {
+        "column": {
+            "entity_id": true,
+            "team_id": true,
+            "user_id": true
+        },
+        "constraint": {
+            "BRANCH8_HELPDESK_TEAM_USER_TEAM_ID_BRANCH8_HELPDESK_TEAM_TEAM_ID": true,
+            "BRANCH8_HELPDESK_TEAM_USER_USER_ID_ADMIN_USER_USER_ID": true,
+            "PRIMARY": true
+        }
+    }
+}

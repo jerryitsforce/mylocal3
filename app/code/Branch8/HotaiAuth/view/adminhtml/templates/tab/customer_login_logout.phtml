@@ -1,0 +1,52 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiAuth\Block\Adminhtml\Edit\Tab\LoginLogOut
+ */
+$data = $block->getCustomerDataLoginOut();
+?>
+<div class="fieldset-wrapper customer-information">
+    <div class="fieldset-wrapper-title">
+        <span class="title"><?php /* @escapeNotVerified */
+            echo __('Customer Login/Logout Action') ?></span>
+    </div>
+    <?php if (!empty($data)): ?>
+        <?php
+        $groupedData = [];
+        foreach ($data as $row) {
+            if ($row['last_login_at'] !== null) {
+                $date = date('d/m/Y', @strtotime($row['last_login_at']));
+                $groupedData[$date][] = [
+                    'event' => 'Login Time',
+                    'timestamp' => $row['last_login_at'],
+                    'device' => ucfirst($row['device'] ?? 'Other'),
+                ];
+            }
+            // Check if 'last_logout_at' is not null
+            if ($row['last_logout_at'] !== null) {
+                $date = date('d/m/Y', @strtotime($row['last_logout_at']));
+                $groupedData[$date][] = [
+                    'event' => 'Logout Time',
+                    'timestamp' => $row['last_logout_at'],
+                    'device' => ucfirst($row['device'] ?? 'Other'),
+                ];
+            }
+        }
+        ?>
+        <table class="admin__table-secondary">
+            <tbody>
+            <?php foreach ($groupedData as $date => $events): ?>
+                <tr>
+                    <td colspan="3"> <strong>Date: <?php echo $date; ?></strong></td>
+                </tr>
+                <?php foreach ($events as $event): ?>
+                    <tr>
+                        <td><?= $block->escapeHtml(ucfirst($event['event'])); ?>:</td>
+                        <td><?= $block->escapeHtml($block->getTime($event['timestamp'])); ?></td>
+                        <td><?= $block->escapeHtml($event['device']); ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>

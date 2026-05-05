@@ -1,0 +1,261 @@
+<?php
+$shipments = $this->getShipments();
+$orderItems = $this->getItems();
+/**
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+
+<form id="tracking_number_form">
+    <input type="hidden" id="order_id" name="id" value="<?php echo $this->getOrder()->getId();?>" />
+<!--    <input type="hidden" id="itemsFormKey" name="form_key" value="--><?php //echo $this->getFormKey();?><!--">-->
+    <?php echo $block->getBlockHtml('formkey')?>
+    <?php
+    if($this->getOrder()->canShip()){
+    ?>
+    <div>Tracking number for all items</div>
+        <table>
+            <thead>
+                <tr class="headings">
+                    <th class="col-carrier" style="width:200px"><?= $block->escapeHtml(__('Carrier')) ?></th>
+    <!--                <th class="col-title" style="width:200px">--><?php //= $block->escapeHtml(__('Title')) ?><!--</th>-->
+                    <th class="col-number"><?= $block->escapeHtml(__('Number')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="col-carrier txt-left">
+                    <input name="carrier_all" value="custom" type="hidden" class="carrier_all">
+                    <select name="carrier_title_all" class="select admin__control-select carrier_title_all">
+                        <?php foreach ($block->getCarriers() as $_code => $_url): ?>
+                            <option value="<?= $block->escapeHtmlAttr($_code) ?>">
+                                <?= $block->escapeHtml($_code) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+<!--                <td>-->
+<!--                    <input class="input-text admin__control-text carrier_title_all"-->
+<!--                           type="text"-->
+<!--                           name="carrier_title_all"-->
+<!--                           value="" />-->
+<!--                </td>-->
+                <td class="txt-left">
+                    <input class="input-text admin__control-text required-entry tracking_number_all"
+                           type="text"
+                           name="tracking_number_all"
+                           value="" />
+                    <button class="button add-tracking-number" title="Create Shipment" type="button" id="add-tracking-number">
+                        <span><span><?php echo __("Create shipment");?></span></span>
+                    </button>
+                    <?php /* Logistics pickup button hidden - pending frontend/backend separation
+                    <button class="button logistics-pickup-number" title="Logistics Pickup Number" type="button" id="logistics-pickup-number">
+                        <span><span><?php echo __("物流取號");?></span></span>
+                    </button>
+                    */ ?>
+                </td>
+            </tr>
+            <tr>
+                <td id="add_shipment_msg" class="" colspan="3" style="display: table-cell"></td>
+            </tr>
+            </tbody>
+        </table>
+    <?php
+    }
+    ?>
+    <table>
+        <thead>
+        <tr>
+            <th colspan="7"><?php echo __('Items not yet shipped');?></th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" name="select_all_item" id="select_all_item" /> </td>
+            <th>#</th>
+            <th>Product</th>
+            <th>SKU</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <?php /* Logistics print column hidden - pending frontend/backend separation
+            <th>Print</th>
+            */ ?>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $cntItemNoShipment = 0;
+        $isFlagshipStoreProcessOrder = $this->getOrder()->getData('is_flagship_store_process_order');
+        foreach($orderItems as $_itemId => $_item){
+            if(isset($shipments[$_itemId])){
+               continue;
+            }
+            $cntItemNoShipment ++;
+            ?>
+            <tr>
+                <td class="txt-left">
+                <?php
+                if(!isset($shipments[$_itemId]) && $_item->getProductType() != \Magento\Catalog\Model\Product\Type::TYPE_VIRTUAL){?>
+                        <input type="checkbox" class="order_items" name="order_items[<?php echo $_item->getId();?>]" value="<?php echo $_item->getId();?>">
+                <?php }?>
+                </td>
+                <td  class="txt-left"><?php echo $cntItemNoShipment;?></td>
+                <td  class="txt-left"><?php echo $_item->getName();?></td>
+                <td  class="txt-left"><?php echo $_item->getSku();?></td>
+                <td  class="txt-left">
+                    <?php echo $isFlagshipStoreProcessOrder ? 0 : $_item->getPrice();?>
+                </td>
+                <td  class="txt-left">
+                    <div>Ordered: <?php echo $_item->getQtyOrdered()*1;?></div>
+                    <div>Invoiced: <?php echo $_item->getQtyInvoiced()*1;?></div>
+                    <div>Shipped: <?php echo $_item->getQtyShipped()*1;?></div>
+                </td>
+                <?php /* Logistics waybill print/status column hidden - pending frontend/backend separation
+                <td class="txt-left">
+                    <?php
+                    $waybill = $block->getWaybillByItemId($_item->getId());
+                    if ($waybill && $waybill->getId()): ?>
+                        <button class="button print-waybill"
+                                type="button"
+                                data-item-id="<?php echo $_item->getId(); ?>"
+                                data-waybill-id="<?php echo $waybill->getId(); ?>">
+                            <span><span><?php echo __("列印");?></span></span>
+                        </button>
+                    <?php else: ?>
+                        <span class="no-waybill"><?php echo __("未取號");?></span>
+                    <?php endif; ?>
+                </td>
+                */ ?>
+                <td>&nbsp;</td>
+            </tr>
+            <?php
+        }
+        if(!$cntItemNoShipment){?>
+            <tr>
+                <td colspan="7" align="center"><?php echo __('All items are shipped');?></td>
+            </tr>
+        <?php
+        }
+        foreach($this->getShipmentCollection() as $_shipment){?>
+            <thead>
+            <tr>
+                <td colspan="6">
+                    Shipment #<?php echo $_shipment->getIncrementId();?>
+                    <input type="hidden" name="smid" class="smid" id="smid<?php echo $_shipment->getId();?>" value="<?php echo $_shipment->getId();?>">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <?php
+                    $trackData = $this->getTrackingData($_shipment);
+                    if(!empty($trackData)){
+                        $trackingCode = $trackData['tracking_code'];
+                        $carrierTitle = $trackData['carrier_title'];
+                        $carrierCode = $trackData['carrier_title'];//$trackData['carrier_code'];
+                    }else{
+                        $trackingCode = '';
+                        $carrierTitle = '';
+                        $carrierCode = '';
+                    }
+                    ?>
+                    <table>
+                        <thead>
+                        <tr class="headings">
+                            <th class="col-carrier"><?= $block->escapeHtml(__('Carrier')) ?></th>
+<!--                            <th class="col-title">--><?php //= $block->escapeHtml(__('Title')) ?><!--</th>-->
+                            <th class="col-number"><?= $block->escapeHtml(__('Number')) ?></th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="col-carrier txt-left">
+                                <input name="carrier[<?php echo $_shipment->getId();?>]" type="hidden" value="custom" class="carrier<?php echo $_shipment->getId();?>">
+                                <select name="carrier_title[<?php echo $_shipment->getId();?>]" class="select admin__control-select carrier carrier_title<?php echo $_shipment->getId();?>">
+                                    <?php foreach ($block->getCarriers() as $_code => $_url): ?>
+                                        <option <?php echo ($carrierCode == $_code) ? 'selected' : '';?>  value="<?= $block->escapeHtmlAttr($_code) ?>">
+                                            <?= $block->escapeHtml($_code) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+<!--                            <td class="col-title">-->
+<!--                                <input class="input-text admin__control-text carrier_title carrier_title--><?php //echo $_shipment->getId();?><!--"-->
+<!--                                       type="text"-->
+<!--                                       name="carrier_title[--><?php //echo $_shipment->getId();?><!--]"-->
+<!--                                       value="--><?php //echo $carrierTitle;?><!--" />-->
+<!--                            </td>-->
+                            <td class="col-number txt-left">
+                                <input class="input-text admin__control-text tracking_number tracking_number<?php echo $_shipment->getId();?>"
+                                       type="text"
+                                       name="tracking_number[<?php echo $_shipment->getId();?>]"
+                                       value="<?php echo $trackingCode;?>" />
+                            </td>
+                            <td class="txt-left">
+                                <button class="button update-tracking-number" title="Create Shipment" type="button" id="update-tracking-number" data-id="<?php echo $_shipment->getId();?>">
+                                    <span><span><?php echo __("Update Tracking Number");?></span></span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <th>#</th>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Price</th>
+                <th>Qty</th>
+            </tr>
+            </thead>
+            <?php
+            $cnt = 0;
+            foreach($_shipment->getItems() as $_shipmentItem){
+                $cnt ++;
+                $_item = $orderItems[$_shipmentItem->getOrderItemId()];
+            ?>
+            <tr>
+                <td>&nbsp;</td>
+                <td class="txt-left"><?php echo $cnt;?></td>
+                <td class="txt-left"><?php echo $_item->getName();?></td>
+                <td class="txt-left"><?php echo $_item->getSku();?></td>
+                <td class="txt-left"><?php echo $_item->getPrice();?></td>
+                <td class="txt-left">
+                    <div>Ordered: <?php echo $_item->getQtyOrdered()*1;?></div>
+                    <div>Invoiced: <?php echo $_item->getQtyInvoiced()*1;?></div>
+                    <div>Shipped: <?php echo $_item->getQtyShipped()*1;?></div>
+                </td>
+                <td>
+                <?php
+                }
+                ?>
+            </td>
+        </tr>
+        <?php
+        }
+        ?>
+        </tbody>
+    </table>
+</form>
+<?php
+$scriptString = <<<script
+
+require(['prototype', 'jquery', 'Magento_Ui/js/modal/confirm'], function(prototype, \$j, confirm) {
+//<![CDATA[
+    function selectCarrierAll(elem) {
+        var option = elem.options[elem.selectedIndex];
+        \$j(elem).parent().parent().find('input[name="carrier_title_all"]').val(option.value && option.value != 'custom' ? option.text : '');
+    }
+    function selectCarrier(elem) {
+        var option = elem.options[elem.selectedIndex];
+        \$j(elem).parent().parent().find('input.carrier_title').val(option.value && option.value != 'custom' ? option.text : '');
+    }
+    \$j('select[name="carrier_all"]').change(function(){
+        selectCarrierAll($(this));
+    });
+    \$j('select.carrier').change(function(){
+        selectCarrier($(this));
+    });
+    
+});
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>

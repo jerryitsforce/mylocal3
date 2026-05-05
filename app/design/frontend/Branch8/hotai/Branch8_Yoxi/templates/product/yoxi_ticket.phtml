@@ -1,0 +1,37 @@
+<?php
+
+/** @var $block \Webkul\Marketplace\Block\Product\Create */
+
+$viewModel = $block->getViewModel();
+?>
+<div id="yoxi-ticket-block">
+    <h3 class="title">
+        <?= /* @noEscape */ $escaper->escapeHtml(__('YOXI ticket record overview')); ?>
+    </h3>
+    <div id="yoxi-ticket-block-loader" class="admin__data-grid-outer-wrap" style="display:block;">
+        <div class="admin__data-grid-loading-mask">
+            <div class="spinner">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+    <div id="yoxi-ticket-block-wrapper" style="display:none;">
+        <?= $block->getChildHtml(); ?>
+    </div>
+</div>
+<?php
+$formData = [
+    'yoxiTicket' => $viewModel->getJsonHelper()->jsonEncode([])
+];
+$serializedFormData = $viewModel->getJsonHelper()->jsonEncode($formData);
+?>
+
+<script type="text/x-magento-init">
+    {
+        "#yoxi-ticket-block": {
+            "yoxiTicket": <?= /* @noEscape */ $serializedFormData; ?>
+    }
+}
+</script>
+
+

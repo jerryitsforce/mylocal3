@@ -1,0 +1,25 @@
+<?php
+/** @var  $block Magenest\NotificationBox\Block\Notification\Notification */
+?>
+<div class="magenest-notification-popup noti-popup" hidden>
+    <div class="notification-wrapper">
+        <p class="magenest-notification-popup--close close"></p>
+        <div class="notification-popup">
+            <p class="mgn-message-allow-subscriber"></p>
+            <div class="answer-wrapper">
+                <p class="defer"><?=__('Remind me later')?></p>
+                <button id="mgn-allow-receive-notice" class="action tocart primary"><?=__('Allow')?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "notificationBox": {
+                "timeResendPopup": "<?= $block->getTimeResendPopUp() ?>"
+            }
+        }
+    }
+</script>
+

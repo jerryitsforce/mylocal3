@@ -1,0 +1,36 @@
+<?php
+/**
+ * @var $block Branch8\WebkulMpBuyerSellerChatSellerUi\Block\Seller\ActiveModel
+ */
+$helper = $block->getHelperObject();
+$sellerExist= $helper->isSellerExist();
+$isSeparateDashboard = $helper->getIsSeparatePanel();
+$charWindowDisplay = $block->checkChatWindowView();
+$currencySymbol = $block->getCurrentCurrencySymbol();
+$viewOrdersUrl = $block->getUrl('marketplace/order/history');
+$mediaUrl = $block->getUrl('mpchatsystem/index/viewfile?image=');
+$mediaUrl = str_replace("image=/", "image=", $mediaUrl);
+if ($isSeparateDashboard > 0) {
+    $dashboard = 'separate';
+} else {
+    $dashboard = '';
+}
+?>
+
+<?php if ($sellerExist && $charWindowDisplay): ?>
+    <script>
+        window.sellerChatboxConfig = <?= /* @noEscape */ \Laminas\Json\Json::encode($block->getChatBoxConfig()); ?>;
+        window.baseUrl = <?= /* @noEscape */ $block->jsonFormat($block->getBaseUrl()); ?>;
+        window.dashboard = <?= /* @noEscape */ $block->jsonFormat($dashboard); ?>
+    </script>
+    <div id="active-users" data-bind="scope:'active-users'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <script type="text/x-magento-init">
+        {
+            "#active-users": {
+                "Magento_Ui/js/core/app":  <?= /* @noEscape */ $block->getJsLayout();?>
+            }
+        }
+        </script>
+    </div>
+<?php endif; ?>

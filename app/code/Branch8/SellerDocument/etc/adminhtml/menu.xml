@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Branch8::top_level" title="Branch8" module="Branch8_SellerDocument" sortOrder="9999" resource="Magento_Backend::content"/>
+		<add id="Branch8_SellerDocument::branch8_sellerdocument_file" title="File" module="Branch8_SellerDocument" sortOrder="9999" resource="Magento_Backend::content" parent="Branch8::top_level" action="marketplace_sellerdocument/file/index"/>
+	</menu>
+</config>

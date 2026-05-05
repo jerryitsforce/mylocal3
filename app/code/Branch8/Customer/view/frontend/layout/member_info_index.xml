@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+	<head>
+        <title>會員制度</title>
+    </head>
+	<body>
+		<referenceContainer name="after.body.start">
+			<block name="info.loader" class="Magento\Framework\View\Element\Template" template="Branch8_Customer::info/loader.phtml"/>
+		</referenceContainer>
+		<referenceContainer name="content">
+			<block name="info.index" class="Branch8\Customer\Block\Info\Index" template="Branch8_Customer::info/index.phtml"/>
+		</referenceContainer>
+	</body>
+</page>

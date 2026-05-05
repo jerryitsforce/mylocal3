@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="400">
+            <label>Branch8</label>
+        </tab>
+        <section id="product_discussion" sortOrder="100" showInWebsite="0" showInStore="0" showInDefault="1"
+                 translate="label">
+            <group id="seller" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Seller</label>
+                <field id="page_size" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Page Size</label>
+                </field>
+                <group id="email" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+                    <label>Email</label>
+                    <field id="enable_sendmail" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="0"
+                           showInStore="1">
+                        <label>Notify To Customer When Seller Reply</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>product_discussion/seller/enable_sendmail</config_path>
+                    </field>
+                    <field id="seller_reply_identity" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0"
+                           showInStore="0" canRestore="1">
+                        <label>Email Sender</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                        <depends>
+                            <field id="enable_sendmail">1</field>
+                        </depends>
+                        <config_path>product_discussion/seller/seller_reply_identity</config_path>
+                    </field>
+                    <field id="reply_template" translate="label" type="select" sortOrder="15" showInDefault="1"
+                           showInWebsite="0" showInStore="0">
+                        <label>Seller Reply Email Template</label>
+                        <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                        <config_path>product_discussion/seller/reply_template</config_path>
+                        <depends>
+                            <field id="enable_sendmail">1</field>
+                        </depends>
+                    </field>
+
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

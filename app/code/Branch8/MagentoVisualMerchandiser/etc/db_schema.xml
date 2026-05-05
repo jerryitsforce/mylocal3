@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="visual_merchandiser_rule_index" resource="default" engine="innodb"
+           comment="Reindex rule if neccessary">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="vm_rule_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Visual Merchandiser Rule ID"/>
+        <column xsi:type="timestamp" name="last_index" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Last Index Time"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="255" comment="status" default="pending"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="VM_RULE_ID_UNIQUE">
+            <column name="vm_rule_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="visual_merchandiser_rule_index_vm_rule_id"
+                    table="visual_merchandiser_rule_index"
+                    column="vm_rule_id"
+                    referenceTable="visual_merchandiser_rule"
+                    referenceColumn="rule_id" onDelete="CASCADE"/>
+    </table>
+    <table name="visual_merchandiser_rule" resource="default" engine="innodb" comment="VisualMerchandiser Rules Table">
+        <column xsi:type="smallint" name="use_advance_rule" unsigned="true"  nullable="false" default="0"
+                comment="Use Advance Conditions"/>
+        <column xsi:type="mediumtext" name="advance_conditions_serialized" nullable="true" comment="Conditions Serialized"/>
+    </table>
+</schema>

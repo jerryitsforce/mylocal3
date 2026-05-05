@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Customer Group Catalog for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_groupcat_rule" resource="default" engine="innodb" comment="Customer Group Catalog Rule">
+        <column xsi:type="varchar" name="forbidden_specificed_url" nullable="true" length="1024" comment="Forbidden Specificed Url"/>
+        <column xsi:type="varchar" name="forbidden_page_id_for_guest" nullable="true" length="1024" comment="Forbidden Page Id For Guest"/>
+    </table>
+</schema>

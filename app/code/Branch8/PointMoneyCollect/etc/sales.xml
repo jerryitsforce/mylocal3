@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="point_used" instance="Branch8\PointMoneyCollect\Model\Total\Quote\Point" sort_order="450"/>
+        </group>
+    </section>
+    <section name="order_invoice">
+        <group name="totals">
+            <item name="point_used" instance="Branch8\PointMoneyCollect\Model\Total\Invoice\Point" sort_order="400"/>
+        </group>
+    </section>
+</config>

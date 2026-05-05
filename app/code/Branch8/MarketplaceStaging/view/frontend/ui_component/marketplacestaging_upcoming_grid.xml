@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">marketplacestaging_upcoming_grid.marketplacestaging_upcoming_grid_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>columns</spinner>
+        <deps>
+            <dep>marketplacestaging_upcoming_grid.marketplacestaging_upcoming_grid_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="marketplacestaging_upcoming_grid_data_source" component="Branch8_MarketplaceStaging/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">id</param>
+            </storageConfig>
+            <updateUrl path="marketplace/mui_index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="marketplacestaging_upcoming_grid_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>row_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="columns" template="Branch8_MarketplaceStaging/grid/listing">
+        <column name="start_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" displayArea="start-datetime-area">
+            <settings>
+                <timeFormat>h:mm A</timeFormat>
+                <dateFormat>MMM d, y</dateFormat>
+                <bodyTmpl>Branch8_MarketplaceStaging/grid/cells/cell-date</bodyTmpl>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="name" displayArea="details-area">
+            <settings>
+                <label translate="true">Name</label>
+                <sorting>asc</sorting>
+                <fieldClass>
+                    <class name="schedule-name">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+        <column name="description" displayArea="details-area">
+            <settings>
+                <label translate="true">Description</label>
+                <fieldClass>
+                    <class name="limited-text">true</class>
+                </fieldClass>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="marketplaceStagingUpcomingGridActions" displayArea="actions-area">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="align" xsi:type="string">left</item>
+                    <item name="data_type" xsi:type="string">actions</item>
+                    <item name="filterable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>id</indexField>
+                <dataType>actions</dataType>
+                <label translate="true">Action</label>
+                <bodyTmpl>Branch8_MarketplaceStaging/grid/cells/actions</bodyTmpl>
+                <draggable>false</draggable>
+                <sortable>false</sortable>
+            </settings>
+        </actionsColumn>
+        <column name="end_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date" displayArea="end-datetime-area">
+            <settings>
+                <timeFormat>h:mm A</timeFormat>
+                <dateFormat>MMM d, y</dateFormat>
+                <bodyTmpl>Branch8_MarketplaceStaging/grid/cells/cell-date</bodyTmpl>
+            </settings>
+        </column>
+    </columns>
+</listing>

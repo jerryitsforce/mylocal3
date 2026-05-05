@@ -1,0 +1,49 @@
+{
+    "sales_order_grid": {
+        "column": {
+            "shipping_phone": true,
+            "shipping_zipcode": true,
+            "shipping_city": true,
+            "shipping_region": true,
+            "billing_phone": true
+        }
+    },
+    "marketplace_rma_grid": {
+        "column": {
+            "id": true,
+            "created_date": true,
+            "order_created_at": true,
+            "salesperson": true,
+            "seller_id": true,
+            "resolution_type": true,
+            "order_ref": true,
+            "customer_id": true,
+            "customer_name": true,
+            "customer_email": true,
+            "status": true,
+            "order_status": true,
+            "rma_order_status": true,
+            "product_name": true,
+            "product_sku": true,
+            "supplier_sku": true,
+            "rma_phone": true,
+            "shipping_method": true,
+            "product_seller": true
+        },
+        "index": {
+            "MARKETPLACE_RMA_GRID_SALESPERSON": true,
+            "MARKETPLACE_RMA_GRID_ORDER_REF": true,
+            "MARKETPLACE_RMA_GRID_CUSTOMER_NAME": true,
+            "MARKETPLACE_RMA_GRID_CUSTOMER_EMAIL": true,
+            "MARKETPLACE_RMA_GRID_STATUS": true,
+            "MARKETPLACE_RMA_GRID_ORDER_STATUS": true,
+            "MARKETPLACE_RMA_GRID_PRODUCT_NAME": true,
+            "MARKETPLACE_RMA_GRID_PRODUCT_SKU": true,
+            "MARKETPLACE_RMA_GRID_RMA_PHONE": true,
+            "MARKETPLACE_RMA_GRID_SHIPPING_METHOD": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

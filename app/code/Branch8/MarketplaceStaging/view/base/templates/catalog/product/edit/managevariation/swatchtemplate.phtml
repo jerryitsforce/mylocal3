@@ -1,0 +1,108 @@
+<?php
+/**
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+<script id="wk-swatch-form-template" type="text/x-magento-template">
+    <form class="wk-swatch-form" id="wk-swatch-form">
+        <div class="data-grid-search-control-wrap">
+            <input id="swatch-search" class="admin__control-text data-grid-search-control"
+             type="text" placeholder="<?= $escaper->escapeHtml(__('Search by keyword')) ?>" >
+        </div>
+        <div id="pagination">
+            <div class="admin__control-table-pagination">
+                <div class="form-group"><select class="form-control pageNum-select maxRows">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="5000"><?= $escaper->escapeHtml('Show ALL Rows') ?></option>
+</select>
+<label class="admin__control-support-text">
+    <?= $escaper->escapeHtml(__('per page')) ?>
+</label>
+<div class="admin__data-grid-pager">
+    <button class="action-previous pre-pag-btn" type="button"
+            title="Previous Page" disabled=""></button>
+    <input class="admin__control-text currenpage" type="number">
+    <label class="admin__control-support-text pagenumlabel">of 1</label>
+    <button class="action-next nxt-pag-btn" type="button" title="Next Page" disabled=""></button>
+</div>
+</div>
+</div>
+</div>
+<table class="data-grid wk-swatch-table" id="swatch-tbl">
+    <thead>
+    <tr>
+        <th class="data-grid-th">
+            <input class="admin__control-checkbox mass-selection" type="checkbox" id="check">
+        </th>
+        <th class="data-grid-th w-95"><?= $escaper->escapeHtml(__('Option Label')); ?></th>
+    </tr>
+    </thead>
+    <% var rowClass = "_even-row"; %>
+    <% _.each(data.swatchs, function(swatchData, index) { %>
+    <% if (index%2!=0) { %>
+    <% rowClass = "_odd-row"; %>
+    <% } %>
+    <%
+    var originalString = swatchData.title;
+    var value = originalString.replace(/(<([^>]+)>)/gi, "");
+    %>
+    <% if (swatchData.type=="radio" || swatchData.type=="drop-down" || swatchData.type=="drop_down") { %>
+    <tr class="data-row <%- rowClass %>">
+        <td>
+            <label class="data-grid-checkbox-cell-inner">
+                <% if (data.formattedSwatch[value]==1) { %>
+                <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                       name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>" checked>
+                <% } else { %>
+                <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                       name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>">
+                <% } %>
+                <label for="is-swatch-<%- index %>"></label>
+            </label>
+        </td>
+        <td>
+            <input class="admin__control-text wk-swatch-id" type="hidden"
+                   value="<%- swatchData.option_id %>" name="wkswatch[<%- index %>][option_id]">
+            <input class="admin__control-text wkswatch-title" type="hidden"
+                   value="<%- value %>" name="wkswatch[<%- index %>][title]"> <%- value %>
+        </td>
+    </tr>
+    <% } else { %>
+    <tr class="data-row <%- rowClass %>" style="display:none;">
+        <td>
+            <label class="data-grid-checkbox-cell-inner">
+                <% if (data.formattedSwatch[value]==1) { %>
+                <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                       name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>" checked>
+                <% } else { %>
+                <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                       name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>">
+                <% } %>
+                <label for="is-swatch-<%- index %>"></label>
+            </label>
+        </td>
+        <td>
+            <input class="admin__control-text wk-swatch-id" type="hidden"
+                   value="<%- swatchData.option_id %>"
+                   name="wkswatch[<%- index %>][option_id]">
+            <input class="admin__control-text wkswatch-title" type="hidden" value="<%- value %>"
+                   name="wkswatch[<%- index %>][title]">
+            <%- value %>
+        </td>
+    </tr>
+    <% } %>
+    <% }); %>
+</table>
+<div class="pagination-container">
+    <nav>
+        <ul class="pagination"></ul>
+    </nav>
+</div>
+<div class="rows_count">Showing 10 to 20 of 91 entries</div>
+</form>
+</script>

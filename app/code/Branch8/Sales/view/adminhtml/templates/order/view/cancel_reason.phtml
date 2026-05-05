@@ -1,0 +1,27 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var $block \Magento\Sales\Block\Adminhtml\Order\AbstractOrder
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var $cancelModel \Branch8\Sales\ViewModel\CancelModel
+ */
+$cancelModel = $block->getData('cancel_model');
+$cancelReason = $cancelModel->getOrderCancellation($block->getOrder());
+if (!$cancelReason) {
+    return;
+}
+?>
+<?php $order = $block->getOrder() ?>
+<div class="admin__page-section-item order-shipping-method">
+    <div class="admin__page-section-item-content">
+        <?php if ($order->getShippingDescription()): ?>
+            <?= $block->escapeHtml($cancelReason) ?>
+        <?php else: ?>
+            <?= $block->escapeHtml(__('No Cancellation Reason')) ?>
+        <?php endif; ?>
+    </div>
+</div>

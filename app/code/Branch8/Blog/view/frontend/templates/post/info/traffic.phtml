@@ -1,0 +1,22 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Post\View;
+use Branch8\Blog\Helper\Image;
+use Branch8\Blog\Model\Config\Source\Comments\Type;
+use Magento\Framework\Escaper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+$_post = $block->getPost();
+?>
+<?php if ($_post->getViewTraffic()) : ?>
+    |
+    <span><i class="blog-icon blog-traffic" aria-hidden="true"></i>
+                            <?= $escaper->escapeHtml(__('View: %1', $_post->getViewTraffic())) ?>
+                        </span>
+<?php endif; ?>

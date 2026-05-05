@@ -1,0 +1,38 @@
+{
+    "branch8_certification_type": {
+        "column": {
+            "entity_id": true,
+            "certification_name": true,
+            "status": true,
+            "icon": true,
+            "category_ids": true,
+            "sort_order": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "BRANCH8_CERTIFICATION_TYPE_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_product_certification": {
+        "column": {
+            "entity_id": true,
+            "product_id": true,
+            "certification_type_id": true,
+            "certification_value": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "BRANCH8_PRODUCT_CERTIFICATION_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_PRODUCT_CERTIFICATION_PRODUCT_ID_CERTIFICATION_TYPE_ID": true,
+            "FK_521C26F0ECBC315F77B1CA993629EF89": true
+        }
+    }
+}

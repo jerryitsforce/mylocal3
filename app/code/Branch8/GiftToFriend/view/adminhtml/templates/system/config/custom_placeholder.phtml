@@ -1,0 +1,51 @@
+<script>
+    var cities = <?php echo $this->getCities();?>;
+    var currentCity = "<?php echo ($this->getCurrentCity()) ? $this->getCurrentCity() : '';?>";
+    require([
+    'jquery',
+    'plugins/DOMPurify'
+    ], function($, DOMPurify) {
+    'use strict';
+    var jQ = $.noConflict();
+    jQ('#row_gift_order_placeholder_address_city').addClass('hide').hide();
+    jQ(document).ajaxComplete(function() {
+        let plRegion = DOMPurify.sanitize(jQ('#gift_order_placeholder_address_region_id').val());
+        reloadPlCity(plRegion);
+        jQ('#row_gift_order_placeholder_address_city').addClass('hide').hide();
+    });
+
+    function reloadPlCity(regionId){
+        let rCities = cities[regionId];
+        let cityOptions = '';
+        for (const key in rCities) {
+            if(key == currentCity){
+                cityOptions += DOMPurify.sanitize('<option value="'+key+'" selected>'+rCities[key]+'</option>');
+            }else{
+                cityOptions += DOMPurify.sanitize('<option value="'+key+'">'+rCities[key]+'</option>');
+            }
+        }
+        jQ('#gift_order_placeholder_address_city_id').html(cityOptions);
+        reloadCity();
+    }
+
+    function reloadCity(){
+        const regionId = jQ('#gift_order_placeholder_address_region_id').val();
+        const cityId = jQ('#gift_order_placeholder_address_city_id').val();
+        const rCities = cities[regionId];
+        const city = rCities[cityId] || '';
+        // console.log('reloadCity', city);
+        jQ('#gift_order_placeholder_address_city').val(city);
+    }
+
+    jQ('#gift_order_placeholder_address_region_id').change(function(){
+        let plRegion = $(this).val();
+        reloadPlCity(plRegion);
+    });
+
+    jQ('#gift_order_placeholder_address_city_id').change(function(){
+        let plRegion = $(this).val();
+        // console.log('change city_id', plRegion);
+        reloadCity();
+    });
+});
+</script>

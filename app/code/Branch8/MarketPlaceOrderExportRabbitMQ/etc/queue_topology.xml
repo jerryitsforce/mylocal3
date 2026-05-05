@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento">
+        <binding id="Branch8OrderExport0" topic="branch8.order.export.assynchronization0" destination="branch8.order.export.assynchronization0"/>
+        <binding id="Branch8OrderExport1" topic="branch8.order.export.assynchronization1" destination="branch8.order.export.assynchronization1"/>
+        <binding id="Branch8OrderExport2" topic="branch8.order.export.assynchronization2" destination="branch8.order.export.assynchronization2"/>
+        <binding id="Branch8OrderMailSent" topic="branch8.order.export.assynchronizationmailsent" destination="branch8.order.export.assynchronizationmailsent"/>
+        <binding id="Branch8OrderNotification" topic="branch8.order.notification.synchronization" destination="branch8.order.notification.synchronization"/>
+    </exchange>
+</config>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Mageplaza_Core::css/font-awesome.min.css"/>
+        <css src="Branch8_Blog::css/managePost.css"/>
+    </head>
+    <body>
+        <referenceContainer name="sidebar.main">
+            <block class="Magento\Framework\View\Element\Template" name="sidebar.main.blog_nav" template="Magento_Theme::html/collapsible.phtml" before="-">
+                <arguments>
+                    <argument name="block_css" xsi:type="string">block-collapsible-nav</argument>
+                </arguments>
+                <block class="Branch8\Blog\Block\Navigation" name="blog_account_navigation" before="-">
+                    <arguments>
+                        <argument name="css_class" xsi:type="string">nav items</argument>
+                    </arguments>
+                    <block class="Magento\Framework\View\Element\Html\Link\Current" name="blog-navigation-info">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Author Information</argument>
+                            <argument name="path" xsi:type="string">blog/author/information</argument>
+                            <argument name="sortOrder" xsi:type="number">10</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Framework\View\Element\Html\Link\Current" name="blog-navigation-post-list">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Post List</argument>
+                            <argument name="path" xsi:type="string">blog/post/history</argument>
+                            <argument name="sortOrder" xsi:type="number">20</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Framework\View\Element\Html\Link\Current" name="blog-navigation-back">
+                        <arguments>
+                            <argument name="label" xsi:type="string" translate="true">Back</argument>
+                            <argument name="path" xsi:type="string">customer/account/</argument>
+                            <argument name="sortOrder" xsi:type="number">100</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="head.additional">
+            <block class="Branch8\Blog\Block\Design" ifconfig="blog/general/customer_approve" name="blog.design" template="Branch8_Blog::design.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

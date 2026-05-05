@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="user_role" translate="label" type="text" sortOrder="120" showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="1">
+            <label>CMS PAGE Permission</label>
+            <tab>branch8</tab>
+            <resource>Branch8_UserCustom::config</resource>
+            <group id="general_settings" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General Settings</label>
+                <field id="user_role" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>User Role</label>
+                    <source_model>Branch8\UserCustom\Model\Source\UserRole</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

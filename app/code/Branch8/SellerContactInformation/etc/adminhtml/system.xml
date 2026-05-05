@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="seller_info" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Seller Config</label>
+            <tab>branch8</tab>
+            <resource>Webkul_Marketplace::config_marketplace</resource>
+        </section>
+        <section id="seller_flagship" translate="label" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Flagship</label>
+            <tab>branch8</tab>
+            <resource>Webkul_Marketplace::config_marketplace</resource>
+            <group id="general" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General</label>
+                <field id="categories" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Category</label>
+                    <frontend_model>Branch8\SellerContactInformation\Block\Adminhtml\MultiSelect</frontend_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="hotai_point_sales_order_place_after_observer_execute_start">
+        <observer name="family_bonus_pin_ticket_set_allocation_observer" instance="Branch8\FamilyBonusPin\Observer\TicketSetAllocationObserver" />
+    </event>
+
+    <event name="hotai_point_sales_order_place_after_observer_execute_exception">
+        <observer name="family_bonus_pin_ticket_reset_imported_observer_sales_order_place_after" instance="Branch8\FamilyBonusPin\Observer\TicketResetImportedObserver" />
+    </event>
+
+    <event name="hotai_point_deduction_commit_flow_end">
+        <observer name="family_bonus_pin_ticket_set_sold_observer" instance="Branch8\FamilyBonusPin\Observer\TicketSetSoldObserver" />
+    </event>
+
+    <!-- 改由Branch8\Refund\Observer\CancelObserver和Branch8\HotaiCore\Helper\VirtualProduct::cancelTickets()處理 -->
+    <!-- <event name="sales_order_save_after">
+        <observer name="family_bonus_pin_order_change_to_canceled_observer" instance="Branch8\FamilyBonusPin\Observer\OrderChangeToCanceled" />
+    </event> -->
+</config>

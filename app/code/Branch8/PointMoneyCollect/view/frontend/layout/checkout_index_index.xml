@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="additional" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="point-apply" xsi:type="array">
+                                                    <item name="sortOrder" xsi:type="string">10</item>
+                                                    <item name="component" xsi:type="string">Branch8_PointMoneyCollect/js/view/checkout/summary/point-apply</item>
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="pointTitle" xsi:type="string" translate="true">Apply Point Discount</item>
+                                                        <item name="pointInfor" xsi:type="string" translate="true">Text information for Point</item>
+                                                        <item name="pointLimit" xsi:type="string" translate="true">Limit point to apply is</item>
+                                                        <item name="pointTxt" xsi:type="string" translate="true">point</item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

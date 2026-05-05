@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V2/message/save-message/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\SaveMessageInterface"
+                 method="saveChatMessage"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/chat-profile/changeStatus/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\ChatProfileRepositoryInterface"
+                 method="changeStatus"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/chat/load-recently/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\LoadRecentlyChatInterface"
+                 method="load"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/chat/load-history/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\LoadChatHistoryInterface"
+                 method="load"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/chat/total-unread-messages/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\TotalUnreadMessageInterface"
+                 method="get"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/chat/last-read-message/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\LastReadMessageInterface"
+                 method="save"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+
+    <!-- Seller Endpoints-->
+    <route url="/V2/seller/message/save-message/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\SaveMessageInterface"
+                 method="saveChatMessage"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/seller/chat-profile/changeStatus/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\ChatProfileRepositoryInterface"
+                 method="changeStatus"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/seller/chat/load-recently/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\LoadRecentlyChatInterface"
+                 method="load"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/seller/chat/load-history/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\LoadChatHistoryInterface"
+                 method="load"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/seller/chat/total-unread-messages/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\TotalUnreadMessageInterface"
+                 method="get"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <route url="/V2/seller/chat/last-read-message/" method="POST">
+        <service class="Branch8\WebkulMpBuyerSellerChat\Api\LastReadMessageInterface"
+                 method="save"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    <!-- End Seller Endpoints-->
+</routes>

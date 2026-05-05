@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Interface preferences -->
+    <preference for="HotaiConnected\TicketApi\Api\FamilyNotifyInterface" 
+                type="HotaiConnected\TicketApi\Model\Api\FamilyNotify"/>
+    <preference for="HotaiConnected\TicketApi\Api\QwareNotifyInterface" 
+                type="HotaiConnected\TicketApi\Model\Api\QwareNotify"/>
+    
+    <!-- TicketResource configuration -->
+    <type name="HotaiConnected\TicketApi\Model\ResourceModel\TicketResource">
+        <arguments>
+            <argument name="hotaiCoreCommonHelper" xsi:type="object">Branch8\HotaiCore\Helper\Common</argument>
+            <argument name="request" xsi:type="object">Magento\Framework\Webapi\Rest\Request\Proxy</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+        </arguments>
+    </type>
+   
+    <!-- FamilyNotify configuration -->
+    <type name="HotaiConnected\TicketApi\Model\Api\FamilyNotify">
+        <arguments>
+            <argument name="request" xsi:type="object">Magento\Framework\Webapi\Rest\Request\Proxy</argument>
+            <argument name="response" xsi:type="object">Magento\Framework\Webapi\Rest\Response\Proxy</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+            <argument name="ticketResource" xsi:type="object">HotaiConnected\TicketApi\Model\ResourceModel\TicketResource</argument>
+        </arguments>
+    </type>
+
+    <!-- QwareNotify configuration -->
+    <type name="HotaiConnected\TicketApi\Model\Api\QwareNotify">
+        <arguments>
+            <argument name="request" xsi:type="object">Magento\Framework\Webapi\Rest\Request\Proxy</argument>
+            <argument name="response" xsi:type="object">Magento\Framework\Webapi\Rest\Response\Proxy</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+            <argument name="qwareTicketResource" xsi:type="object">HotaiConnected\TicketApi\Model\ResourceModel\QwareTicketResource</argument>
+            <argument name="qwareCommonHelper" xsi:type="object">HotaiConnected\Qware\Helper\Common</argument>
+        </arguments>
+    </type>
+
+    <!-- QwareTicketResource configuration -->
+    <type name="HotaiConnected\TicketApi\Model\ResourceModel\QwareTicketResource">
+        <arguments>
+            <argument name="resourceConnection" xsi:type="object">Magento\Framework\App\ResourceConnection</argument>
+            <argument name="qwareTicketRecordRepository" xsi:type="object">HotaiConnected\Qware\Api\QwareTicketRecordRepositoryInterface</argument>
+            <argument name="logger" xsi:type="object">Psr\Log\LoggerInterface</argument>
+        </arguments>
+    </type>
+
+</config>

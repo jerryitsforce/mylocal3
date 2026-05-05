@@ -1,0 +1,28 @@
+<!-- ko foreach: { data: items, as: 'item' } -->
+<div class="rma-order-item">
+    <div class="rma-product-img-wrapper">
+        <img class="rma-product-img" data-bind="attr: {src: item.productImage, alt: item.name}"/>
+    </div>
+    <div class="rma-product-info">
+        <h4 class="rma-product-name">
+            <!-- ko if: item.productUrl -->
+            <a class="rma-product-name-link" data-bind="{attr: { title: item.name, href: item.productUrl}}">
+                <span data-bind="text: item.name"></span>
+            </a>
+            <!-- /ko -->
+            <!-- ko ifnot: item.productUrl -->
+                <span data-bind="text: item.name"></span>
+            <!-- /ko -->
+        </h6>
+        <!-- ko if: item.optionText -->
+        <span class="rma-product-option" data-bind="text: item.optionText"></span>
+        <!-- /ko -->
+        <p class="rma-product-price">x <text args="item.qty" if="item.qty"></text>
+            <span class="rma-product-price-value" data-bind="text: item.price"></span>
+            <!-- ko if: item.point_used && item.point_used != 0 --> + <span
+            class="rma-product-point" data-bind="text: item.point_used"></span>
+            <!-- /ko -->
+        </p>
+    </div>
+</div>
+<!-- /ko -->

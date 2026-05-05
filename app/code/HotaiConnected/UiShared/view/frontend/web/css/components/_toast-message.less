@@ -1,0 +1,133 @@
+.toast-message {
+    background: #fffbbb;
+    border: solid #d1d1d1;
+    border-width: 0.1rem;
+    position: relative;
+    padding: 1.5rem 2rem 1.5rem 5rem;
+    color: #333333;
+    display: flex;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+
+    &::before {
+        position: absolute;
+        height: 100%;
+        color: #eb5202;
+        content: '\e623';
+        left: 1.5rem;
+        font-family: 'Admin Icons';
+        display: flex;
+        align-items: center;
+        margin-top: -1.5rem;
+        font-size: 1.8rem;
+        margin-inline: 2px;
+    }
+
+    // Error 類型 - 紅色
+    &[data-type="error"] {
+        background: #ff5656;
+        color: #fff;
+        border-color: #e02b27;
+        &::before {
+            color: #fff;
+            content: '\e623'; // 錯誤圖示
+        }
+        & .toast-message__close > span {
+            color: #fff;
+        }
+    }
+
+    // Success 類型 - 綠色
+    &[data-type="success"] {
+        background: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+        &::before {
+            color: #28a745;
+            content: '\e60c'; // 成功圖示
+        }
+        & .toast-message__close > span {
+            color: #155724;
+        }
+    }
+
+    // Warning 類型 - 黃色（預設樣式）
+    &[data-type="warning"] {
+        background: #fff3cd;
+        color: #856404;
+        border-color: #ffeaa7;
+        &::before {
+            color: #ffc107;
+            content: '\e623'; // 警告圖示
+        }
+        & .toast-message__close > span {
+            color: #856404;
+        }
+    }
+
+    // Info 類型 - 藍色
+    &[data-type="info"] {
+        background: #d1ecf1;
+        color: #0c5460;
+        border-color: #bee5eb;
+        &::before {
+            color: #17a2b8;
+            content: '\e624'; // 資訊圖示
+        }
+        & .toast-message__close > span {
+            color: #0c5460;
+        }
+    }
+    
+    &__content {
+        flex: 1;
+        &__label {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        &__text {
+            font-size: 1.2rem;
+        }
+        ul, ol {
+            list-style: disc;
+            padding-left: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        background: rgba(0, 0, 0, 0);
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 50%;
+
+        & > span {
+            display: flex;
+            width: 26px;
+            height: 26px;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #666;
+            border-radius: 50%;
+            transition: background 0.2s ease-in-out;
+            line-height: 1;
+        }
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    }
+}

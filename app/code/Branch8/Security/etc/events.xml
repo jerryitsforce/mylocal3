@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="customer_login">
+		<observer name="branch8_security_observer_customer_login_customer_login" instance="Branch8\Security\Observer\Customer\Login"/>
+	</event>
+</config>

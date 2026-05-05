@@ -1,0 +1,136 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+& when (@media-common = true) {
+    .page-wrapper{
+        padding-top: @nav__height;
+    }
+    .page-header{
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 102;
+
+        &.headroom--unpinned ~ * .headroom--pinned.headroom--not-top{
+            visibility: hidden;
+        }
+
+        
+    }
+
+    .headroom {
+        will-change: transform, top;
+        transition: transform 300ms linear, top 300ms linear, visibility 0ms;
+    }
+
+    .headroom--not-top:not(.page-header){
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 101;
+        background-color: @page__background-color;
+        box-shadow: var(--box-shadow);
+        .lib-css(transform, translateY(0%), 1);
+
+        &.headroom--unpinned{
+        }
+    }
+    .headroom--pinned {
+        .lib-css(transform, translateY(0%), 1);
+    }
+    .headroom--unpinned {
+        .lib-css(transform, translateY(-100%), 1);
+    }
+
+    .additional-headroom{
+        .lib-css(transform, translateY(0%), 1);
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .search-before-open{
+        .page-wrapper{
+            padding-top: 0 !important;
+        }
+        .page-header{
+            position: static;
+            .lib-css(transform, none, 1);
+            margin-bottom: 0;
+        }
+
+        .headroom{
+            will-change: initial;
+            position: relative;
+        }
+    }
+
+    .headroom--not-top:not(.page-header){
+        padding-left: var(--layout-indent__width);
+        padding-right: var(--layout-indent__width);
+
+        &.ds-widgets-header-wrapper{
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        
+    }
+
+    body.filters-opening{
+        overflow: hidden;
+
+        .page-header{
+            visibility: hidden;
+        }
+
+        .headroom{
+            will-change: initial;
+            transform: none;
+            transition: none;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .page-wrapper{
+        padding-top: 68px;
+    }
+    
+    .search-open{
+        .headroom--unpinned{
+            .block-search .block-content{
+                display: none;
+            }
+        }
+    }
+
+    .headroom--unpinned{
+        .block-search .search-autocomplete{
+            display: none !important;
+        }
+    }
+
+    .headroom--not-top:not(.page-header){
+        box-shadow: 0px 2px 20px 0px rgba(35, 24, 21, 0.12);
+    }
+    
+}
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .page-wrapper{
+        padding-top: 96px;
+    }
+    
+}

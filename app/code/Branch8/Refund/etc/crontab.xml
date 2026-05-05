@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="refund">
+        <job name="refund_inquiry" instance="Branch8\Refund\Cron\RefundStatusCheckInquiry" method="execute">
+            <schedule>*/30 * * * *</schedule>
+        </job>
+        <job name="refund_schedule_execute" instance="Branch8\Refund\Cron\RefundScheduleExecute" method="execute">
+            <config_path>refund/cron/schedule_execute</config_path>
+        </job>
+    </group>
+</config>

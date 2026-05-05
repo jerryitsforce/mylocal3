@@ -1,0 +1,27 @@
+<!--@subject {{trans "New Message for Ticket %ticket_code" ticket_code=$ticket.code}} @-->
+
+{{var preheader_text | raw}}
+
+{{template config_path="design/email/header_template"}}
+
+{{var hidden_separator|raw}}
+<p>
+    <strong> Ticket ID: </strong>{{var ticket.code}}<br>
+    <strong> Title: </strong>{{var ticket.title}}<br>
+    <strong> Name: </strong>{{var ticket.customer_name}}<br>
+    <strong> Customer Email address:</strong> {{var ticket.customer_email}}<br>
+    <strong> Phone:</strong> {{var ticket.phone}}<br>
+    <strong> Team: </strong>{{var ticket.team}}<br>
+    <strong> Staff (Owner): </strong>{{var ticket.staff}}<br>
+    <strong> Status: </strong>{{var ticket.status}}<br>
+    <strong> Priority: </strong>{{var ticket.priority}}<br>
+    <strong> Created At:</strong> {{var ticket.createdAt}}<br>
+    <strong> Problems encountered : </strong>{{var ticket.category}}<br>
+    <strong> Orders Related : </strong>{{var ticket.orders}}<br>
+</p>
+{{depend ticket.lastReplyBy}}
+<strong>Last Reply By</strong>: {{var ticket.lastReplyBy|raw}}
+<br>
+″{{var ticket.lastReplyMessage|raw}}″
+{{/depend}}
+{{template config_path="design/email/footer_template"}}

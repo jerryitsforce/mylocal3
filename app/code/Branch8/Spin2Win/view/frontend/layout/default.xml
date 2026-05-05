@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <!-- <head>
+        <script src="Webkul_SpinToWin::js/main.js"/>
+        <css src="Webkul_SpinToWin::css/main.css"/>
+        <css src="Webkul_SpinToWin::css/style.css"/>
+    </head> -->
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="Branch8\Spin2Win\Block\TriggerAction" name="spin2win_trigger_action" template="Branch8_Spin2Win::view/trigger_action.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * CLEARgo
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the CLEARgo.com license that is
+ * available through the world-wide-web at this URL:
+ * http://cleargo.com/license
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category   CLEARgo
+ * @package    Cleargo_RewardPoints
+ * @copyright  Copyright (c) 2016 CLEARgo (http://www.cleargo.com/)
+ * @license    http://www.cleargo.com/LICENSE-1.0.html
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="hotaipointsgreeting" sortOrder="10" type="Branch8\HotaiPoint\Plugin\Magento\Customer\CustomerData\Customer"/>
+    </type>
+</config>

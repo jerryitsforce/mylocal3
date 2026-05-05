@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">rma_order_choose_grid.rma_order_choose_grid_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>rma_order_columns</spinner>
+        <deps>
+            <dep>rma_order_choose_grid.rma_order_choose_grid_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="rma_order_choose_grid_data_source"
+                component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Customer\Ui\Component\DataProvider"
+                      name="rma_order_choose_grid_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="rma_order_columns"
+        template="Branch8_RmaAdminUi/create/order-listing"
+        component="Branch8_RmaAdminUi/js/create/order/grid/columns"
+    >
+        <column name="entity_id"
+                component="Branch8_RmaAdminUi/js/create/order/grid/column">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>asc</sorting>
+            </settings>
+        </column>
+        <column name="increment_id"
+                component="Branch8_RmaAdminUi/js/create/order/grid/column">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Increment Id</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    
+    <!-- 監聽和泰點數流程完成事件 -->
+    <event name="hotai_point_deduction_commit_flow_end">
+        <observer name="openhub_request_api_for_ticket" instance="HotaiConnected\OpenHub\Observer\RequestOpenHubApiForTicket"/>
+    </event>
+    
+</config>

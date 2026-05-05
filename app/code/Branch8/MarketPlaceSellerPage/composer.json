@@ -1,0 +1,17 @@
+{
+  "name": "branch8/module-market-place-seller-page",
+  "version": "1.0.0",
+  "description": "The Page use to display Seller Product",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\MarketPlaceSellerPage\\": ""
+    }
+  }
+}

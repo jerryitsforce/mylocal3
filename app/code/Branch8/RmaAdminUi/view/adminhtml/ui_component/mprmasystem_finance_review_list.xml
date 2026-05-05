@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list_data_source</item>
+            <item name="deps" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">mprmasystem_details_columns</item>
+    </argument>
+    <dataSource name="mprmasystem_finance_review_list_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\RmaAdminUi\Ui\Listing\DataProvider</argument>
+            <argument name="name" xsi:type="string">mprmasystem_finance_review_list_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="referer_url" xsi:type="url" path="mprmasystem/finance/reviews"/>
+                    <item name="storageConfig" xsi:type="array">
+						<item name="indexField" xsi:type="string">id</item>
+					</item>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <container name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="template" xsi:type="string">ui/grid/toolbar</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="namespace" xsi:type="string">mprmasystem_finance_review_list</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <exportButton name="export_button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.mprmasystem_details_columns.ids</item>
+                </item>
+            </argument>
+        </exportButton>
+        <component name="columns_controls">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsData" xsi:type="array">
+                        <item name="provider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.mprmasystem_details_columns</item>
+                    </item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/controls/columns</item>
+                    <item name="displayArea" xsi:type="string">dataGridActions</item>
+                </item>
+            </argument>
+        </component>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="columnsProvider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.mprmasystem_details_columns</item>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.filters</item>
+                    </item>
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                    <item name="childDefaults" xsi:type="array">
+                        <item name="provider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.listing_top.listing_filters</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.mprmasystem_details_columns.${ $.index }:visible</item>
+                        </item>
+                    </item>
+                </item>
+                <item name="observers" xsi:type="array">
+                    <item name="column" xsi:type="string">column</item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="provider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.listing_top.bookmarks</item>
+                        <item name="namespace" xsi:type="string">current.paging</item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">mprmasystem_finance_review_list.mprmasystem_finance_review_list.mprmasystem_details_columns.ids</item>
+                </item>
+            </argument>
+        </paging>
+        <massaction name="listing_massaction">
+            <action name="massApprove">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to do this action ?</message>
+                    </confirm>
+                    <url path="mprmasystem/finance/massApprove"/>
+                    <type>massApprove</type>
+                    <label translate="true">Approve Finance</label>
+                </settings>
+            </action>
+            <action name="massReject">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to do this action ?</message>
+                    </confirm>
+                    <url path="mprmasystem/finance/massReject"/>
+                    <type>massReject</type>
+                    <label translate="true">Reject Finance</label>
+                </settings>
+            </action>
+        </massaction>
+    </container>
+    <columns name="mprmasystem_details_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                <item name="resizeEnabled" xsi:type="boolean">false</item>
+                <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                <item name="indexField" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+
+        <column name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">RMA Id</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </column>
+        <column name="order_ref">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Order Ref</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                </item>
+            </argument>
+        </column>
+        <column name="status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\RmaAdminUi\Model\Rma\Source\RmaStatusForFinanceReviewGrid</item>
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">RMA Status</item>
+                    <item name="sortOrder" xsi:type="number">9</item>
+                    <item name="visible" xsi:type="string">true</item>
+                    <item name="filter" xsi:type="string">select</item>
+                </item>
+            </argument>
+        </column>
+        <column name="order_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Webkul\MpRmaSystem\Model\Rma\Source\OrderStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Order Status</item>
+                    <item name="sortOrder" xsi:type="number">11</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

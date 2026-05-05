@@ -1,0 +1,138 @@
+<?php
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation\SubOrders\Items
+ * @Var $seller \Magento\Customer\Model\Customer
+ * @var $order \Magento\Sales\Model\Order
+ */
+$order = $block->getOrder();
+if (empty($order)) {
+    return '';
+}
+/**
+ * @var $seller \Magento\Customer\Model\Data\Customer
+ */
+$seller = $block->getSeller();
+$class = $block->getClass();
+?>
+<section class="admin__page-section">
+    <div class="admin__page-section-content">
+        <ul class="note-list">
+            <li class="<?= $class ?>">
+                <span class="note-list-status"><?= __('Order ID: ') ?>
+                    <span class="no-bold">
+                         <a href="<?= $block->getUrl('sales/order/view', [
+                             'order_id' => $order->getId()
+                         ]) ?>" target="_blank"><?= $order->getIncrementId() ?></a>
+                        </span>
+                </span>
+                <?php if ($seller): ?>
+                    <span class="note-list-status"><?= __('Seller: ') ?><span
+                            class="no-bold">
+                        <a target="_blank"
+                           href="<?= $block->getUrl('customer/index/edit', ['id' => $seller->getId(), 'seller_panel' => '1']) ?>">
+                            <?= sprintf('%s %s', $seller->getFirstname(), $seller->getLastname()) ?>
+                        </a>
+                    </span>
+                </span>
+                <?php endif ?>
+                <span class="note-list-status">
+                    <?= __('Purchase Date: ') ?><span
+                        class="no-bold"><?= $block->formatDate($order->getCreatedAt()) ?></span>
+                </span>
+                <span class="note-list-status">
+                    <?= __('Grand Total (Base): ') ?>
+                    <span class="no-bold"><?= $block->formatPrice($order->getBaseGrandTotal()) ?></span>
+                </span>
+                <span class="note-list-status"><?= __('Grand Total (Purchased): ') ?><span
+                        class="no-bold"><?= $block->formatPrice($order->getGrandTotal()) ?></span></span>
+                <span class="note-list-status"><?= __('Status: ') ?><span
+                        class="no-bold"><?= $order->getStatusLabel() ?></span></span>
+                <?php if (count($order->getInvoiceCollection())): ?>
+                    <span class="note-list-status">
+                    <?= __('Invoice: ') ?>
+                    <span class="no-bold">
+                        <?php foreach ($order->getInvoiceCollection() as $invoice): ?>
+                            <?php
+                            /**
+                             * @var $invoice \Magento\Sales\Model\Order\Invoice
+                             */
+                            ?>
+                            <a target="_blank" href="<?= $block->getUrl('sales/invoice/view',
+                                ['invoice_id' => $invoice->getId()]) ?>">
+                               <?= $invoice->getIncrementId() ?>
+                           </a>
+                        <?php endforeach; ?>
+                    </span>
+                </span>
+                <?php endif ?>
+                <?php if (count($order->getShipmentsCollection())): ?>
+                    <span class="note-list-status">
+                    <?= __('Ship: ') ?>
+                          <span class="no-bold">
+                        <?php foreach ($order->getShipmentsCollection() as $shipment): ?>
+                            <?php
+                            /**
+                             * @var $shipment \Magento\Sales\Model\Order\Shipment
+                             */
+                            ?>
+                            <a target="_blank"
+                               href="<?= $block->getUrl('sales/shipment/view',
+                                   ['shipment_id' => $shipment->getId()]) ?>">
+                               <?= $shipment->getIncrementId() ?>
+                           </a>
+                        <?php endforeach; ?>
+                    </span>
+                </span>
+                <?php endif ?>
+                <span class="no-bold">
+                    <a href="<?= $block->getUrl('sales/order/view', [
+                        'order_id' => $order->getId()
+                    ]) ?>" target="_blank"> <?= __('View/Edit') ?></a>
+                </span>
+            <li>
+        </ul>
+        <?php if(!$order->getData('is_flagship_store_process_order')):?>
+        <table class="data-table admin__table-primary edit-order-table">
+            <thead>
+            <tr class="headings">
+                <?php $i = 0;
+                $columns = $block->getColumns();
+                $lastItemNumber = count($columns) ?>
+                <?php foreach ($columns as $columnName => $columnTitle) : ?>
+                    <?php $i++; ?>
+                    <th class="col-<?= $block->escapeHtmlAttr($columnName) ?><?= /* @noEscape */
+                    ($i === $lastItemNumber ? ' last' : '') ?>"><span><?= $block->escapeHtml($columnTitle) ?></span>
+                    </th>
+                <?php endforeach; ?>
+            </tr>
+            </thead>
+            <?php $_items = $order->getItemsCollection(); ?>
+            <?php $i = 0;
+            foreach ($_items as $_item) : ?>
+                <?php if ($_item->getParentItem()) :
+                    continue;
+                else :
+                    $i++;
+                endif; ?>
+                <tbody class="<?= /* @noEscape */
+                $i % 2 ? 'even' : 'odd' ?>">
+                <?= $block->getItemHtml($_item) ?>
+                <?= $block->getItemExtraInfoHtml($_item) ?>
+                </tbody>
+            <?php endforeach; ?>
+        </table>
+        <?php else:?>
+            <?php $flagshipHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class); ?>
+        <table class="data-table admin__table-primary edit-order-table">
+            <tr>
+                <td>
+                    <p><?php echo __('This is flagship process shipping order for');?></p>
+                    <?php foreach($flagshipHelper->getOrderUrls($order->getData('is_flagship_store_process_order')) as $incrementId => $_url):?>
+                        <a href="<?= $_url;?>"><?= $incrementId;?></a> <br />
+                    <?php endforeach;?>
+                </td>
+            </tr>
+        </table>
+        <?php endif;?>
+    </div>
+</section>

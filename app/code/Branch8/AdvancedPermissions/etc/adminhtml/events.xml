@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Rule events -->
+    <event name="controller_action_postdispatch_adminhtml_user_role_saverole">
+        <observer name="amasty_rolepermissions" disabled="true"/>
+        <observer name="b8_amasty_rolepermissions" instance="Branch8\AdvancedPermissions\Observer\Admin\Rule\SaveObserver" />
+    </event>
+    <event name="customer_load_after">
+        <observer name="b8_amasty_rolepermissions" instance="Branch8\AdvancedPermissions\Observer\Admin\Customer\LoadAfterObserver" />
+    </event>
+    <event name="sales_order_load_after">
+        <observer name="b8_amasty_rolepermissions" instance="Branch8\AdvancedPermissions\Observer\Admin\Order\LoadAfterObserver" />
+    </event>
+
+    <event name="cms_block_load_after">
+        <observer name="b8_amasty_blockrolepermissions" instance="Branch8\AdvancedPermissions\Observer\Admin\Block\LoadAfterObserver" />
+    </event>
+
+    <event name="cms_block_save_after">
+        <observer name="b8_amasty_blockrolepermissions_save_after" instance="Branch8\AdvancedPermissions\Observer\Admin\Block\SaveAfterObserver" />
+    </event>
+    <event name="catalog_category_save_after">
+        <observer name="amasty_rolepermissions" disabled="true"/>
+    </event>
+</config>

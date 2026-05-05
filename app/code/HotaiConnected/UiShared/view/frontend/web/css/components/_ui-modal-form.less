@@ -1,0 +1,189 @@
+// =============================================
+//  UI Modal Form Component (BEM)
+// =============================================
+//  統一 Magento Modal (alert/confirm) 的表單呈現風格
+//  使用於：unlock-checkout, download-monthly-summary, exception-authorization, ball-pit-ticket-verification-details
+//
+//  BEM 結構：
+//  Block: .ui-modal-form
+//  Elements: __body, __title, __remark, __msg, __item, __label, __content
+//  Modifiers: --download-monthly, --exception-auth
+//
+//  注意：此組件從 .checkout-area-popup 重構而來
+//  @updated 2025-01-XX - 移至 UiShared 共用模組，重命名為 ui-modal-form
+//  @updated 2025-10-28 - 重構：採用標準 BEM 命名，扁平化結構
+// =============================================
+
+.ui-modal-form {
+    max-width: 600px;
+    margin: 0 auto;
+    
+    // Element: Body
+    &__body {
+        padding: 20px 0;
+        display: grid;
+        gap: 20px;
+    }
+
+    // Element: Title
+    &__title {
+        margin-bottom: 5px;
+    }
+
+    // Element: Remark
+    &__remark {
+        font-size: 12px;
+        color: #e02b27;
+    }
+
+    // Element: Message
+    &__msg {
+        font-size: 12px;
+        color: #adadad;
+        
+        &.error {
+            color: #e02b27;
+        }
+    }
+    
+    // Error messages for inputs
+    & .mage-error,
+    & input + .mage-error,
+    & textarea + .mage-error {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #e02b27;
+    }
+
+    // Disabled state
+    &.disabled input,
+    &.disabled button {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    // Element: Form Item
+    &__item {
+        
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        // Flex layout variant
+        &.d-flex {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            
+            & > label {
+                margin-bottom: 0;
+            }
+        }
+    }
+    
+    // Element: Label (扁平化：直接屬於 popup)
+    &__label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 10px;
+        
+        &.required {
+            &:after {
+                content: ' *';
+                color: #e02b27;
+                font-weight: 400;
+            }
+        }
+    }
+    
+    // Element: Content (扁平化：直接屬於 popup)
+    &__content {
+        
+        & input,
+        & textarea {
+            width: 100%;
+            line-height: 1.36;
+            padding: 0.6rem 1em 0.6rem;
+            border: 1px solid #adadad;
+
+            // Specific field styling
+            &[name="checkout_batch"] {
+                & + .input-error {
+                    display: none;
+                }
+
+                &.error {
+                    border-color: #e02b27;
+                    
+                    & + .input-error {
+                        display: block;
+                        padding-top: 5px;
+                        font-size: 12px;
+                        color: #e02b27;
+                    }
+                }
+            }
+        }
+
+        // Date range layout
+        &[data-type="date-range"] {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+
+            & .date-input-group {
+                display: flex;
+                align-items: center;
+                position: relative;
+
+                & button.ui-datepicker-trigger {
+                    position: absolute;
+                    right: 12px;
+                }
+            }
+        }
+    }
+
+    // Textarea
+    & textarea {
+        width: 100%;
+    }
+}
+
+// 向後相容：保留 checkout-popup 別名（過渡期使用）
+// 注意：現有的 HTML/JS 仍可使用 .checkout-popup 及其子元素，樣式會自動套用
+.checkout-popup {
+    &:extend(.ui-modal-form all);
+    
+    // 子元素別名（確保完全向後相容）
+    &__body {
+        &:extend(.ui-modal-form__body all);
+    }
+    
+    &__title {
+        &:extend(.ui-modal-form__title all);
+    }
+    
+    &__remark {
+        &:extend(.ui-modal-form__remark all);
+    }
+    
+    &__msg {
+        &:extend(.ui-modal-form__msg all);
+    }
+    
+    &__item {
+        &:extend(.ui-modal-form__item all);
+    }
+    
+    &__label {
+        &:extend(.ui-modal-form__label all);
+    }
+    
+    &__content {
+        &:extend(.ui-modal-form__content all);
+    }
+}
+

@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\PopupComplete $block
+ */
+$msg = $block->getCompleteMsg();
+?>
+<div id="limit-point-transfer-modal" class="modal-hide">
+    <div class="modal-custom-content">
+        <!-- <p><?= $block->escapeHtml(__('已達點數轉移每日上限(1500點)。')) ?></p> -->
+    </div>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8HotaiPointLimitPopup": {}
+    }
+}
+</script>

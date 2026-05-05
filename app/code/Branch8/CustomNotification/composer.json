@@ -1,0 +1,20 @@
+{
+  "name": "branch8/module-custom-notification",
+  "version": "1.0.0",
+  "description": "N/A",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "license": [
+    "M"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\CustomNotification\\": ""
+    }
+  }
+}

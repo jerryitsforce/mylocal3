@@ -1,0 +1,23 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="pagebuilder-content-type pagebuilder-block" event="{ mouseover: onMouseOver, mouseout: onMouseOut }, mouseoverBubble: false">
+    <div attr="data.main.attributes" ko-style="data.main.style" css="data.main.css">
+        <div ifnot="data.main.attributes()['data-limit']" class="pagebuilder-block-placeholder info-selection">
+            <p>limit keyword is not set
+                <p>
+                    <button data-bind="click: openEdit;">Edit keyworks search</button>
+        </div>
+        <div if="data.main.attributes()['data-limit']">
+            <div class="pagebuilder-block-placeholder flex-container">
+                <div><i class="icon-pagebuilder-productrecommendations-image"></i><i class="icon-pagebuilder-productrecommendations-info"></i></div>
+            </div>
+            <div class="info-div"><span class="info-text">This rendering is an approximation only.</span></div>
+        </div>
+    </div>
+    <render args="getOptions().template" />
+</div>

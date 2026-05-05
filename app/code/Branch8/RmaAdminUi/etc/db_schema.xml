@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
+        <column xsi:type="varchar" name="shipping_phone" nullable="true" length="255" comment="Shipping Address Phone Number"/>
+        <column xsi:type="varchar" name="shipping_zipcode" nullable="true" length="255" comment="Shipping Address Phone Number"/>
+        <column xsi:type="varchar" name="shipping_city" nullable="true" length="255" comment="Shipping City"/>
+        <column xsi:type="varchar" name="shipping_region" nullable="true" length="255" comment="Shipping Region"/>
+
+        <column xsi:type="varchar" name="billing_phone" nullable="true" length="255" comment="Billing Address Phone Number"/>
+
+    </table>
+    <table name="marketplace_rma_grid" resource="default" engine="innodb" comment="Marketplace RMA Details Flat">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Id"/>
+        <column xsi:type="timestamp" name="created_date" on_update="false" nullable="false"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="order_created_at" nullable="true"
+                comment="Order Created At"/>
+        <column xsi:type="varchar" name="salesperson" nullable="true" comment="Sales Person"/>
+        <column xsi:type="int" name="seller_id" padding="11" unsigned="true" nullable="true"
+                comment="Seller Id"/>
+        <column xsi:type="int" name="resolution_type" nullable="true" comment="Resolution Type"/>
+        <column xsi:type="varchar" name="order_ref" nullable="true" comment="Order Ref" length="255" default="null"/>
+        <column xsi:type="int" name="customer_id" padding="11" unsigned="false" nullable="false" identity="false" comment="Customer Id"/>
+        <column xsi:type="varchar" name="product_seller" nullable="true" comment="Product Seller"/>
+        <column xsi:type="varchar" name="customer_name" nullable="true" comment="Customer Name"/>
+        <column xsi:type="varchar" name="customer_email" nullable="true" comment="Customer Email"/>
+        <column xsi:type="int" name="status" nullable="true" comment="Status"/>
+        <column xsi:type="int" name="order_status" nullable="true" comment="Order Status"/>
+        <column xsi:type="varchar" name="rma_order_status" nullable="true" comment="Rma Order Status"/>
+        <column xsi:type="text" name="product_name" nullable="true" comment="Product Name"/>
+        <column xsi:type="text" name="product_sku" nullable="true" comment="Product Sku"/>
+        <column xsi:type="text" name="supplier_sku" nullable="true" comment="Supplier Sku"/>
+        <column xsi:type="varchar" name="rma_phone" nullable="true" comment="Rma Phone"/>
+        <column xsi:type="varchar" name="shipping_method" nullable="true" comment="Shipping Method"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="MARKETPLACE_RMA_GRID_SALESPERSON" indexType="btree">
+            <column name="salesperson"/>
+        </index>
+        <index referenceId="MARKETPLACE_RMA_GRID_ORDER_REF" indexType="btree">
+            <column name="order_ref"/>
+        </index>
+        <index referenceId="MARKETPLACE_RMA_GRID_CUSTOMER_NAME" indexType="btree">
+            <column name="customer_name"/>
+        </index>
+        <index referenceId="MARKETPLACE_RMA_GRID_CUSTOMER_EMAIL" indexType="btree">
+            <column name="customer_email"/>
+        </index>
+        <index referenceId="MARKETPLACE_RMA_GRID_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="MARKETPLACE_RMA_GRID_ORDER_STATUS" indexType="btree">
+            <column name="order_status"/>
+        </index>
+       <!-- <index referenceId="MARKETPLACE_RMA_GRID_PRODUCT_NAME" indexType="btree">
+            <column name="product_name"/>
+        </index>-->
+      <!--  <index referenceId="MARKETPLACE_RMA_GRID_PRODUCT_SKU" indexType="btree">
+            <column name="product_sku"/>
+        </index>-->
+        <index referenceId="MARKETPLACE_RMA_GRID_RMA_PHONE" indexType="btree">
+            <column name="rma_phone"/>
+        </index>
+        <index referenceId="MARKETPLACE_RMA_GRID_SHIPPING_METHOD" indexType="btree">
+            <column name="shipping_method"/>
+        </index>
+    </table>
+</schema>

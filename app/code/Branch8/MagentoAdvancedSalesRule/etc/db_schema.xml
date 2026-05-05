@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="magento_salesrule_filter" resource="default" engine="innodb" comment="Enterprise SalesRule Filter">
+        <column xsi:type="text" name="filter_skus" nullable="false" comment="Filter SKUS"/>
+        <column xsi:type="varchar" name="filter_text_hash" length="255" nullable="true"  comment="Filter Text Hash"/>
+        <index referenceId="MAGENTO_SALESRULE_FILTER_FILTER_SKUS" indexType="fulltext">
+            <column name="filter_skus"/>
+        </index>
+        <index referenceId="MAGENTO_SALESRULE_FILTER_FILTER_TEXT_RULE_ID_GROUP_ID2" indexType="btree">
+            <column name="filter_text_hash"/>
+            <column name="rule_id"/>
+            <column name="group_id"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="email_notification_order_daily_notification_to_seller_template"
+              label="Order Daily Notification to Seller" file="order_daily_notification_to_seller.html" type="html" module="Branch8_MarketPlaceSeller" area="frontend"/>
+    <template id="email_notification_return_report_settings_template"
+              label="Return Daily Notification to Seller" file="return_daily_notification_to_seller.html" type="html" module="Branch8_MarketPlaceSeller" area="frontend"/>
+</config>

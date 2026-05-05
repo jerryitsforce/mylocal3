@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="referrer_code" xsi:type="string">sales_order.referrer_code</item>
+                <item name="order_note" xsi:type="string">sales_order.order_note</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="save_address_store_info" type="Branch8\OneStepCheckout\Plugin\Model\ShippingInformationManagement" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Address\ToOrderAddress">
+        <plugin name="split_shipping_convert_address" type="Branch8\OneStepCheckout\Plugin\Quote\Address\ToOrderAddress"/>
+    </type>
+    <type name="Magento\Framework\App\Request\CsrfValidator">
+        <plugin name="branch_by_pass_post_from_map"
+                type="Branch8\OneStepCheckout\Plugin\ValidateBypassPlugin"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Checkout\Model\PaymentInformationManagement">
+        <plugin name="save_order_note_and_referer_code"
+                type="Branch8\OneStepCheckout\Plugin\Checkout\Model\PaymentInformationManagementPlugin"
+                sortOrder="3"
+                disabled="false"/>
+    </type>
+</config>

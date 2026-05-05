@@ -1,0 +1,536 @@
+& when (@media-common = true) {
+    .hotaipoint-form-page {
+        &.account {
+            .page-title-wrapper {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px; 
+                position: relative;
+
+                .hotai-points-logo { 
+                    height: 1.71em;
+                    order: -1;
+                    position: relative;
+                    top: -53px;
+                }
+
+                .page-title {
+                    border: 0;
+                    width: auto;
+                    justify-content: center;
+                    margin: 0;
+                    position: relative;
+                    top: -54px;
+                    background: transparent;
+                    left: 0;
+
+                    &::before,
+                    &::after {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    
+    .hotai-point-qrcode { 
+        display: none;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        background: url(../images/scanning-bg.jpg) center center no-repeat;
+        background-size: cover;  
+        position: relative;
+        margin: -12px -16px 25px;
+        padding: 0;
+        min-height: 385px;
+        
+        // &::after {
+        //     content: "";
+        //     position: absolute;
+        //     width: 100%;
+        //     height: 100%;
+        //     background: rgba(35, 24, 21, 0.4);
+        //     z-index: 0;
+        //     top: 0;
+        //     left: 0;
+        // }
+        
+        // div {
+        //     position: relative;
+        //     z-index: 1;
+        // }
+    }
+
+
+    .hotai-point-qrcode-img {
+        width: 34%;
+        margin: 15% auto;
+        display: block;
+    }
+
+
+    .hotai-point-qrcode-text {
+        &:extend(.abs-caption2-medium all);
+        margin: 0 0 8px;
+        color: var(--color-black-solid1);
+        border-radius: 4px;
+        padding: 7px 24px;
+        background: var(--color-gray-light-bg);
+    }
+
+    .custom-breadcrumb {
+        position: relative;
+        display: flex;
+        width: 100%;
+        margin: 0;
+
+        .account .page-wrapper & .breadcrumbs {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .breadcrumbs {
+            .item {
+                display: flex;
+                border-bottom: var(--border-light);
+                width: 100%;
+                padding: 2px 0;
+                flex-direction: row;
+                min-height: 48px;
+                margin: 0; 
+                padding-left: var(--layout-indent__width);
+                padding-right: var(--layout-indent__width);
+            }
+
+            a { 
+                display: flex;
+                text-decoration: none;
+                &:extend(.abs-h6-bold all);
+                color: var(--color-black-solid);
+                width: 100%;
+                align-items: center;
+
+                &::before {
+                    &:extend(.abs-hotai-icon all);
+                    content: var(--icon-arrow);
+                    font-size: 25px;
+                    line-height: 1;
+                    color: var(--color-black-solid1);
+                    transform: rotate(180deg);
+                }
+
+                span {
+                    flex: 1;
+                    text-align: center;
+                    padding-right: 26px;
+                    visibility: hidden;
+                    opacity: 0;
+                }
+            }
+        }
+    }
+
+    .hotai-point-form-container {
+        padding: 15px 0 0;
+
+        .hotai-point-form {
+            .actions-toolbar {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+        
+              .primary {
+                display: flex;
+                flex-direction: column;
+                gap: 12px 0;
+              }
+        
+              .action {
+                min-width: 96px;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                padding: 10px 30px;
+              }
+            }
+        
+            .fieldset {
+                margin: 0;
+
+              > .field {
+                margin: 0 0 17px;
+                display: flex;
+                flex-direction: column;
+                gap: 7px 0;
+        
+                > .label {
+                  &:extend(.abs-label all);
+                  &:extend(.abs-body-text-bold all);
+        
+                  &::after {
+                    color: var(--color-red-base);
+                    margin-left: -4px;
+                    font-size: 14px;
+                  }
+                }
+        
+                &:extend(.abs-input all);
+        
+                input[type="number"],
+                input[type="text"] {
+                  &:extend(.abs-body-text all);
+                }
+        
+                > .control {
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 0 10px;
+        
+                  &.switch-option {
+                    gap: 0;
+                  }
+                }
+              }
+            }
+          }
+    }
+
+    .hotai-point-additional-content {
+        padding: 11px 0 0;
+        margin: 0 0 50px;
+
+        [data-content-type="heading"] {
+            margin: 0 0 8px;
+            &:extend(.abs-label all);
+            &:extend(.abs-body-text-bold all);
+        }
+
+        [data-content-type='text'] {
+            &:extend(.abs-caption2 all);
+            color: var(--color-gray-solid1);
+
+            ol,
+            ul {
+                margin: 0;
+                padding: 0 0 0 20px;
+
+                > li {
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    .hotai-point-registration-container {
+        .hotai-point-additional-content {
+            padding: 3px 0 0;
+            margin: 0 0 32px;
+        }
+    }
+
+    .hotaipoint-confirm-popup {
+        .modal-custom-content {
+            text-align: left;
+
+            p {
+                margin-bottom: 6px;
+            }
+
+            .transfer-info {
+                margin-bottom: 0;
+            }
+
+            .transfer-info-phone {
+                font-weight: 500;
+                color: var(--color-black-solid);
+            }
+
+            .transfer-info-point {
+                font-weight: 500;
+                color: var(--color-red-base);
+            }
+
+            .warning-message {
+                background: var(--color-gray-light5);
+                box-shadow: none;
+                padding: 7px 12px;
+                border-radius: var(--TagL);
+                gap: 8px;
+                display: flex;
+                margin: 17px 0 0;
+                &:extend(.abs-caption2 all);
+
+                &::before {
+                    font-style: normal;
+                    font-weight: normal;
+                    line-height: 1;
+                    font-family: var(--font-hotai-icons);
+                    content: var(--icon-warning);
+                    font-size: 12px;
+                    margin-right: 0; 
+                    position: relative;
+                    top: 4px;
+                }
+            }
+        }
+        .modal-footer {
+            padding: 26px 24px 24px;
+        }
+    }
+
+    .hotaipoint-limit-popup {
+        .modal-footer {
+            padding: 14px 24px 18px;
+        }
+    }
+}
+
+@media only screen and (max-width: 390px) {
+    .hotai-point-qrcode-img {
+        margin: 24% auto 18%;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__s) {
+    .hotai-point-qrcode { 
+       display: flex;
+    }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    .custom-breadcrumb {
+        .breadcrumbs {
+            a {
+                &:extend(.abs-tb-caption1-medium all);
+            }
+        }
+    }
+
+    .hotai-point-form-container {
+        .hotai-point-form{
+          .fieldset {
+            > .field {
+              gap: 12px 0;
+              margin: 0 0 24px;
+              > .label {
+                &:extend(.abs-label all);
+                &:extend(.abs-body-text-bold all);
+              }
+    
+              &:extend(.abs-input all);
+    
+              input[type="number"],
+              input[type="text"] {
+                &:extend(.abs-body-text all);
+              }
+            }
+          }
+    
+          .actions-toolbar .primary {
+            flex-direction: row;
+            gap: 0 12px;
+          }
+        }
+    }
+
+    .hotai-point-additional-content {
+        [data-content-type="heading"] {
+            &:extend(.abs-label all);
+            &:extend(.abs-body-text-bold all);
+        }
+        [data-content-type='text'] {
+            &:extend(.abs-tb-caption1 all);
+        }
+    }
+
+    
+    .hotaipoint-confirm-popup {
+        .modal-custom-content {
+            p {
+                margin-bottom: 16px;
+            }
+
+            .warning-message {
+                padding: 12px 15px;
+                margin: 17px 0 0;
+
+                &::before {
+                    font-size: 14px;
+                    top: 1px;
+                }
+            }
+        }
+    }
+
+    .hotaipoint-limit-popup {
+        .modal-footer {
+            padding: 28px 40px 40px;
+        }
+    }
+
+    .hotaipoint-form-page {
+        &.account {
+            .page-title-wrapper {
+                .hotai-points-logo { 
+                    height: 2.85em;
+                }
+            }
+        }
+    }
+}
+  
+//
+//  Desktop (1024px and up)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__l) {
+    .custom-breadcrumb {
+        .account .page-wrapper & .breadcrumbs {
+            width: 100%;
+            position: static;
+            transform: none;
+            margin: 0 auto;
+            max-width: 780px;
+        }
+
+        .breadcrumbs {
+            .item {
+                border: 0;
+                min-height: 65px;            
+                padding: 2px 0;
+            }
+
+            a {
+                &:extend(.abs-dk-caption1-medium all);
+                align-items: center;
+                display: inline-flex;
+                gap: 0 3px;
+                color: var(--color-gray-light2);
+
+                &::before {
+                    content: var(--icon-prev1);
+                    line-height: 1;
+                    font-size: 12px;
+                    color: var(--color-gray-light2);
+                    transform: none;
+                }
+
+                span {
+                    visibility: visible;
+                    opacity: 1;
+                    text-align: left;
+                }
+            }
+        }
+    }
+
+    .hotaipoint-form-page.account {
+        .page-title-wrapper {
+            justify-content: start;
+            .page-title {
+                position: static;
+            }
+            .hotai-points-logo {
+                position: static;
+            }
+        }
+
+        main.page-main {
+            padding-top: 13px;
+
+            .hotaipoint-registration-index& {
+                padding-top: 7px;
+            }
+        }
+
+        .columns {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+    }
+
+    .hotai-point-form-container {
+        padding: 36px 0 0;
+
+        .hotai-point-form  {
+          .fieldset {
+            background: var(--color-gray-light1);
+            border-radius: var(--CardL);
+            padding: 40px 40px 36px;
+            margin: 0 0 21px;
+
+            .hotai-point-registration-container& {
+                margin: 0 0 29px;
+            }
+          }
+        }
+    }
+
+    .hotai-point-additional-content {
+        padding: 11px 40px 0;
+        margin: 0 0 40px;
+
+        .hotai-point-registration-container & {
+            padding: 3px 40px 0;
+            margin: 0 0 40px;
+        }
+    }
+
+    
+}
+  
+//
+//  Desktop (1280px and up)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+    .hotai-point-form-container {
+        .hotai-point-form{
+          .fieldset {
+            > .field {
+              > .label {
+                &:extend(.abs-label all);
+                &:extend(.abs-body-text-bold all);
+
+                &::before {
+                    height: 14px;
+                }
+              }
+    
+              &:extend(.abs-input all);
+    
+              input[type="number"],
+              input[type="text"] {
+                &:extend(.abs-body-text all);
+              }
+            }
+          }
+        }
+    }
+
+    .hotai-point-additional-content {
+        [data-content-type="heading"] {
+            &:extend(.abs-label all);
+            &:extend(.abs-body-text-bold all);
+
+            &::before {
+                height: 14px;
+            }
+        }
+        [data-content-type='text'] {
+            &:extend(.abs-dk-caption1 all);
+        }
+    }
+
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="db">
+        <binding id="AutomatedRewardCheckAndAssignReward" topic="automated.reward.check.assign_reward" destinationType="queue"    destination="automated.reward.check.assign_reward"/>
+    </exchange>
+</config>

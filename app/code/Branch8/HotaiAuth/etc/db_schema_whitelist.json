@@ -1,0 +1,35 @@
+{
+    "customer_entity": {
+        "column": {
+            "phone_number": true,
+            "member_seq": true,
+            "platform": true,
+            "one_id": true
+        },
+        "index": {
+            "CUSTOMER_ENTITY_PHONE_NUMBER": true,
+            "CUSTOMER_ENTITY_ONE_ID": true
+        },
+        "constraint": {
+            "CUSTOMER_ENTITY_PHONE_NUMBER_MEMBER_SEQ": true
+        }
+    },
+    "branch_custom_customer_log": {
+        "column": {
+            "log_id": true,
+            "customer_id": true,
+            "last_login_at": true,
+            "last_logout_at": true,
+            "utm": true,
+            "device": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "custom_login_log_id": true
+        }
+    }
+}

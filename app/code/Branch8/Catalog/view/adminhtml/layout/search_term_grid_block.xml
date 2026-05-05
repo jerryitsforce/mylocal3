@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="adminhtml.catalog.search.grid.columnSet">
+            <block class="Magento\Backend\Block\Widget\Grid\Column" name="adminhtml.catalog.search.grid.columnSet.is_pin_search_term" as="is_pin_search_term" before="adminhtml.catalog.search.grid.columnSet.action">
+                <arguments>
+                    <argument name="header" xsi:type="string" translate="true">Is pin search term</argument>
+                    <argument name="sortable" xsi:type="string">1</argument>
+                    <argument name="index" xsi:type="string">is_pin_search_term</argument>
+                    <argument name="type" xsi:type="string">options</argument>
+                    <argument name="options" xsi:type="options" model="Magento\Config\Model\Config\Source\Yesno"/>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

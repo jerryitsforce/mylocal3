@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\ChatConversationRepositoryInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\ChatConversationRepository" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\Data\ChatConversationInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\ChatConversation" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\Data\MessageDataInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\MessageData" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\Data\MessageMetaInformationInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\MessageMetaInformation" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\Data\ChatProfileInfoInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\ChatProfileInformation" />
+
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\ChatProfileRepositoryInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\ChatProfileRepository" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\LoadRecentlyChatInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\LoadRecentlyChat" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\LoadChatHistoryInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\LoadChatHistory" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\SaveMessageInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\SaveMessage" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\TotalUnreadMessageInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Actions\ReadTotalUnreadMessages" />
+    <preference for="Branch8\WebkulMpBuyerSellerChat\Api\LastReadMessageInterface"
+                type="Branch8\WebkulMpBuyerSellerChat\Model\Api\LastReadMessage" />
+</config>

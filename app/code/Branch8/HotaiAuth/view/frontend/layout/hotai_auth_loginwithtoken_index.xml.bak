@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<page layout="empty" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <remove src="Magento_Theme/css/perfect-scrollbar.css"/>
+        <remove src="Amasty_Affiliate/css/default.css"/>
+        <remove src="Amasty_Groupcat/js/fancybox/jquery.fancybox.css"/>
+        <remove src="Amasty_LibSwiperJs/vendor/swiper/swiper.min.css"/>
+        <remove src="Webkul_Marketplace/css/wk_block.css"/>
+        <remove src="Magetop_Quickview/css/magnific-popup.css"/>
+        <remove src="Branch8_Checkout/js/individual_product.js"/>
+        <remove src="Magenest_NotificationBox/js/register_notification.js"/>
+        <remove src="Magento_Customer/js/customer-data.js"/>
+        <remove src="Magento_Customer/js/section-config.js"/>
+    </head>
+    <body>
+        <referenceContainer name="root">
+          <block name="login_with_token_process" class="Magento\Framework\View\Element\Template" template="Branch8_HotaiAuth::login/processing.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="page.wrapper" remove="true"/>
+        <referenceContainer name="after.body.start" remove="true"/>
+    </body>
+</page>

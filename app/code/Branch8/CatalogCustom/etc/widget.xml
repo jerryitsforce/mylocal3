@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget class="Branch8\CatalogCustom\Block\Widget\CategoryList" id="sub_category_list_block">
+        <label>Sub-Category Block</label>
+        <description>Show sub-category of selected category</description>
+        <parameters>
+            <parameter name="id_path" xsi:type="block" visible="true" required="false" sort_order="10">
+                <label translate="true">Category</label>
+                <block class="Magento\Catalog\Block\Adminhtml\Category\Widget\Chooser">
+                    <data>
+                        <item name="button" xsi:type="array">
+                            <item name="open" xsi:type="string" translate="true">.....Select Category.....</item>
+                        </item>
+                    </data>
+                </block>
+            </parameter>
+            <parameter name="max_product" xsi:type="text" visible="true" required="false" sort_order="20">
+                <label translate="true">Maximum Number of Products</label>
+                <value>20</value>
+            </parameter>
+            <!-- for GA4 -->
+            <parameter name="widget_location" xsi:type="select" visible="true" required="false" sort_order="30">
+                <label translate="true">Widget Location</label>
+                <options>
+                    <option name="mall_list" value="mall_list" selected="true">
+                        <label translate="true">Mall</label>
+                    </option>
+                    <option name="flagshipmall_category" value="flagshipmall_category">
+                        <label translate="true">FlagShip Mall</label>
+                    </option>
+                </options>
+            </parameter>
+            <parameter name="mall_name" xsi:type="text" visible="true" required="false" sort_order="32">
+                <label translate="true">Mall/Flagship Mall Name</label>
+            </parameter>
+
+        </parameters>
+    </widget>
+
+</widgets>

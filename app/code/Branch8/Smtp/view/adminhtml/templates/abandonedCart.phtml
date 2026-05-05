@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Branch8\Smtp\Block\AbandonedCart\AbandonedCart */
+/** @var \Magento\Quote\Model\Quote $quote */
+$quote = $block->getQuote();
+$i = 0;
+?>
+<?php if($quote && $quote->getAllVisibleItems()): ?>
+<table cellpadding="0" cellspacing="0" class="abandoned-cart product-info">
+    <?php foreach ($quote->getAllVisibleItems() as $item): /** @var \Magento\Quote\Model\Quote\Item $item */?>
+        <?php $class = ($i == 0) ? "first" : (($i == count($quote->getAllVisibleItems())) ? "last" : "") ?>
+        <tr class="<?= $class?> item">
+            <td class="col photo">
+                <a href="<?= $item->getProduct()->getProductUrl()?>" title="" class="product photo">
+                    <img src="<?= $block->getProductImageUrl($item->getProduct())?>" />
+                </a>
+            </td>
+            <td class="col item">
+                <p>
+                    <strong class="product name">
+                        <a href="<?= $item->getProduct()->getProductUrl()?>"><?= $item->getName()?></a>
+                    </strong>
+                </p>
+                <p class="short-description">
+                    <?= $block->getProductOption($item)?>
+                </p>
+                <table class="price-with-qty">
+                    <tr>
+                        <td class="_qty">x<?= $item->getQty()?></td>
+                        <td class="_price">
+                            <div class="price-box price-final_price">
+                                <span class="special-price">
+                                    <span class="price-container price-final_price tax weee">
+                                        <span class="price-wrapper ">
+                                            <span class="price">
+                                                <?= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency(number_format($item->getPrice(), 0), true, false);?>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </span>
+                                <?php if ($item->getOriginalPrice() > 0): ?>
+                                    <span class="old-price">
+                                        <span class="price-container price-final_price tax weee">
+                                            <span class="price-wrapper ">
+                                                <span class="price">
+                                                    <?= $this->helper('Magento\Framework\Pricing\Helper\Data')->currency(number_format($item->getOriginalPrice(), 0), true, false);?>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                <?php endif;?>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <?php $i++; ?>
+    <?php endforeach; ?>
+</table>
+<?php endif; ?>

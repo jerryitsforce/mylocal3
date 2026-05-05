@@ -1,0 +1,28 @@
+<div id="rule_new_version">
+    <div><h2>New Data</h2></div>
+    <?= $block->getChildHtml('catalog_rule_form_approval'); ?>
+</div>
+<script>
+    <?php
+    $currentRule = $this->getData('current_promo_catalog_rule');
+    $apprRecord = $this->getData('approval_rule_model');
+    $newBannerData = $apprRecord->getData('related_banners');
+    if(!$newBannerData){
+        $newBannerData = [];
+    }
+    foreach($newBannerData as &$nBanner){
+        $nBanner = (int)$nBanner;
+    }
+    $ruleBannerData = $currentRule->getData('related_banners');
+    foreach($ruleBannerData as &$rBanner){
+        $rBanner = (int)$rBanner;
+    }
+    
+    ?>
+    var ruleBanners = <?php echo json_encode($ruleBannerData);?>;
+    var newBanners = <?php echo json_encode($newBannerData);?>;
+    var ruleConditions = <?php echo json_encode($currentRule->getData('actions_serialized'));?>;
+    var newConditions = <?php echo json_encode($apprRecord->getData('actions_serialized'));?>;
+    var ruleSellerIds = '<?php echo $currentRule->getSellerIds();?>';
+    var newSellerIds = '<?php echo $apprRecord->getSellerIds();?>';
+</script>

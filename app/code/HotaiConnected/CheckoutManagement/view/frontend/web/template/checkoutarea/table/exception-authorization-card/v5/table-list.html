@@ -1,0 +1,32 @@
+<div class="exception-auth-v5-list__tbody-row">
+    <div class="exception-auth-v5-list__left">
+        <div class="exception-auth-v5-list__left-top">
+            <div class="exception-auth-v5-list__tbody-col" data-key="index"><%- itemIndex %>.</div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="shop_title"><%- shop_title %></div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="seller_code"><%- seller_code %></div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="exception_status"><%- exception_status %></div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="batch_num"><%- batch_num %></div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="data_source"><%- data_source %></div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="salesperson_role_name"><%- salesperson_role_name %></div>
+            <div class="exception-auth-v5-list__tbody-col" data-key="created_date"><%- created_date %></div>
+        </div>
+        <div class="exception-auth-v5-list__left-bottom">
+            <div class="exception-auth-v5-list__tbody-col" data-key="reason">
+                <label class="exception-auth-v5-list__tbody-col__label">原因：</label>
+                <textarea readonly rows="1"><%- reason %></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="exception-auth-v5-list__right">
+        <div class="exception-auth-v5-list__tbody-col" data-key="show_value">
+            <div class="exception-auth-v5-list__tbody-col__options">
+                <% showValueEntries.forEach(function(entry) { %>
+                <div class="exception-auth-v5-list__tbody-col__option">
+                    <span class="exception-auth-v5-list__tbody-col__option-label"><%- entry.label %></span>
+                    <span class="exception-auth-v5-list__tbody-col__option-value"><%- entry.value %></span>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+</div>

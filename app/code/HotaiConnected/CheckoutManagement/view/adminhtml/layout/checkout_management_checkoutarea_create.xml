@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="HotaiConnected_UiShared::css/vendor/sumoselect/sumoselect.min.css"/>
+        <css src="HotaiConnected_CheckoutManagement::css/checkoutarea/create-select-search.css"/>   
+        <!-- <css src="HotaiConnected_CheckoutManagement::css/checkoutarea/create-select-grid-multiselect.css"/>    -->
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <!-- 共用資料區塊（透過 js-config 注入，集中管理 token / key / header 等） -->
+            <block class="HotaiConnected\UiShared\Block\Adminhtml\Common\JSConfig" name="shared.jsconfig" template="HotaiConnected_UiShared::shared/js-config.phtml" before="checkoutarea_create_form"/>
+            
+            <!-- 月結批次建立頁主內容 Block：包含表單內容 -->
+            <block class="Magento\Backend\Block\Template" name="checkoutarea_create_form" template="HotaiConnected_CheckoutManagement::checkoutarea/create-select-search.phtml"/>
+            <!-- <block class="Magento\Backend\Block\Template" name="checkoutarea_create_form" template="HotaiConnected_CheckoutManagement::checkoutarea/create-select-grid-multiselect.phtml"/> -->
+        </referenceContainer>
+    </body>
+</page> 

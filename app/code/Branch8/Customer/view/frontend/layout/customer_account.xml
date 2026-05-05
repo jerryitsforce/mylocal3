@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_fullScreenChat"/>
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-member-information">
+                <arguments>
+                    <argument name="path" xsi:type="string">member/info/detail</argument>
+                    <argument name="label" xsi:type="string" translate="true">Member Information</argument>
+                    <argument name="sortOrder" xsi:type="number">199</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-navigation-member">
+                <arguments>
+                    <argument name="path" xsi:type="string">member/level/index</argument>
+                    <argument name="label" xsi:type="string" translate="true">會員制度</argument>
+                    <argument name="sortOrder" xsi:type="number">60</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="page.top">
+            <container name="customer.page.top" htmlTag="div" htmlClass="customer-header-wrapper">
+                <block class="Branch8\Customer\Block\Account\Header" name="customer.account.header" template="account/header.phtml" before="-"/>
+            </container>
+        </referenceContainer>
+
+        <referenceContainer name="sidebar.main">
+            <block class="Magento\Customer\Block\Account\Navigation" name="customer_nav_top" before="-">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">customer-nav-top</argument>
+                    <argument name="title" xsi:type="string" translate="true">我的管理</argument>
+                    <argument name="sorter" xsi:type="object">Branch8\Customer\ViewModel\Sortable</argument>
+                </arguments>
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Branch8_Customer::account/navigation.phtml</argument>
+                </action>
+                <block class="Branch8\Customer\Block\Account\Link"
+                   name="customer-nav-top-parent-orders-link" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">sales/parentOrder/history</argument>
+                        <argument name="label" xsi:type="string" translate="true">My Orders</argument>
+                        <argument name="css_class" xsi:type="string">order</argument>
+                        <argument name="sortOrder" xsi:type="number">10</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link"
+                   name="customer-nav-top-hotai-point-link" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">hotai_point/detail</argument>
+                        <argument name="label" xsi:type="string" translate="true">Hotai Point</argument>
+                        <argument name="css_class" xsi:type="string">point</argument>
+                        <argument name="sortOrder" xsi:type="number">20</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link"
+                   name="customer-nav-top-my-tickets-family-bonus-pin" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">member/ticket/index</argument>
+                        <argument name="label" xsi:type="string" translate="true">Member ticket</argument>
+                        <argument name="css_class" xsi:type="string">ticket</argument>
+                        <argument name="sortOrder" xsi:type="number">30</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" ifconfig="wishlist/general/active" name="customer-nav-top-wish-list-link" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">wishlist</argument>
+                        <argument name="label" xsi:type="string" translate="true">My Wish List</argument>
+                        <argument name="css_class" xsi:type="string">wishlist</argument>
+                        <argument name="sortOrder" xsi:type="number">40</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-top-recently-viewed" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">member/browsinghistory</argument>
+                        <argument name="label" xsi:type="string" translate="true">瀏覽紀錄</argument>
+                        <argument name="css_class" xsi:type="string">recently-viewed</argument>
+                        <argument name="sortOrder" xsi:type="number">50</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-top-notification" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">notification/customer/notification</argument>
+                        <argument name="label" xsi:type="string" translate="true">通知</argument>
+                        <argument name="css_class" xsi:type="string">notification</argument>
+                        <argument name="sortOrder" xsi:type="number">100</argument>
+                    </arguments>
+                </block>
+                <!-- <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-top-gift-box" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">gift-order/giftbox/listing</argument>
+                        <argument name="label" xsi:type="string" translate="true">禮物盒</argument>
+                        <argument name="css_class" xsi:type="string">giftbox</argument>
+                        <argument name="sortOrder" xsi:type="number">70</argument>
+                    </arguments>
+                </block> -->
+            </block>
+            <block class="Magento\Customer\Block\Account\Navigation" name="customer_nav_middle" after="customer_nav_top">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">customer-nav-middle</argument>
+                    <argument name="title" xsi:type="string" translate="true">個人資料</argument>
+                </arguments>
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Branch8_Customer::account/navigation.phtml</argument>
+                </action>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-middle-account" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">customer/account</argument>
+                        <argument name="label" xsi:type="string" translate="true">會員資料</argument>
+                        <argument name="css_class" xsi:type="string">user</argument>
+                        <argument name="sortOrder" xsi:type="number">10</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-middle-address" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">customer/address</argument>
+                        <argument name="label" xsi:type="string" translate="true">地址管理</argument>
+                        <argument name="css_class" xsi:type="string">address</argument>
+                        <argument name="sortOrder" xsi:type="number">20</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-middle-hotai-pay" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">hotaipay/creditcard/listaction</argument>
+                        <argument name="label" xsi:type="string" translate="true">支付管理</argument>
+                        <argument name="css_class" xsi:type="string">hotai-pay</argument>
+                        <argument name="sortOrder" xsi:type="number">30</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-middle-member" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">member/level/index</argument>
+                        <argument name="label" xsi:type="string" translate="true">會員制度</argument>
+                        <argument name="css_class" xsi:type="string">member</argument>
+                        <argument name="sortOrder" xsi:type="number">40</argument>
+                    </arguments>
+                </block>
+            </block>
+            <block class="Magento\Customer\Block\Account\Navigation" name="customer_nav_bottom" after="customer_nav_middle">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">customer-nav-bottom</argument>
+                    <argument name="title" xsi:type="string" translate="true">客戶服務</argument>
+                </arguments>
+                <action method="setTemplate">
+                    <argument name="template" xsi:type="string">Branch8_Customer::account/navigation.phtml</argument>
+                </action>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-bottom-faq" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">faq</argument>
+                        <argument name="label" xsi:type="string" translate="true">常見問題</argument>
+                        <argument name="css_class" xsi:type="string">faq</argument>
+                        <argument name="sortOrder" xsi:type="number">40</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-bottom-ticket" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">helpdesk/ticket</argument>
+                        <argument name="label" xsi:type="string" translate="true">客服表單</argument>
+                        <argument name="css_class" xsi:type="string">member-ticket</argument>
+                        <argument name="sortOrder" xsi:type="number">40</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-bottom-services" template="Branch8_Customer::account/link.phtml">
+                    <arguments>
+                        <argument name="path" xsi:type="string">account/groupapps</argument>
+                        <argument name="label" xsi:type="string" translate="true">和泰集團相關服務</argument>
+                        <argument name="css_class" xsi:type="string">services</argument>
+                        <argument name="sortOrder" xsi:type="number">40</argument>
+                    </arguments>
+                </block>
+            </block>
+
+            <block class="Branch8\Customer\Block\Account\Link" name="customer-nav-bottom-logout" template="Branch8_Customer::account/link-logout.phtml">
+                <arguments>
+                    <argument name="path" xsi:type="string">logout</argument>
+                    <argument name="label" xsi:type="string" translate="true">登出</argument>
+                    <argument name="css_class" xsi:type="string">logout</argument>
+                    <argument name="sortOrder" xsi:type="number">80</argument>
+                </arguments>
+            </block>
+
+        </referenceContainer>
+
+        <referenceBlock name="customer_account_navigation">
+            <arguments>
+                <argument name="css_class" xsi:type="string">default-nav</argument>
+            </arguments>
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_Customer::account/default_nav.phtml</argument>
+            </action>
+        </referenceBlock>
+
+        <referenceBlock name="customer_account_dashboard_address" remove="true" />
+        <referenceContainer name="div.sidebar.additional" remove="true" />
+
+        <!-- <referenceBlock name="customer_account_navigation" remove="true" /> -->
+        <referenceBlock name="amasty_affiliate_account_navigation_block" remove="true" />
+        <referenceBlock name="customer_account_dashboard_info">
+            <arguments>
+                <argument name="mask_model" xsi:type="object">Branch8\MaskCustomerInformation\ViewModel\MaskPersonal</argument>
+            </arguments>
+        </referenceBlock>
+        <!-- <move element="customer-account-navigation-parent-orders-link" destination="customer_nav_top" before="-"/>
+        <move element="customer-account-navigation-hotai-point-detail" destination="customer_nav_top"/>
+        <move element="customer-account-navigation-my-tickets-family-bonus-pin" destination="customer_nav_top"/>
+        <referenceBlock name="customer-account-navigation-parent-orders-link">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_Customer::account/link.phtml</argument>
+            </action>
+        </referenceBlock> -->
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template" name="customer.account.order.component" template="Branch8_Customer::account/refactor/orders.phtml" before="-"/>
+        </referenceContainer>
+    </body>
+</page>

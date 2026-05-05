@@ -1,0 +1,267 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Address\Book $block */
+
+use Branch8\OneStepCheckout\Model\Source\HotaiAddressType;
+$customerInfoHelper = $this->helper('Branch8\Customer\Helper\Info');
+$emptyAccountImg = $block->getViewFileUrl('images/account-home.svg');
+$emptyAccountStoreImg = $block->getViewFileUrl('images/account-store.svg');
+?>
+<div class="block block-addresses"
+    data-mage-init='{"mage/tabs": {"openedState": "active", "active": <?= $block->getCurrentTabByNum() ?>,  "disabledState": "disabled"}}'>
+    <div class="account-tab-items">
+        <div class="account-tab-title" data-role="collapsible">
+            <a class="account-tab-item-switch" data-toggle="trigger" href="?tab=home"><?= __("常用宅配地址") ?></a>
+        </div>
+        <div class="account-tab-title" data-role="collapsible">
+            <a class="account-tab-item-switch" data-toggle="trigger"
+                href="?tab=convenience_store"><?= __("常用超商門市") ?></a>
+        </div>
+    </div>
+    <div id="tab-address-home" class="account-tab-content" data-role="content" style="display: <?= $block->getCurrentTabByNum() == 0? 'block': 'none'?>;">
+        <?php $homeAddress = $block->getAddressByType(HotaiAddressType::ADDRESS_TYPE_NORMAL); ?>
+        <?php if ($homeAddress->getSize()): ?>
+            <div class="table-wrapper address-listing address-home" id="address-normal-table">
+                <div class="table account addresses">
+                    <div class="table-header">
+                        <div class="table-row">
+                            <div class="group">
+                                <div class="table-column status"></div>
+                            </div>
+                            <div class="group">
+                                <div class="table-column recipient"><?= $block->escapeHtml(__('收件人')) ?></div>
+                                <div class="table-column phone"><?= $block->escapeHtml(__('手機號碼')) ?></div>
+                                <div class="table-column address"><?= $block->escapeHtml(__('地址')) ?></div>
+                            </div>
+                            <div class="group f-row">
+                                <div class="table-column actions edit-actionn"><?= $block->escapeHtml(__('編輯')) ?></div>
+                                <div class="table-column actions remove-action"><?= $block->escapeHtml(__('移除')) ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-body">
+                        <?php foreach ($block->getSortedList($homeAddress, HotaiAddressType::ADDRESS_TYPE_NORMAL) as $_address): ?>
+                            <div class="table-row">
+                                <div class="group">
+                                    <div data-th="" class="table-column status">
+                                        <?php if ($_address->getDataModel()->isDefaultShipping()): ?>
+                                            <span class="status-button">
+                                                <?= $block->escapeHtml(__('預設')) ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <div class="group f-wrap">
+                                    <div data-th="<?= $block->escapeHtml(__('收件人')) ?>" class="table-column recipient">
+                                        <?= $customerInfoHelper->getOAuthName('', $_address->getFirstname()); ?>
+                                    </div>
+                                    <div data-th="<?= $block->escapeHtml(__('手機號碼')) ?>" class="table-column phone">
+                                        <?= $customerInfoHelper->getOAuthPhone($_address->getTelephone()); ?>
+                                    </div>
+                                    <div data-th="<?= $block->escapeHtml(__('地址')) ?>" class="table-column address">
+                                        <?= $block->getAddress($_address); ?>
+                                    </div>
+                                </div>
+                                <div class="group f-row">
+
+                                    <div data-th="<?= $block->escapeHtml(__('編輯')) ?>" class="table-column actions edit-action">
+                                        <a class="action edit"
+                                            href="<?= $block->getUrl('customer/address/edit', [
+                                                'id' => $_address->getId(),
+                                                'type' => HotaiAddressType::ADDRESS_TYPE_NORMAL
+                                            ]); ?>">
+                                            <img src="<?= $block->escapeUrl($block
+                                                ->getViewFileUrl('Magento_Customer::images/edit.svg')); ?>"
+                                                title="<?= $block->escapeHtml(__('編輯')) ?>"
+                                                alt="<?= $block->escapeHtml(__('編輯')) ?>" />
+                                        </a>
+                                    </div>
+                                    <div data-th="<?= $block->escapeHtml(__('移除')) ?>"
+                                        class="table-column actions remove-action">
+                                        <a href="#" class="action delete" role="delete-address" data-address="<?= $_address->getId() ?>">
+                                            <img src="<?= $block->escapeUrl($block
+                                                ->getViewFileUrl('Magento_Customer::images/cancel_all.svg')); ?>"
+                                                title="<?= $block->escapeHtml(__('移除')) ?>"
+                                                alt="<?= $block->escapeHtml(__('移除')) ?>" />
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <a href="<?= $block->getUrl('customer/address/new', ['type' => HotaiAddressType::ADDRESS_TYPE_NORMAL]); ?>"
+                    title="<?= $block->escapeHtmlAttr(__('新增宅配地址')) ?>" class="action primary add">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="white" d="M6 12H18" stroke="#231815" stroke-width="1.5" stroke-linecap="round" />
+                        <path stroke="white" d="M12 6L12 18" stroke="#231815" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <span><?= $block->escapeHtml(__('新增宅配地址')) ?></span>
+                </a>
+            </div>
+        <?php else: ?>  
+            <div class="no-data">
+                <div class="no-data-img">
+                    <img src="<?= $emptyAccountImg ?>" alt="<?= $block->escapeHtmlAttr(__('Account Logo')) ?>" />
+                </div>
+                <div class="no-data-text">
+                    <?= $block->escapeHtml(__('開始新增第一個宅配地址吧！')) ?>
+                </div>
+                <div class="actions-toolbar">
+                    <a href="<?= $block->getUrl('customer/address/new', ['type' => HotaiAddressType::ADDRESS_TYPE_NORMAL]); ?>"
+                        title="<?= $block->escapeHtmlAttr(__('新增宅配地址')) ?>" class="action primary add">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke="white" d="M6 12H18" stroke="#231815" stroke-width="1.5" stroke-linecap="round" />
+                            <path stroke="white" d="M12 6L12 18" stroke="#231815" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                        <span><?= $block->escapeHtml(__('新增宅配地址')) ?></span>
+                    </a>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div id="tab-address-convenience" class="account-tab-content" data-role="content" style="display: <?= $block->getCurrentTabByNum() == 1? 'block': 'none'?>;">
+        <?php
+        $convenienceAddresses = $block->getAddressByType(HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE);
+        ?>
+        <?php if ($convenienceAddresses->getSize()): ?>
+            <div class="table-wrapper address-listing address-convenience">
+                <div class="table account addresses">
+                    <div class="table-header">
+                        <div class="table-row">
+                            <div class="group">
+                                <div class="table-column status"></div>
+                            </div>
+                            <div class="group">
+                                <div class="table-column recipient"><?= $block->escapeHtml(__('收件人')) ?></div>
+                                <div class="table-column phone"><?= $block->escapeHtml(__('手機號碼')) ?></div>
+                                <div class="table-column address"><?= $block->escapeHtml(__('門市名稱&地址')) ?></div>
+                            </div>
+                            <div class="group f-row">
+                                <div class="table-column actions edit-actionn"><?= $block->escapeHtml(__('編輯')) ?></div>
+                                <div class="table-column actions remove-action"><?= $block->escapeHtml(__('移除')) ?></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-body">
+                        <?php $isDefaultConvenienceAddrId = $block->getDefaultConvenienceAddress(); ?>
+                        <?php foreach ($block->getSortedList($convenienceAddresses, HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE) as $_address): ?>
+                            <?php
+                            $isDefaultConvenienceAddr = false;
+                            if ($_address->getId() == $isDefaultConvenienceAddrId) {
+                                $isDefaultConvenienceAddr = true;
+                            }
+                            ?>
+                            <div class="table-row">
+                                <div class="group">
+                                    <div data-th="" class="table-column status">
+                                        <?php if ($isDefaultConvenienceAddr) :  ?>
+                                        <span class="status-button">
+                                            <?= $block->escapeHtml(__('預設')) ?>
+                                        </span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <div class="group f-wrap">
+                                    <div data-th="<?= $block->escapeHtml(__('收件人')) ?>" class="table-column recipient">
+                                        <?= $customerInfoHelper->getOAuthName('', $_address->getFirstname()); ?>
+                                    </div>
+                                    <div data-th="<?= $block->escapeHtml(__('手機號碼')) ?>" class="table-column phone">
+                                        <?= $customerInfoHelper->getOAuthPhone($_address->getTelephone()); ?>
+                                    </div>
+                                    <div data-th="<?= $block->escapeHtml(__('地址')) ?>" class="table-column address">
+                                        <?= $block->getConvenienceAddress($_address); ?>
+                                    </div>
+                                </div>
+                                <div class="group f-row">
+                                    <div data-th="<?= $block->escapeHtml(__('編輯')) ?>" class="table-column actions edit-action">
+                                        <a class="action edit"
+                                            href="<?= $block->getUrl('customer/address/edit', [
+                                                'id' => $_address->getId(),
+                                                'type' => HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE
+                                            ]); ?>">
+                                            <img src="<?= $block->escapeUrl($block
+                                                ->getViewFileUrl('Magento_Customer::images/edit.svg')); ?>"
+                                                title="<?= $block->escapeHtml(__('編輯')) ?>"
+                                                alt="<?= $block->escapeHtml(__('編輯')) ?>" />
+                                        </a>
+                                    </div>
+                                    <div data-th="<?= $block->escapeHtml(__('移除')) ?>"
+                                        class="table-column actions remove-action">
+                                        <a href="#" class="action delete" role="delete-address" data-address="<?= $_address->getId() ?>">
+                                            <img src="<?= $block->escapeUrl($block
+                                                ->getViewFileUrl('Magento_Customer::images/cancel_all.svg')); ?>"
+                                                title="<?= $block->escapeHtml(__('移除')) ?>"
+                                                alt="<?= $block->escapeHtml(__('移除')) ?>" />
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <a href="<?php echo $block->getUrl('customer/address/new', ['type' => HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE]); ?>"
+                    title="<?= $block->escapeHtmlAttr(__('新增超商取貨門市')) ?>" class="action primary add">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="white" d="M6 12H18" stroke="#231815" stroke-width="1.5" stroke-linecap="round" />
+                        <path stroke="white" d="M12 6L12 18" stroke="#231815" stroke-width="1.5"
+                            stroke-linecap="round" />
+                    </svg>
+                    <span><?= $block->escapeHtml(__('新增超商取貨門市')) ?></span>
+                </a>
+            </div>
+        <?php else: ?>    
+            <div class="no-data">
+                <div class="no-data-img">
+                    <img src="<?= $emptyAccountStoreImg ?>" alt="<?= $block->escapeHtmlAttr(__('Account Store Logo')) ?>" />
+                </div>
+                <div class="no-data-text">
+                    <?= $block->escapeHtml(__('開始新增第一個超商門市吧！')) ?>
+                </div>
+                <div class="actions-toolbar">
+                    <a href="<?php echo $block->getUrl('customer/address/new', ['type' => HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE]); ?>"
+                        title="<?= $block->escapeHtmlAttr(__('新增超商取貨門市')) ?>" class="action primary add">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke="white" d="M6 12H18" stroke="#231815" stroke-width="1.5" stroke-linecap="round" />
+                            <path stroke="white" d="M12 6L12 18" stroke="#231815" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                        <span><?= $block->escapeHtml(__('新增超商取貨門市')) ?></span>
+                    </a>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div id="delete-address-modal" class="modal modal-hide" data-role="modal">
+    <div class="modal-body">
+        <?= $escaper->escapeHtml(__('是否確定刪除此常用地址？')) ?>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        ".page-main": {
+            "address": {
+                "deleteAddress": ".actions a[role='delete-address']",
+                "deleteUrlPrefix": "<?= $block->escapeJs($block->escapeUrl($block->getDeleteUrl())) ?>id/",
+                "addAddress": "button[role='add-address']",
+                "addAddressLocation": "<?= $block->escapeJs($block->escapeUrl($block->getAddAddressUrl())) ?>"
+            }
+        }
+    }
+</script>

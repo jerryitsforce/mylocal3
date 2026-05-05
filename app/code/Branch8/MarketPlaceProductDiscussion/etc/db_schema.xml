@@ -1,0 +1,322 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!-- ===================================================== -->
+    <!-- THREAD TABLE                                          -->
+    <!-- ===================================================== -->
+
+    <table name="branch8_marketplace_product_discussion_thread"
+           resource="default"
+           engine="innodb"
+           comment="Marketplace Product Discussion Thread">
+
+        <column xsi:type="int" name="thread_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false"/>
+        <column xsi:type="smallint" name="store_id" padding="5" unsigned="true" nullable="false" identity="false" comment="Store Id"/>
+        <column xsi:type="varchar" name="sku" length="255" nullable="true"/>
+        <column xsi:type="varchar" name="product_name" length="512" nullable="true"/>
+        <column xsi:type="text" name="product_spec" nullable="true"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="true"/>
+        <column xsi:type="varchar" name="seller_name" length="512" nullable="false"/>
+        <column xsi:type="varchar" name="author_name" length="512" nullable="false"/>
+        <column xsi:type="varchar" name="author_type" length="64" nullable="false"
+                comment="customer | seller"/>
+        <column xsi:type="int" name="author_id" unsigned="true" nullable="false"/>
+        <column xsi:type="bigint" name="review_id" unsigned="true" nullable="true"/>
+        <column xsi:type="varchar" name="title" length="256" nullable="false"
+                comment="title"/>
+        <column xsi:type="varchar" name="content" length="1024" nullable="false"
+                comment="content"/>
+        <column xsi:type="varchar" name="thread_type" length="20" nullable="false"
+                comment="question | review | general"/>
+        <column xsi:type="varchar" name="status" length="20" nullable="false" default="pending"
+                comment="pending | approved | rejected | closed"/>
+        <column xsi:type="smallint" name="is_verified_buyer" nullable="false" default="0"/>
+        <column xsi:type="smallint" name="is_featured" nullable="false" default="0"/>
+        <column xsi:type="smallint" name="is_locked" nullable="false" default="0"/>
+        <column xsi:type="smallint" name="is_seller_reply" nullable="false" default="0"/>
+        <column xsi:type="timestamp" name="seller_replied_at" nullable="true"/>
+        <column xsi:type="int" name="helpful_count" nullable="false" default="0"/>
+        <column xsi:type="int" name="message_count" nullable="false" default="0"/>
+        <column xsi:type="text" name="meta" nullable="true"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false"
+                default="CURRENT_TIMESTAMP"
+                on_update="true"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="thread_id"/>
+        </constraint>
+
+        <!-- FK: Product -->
+        <constraint xsi:type="foreign"
+                    referenceId="FK_MP_DISCUSSION_THREAD_PRODUCT"
+                    table="branch8_marketplace_product_discussion_thread"
+                    column="product_id"
+                    referenceTable="catalog_product_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+
+        <!-- FK: Review (optional link) -->
+        <constraint xsi:type="foreign"
+                    referenceId="FK_MP_DISCUSSION_THREAD_REVIEW"
+                    table="branch8_marketplace_product_discussion_thread"
+                    column="review_id"
+                    referenceTable="review"
+                    referenceColumn="review_id"
+                    onDelete="SET NULL"/>
+
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_PRODUCT">
+            <column name="product_id"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_SELLER_REPLIED_AT">
+            <column name="seller_replied_at"/>
+        </index>
+
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_SKU">
+            <column name="sku"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_PRODUCT_NAME">
+            <column name="product_name"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_SELLER_REPLIED">
+            <column name="is_seller_reply"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_SELLER">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_AUTHOR_ID">
+            <column name="author_id"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_AUTHOR_NAME">
+            <column name="author_name"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_SELLER_NAME">
+            <column name="seller_name"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_AUTHOR_ID_AUTHOR_TYPE">
+            <column name="author_id"/>
+            <column name="author_type"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_FULLTEXT" indexType="fulltext">
+            <column name="sku"/>
+            <column name="product_name"/>
+            <column name="seller_name"/>
+            <column name="author_name"/>
+            <column name="title"/>
+            <column name="content"/>
+            <column name="status"/>
+        </index>
+
+        <index referenceId="IDX_MP_DISCUSSION_THREAD_STATUS">
+            <column name="status"/>
+        </index>
+
+    </table>
+
+
+    <!-- ===================================================== -->
+    <!-- MESSAGE TABLE                                         -->
+    <!-- ===================================================== -->
+
+    <table name="branch8_marketplace_product_discussion_message"
+           resource="default"
+           engine="innodb"
+           comment="Marketplace Product Discussion Messages">
+
+        <column xsi:type="int" name="message_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="thread_id" unsigned="true" nullable="false"/>
+        <column xsi:type="int" name="parent_message_id" unsigned="true" nullable="true"/>
+
+        <column xsi:type="varchar" name="author_type" length="20" nullable="false"
+                comment="customer | seller | admin"/>
+
+        <column xsi:type="int" name="author_id" unsigned="true" nullable="false"/>
+        <column xsi:type="varchar" name="author_name" length="255" nullable="true"
+                comment="Author Name"/>
+        <column xsi:type="text" name="message" nullable="false"/>
+
+        <column xsi:type="smallint" name="is_seller_reply" nullable="false" default="0"/>
+        <column xsi:type="smallint" name="is_edited" nullable="false" default="0"/>
+        <column xsi:type="smallint" name="is_moderated" nullable="false" default="0"/>
+
+        <column xsi:type="int" name="helpful_count" nullable="false" default="0"/>
+
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false"
+                default="CURRENT_TIMESTAMP"
+                on_update="true"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="message_id"/>
+        </constraint>
+
+        <!-- FK: Thread -->
+        <constraint xsi:type="foreign"
+                    referenceId="FK_MP_DISCUSSION_MESSAGE_THREAD"
+                    table="branch8_marketplace_product_discussion_message"
+                    column="thread_id"
+                    referenceTable="branch8_marketplace_product_discussion_thread"
+                    referenceColumn="thread_id"
+                    onDelete="CASCADE"/>
+
+        <!-- FK: Parent Message (Nested reply) -->
+        <constraint xsi:type="foreign"
+                    referenceId="FK_MP_DISCUSSION_MESSAGE_PARENT"
+                    table="branch8_marketplace_product_discussion_message"
+                    column="parent_message_id"
+                    referenceTable="branch8_marketplace_product_discussion_message"
+                    referenceColumn="message_id"
+                    onDelete="CASCADE"/>
+
+        <index referenceId="IDX_MP_DISCUSSION_MESSAGE_THREAD">
+            <column name="thread_id"/>
+        </index>
+
+        <index referenceId="IDX_MP_DISCUSSION_MESSAGE_AUTHOR_NAME">
+            <column name="author_name"/>
+        </index>
+
+        <index referenceId="IDX_MP_DISCUSSION_MESSAGE_CREATED_AT">
+            <column name="created_at"/>
+        </index>
+        <index referenceId="IDX_MP_DISCUSSION_MESSAGE_PARENT">
+            <column name="parent_message_id"/>
+        </index>
+
+        <index referenceId="IDX_MP_DISCUSSION_MESSAGE_AUTHOR">
+            <column name="author_id"/>
+        </index>
+        <index referenceId="IDX_MP_MESSAGE_FULLTEXT" indexType="fulltext">
+            <column name="author_name"/>
+            <column name="message"/>
+            <column name="author_type"/>
+        </index>
+    </table>
+
+
+    <!-- ===================================================== -->
+    <!-- PARTICIPANTS TABLE                                    -->
+    <!-- ===================================================== -->
+
+    <table name="branch8_marketplace_product_discussion_participant"
+           resource="default"
+           engine="innodb"
+           comment="Marketplace Product Discussion Participants">
+
+        <column xsi:type="int" name="participant_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="thread_id" unsigned="true" nullable="false"/>
+
+        <column xsi:type="varchar" name="user_type" length="20" nullable="false"
+                comment="customer | seller | admin"/>
+
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false"/>
+
+        <column xsi:type="smallint" name="is_owner" nullable="false" default="0"/>
+        <column xsi:type="smallint" name="is_seller" nullable="false" default="0"/>
+
+        <column xsi:type="timestamp" name="joined_at" nullable="false" default="CURRENT_TIMESTAMP"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="participant_id"/>
+        </constraint>
+
+        <constraint xsi:type="foreign"
+                    referenceId="FK_MP_DISCUSSION_PARTICIPANT_THREAD"
+                    table="branch8_marketplace_product_discussion_participant"
+                    column="thread_id"
+                    referenceTable="branch8_marketplace_product_discussion_thread"
+                    referenceColumn="thread_id"
+                    onDelete="CASCADE"/>
+
+        <constraint xsi:type="unique"
+                    referenceId="UNQ_MP_DISCUSSION_THREAD_USER">
+            <column name="thread_id"/>
+            <column name="user_type"/>
+            <column name="user_id"/>
+        </constraint>
+
+        <index referenceId="IDX_MP_DISCUSSION_PARTICIPANT_THREAD">
+            <column name="thread_id"/>
+        </index>
+
+    </table>
+
+
+    <!-- ===================================================== -->
+    <!-- VOTE TABLE                                            -->
+    <!-- ===================================================== -->
+
+    <table name="branch8_marketplace_product_discussion_vote"
+           resource="default"
+           engine="innodb"
+           comment="Marketplace Product Discussion Helpful Votes">
+
+        <column xsi:type="int" name="vote_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="message_id" unsigned="true" nullable="false"/>
+
+        <column xsi:type="varchar" name="user_type" length="20" nullable="false"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false"/>
+
+        <column xsi:type="varchar" name="vote_type" length="20" nullable="false" default="helpful"/>
+
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="vote_id"/>
+        </constraint>
+
+        <constraint xsi:type="foreign"
+                    referenceId="FK_MP_DISCUSSION_VOTE_MESSAGE"
+                    table="branch8_marketplace_product_discussion_vote"
+                    column="message_id"
+                    referenceTable="branch8_marketplace_product_discussion_message"
+                    referenceColumn="message_id"
+                    onDelete="CASCADE"/>
+
+        <constraint xsi:type="unique"
+                    referenceId="UNQ_MP_DISCUSSION_VOTE_USER">
+            <column name="message_id"/>
+            <column name="user_type"/>
+            <column name="user_id"/>
+        </constraint>
+
+    </table>
+
+
+    <!-- ===================================================== -->
+    <!-- MODERATION TABLE                                      -->
+    <!-- ===================================================== -->
+
+    <table name="branch8_marketplace_product_discussion_moderation"
+           resource="default"
+           engine="innodb"
+           comment="Marketplace Product Discussion Moderation Log">
+
+        <column xsi:type="int" name="moderation_id" unsigned="true" nullable="false" identity="true"/>
+        <column xsi:type="int" name="thread_id" unsigned="true" nullable="true"/>
+        <column xsi:type="int" name="message_id" unsigned="true" nullable="true"/>
+
+        <column xsi:type="varchar" name="action" length="30" nullable="false"
+                comment="approve | reject | delete | lock | unlock"/>
+
+        <column xsi:type="text" name="reason" nullable="true"/>
+        <column xsi:type="int" name="moderator_id" unsigned="true" nullable="false"/>
+
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="moderation_id"/>
+        </constraint>
+
+        <index referenceId="IDX_MP_DISCUSSION_MOD_THREAD">
+            <column name="thread_id"/>
+        </index>
+
+        <index referenceId="IDX_MP_DISCUSSION_MOD_MESSAGE">
+            <column name="message_id"/>
+        </index>
+
+    </table>
+
+</schema>

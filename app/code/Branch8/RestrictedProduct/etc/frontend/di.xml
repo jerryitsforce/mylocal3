@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:ObjectManager/etc/config.xsd">
+	<type name="Branch8\Customer\CustomerData\Common">
+		<plugin name="branch8_restricted_product_common_data" type="Branch8\RestrictedProduct\Plugin\CustomerDataCommonPlugin"/>
+	</type>
+	<type name="Magento\Quote\Model\Quote">
+        <plugin name="Amasty_Groupcat::FixLoadQuoteWithRestrictedItems" disabled="true" />
+    </type>
+    <type name="Amasty\Groupcat\Controller\ControllerRedirectProcessor">
+        <plugin name="Branch8_RestrictedProduct::redirectWithSpecifiedUrl"
+                type="Branch8\RestrictedProduct\Plugin\Amasty\Groupcat\Controller\ControllerRedirectProcessorPlugin" disabled="false" />
+    </type>
+    <type name="Branch8\RestrictedProduct\Plugin\Amasty\Groupcat\Controller\ControllerRedirectProcessorPlugin">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\CatalogWidget\Block\Product\ProductsList">
+        <arguments>
+            <argument name="sqlBuilder" xsi:type="object">Branch8\RestrictedProduct\Rewrite\Magento\Rule\Model\Condition\Sql\Builder</argument>
+        </arguments>
+        <plugin name="Branch8_RestrictedProduct::optimize"
+                type="Branch8\RestrictedProduct\Plugin\Magento\CatalogWidget\Block\Product\ProductListPlugin"
+                disabled="false" />
+    </type>
+</config>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Branch8_WebkulMpBuyerSellerChatUnreadMessageReminder">
+        <sequence>
+            <module name="Webkul_SellerSubAccount"/>
+            <module name="Branch8_WebkulMpBuyerSellerChat"/>
+            <module name="Magenest_NotificationBox"/>
+        </sequence>
+    </module>
+</config>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters">
+            <filterSelect
+                name="hotai_brand"
+                provider="${ $.parentName }"
+                component="Magento_Ui/js/form/element/ui-select"
+                template="ui/grid/filters/elements/ui-select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\Catalog\Ui\Component\Product\Form\Brand\Options"/>
+                    <caption translate="true">– Please Select Brands –</caption>
+                    <label translate="true">Brand</label>
+                    <dataScope>hotai_brand</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+            </filterSelect>
+        </filters>
+    </listingToolbar>
+    <columns name="product_columns" class="Magento\Catalog\Ui\Component\Listing\Columns" >
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">disabled</item>
+                    <item name="target" xsi:type="string">disabled</item>
+                    <item name="provider" xsi:type="string">product_listing.product_listing_data_source</item>
+                    <item name="target" xsi:type="string">edit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">entity_id</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <column name="is_hidden" sortOrder="76" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <addField>true</addField>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <sortable>false</sortable>
+                <options class="Branch8\Catalog\Model\Source\HiddenTypeFull" />
+                <label translate="true">Is Hidden</label>
+            </settings>
+        </column>
+        <column name="is_returnable" sortOrder="80" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <addField>true</addField>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <sortable>false</sortable>
+                <options class="Branch8\Catalog\Model\Source\RmaSetting" />
+                <label translate="true">Enable RMA</label>
+            </settings>
+        </column>
+        <column name="special_price" sortOrder="78" class="Magento\Catalog\Ui\Component\Listing\Columns\Price">
+            <settings>
+                <addField>true</addField>
+                <filter>textRange</filter>
+                <dataType>price</dataType>
+                <label translate="true">Special Price</label>
+            </settings>
+        </column>
+        <column name="special_from_date" component="Magento_Ui/js/grid/columns/date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Special Price From Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="special_to_date" component="Magento_Ui/js/grid/columns/date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Special Price To Date</item>
+                </item>
+            </argument>
+        </column>
+        <column name="cost" sortOrder="81" class="Magento\Catalog\Ui\Component\Listing\Columns\Price">
+            <settings>
+                <addField>true</addField>
+                <filter>textRange</filter>
+                <dataType>price</dataType>
+                <label translate="true">Cost</label>
+            </settings>
+        </column>
+        <column name="salable_quantity"
+                class="Branch8\Catalog\Ui\Component\Listing\Columns\Product\SalableQuantity"
+                component="Branch8_Catalog/js/product/grid/cell/salable-quantity"
+                sortOrder="77">
+            <settings>
+                <filter>false</filter>
+                <sortable>false</sortable>
+                <label translate="true">Salable Quantity</label>
+            </settings>
+        </column>
+        <column name="reserved_quantity"
+                class="Branch8\Catalog\Ui\Component\Listing\Columns\Product\ReservedQuantity"
+                component="Branch8_Catalog/js/product/grid/cell/reserved-quantity"
+                sortOrder="12">
+            <settings>
+                <filter>false</filter>
+                <sortable>false</sortable>
+                <label translate="true">Reserved Quantity</label>
+            </settings>
+        </column>
+        <column name="admin_user_updated" sortOrder="82">
+            <settings>
+                <addField>true</addField>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <sortable>false</sortable>
+                <label translate="true">Last Updated User</label>
+            </settings>
+        </column>
+        <column name="first_enabled_date" component="Magento_Ui/js/grid/columns/date" class="Branch8\Catalog\Ui\Component\Listing\Columns\Product\FirstEnabledDate">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">First Enabled Date</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+            </argument>
+        </column>
+        <column name="variation_price" class="Branch8\Catalog\Ui\Component\Listing\Columns\Product\VariationPrice">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="label" xsi:type="string" translate="true">Variation Price</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">120</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="variation_cost"  class="Branch8\Catalog\Ui\Component\Listing\Columns\Product\VariationCost">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="label" xsi:type="string" translate="true">Variation Cost</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">125</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="status_history" class="Branch8\Catalog\Ui\Component\Listing\Columns\Product\StatusHistory" sortOrder="499">
+            <settings>
+                <label translate="true">Status History</label>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

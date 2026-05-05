@@ -1,0 +1,33 @@
+{
+    "quote": {
+        "column": {
+            "point_used_total": true,
+            "point_discount_total": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "row_total_point_used": true,
+            "row_total_point_discount": true,
+            "price_incl_tax_before_point_discount": true,
+            "base_price_incl_tax_before_point_discount": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "point_used_total": true,
+            "point_discount_total": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "row_total_point_used": true,
+            "row_total_point_discount": true
+        }
+    },
+    "sales_invoice": {
+        "column": {
+            "point_used_total": true
+        }
+    }
+}

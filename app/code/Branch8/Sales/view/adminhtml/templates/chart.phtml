@@ -1,0 +1,19 @@
+<?php
+/** @var $block \Branch8\Sales\Block\Dashboard\Tab\Products\CustomChart */
+?>
+<?php
+$chartInfo = $block->getProductData();
+?>
+<div class="dashboard-item-content">
+    <div id="chart_div" style="height: 500px;"></div>
+</div>
+<script src="https://www.gstatic.com/charts/loader.js" type="text/javascript"></script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_Sales/js/custom-chart": {
+                "chartInfo": <?= /** @noEscape */ json_encode($chartInfo) ?>
+    }
+}
+}
+</script>

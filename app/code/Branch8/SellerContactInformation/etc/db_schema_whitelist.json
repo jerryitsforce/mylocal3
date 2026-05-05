@@ -1,0 +1,159 @@
+{
+    "marketplace_userdata": {
+        "column": {
+            "register_account": true,
+            "company_name": true,
+            "special_dealer_code": true,
+            "special_dealer_name": true,
+            "company_phone": true,
+            "company_representative": true,
+            "status": true,
+            "uniform_numbers": true,
+            "invoice_title": true,
+            "invoice_shipping_address": true,
+            "invoice_and_statement_email": true,
+            "account_name": true,
+            "bank": true,
+            "bank_code": true,
+            "primary_contact": true,
+            "primary_contact_email": true,
+            "financial_liaison": true,
+            "financial_liaison_contact_number": true,
+            "financial_liaison_email": true,
+            "customer_service_contact": true,
+            "customer_service_contact_number": true,
+            "customer_service_contact_email": true,
+            "bank_account": true,
+            "non_fixed_service_fee": true,
+            "applicable_contracts_and_quotations": true,
+            "contracts_from": true,
+            "contracts_to": true,
+            "logistics_contracted_partner": true,
+            "pickup_option": true,
+            "company_code": true,
+            "salesperson": true,
+            "most_recent_personal_data_destruction_period": true,
+            "destruction_document_status": true,
+            "personal_data_destruction_affidavit": true,
+            "personal_data_destruction_certificate": true,
+            "company_address": true,
+            "hot_tag": true,
+            "invoice_company_no": true,
+            "invoice_company_name": true,
+            "invoice_company_address": true,
+            "bank_type": true,
+            "bank_branch_type": true,
+            "bank_branch_no": true,
+            "bank_memo": true,
+            "logistics_and_delivery_contract": true,
+            "logistics_and_delivery_phone_number": true,
+            "logistics_and_delivery_email": true,
+            "seller_no": true,
+            "seller_code": true,
+            "preservation_status": true,
+            "basic_information_registration_file": true,
+            "enable_low_notification": true,
+            "low_stock_quantity": true
+        },
+        "index": {
+            "FTI_FF9F29990FC547A01304B96475BC72C6": true,
+            "FTI_E8448A28598CD003059557DED546B8C9": true
+        },
+        "constraint": {
+            "MARKETPLACE_USERDATA_SELLER_ID_STORE_ID": true
+        }
+    },
+    "seller_contract_files": {
+        "column": {
+            "entity_id": true,
+            "seller_id": true,
+            "file_name": true,
+            "applicable_period": true,
+            "contracts_from": true,
+            "contracts_to": true,
+            "updated_at": true,
+            "contract_title": true,
+            "update_existed_product": true,
+            "is_active": true,
+            "commission": true,
+            "min_commission": true,
+            "updated_by": true
+        },
+        "index": {
+            "SELLER_CONTRACT_FILES_SELLER_ID": true,
+            "SELLER_CONTRACT_FILES_FILE_NAME": true,
+            "SELLER_CONTRACT_FILES_CONTRACTS_FROM": true,
+            "SELLER_CONTRACT_FILES_CONTRACTS_TO": true,
+            "SELLER_CONTRACT_FILES_IS_ACTIVE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "marketplace_saleperpartner": {
+        "column": {
+            "min_commission_rate": true,
+            "avg_commission_rate": true,
+            "default_commission_rate": true,
+            "default_min_commission_rate": true
+        }
+    },
+    "seller_contract_logs": {
+        "column": {
+            "entity_id": true,
+            "contract_id": true,
+            "seller_id": true,
+            "file_name": true,
+            "applicable_period": true,
+            "contracts_from": true,
+            "update_existed_product": true,
+            "is_active": true,
+            "contracts_to": true,
+            "commission": true,
+            "min_commission": true,
+            "updated_by": true,
+            "updated_at": true,
+            "is_deleted": true
+        },
+        "index": {
+            "SELLER_CONTRACT_LOGS_CONTRACT_ID": true,
+            "SELLER_CONTRACT_LOGS_SELLER_ID": true,
+            "SELLER_CONTRACT_LOGS_FILE_NAME": true,
+            "SELLER_CONTRACT_LOGS_CONTRACTS_FROM": true,
+            "SELLER_CONTRACT_LOGS_CONTRACTS_TO": true,
+            "SELLER_CONTRACT_LOGS_IS_ACTIVE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "seller_contract_logs": {
+        "column": {
+            "entity_id": true,
+            "contract_id": true,
+            "seller_id": true,
+            "file_name": true,
+            "applicable_period": true,
+            "contracts_from": true,
+            "update_existed_product": true,
+            "is_active": true,
+            "contracts_to": true,
+            "commission": true,
+            "min_commission": true,
+            "updated_by": true,
+            "updated_at": true,
+            "is_deleted": true
+        },
+        "index": {
+            "SELLER_CONTRACT_LOGS_CONTRACT_ID": true,
+            "SELLER_CONTRACT_LOGS_SELLER_ID": true,
+            "SELLER_CONTRACT_LOGS_FILE_NAME": true,
+            "SELLER_CONTRACT_LOGS_CONTRACTS_FROM": true,
+            "SELLER_CONTRACT_LOGS_CONTRACTS_TO": true,
+            "SELLER_CONTRACT_LOGS_IS_ACTIVE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

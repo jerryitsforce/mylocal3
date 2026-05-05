@@ -1,0 +1,19 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+?>
+<?php if ($block->isBlogEnabled()) : ?>
+    <div class="field choice blog-sign-up-author">
+        <input type="checkbox" name="is_mp_author" title="<?= $block->escapeHtmlAttr(__('Sign Up to be an Author')) ?>"
+               value="1" id="is_mp_author" class="checkbox">
+        <label for="is_mp_author" class="label">
+            <span><?= $escaper->escapeHtml(__('Sign Up to be an Author')) ?></span>
+        </label>
+    </div>
+<?php endif; ?>

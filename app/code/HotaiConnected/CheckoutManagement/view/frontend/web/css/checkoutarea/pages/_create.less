@@ -1,0 +1,133 @@
+//
+//  Create Monthly Batch Form Styles
+//  _____________________________________________
+
+.create-monthly-batch-form {
+    & fieldset,
+    & fieldset > legend {
+        padding: 13px;
+    }
+    & td { 
+        white-space: nowrap;
+    }
+
+    &__content {
+
+    }
+
+    &__item {
+        margin-bottom: 20px;
+        & > div {
+            padding: 0 13px;
+        }
+
+        & div[data-type="date-range"] {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            
+            .admin__field-control {
+                position: relative;
+                
+                .admin__control-text {
+                    width: 100%;
+                    min-width: 150px;
+                }
+                & > button.ui-datepicker-trigger {
+                    background-image: none;
+                    background: none;
+                    -moz-box-sizing: content-box;
+                    border: 0;
+                    box-shadow: none;
+                    line-height: inherit;
+                    margin: 0;
+                    padding: 0;
+                    text-shadow: none;
+                    font-weight: 400;
+                    text-decoration: none;
+                    display: inline-block;
+                    height: 3.2rem;
+                    margin-left: -3.2rem;
+                    overflow: hidden;
+                    position: absolute;
+                    vertical-align: top;
+                    z-index: 1;
+                }
+            }
+        }
+
+        & select, & input {
+            width: -webkit-fill-available;
+        }
+
+        & div[data-type="checkbox"] {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            height: 32px;
+        }
+
+
+        & .label {
+            text-align: right;
+            font-weight: 600;
+            display: block;
+            min-height: 32px;
+            line-height: 32px;
+            position: relative;
+            padding-right: 15px;
+            
+            & .required {
+                color: #f00;
+                position: absolute;
+                right: 4px;
+            }
+        }
+
+        & ._has-datepicker.admin__control-text {
+            width: auto;
+            padding-right: 30px; // 為按鈕留出空間
+        }
+    }
+    
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    &__error {
+        width: 100%;
+    }
+    
+    & div {
+        &.mage-error {
+            font-size: 12px;
+            color: #e22626;
+            background: #fffbbb;
+            padding: 1rem;
+            border: solid #d1d1d1;
+            border-width: 0 0.1rem 0.1rem;
+        }
+
+        &.checkbox-group + .mage-error {
+            border-width: 0.1rem;
+        }
+    }
+
+    & .admin__control-select {
+        height: 32px;
+        padding: 2px 41px 2px 8px;
+        // & .search-txt {
+        //     margin: -1px;
+        //     width: -webkit-fill-available;
+        //     z-index: 1;
+        //     border: 1px solid #007bdb;
+        //     border-bottom: 1px solid #ddd;
+        //     top: 31px;
+        // }
+    }
+    // & .SumoSelect.open .optWrapper {
+    //     top: 66px;
+    // }
+} 

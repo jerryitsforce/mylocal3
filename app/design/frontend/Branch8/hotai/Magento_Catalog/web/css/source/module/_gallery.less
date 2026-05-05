@@ -1,0 +1,478 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .fotorama__thumb{
+        border-radius: var(--radius-card_s);
+    }
+
+    .fotorama-item:not(.fotorama--fullscreen){
+        .fotorama__wrap{
+            .fotorama__fullscreen-icon{
+                display: inline-block !important;
+                background-color: #ffffff;
+                border: 1px solid var(--border-color);
+                border-radius: 100px;
+                background-image: none;
+                right: 8px;
+                top: 8px;
+                width: 30px;
+                height: 30px;
+    
+                .lib-icon-font(
+                    @_icon-font-content: '\e94d',
+                    @_icon-font-position: before,
+                    @_icon-font-size: 30px,
+                    @_icon-font-line-height: 30px,
+                    @_icon-font-color: var(--color-gray-solid2)
+                );
+
+                &:hover{
+                    &:before{
+                        color: var(--color-red-base);
+                    }
+                }
+            }
+
+            .fotorama__nav--thumbs{
+                margin: 0;
+            }
+        }
+    }
+
+    .fotorama-item{
+        .fotorama__stage.fotorama__shadows--left:before,
+        .fotorama__stage.fotorama__shadows--right:after{
+            visibility: hidden;
+        }
+
+        .fotorama__thumb-border{
+            border-color: var(--color-yellow);
+            border-radius: var(--radius-card_s);
+        }
+
+        .fotorama__nav.fotorama__nav--thumbs{
+            &:before,
+            &:after{
+                background-image: none;
+
+            }
+
+            &.fotorama__shadows--left{
+                &:before{
+                    content: '';
+                    background: linear-gradient(270deg, var(--color-page-bg) 0%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(270deg, var(--color-page-bg) 0%, rgba(255, 255, 255, 0) 100%);
+                    width: 40px;
+                    .lib-css(transform, rotate(180deg), 1);
+                    display: block;
+                }
+            }
+
+            &.fotorama__shadows--right{
+                &:after{
+                    content: '';
+                    background: linear-gradient(270deg, var(--color-page-bg) 0%, rgba(255, 255, 255, 0) 100%),
+    linear-gradient(270deg, var(--color-page-bg) 0%, rgba(255, 255, 255, 0) 100%);
+                    width: 40px;
+                    display: block;
+                }
+            }
+        }
+
+        &.fotorama--fullscreen .fotorama__nav.fotorama__nav--thumbs:before,
+        &.fotorama--fullscreen .fotorama__nav.fotorama__nav--thumbs:after{
+            display: block;
+        }
+
+        .fotorama__arr--disabled{
+            opacity: 0.3;
+        }
+
+        .fotorama__nav-wrap--horizontal .fotorama__thumb__arr--left, 
+        .fotorama__nav-wrap--horizontal .fotorama__thumb__arr--right{
+            .lib-icon-font(
+                @_icon-font-content: '\e925',
+                @_icon-font-position: before,
+                @_icon-font-size: 16px,
+                @_icon-font-line-height: 36px,
+                @_icon-font-color: var(--color-text-base)
+            );
+            text-align: center;
+            width: 36px;
+            height: 36px;
+            top: 50%;
+            margin-top: -18px;
+            bottom: auto;
+            border: 1px solid #CCCCCC;
+            border-radius: 10px;
+            box-sizing: border-box;
+
+            &:hover{
+                &:before{
+                    color: var(--color-red-base);
+                }
+            }
+            
+        }
+
+        .fotorama__nav-wrap--horizontal .fotorama__thumb__arr--left{
+            left: auto;
+            right: 48px;
+            &:before{
+                transform: rotate(-180deg);
+            }
+        }
+
+        .fotorama__thumb--icon{
+            &:extend(.abs-visually-hidden all);
+        }
+
+        .fotorama__thumb{
+            background-color: var(--color-gray-light-bg);
+        }
+
+        .fotorama__fullscreen-icon:focus:after,
+        .fotorama__zoom-in:focus:after, 
+        .fotorama__zoom-out:focus:after{
+            display: none;
+        }
+
+        .fotorama__nav-wrap{
+            position: relative;
+        }
+
+        .fotorama__arr{
+            background: none;
+
+            .fotorama__arr__arr{
+                background: none;
+                .lib-icon-font(
+                    @_icon-font-content: '',
+                    @_icon-font-position: before,
+                    @_icon-font-size: 28px,
+                    @_icon-font-line-height: 36px,
+                    @_icon-font-color: var(--color-text-base)
+                );
+
+                &:before{
+                    width: 100%;
+                }
+            }
+
+            &:active{
+                background: none;
+            }
+
+            &:focus:after{
+                visibility: hidden;
+            }
+
+            &:hover{
+                .fotorama__arr__arr:before{
+                    color: var(--color-red-base);
+                }
+            }
+            
+
+            &.fotorama__arr--prev{
+                .fotorama__arr__arr:before{
+                    content: '\e91d';
+                }
+            }
+
+            &.fotorama__arr--next{
+                .fotorama__arr__arr:before{
+                    content: '\e91a';
+                }
+            }
+        }
+    }
+
+    .fotorama__nav-wrap--horizontal.fotorama__nav-wrap{
+        // text-align: center;
+    }
+
+    .fotorama__close-fullscreen-icon{
+        position: absolute;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    .fotorama--fullscreen{
+        .fotorama__close-fullscreen-icon,
+        .fotorama__fullscreen-icon{
+            width: 28px;
+            height: 28px;
+            background-image: none;
+            text-align: center;
+            right: 16px;
+            top: 16px;
+            border-radius: 100px;
+
+            .lib-icon-font(
+                @_icon-font-content: '\e911',
+                @_icon-font-position: before,
+                @_icon-font-size: 28px,
+                @_icon-font-line-height: 28px,
+                @_icon-font-color: var(--color-text-base)
+            );
+
+            &:hover{
+                &:before{
+                    color: var(--color-red-base);
+                }
+            }
+        }
+
+        .fotorama__stage{
+            .fotorama__fullscreen-icon{
+                &:extend(.abs-visually-hidden all);
+            }
+        }
+
+        .fotorama__wrap{
+            .fotorama__zoom-in, 
+            .fotorama__zoom-out{
+                width: 60px;
+                height: 60px;
+                background-image: none;
+                border-radius: var(--radius-m);
+            }
+
+            .fotorama__zoom-out{
+                top: 60px;
+            }
+        }
+        .fotorama__zoom-in, 
+        .fotorama__zoom-out{
+            text-align: center;
+            .lib-icon-font(
+                @_icon-font-content: '',
+                @_icon-font-position: before,
+                @_icon-font-size: 30px,
+                @_icon-font-line-height: 60px,
+                @_icon-font-color: var(--color-text-base)
+            );
+
+            &:hover{
+                &:before{
+                    color: var(--color-red-base);
+                }
+            }
+        }
+        .fotorama__zoom-in{
+            &:before{
+                content: '\e913';
+            }
+        }
+        .fotorama__zoom-out{
+            &:before{
+                content: '\e914';
+            }
+        }
+
+        .fotorama__nav--thumbs{
+            text-align: center;
+        }
+    }
+
+    .fotorama__stage__frame .fotorama__img{
+        background-color: var(--color-gray-light-bg);
+    }
+
+    .fotorama-item .fotorama__nav-wrap.fotorama__nav__arr--disabled{
+        .fotorama__thumb__arr{
+            visibility: hidden;
+        }
+    }
+
+    .fotorama__thumb--index{
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        background-color: rgba(35, 24, 21, 0.6);
+        color: var(--color-white);
+        &:extend(.abs-caption2 all);
+        padding: 2px 7px;
+        border-radius: 100px;
+        display: inline-flex;
+        gap: 4px;
+
+        .fotorama__thumb-total{
+            opacity: 0.5;
+        }
+    }
+}
+
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+}
+
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .fotorama-item{
+        // Hide nav shadow on mobile
+        .fotorama__nav.fotorama__nav--thumbs:before, 
+        .fotorama__nav.fotorama__nav--thumbs:after{
+            visibility: hidden;
+        }
+        .fotorama__arr, .fotorama__thumb__arr{
+            display: none !important;
+        }
+    }
+
+    .fotorama-item:not(.fotorama--fullscreen) .fotorama__wrap .fotorama__fullscreen-icon {
+        right: 0;
+    }
+
+    .fotorama--fullscreen .fotorama__close-fullscreen-icon {
+        right: 45px;
+    }
+    
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .fotorama__nav-wrap--horizontal.fotorama__nav-wrap{
+        margin-top: 4px;
+        margin-bottom: -16px;
+    }
+    .fotorama-item:not(.fotorama--fullscreen){
+        .fotorama__wrap{
+            .fotorama__fullscreen-icon{
+                width: 44px;
+                height: 44px;
+                top: 8px;
+                right: 8px;
+
+                &:before{
+                    font-size: 44px;
+                    line-height: 44px;
+                }
+            }
+        }
+
+        .fotorama__thumb--index{
+            display: none;
+        }
+    }
+
+    .fotorama-item{
+        .fotorama__thumb--index{
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .fotorama__arr{
+            bottom: 96px;
+
+            &.fotorama__arr--prev{
+                left: -84px;
+            }
+
+            &.fotorama__arr--next{
+                right: -84px;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body.fotorama__fullscreen{
+        &:before{
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(35, 24, 21, 0.4);
+            z-index: 999;
+        }
+    }
+
+    .fotorama-item.fotorama--fullscreen{
+        max-width: 780px !important;
+        top: 50% !important;
+        bottom: auto !important;
+        margin: auto !important;
+        transform: translateY(-50%);
+        padding: 40px;
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--color-gray-light1);
+        border-radius: var(--radius-popover);
+        box-sizing: border-box;
+
+        
+        
+        .fotorama__wrap{
+            max-width: 82.8571428571429% !important;
+            margin: auto;
+
+            .fotorama__stage{
+                height: 0 !important;
+                padding-bottom: 100%; 
+            }
+        }
+
+        .fotorama__stage__shaft{
+            position: absolute;
+        }
+
+        .fotorama__nav-wrap--horizontal{
+            .fotorama__thumb__arr--left{
+                right: -17px;
+            }
+            .fotorama__thumb__arr--right{
+                right: -65px;
+            }
+        }
+    }
+
+    .fotorama__stage{
+        background-color: var(--color-gray-light-bg);
+        border-radius: var(--radius-m);
+    }
+}
+////////////////////////////////////////////////////
+/// Fix for desktop with small height
+///////////////////////////////////////////////////
+@media only screen 
+and (min-width : 769px) 
+and (max-height: 741px) {
+    .fotorama.fotorama-item.fotorama--fullscreen{
+        max-height: 100vh;
+    }
+
+    .fotorama.fotorama-item.fotorama--fullscreen .fotorama__wrap{
+        max-height: ~"calc(100vh - 80px)";
+    }
+
+    .fotorama.fotorama-item.fotorama--fullscreen .fotorama__wrap .fotorama__stage{
+        height: ~"calc(100vh - 135px)" !important;
+        padding-bottom: 0;
+    }
+}
+

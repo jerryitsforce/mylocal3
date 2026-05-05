@@ -1,0 +1,61 @@
+{
+    "customer_ticket": {
+        "column": {
+            "record_id": true,
+            "type": true,
+            "ticket_table_name": true,
+            "ticket_table_record_id": true,
+            "batch_code": true,
+            "customer_id": true,
+            "sales_order_item_id": true,
+            "belong_to_product_id": true,
+            "seller_id": true,
+            "ticket_unique_content": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "status": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "CUSTOMER_TICKET_TYPE_TICKET_TABLE_RECORD_ID": true,
+            "CSTR_TICKET_TYPE_CSTR_ID_STS_USE_START_TIME_USE_END_TIME": true,
+            "CUSTOMER_TICKET_CUSTOMER_ID": true,
+            "CUSTOMER_TICKET_TICKET_TABLE_NAME": true,
+            "CUSTOMER_TICKET_TICKET_TABLE_RECORD_ID": true,
+            "CUSTOMER_TICKET_TICKET_UNIQUE_CONTENT": true,
+            "CUSTOMER_TICKET_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "customer_ticket_over_due": {
+        "column": {
+            "record_id": true,
+            "type": true,
+            "ticket_table_name": true,
+            "ticket_table_record_id": true,
+            "batch_code": true,
+            "customer_id": true,
+            "sales_order_item_id": true,
+            "belong_to_product_id": true,
+            "seller_id": true,
+            "ticket_unique_content": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "status": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "CUSTOMER_TICKET_OVER_DUE_TYPE_TICKET_TABLE_RECORD_ID": true,
+            "IDX_EBD2ACDE3DF3ABAD65B02B671C686BFD": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

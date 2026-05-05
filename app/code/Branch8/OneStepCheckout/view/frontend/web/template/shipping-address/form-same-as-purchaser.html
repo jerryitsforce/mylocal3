@@ -1,0 +1,123 @@
+<form class="form form-shipping-address form-shipping-address-same-as-purchaser" id="co-shipping-form-same-as-purchaser"
+    data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+    <div id="shipping-same-as-purchaser-form" class="shipping-address-wrappper" data-bind="afterRender: onAfterRenderSameAsPurchaser()">
+        <!-- ko if: isCustomerLoggedIn() -->
+        <div id="login-customer-info-fieldset" class="buyer-detail address-default">
+            <!-- ko if: isShowDefaultBillingAddress() -->
+                <div class="buyer-detail-field name">
+                    <label class="label"><span data-bind="i18n: 'Name'"></span></label>
+                    <span data-bind="text: formatAddressName(defaultBillingAddress.firstname)"></span>
+                </div>
+                <div class="buyer-detail-field phone">
+                    <label class="label"><span data-bind="i18n: 'Phone Number'"></span></label>
+                    <span data-bind="text: formatAddressPhone(defaultBillingAddress.telephone)"></span>
+                </div>
+                <div class="buyer-detail-field address-info">
+                    <label class="label"><span data-bind="i18n: 'Address'"></span></label>
+                    <text args="formatAddressStreet(defaultBillingAddress)"></text>
+                </div>
+            <!-- /ko -->
+            <!-- ko if: isShowDefaultConvenienceAddress() -->
+                <div class="buyer-detail-field name">
+                    <label class="label"><span data-bind="i18n: 'Name'"></span></label>
+                    <span data-bind="text: formatAddressName(defaultConvenienceAddress.firstname)"></span>
+                </div>
+                <div class="buyer-detail-field phone">
+                    <label class="label"><span data-bind="i18n: 'Phone Number'"></span></label>
+                    <span data-bind="text: formatAddressPhone(defaultConvenienceAddress.telephone)"></span>
+                </div>
+                <div class="buyer-detail-field address-info">
+                    <label class="label"><span data-bind="i18n: 'Address'"></span></label>
+                    <text args="formatConvenienceAddress(defaultConvenienceAddress)"></text>
+                </div>
+            <!-- /ko -->
+            <!-- ko if: (!isShowDefaultBillingAddress() && !isShowDefaultConvenienceAddress()) -->
+                <div class="buyer-detail-field name">
+                    <label class="label"><span data-bind="i18n: 'Name'"></span></label>
+                    <span data-bind="text: customerName()"></span>
+                </div>
+                <div class="buyer-detail-field phone">
+                    <label class="label"><span data-bind="i18n: 'Phone Number'"></span></label>
+                    <span data-bind="text: customerPhoneNumber()"></span>
+                </div>
+            <!-- /ko-->
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: (!isShowDefaultBillingAddress() && !isShowDefaultConvenienceAddress()) -->
+        <div class="address-fieldset pickup-address-default" id="pickup-store-info-fieldset">
+            <!-- ko if: !isSelectStoreVisible() -->
+            <div class="pickup-default-selected">
+                <label class="label"><span data-bind="i18n: 'Address'"></span></label>
+                <button type="button" class="action action-show-new-address"
+                        id="add-same-as-purchaser-address"
+                        data-bind="click: displaySameAsPurchaserFormAddress, visible: !isNewAddressAdded()">
+                    <span data-bind="i18n: '新增宅配地址'"></span>
+                </button>
+            </div>
+            <div id="same-as-purchaser-address-info" class="address-info" style="display:none">
+                <text args="sameAsPurchaserAddressData"></text>
+            </div>
+            <!-- /ko -->
+            <div id="same-as-purchaser-address-form" style="display:none">
+                <!-- ko if: !isSelectStoreVisible() -->
+                <fieldset id="same-as-purchaser-address-fieldset" class="fieldset address">
+                    <!-- ko foreach: getRegion('same-as-purchaser-fieldset') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!--/ko-->
+                </fieldset>
+                <!-- /ko -->
+                <!-- ko if: isSelectStoreVisible() -->
+                <fieldset id="same-as-purchaser-address-fieldset" class="fieldset address">
+                    <!-- ko foreach: getRegion('same-as-purchaser-convenience-fieldset') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!--/ko-->
+                </fieldset>
+                <!-- /ko -->
+                <div class="form-action" data-bind="visible: !isSelectStoreVisible()">
+                    <input type="hidden" name="index_id" />
+                    <input type="hidden" name="address_id" />
+                    <button class="action secondary action-hide-popup" type="button" data-role="action" click="cancelUpdateSameAsPurchaserAddress">
+                        <span translate="'Cancel'"></span>
+                    </button>
+                    <button id="use-same-as-purchaser-address-button" class="action primary action-save-address" type="button" data-role="action" click="useSameAsPurchaserAddress">
+                        <span translate="'Add'"></span>
+                    </button>
+                </div>
+            </div>
+            <!-- ko if: isSelectStoreVisible() -->
+            <div id="selected-store-info" class="pickup-store-wrapper">
+                <div class="pickup-store-field pickup-store-selector">
+                    <label class="label">
+                        <span data-bind="i18n: '地址', visible: !isStoreSelected()"></span>
+                        <span data-bind="i18n: '門市名稱', visible: isStoreSelected"></span>
+                    </label>
+                    <div class="content">
+                        <span data-bind="visible: isStoreSelected, text: storeName"></span>
+                        <!-- <button type="button" class="action action-show-select-store"
+                        id="select-store-button"
+                        data-bind="visible: isStoreSelected(), click: function() { selectStore(false, 'update'); }">
+                            <span data-bind="i18n: '重新選擇'"></span>
+                        </button> -->
+                        <button type="button" class="action action-show-select-store"
+                                id="select-store-button"
+                                data-bind="visible: !isStoreSelected() || isUnsupportedStore(), click: function() { selectStore(false); isUnsupportedStore(false);}, css: { 'unsupported-store': isUnsupportedStore }">
+                            <span data-bind="i18n: '選擇超商門市'"></span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="pickup-store-field pickup-store-address" data-bind="visible: isStoreSelected">
+                    <label class="label"><span data-bind="i18n: 'Store Address'"></span></label>
+                    <div class="content">
+                        <span data-bind="text: storeAddress"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+    </div>
+</form>

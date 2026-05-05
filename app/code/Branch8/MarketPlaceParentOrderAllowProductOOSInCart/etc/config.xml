@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <parent_order>
+            <parent_order_configuration>
+                <allow_reorder_product_oos>1</allow_reorder_product_oos>
+            </parent_order_configuration>
+        </parent_order>
+    </default>
+</config>

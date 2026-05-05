@@ -1,0 +1,22 @@
+{
+    "customer_fcm_token": {
+        "column": {
+            "entity_id": true,
+            "customer_id": true,
+            "store_id": true,
+            "token": true,
+            "created_at": true,
+            "is_subscribed": true
+        },
+        "index": {
+            "CUSTOMER_FCM_TOKEN_CUSTOMER_ID": true,
+            "CUSTOMER_FCM_TOKEN_CUSTOMER_ID_TOKEN": true,
+            "CUSTOMER_FCM_TOKEN_CUSTOMER_ID_IS_SUBSCRIBED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CUSTOMER_FCM_TOKEN_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true,
+            "CUSTOMER_FCM_TOKEN_CUSTOMER_ID_STORE_ID": true
+        }
+    }
+}

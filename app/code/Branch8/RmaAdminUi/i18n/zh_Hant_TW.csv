@@ -1,0 +1,21 @@
+"[GRID]RMA Id","退換貨授權 編號",module,Branch8_RmaAdminUi
+"[GRID]Order ref","子訂單編號",module,Branch8_RmaAdminUi
+"[GRID]Resolution Type","RMA類型",module,Branch8_RmaAdminUi
+"[GRID]Rma Status","退換貨授權 狀態",module,Branch8_RmaAdminUi
+"[GRID]Shipping Status","配送狀態",module,Branch8_RmaAdminUi
+"[GRID]Order Status","配送狀態",module,Branch8_RmaAdminUi
+"[GRID]Product Name","商品名稱",module,Branch8_RmaAdminUi
+"[GRID]Product Sku"," 產品貨號",module,Branch8_RmaAdminUi
+"[GRID]Supplier Sku","廠商貨號",module,Branch8_RmaAdminUi
+"[GRID]Phone Number","手機號碼",module,Branch8_RmaAdminUi
+"[GRID]Order Purchase Date","購買日期",module,Branch8_RmaAdminUi
+"Please enter Phone Number","請選入訂購人手機號碼",module,Branch8_RmaAdminUi
+"Please enter Product SKU","請輸入商品貨號",module,Branch8_RmaAdminUi
+"Please enter Supplier SKU","請輸入廠商貨號",module,Branch8_RmaAdminUi
+"Please select RMA Status","請選擇退換貨狀態",module,Branch8_RmaAdminUi
+"Please enter order ref","請選入訂單號碼",module,Branch8_RmaAdminUi
+"Please select Shipping Status","請選入訂單號碼",module,Branch8_RmaAdminUi
+"Please enter Product Name","請輸入商品名稱",module,Branch8_RmaAdminUi
+"Please select resolution type","請選擇RMA類型",module,Branch8_RmaAdminUi
+"Please enter RMA ID","請輸入RMA編號起訖",module,"Branch8_RmaAdminUi"
+"Rma Refund","退貨","module","Branch8_RmaAdminUi"

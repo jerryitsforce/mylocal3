@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order">
+        <column name="ecpay_invoice_status" nullable="false" xsi:type="int" comment="0 未開立, 1 已開立, 2 作廢發票, 3 折讓發票, 4 折讓(不上傳), -1 開立失敗" default="0" identity="false"/>
+        <column name="ecpay_invoice_print" nullable="false" xsi:type="int" comment="ecpay_invoice_print" default="0"/>
+        <column name="ecpay_invoice_print_views" nullable="false" xsi:type="int" comment="ecpay_invoice_print_views" default="0"/>
+        <column name="ecpay_invoice_updated_at" nullable="true" xsi:type="datetime" comment="ecpay_invoice_updated_at"/>
+    </table>
+</schema>

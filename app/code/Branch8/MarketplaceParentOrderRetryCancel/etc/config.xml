@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_sales>
+            <auto_retry_cancel_parent_order>
+                <enable>0</enable>
+            </auto_retry_cancel_parent_order>
+        </branch8_sales>
+    </default>
+</config>

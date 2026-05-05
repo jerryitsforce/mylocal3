@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Branch8\GiftToFriend\Block\Confirmation\RecipientConfirmation" name="custom_og_tags" template="Branch8_GiftToFriend::og-tags.phtml"/>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Branch8\GiftToFriend\Block\Confirmation\RecipientConfirmation" cacheable="false"
+            name="gift_recipientt_confirmation" template="Branch8_GiftToFriend::confirmation/index.phtml">
+                <arguments>
+                    <argument name="region_provider" xsi:type="object">Magento\Customer\ViewModel\Address\RegionProvider</argument>
+                </arguments>
+                <block class="Branch8\GiftToFriend\Block\Confirmation\Items"
+                    name="gift_confirmation_order_items"
+                    template="Branch8_GiftToFriend::confirmation/items.phtml"/>
+                <block class="Magento\Framework\View\Element\Template" name="gift_recipient_confirmation_note" template="Branch8_GiftToFriend::note.phtml"/>
+            </block>
+            <block class="Branch8\CityDirectory\Block\Checkout\Cities" name="city-updater" template="Branch8_CityDirectory::customer_address_form/city-updater.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

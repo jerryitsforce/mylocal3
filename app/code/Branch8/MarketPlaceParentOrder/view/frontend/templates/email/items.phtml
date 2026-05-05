@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var $block \Branch8\MarketPlaceParentOrder\Block\ParentOrder\Email\Items
+ * @var $parentOrder Branch8\MarketPlaceParentOrder\Model\ParentOrder
+ */
+$count = 0;
+?>
+<?php $parentOrder = $block->getParentOrder() ?>
+<?php if ($parentOrder) : ?>
+    <?php $_items = $parentOrder->getAllItems(false); ?>
+<ul>
+        <?php foreach ($_items as $_item) : ?>
+            <?php if (!$_item->getParentItem()) : ?>
+            <?php $count++ ?>
+            <li>
+                <?= $count ?>.
+                <?= $block->escapeHtml($_item->getName()) ?> X <?= (int)$_item->getQtyOrdered() ?>
+            </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+</ul>
+<?php endif; ?>

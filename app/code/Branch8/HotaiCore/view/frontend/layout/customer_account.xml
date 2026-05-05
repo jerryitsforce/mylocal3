@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Customer\Block\Account\Delimiter" name="customer-account-navigation-hotai-core-my-tickets-delimiter-start" template="Magento_Customer::account/navigation-delimiter.phtml">
+                <arguments>
+                    <argument name="sortOrder" xsi:type="number">15.1</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Customer\Block\Account\Delimiter" name="customer-account-navigation-hotai-core-my-tickets-delimiter-end" template="Magento_Customer::account/navigation-delimiter.phtml">
+                <arguments>
+                    <argument name="sortOrder" xsi:type="number">15.9</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

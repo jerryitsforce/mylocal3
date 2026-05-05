@@ -1,0 +1,130 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\MaskCustomerInformation\Model\PermissionInterface"
+                type="Branch8\MaskCustomerInformation\Model\AdminPermission"/>
+    <type name="Magento\Customer\Model\Customer\DataProviderWithDefaultAddresses">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformation"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Customer\Model\Customer\DataProviderWithDefaultAddressesPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\Tab\View\PersonalInfo">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformation"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Customer\Block\Adminhtml\Edit\Tab\View\PersonalInfoPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Magento\Customer\Ui\Component\Listing\Address\DataProvider">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformation"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Customer\Ui\Component\Listing\Address\DataProviderPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Magento\Backend\Block\Widget\Grid\Extended">
+        <plugin name="Branch8_MaskCustomerInformation::addFlagToHideSensitiveInformation"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Backend\Block\Widget\Grid\ExtendedPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Magento\Customer\Ui\Component\Listing\Address\DataProvider">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformationCustomer"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Customer\Ui\Component\Listing\Address\DataProviderPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Magento\Customer\Ui\Component\Listing\Address\DataProvider">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformationAddress"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Customer\Ui\Component\Listing\Address\DataProviderPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\Order\View\Info">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformation"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Sales\Block\Adminhtml\Order\View\InfoPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <type name="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformationParentOrder"
+                type="Branch8\MaskCustomerInformation\Plugin\Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformationPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+    <!--rma-->
+    <type name="Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\Details">
+        <plugin name="Branch8_MaskCustomerInformation::hideSensitiveInformationForRmaDetail"
+                type="Branch8\MaskCustomerInformation\Plugin\Magento\Rma\Block\Adminhtml\Rma\Edit\Tab\General\DetailsPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+
+    <type name="Branch8\MaskCustomerInformation\Observer\Adminhtml\HideSensitiveDefaultObserver">
+        <arguments>
+            <argument name="permission" xsi:type="object">Branch8\MaskCustomerInformation\Model\AdminPermission</argument>
+            <argument name="collectionChecks" xsi:type="array">
+                <item name="parent_order" xsi:type="array">
+                    <item name="AsyncParentOrderGrid" xsi:type="string">Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\ParentOrder\Grid\Collection</item>
+                    <item name="AsyncParentOrderInterceptor" xsi:type="string">Branch8\MarketPlaceParentOrderAdminUi\Model\ResourceModel\ParentOrder\Grid\Collection\Interceptor</item>
+                </item>
+                <item name="order" xsi:type="array">
+                    <item name="AsyncOrderGrid" xsi:type="string">Magento\AsyncOrder\Model\ResourceModel\Order\Grid\Collection</item>
+                    <item name="AsyncOrderGridInterceptor" xsi:type="string">Magento\AsyncOrder\Model\ResourceModel\Order\Grid\Collection\Interceptor</item>
+                    <item name="OriginalGridCollection" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Grid\Collection</item>
+                    <item name="OriginalGridCollectionInterceptor" xsi:type="string">\Magento\Sales\Model\ResourceModel\Order\Grid\Collection\Interceptor</item>
+                </item>
+                <item name="invoice" xsi:type="array">
+                  <!--  <item name="AsyncInvoiceGrid" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection</item>
+                    <item name="AsyncInvoiceGridInterceptor" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection\Interceptor</item>-->
+                    <item name="OriginalInvoiceGridCollection" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Invoice\Grid\Collection</item>
+                    <item name="OriginalInvoiceGridCollectionInterceptor" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Invoice\Grid\Collection\Interceptor</item>
+                </item>
+                <item name="shipment" xsi:type="array">
+                    <item name="OriginalShipmentGridCollection" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Shipment\Grid\Collection</item>
+                    <item name="OriginalShipmentGridCollectionInterceptor" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Shipment\Grid\Collection\Interceptor</item>
+                    <item name="OriginalOrderDetailShipmentGridCollection" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Shipment\Order\Grid\Collection</item>
+                    <item name="OriginalOrderDetailShipmentGridCollectionInterceptor" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Shipment\Order\Grid\Collection\Interceptor</item>
+                </item>
+                <item name="credit_nemo" xsi:type="array">
+                    <item name="OriginalCreditNemoGridCollection" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Creditmemo\Grid\Collection</item>
+                    <item name="OriginalCreditNemoGridCollectionInterceptor" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Creditmemo\Grid\Collection\Interceptor</item>
+                </item>
+                <item name="customer" xsi:type="array">
+                    <item name="AsyncCustomerGrid" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection</item>
+                    <item name="AsyncCustomerGridInterceptor" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection\Interceptor</item>
+                    <item name="AsyncCustomerOnlineGrid" xsi:type="string">Magento\Customer\Model\ResourceModel\Online\Grid\Collection</item>
+                    <item name="AsyncCustomerOnlineGridInterceptor" xsi:type="string">Magento\Customer\Model\ResourceModel\Online\Grid\Collection\Interceptor</item>
+                    <item name="AdvanceCustomerGrid" xsi:type="string">Branch8\AdvancedPermissions\Model\ResourceModel\Customer\Grid\Collection</item>
+                    <item name="AdvanceCustomerGridInterceptor" xsi:type="string">Branch8\AdvancedPermissions\Model\ResourceModel\Customer\Grid\Collection\Interceptor</item>
+                </item>
+
+            </argument>
+            <argument name="ignoreClasses" xsi:type="array">
+                <item name="b8RoleDelegate" xsi:type="string">Branch8\RoleDelegate\Model\ResourceModel\Delegate\Collection</item>
+                <item name="b8RoleDelegateInterceptor" xsi:type="string">Branch8\RoleDelegate\Model\ResourceModel\Delegate\Collection\Interceptor</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+    <type name="Branch8\MaskCustomerInformation\Plugin\Magento\Backend\Block\Widget\Grid\ExtendedPlugin">
+        <arguments>
+            <argument name="permission" xsi:type="object">Branch8\MaskCustomerInformation\Model\AdminPermission</argument>
+            <argument name="collectionChecks" xsi:type="array">
+                <item name="order" xsi:type="array">
+                    <item name="OrderReport" xsi:type="string">Magento\Reports\Model\ResourceModel\Order\Collection</item>
+                    <item name="OrderReportInterceptor" xsi:type="string">Magento\Reports\Model\ResourceModel\Order\Collection\Interceptor</item>
+                </item>
+                <item name="customer"  xsi:type="array">
+                    <item name="CustomerReport" xsi:type="string">Magento\Reports\Model\ResourceModel\Customer\Collection</item>
+                    <item name="CustomerReportInterceptor" xsi:type="string">Magento\Reports\Model\ResourceModel\Customer\Collection\Interceptor</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MaskCustomerInformation\Model\RuleManagement">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="order" xsi:type="object">Branch8\MaskCustomerInformation\Model\Order\Rule</item>
+                <item name="parent_order" xsi:type="object">Branch8\MaskCustomerInformation\Model\ParentOrder\Rule</item>
+                <item name="customer" xsi:type="object">Branch8\MaskCustomerInformation\Model\Customer\Rule</item>
+                <item name="invoice" xsi:type="object">Branch8\MaskCustomerInformation\Model\Invoice\Rule</item>
+                <item name="shipment" xsi:type="object">Branch8\MaskCustomerInformation\Model\Shipment\Rule</item>
+                <item name="credit_nemo" xsi:type="object">Branch8\MaskCustomerInformation\Model\CreditNemo\Rule</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <preference for="Magento\Sales\Block\Adminhtml\Order\Address\Form"
+                type="Branch8\MaskCustomerInformation\Override\Magento\Sales\Block\Adminhtml\Order\Address\Form"/>
+</config>

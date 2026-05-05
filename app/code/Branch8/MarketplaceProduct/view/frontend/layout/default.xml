@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="default_head_blocks"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketplaceProduct\Block\Product\PriceChangePopup" name="branch8_mpproduct_price_change_popup"
+                   ifconfig="marketplace/branch8_product_popup/check_price_change"
+                   after="-"
+                   template="Branch8_MarketplaceProduct::product/price_change_popup.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

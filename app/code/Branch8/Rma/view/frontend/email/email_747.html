@@ -1,0 +1,97 @@
+<!--@subject 超商取貨通知 @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>超商取貨通知</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    親愛的{{var customer_name}}您好，<br/>
+    您期待的商品已送達超商，請在七天內於超商完成取貨
+<p>
+
+<table cellpadding="0" cellspacing="0" class="order-info order-pickup-details m-bottom__sm">
+    <thead>
+    <tr>
+        <th>取件明細</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">物流編號</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var order_data.url_history}}">{{var tracking_number}}</a>
+                    </td>
+                </tr>
+                <tr class="order_pickup_store">
+                    <td class="label">取貨門市</td>
+                    <td class="value">{{var store_name}}</td>
+                </tr>
+                <tr class="order_pickup_address">
+                    <td class="label">取件地址</td>
+                    <td class="value">{{var store_address}}</td>
+                </tr>
+                <tr class="order_pickup_name">
+                    <td class="label">取件人姓名</td>
+                    <td class="value">{{var recipient_name}}</td>
+                </tr>
+                <tr class="order_pickup_phone row_no-border__bottom">
+                    <td class="label">取件人手機</td>
+                    <td class="value">{{var recipient_phone}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<table cellpadding="0" cellspacing="0" class="order-info order-details m-bottom__m">
+    <thead>
+    <tr>
+        <th>訂單明細</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">訂單編號</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var order_data.url_history}}">{{var order_number}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">訂單日期</td>
+                    <td class="value">{{var order_date | datetime("YYYY/MM/dd HH:mm")}}</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">實付金額</td>
+                    <td class="value">${{var order_total | number_format(2)}}</td>
+                </tr>
+                <tr class="order_items">
+                    <td class="label">訂購商品</td>
+                    <td class="value">{{var order_items | raw}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    請留意近期手機訊息及確保收貨資訊正確。<br>
+    請至 帳號管理 > <a target="_blank" class="link-primary" href="{{var order_data.url_history}}">訂單查詢</a> 瀏覽完整訂單內容。
+</p>
+
+{{template config_path="design/email/footer_template"}}

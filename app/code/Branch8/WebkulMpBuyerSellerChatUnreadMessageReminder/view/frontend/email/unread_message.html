@@ -1,0 +1,25 @@
+<!--@subject {{trans "HOTAI Unread Chat Notification"}} @-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-information">
+        <td>
+            <table class="query-details">
+                <tr>
+                    <td class="product-details">
+                        <p>{{var seller_name}}您好，<br>
+                            {{trans "You have 1 unread chat message on HOTAI. Please reply to the buyer as soon as possible."}}
+                        </p>
+                        <a target="_blank" href="{{var chat_url}}">{{trans "查看後台"}}</a>
+                        <br>
+                        {{var message |raw}}
+                        <br>
+                        <p>{{trans "This is an automated email from HOTAI. Please do not reply directly to this email."}} </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

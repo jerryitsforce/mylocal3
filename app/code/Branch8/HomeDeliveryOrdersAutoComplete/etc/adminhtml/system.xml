@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="home_delivery_orders_auto_complete" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Home Delivery Orders Auto Complete</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HomeDeliveryOrdersAutoComplete::config</resource>
+            <group id="cron" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>Cron</label>
+                <field id="target_shipping_methods_for_home_delivery_orders_auto_complete" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shipping methods belongs to home_delivery</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Branch8\HomeDeliveryOrdersAutoComplete\Model\Config\Source\ShippingMethodOption</source_model>
+                    <comment>Setting for change order status to complete in cron which belongs to these shipping methods.</comment>
+                </field>
+                <field id="created_after_minutes_for_home_delivery_orders_auto_complete" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Created after minutes for home delivery orders auto complete</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Setting for change order status to complete in cron which has passed certain minutes since created.</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

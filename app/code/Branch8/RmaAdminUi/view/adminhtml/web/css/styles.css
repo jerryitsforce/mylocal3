@@ -1,0 +1,16 @@
+.wk-mprma-shipping-tracking {
+    display: flex !important;;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
+
+.wk-mprma-shipping-tracking-carrier {
+    flex-shrink: 0;
+    width: auto;
+}
+
+.wk-mprma-shipping-tracking-logistics-name {
+    display: none;
+    flex-shrink: 0;
+    width: 500px !important;;
+}

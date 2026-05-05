@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpBuyerSellerChat
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */ -->
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="connect-src">
+            <values>
+                <value id="wk-mpchat-socket" type="host">http://hotaigo-wss.yoxi.io:443/socket.io/</value>
+                <value id="wk-mpchat-sockets" type="host">https://hotaigo-wss.yoxi.io:443/socket.io/</value>
+                <value id="wk-mpchat-websocket" type="host">wss://hotaigo-wss.yoxi.io:443/socket.io/</value>
+                <value id="wk-mpchat-socket-local" type="host">http://chathotail.local:443/socket.io/</value>
+                <value id="wk-mpchat-sockets-local" type="host">https://chathotail.local:443/socket.io/</value>
+                <value id="wk-mpchat-websocket-local" type="host">wss://chathotail.local:443/socket.io/</value>
+                <value id="wk-mpchat-socket-local1" type="host">http://chathotail.local:443/socket.io/</value>
+                <value id="wk-mpchat-sockets-local2" type="host">https://chathotail.local/socket.io/</value>
+                <value id="wk-mpchat-websocket-local3" type="host">wss://chathotail.local:443/socket.io/</value>
+                <value id="staging-mpchat-socket" type="host">http://test-chat-app-hotai.vercel.app/socket.io/</value>
+                <value id="staging-mpchat-sockets" type="host">https://test-chat-app-hotai.vercel.app:443/socket.io/</value>
+                <value id="staging-mpchat-websocket" type="host">wss://test-chat-app-hotai.vercel.app:443/socket.io/</value>
+                <value id="aws-test-app-http" type="host">http://hotaichatapptest.branch8.com/socket.io/</value>
+                <value id="aws-test-app-https" type="host">https://hotaichatapptest.branch8.com:443/socket.io/</value>
+                <value id="aws-test-app-wss" type="host">wss://hotaichatapptest.branch8.com:443/socket.io/</value>
+                <value id="aws-test-app-ws" type="host">ws://hotaichatapptest.branch8.com:80/socket.io/</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="wk-mpchat_fontawesome" type="host">https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="wk-mpchat-fontawesome-font1" type="host">https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2</value>
+                <value id="wk-mpchat-fontawesome-font3" type="host">https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff</value>
+                <value id="wk-mpchat-fontawesome-font2" type="host">https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

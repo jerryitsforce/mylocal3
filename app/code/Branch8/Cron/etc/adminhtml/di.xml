@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<type name="Mageplaza\CronSchedule\Controller\Adminhtml\Job\MassExecute">
+        <plugin name="cron_schedule_mass_execute" type="Branch8\Cron\Controller\Adminhtml\Job\MassExecute"/>
+    </type>
+	<type name="Mageplaza\CronSchedule\Controller\Adminhtml\Job\Save">
+        <plugin name="cron_schedule_save" type="Branch8\Cron\Controller\Adminhtml\Job\Save"/>
+    </type>
+</config>

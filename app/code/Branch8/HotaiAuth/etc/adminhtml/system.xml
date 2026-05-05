@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+        <section id="hotai_auth" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Hotai Auth</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiAuth::config</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>General</label>
+                <field id="api_domain" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                </field>
+                <field id="api_redirect_uri" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Redirect Uri</label>
+                </field>
+                <field id="app_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP ID</label>
+                </field>
+                <field id="app_key" translate="label" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP Key</label>
+                </field>
+                <field id="client_id" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client ID</label>
+                </field>
+                <field id="client_secret" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Client Secret</label>
+                </field>
+                <field id="aes_key" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES Key</label>
+                </field>
+                <field id="aes_iv" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES IV</label>
+                </field>
+                <field id="app_version" translate="label" type="text" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP Version</label>
+                </field>
+                <field id="api_version" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Version</label>
+                </field>
+            </group>
+            <group id="hotai_go_travel" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Hotai Go Travel</label>
+                <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                </field>
+                <field id="app_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>APP ID</label>
+                </field>
+                <field id="aes_key" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES Key</label>
+                </field>
+                <field id="aes_iv" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES IV</label>
+                </field>
+            </group>
+            <group id="external_exchange" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Hotai External Exchange</label>
+                <field id="is_production" translate="label" type="select" sortOrder="1" showInDefault="1">
+                    <label>Enable Production Mode Key and IV</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="api_back_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                </field>
+                <field id="aes_key" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Testing AES Key</label>
+                    <depends>
+                        <field id="is_production">0</field>
+                    </depends>
+                </field>
+                <field id="aes_iv" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Testing AES IV</label>
+                    <depends>
+                        <field id="is_production">0</field>
+                    </depends>
+                </field>
+                <field id="production_aes_key" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES Key</label>
+                    <frontend_model>Branch8\HotaiAuth\Block\Adminhtml\Form\Field\AesKey</frontend_model>
+                    <backend_model>Branch8\HotaiAuth\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <depends>
+                        <field id="is_production">1</field>
+                    </depends>
+                </field>
+                <field id="production_aes_iv" translate="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AES IV</label>
+                    <frontend_model>Branch8\HotaiAuth\Block\Adminhtml\Form\Field\AesIV</frontend_model>
+                    <backend_model>Branch8\HotaiAuth\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <depends>
+                        <field id="is_production">1</field>
+                    </depends>
+                </field>
+            </group>
+
+
+            <group id="one_id" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Hotai One ID</label>
+                <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                </field>
+                <field id="service" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Service Name</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

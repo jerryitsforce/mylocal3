@@ -1,0 +1,233 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model;
+
+use Branch8\WebkulMpBuyerSellerChat\Model\Actions\SendSellerUnreadChatEmail;
+use Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\ChatParticipant;
+use Branch8\WebkulMpBuyerSellerChat\Model\Api\Data\ChatParticipantFactory;
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Exception\LockException;
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\ResourceModel\Queue\CollectionFactory;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\NoSuchEntityException;
+use phpseclib3\Math\BigInteger\Engines\PHP;
+use Psr\Log\LoggerInterface;
+
+class ProcessQueue
+{
+    private LockModel $lockedModel;
+    private ChatParticipant $chatParticipant;
+    private CollectionFactory $collectionFactory;
+    private Config $config;
+    private LoggerInterface $logger;
+    private $participantCache = [];
+    private ResourceConnection $resourceConnection;
+    private ChatParticipantFactory $chatParticipantFactory;
+    private \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant $participantResource;
+    private Mail $mail;
+
+    /**
+     * @param ResourceConnection $resourceConnection
+     * @param \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant $chatParticipantResource
+     * @param ChatParticipantFactory $chatParticipantFactory
+     * @param Config $config
+     * @param LockModel $lockedModel
+     * @param CollectionFactory $collectionFactory
+     * @param Mail $mail
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        ResourceConnection                                                   $resourceConnection,
+        \Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatParticipant $chatParticipantResource,
+        ChatParticipantFactory                                               $chatParticipantFactory,
+        Config                                                               $config,
+        LockModel                                                            $lockedModel,
+        CollectionFactory                                                    $collectionFactory,
+        Mail                                                                 $mail,
+        LoggerInterface                                                      $logger
+    )
+    {
+        $this->chatParticipantFactory = $chatParticipantFactory;
+        $this->resourceConnection = $resourceConnection;
+        $this->logger = $logger;
+        $this->config = $config;
+        $this->lockedModel = $lockedModel;
+        $this->collectionFactory = $collectionFactory;
+        $this->participantResource = $chatParticipantResource;
+        $this->mail = $mail;
+    }
+
+    /**
+     * @return void
+     * @throws LockException
+     */
+    protected function lock()
+    {
+        if ($this->lockedModel->isQueueLocked(LockModel::PROCESS_FLAG)) {
+            throw new LockException(__('Another lock detected (
+            the process unread reminder queue is in a progress).')
+            );
+        }
+
+        $this->lockedModel->setIsQueueLocked(LockModel::PROCESS_FLAG, true);
+    }
+
+    /**
+     * @return void
+     */
+    protected function unlock()
+    {
+        $this->lockedModel->setIsQueueLocked(LockModel::PROCESS_FLAG, false);
+    }
+
+    /**
+     * @return void
+     */
+    public function forceUnlock()
+    {
+        $this->lockedModel->setIsQueueLocked(LockModel::PROCESS_FLAG, false);
+    }
+
+    /**
+     * Generate and process queue
+     *
+     * @return void
+     * @throws LockException
+     */
+    public function process()
+    {
+        $this->lock(LockModel::PROCESS_FLAG);
+        /**
+         * @var $collection \Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\ResourceModel\Queue\Collection
+         */
+        $collection = $this->collectionFactory->create();
+        $collection->setPageSize(100);
+        $maxRetried = $this->config->getMaxSendMailNotificationRetry();
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $collection->addFieldToFilter('status', Queue::STATUS_PENDING);
+        $collection->addFieldToFilter('scheduled_at', ['lt' => $now->format('Y-m-d H:i:s')]);
+        $success = $failed = [];
+        echo PHP_EOL . $collection->getSelect() . PHP_EOL;
+        /**
+         * @var $item \Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\Queue
+         */
+        foreach ($collection as $item) {
+            $runAt = new \DateTime(
+                'now',
+                new \DateTimeZone('UTC')
+            );
+            $runAt = $runAt->format('Y-m-d H:i:s');
+            $scheduleAt = $item->getScheduledAt();
+            $participant = $this->getParticipant($item->getParticipantId());
+            try {
+                /**
+                 * @var $participant ChatParticipant
+                 */
+                if (!$participant->getMailSent()) {// comment if want to send
+                    throw new \Exception(__('Mail sent')->render());
+                }
+                if ($participant->getRetried() >= $maxRetried) {
+                    throw new \Exception(__('Max Retry Send')->render());
+                }
+
+                $this->sendMail(
+                    (int)$item->getParticipantId()
+                );
+                $finishAt = new \DateTime(
+                    'now',
+                    new \DateTimeZone('UTC')
+                );
+                $finishAt = $finishAt->format('Y-m-d H:i:s');
+                $success[] = [
+                    'scheduled_at' => $scheduleAt,
+                    'executed_at' => $runAt,
+                    'finished_at' => $finishAt,
+                    'participant_id' => $item->getParticipantId(),
+                    'id' => $item->getId(),
+                    'status' => Queue::STATUS_SUCCESS,
+                    'messages' => ''
+                ];
+                $retried = $participant->getRetried() + 1;
+                $participant->setRetried($retried);
+                $participant->setMailSent(true);
+            } catch (\Exception $exception) {
+                $finishAt = new \DateTime(
+                    'now',
+                    new \DateTimeZone('UTC')
+                );
+                $finishAt = $finishAt->format('Y-m-d H:i:s');
+                $failed[] = [
+                    'finished_at' => $finishAt,
+                    'executed_at' => $runAt,
+                    'scheduled_at' => $scheduleAt,
+                    'participant_id' => $item->getParticipantId(),
+                    'status' => Queue::STATUS_ERROR,
+                    'id' => $item->getId(),
+                    'messages' => $exception->getMessage()
+                ];
+            }
+            $participant->setMailSent(1);
+            $this->participantResource->save($participant);
+        }
+        if ($success) {
+            $this->updateBatch($success);
+        }
+        if ($failed) {
+            $this->updateBatch($failed);
+        }
+        $this->unlock();
+    }
+
+    /**
+     * @param $batch
+     * @return void
+     */
+    private function updateBatch($batch)
+    {
+        $connection = $this->resourceConnection->getConnection();
+        $connection->insertOnDuplicate(
+            $connection->getTableName('marketplace_chat_message_notify_msg_schedule'),
+            $batch,
+            ['id', 'executed_at', 'scheduled_at', 'finished_at', 'status', 'messages', 'participant_id']
+        );
+    }
+
+    /**
+     * @param int $id
+     * @return void
+     * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\MailException
+     */
+    private function sendMail(int $id)
+    {
+        /**
+         * @var ChatParticipant
+         */
+        $chatParticipant = $this->getParticipant($id);
+        $profile = $chatParticipant->getChatProfileInformation();
+        if ($profile && $profile->getId() && $profile->getObjectId()) {
+            $this->mail->send($chatParticipant);
+        }
+    }
+
+    /**
+     * @param $id
+     * @return ChatParticipant|mixed
+     * @throws NoSuchEntityException
+     */
+    private function getParticipant($id)
+    {
+        if (isset($this->participantCache[$id])) {
+            return $this->participantCache[$id];
+        }
+        $chatParticipant = $this->chatParticipantFactory->create()->load(
+            $id
+        );
+        if (!$chatParticipant || !$chatParticipant->getId()) {
+            throw new NoSuchEntityException(__('No participant found'));
+        }
+        $this->participantCache[$id] = $chatParticipant;
+        return $this->participantCache[$id];
+    }
+}

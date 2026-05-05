@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="branch8_tracking_category" type="Branch8\Checkout\Plugin\Quote\CopyTrackingCategory" sortOrder="50" />
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="branch8_check_gift_product_set_available_checkout" type="Branch8\Checkout\Plugin\Quote\Model\Quote\AutoSetAvailableToCheckoutForGiftCart"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\AbstractItem">
+        <plugin name="get_invididual_product_tocart" type="Branch8\Checkout\Plugin\CustomerData\AbstractItem"/>
+    </type>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="ignore_oos_product_on_update" type="Branch8\Checkout\Plugin\Model\Cart"/>
+    </type>
+     <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="branch8_address_logger_plugin" type="Branch8\Checkout\Plugin\Model\ShippingInformationManagementPlugin" sortOrder="1"/>
+    </type>
+    <type name="Magento\Checkout\Controller\Onepage\Failure">
+        <plugin name="plugin_failure_for_fullpoint" type="Branch8\Checkout\Plugin\Controller\Onepage\Failure" sortOrder="1"/>
+    </type>
+</config>

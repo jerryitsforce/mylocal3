@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="ParentOrderGridProductTypeSelect" type="Branch8\MarketPlaceParentOrderAdminUi\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Magento\Catalog\Model\Product\Type</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentOrderGridSalespersonSelect" type="Branch8\MarketPlaceParentOrderAdminUi\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Branch8\AdvancedPermissions\Model\Options\Salesperson</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentOrderGridShippingMethodSelect" type="Branch8\MarketPlaceParentOrderAdminUi\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Branch8\AdvancedPermissions\Model\Options\ShippingMethod</argument>
+            <argument name="defaultLabel" xsi:type="string">No Shipping</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <plugin name="orderGridCollectionFilterPlugin"
+                type="Branch8\MarketPlaceParentOrderAdminUi\Plugin\Magento\Sales\Model\ResourceModel\Order\OrderGridCollectionFilter"/>
+    </type>
+</config>

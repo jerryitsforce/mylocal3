@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_after">
+        <observer name="hotai_auth_sales_order_place_after" instance="Branch8\HotaiAuth\Observer\OrderPlaceAfter" />
+    </event>
+    <event name="hotai_auth_save_latest_token">
+        <observer name="branch8_hotaiAuth_save_latest_hotai_token_observer"
+                  instance="Branch8\HotaiAuth\Observer\SaveLatestHotaiTokenObserver"/>
+    </event>
+</config>

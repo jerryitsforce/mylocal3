@@ -1,0 +1,92 @@
+<?php
+/** @var $block \Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\Tab\ShippingSettings */
+$sellerInfo = $block->getSellerInfo();
+?>
+<div class="entry-edit form-inline">
+    <form>
+        <fieldset class="fieldset admin__fieldset " id="marketplace_shipping_settings_fieldset">
+            <legend class="admin__legend legend">
+                <span><?= $block->escapeHtml(__('Shipping And Freight Settings')) ?></span>
+            </legend><br>
+            <div class="messages"></div>
+
+            <div class="admin__field field field-change_shipping_settings_enable">
+                <label class="label admin__field-label" for="marketplace_change_shipping_settings_enable"><span><?= $block->escapeHtml(__('Change Settings')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input id="marketplace_change_shipping_settings_enable" name="change_shipping_settings_enable" value="" 
+                        data-form-part="customer_form" title="Change Settings" type="checkbox">
+                </div>
+            </div>
+
+            <div class="admin__field field field-is_allow_large_item" id="marketplace_is_allow_large_item-field">
+                <label class="label admin__field-label" for="marketplace_is_allow_large_item"><span><?= $block->escapeHtml(__('Allow large item')) ?></span></label>
+                <div class="admin__field-control control">
+                    <select disabled id="marketplace_is_allow_large_item" name="is_allow_large_item" data-form-part="customer_form"
+                            title="<?= $block->escapeHtml(__('Allow large item')) ?>" class="select admin__control-select">
+                        <option value="1" <?php if ($sellerInfo['is_allow_large_item'] == 1) echo 'selected="selected"'?>><?= $block->escapeHtml(__('Enable')) ?></option>
+                        <option value="0" <?php if ($sellerInfo['is_allow_large_item'] == 0) echo 'selected="selected"'?>><?= $block->escapeHtml(__('Disable')) ?></option>
+                    </select>
+                </div>
+            </div>
+            <div class="admin__field field field-preservation_status">
+                <label class="label admin__field-label" for="marketplace_preservation_status"><span><?= $block->escapeHtml(__('Preservation Status')) ?></span></label>
+                <div class="admin__field-control control">
+                    <?php
+                    $selectedPreservationStatus = $sellerInfo['preservation_status'];
+                    if($selectedPreservationStatus === null){
+                        $arraySelectedPreservationStatus = [];
+                    }else{
+                        $arraySelectedPreservationStatus = explode(",", $selectedPreservationStatus);
+                    }
+                    $preservationStatusOptions = $this->getPreservationStatusOptions();
+                    ?>
+                    <select disabled multiple="multiple" id="marketplace_preservation_status" name="preservation[]" data-form-part="customer_form" 
+                        title="<?= $block->escapeHtml(__('Preservation Status')) ?>" class="select multiselect admin__control-multiselect">
+                        <?php foreach($preservationStatusOptions as $option) { ?>
+                            <option <?php if(in_array($option['value'], $arraySelectedPreservationStatus)) {echo 'selected';}?> value="<?php echo $option['value'];?>"><?php echo $option['label'];?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="admin__field field field-shipping_methods">
+                <label class="label admin__field-label" for="marketplace_shipping_methods"><span><?= $block->escapeHtml(__('Shipping methods Setting')) ?></span></label>
+                <div class="admin__field-control control">
+                    <?php
+                    $shippingMethods = (string) $sellerInfo['shipping_methods'];
+                    $arrayShippingMethods = explode(",", $shippingMethods);
+
+                    $allActiveShippingMethods = $this->getActiveShippingMethod();
+                    ?>
+                    <select disabled multiple="multiple" id="marketplace_shipping_methods" name="shippingMethods[]" data-form-part="customer_form"
+                            title="<?= $block->escapeHtml(__('Shipping Methods')) ?>" class="select multiselect admin__control-multiselect">
+                        <?php
+                        foreach($allActiveShippingMethods as $_method){?>
+                            <option <?php if(in_array($_method['code'], $arrayShippingMethods)){echo 'selected';}?> value="<?php echo $_method['code'];?>"><?php echo $_method['label'];?></option>
+                            <?php
+                        }
+
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script>
+    require([
+        'jquery',
+        '!domReady'
+    ], function($){
+        $('#marketplace_change_shipping_settings_enable').on('change', function () {
+            if (this.checked === true) {
+                $('#marketplace_is_allow_large_item').removeAttr('disabled');
+                $('#marketplace_preservation_status').removeAttr('disabled');
+                $('#marketplace_shipping_methods').removeAttr('disabled');
+            } else {
+                $('#marketplace_is_allow_large_item').attr('disabled', 'disabled');
+                $('#marketplace_preservation_status').attr('disabled', 'disabled');
+                $('#marketplace_shipping_methods').attr('disabled', 'disabled');
+            }
+        });
+    });
+</script>

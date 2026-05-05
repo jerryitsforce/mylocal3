@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="branch8_catalog_rule_product_assign" queue="branch8_catalog_rule_product_assign" connection="db"
+              consumerInstance="Magento\Framework\MessageQueue\Consumer"
+              handler="Branch8\PromotionPage\Model\Queue\Handler::process"/>
+    <consumer name="branch8_vip_product_assign" queue="branch8_vip_product_assign" connection="db"
+              consumerInstance="Magento\Framework\MessageQueue\Consumer"
+              handler="Branch8\PromotionPage\Model\Queue\Handler::process"/>
+</config>

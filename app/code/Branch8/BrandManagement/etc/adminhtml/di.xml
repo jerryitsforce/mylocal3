@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Plugin to add url field to media gallery oninsert response -->
+    <type name="Magento\MediaGalleryUi\Controller\Adminhtml\Image\OnInsert">
+        <plugin name="branch8_brandmanagement_add_url_to_oninsert_response"
+                type="Branch8\BrandManagement\Plugin\MediaGallery\OnInsert\AddUrlToResponse"
+                sortOrder="10"/>
+    </type>
+</config>
+

@@ -1,0 +1,94 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\LiveSearchStorefrontPopover\Block\Frontend\SaaSContext;
+use Magento\Search\Helper\Data;
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+?>
+<?php
+// This file is a modified copy of magento/module-search/view/frontend/templates/form.mini.phtml
+
+/** @var $block SaaSContext */
+/** @var $helper Data */
+//phpcs:ignore
+$helper = $this->helper(Data::class);
+// Disable default search
+$isDisableTemp = true;
+?>
+
+<div class="block block-search">
+    <div class="block block-title"><strong><?= $block->escapeHtml(__('Search')) ?></strong></div>
+    <div class="block block-content">
+        <div class="hide-desktop action close-btn"></div>
+        <form class="form minisearch" id="search_mini_form"
+              action="<?= $block->escapeUrl($helper->getResultUrl()) ?>" method="get">
+            <div class="field search">
+                <span class="hide-desktop" id="hide-nav-button"></span>
+                <label class="label" for="search" data-role="minisearch-label">
+                    <span><?= $block->escapeHtml(__('Search')) ?></span>
+                </label>
+                <div class="control">
+                    <input id="search"
+                           type="text"
+                           name="<?= $block->escapeHtmlAttr($helper->getQueryParamName()) ?>"
+                           value="<?= /* @noEscape */ $helper->getEscapedQueryText() ?>"
+                           placeholder="<?= $block->escapeHtmlAttr(__('Search entire store here...')) ?>"
+                           class="input-text"
+                           maxlength="<?= $block->escapeHtmlAttr($helper->getMaxQueryLength()) ?>"
+                           role="combobox"
+                           aria-haspopup="false"
+                           aria-autocomplete="both"
+                           autocomplete="off"
+                           aria-expanded="false"
+                           onchange=""
+                    />
+                    <span class="action clear"></span>
+                    <?php if($isDisableTemp): ?>
+                        <div id="search_autocomplete" class="search-autocomplete"></div>
+                    <?php endif; ?>
+                    <?= $block->getChildHtml() ?>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit"
+                        title="<?= $block->escapeHtml(__('Search')) ?>"
+                        class="action search"
+                        aria-label="Search"
+                >
+                    <span><?= $block->escapeHtml(__('Search')) ?></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<?php if($isDisableTemp): ?>
+<?php if($this->getBrowsingHistoryBlock()): ?>
+<?php echo $this->getLayout()->createBlock('Magento\Cms\Block\Block')->setBlockId($this->getBrowsingHistoryBlock())->toHtml(); ?>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8SearchAsYouType": {
+                "popularSearchTerm": <?= $block->getPopularSearchTerm() ?>,
+                "environmentId": "<?= $block->escapeJs($block->getEnvironmentId()); ?>",
+                "websiteCode": "<?= $block->escapeJs($block->getWebsiteCode()); ?>",
+                "storeCode": "<?= $block->escapeJs($block->getStoreCode()); ?>",
+                "storeViewCode": "<?= $block->escapeJs($block->getStoreViewCode()); ?>",
+                "pageSize": "<?= $block->escapeJs($block->getAutocompleteLimit()); ?>",
+                "minQueryLength": "<?= $block->escapeJs($helper->getMinQueryLength()); ?>",
+                "currencySymbol": "<?= $block->escapeJs($block->getCurrencySymbol()); ?>",
+                "currencyRate": "<?= $block->escapeJs($block->getCurrencyRate()); ?>",
+                "displayOutOfStock": "<?= $block->escapeJs($block->isDisplayOutOfStock()); ?>",
+                "allowAllProducts": "<?= $block->escapeJs($block->isAllowAllProducts()); ?>",
+                "customerGroupCode": "<?= $block->escapeJs($block->getCustomerGroupCode()) ?>",
+                "browsingHistoryUrl": "<?= $block->escapeJs($block->getUrl('member/browsinghistory')) ?>",
+                "moduleVersion": "<?= $block->escapeHtmlAttr($block->getModuleVersion()); ?>"
+            }
+        }
+    }
+</script>
+<?php endif; ?>

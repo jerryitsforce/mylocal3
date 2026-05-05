@@ -1,0 +1,178 @@
+<?php
+
+/**
+ * @var $block \Branch8\CatalogCustom\Block\Widget\CategoryList
+ * @var $escaper \Magento\Framework\Escaper
+ */
+
+use Magento\Framework\App\Action\Action;
+
+$categoryId = $block->getData('category_id');
+if (!$categoryId) {
+    return;
+}
+
+$data = $block->getCategoryProductsData($categoryId);
+if (!$data) {
+    return;
+}
+
+$preorderHelper = $this->helper(\Webkul\MarketplacePreorder\Helper\Data::class);
+$vipHelper = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+$showWishlist = true;
+$showCompare = true;
+$showCart = true;
+$type = 'widget-product-grid';
+$isShowFull = $block->getIsShowInformation();
+$additionalParams = $block->getUrlAdditionalParams();
+$widgetLocation = $block->getData('widget_location') ?? 'mall_list';
+$mallName = $block->getData('mall_name');
+
+$itemListNameTemplates = [
+    'mall_list' => '館別頁_{{mall_name}}_{{category_name}}',
+    'flagshipmall_category' => '品牌旗艦館_{{mall_name}}_{{category_name}}',
+];
+
+$itemListId = $widgetLocation;
+$itemListNameTemplate = $itemListNameTemplates[$widgetLocation] ?? '{{category_name}}';
+$itemListNameTemplate = $mallName ? str_replace('{{mall_name}}', $mallName, $itemListNameTemplate) : $itemListNameTemplate;
+
+$category = $data['category'];
+$productCollection = $data['productCollection'];
+$itemListName = str_replace('{{category_name}}', $category->getName(), $itemListNameTemplate);
+$ga4SettingsObject = new \Magento\Framework\DataObject(
+    [
+        'item_list_id' => $itemListId,
+        'item_list_name' => $itemListName,
+    ]
+);
+?>
+
+<?php if ($isShowFull && $category->getImage()): ?>
+    <div class="category-image">
+        <img src="<?= $block->escapeUrl($block->getBaseUrl() . $category->getImage()) ?>" alt="<?= $block->escapeHtml($category->getName()) ?>" />
+    </div>
+<?php endif; ?>
+
+<?php if ($isShowFull && $category->getDescription()): ?>
+    <div class="category-description">
+        <?= $block->escapeHtml($block->getDescription($category->getDescription())) ?>
+    </div>
+<?php endif; ?>
+
+<div class="category-title-row">
+    <h3 class="category-title">
+        <?= $block->escapeHtml(__($category->getName())) ?>
+    </h3>
+    <a class="a-button action-small view-all" href="<?= $block->escapeUrl($category->getUrl()) ?>">
+        <?= $block->escapeHtml(__('View all')) ?>
+    </a>
+</div>
+
+<?php if ($productCollection): ?>
+    <div class="product-list">
+        <div class="products-grid <?= $type ?> widget-slider" data-action="widget-slider-custom">
+            <ol class="product-items">
+                <?php $index = 0; ?>
+                <?php foreach ($productCollection as $_item): ?>
+                    <?php
+                    $additionalParams['_query'] = [
+                        'item_list_id' => $itemListId,
+                        'item_list_name' => $itemListName,
+                        'position' => $index,
+                        'referer' => 'card',
+                    ];
+                    $index++;
+                    $_item->setData('ga4_settings', $ga4SettingsObject)
+                    ?>
+                    <li class="product-item"
+                        data-item-list-id="<?= $itemListId ?>"
+                        data-item-list-name="<?= $itemListName ?>">
+                        <?php
+                        $isPreorder = $preorderHelper->isPreorder($_item->getId());
+                        $isVip = $vipHelper->isProductInVipCategory($_item);
+                        ?>
+                        <div class="product-item-info">
+                            <input type="hidden" class="ga4-item-json" value="<?= $escaper->escapeHtmlAttr($block->getGA4ItemJson($_item, $index)) ?>" />
+                            <a href="<?= $escaper->escapeUrl($block->getProductUrl($_item, $additionalParams)) ?>"
+                                class="product-item-photo <?= ((!$_item->isSaleable() || !$_item->getIsSalable()) && !$isPreorder) ? 'product-item-photo-oos' : '' ?>">
+                                <?= $block->getImage(
+                                    $_item,
+                                    'new_products_content_widget_grid'
+                                )->toHtml() ?>
+                                <?php if ((!$_item->isSaleable() || !$_item->getIsSalable()) && !$isPreorder): ?>
+                                    <div class="action-stock unavailable"><span><?= $block->escapeHtml(__('缺貨中')) ?></span></div>
+                                <?php endif; ?>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <?php
+                                    if ($isVip || $isPreorder) {
+                                        if ($isVip) {
+                                            echo '<span class="vip-label">' . $block->escapeHtml(__("VIP")) . '</span>';
+                                        }
+                                        if ($isPreorder) {
+                                            echo '<span class="product-badge preorder">' . $block->escapeHtml(__('Preorder')) . '</span>';
+                                        }
+                                    }
+                                    ?>
+                                    <a title="<?= $escaper->escapeHtml($_item->getName()) ?>"
+                                        href="<?= $escaper->escapeUrl(
+                                                    $block->getProductUrl($_item, $additionalParams)
+                                                ) ?>"
+                                        class="product-item-link">
+                                        <?= $escaper->escapeHtml($_item->getName()) ?>
+                                    </a>
+                                </strong>
+                                <?= $block->getProductPriceHtml($_item, 'widget-product-grid') ?>
+
+                                <?= $block->getProductDetailsHtml($_item) ?>
+
+                                <?php if ($showWishlist || $showCompare || $showCart): ?>
+                                    <div class="product-item-inner<?php if ((!$_item->isSaleable() || !$_item->getIsSalable()) && !$isPreorder) {
+                                                                        echo ' stock-unavailable';
+                                                                    } ?>">
+                                        <div class="product-item-actions">
+                                            <?php if ($showCart): ?>
+                                                <div class="actions-primary">
+                                                    <?php if ($_item->isSaleable()): ?>
+                                                        <?php $postParams = $block->getAddToCartPostParams($_item); ?>
+                                                        <form data-role="tocart-form"
+                                                            data-product-sku="<?= $block->escapeHtml($_item->getSku()) ?>"
+                                                            action="<?= $block->escapeUrl($postParams['action']) ?>"
+                                                            method="post">
+                                                            <input type="hidden" name="product"
+                                                                value="<?= $block->escapeHtmlAttr($postParams['data']['product']) ?>">
+                                                            <input type="hidden"
+                                                                name="<?= Action::PARAM_NAME_URL_ENCODED ?>"
+                                                                value="<?= $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                                                            <input type="hidden" name="item_list_id" value="<?= $itemListId ?>">
+                                                            <input type="hidden" name="item_list_name" value="<?= $itemListName ?>">
+                                                            <input type="hidden" name="form_type" value="product_card">
+                                                            <?= $block->getBlockHtml('formkey') ?>
+                                                            <button type="submit"
+                                                                title="<?= $block->escapeHtml(__('Add to Cart')) ?>"
+                                                                class="action tocart primary">
+                                                                <span><?= $block->escapeHtml(__('Add to Cart')) ?></span>
+                                                            </button>
+                                                        </form>
+                                                    <?php else: ?>
+                                                        <?php if ($_item->getIsSalable()): ?>
+                                                            <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                                                        <?php else: ?>
+                                                            <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ol>
+        </div>
+    </div>
+<?php endif; ?>

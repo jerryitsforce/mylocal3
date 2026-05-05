@@ -1,0 +1,25 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpBundleProduct
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ * @var $block \Branch8\MarketplaceStaging\Block\Product\Edit\Bundle\Catalog\Option
+ */
+
+//file to display the bundle productGrid
+
+$productType = $block->getRequest()->getParam('type');
+$productId = $block->getRequest()->getParam('id');
+?>
+<?php if ($productType == ''): ?>
+    <?php $productType = $block->getProduct()->getTypeId() ?>
+<?php endif; ?>
+<?php if ($productType == \Magento\Bundle\Model\Product\Type::TYPE_CODE):?>
+    <div class="wk-bundle-product-grid no-display"  id="staging-wk-bundle-product-grid">
+        <?= /* @noEscape */ $block->getChildHtml(); ?>
+    </div>
+<?php endif;?>

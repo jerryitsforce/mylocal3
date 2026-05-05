@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="branch8_sellerdocument_file" resource="default" engine="innodb" comment="branch8_sellerdocument_file Table">
+		<column xsi:type="int" name="file_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="file_id"/>
+		</constraint>
+		<column name="seller_id" nullable="false" xsi:type="int" comment="seller_id" identity="false"/>
+		<column name="personal_data_destruction_affidavit" nullable="false" xsi:type="varchar" comment="Personal data destruction affidavit" length="255"/>
+		<column name="personal_data_destruction_certificate" nullable="false" xsi:type="varchar" comment="Personal data destruction certificate" length="255"/>
+		<column name="file_name" nullable="false" xsi:type="varchar" comment="file_name" length="255" disabled="true"/>
+		<column name="file_path" nullable="false" xsi:type="varchar" comment="file_path" length="255" disabled="true"/>
+		<column name="file_type" nullable="false" xsi:type="varchar" comment="file_path" length="255" disabled="true"/>
+		<column name="uploaded_at" nullable="true" xsi:type="timestamp" default="CURRENT_TIMESTAMP" on_update="true" comment="Uploaded At"/>
+		<column name="personal_data_destruction_period" nullable="false" xsi:type="varchar" comment="Personal Data Destruction Period" length="255"/>
+		<column name="expired_time" nullable="false"  xsi:type="smallint" default="90" comment="Expired Time"/>
+		<column name="account_make_change" nullable="false" xsi:type="varchar" comment="Change made account name" length="255"/>
+		<column name="status" nullable="true" xsi:type="boolean" comment="status"/>
+		<column name="comment" nullable="true" xsi:type="text" comment="comment"/>
+		<index referenceId="BRANCH8_SELLERDOCUMENT_FILE_SELLER_ID" indexType="btree">
+			<column name="seller_id"/>
+		</index>
+	</table>
+</schema>

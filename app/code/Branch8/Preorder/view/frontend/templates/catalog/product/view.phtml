@@ -1,0 +1,59 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MarketplacePreorder
+ * @author    Webkul
+ * @copyright Copyright (c)  Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<div class="wk-loading-mask wk-display-none">
+    <div class="wk-loader"></div>
+</div>
+<?php
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getMpPreorderHelper();
+$b8Helper = $this->helper(\Branch8\Preorder\Helper\Data::class);
+$configHelper = $viewModel->getMpPreorderConfigHelper();
+$productId = $block->getProduct()->getId();
+$flag = 0;
+$configFlag = 0;
+$preOrderLabel = __('Pre Order');
+if ($helper->isPreorder($productId)) {
+    $flag = 1;
+}
+$html = '';
+if ($helper->isConfigPreorder($productId)) {
+    $configFlag = 1;
+    $configMsg = __('Product has preorder option(s)');
+    $html = "<div class='wk-config-msg-box wk-info'>";
+    $html .= $configMsg;
+    $html .= '</div>';
+}
+$payHtml = $helper->getPayPreOrderHtml($productId);
+$msg = $b8Helper->getPdpMessage($block->getProduct());
+$configMsg = $html;
+$url = $helper->getCheckConfigUrl();
+$data = $helper->jsonEncodeData([
+    "payHtml" => $payHtml,
+    "msg" => $msg,
+    'configmsg' => $configMsg,
+    "flag" => $flag,
+    'config' => $configFlag,
+    "url" => $url,
+    "productId" => $productId,
+    "preOrderLabel" => $preOrderLabel
+]);
+?>
+<script>
+    window.preorderData = <?= /* @noEscape */ json_encode($configHelper->getPreorderConfigData($productId)); ?>
+</script>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "Webkul_MarketplacePreorder/js/pageview": <?= /* @noEscape */ $data ?>
+    }
+}
+</script>

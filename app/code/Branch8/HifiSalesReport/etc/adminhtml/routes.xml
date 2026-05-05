@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="hifi_sales_report" frontName="hifi_sales_report">
+            <module name="Branch8_HifiSalesReport" before="Magento_Backend"/>
+        </route>
+    </router>
+</config>

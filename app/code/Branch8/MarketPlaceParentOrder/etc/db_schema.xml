@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_parent_order_detail" resource="default" engine="innodb"
+           comment="Marketplace Parent Order Detail Table">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="parent_id" unsigned="true"
+                nullable="false" padding="10" identity="false"
+                comment="Parent ID"/>
+        <column xsi:type="varchar" name="state" nullable="true" length="32" comment="State"/>
+        <column xsi:type="varchar" name="status"
+                nullable="true" length="32" comment="Status"/>
+        <column xsi:type="varchar" name="hold_before_state" nullable="true" length="32" comment="hold before State"/>
+        <column xsi:type="varchar" name="hold_before_status"
+                nullable="true" length="32" comment="Hold Before Status"/>
+
+        <column xsi:type="varchar" name="shipping_description" nullable="true" length="255"
+                comment="Shipping Description"/>
+        <column xsi:type="varchar" name="increment_id"
+                nullable="true" length="50" comment="Increment ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="true" identity="false"
+                comment="Customer ID"/>
+        <column xsi:type="varchar" name="shipping_method" nullable="true" length="120"/>
+
+        <column xsi:type="smallint" name="customer_is_guest" unsigned="true" nullable="true"
+                identity="false" comment="Customer Is Guest"/>
+        <column xsi:type="varchar" name="customer_email"
+                nullable="true" length="128" comment="Customer Email"/>
+        <column xsi:type="varchar" name="customer_name"
+                nullable="true" length="255" comment="Customer Name"/>
+        <column xsi:type="int" name="customer_group_id" unsigned="false" nullable="true" identity="false"/>
+        <column xsi:type="varchar" name="payment_method" nullable="true" length="255" comment="Payment Method"/>
+        <column xsi:type="varchar" name="order_currency_code" nullable="true" length="3" comment="Order Currency Code"/>
+        <column xsi:type="varchar" name="parent_relation_new_id" nullable="true" length="32"
+                comment="Relation Child ID"/>
+        <column xsi:type="varchar" name="parent_relation_new_real_id" nullable="true" length="32"
+                comment="Relation Child Real ID"/>
+        <column xsi:type="smallint" name="is_virtual" unsigned="true" nullable="true" identity="false"
+                comment="Is Virtual"/>
+        <column xsi:type="text" name="customer_note" nullable="true"
+                comment="Customer Note"/>
+        <column xsi:type="text" name="order_note" nullable="true"
+                comment="Order Note"/>
+        <column xsi:type="varchar" name="referrer_code" nullable="true"
+                length="255"
+                comment="Referrer Code"/>
+        <column xsi:type="smallint"
+                name="store_id" unsigned="true" nullable="true" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="varchar" name="remote_ip" nullable="true"
+                length="45" comment="Remote Ip"/>
+        <column xsi:type="varchar" name="store_name"
+                nullable="true" length="255" comment="Store Name"/>
+        <column xsi:type="int" name="shipping_address_id"
+                unsigned="true" nullable="true" identity="false"
+                comment="Shipping Address ID"/>
+        <column xsi:type="int" name="billing_address_id"
+                unsigned="true" nullable="true" identity="false"
+                comment="Billing Address ID"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique"
+                    referenceId="SALES_PARENT_ORDER_DETAIL_PARENT_ID_UNIQUE">
+            <column name="parent_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PARENT_ORDER_DETAIL_PARENT_ID_SALES_PARENT_ORDER_ENTITY_ID"
+                    table="sales_parent_order_detail"
+                    column="parent_id" referenceTable="marketplace_mpsplitorder"
+                    referenceColumn="index_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="SALES_PARENT_ORDER_STORE_ID_STORE_STORE_ID"
+                    table="sales_parent_order_detail"
+                    column="store_id"
+                    referenceTable="store" referenceColumn="store_id" onDelete="SET NULL"/>
+        <constraint xsi:type="foreign" referenceId="SALES_PARENT_ORDER_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"
+                    table="sales_parent_order_detail"
+                    column="customer_id"
+                    referenceTable="customer_entity" referenceColumn="entity_id"
+                    onDelete="SET NULL"/>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PARENT_ORDER_DETAIL_SHIPPING_SALES_PARENT_ORDER_ADDRESS"
+                    table="sales_parent_order_detail"
+                    column="shipping_address_id" referenceTable="sales_parent_order_address"
+                    referenceColumn="entity_id" onDelete="SET NULL"/>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PARENT_ORDER_DETAIL_BILLING_SALES_PARENT_ORDER_ADDRESS"
+                    table="sales_parent_order_detail"
+                    column="billing_address_id" referenceTable="sales_parent_order_address"
+                    referenceColumn="entity_id" onDelete="SET NULL"/>
+    </table>
+    <table name="sales_parent_order_address" resource="sales" engine="innodb"
+           comment="Sales Flat Parent Order Address">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="parent_order_id" unsigned="true" nullable="true" identity="false"
+                comment="Sales Parent Detail ID"/>
+        <column xsi:type="int" name="customer_address_id" unsigned="false" nullable="true" identity="false"
+                comment="Customer Address ID"/>
+        <column xsi:type="int" name="region_id" unsigned="false" nullable="true" identity="false"
+                comment="Region ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="false" nullable="true" identity="false"
+                comment="Customer ID"/>
+        <column xsi:type="varchar" name="fax" nullable="true" length="255" comment="Fax"/>
+        <column xsi:type="varchar" name="region" nullable="true" length="255" comment="Region"/>
+        <column xsi:type="varchar" name="postcode" nullable="true" length="255" comment="Postcode"/>
+        <column xsi:type="varchar" name="lastname" nullable="true" length="255" comment="Lastname"/>
+        <column xsi:type="varchar" name="street" nullable="true" length="255" comment="Street"/>
+        <column xsi:type="varchar" name="city" nullable="true" length="255" comment="City"/>
+        <column xsi:type="varchar" name="email" nullable="true" length="255" comment="Email"/>
+        <column xsi:type="varchar" name="telephone" nullable="true" length="255" comment="Phone Number"/>
+        <column xsi:type="varchar" name="country_id" nullable="true" length="2" comment="Country ID"/>
+        <column xsi:type="varchar" name="firstname" nullable="true" length="255" comment="Firstname"/>
+        <column xsi:type="varchar" name="address_type" nullable="true" length="255" comment="Address Type"/>
+        <column xsi:type="varchar" name="prefix" nullable="true" length="255" comment="Prefix"/>
+        <column xsi:type="varchar" name="middlename" nullable="true" length="255" comment="Middlename"/>
+        <column xsi:type="varchar" name="suffix" nullable="true" length="255" comment="Suffix"/>
+        <column xsi:type="varchar" name="company" nullable="true" length="255" comment="Company"/>
+        <column xsi:type="text" name="vat_id" nullable="true" comment="Vat ID"/>
+        <column xsi:type="smallint" name="vat_is_valid" unsigned="false" nullable="true" identity="false"
+                comment="Vat Is Valid"/>
+        <column xsi:type="text" name="vat_request_id" nullable="true" comment="Vat Request ID"/>
+        <column xsi:type="text" name="vat_request_date" nullable="true" comment="Vat Request Date"/>
+        <column xsi:type="smallint" name="vat_request_success" unsigned="false" nullable="true"
+                identity="false" comment="Vat Request Success"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PARENT_ORDER_ADDRESS_PARENT_ID_SALES_PARENT_ORDER_ENTITY_ID"
+                    table="sales_parent_order_address"
+                    column="parent_order_id" referenceTable="marketplace_mpsplitorder"
+                    referenceColumn="index_id" onDelete="CASCADE"/>
+        <index referenceId="SALES_PARENT_ORDER_ADDRESS_PARENT_ORDER_ID" indexType="btree">
+            <column name="parent_order_id"/>
+        </index>
+    </table>
+    <table name="sales_parent_order_children" resource="default" engine="innodb"
+           comment="Parent Order To Sub Order Link">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="parent_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Parent ID"/>
+        <column xsi:type="int" name="children_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Sub Order ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+            <column name="parent_id"/>
+            <column name="children_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PR_OD_CD_SALES_ORDER_ENTITY_ID"
+                    column="children_id"
+                    table="sales_parent_order_children"
+                    referenceColumn="entity_id"
+                    referenceTable="sales_order"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PR_OD_CD_MARKETPLACE_MPSPLITORDER_INDEX_ID"
+                    table="sales_parent_order_children" column="parent_id"
+                    referenceTable="marketplace_mpsplitorder"
+                    referenceColumn="index_id" onDelete="CASCADE"/>
+        <constraint xsi:type="unique"
+                    referenceId="SALES_PARENT_ORDER_CHILDREN_CHILDREN_PARENT_ID_CHILDREN_ID">
+            <column name="parent_id"/>
+            <column name="children_id"/>
+        </constraint>
+        <index referenceId="SALES_PARENT_ORDER_CHILDREN_CHILDREN" indexType="btree">
+            <column name="children_id"/>
+        </index>
+    </table>
+    <table name="sales_parent_order_status_history"
+           resource="sales" engine="innodb" comment="Sales Flat Order Status History">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="parent_id" unsigned="true" nullable="false" identity="false"
+                comment="Parent ID"/>
+        <column xsi:type="int" name="is_customer_notified" unsigned="false" nullable="true"
+                identity="false" comment="Is Customer Notified"/>
+        <column xsi:type="smallint" name="is_visible_on_front" unsigned="true" nullable="false"
+                identity="false" default="0" comment="Is Visible On Front"/>
+        <column xsi:type="text" name="comment" nullable="true" comment="Comment"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="32" comment="Status"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="SALES_PARENT_ORDER_STATUS_HISTORY_PARENT_ID_SALES_ORDER_ENTITY_ID"
+                    table="sales_parent_order_status_history"
+                    column="parent_id" referenceTable="marketplace_mpsplitorder"
+                    referenceColumn="index_id" onDelete="CASCADE"/>
+        <index referenceId="SALES_PARENT_ORDER_STATUS_HISTORY_PARENT_ID" indexType="btree">
+            <column name="parent_id"/>
+        </index>
+        <index referenceId="SALES_PARENT_ORDER_STATUS_HISTORY_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    <table name="sales_parent_order_grid" resource="sales" engine="innodb"
+           comment="Sales Flat Parent Order Grid">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="false"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="32" comment="Status"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="true" identity="false"
+                comment="Store ID"/>
+        <column xsi:type="varchar" name="increment_id" nullable="true" length="50" comment="Increment ID"/>
+        <column xsi:type="varchar" name="customer_email" nullable="true" length="255" comment="Customer Email"/>
+        <column xsi:type="varchar" name="customer_name" nullable="true" length="255" comment="Customer Name"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <column xsi:type="int" name="customer_group_id" unsigned="false" nullable="true" identity="false"/>
+
+        <column xsi:type="varchar" name="billing_address" nullable="true" length="255" comment="Billing Address"/>
+        <column xsi:type="varchar" name="shipping_address" nullable="true" length="255" comment="Shipping Address"/>
+        <column xsi:type="varchar" name="billing_name" nullable="true" length="255" comment="Billing Name"/>
+        <column xsi:type="varchar" name="shipping_name" nullable="true" length="255" comment="Shipping Name"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="true" identity="false"
+                comment="Customer Id"/>
+        <column xsi:type="varchar" name="customer_group" nullable="true" length="255" comment="Customer Group"/>
+        <column xsi:type="varchar" name="payment_method" nullable="true" length="255" comment="Payment Method"/>
+        <column xsi:type="varchar" name="shipping_information" nullable="true" length="255"
+                comment="Shipping Method Name"/>
+        <column xsi:type="varchar" name="rma_status" nullable="true" length="128" comment="Rma Status"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="SALES_PORDER_GRID_INCREMENT_ID_STORE_ID">
+            <column name="increment_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <index referenceId="SALES_PORDER_GRID_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="SALES_PORDER_GRID_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+
+        <index referenceId="SALES_PORDER_GRID_SHIPPING_NAME" indexType="btree">
+            <column name="shipping_name"/>
+        </index>
+        <index referenceId="SALES_PORDER_GRID_BILLING_NAME" indexType="btree">
+            <column name="billing_name"/>
+        </index>
+        <index referenceId="SALES_PORDER_GRID_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+        <index referenceId="SALES_PORDER_GRID_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="SALES_PORDER_GRID_UPDATED_AT" indexType="btree">
+            <column name="updated_at"/>
+        </index>
+        <index referenceId="FTI_65B9E9925EC58F0C7C2E2F6379C233E8" indexType="fulltext">
+            <column name="increment_id"/>
+            <column name="billing_name"/>
+            <column name="shipping_name"/>
+            <column name="shipping_address"/>
+            <column name="billing_address"/>
+            <column name="customer_name"/>
+            <column name="customer_email"/>
+        </index>
+    </table>
+    <table name="sales_parent_order_status_priority" resource="sales" engine="innodb"
+           comment=" Order Status Priorirty">
+        <column xsi:type="int" name="entity_id"
+                unsigned="true"
+                nullable="false"
+                identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="128"
+                comment="Parent Order Status"/>
+        <column xsi:type="smallint" name="priority" unsigned="true" nullable="true"/>
+        <constraint xsi:type="unique"
+                    referenceId="SALES_PO_STATUS_UNIQUE">
+            <column name="status"/>
+        </constraint>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PO_STATUS_PRIORITY_STATUS"
+                    table="sales_parent_order_status_priority"
+                    column="status"
+                    referenceTable="sales_order_status"
+                    referenceColumn="status"
+                    onDelete="CASCADE"
+        />
+    </table>
+
+</schema>

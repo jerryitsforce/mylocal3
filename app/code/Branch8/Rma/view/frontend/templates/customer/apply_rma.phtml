@@ -1,0 +1,231 @@
+<div class="wk-loading-mask wk-display-none">
+    <div class="wk-loader"></div>
+</div>
+<?php
+/**
+ * @var $reasonModel \Branch8\Rma\ViewModel\Reasons
+ */
+$reasonModel = $block->getReasonsModel();
+$helper = $block->helper();
+$orders = $helper->getOrdersOfCustomer();
+$reasons = $block->getReasonsModel()->getReasonByTags(\Branch8\Rma\Model\Actions\ReasonsByTags::FRONTEND_TAG);
+$orderUrl = $block->getUrl('reqrma/order/items');
+$checkUrl = $block->getUrl('mprmasystem/order/check');
+$totalOrderQtyUrl = $block->getUrl('mprmasystem/order/totalorderquantity');
+$symbol = $helper->getCurrencySymbol();
+$allReasons = [];
+foreach ($reasons as $reasonId => $reason) {
+    $allReasons[$reasonId] = $reason;
+}
+$blockHtml = '<div class="wk-showcase-block">';
+$blockHtml .= '<div title= "Delete Showcase" class="wk-delete-item">x</div>';
+$blockHtml .= '<div class="wk-default-block">Add Image</div>';
+$blockHtml .= '<input type="file" name="showcase[]" accept="image/*" class="wk-showcase-img wk-no-display">';
+$blockHtml .= '</div>';
+$imgErrorMsg = __("Invalid Image Format. jpeg, jpg, gif, png are accepted");
+$sellerLabel = __("Seller");
+$consignmentLabel = __("Enter Consignment Number");
+$selectItemLabel = __("Please select item");
+$imgSelectLabel = __("Image(s) are not selected");
+$orderSelectLabel = __("No Order Selected");
+$sellerSelectLabel = __("No Seller Selected");
+$resolutionSelectLabel = __("No Resolution Selected");
+$itemsErrorLabel = __("Items not available for RMA");
+$refundLabel = __("Refund");
+$replaceLabel = __("Replace");
+$cancelLabel = __("Cancel Items");
+$notDeliveredLabel = __("Not Delivered");
+$deliveredLabel = __("Delivered");
+$selectQtyLabel = __("Select Quantity");
+$selectSellerLabel = __("Select Seller");
+$warningLabel = __("Warning");
+$qtyMsg = __("Quantity not available");
+$orderStatusLabel = __("Order's Status");
+$data = $helper->jsonEncodeData([
+    "orderUrl" => $orderUrl,
+    "checkUrl" => $checkUrl,
+    "reasons" => $allReasons,
+    "isGuest" => 0,
+    "blockHtml" => $blockHtml,
+    "imgErrorMsg" => $imgErrorMsg,
+    "consignmentLabel" => $consignmentLabel,
+    "sellerLabel" => $sellerLabel,
+    "selectItemLabel" => $selectItemLabel,
+    "imgSelectLabel" => $imgSelectLabel,
+    "orderSelectLabel" => $orderSelectLabel,
+    "sellerSelectLabel" => $sellerSelectLabel,
+    "resolutionSelectLabel" => $resolutionSelectLabel,
+    "itemsErrorLabel" => $itemsErrorLabel,
+    "refundLabel" => $refundLabel,
+    "replaceLabel" => $replaceLabel,
+    "cancelLabel" => $cancelLabel,
+    "deliveredLabel" => $deliveredLabel,
+    "notDeliveredLabel" => $notDeliveredLabel,
+    "selectQtyLabel" => $selectQtyLabel,
+    "selectSellerLabel" => $selectSellerLabel,
+    "warningLabel" => $warningLabel,
+    "qtyMsg" => $qtyMsg,
+    "orderStatusLabel" => $orderStatusLabel,
+    "totalOrderQtyUrl" => $totalOrderQtyUrl,
+]);
+?>
+
+<div id="popup-modal-main" class="modal-dialog modal-dialog-scrollable" style="display:none;">
+    <form method="post"
+        action="<?=$escaper->escapeUrl($block->getUrl('reqrma/customer/create'));?>"
+        id="wk_new_rma_form" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset wk-mprma-fieldset">
+        <div class="required table-wrapper field">
+                <table id="orders-item-table" class="data table table-order-items">
+                    <tbody id= "order_items"></tbody>
+                </table>
+            </div>
+            <div class="required field">
+                <label for="resolution_type" class="label">
+                    <span class="resolution_type"><?=$escaper->escapeHtml(__("Choose Return or Exchange"));?></span>
+                </label>
+                <div class="control">
+                    <div>
+                        <input type="radio" id="return" name="resolution_type" value="1" required/>
+                        <label for="return"><?= $escaper->escapeHtml(__("Choose Return"));?></label>
+                    </div>
+                    <div>
+                        <input type="radio" id="exchange" name="resolution_type" value="2"/>
+                        <label for="exchange"><?=$escaper->escapeHtml(__("Choose Exchange"));?></label>
+                    </div>
+                </div>
+            </div>
+            <div class="required field">
+                <label for="order_status" class="label">
+                    <span class="order_status"><?=$escaper->escapeHtml(__("Have You Received Goods Yet"));?></span>
+                </label>
+                <div class="control">
+                    <div>
+                        <input type="radio" id="is_received_goods_true" name="order_status" value="1" required/>
+                        <label for="is_received_goods_true"><?=$escaper->escapeHtml(__("Yes, Received."));?></label>
+                    </div>
+                    <div>
+                        <input type="radio" id="is_received_goods_false" name="order_status" value="0"/>
+                        <label for="is_received_goods_false"><?=$escaper->escapeHtml(__("No, Not Received."));?></label>
+                    </div>
+                </div>
+            </div>
+            <div class="required field">
+                <label for="return_or_exchange_reason" class="label">
+                    <span class="return_or_exchange_reason"><?=$escaper->escapeHtml(__("Reasons of Return or Exchange"));?></span>
+                </label>
+                <div class="control required">
+                    <select id="return_or_exchange_reason" name="reason_id">
+                        <option value="" required disabled><?=$escaper->escapeHtml(__("Please Choose Reason."));?></option>
+                    </select>
+                </div>
+                <div id= "return_or_exchange_reason_additional_info" class="control">
+                    <textarea name="additional_info" class="validate-no-html-tags" placeholder="<?=$escaper->escapeHtml(__("Please Describe Your Reasons. 20 characters limited."));?>"></textarea>
+                </div>
+            </div>
+            <div class="required field">
+                <label for="return_or_exchange_customer_name" class="label">
+                    <span class="return_or_exchange_customer_name"><?=$escaper->escapeHtml(__("RMA Customer Name"));?></span>
+                </label>
+                <div class="control">
+                    <input type="text" id="return_or_exchange_customer_name" name="rma_receiver" value=""  data-validate="{'required':true}">
+                </div>
+            </div>
+            <div class="required field">
+                <label for="return_or_exchange_phone_number" class="label">
+                    <span class="return_or_exchange_phone_number"><?=$escaper->escapeHtml(__("RMA Phone Number"));?></span>
+                </label>
+                <div class="control" >
+                    <input type="text" id="return_or_exchange_phone_number" name="rma_phone" value="" data-validate="{'required':true}">
+                </div>
+            </div>
+            <div class="required field">
+                <label for="return_or_exchange_order_address" class="label">
+                    <span class="return_or_exchange_order_address"><?=$escaper->escapeHtml(__("RMA Address"));?></span>
+                </label>
+                <div class="control">
+                    <input type="text" id="return_or_exchange_order_address_city" name="rma_address[]" value="">
+                    <input type="text" id="return_or_exchange_order_address_region" name="rma_address[]" value="">
+                    <input type="text" id="return_or_exchange_order_address_street" name="rma_address[]" value="">
+                </div>
+            </div>
+            <div class="required field">
+                <label for="rma_delivery_time" class="label">
+                    <span class="rma_delivery_time"><?=$escaper->escapeHtml(__("RMA Delivery Time"));?></span>
+                </label>
+                <div class="control">
+                    <div>
+                        <input type="checkbox" id="rma_delivery_time_morning" name="rma_delivery_time[]" value="1"/>
+                        <label for="rma_delivery_time_morning"><?=$escaper->escapeHtml(__("Morning（9:00-12:59）"));?></label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="rma_delivery_time_afternoon" name="rma_delivery_time[]" value="2"/>
+                        <label for="rma_delivery_time_afternoon"><?=$escaper->escapeHtml(__("Afternoon（13:00-17:59）"));?></label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="rma_delivery_time_not_specific" name="rma_delivery_time[]" value="0" required/>
+                        <label for="rma_delivery_time_not_specific"><?=$escaper->escapeHtml(__("Not Specific"));?></label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+
+<script class="script-reinit">
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'Magento_Customer/js/customer-data',
+            'mage/translate'
+        ],
+        function($, modal, customerData) {
+            // var directoryData = customerData.get('directory-data')();console.log('herssse');
+            // if(directoryData['TW'] == undefined){console.log('here');
+            //     customerData.reload(['directory-data']);
+            // }
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: $.mage.__('Request Return or Exchange'),
+                buttons: [
+                    {
+                        text: $.mage.__('Apply Rma'),
+                        class: 'action save primary wk-save',
+                        click: async function () {
+                            event.preventDefault();
+                            if ($('#wk_new_rma_form').valid()) {
+                                $('body').trigger('processStart');
+                            }
+                            $("#wk_new_rma_form").submit();
+                        }
+                    },
+                    {
+                        text: $.mage.__('Cancel Apply Rma'),
+                        class: 'buttun',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    }
+                ]
+            };
+
+            var popup = modal(options, $('#popup-modal-main'));
+            $(".action-return-exchange-primary").on('click',function(){
+                var itemId = $('.action-return-exchange-primary').data('item-id');
+                let orderId = $('.action-return-exchange-primary').data('order-id');
+
+                $("#popup-modal-main").modal("openModal");
+            });
+        }
+    );
+</script>
+<script type="text/x-magento-init">
+    {
+        "body": {
+             "Branch8_Rma/js/newRma": <?=/* @noEscape */$data?>
+        }
+    }
+</script>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="RewardSystemGridCollection" type="Branch8\RewardSystem\Ui\DataProvider\Event\Listing\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_rewardsystem_event</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\RewardSystem\Model\ResourceModel\Event</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="reward_system_listing_data_source" xsi:type="string">RewardSystemGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Branch8\RewardSystem\Api\ApiRequestInterface" type="Branch8\RewardSystem\Model\Api\ApiRequest" />
+    <preference for="Branch8\RewardSystem\Api\ApiResponseInterface" type="Branch8\RewardSystem\Model\Api\ApiResponse" />
+    <preference for="Branch8\RewardSystem\Api\ApiTriggerInterface" type="Branch8\RewardSystem\Model\Api\ApiTrigger" />
+
+    <type name="Branch8\RewardSystem\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RewardSystem\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">rewardSystemLogHandler</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\RewardSystem\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

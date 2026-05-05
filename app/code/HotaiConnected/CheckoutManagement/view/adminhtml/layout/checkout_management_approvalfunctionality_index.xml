@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="HotaiConnected_UiShared::css/vendor/tabulator/tabulator.min.css"/>
+        <css src="HotaiConnected_UiShared::css/vendor/sumoselect/sumoselect.min.css"/>
+        <css src="HotaiConnected_CheckoutManagement::css/approvalfunctionality/index.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content" htmlTag="div" htmlClass="approval-functionality">
+            <!-- 共用資料區塊：使用 Hidden Input（DOM data-* 屬性），可靠且除錯容易 -->
+            <block class="HotaiConnected\UiShared\Block\Adminhtml\Common\JSConfig" name="shared.jsconfig" template="HotaiConnected_UiShared::shared/js-config.phtml" before="approval_functionality_content"/>
+            
+            <!-- 審核功能主內容 Block：包含共用篩選器 -->
+            <block class="Magento\Backend\Block\Template" name="approval_functionality_content" template="HotaiConnected_CheckoutManagement::approvalfunctionality/index.phtml">
+                <block class="Magento\Backend\Block\Template" name="shared.filters" template="HotaiConnected_UiShared::shared/filters.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

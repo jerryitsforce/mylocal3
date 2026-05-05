@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="cron_manual_execution" resource="default" engine="innodb" comment="Cron Manual Execution Table">
+		<column xsi:type="int" name="cron_manual_execution_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="cron_manual_execution_id"/>
+		</constraint>
+		<column xsi:type="varchar" name="executor" nullable="false" length="255" default="0" comment="Executor"/>
+		<column xsi:type="varchar" name="job_code" nullable="false" length="255" default="0" comment="Job Code"/>
+		<column xsi:type="varchar" name="status" nullable="false" length="7" default="pending" comment="Status"/>
+		<column xsi:type="timestamp" name="executed_at" on_update="false" nullable="true" comment="Executed At"/>
+        <column xsi:type="timestamp" name="finished_at" on_update="false" nullable="true" comment="Finished At"/>
+	</table>
+    <table name="cron_schedule" resource="default" engine="innodb" comment="Cron Schedule">
+        <index referenceId="CRON_SCHEDULE_JOB_CODE_SCHEDULED_AT" indexType="btree">
+            <column name="job_code"/>
+            <column name="scheduled_at"/>
+        </index>
+    </table>
+</schema>

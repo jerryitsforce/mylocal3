@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <!-- 財務自動化主資源 -->
+                <resource id="HotaiConnected_FinancialReconciliation::finance_automation" title="財務自動化" sortOrder="150">
+                    <!-- 結帳專區 -->
+                    <resource id="HotaiConnected_FinancialReconciliation::checkout_area" title="結帳專區" sortOrder="10">
+                        <resource id="HotaiConnected_FinancialReconciliation::checkout_area_view" title="Listing Results" sortOrder="10">
+                            <!-- 篩選器權限群組 (對應 CheckoutArea/Index.php getFiltersData() 中的篩選器) -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter" title="Filter Criteria" sortOrder="10">
+                                <!-- 篩選器：結帳批次 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_batch_num" title="Checkout Batch" sortOrder="10"/>
+                                <!-- 篩選器：館長姓名 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_sales_person" title="Principal Curator" sortOrder="20"/>
+                                <!-- 篩選器：特約商名稱 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_shop_title" title="Authorized Dealer Name" sortOrder="30"/>
+                                <!-- 篩選器：特約商代號 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_seller_code" title="Authorized Dealer Code" sortOrder="40"/>
+                                <!-- 篩選器：訂單結帳序號異動日(起/訖) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_checkout_date" title="Order Checkout Number Modification Date (From-To)" sortOrder="50"/>
+                                <!-- 篩選器：資料來源 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_data_source" title="Resource Source" sortOrder="60"/>
+                                <!-- 篩選器：票券狀態 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_ticket_status" title="Ticket Status" sortOrder="70"/>
+                                <!-- 篩選器：商品物流狀態 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_shipping_status" title="Product Shipping Status" sortOrder="80"/>
+                                <!-- 篩選器：發票狀態 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_invoice_status" title="Invoice Status" sortOrder="90"/>
+                                <!-- 篩選器：統一編號 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_tax_id" title="Tax ID Number" sortOrder="100"/>
+                                <!-- 篩選器：廠商發票號碼 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::checkout_area_filter_invoice_number" title="Vendor Invoice Number" sortOrder="110"/>
+                            </resource>
+                        </resource>
+                        <!-- 批量操作權限群組 (對應 CheckoutArea/Index.php getBatchActions() 中的順序) -->
+                        <resource id="HotaiConnected_FinancialReconciliation::checkout_batch_actions" title="Menu Actions" sortOrder="20">
+                            <!-- 批量操作：下載廠商對帳單 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_detail_export" title="Download Vendor Statement" sortOrder="10"/>
+                            <!-- 批量操作：下載月結總表 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_summarize" title="Download Monthly Summary" sortOrder="20"/>
+                            <!-- 批量操作：解除結帳 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_delete" title="Unlock Checkout" sortOrder="30"/>
+                            <!-- 批量操作：寄出對帳單 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_detail_send" title="Send Statement" sortOrder="40"/>
+                            <!-- 批量操作：例外授權 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_exception_insert" title="Exception Authorization" sortOrder="50"/>
+                        </resource>
+                        <!-- 操作權限群組 -->
+                        <resource id="HotaiConnected_FinancialReconciliation::checkout_area_actions" title="More Actions" sortOrder="30">
+                            <!-- 建立月結帳批次權限 -->
+                            <!-- Controller: CheckoutArea/Create.php -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_insert" title="Create Monthly Checkout Batch" sortOrder="10"/>
+                            <!-- 新增廠商發票權限 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_invoice_insert" title="新增廠商發票" sortOrder="80"/>
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_invoice_update" title="更新廠商發票" sortOrder="85"/>
+                            <!-- 例外授權子選單權限 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_exception_select" title="例外授權子選單" sortOrder="90"/>
+                            <resource id="HotaiConnected_FinancialReconciliation::checkout_area_order" title="訂單結帳匯出" sortOrder="50"/>
+                        </resource>
+                    </resource>
+                    
+                    <!-- 審核專區 -->
+                    <resource id="HotaiConnected_FinancialReconciliation::review_function" title="審核功能" sortOrder="20">
+                        <resource id="HotaiConnected_FinancialReconciliation::review_function_list" title="Listing Results" sortOrder="10">
+                            <!-- 篩選器權限群組 (對應 ApprovalFunctionality/Index.php getFiltersData() 中的篩選器) -->
+                            <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter" title="Filter Criteria" sortOrder="10">
+                                <!-- 篩選器：館長姓名 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter_sales_person" title="Principal Curator" sortOrder="10"/>
+                                <!-- 篩選器：申請時間(起/訖) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter_application_date" title="Application Date (From-To)" sortOrder="20"/>
+                                <!-- 篩選器：審核結果 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter_exception_status" title="Approval Result" sortOrder="30"/>
+                                <!-- 篩選器：結帳批次 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter_batch_num" title="Checkout Batch" sortOrder="40"/>
+                                <!-- 篩選器：特約商名稱 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter_shop_title" title="Authorized Dealer Name" sortOrder="50"/>
+                                <!-- 篩選器：特約商代號 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_filter_seller_code" title="Authorized Dealer Code" sortOrder="60"/>
+                            </resource>
+                        </resource>
+                        <!-- 批量操作權限群組 (對應 ApprovalFunctionality/Index.php getBatchActions() 中的順序) -->
+                        <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_actions" title="Menu Actions" sortOrder="20">
+                            <resource id="HotaiConnected_FinancialReconciliation::review_function_approvement" title="Batch Review" sortOrder="20">
+                                <!-- 批量操作：批次審核(同意) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_batch_approve" title="Batch Approve" sortOrder="10"/>
+                                <!-- 批量操作：批次審核(拒絕) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::approval_functionality_batch_reject" title="Batch Reject" sortOrder="20"/>
+                            </resource>
+                            <!-- 批量操作：下載報表 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::review_function_export" title="Download Report" sortOrder="30"/>
+                        </resource>
+                    </resource>
+                    
+                    <!-- 訂單結帳匯出 -->
+                    <resource id="HotaiConnected_FinancialReconciliation::order_checkout_export" title="訂單結帳匯出" sortOrder="30">
+                        <resource id="HotaiConnected_FinancialReconciliation::order_checkout_export_list" title="Listing Results" sortOrder="10">
+                        <!-- 篩選器權限群組 (對應 ExportOrderCheckoutData/Index.php getFiltersData() 中的篩選器) -->
+                            <resource id="HotaiConnected_FinancialReconciliation::export_order_checkout_data_filter" title="Filter Criteria" sortOrder="10">
+                                <!-- 篩選器：訂單結帳序號異動日(起/訖) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::export_order_checkout_data_filter_checkout_date" title="Order Checkout Number Modification Date (From-To)" sortOrder="10"/>
+                                <!-- 篩選器：特約商名稱 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::export_order_checkout_data_filter_shop_title" title="Authorized Dealer Name" sortOrder="20"/>
+                                <!-- 篩選器：館長姓名 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::export_order_checkout_data_filter_sales_person" title="Principal Curator" sortOrder="30"/>
+                            </resource>
+                        </resource>
+                        <!-- 操作權限群組 -->
+                        <resource id="HotaiConnected_FinancialReconciliation::export_order_checkout_data_actions" title="More Actions" sortOrder="20">
+                            <!-- 下載搜尋資料權限 -->
+                            <resource id="HotaiConnected_FinancialReconciliation::order_checkout_export_download" title="Download Search Data" sortOrder="10"/>
+                        </resource>
+                    </resource>
+                    
+                    <!-- 票券對帳專區 -->
+                    <resource id="HotaiConnected_FinancialReconciliation::ticket_reconciliation" title="票券對帳專區" sortOrder="40">
+                        <resource id="HotaiConnected_FinancialReconciliation::ticket_reconciliation_list" title="Listing Results" sortOrder="10">
+                            <!-- 篩選器權限群組 (對應 VoucherReconciliationArea/Index.php getFiltersData() 中的篩選器) -->
+                            <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter" title="Filter Criteria" sortOrder="10">
+                                <!-- 篩選器：門市名稱 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_shop_title" title="Shop Name" sortOrder="20"/>
+                                <!-- 篩選器：票券狀態 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_ticket_status" title="Ticket Status" sortOrder="30"/>
+                                <!-- 篩選器：報表歸屬 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_type" title="Report Attribution" sortOrder="40">
+                                    <!-- 篩選器選項：球池票券核銷明細表（僅查詢） -->
+                                    <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_type_event" title="Ball Pit Ticket Redemption Report" sortOrder="10">
+                                        <!-- 篩選器：球池建立日(起/訖) -->
+                                        <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_ball_pit_date" title="Ball Pit Creation Date (From-To)" sortOrder="10"/>
+                                    </resource>
+                                    <!-- 篩選器選項：2.0 一般票券核銷明細表（僅查詢） -->
+                                    <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_type_ticket" title="2.0 Standard Ticket Redemption Report" sortOrder="20">
+                                        <!-- 篩選器：訂單成立時間(起/訖) -->
+                                        <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_order_creation_date" title="Order Creation Date Range (From-To)" sortOrder="10"/>
+                                        <!-- 篩選器：訂單結帳序號異動日(起/訖) -->
+                                        <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_checkout_date" title="Order Checkout Number Modification Date (From-To)" sortOrder="20"/>
+                                    </resource>
+                                </resource>
+                                <!-- 篩選器：訂單狀態 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_order_status" title="Order Status" sortOrder="50"/>
+                                <!-- 篩選器：票券序號 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_serial_number" title="Ticket Serial Number" sortOrder="60"/>
+                                <!-- 篩選器：核銷到期日(起/訖) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_verification_expiration_date" title="Verification Expiration Date (From-To)" sortOrder="70"/>
+                                <!-- 篩選器：核銷日期(起/訖) -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_filter_verification_date" title="Verification Date (From-To)" sortOrder="80"/>
+                            </resource>
+                        </resource>
+
+                        <!-- 操作權限群組 -->
+                        <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_batch_actions" title="Menu Actions" sortOrder="20">
+                            <resource id="HotaiConnected_FinancialReconciliation::ticket_reconciliation_export" title="票券對帳匯出" sortOrder="10">
+                                <!-- 批量操作：球池票券核銷明細表 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_batch_actions_event" title="Ball Pit Ticket Redemption Report (Download)" sortOrder="10"/>
+                                <!-- 批量操作：2.0 一般票券核銷明細表 -->
+                                <resource id="HotaiConnected_FinancialReconciliation::voucher_reconciliation_area_batch_actions_ticket" title="2.0 Standard Ticket Redemption Report (Download)" sortOrder="20"/>
+                            </resource>
+                        </resource>
+                    </resource>
+
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

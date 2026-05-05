@@ -1,0 +1,122 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Product Swiper
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .hot-items.products-swiper{
+        .product-item{
+        }
+    }
+
+    .products-swiper[data-content-type="products"],
+    .products-swiper[data-content-type="product_recommendations"] .products-grid{
+        min-height: 160px;
+        text-align: center;
+        position: relative;
+        &:before{
+            content: '';
+            &:extend(.abs-loader-spinner all);
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -8px;
+            margin-left: -16px;
+        }
+        .product-item{
+            display: none;
+        }
+        &.swiper-initialized{
+            text-align: left;
+            &:before{
+                display: none;
+            }
+            .product-item{
+                display: inline-block;
+            }
+        }
+    }
+
+}
+//
+//  Mobile
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .hot-items.products-swiper{
+        &[data-content-type="products"],
+        &[data-content-type="product_recommendations"] .products-grid{
+            .product-item{
+                width: 190px;
+            }
+    
+            .product-item .product-item-info{
+                width: 100%;
+            }
+        }
+    }
+
+    .products-swiper[data-carousel-mode="continuous"],
+    .products-swiper[data-slidetoshow-mobile="continuous"]{
+        .product-item{
+            .product-item-details{
+                padding: 16px 12px 12px;
+            }
+        }
+        
+        &.swiper-initialized,
+        .swiper-initialized.products-grid{
+            .product-item{
+                width: 170px;
+                padding-left: 0;
+                padding-right: 0;
+                .product-item-info{
+                    .lib-css(transition, all 300ms ease, 1);
+                    .lib-css(transform, scale(0.80), 1);
+                }
+    
+                &.swiper-slide-active{
+                    .product-item-info{
+                        .lib-css(transform, scale(1), 1);
+                    }
+                }
+            }
+        }
+        
+    }
+}
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+}
+
+// [769 - 1024 ]
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__m) and (@break-max = @screen__l) {
+    .hot-items.products-swiper{
+        &[data-content-type="products"],
+        &[data-content-type="product_recommendations"] .products-grid{
+            .product-item{
+                width: 240px;
+            }
+        }
+    }
+}
+
+// >= 1024px
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .hot-items.products-swiper{
+        &[data-content-type="products"],
+        &[data-content-type="product_recommendations"] .products-grid{
+            .product-item{
+                width: 300px;
+            }
+        }
+    }
+}
+

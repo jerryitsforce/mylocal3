@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @var $block \Magento\Backend\Block\Template
+ */;
+
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Ecpay_Invoice::css/order/invoice-block.css')?>">
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Ecpay Invoices') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?= $block->getChildHtml('') ?>
+    </div>
+</section>

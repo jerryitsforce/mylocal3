@@ -1,0 +1,25 @@
+<!--@subject Your Ticket  {{var ticket.code}} has been updated @-->
+
+{{template config_path="design/email/header_template"}}
+
+Dear {{var ticket.customer_name}},
+<br>
+
+The ticket <strong>"{{var ticket.code}}"</strong> has been changed status.
+
+<div style="padding-left:20px;margin:0;border-left:2px solid #ccc;color:#888">
+Status :{{var ticket.frontend_status|raw}}
+</div>
+
+<div style="padding-left:20px;margin:0;border-left:2px solid #ccc;color:#888">
+    Problem Description :{{var ticket.content|raw}}
+</div>
+
+<a style="color:#5ac17f" href="{{var ticket.frontendTicketUrl}}">
+    Click here to sign in and reply to this ticket
+</a>
+<br>
+<p style="padding:20px 0 0 0;margin:0">
+    <b>This is an automated message please do not reply.!</b>
+</p>
+{{template config_path="design/email/footer_template"}}

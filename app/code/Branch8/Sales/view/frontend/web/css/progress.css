@@ -1,0 +1,96 @@
+.ProgressBar {
+  margin: 0 auto;
+  padding: 2em 0 3em;
+  list-style: none;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  width: 250%;
+}
+
+.ProgressBar-step {
+  text-align: center;
+  position: relative;
+  width: 100%;
+
+  &:before,
+  &:after {
+    content: "";
+    height: 0.5em;
+    background-color: #372393;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    left: -50%;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .25s ease-out;
+  }
+  
+  &:first-child:before,
+  &:first-child:after { 
+    display: none; 
+  }
+
+  &:after {
+    background-color: #FF8800;
+    width: 0%;
+  }
+
+  &.is-complete + &.is-current:after,
+  &.is-complete + &.is-complete:after {
+    width: 100%;
+  }
+}
+
+.ProgressBar-icon {
+  width: 1em;
+  height: 1em;
+  background-color: #ffbb33;
+  fill: #ffbb33;
+  border-radius: 50%;
+  padding: 0.5em;
+  max-width: 100%;
+  z-index: 10;
+  position: relative;
+  transition: all .25s ease-out;
+  
+  .is-current & {
+    fill: #ffbb33;
+    background-color: #ffbb33;
+  }
+  
+  .is-complete & {
+    fill: #DBF1FF;
+    background-color: #ffbb33;
+  }
+}
+
+.ProgressBar-stepLabel {
+  display: block;
+  color: black;
+  position: relative;
+  padding-top: 0.5em;
+  width: 100%;
+  transition: all .25s ease-out;
+  
+  .is-current > &,
+  .is-complete > & {
+    color: #ffbb33;
+  }
+}
+
+.ProgressBar-stepTime {
+  display: block;
+  color: gray;
+  position: relative;
+  padding-top: 0.5em;
+  width: 100%;
+  font-size: 8px;
+  transition: all .25s ease-out;
+  
+  .is-current > &,
+  .is-complete > & {
+    color: #ffbb33;
+  }
+}

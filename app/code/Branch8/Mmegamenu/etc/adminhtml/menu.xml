@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_Mmegamenu::megamenu" title="Megamenu" module="Branch8_Mmegamenu" sortOrder="20" parent="Magento_Backend::content" resource="Branch8_Mmegamenu::megamenu"/>
+        <add id="Branch8_Mmegamenu::parent" title="Manage Menu" module="Branch8_Mmegamenu" sortOrder="10" parent="Branch8_Mmegamenu::megamenu" action="adminhtml/mmegamenu/parents" resource="Branch8_Mmegamenu::parent"/>
+        <add id="Branch8_Mmegamenu::items" title="Manage Megamenu Items" module="Branch8_Mmegamenu" sortOrder="20" parent="Branch8_Mmegamenu::megamenu" action="adminhtml/mmegamenu/index" resource="Branch8_Mmegamenu::parent"/>
+        <add id="Branch8_Mmegamenu::config" title="Configuration" module="Branch8_Mmegamenu" sortOrder="30" parent="Branch8_Mmegamenu::megamenu" action="adminhtml/system_config/edit/section/megamenu" resource="Branch8_Mmegamenu::parent"/>
+    </menu>
+</config>

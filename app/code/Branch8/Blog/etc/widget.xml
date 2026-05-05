@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="branch8_blog_posts" class="Branch8\Blog\Block\Widget\Posts">
+        <label>Blog</label>
+        <description>Blog Widget</description>
+        <parameters>
+            <parameter name="title" xsi:type="text" required="false" visible="true">
+                <label>Title</label>
+            </parameter>
+            <parameter name="post_count" xsi:type="block" required="true" visible="true">
+                <label>Numbers of Posts Display</label>
+                <block class="Branch8\Blog\Block\Adminhtml\Widget\Number"/>
+            </parameter>
+            <parameter name="show_type" xsi:type="select" required="false" visible="true"
+                       source_model="Branch8\Blog\Model\Config\Source\WidgetShowType">
+                <label>Show Type</label>
+            </parameter>
+            <parameter name="category_id" xsi:type="select" required="true" visible="true"
+                       source_model="Branch8\Blog\Model\Config\Source\WidgetCategory">
+                <label>Category</label>
+                <depends>
+                    <parameter name="show_type" value="category"/>
+                </depends>
+            </parameter>
+            <parameter name="template" xsi:type="select" required="true" visible="true">
+                <label>Template</label>
+                <options>
+                    <option name="posts" value="Branch8_Blog::widget/posts.phtml" selected="true">
+                        <label>Default Posts Template</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+        <containers>
+            <container name="content">
+                <template name="posts" value="posts"/>
+            </container>
+        </containers>
+    </widget>
+</widgets>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_hotaipay>
+                <log_type>0</log_type>
+            </branch8_hotaipay>
+        </branch8_debug>
+        <payment>
+            <hotaipay>
+                <active>1</active>
+                <model>Branch8\HotaiPay\Model\Payment\HotaiPay</model>
+                <merchant_gateway_key backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <order_status>pending</order_status>
+                <order_status_pending>pending</order_status_pending>
+                <order_success>processing</order_success>
+                <order_fail>pending</order_fail>
+                <payment_action>authorize</payment_action>
+                <title>和泰Pay</title>
+                <currency>NTD</currency>
+                <can_authorize>1</can_authorize>
+                <can_refund>1</can_refund>
+                <can_void>1</can_void>
+                <can_use_checkout>1</can_use_checkout>
+                <is_gateway>1</is_gateway>
+                <sort_order>1</sort_order>
+                <sort_order>0</sort_order>
+                <group>hotaipay-payments</group>
+            </hotaipay>
+        </payment>
+    </default>
+</config>

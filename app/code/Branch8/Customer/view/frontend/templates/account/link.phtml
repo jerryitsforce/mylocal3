@@ -1,0 +1,9 @@
+<?php
+/**
+ * @var \Branch8\Customer\Block\Account\Link $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<li class="link <?= /* @noEscape */ $block->getCssClass() ?> <?= $block->isCurrent() ? 'active' : ''?>">
+    <a href=<?= $block->getHref()?> title="<?= $escaper->escapeHtml($block->getLabel()) ?>"><?= $escaper->escapeHtml($block->getLabel()) ?></a>
+</li>

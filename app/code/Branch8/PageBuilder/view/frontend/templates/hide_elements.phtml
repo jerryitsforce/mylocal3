@@ -1,0 +1,15 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Branch8\PageBuilder\Block\HideElements $block */
+?>
+<?php if ($block->hideElements()): ?>
+    <style>
+        #html-body div[data-visible-for-none-order="1"] {
+            display: none;
+        }
+    </style>
+<?php endif; ?>

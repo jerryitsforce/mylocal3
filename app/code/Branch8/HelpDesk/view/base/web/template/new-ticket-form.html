@@ -1,0 +1,158 @@
+<div class="block lrw-block lrw-account-summary-listing">
+    <div class="block-title">
+        <strong>
+            <text args="'Create New Ticket'"></text>
+        </strong>
+    </div>
+    <div class="block-content" data-bind="blockLoader: isLoading">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <!-- ko foreach: getRegion('before') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!-- /ko -->
+        <form id="helpdesk-form" class="form helpdesk-form"
+              data-bind="mageInit: {'validation': {}},event: {submit: createTicket },afterRender:afterRender.bind($data)"
+              enctype="multipart/form-data">
+            <fieldset class="fieldset">
+                <div class="field required">
+                    <label class="label" for="customer_name">
+                        <span data-bind="i18n: 'Nick Name'"></span>
+                    </label>
+                    <div class="control">
+                        <input name="customer_name"
+                               title="Nick Name"
+                               id="customer_name"
+                               data-bind="value:configurations.customer.name"
+                               data-validate="{'required':true}"
+                               class="input-text"
+                               type="text"
+                        />
+                    </div>
+                </div>
+                <div class="field required">
+                    <label class="label" for="email">
+                        <span data-bind="i18n: 'Email'"></span>
+                    </label>
+                    <div class="control">
+                        <input name="email"
+                               title="Email"
+                               id="email"
+                               data-bind="value:configurations.customer.email"
+                               data-validate="{'required':true,'validate-email':true}"
+                               class="input-text"
+                               type="hidden"
+                        />
+                        <input name="customer_email_masked"
+                               title="Email"
+                               id="customer_email_masked"
+                               data-bind="value:configurations.customer.email_masked"
+                               data-validate="{'required':true,'validate-email':true}"
+                               class="input-text"
+                               disabled="disabled"
+                               type="text"
+                        />
+                    </div>
+                </div>
+                <div class="field required">
+                    <label class="label" for="telephone">
+                        <span data-bind="i18n: 'Phone'"></span>
+                    </label>
+                    <div class="control">
+                        <input name="phone"
+                               title="Telephone"
+                               id="telephone"
+                               data-bind="value:configurations.customer.phone"
+                               data-validate="{'required':true}"
+                               class="input-text"
+                               type="hidden"
+                        />
+                        <input name="customer_email_masked"
+                               title="Email"
+                               id="phone_masked"
+                               data-bind="value:configurations.customer.phone_masked"
+                               data-validate="{'required':true,'validate-email':true}"
+                               disabled="disabled"
+                               class="input-text"
+                               type="text"
+                        />
+                    </div>
+                </div>
+                <div class="field required">
+                    <label class="label" for="title">
+                        <span data-bind="i18n: 'Subject'"></span>
+                    </label>
+                    <div class="control">
+                        <input name="title"
+                               title="Title"
+                               id="title"
+                               data-validate="{'required':true,'validate-length':true}"
+                               class="input-text maximum-length-20"
+                               type="text"
+                        />
+                        <i data-bind="i18n:'For order-related issues, please go to My Orders > Contact Seller'"></i>
+                    </div>
+                </div>
+
+                <!-- ko foreach: getRegion('findYourOrder') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+
+                <div class="field  required">
+                    <label class="label" for="category">
+                        <span data-bind="i18n: 'Problems encountered'"></span>
+                    </label>
+                    <div class="control">
+                        <select id="category"
+                                name="category_id"
+                                class="form-control select"
+                                data-validate="{'required':true}"
+                                data-bind="options: getCategoryOptions(),
+                                optionsValue: 'value',
+                                optionsText: 'label',
+                                optionsCaption: $t('-- Please Select Category --')"
+                        >
+                        </select>
+                    </div>
+                </div>
+                <div class="field message required">
+                    <label class="label" for="content">
+                        <span data-bind="i18n: 'Problem Description'"></span>
+                    </label>
+                    <div class="control">
+                <textarea name="content" id="content"
+                          class="input-text maximum-length-300"
+                          rows="5"
+                          data-validate="{'required':true,'validate-length':true}"
+                          aria-required="true"></textarea>
+                    </div>
+                </div>
+                <div class="field attachment">
+                    <div class="control">
+                        <!-- ko foreach: getRegion('attachment') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                    <div class="control">
+                        <!-- ko foreach: getRegion('attachment1') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <!-- ko foreach: getRegion('additional-login-form-fields') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </fieldset>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" title="Submit"
+                            class="button action primary"
+                            data-bind="enable:canPost"
+                    >
+                        <span translate="'Submit Ticket'"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

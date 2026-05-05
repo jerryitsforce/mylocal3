@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block Point */
+
+use Branch8\HotaiPoint\Block\Header\Point;
+?>
+<div class="point-floating-button">
+    <span class="link">
+        <span><?= $block->escapeHtml(__('Check')) ?></span>
+        <span><?= $block->escapeHtml(__('Points')) ?></span>
+    </span>
+    <span class="action close"></span>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8FloatingPointBtn": {}
+        }
+    }
+</script>

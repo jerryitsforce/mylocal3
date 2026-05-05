@@ -1,0 +1,140 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+
+//
+//  Variables
+//  _____________________________________________
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    body{
+        .mfp-bg{
+            background: rgba(35, 24, 21, 1);
+            opacity: 0.4;
+        }
+    
+        .mfp-iframe-scaler iframe{
+            border-radius: 20px;
+            box-sizing: border-box;
+            background: @page__background-color;
+            box-shadow: none;
+        }
+    
+        .mfp-close{
+            .lib-button-icon(
+                '\e911',
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 24px,
+                @_icon-font-text-hide: true
+            );
+            width: 30px;
+            height: 30px;
+            font-size: 0;
+            line-height: 0;
+            opacity: 1;
+            color: @primary__color;
+
+            &:hover{
+                color: @theme__color__primary;
+            }
+        }
+    
+        .mfp-image-holder, .mfp-iframe-holder{
+            .mfp-close{
+                right: 15px;
+                top: 13px;
+                padding: 0;
+                width: 30px;
+                color: @primary__color;
+
+                &:hover{
+                    color: @theme__color__primary;
+                }
+            }
+        }
+
+        .mfp-iframe-holder{
+            padding: 0;
+            .mfp-content{
+                height: 69% !important;
+                max-width: 769px;
+                min-height: 360px;
+                max-height: ~"calc(100% - 47px)";
+            }
+
+            .mfp-close{
+                display: none;
+            }
+        }
+    
+        .mfp-preloader{
+            &:extend(.abs-loader-spinner all);
+            height: auto;
+            opacity: 1;
+        }
+    }
+}
+
+//
+//  Mobile @screen__m
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body{
+        .mfp-iframe-holder{
+            .mfp-content{
+                vertical-align: bottom;
+                height: ~"calc(100% - 47px)" !important;
+            }
+
+            iframe{
+                border-radius: 20px 20px 0 0;
+            }
+        }
+
+        .mfp-wrap.mfp-quickview{
+            height: 100% !important;
+            overflow: hidden !important;
+        }
+    }
+}
+
+//
+//  Mobile @screen__s
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body{
+        .mfp-iframe-holder{
+            .mfp-content{
+                height: 69% !important;
+            }
+        }
+    }
+}
+
+//
+//  Desktop large
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__xl) {
+    
+}

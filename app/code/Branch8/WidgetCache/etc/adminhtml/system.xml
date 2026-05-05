@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="branch8_debug">
+            <group id="branch8_widgetcache" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_WidgetCache</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\WidgetCache\Model\Config\Source\LogOption</source_model>
+                </field>
+            </group>
+        </section>
+        <!-- Define Branch8 tab if not already defined by another module -->
+        <tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+        
+        <section id="widget_cache" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Widget Cache</label>
+            <tab>branch8</tab>
+            <resource>Branch8_WidgetCache::config</resource>
+            
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Widget Cache</label>
+                    <comment>Enable custom caching for widget content</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>widget_cache/general/enabled</config_path>
+                </field>
+                
+                <field id="lifetime" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cache Lifetime (seconds)</label>
+                    <comment>Cache lifetime in seconds. Default is 3600 (1 hour)</comment>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                    <config_path>widget_cache/general/lifetime</config_path>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                
+                <field id="debug" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Debug Mode</label>
+                    <comment>Enable debug logging for widget cache operations</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>widget_cache/general/debug</config_path>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+            
+            <group id="statistics" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Cache Statistics</label>
+                
+                <field id="cache_stats" translate="label" type="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Current Cache Status</label>
+                    <frontend_model>Branch8\WidgetCache\Block\Adminhtml\System\Config\CacheStats</frontend_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Blog\Block\Adminhtml\Category\Edit" name="mageplaza.blog.category.edit" template="category/edit.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="left" htmlClass="admin__scope-old" htmlTag="div"/>
+        <referenceContainer name="left">
+            <block class="Branch8\Blog\Block\Adminhtml\Category\Tree" name="mageplaza.blog.category.tree" template="Magento_Catalog::catalog/category/tree.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,185 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Design;
+use Magento\Framework\Escaper;
+
+/** @var Design $block */
+/** @var Escaper $escaper */
+
+?>
+<script type="text/javascript">
+    require(['jquery'], function ($) {
+        $(window).on('load',function () {
+            var body = $('body');
+
+            if (body.hasClass('page-layout-1column')) {
+                $('.columns').find('.sidebar.sidebar-main').remove();
+            }
+            <?php if ($block->getCurrentTheme() === "Etheme/yourstore") : ?>
+            body.addClass('blog-etheme-yourstore');
+            <?php endif; ?>
+        });
+    });
+</script>
+<?php $color = $block->getHelper()->getDisplayConfig('font_color'); ?>
+<style type="text/css">
+    .blog-review-title {
+        text-align: center;
+    }
+
+    #blog-review {
+        position: relative;
+        height: 65px;
+    }
+
+    #blog-review div {
+        padding: 10px 20px;
+        color: #ffffff;
+        cursor: pointer;
+        width: 120px;
+        text-align: center;
+        position: absolute;
+        margin-top: 10px;
+    }
+
+    .blog-like {
+        background-color: #6AA84F;
+        left: 33%;
+    }
+
+    .blog-dislike {
+        background-color: #EC3A3C;
+        left: 52%;
+    }
+
+    @media (max-width: 1024px) {
+        .blog-like {
+            left: 28%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .blog-like {
+            left: 20%;
+        }
+        main#maincontent {
+            position: relative;
+        }
+        .sidebar-main .block-collapsible-nav .title {
+            padding: 30px 40px 10px 15px;
+        }
+    }
+
+    @media (max-width: 375px) {
+        .blog-like {
+            left: 0;
+        }
+    }
+
+    .blog-new-post {
+        height: 60px;
+    }
+
+    .blog-new-post button {
+        float: right;
+        margin: 10px;
+        padding: 10px 30px
+    }
+
+    .post-item-wraper {
+        position: relative;
+    }
+
+    .post-info-action {
+        display: flex;
+        position: absolute;
+        float: right;
+        right: 10px;
+        top: 10px;
+    }
+
+    .post-info-action div {
+        margin: 0 10px;
+        width: 25px;
+        cursor: pointer;
+    }
+
+    .post-view-image {
+        text-align: center;
+    }
+
+    /*Post List Content Css*/
+    .about-admin h4.admin-title a,
+    .mp-post-meta-info a.mp-read-more,
+    .mp-post-info a.mp-info,
+    ul.menu-categories a.list-categories:hover,
+    .products-same-post a.product-item-link:hover,
+    a.mp-relate-link,
+    .blog-product-name {
+        color: <?= /** @noEscape */ $color ?> !important;
+    }
+
+    a.label.label-default.tags-list:hover,
+    a.label.label-default.tags-list:focus {
+        background: <?= /** @noEscape */ $color ?>;
+        color: #fff !important;
+    }
+
+    .list-post-tabs a {
+        background: #fbfbfb;
+        color: <?= /** @noEscape */ $color ?>;
+    }
+
+    /*Site Map CSS*/
+    .mp-sidebar a.sitemap-link,
+    .menu-archives a.list-archives:hover {
+        text-decoration: none !important;
+        color: <?= /** @noEscape */ $color ?> !important;
+    }
+
+    .mp-sidebar .row div {
+        width: 100%;
+    }
+
+    /*Comment CSS*/
+    button.default-cmt__content__cmt-block__cmt-box__cmt-btn__btn-submit {
+        background: <?= /** @noEscape */ $color ?> !important;
+        color: #fff;
+        border-color: #999 !important;
+    }
+
+    span.cmt-row__cmt-username {
+        font-weight: 600;
+        color: <?= /** @noEscape */ $color ?>;
+    }
+
+    a.interactions__btn-actions.blog-like {
+        color: #333333
+    }
+
+    a.interactions__btn-actions.blog-liked {
+        color: <?= /** @noEscape */ $color ?>;
+    }
+
+    a.interactions__btn-actions {
+        color: <?= /** @noEscape */ $color ?>;
+
+    }
+
+    /*Widget CSS*/
+    .widget-title a {
+        color: <?= /** @noEscape */ $color ?>;
+        font-size: 26px;
+    }
+
+    /*Author CSS*/
+    .author-name h3 {
+        color: <?= /** @noEscape */ $color ?>;
+        text-align: center;
+    }
+</style>

@@ -1,0 +1,46 @@
+<?php
+/**
+ * Template for rendering individual category items
+ *
+ * @var $block \Branch8\PromotionPage\Widget\CategoryList
+ * @var $category \Magento\Catalog\Model\Category
+ */
+$category = $block->getCategory();
+?>
+<li class="category-item">
+    <a href="<?= $block->escapeUrl($category->getUrl()) ?>" class="category-link">
+        <?php if ($imageUrl = $category->getImageUrl()): ?>
+            <div class="category-image">
+                <img src="<?= $block->escapeUrl($imageUrl) ?>" alt="<?= $block->escapeHtml($category->getName()) ?>" />
+            </div>
+        <?php endif; ?>
+        <span class="category-name"><?= $block->escapeHtml($category->getName()) ?></span>
+    </a>
+
+    <?php
+    try {
+        $startTime = $category->getCustomAttribute('catalog_price_rule_date_from') ? $category->getCustomAttribute('catalog_price_rule_date_from')->getValue() : null;
+        $endTime = $category->getCustomAttribute('catalog_price_rule_date_to') ? $category->getCustomAttribute('catalog_price_rule_date_to')->getValue() : null;
+
+        if (!$startTime) {
+            $startTime = date('Y-m-d H:i:s');
+        }
+        $formattedStartTime = date('m/d', strtotime($startTime));
+        $formattedEndTime = $endTime ? date('m/d', strtotime($endTime)) : null;
+
+        if ($formattedStartTime):
+            ?>
+            <div class="category-time-range">
+                <?php if ($formattedEndTime): ?>
+                    <?= $block->escapeHtml(sprintf('%s - %s', $formattedStartTime, $formattedEndTime)) ?>
+                <?php else: ?>
+                    <?= $block->escapeHtml($formattedStartTime) ?>
+                <?php endif; ?>
+            </div>
+        <?php
+        endif;
+    } catch (\Exception $e) {
+        echo __('An error occurred while formatting the category time range.');
+    }
+    ?>
+</li>

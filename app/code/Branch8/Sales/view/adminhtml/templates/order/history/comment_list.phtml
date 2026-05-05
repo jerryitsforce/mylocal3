@@ -1,0 +1,49 @@
+<?php
+$page = $block->getCurrentPage();
+$itemCollection = $block->getStatusHistoryCollection($page);
+?>
+<ul class="note-list">
+    <?php foreach ($itemCollection as $_item): ?>
+        <li class="note-list-item">
+        <span class="note-list-date">
+            <?= /* @noEscape */
+            $block->formatDate($_item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+        </span>
+            <span class="note-list-time">
+            <?= /* @noEscape */
+            $block->formatTime($_item->getCreatedAt(), \IntlDateFormatter::MEDIUM) ?>
+        </span>
+            <span class="note-list-status"><?= $block->escapeHtml($_item->getStatusLabel()) ?></span>
+            <span class="note-list-customer">
+            <?= $block->escapeHtml(__('Customer')) ?>
+                <?php if ($block->isCustomerNotificationNotApplicable($_item)): ?>
+                    <span class="note-list-customer-notapplicable">
+                    <?= $block->escapeHtml(__('Notification Not Applicable')) ?>
+                </span>
+                <?php elseif ($_item->getIsCustomerNotified()): ?>
+                    <span class="note-list-customer-notified"><?= $block->escapeHtml(__('Notified')) ?></span>
+                <?php else: ?>
+                    <span
+                        class="note-list-customer-not-notified"><?= $block->escapeHtml(__('Not Notified')) ?></span>
+                <?php endif; ?>
+        </span>
+            <?php if ($_item->getComment()): ?>
+                <div class="note-list-comment">
+                    <?= $block->escapeHtml($_item->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?>
+                <?php
+                if($_item->getResourceOwner()):?>
+                    <span><a target="_blank" href="<?php echo $this->getUrl('sales/order/viewDetailHistory', ['id' => $_item->getId()]);?>"><?php echo __('View detail');?></a></span>
+                <?php endif;?>
+                </div>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ul>
+<div id="comment_pager">
+    <?php
+    $pages = $block->getPageList($itemCollection, $page);
+    foreach($pages as $_page){
+        echo $_page;
+    }
+    ?>
+</div>

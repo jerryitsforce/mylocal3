@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock  name="category.merchandiser.smart_category" template="Branch8_MagentoVisualMerchandiser::category/smart_category.phtml">
+            <block class="Branch8\MagentoVisualMerchandiser\Block\Adminhtml\Widget\UseAdvanceRuleSwitcher"
+                   as="use_advance_rule_switcher"
+                   name="use_advance_rule_switcher"
+                   template="Branch8_MagentoVisualMerchandiser::widget/use_advance_rule.phtml"/>
+            <block class="Branch8\MagentoVisualMerchandiser\Block\Adminhtml\Tab\AdvanceRule\Conditions"
+                   as="advance_smart_category_rules"
+                   name="category.merchandiser.smart_category.advance_smart_category_rules"/>
+
+        </referenceBlock>
+    </body>
+</page>

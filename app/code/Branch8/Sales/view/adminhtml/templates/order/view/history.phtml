@@ -1,0 +1,140 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Sales\Block\Adminhtml\Order\View\History $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Branch8\Sales\ViewModel\StatusResolver $statusResolverModel */
+$statusResolverModel = $block->getData('status_resolver_model');
+$order = $block->getOrder();
+$statues = $statusResolverModel->resolveStatusForNativeOrder($block->getOrder());
+$currentStatus = $block->getOrder()->getStatus();
+$canModifyStatus = $statusResolverModel->canModifyOrdertatus($order);
+// Temporary solution
+$onclick = "submitCommentAndReloadToolBar($('order_history_block').parentNode, '" . $block->getSubmitUrl() . "')";
+$button = $this->getLayout()->createBlock(
+    \Magento\Backend\Block\Widget\Button::class
+)->setData(
+    ['label' => __('Submit Comment'), 'class' => 'action-save action-secondary', 'onclick' => $onclick]
+);
+$block->setChild('submit_button_custom', $button);
+?>
+<div id="order_history_block" class="edit-order-comments">
+    <?php if ($block->canAddComment()): ?>
+        <div class="order-history-block" id="history_form">
+            <div class="admin__field">
+
+                <div class="admin__field-control">
+                    <b><?= $block->escapeHtml(__('Current Status:')) ?></b> <?= $currentStatus ?>
+                </div>
+            </div>
+            <?php if ($canModifyStatus && $statues): ?>
+                <div class="admin__field">
+                    <label for="history_status"
+                           class="admin__field-label "><?= $block->escapeHtml(__('Actions:')) ?></label>
+                    <div class="admin__field-control">
+                        <select name="history[status]" id="history_status" class="admin__control-select">
+                            <?php foreach ($statues as $_code => $_label): ?>
+                                <option value="<?= $block->escapeHtmlAttr($_code) ?>"
+                                    <?php if ($_code == $order->getStatus()): ?> selected="selected"
+                                    <?php endif; ?>>
+                                    <?= $block->escapeHtml($_label) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            <?php endif ?>
+            <div class="admin__field">
+                <label for="history_comment" class="admin__field-label">
+                    <?= $block->escapeHtml(__('Comment')) ?>
+                </label>
+                <div class="admin__field-control">
+                    <textarea <?php if (!$statues): ?> disabled="disabled" <?php endif ?> name="history[comment]"
+                                                                                          rows="3"
+                                                                                          cols="5"
+                                                                                          id="history_comment"
+                                                                                          class="admin__control-textarea"></textarea>
+                    <div class="admin__field-note">
+                        <span>
+                            <?= $block->escapeHtml(
+                                __('A status change or comment text is required to submit a comment.')
+                            ) ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin__field">
+                <div class="order-history-comments-options">
+                    <div class="admin__field admin__field-option">
+                        <?php if ($block->canSendCommentEmail()): ?>
+                            <input name="history[is_customer_notified]"
+                                <?php if (!$statues || !$canModifyStatus): ?> disabled="disabled" <?php endif ?>
+                                   type="checkbox"
+                                   id="history_notify"
+                                   class="admin__control-checkbox"
+                                   value="1"/>
+                            <label class="admin__field-label" for="history_notify">
+                                <?= $block->escapeHtml(__('Notify Customer by Email')) ?>
+                            </label>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="admin__field admin__field-option">
+
+                        <input name="history[is_visible_on_front]"
+                            <?php if (!$statues || !$canModifyStatus): ?> disabled="disabled" <?php endif ?>
+                               type="checkbox"
+                               id="history_visible"
+                               class="admin__control-checkbox"
+                               value="1"/>
+                        <label class="admin__field-label" for="history_visible">
+                            <?= $block->escapeHtml(__('Visible on Storefront')) ?>
+                        </label>
+                    </div>
+                </div>
+                <?php if ($statues && $canModifyStatus): ?>
+                    <div class="order-history-comments-actions">
+                        <?= $block->getChildHtml('submit_button_custom') ?>
+                    </div>
+                <?php endif ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    <div id='comment_list'>
+        <?php echo $this->getChildHtml('order.comments.list');?>
+    </div>
+    <?php $scriptString = <<<script
+        require(['prototype'], function(){
+            if($('order_status'))$('order_status').update('{$block->escapeJs($block->getOrder()->getStatusLabel())}');
+        });
+
+        require(["jquery", "plugins/DOMPurify"], function($, DOMPurify){
+            $(document).on('click', '.comment_pager_link',function(){
+                $('body').trigger('processStart');
+                var comment_list_url = '{$block->getUrl("sales/order_history/comments", ["order_id" => $order->getId()])}';
+                $.ajax({
+                    url: comment_list_url,
+                    method: 'GET',
+                    cache: false,
+                    data: {'cmt_page': $(this).attr('data-page')},
+                    success: function (response) {
+                        if(response.success){
+                            $('#comment_list').html(DOMPurify.sanitize(response.html));
+                        }
+                        $('body').trigger('processStop');
+                    },
+                    error: function (error) {
+                        $('body').trigger('processStop');
+                    }
+                });
+            });
+        });
+script;
+    ?>
+    <?= /* @noEscape */
+    $secureRenderer->renderTag('script', [], $scriptString, false)?>
+</div>

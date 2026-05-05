@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var $viewModel \Branch8\SingleDeviceLogin\ViewModel\Config
+ */
+$viewModel = $block->getViewModel();
+$config = $viewModel->getConfig();
+if (!$viewModel->isLogin() || !$viewModel->isEnable() || $viewModel->isHotaiApp()) {
+    return '';
+}
+?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_SingleDeviceLogin/js/singleLogin": <?= json_encode($config) ?>
+    }
+}
+</script>
+<div id="single-login-timeout-modal" style="display: none;">
+    <div class="content" id="single-login-notify">
+    </div>
+
+</div>

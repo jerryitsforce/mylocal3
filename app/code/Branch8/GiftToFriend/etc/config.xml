@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <gift_order>
+            <general>
+                <expired_period>14</expired_period>
+                <sms_order_confirm_template>您的HOTAI購收禮驗證碼為%code，請於五分鐘內輸入。若非您本人操作，提醒您，請保持警惕，勿將驗證碼交付他人，以防詐騙。</sms_order_confirm_template>
+                <sms_period>5</sms_period>
+                <sms_gift_box_template>您的HOTAI購收禮驗證碼為%code，請於五分鐘內輸入。若非您本人操作，提醒您，請保持警惕，勿將驗證碼交付他人，以防詐騙。</sms_gift_box_template>
+                <sms_environment>1</sms_environment>
+                <giftbox_session_lifttime>30</giftbox_session_lifttime>
+            </general>
+            <security>
+                <protection_type>1</protection_type>
+                <max_request>5</max_request>
+                <max_request_in>10800</max_request_in>
+                <min_time>1</min_time>
+            </security>
+        </gift_order>
+    </default>
+</config>

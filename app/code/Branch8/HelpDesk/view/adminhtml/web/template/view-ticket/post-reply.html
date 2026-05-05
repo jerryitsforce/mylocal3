@@ -1,0 +1,45 @@
+<div class="admin__page-section-content"    data-bind="afterRender:afterRender">
+
+    <div  aria-atomic="true" data-bind="visible:messageRes,attr:{class:'message message-'+messageType()}"
+          id="post-reply-message"
+    >
+        <div data-bind="text:messageRes">
+        </div>
+    </div>
+    <div class="admin__page-section-item">
+        <div class="admin__field">
+            <label for="message" class="admin__field-label"><span data-bind="i18n: 'Comment'"></span></label>
+            <div class="admin__field-control">
+                <textarea name="message_content" id="message"
+                          class="admin__control-textarea" spellcheck="false"
+                          rows="5"
+                ></textarea>
+            </div>
+        </div>
+        <div class="admin__field">
+            <label for="message" class="admin__field-label" translate="'Attachment'"></label>
+            <div class="admin__field-control">
+                <!-- ko foreach: getRegion('attachment') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="admin__field">
+            <div class="history-comments-actions">
+                <button type="button" title="Submit"
+                        data-bind="click:postMessage,enable:canPost"
+                        class="action-default scalable action-save action-secondary"
+
+                >
+                    <span translate="'Post Reply'"></span>
+                </button>
+                <label for="notify">
+                    <input id="notify" type="checkbox"
+                           data-bind="checked: notify"
+                    />
+                    <span data-bind="i18n: 'Notify To Customer'"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

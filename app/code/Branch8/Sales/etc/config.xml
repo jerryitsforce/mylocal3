@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+       <b8sales>
+           <order_status>
+               <keep_virtual_order_status>1</keep_virtual_order_status>
+               <allow_specific>1</allow_specific>
+               <statuses_filter_apply>arrived,canceled,cancel_pending,picked,processing,shipping,tallying,pending_payment,gift_info_pending,gift_info_complete</statuses_filter_apply>
+           </order_status>
+       </b8sales>
+    </default>
+</config>

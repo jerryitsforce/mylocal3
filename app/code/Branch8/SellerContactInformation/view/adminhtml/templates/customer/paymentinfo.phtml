@@ -1,0 +1,129 @@
+<?php
+/** @var $block \Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\Tab\PaymentInfo */
+$sellerInfo = $block->getSellerInfo();
+$paymentInfo = $block->getPaymentInfo();
+?>
+
+<div class="entry-edit form-inline">
+    <form>
+        <fieldset class="fieldset admin__fieldset " id="marketplace_bank_information_fieldset">
+            <legend class="admin__legend legend">
+                <span><?= $block->escapeHtml(__('Invoice And Bank Information')) ?></span>
+            </legend><br>
+            <div class="messages"></div>
+
+            <div class="admin__field field field-invoice_and_bank_change_settings_enable">
+                <label class="label admin__field-label" for="marketplace_invoice_and_bank_change_settings_enable"><span><?= $block->escapeHtml(__('Change Settings')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input id="marketplace_invoice_and_bank_change_settings_enable" name="invoice_and_bank_change_settings_enable" value="" 
+                        data-form-part="customer_form" title="Change Settings" type="checkbox">
+                </div>
+            </div>
+            <div class="admin__field field required field-invoice_company_no" >
+                <label class="label admin__field-label" for="marketplace_invoice_company_no"><span><?= $block->escapeHtml(__('Invoice Company No')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_invoice_company_no" name="invoice_company_no" value="<?=$sellerInfo['invoice_company_no']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Invoice Company No')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-invoice_company_name" >
+                <label class="label admin__field-label" for="marketplace_invoice_company_name"><span><?= $block->escapeHtml(__('Invoice Company Name')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_invoice_company_name" name="invoice_company_name" value="<?=$sellerInfo['invoice_company_name']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Invoice Company Name')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-invoice_company_address" >
+                <label class="label admin__field-label" for="marketplace_invoice_company_address"><span><?= $block->escapeHtml(__('Invoice Company Address')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_invoice_company_address" name="invoice_company_address" value="<?=$sellerInfo['invoice_company_address']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Invoice Company Address')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-bank" >
+                <label class="label admin__field-label" for="marketplace_bank"><span><?= $block->escapeHtml(__('Bank')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank" name="bank" value="<?=$sellerInfo['bank']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-bank_type" >
+                <label class="label admin__field-label" for="marketplace_bank_type"><span><?= $block->escapeHtml(__('Bank Type')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank_type" name="bank_type" value="<?=$sellerInfo['bank_type']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank Type')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-bank_branch_type" >
+                <label class="label admin__field-label" for="marketplace_bank_branch_type"><span><?= $block->escapeHtml(__('Bank Branch Type')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank_branch_type" name="bank_branch_type" value="<?=$sellerInfo['bank_branch_type']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank Branch Type')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-bank_code" >
+                <label class="label admin__field-label" for="marketplace_bank_code"><span><?= $block->escapeHtml(__('Bank No')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank_code" name="bank_code" value="<?=$sellerInfo['bank_code']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank No')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-bank_branch_type" >
+                <label class="label admin__field-label" for="marketplace_bank_branch_no"><span><?= $block->escapeHtml(__('Bank Branch No')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank_branch_no" name="bank_branch_no" value="<?=$sellerInfo['bank_branch_no']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank Branch No')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field required field-bank_account" >
+                <label class="label admin__field-label" for="marketplace_bank_account"><span><?= $block->escapeHtml(__('Bank Account')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank_account" name="bank_account" value="<?=$sellerInfo['bank_account']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank Account')) ?>" type="text" class="input-text required-entry admin__control-text">
+                </div>
+            </div>
+            <div class="admin__field field field-bank_memo" >
+                <label class="label admin__field-label" for="marketplace_bank_memo"><span><?= $block->escapeHtml(__('Bank Memo')) ?></span></label>
+                <div class="admin__field-control control">
+                    <input disabled id="marketplace_bank_memo" name="bank_memo" value="<?=$sellerInfo['bank_memo']?>" data-form-part="customer_form"
+                           title="<?= $block->escapeHtml(__('Bank Memo')) ?>" type="text" class="input-text admin__control-text">
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script>
+    require([
+        'jquery',
+        '!domReady'
+    ], function($){
+        $("input[type='file']").attr('form','customer_form');
+        $("#marketplace_basic_information_registration_file").attr('accept','image/*, application/pdf');
+
+        $('#marketplace_invoice_and_bank_change_settings_enable').on('change', function () {
+            if (this.checked === true) {
+                $('#marketplace_invoice_company_no').removeAttr('disabled');
+                $('#marketplace_invoice_company_name').removeAttr('disabled');
+                $('#marketplace_invoice_company_address').removeAttr('disabled');
+                $('#marketplace_bank').removeAttr('disabled');
+                $('#marketplace_bank_type').removeAttr('disabled');
+                $('#marketplace_bank_branch_type').removeAttr('disabled');
+                $('#marketplace_bank_code').removeAttr('disabled');
+                $('#marketplace_bank_branch_no').removeAttr('disabled');
+                $('#marketplace_bank_account').removeAttr('disabled');
+                $('#marketplace_bank_memo').removeAttr('disabled');
+            } else {
+                $('#marketplace_invoice_company_no').attr('disabled', 'disabled');
+                $('#marketplace_invoice_company_name').attr('disabled', 'disabled');
+                $('#marketplace_invoice_company_address').attr('disabled', 'disabled');
+                $('#marketplace_bank').attr('disabled', 'disabled');
+                $('#marketplace_bank_type').attr('disabled', 'disabled');
+                $('#marketplace_bank_branch_type').attr('disabled', 'disabled');
+                $('#marketplace_bank_code').attr('disabled', 'disabled');
+                $('#marketplace_bank_branch_no').attr('disabled', 'disabled');
+                $('#marketplace_bank_account').attr('disabled', 'disabled');
+                $('#marketplace_bank_memo').attr('disabled', 'disabled');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,35 @@
+<form id="ask-approve-form-<%- productid %>" method="get" enctype="multipart/form-data" action="<%- formaction %>" class="wk-mp-deny-form">
+    <div class="modal-footer">
+        <span class="error"></span>
+        <input type="hidden" name="mageproduct_id" value="<%- productid %>">
+        <input type="hidden" name="seller_id" value="<%- sellerid %>">
+        <input type="hidden" name="grid_namespace" value="<%- gridnamespace %>">
+        <button type="submit" class="btn btn-primary"><span><%- submitlabel %></span></button>
+        <span class="clear"></span>
+    </div>
+</form>
+<script>
+    require([
+        "jquery",
+        "mage/mage"
+    ], function($) {
+        const formSelector = '#ask-approve-form-<%- productid %>';
+        $(formSelector).mage('validation', {});
+        $(formSelector).on('submit', function (e) {
+            var $form = $(this),
+                $button = $form.find('button[type=submit]');
+            if ($button.prop('disabled')) {
+                e.preventDefault();
+                return false;
+            }
+            $button.prop('disabled', true);
+        });
+        $('body').delegate('.action-close', 'click', function () {
+            if ($(this).parents('.modals-wrapper').find('form').attr('class') == 'b8-mp-approve-form') {
+                $(this).parents('.modals-wrapper').find('.modals-overlay').remove();
+                $(this).parents('.modal-popup').remove();
+                $('body').removeClass('_has-modal');
+            }
+        });
+    });
+</script>

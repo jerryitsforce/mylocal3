@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="branch8_variations_price_view" class="Branch8\OptionsWithStockAndImages\Model\Indexer\VariationPrice" group="indexer">
+        <subscriptions>
+            <table name="catalog_product_entity_decimal" entity_column="entity_id" />
+            <table name="wk_osi_variations" entity_column="product_id" />
+            <table name="catalogrule_product_price" entity_column="product_id" />
+        </subscriptions>
+    </view>
+</config>

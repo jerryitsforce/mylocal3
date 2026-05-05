@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="branch8.order.export.assynchronization0" queue="branch8.order.export.assynchronization0"
+              handler="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Consumer::execute"/>
+    <consumer name="branch8.order.export.assynchronization1" queue="branch8.order.export.assynchronization1"
+              handler="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Consumer::execute"/>
+    <consumer name="branch8.order.export.assynchronization2" queue="branch8.order.export.assynchronization2"
+              handler="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Consumer::execute"/>
+    <consumer name="branch8.order.export.assynchronizationmailsent" queue="branch8.order.export.assynchronizationmailsent"
+              handler="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\MailConsumer::execute"/>
+    <consumer name="branch8.order.notification.synchronization" queue="branch8.order.notification.synchronization"
+              handler="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Notification\Consumer::execute"/>
+</config>

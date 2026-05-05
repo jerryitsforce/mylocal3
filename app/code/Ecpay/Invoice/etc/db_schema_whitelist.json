@@ -1,0 +1,61 @@
+{
+    "sales_order": {
+        "column": {
+            "hotai_order_invoice_log_id": true
+        },
+        "index": {
+            "SALES_ORDER_HOTAI_ORDER_INVOICE_LOG_ID": true
+        }
+    },
+    "ecpay_invoice_hotai_order_invoice_logs": {
+        "column": {
+            "hotai_order_invoice_logs_id": true,
+            "order_id": true,
+            "invoice_number": true,
+            "hotai_checkout_number": true,
+            "status": true,
+            "invoice_count": true,
+            "is_reverse": true,
+            "is_cross_month": true,
+            "created_at": true,
+            "updated_at": true,
+            "point_used": true,
+            "include_tax": true,
+            "exclude_tax": true,
+            "tax": true
+        },
+        "index": {
+            "ECPAY_INVOICE_HOTAI_ORDER_INVOICE_LOGS_ORDER_ID": true,
+            "ECPAY_INVOICE_HOTAI_ORDER_INVOICE_LOGS_HOTAI_CHECKOUT_NUMBER": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ecpay_invoice_hotai_order_item_invoice_logs": {
+        "column": {
+            "hotai_order_item_invoice_logs_id": true,
+            "hotai_order_invoice_log_id": true,
+            "order_item_id": true,
+            "order_item_name": true,
+            "created_at": true,
+            "updated_at": true,
+            "qty": true,
+            "include_tax": true,
+            "exclude_tax": true,
+            "tax": true,
+            "discount_amount_include_tax": true,
+            "discount_amount_exclude_tax": true,
+            "discount_amount_tax": true,
+            "type": true,
+            "export_report": true
+        },
+        "index": {
+            "IDX_C6DE203BD88EE2FD8D59E86FC30B7367": true,
+            "ECPAY_INVOICE_HOTAI_ORDER_ITEM_INVOICE_LOGS_ORDER_ITEM_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

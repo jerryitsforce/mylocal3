@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider">
+        <arguments>
+            <argument name="addFieldStrategies" xsi:type="array">
+                <item name="is_hidden" xsi:type="object">Branch8\Catalog\Ui\DataProvider\Product\IsHidden</item>
+            </argument>
+            <argument name="addFilterStrategies" xsi:type="array">
+                <item name="is_hidden" xsi:type="object">Branch8\Catalog\Ui\DataProvider\Product\IsHiddenFilter</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\ProductDataProvider">
+        <plugin name="branch8_default_filter_is_hidden" type="Branch8\Catalog\Plugin\Ui\DataProvider\Product\ProductDataProvider" sortOrder="1" disabled="false"/>
+        <plugin name="branch8_catalog_product_data_provider" type="Branch8\Catalog\Plugin\Ui\DataProvider\Product\ProductDataProvider" sortOrder="10"/>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Eav">
+        <plugin name="Branch8_Catalog::product_form_modifier_eav"
+                type="Branch8\Catalog\Plugin\Ui\DataProvider\Product\Form\Modifier\Eav" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\AdvancedPricing">
+        <plugin name="Branch8_Catalog::product_form_modifier_advanced_pricing"
+                type="Branch8\Catalog\Plugin\Ui\DataProvider\Product\Form\Modifier\AdvancedPricing" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\TierPrice">
+        <plugin name="Branch8_Catalog::product_form_modifier_tier_price"
+                type="Branch8\Catalog\Plugin\Ui\DataProvider\Product\Form\Modifier\TierPrice" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\Eav">
+        <plugin name="Branch8_Catalog::product_schedule_form_modifier_eav"
+                type="Branch8\Catalog\Plugin\Ui\DataProvider\ProductSchedule\Form\Modifier\Eav" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Framework\Stdlib\DateTime\Filter\DateTime">
+        <plugin name="Branch8_Catalog::datetime_filter"
+                type="Branch8\Catalog\Plugin\Magento\Framework\Stdlib\DateTime\Filter\DateTime" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Catalog\Ui\Component\Product\MassAction">
+        <plugin name="branch8_hide_delete_product_massaction"
+                type="Branch8\Catalog\Plugin\Ui\Component\Product\MassAction" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Action\Attribute\Save">
+        <plugin name="Branch8_Catalog::product_attribute_save"
+                type="Branch8\Catalog\Plugin\Magento\Catalog\Controller\Adminhtml\Product\Action\Attribute\Save" sortOrder="10" disabled="false"/>
+    </type>
+    <preference for="Magento\Catalog\Controller\Adminhtml\Product\Save"
+                type="Branch8\Catalog\Rewrite\Controller\Adminhtml\Product\Save"/>
+    <preference for="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\CustomOptions"
+                type="Branch8\Catalog\Rewrite\Ui\DataProvider\Product\Form\Modifier\CustomOptions"/>
+    <preference for="Magento\Catalog\Ui\Component\Listing\Columns\Thumbnail"
+                type="Branch8\Catalog\Rewrite\Ui\Component\Listing\Columns\Thumbnail"/>
+    <preference for="Magento\Catalog\Ui\Component\Listing\Columns\ProductActions"
+                type="Branch8\Catalog\Rewrite\Ui\Component\Listing\Columns\ProductActions"/>
+    <virtualType name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\CustomOptions" type="Branch8\Catalog\Rewrite\Ui\DataProvider\Product\Form\Modifier\CustomOptions">
+        <arguments>
+            <argument name="scopeName" xsi:type="string">catalogstaging_update_form.catalogstaging_update_form</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="main_category" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\MainCategory</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+                <item name="product_visibility" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\Visibility</item>
+                    <item name="sortOrder" xsi:type="number">300</item>
+                </item>
+                <item name="brand" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\Brand</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+                <item name="show_long_time_ship" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\ShowLongTimeShip</item>
+                    <item name="sortOrder" xsi:type="number">556</item>
+                </item>
+                <item name="exchange_hint" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\ExchangeHint</item>
+                    <item name="sortOrder" xsi:type="number">999</item>
+                </item>
+                <item name="weight" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\Weight</item>
+                    <item name="sortOrder" xsi:type="number">29</item>
+                </item>
+                <item name="commission_source" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\CommissionSource</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="main_category" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\MainCategory</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+                <item name="product_visibility" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\Visibility</item>
+                    <item name="sortOrder" xsi:type="number">300</item>
+                </item>
+                <item name="brand" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\Brand</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+                <item name="commission_source" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Form\Modifier\CommissionSource</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Validate">
+        <plugin name="branch8_validate_virtual_shipping_method"
+                type="Branch8\Catalog\Plugin\Magento\Catalog\Controller\Adminhtml\Product\Validate" sortOrder="10" disabled="false"/>
+    </type>
+
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="product_general_modifier" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Validate</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="product_general_stg_modifier" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\Validate</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+                <item name="product_general_stg_modifier" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Catalog\Ui\DataProvider\Product\RemovePreorderAttrFromStg</item>
+                    <item name="sortOrder" xsi:type="number">210</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Catalog\Model\Product\Validator">
+        <plugin name="validate-image-tags" type="Branch8\Catalog\Plugin\Magento\Catalog\Model\Product\ValidatorPlugin" sortOrder="100" />
+    </type>
+</config>

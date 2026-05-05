@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Manual Invoice Repository Interface -->
+    <preference for="HotaiConnected\ManualInvoice\Api\ManualInvoiceRepositoryInterface"
+                type="HotaiConnected\ManualInvoice\Model\ManualInvoiceRepository"/>
+    
+    <!-- Manual Invoice Data Interface -->
+    <preference for="HotaiConnected\ManualInvoice\Api\Data\ManualInvoiceInterface"
+                type="HotaiConnected\ManualInvoice\Model\ManualInvoice"/>
+</config>

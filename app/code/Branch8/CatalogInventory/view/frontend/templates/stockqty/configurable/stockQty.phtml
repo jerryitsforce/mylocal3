@@ -1,0 +1,12 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+$defaultStockqty= $block->getLayout()->createBlock('Magento\CatalogInventory\Block\Stockqty\DefaultStockqty');
+?>
+<div class="availability only configurable-variation-qty" title="<?= $block->escapeHtmlAttr(__('Qty')) ?>">
+    <?= /* @noEscape */ __('Inventory less than %1 units', "{$block->escapeHtml($defaultStockqty->getThresholdQty())}") ?>
+</div>

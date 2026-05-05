@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <mppreorder>
+            <general_setting>
+                <preorder_conplete_product_sku>HOTAI1729655606-preorder_complete</preorder_conplete_product_sku>
+            </general_setting>
+        </mppreorder>
+    </default>
+</config>

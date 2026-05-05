@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
+        <column xsi:type="decimal" name="subtotal_incl_tax" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Subtotal Incl Tax"/>
+        <column xsi:type="decimal" name="shipping_incl_tax" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Shipping Incl Tax"/>
+        <column xsi:type="varchar" name="shipping_method" nullable="true" length="120"
+                comment="Shipping Method"/>
+        <column xsi:type="text" name="all_item_skus" nullable="true" comment="Using Display All SKU ON GRID"/>
+        <column xsi:type="text" name="all_items_cost" nullable="true" comment="Using For Filter Cost"/>
+        <column xsi:type="text" name="all_items_commission_percent" nullable="true" comment="Using For Filter Cost"/>
+        <column xsi:type="varchar" name="customer_phone_number" nullable="true" length="255"
+                comment="Hotai Customer Phone Number"/>
+        <index referenceId="ORDER_GRID_APPROVE_STATUS" indexType="btree">
+            <column name="order_approval_status"/>
+        </index>
+        <index referenceId="SALES_ORDER_GRID_CUSTOMER_PHONE_NUMBER" indexType="btree">
+            <column name="customer_phone_number"/>
+        </index>
+    </table>
+    <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
+        <column xsi:type="varchar" name="customer_phone_number" nullable="true" length="255"
+                comment="Hotai Customer Phone Number"/>
+    </table>
+
+    <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="varchar" name="customer_phone_number" nullable="true" length="255"
+                comment="Hotai Customer Phone Number"/>
+        <index referenceId="SALES_ORDER_CUSTOMER_PHONE_NUMBER" indexType="btree">
+            <column name="customer_phone_number"/>
+        </index>
+    </table>
+
+    <table name="marketplace_rma_details">
+        <index referenceId="MP_RMA_DETAILS_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+    </table>
+    <table name="marketplace_orders">
+        <index referenceId="MP_ORDER_SELLER_PENDING_NOTIFICATION" indexType="btree">
+            <column name="seller_pending_notification"/>
+        </index>
+    </table>
+    <table name="marketplace_product">
+        <index referenceId="MP_PRODUCT_MAGEPRODUCT_ID" indexType="btree">
+            <column name="mageproduct_id"/>
+        </index>
+        <index referenceId="MP_PRODUCT_STORE_ID" indexType="btree">
+            <column name="store_id"/>
+        </index>
+        <index referenceId="MP_PRODUCT_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="MP_PRODUCT_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="MP_PRODUCT_IS_APPROVED" indexType="btree">
+            <column name="is_approved"/>
+        </index>
+        <index referenceId="MP_PRODUCT_SELLER_PENDING_NOTIFICATION" indexType="btree">
+            <column name="seller_pending_notification"/>
+        </index>
+        <index referenceId="MP_PRODUCT_ADMIN_PENDING_NOTIFICATION" indexType="btree">
+            <column name="admin_pending_notification"/>
+        </index>
+        <index referenceId="MP_PRODUCT_DEALER_APPROVE_STATUS" indexType="btree">
+            <column name="dealer_approve_status"/>
+        </index>
+    </table>
+    <table name="marketplace_saleslist">
+        <index referenceId="MP_SALESLIST_CCPPROSTATUS" indexType="btree">
+            <column name="cpprostatus"/>
+        </index>
+        <index referenceId="MP_SALESLIST_MAGEBUYER_ID" indexType="btree">
+            <column name="magebuyer_id"/>
+        </index>
+        <index referenceId="MP_SALESLIST_PARENT_ITEM_ID" indexType="btree">
+            <column name="parent_item_id"/>
+        </index>
+        <index referenceId="MP_SALESLIST_MAGEREALORDER_ID" indexType="btree">
+            <column name="magerealorder_id"/>
+        </index>
+        <index referenceId="MP_SALESLIST_PAID_STATUS" indexType="btree">
+            <column name="paid_status"/>
+        </index>
+        <index referenceId="MP_SALESLIST_IS_SHIPPING" indexType="btree">
+            <column name="is_shipping"/>
+        </index>
+        <index referenceId="MP_SALESLIST_IS_COUPON" indexType="btree">
+            <column name="is_coupon"/>
+        </index>
+        <index referenceId="MP_SALESLIST_IS_PAID" indexType="btree">
+            <column name="is_paid"/>
+        </index>
+        <index referenceId="MP_SALESLIST_IS_WITHRAWAL_REQUEST" indexType="btree">
+            <column name="is_withdrawal_requested"/>
+        </index>
+    </table>
+    <table name="marketplace_product_temp">
+        <index referenceId="MP_PRODUCT_TEMP_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="MP_PRODUCT_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+
+    </table>
+
+</schema>

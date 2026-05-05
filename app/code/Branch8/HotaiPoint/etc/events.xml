@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_after">
+        <observer name="hotai_point_sales_order_place_after_observer" instance="Branch8\HotaiPoint\Observer\SalesOrderPlaceAfterObserver" />
+    </event>
+
+    <event name="hotaiPay_payment_retry">
+        <observer name="hotai_point_payment_retry_observer" instance="Branch8\HotaiPoint\Observer\ReDeductionPointForPaymentRetry" />
+    </event>
+
+    <event name="ecpay_invoice_issued_for_paid">
+        <observer name="hotai_point_api_commit_for_paid_order" instance="Branch8\HotaiPoint\Observer\ApiCommitForPaidOrder" />
+    </event>
+
+    <event name="hotai_point_api_success_deduction_point">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_deduction_point_by_get_order_info">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_add_n_deduction_point">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_add_point">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_batch_add_point">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_return_point">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_add_point_non">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+    <event name="hotai_point_api_success_commit">
+        <observer name="hotai_point_api_record_writer_observer" instance="Branch8\HotaiPoint\Observer\ApiRecordWriterObserver" />
+    </event>
+</config>

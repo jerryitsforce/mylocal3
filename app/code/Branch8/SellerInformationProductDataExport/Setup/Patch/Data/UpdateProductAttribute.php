@@ -1,0 +1,93 @@
+<?php
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+declare(strict_types=1);
+
+namespace Branch8\SellerInformationProductDataExport\Setup\Patch\Data;
+
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Setup\EavSetup;
+use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Setup\Patch\PatchRevertableInterface;
+
+class UpdateProductAttribute implements DataPatchInterface, PatchRevertableInterface
+{
+
+    /**
+     * @var ModuleDataSetupInterface
+     */
+    private $moduleDataSetup;
+    /**
+     * @var EavSetupFactory
+     */
+    private $eavSetupFactory;
+
+    /**
+     * Constructor
+     *
+     * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param EavSetupFactory $eavSetupFactory
+     */
+    public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup,
+        EavSetupFactory $eavSetupFactory
+    ) {
+        $this->moduleDataSetup = $moduleDataSetup;
+        $this->eavSetupFactory = $eavSetupFactory;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function apply(): void
+    {
+        $this->moduleDataSetup->getConnection()->startSetup();
+        /** @var EavSetup $eavSetup */
+        $eavSetup = $this->eavSetupFactory->create();
+        $eavSetup->updateAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'livesearch_categories',
+            [
+                'used_in_product_listing' => 1,
+                'is_visible_on_front' => 1,
+            ]
+        );
+        $eavSetup->updateAttribute(
+            \Magento\Catalog\Model\Product::ENTITY,
+            'seller_shop_name',
+            [
+                'used_in_product_listing' => 1,
+                'is_visible_on_front' => 1,
+            ]
+        );
+
+        $this->moduleDataSetup->getConnection()->endSetup();
+    }
+
+    public function revert(): void
+    {
+        
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases(): array
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDependencies(): array
+    {
+        return [
+        
+        ];
+    }
+}

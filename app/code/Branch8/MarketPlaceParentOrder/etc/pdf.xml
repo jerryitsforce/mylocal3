@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/pdf_file.xsd">
+    <renderers>
+        <page type="parent_order">
+            <renderer product_type="default">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Pdf\Items\ParentOrder\DefaultRenderer</renderer>
+        </page>
+    </renderers>
+</config>

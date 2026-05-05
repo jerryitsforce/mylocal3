@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sales_email>
+            <refund>
+                <enabled>1</enabled>
+                <success_template>sales_email_refund_success_template</success_template>
+                <decline_template>sales_email_refund_decline_template</decline_template>
+                <abnormal_template>sales_email_refund_abnormal_template</abnormal_template>
+                <identity>sales</identity>
+            </refund>
+        </sales_email>
+        <refund>
+            <cron>
+                <schedule_execute>30 15 * * *</schedule_execute>
+            </cron>
+        </refund>
+        <branch8_debug>
+            <branch8_refund>
+                <log_file></log_file>
+            </branch8_refund>
+        </branch8_debug>
+    </default>
+</config>

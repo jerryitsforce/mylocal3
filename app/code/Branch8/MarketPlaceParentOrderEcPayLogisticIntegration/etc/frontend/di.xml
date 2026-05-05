@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Logger Debug Logistic-->
+    <type name="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\LogisticMapToEcPayPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">ecPayLogisticWithParentOrderDebugRequestLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\LogisticMapResponsePlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">ecPayLogisticWithParentOrderDebugResponseLogger</argument>
+        </arguments>
+    </type>
+    <!-- End Logger Debug Logistic-->
+    <!-- Logger Debug Payment -->
+    <type name="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\PaymentToEcpayPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">ecPayPaymentWithParentRequestOrderDebugLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\PaymentResponsePlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">ecPayPaymentWithParentResponseOrderDebugResponseLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\PaymentInfoResponsePlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">ecPayPaymentWithParentResponseOrderDebugResponseLogger</argument>
+        </arguments>
+    </type>
+    <!-- End Logger Debug Payment -->
+
+
+    <type name="Ecpay\General\Observer\RedirectToEcpay">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::processRedirectWithParentOrderInformation"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Observer\RedirectToEcPayPlugin"
+                sortOrder="1" disabled="false"/>
+    </type>
+    <type name="Magento\Checkout\Controller\Onepage\Success">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::addExtraDataToObserver"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Magento\Checkout\Controller\Onepage\SuccessPlugin"
+                sortOrder="100" disabled="false"/>
+    </type>
+    <type name="Ecpay\General\Controller\Process\LogisticMapToEcpay">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::logisticMapsau giờToEcPayPlugin"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\LogisticMapToEcPayPlugin"
+                sortOrder="100" disabled="false"/>
+    </type>
+    <type name="Ecpay\General\Controller\Process\LogisticMapResponse">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::logisticMapResponsePlugin"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\LogisticMapResponsePlugin"
+                sortOrder="100" disabled="false"/>
+    </type>
+    <type name="Ecpay\General\Controller\Process\PaymentToEcpay">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::PaymentToEcpayPlugin"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\PaymentToEcpayPlugin"
+                sortOrder="100" disabled="false"/>
+    </type>
+    <type name="Ecpay\General\Controller\Process\PaymentResponse">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::PaymentResponsePlugin"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\PaymentResponsePlugin"
+                sortOrder="100" disabled="false"/>
+    </type>
+    <type name="Ecpay\General\Controller\Process\PaymentInfoResponse">
+        <plugin name="Branch8_MarketPlaceParentOrderEcPayLogisticIntegration::PaymentInfoResponsePlugin"
+                type="Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Plugin\Ecpay\General\Controller\Process\PaymentInfoResponsePlugin"
+                sortOrder="100" disabled="false"/>
+    </type>
+</config>

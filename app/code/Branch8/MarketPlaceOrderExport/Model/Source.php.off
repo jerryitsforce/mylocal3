@@ -1,0 +1,299 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+declare(strict_types=1);
+
+namespace Branch8\MarketPlaceOrderExport\Model;
+
+use Branch8\MarketPlaceOrderExport\Model\Services\GetTZOffsetTransitions;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Query\BatchIteratorInterface;
+use Magento\Framework\DB\Query\Generator;
+use Magento\Framework\DB\Select;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Indexer\BatchSizeManagementInterface;
+use Magento\Store\Model\StoreManager;
+use Branch8\MarketPlaceOrderExport\Helper\Logger as LoggerInterface;
+
+/**
+ * Class for retrieval of all product images
+ */
+class Sourceoff
+{
+    /**
+     * @var AdapterInterface
+     */
+    protected $connection;
+
+    /**
+     * @var Generator
+     */
+    protected $batchQueryGenerator;
+
+    /**
+     * @var ResourceConnection
+     */
+    protected $resourceConnection;
+    /**
+     * @var int
+     */
+    protected $batchSize;
+
+    protected \Magento\Framework\Stdlib\DateTime\Timezone $timezone;
+    protected LoggerInterface $logger;
+    /**
+     * @var \Magento\Framework\Stdlib\DateTime\Timezone\Validator
+     */
+    protected $timezoneValidator;
+    protected array $headers;
+    protected StoreManager $storeManager;
+    protected GetTZOffsetTransitions $getTZOffsetTransitions;
+
+    /**
+     * @param Generator $generator
+     * @param ResourceConnection $resourceConnection
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone $timezone
+     * @param StoreManager $storeManager
+     * @param LoggerInterface $logger
+     * @param GetTZOffsetTransitions $getTZOffsetTransitions
+     * @param array $headers
+     * @param int $batchSize
+     */
+    public function __construct(
+        Generator                                             $generator,
+        ResourceConnection                                    $resourceConnection,
+        \Magento\Framework\Stdlib\DateTime\Timezone\Validator $timezoneValidator,
+        \Magento\Framework\Stdlib\DateTime\Timezone           $timezone,
+        StoreManager                                          $storeManager,
+        LoggerInterface                                       $logger,
+        GetTZOffsetTransitions                                $getTZOffsetTransitions,
+        array                                                 $headers = [],
+        int                                                   $batchSize = 100
+    )
+    {
+        $this->headers = $headers;
+        $this->timezoneValidator = $timezoneValidator;
+        $this->batchQueryGenerator = $generator;
+        $this->resourceConnection = $resourceConnection;
+        $this->connection = $this->resourceConnection->getConnection();
+        $this->timezone = $timezone;
+        $this->batchSize = $batchSize;
+        $this->logger = $logger;
+        $this->storeManager = $storeManager;
+        $this->getTZOffsetTransitions = $getTZOffsetTransitions;
+    }
+
+    /*
+     * @return string[]
+     */
+    protected function getOrderColumns()
+    {
+        return [
+            'shipping_incl_tax' => 'sales_order.shipping_incl_tax',
+            'distribution_thermosphere' => 'sales_order.distribution_thermosphere',
+            'site_free_shipping_threshold' => 'sales_order.site_free_shipping_threshold',
+            'site_shipping_fee' => 'sales_order.site_shipping_fee',
+            'order_free_shipping_threshold' => 'sales_order.order_free_shipping_threshold',
+            'order_id' => 'sales_order.entity_id',
+            //'ecpay_invoice_number' => 'sales_order.ecpay_invoice_number',
+            //'ecpay_invoice_status' => 'sales_order.ecpay_invoice_status',
+            'point_used_total' => 'sales_order.point_used_total',
+            'sub_order_number' => 'sales_order.increment_id',
+            'subtotal_incl_tax' => 'sales_order.subtotal_incl_tax',
+            'customer_id' => 'sales_order.customer_id',
+            'customer_firstname' => 'sales_order.customer_firstname',
+            'customer_lastname' => 'sales_order.customer_lastname',
+            'name' => new \Zend_Db_Expr(
+                'CONCAT (COALESCE(`customer_firstname`,"")," ",COALESCE(`customer_lastname`,""))'
+            ),
+            'status' => 'sales_order.status',
+            'order_status' => 'sales_order.status',
+            'order_updated_at' => 'sales_order.updated_at',
+            'rma_status' => 'sales_order.rma_status',
+            'order_type' => 'sales_order.order_type'
+        ];
+    }
+
+    /**
+     * @param $ids
+     * @param $storeID
+     * @return \Generator
+     * @throws LocalizedException
+     */
+    public function getOrders($ids, $storeID = null): \Generator
+    {
+        if (!$storeID) {
+            $storeID = $this->storeManager->getStore()->getId();
+        }
+        if (count($ids) > $this->batchSize) {
+            throw new LocalizedException(
+                __('Maximum %1 for once time export', $this->batchSize)
+            );
+        }
+        $select = $this->getSelect($ids, $storeID);
+        $batchSelectIterator = $this->batchQueryGenerator->generate(
+            'entity_id',
+            $select,
+            $this->batchSize,
+            \Magento\Framework\DB\Query\BatchIteratorInterface::UNIQUE_FIELD_ITERATOR
+        );
+        //echo $select;die;
+        foreach ($batchSelectIterator as $select) {
+            foreach ($this->connection->fetchAll($select) as $key => $value) {
+                yield $key => $value;
+            }
+        }
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getItemColumns()
+    {
+        return [
+            //'column'=>new \Zend_Db_Expr('item'),
+            'item_id' => 'sales_order_item.item_id',
+            'order_item_id' => 'sales_order_item.item_id',
+            'product_id' => 'sales_order_item.product_id',
+            'price' => 'sales_order_item.price',
+            'original_price' => 'sales_order_item.original_price',
+            'product_type' => 'sales_order_item.product_type',
+            'product_sku' => 'sales_order_item.sku',
+            'product_options' => 'sales_order_item.product_options',
+            'product_name' => 'sales_order_item.name',
+            'cart_rules' => 'sales_order_item.applied_rule_ids',
+            'cost' => 'sales_order_item.base_cost',
+            'discount_amount' => 'sales_order_item.discount_amount',
+            'discount_percent' => 'sales_order_item.discount_percent',
+            'qty' => 'sales_order_item.qty_ordered',
+            'tax_amount' => 'sales_order_item.tax_amount',
+            'base_tax_amount' => 'sales_order_item.base_tax_amount',
+            'tax_invoiced' => 'sales_order_item.tax_invoiced',
+            'base_tax_invoiced' => 'sales_order_item.base_tax_invoiced',
+            'is_virtual' => 'sales_order_item.is_virtual',
+            'seller_id' => 'sales_order_item.seller_id',
+            'applied_rule_names' => 'sales_order_item.applied_rule_names',
+            'schedule_change_special_price' => 'sales_order_item.schedule_change_special_price',
+            'schedule_change_special_price_start' => 'sales_order_item.schedule_change_special_price_start',
+            'schedule_change_special_price_end' => 'sales_order_item.schedule_change_special_price_end',
+            'special_price' => 'sales_order_item.special_price',
+            'price_incl_tax' => 'sales_order_item.price_incl_tax',
+            'row_invoiced' => 'sales_order_item.row_invoiced',
+            'row_total_point_used' => 'sales_order_item.row_total_point_used',
+            'row_total_incl_tax' => 'sales_order_item.row_total_incl_tax',
+            'flow_status' => 'sales_order_item.flow_status',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getDateAdd($storeID)
+    {
+        $timezone = $this->timezone->getConfigTimezone(
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORES, $storeID);
+        $dateAdd = $this->getTZOffsetTransitions->get($timezone);
+        return $dateAdd;
+    }
+
+    /**
+     * @param $ids
+     * @param $storeID
+     * @return Select
+     * @TODO  create index table
+     */
+    private function getSelect($ids, $storeID): Select
+    {
+        $dateAdd = $this->getDateAdd($storeID);
+        $itemColumns = $this->getItemColumns();
+        if ($dateAdd) {
+            // add offset follow locale store
+            $offsetDate = $this->resourceConnection->getConnection()->getDateAddSql(
+                'sales_order_item.created_at',
+                array_key_first($dateAdd),
+                \Magento\Framework\DB\Adapter\AdapterInterface::INTERVAL_SECOND
+            );
+            $itemColumns['order_date'] = $offsetDate;
+        }
+        $select = $this->connection->select();
+        $orderTable = $this->resourceConnection->getTableName(
+            'sales_order'
+        );
+        $orderItemTable = $this->resourceConnection->getTableName(
+            'sales_order_item'
+        );
+        $select->from($orderTable, $this->getOrderColumns())
+            ->join(
+                ['sales_order_item' => $orderItemTable],
+                'sales_order.entity_id=sales_order_item.order_id',
+                $itemColumns
+            );
+        $select->where(
+            'sales_order.entity_id IN (?)', $ids
+        )->where('parent_item_id IS NULL');
+        // $select = $this->joinShipment($select);
+        $this->joinParentOrder($select);
+        //$this->joinEcpayInvoiceLog($select);
+       // echo $select;die;
+        return $select;
+    }
+
+    /**
+     * @param $select
+     * @return Select
+     */
+    private function joinEcpayInvoiceLog(Select $select): Select
+    {
+        $logTable = $this->resourceConnection->getTableName(
+            'ecpay_invoice_hotai_order_invoice_logs'
+        );
+        $concatString = "CONCAT(sales_order.increment_id,";
+        $concatString .= "'_',";
+        $concatString .= "COALESCE(ecpay_invoice_hotai_order_invoice_logs.invoice_number, 'no_value'),";
+        $concatString .= "'_',";
+        $concatString .= "COALESCE(ecpay_invoice_hotai_order_invoice_logs.status, 'no_value')";
+        $concatString .= ")";
+        $shippingKeyStop = new \Zend_Db_Expr($concatString);
+        $columns = [
+            'hotai_order_invoice_logs_id' => 'ecpay_invoice_hotai_order_invoice_logs.hotai_order_invoice_logs_id',
+            'ecpay_invoice_status' => 'ecpay_invoice_hotai_order_invoice_logs.status',
+            'ecpay_invoice_number' => 'ecpay_invoice_hotai_order_invoice_logs.invoice_number',
+            'shipping_stop_key' => $shippingKeyStop,
+        ];
+        $select->joinLeft(
+            ['ecpay_invoice_hotai_order_invoice_logs' => $logTable],
+            'sales_order.entity_id=ecpay_invoice_hotai_order_invoice_logs.order_id',
+            $columns
+        );
+        return $select;
+    }
+
+    /**
+     * @param Select $select
+     * @return Select
+     */
+    protected function joinParentOrder(Select $select)
+    {
+        $parentOrderDetail = $this->resourceConnection->getTableName(
+            'sales_parent_order_detail'
+        );
+        $select->joinLeft(
+            ['sales_parent_order_children' => 'sales_parent_order_children'],
+            'sales_order.entity_id=sales_parent_order_children.children_id',
+            []
+        )->joinLeft(
+            ['sales_parent_order_detail' => $parentOrderDetail],
+            'sales_parent_order_children.parent_id=sales_parent_order_detail.parent_id',
+            [
+                'parent_order_number' => 'sales_parent_order_detail.increment_id',
+                'parent_order_id' => 'sales_parent_order_children.parent_id'
+            ]
+        );
+        return $select;
+    }
+
+}

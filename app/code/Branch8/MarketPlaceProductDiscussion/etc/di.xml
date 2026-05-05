@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+        <!-- ===================================================== -->
+        <!-- Api Data                          -->
+        <!-- ===================================================== -->
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\Data\ThreadInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\Thread"/>
+
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\Data\MessageInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\Message"/>
+
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\Vote"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\Vote"/>
+
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\Data\ParticipantInterface"
+                type="Branch8\MarketPlaceProductDiscussion\Model\Participant"/>
+
+        <!-- ===================================================== -->
+        <!-- REPOSITORY PREFERENCES                                -->
+        <!-- ===================================================== -->
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\ThreadRepositoryInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\ThreadRepository"/>
+
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\MessageRepositoryInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\MessageRepository"/>
+
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\ParticipantRepositoryInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\ParticipantRepository"/>
+
+        <!-- ===================================================== -->
+        <!-- SERVICE LAYER                                         -->
+        <!-- ===================================================== -->
+
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\DiscussionManagementInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\DiscussionManagement"/>
+        <preference for="Branch8\MarketPlaceProductDiscussion\Api\ProductDiscussionsQueryInterface"
+                    type="Branch8\MarketPlaceProductDiscussion\Model\Actions\ProductDiscussionsQuery"/>
+
+        <!-- ===================================================== -->
+        <!-- COLLECTION PROCESSOR (SearchCriteria support)         -->
+        <!-- ===================================================== -->
+
+        <type name="Branch8\MarketPlaceProductDiscussion\Model\ThreadRepository">
+            <arguments>
+                <argument name="collectionProcessor"
+                          xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor</argument>
+            </arguments>
+        </type>
+
+        <type name="Branch8\MarketPlaceProductDiscussion\Model\MessageRepository">
+            <arguments>
+                <argument name="collectionProcessor"
+                          xsi:type="object">Magento\Framework\Api\SearchCriteria\CollectionProcessor</argument>
+            </arguments>
+        </type>
+
+        <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+            <arguments>
+                <argument name="collections" xsi:type="array">
+                    <item name="discussion_listing_data_source" xsi:type="string">Branch8\MarketPlaceProductDiscussion\Model\ResourceModel\Thread\Grid\Collection</item>
+                    <item name="discussion_message_grid_data_source" xsi:type="string">Branch8\MarketPlaceProductDiscussion\Model\ResourceModel\Message\Grid\Collection</item>
+                </argument>
+            </arguments>
+        </type>
+</config>

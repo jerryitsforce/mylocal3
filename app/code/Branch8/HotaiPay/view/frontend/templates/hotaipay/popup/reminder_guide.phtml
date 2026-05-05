@@ -1,0 +1,36 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\Index $block
+ */
+?>
+<div id="modal-reminder-guide" class="modal-hide">
+  <!-- <div class="modal-custom-header">
+    <h2><?= $block->escapeHtml(__('綁定信用卡')) ?></h2>
+  </div> -->
+  <div class="modal-custom-content">
+    <p><?= $block->escapeHtml(__('我們將引導你至和泰會員中心的信用卡綁定流程...')) ?></p>
+    <p><?= __('綁定過程需要進行1元授權的嘗試刷卡，以確保有效性，這筆授權紀錄並<a href="%1" title="不會實際扣款">不會實際扣款</a>，請放心！', '#' )?>
+    </p>
+    <form action="<?= $block->getUrl('hotaipay/creditcard/add') ?>" name="setup_creditcard" id="setup_creditcard"
+      method="post" enctype="multipart/form-data">
+      <input name="redirectUrl" value="<?= $block->getUrl('hotaipay/creditcard/listaction') ?>" type="hidden"
+        id="setup_creditcard_data" />
+    </form>
+  </div>
+  <!-- <div class="modal-custom-footer">
+    <button class="action primary" id="btn-reminder-sure">
+      <?= $block->escapeHtml(__('確定')) ?>
+    </button>
+  </div> -->
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8SetupCreditCard": {
+          "modalId": "modal-reminder-guide",
+          "modalTriggerBtnId": "binding_creditcard_btn",
+          "formId": "setup_creditcard"
+        }
+    }
+}
+</script>

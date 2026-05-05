@@ -1,0 +1,66 @@
+<?php
+/** @var \Branch8\HotaiPoint\Block\Detail\Row\PointHistoryRow $block */
+
+$pointHelper = $block->getPointHelper();
+$isDeduction = (float)$block->getData('deductionPoint') > 0 || (float)$block->getData('moveOut') > 0;
+$amount = $isDeduction ? -((float)$block->getData('deductionPoint') > 0 ? $block->getData('deductionPoint') : $block->getData('moveOut')) : ((float)$block->getData('addPoint') > 0?  $block->getData('addPoint') : $block->getData('moveIn'));
+?>
+
+<tr class="has-collapsible-content" data-expand-content-row="point-records-collapsible-row-<?=$block->getData('uniqueId')?>">
+    <td>
+        <p class="source-name">
+            <?=$block->getData('rsName')?>
+        </p>
+        <p class="show-on-mobile">
+            <?= $block->getData('transDate') ? $block->createDateFromFormat($block->getData('transDate'))->format('Y/m/d') : ''?>
+        </p>
+    </td>
+    <td class="hide-on-mobile td"><?= $block->getData('transDate') ? $block->createDateFromFormat($block->getData('transDate'))->format('Y/m/d') : ''?></td>
+    <td class="<?= $isDeduction ? 'deduct-point' : 'add-point'?>">
+        <div>
+            <?= $block->getPointHelper()->formatPoints($amount, true, true)?>
+        </div>
+    </td>
+    <td class="hide-on-mobile td">
+        <span class="point-expired-date">
+            <span class="date">
+                <?= $block->getData('pointExpireDate') ? $block->createDateFromFormat($block->getData('pointExpireDate'))->format('Y/m/d') : ''?>
+            </span>
+        </span>
+    </td>
+</tr>
+<tr id="point-records-collapsible-row-<?=$block->getData('uniqueId')?>" class="collapsible-content record-comment point-records-collapsible-row-<?=$block->getData('uniqueId')?> hidden">
+    <td colspan="4">
+        <hr style="margin: 0;" />
+        <div class="point-records-collapsible-container">
+            <div class="point-records-collapsible-item hide-on-pc">
+                <div class="comment-title">
+                    <span class="title">
+                        <?=$escaper->escapeHtml(__('點數到期日')) ?>
+                    </span>
+                </div>
+                <div class="comment-content">
+                    <span class="point-expired-date">
+                        <span class="date">
+                            <?= $block->getData('pointExpireDate') ? $block->createDateFromFormat($block->getData('pointExpireDate'))->format('Y/m/d') : ''?>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            <div class="point-records-collapsible-item">
+                <div class="comment-title">
+                    <span class="title">
+                        <?=$escaper->escapeHtml(__('備註')) ?>
+                    </span>
+                </div>
+                <div class="comment-content">
+                    <p><?=$block->getData('transDesc')?></p>
+                    <?php /*
+                        下一階段需求欄位，和泰會員中心新增「壘點」欄位後開啟
+                        <p><?=$escaper->escapeHtml(__('交易日期')) ?> <?=$block->createDateFromFormat($block->getData('transDate'))->format('Y/m/d')?>。</p>
+                    */ ?>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>

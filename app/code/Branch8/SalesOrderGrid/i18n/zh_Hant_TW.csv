@@ -1,0 +1,66 @@
+"Please enter the total amount of the order","請輸訂單總金額",module,Branch8_SalesOrderGrid
+"Please enter the total amount of the order (purchase currency)","請輸訂單總金額（購買貨幣)",module,Branch8_SalesOrderGrid
+"Please enter sub total","請輸小計金額",module,Branch8_SalesOrderGrid
+"Please enter the order shipping amount","請輸訂單運費金額",module,Branch8_SalesOrderGrid
+"Please Input Purchase Date","請輸入日期區間",module,Branch8_SalesOrderGrid
+"Invoice Modification Date","訂單結帳序號異動日",module,Branch8_SalesOrderGrid
+"Please input Invoice Modification Date","請選擇訂單結帳序號異動日",module,Branch8_SalesOrderGrid
+"Please input Order Id","請選入訂單號碼",module,Branch8_SalesOrderGrid
+"Please enter Bill-to Name","請輸入收貨人姓名",module,Branch8_SalesOrderGrid
+"Please enter Ship-to Name","請輸入收貨人姓名",module,Branch8_SalesOrderGrid
+"Please enter the order purchase date","請輸入日期區間",module,Branch8_SalesOrderGrid
+"Please enter the invoice modification date","請選擇訂單結帳序號異動日",module,Branch8_SalesOrderGrid
+"Please enter the Billing Name","請輸入收貨人姓名",module,Branch8_SalesOrderGrid
+"Please enter the Billing Address","請輸入帳單地址",module,Branch8_SalesOrderGrid
+"Please enter SKU","請輸入商品貨號",module,Branch8_SalesOrderGrid
+"Please enter the Shipping Name","請輸入收貨人姓名",module,Branch8_SalesOrderGrid
+"Please enter the Shipping Address","請選入配送地址",module,Branch8_SalesOrderGrid
+"Please enter the Shipping Information","物流方式",module,Branch8_SalesOrderGrid
+"Please select Logistics method","物流方式",module,Branch8_SalesOrderGrid
+"Please select Product Type","請選擇商品類型",module,Branch8_SalesOrderGrid
+"Please enter Nickname","請輸入暱稱",module,Branch8_SalesOrderGrid
+"Shipping Method (Grid)","物流方式",module,Branch8_SalesOrderGrid
+"Please enter customer email","請選入顧客信箱",module,Branch8_SalesOrderGrid
+"Customer Group","會員身份",module,Branch8_SalesOrderGrid
+"Please choose Customer Group","請選擇會員身份",module,Branch8_SalesOrderGrid
+"Please enter Customer Name","請輸入顧客名稱",module,Branch8_SalesOrderGrid
+"Please choose RMA status","請選擇退換貨狀態",module,Branch8_SalesOrderGrid
+"Please choose Payment Method","請選擇付款方式",module,Branch8_SalesOrderGrid
+"Please enter Product Name","請輸入商品名稱",module,Branch8_SalesOrderGrid
+"[GRID]Seller Name","特約商名稱",module,Branch8_SalesOrderGrid
+"Please enter Seller Name","請選擇特約商名稱",module,Branch8_SalesOrderGrid
+"Please select Product Type","請選擇商品類",module,Branch8_SalesOrderGrid
+"Please enter Phone Number","請選入訂購人手機號碼",module,Branch8_SalesOrderGrid
+"Please enter TransSN","請選入兌點交易序號",module,Branch8_SalesOrderGrid
+"TransSN","兌點交易序號",module,Branch8_SalesOrderGrid
+"Invoice Amount","發票金額",module,Branch8_SalesOrderGrid
+"Using Point","使用點數",module,Branch8_SalesOrderGrid
+"[GRID]Salesperson","館長名稱",module,Branch8_SalesOrderGrid
+"Please enter Sale Person","請選擇業務窗口",module,Branch8_SalesOrderGrid
+"RMAID","退換貨授權 ID",module,Branch8_SalesOrderGrid
+"Supplier SKU","廠商貨號",module,Branch8_SalesOrderGrid
+"Please enter supplier sku","請輸入廠商貨號",module,Branch8_SalesOrderGrid
+"Please enter Nick Name","請輸入暱稱",module,Branch8_SalesOrderGrid
+"[GRID]Customer Group","會員身份",module,Branch8_SalesOrderGrid
+"[GRID]Customer Name","購買人姓名",module,Branch8_SalesOrderGrid
+"Please choose Order Status","請選擇退換貨狀態",module,Branch8_SalesOrderGrid
+"Purchased On","購買日期",module,Branch8_SalesOrderGrid
+"Please enter Logistics Company","請輸入物流商名稱名稱",module,Branch8_SalesOrderGrid
+"[GRID]Logistics Company","物流商名稱",module,Branch8_SalesOrderGrid
+"Please enter the order subtotal amount","請輸小計金額",module,Branch8_SalesOrderGrid
+"[GRID]Subtotal","小計",module,Branch8_SalesOrderGrid
+"[GRID]Order Number","訂單編號",module,Branch8_SalesOrderGrid
+"[GRID]Order Status","訂單狀態",module,Branch8_SalesOrderGrid
+"[GRID]Product Name","商品名稱",module,Branch8_SalesOrderGrid
+"[GRID]Product Type","商品類型",module,Branch8_SalesOrderGrid
+"[GRID]Phone Number","手機號碼",module,Branch8_SalesOrderGrid
+"[GRID]SKU","產品貨號",module,Branch8_SalesOrderGrid
+"Replace Apply Cancel","退貨取消",module,Branch8_SalesOrderGrid
+"Applying Return Cancel","換貨取消",module,Branch8_SalesOrderGrid
+"Purchase Date","購買日期",module,Branch8_SalesOrderGrid
+"Please enter base grand total","請輸訂單總金額",module,Branch8_SalesOrderGrid
+"Please enter grand total","請輸訂單總金額（購買貨幣)",module,Branch8_SalesOrderGrid
+"Please enter Manual Invoice Number","請輸入手開發票號碼",module,Branch8_SalesOrderGrid
+"[GRID]Manual Invoice Number","發票號碼（手開）",module,Branch8_SalesOrderGrid
+"Please Select","請選擇",module,Branch8_SalesOrderGrid
+"[GRID]Has Manual Invoice","是否手開發票",module,Branch8_SalesOrderGrid

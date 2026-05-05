@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="branch8.order.export.assynchronization0" is_synchronous="false" request="string"/>
+    <topic name="branch8.order.export.assynchronization1" is_synchronous="false" request="string"/>
+    <topic name="branch8.order.export.assynchronization2" is_synchronous="false" request="string"/>
+    <topic name="branch8.order.export.assynchronizationmailsent" is_synchronous="false" request="string"/>
+    <topic name="branch8.order.notification.synchronization" is_synchronous="false" request="string">
+        <handler name="branch8.order.notification.synchronization" type="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Notification\Consumer" method="execute" />
+    </topic>
+</config>

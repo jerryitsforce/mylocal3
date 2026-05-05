@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\Mmegamenu\Model\Mmegamenu">
+        <arguments>
+            <argument name="resource" xsi:type="object">Branch8\Mmegamenu\Model\ResourceModel\Mmegamenu</argument>
+        </arguments>
+    </type>
+
+    <!-- Force public Cache-Control headers for the menu AJAX endpoint
+         just before sendResponse(), after PHP/Magento session machinery
+         has had its chance to set no-cache headers. -->
+    <type name="Magento\Framework\App\Response\Http">
+        <plugin name="branch8_mmegamenu_menu_data_cache_headers"
+                type="Branch8\Mmegamenu\Plugin\MenuDataCacheHeaderPlugin"
+                sortOrder="9999"
+                disabled="false" />
+    </type>
+</config>

@@ -1,0 +1,588 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@form__background-color: #fafafa;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .helpdesk-ticket-index {
+        &:not(.page-layout-seller-2columns-left) .message.error {
+            min-width: auto;
+            box-shadow: unset;
+
+            &:before {
+                font-family: var(--font-hotai-icons);
+            }
+        }
+
+        .action-primary {
+            .lib-button-primary();
+            .lib-css(border-radius, @button__border-radius);
+        }
+
+        .modal-popup {
+            .modal-content {
+                .messages .message:before {
+                    content: none
+                }
+            }
+        }
+    }
+    .message-attachments {
+        .lib-vendor-prefix-display(flex);
+    }
+
+    .text-underline {
+        text-decoration: underline !important;
+    }
+
+    .new-ticket-messages {
+        .messages {
+            margin: 0 !important;
+
+            .message {
+                margin-bottom: 21px;
+            }
+        }
+    }
+
+    .form-new-ticket-hint {
+        &:extend(.abs-caption1 all);
+        color: @secondary__color;
+
+        a {
+            color: @secondary__color;
+            font-weight: @font-weight__heavier;
+            text-decoration: underline;
+
+            &:hover {
+                color: @secondary__color;
+            }
+        }
+    }
+
+    .form-style-primary {
+        .fieldset {
+            > .field {
+                .lib-vendor-prefix-display(flex);
+                .lib-vendor-prefix-flex-direction(column);
+                gap: 8px 0;
+                margin: 0 0 24px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &.required > .label,
+                > .label {
+                    &:extend(.abs-label all);
+                    &:extend(.abs-h6-bold all);
+
+                    &:before {
+                        margin-right: 4px;
+                    }
+
+                    &:after {
+                        font-size: 16px;
+                    }
+                }
+
+                input[type="text"],
+                input[type="password"],
+                input[type="url"],
+                input[type="tel"],
+                input[type="search"],
+                input[type="number"],
+                input[type*="date"],
+                input[type="email"],
+                select,
+                textarea {
+                    font-size: 16px;
+                    line-height: 24px;
+                    letter-spacing: 1px;
+                    font-weight: @font-weight__regular;
+
+                    &:hover,
+                    &:focus {
+                        box-shadow: none;
+                    }
+
+                    &[disabled],
+                    &.disabled {
+                        opacity: 1;
+                        background: #F2F2F2;
+                    }
+
+                    &::-ms-input-placeholder, /* Edge 12-18 */
+                    &::placeholder {
+                        color: @secondary__color__light;
+                    }
+
+                    &.hide {
+                        text-indent: -9999rem;
+                        height: 0;
+                        max-height: 0;
+                        border: 0;
+                        visibility: hidden;
+                        width: 0;
+                        display: block;
+                        max-width: 0;
+                    }
+                }
+
+                select {
+                    height: 44px;
+                    font-size: 16px;
+
+                    &.empty {
+                        color: @secondary__color__light;
+                    }
+
+                    &[disabled],
+                    &.disabled {
+                        background: #f2f2f2 url('../images/select-bg.svg') no-repeat 100% 45%;
+                    }
+                }
+
+                textarea {
+                    resize: none;
+                    vertical-align: bottom;
+                }
+
+                input,
+                select,
+                textarea {
+                    &.mage-error {
+                        border: 1px solid rgba(242, 65, 25, 0.3);
+                        .lib-css(box-shadow, 0 0 0 2px rgba(242, 65, 25, 0.08), 1);
+
+                        &:hover,
+                        &:focus {
+                            .lib-css(box-shadow, 0 0 0 2px rgba(242, 65, 25, 0.08), 1);
+                        }
+                    }
+                }
+
+                .file-uploader {
+                    float: left;
+                    width: 100%;
+                    position: relative;
+
+                    .file-uploader-summary {
+                        float: left;
+
+                        .file-uploader-preview,
+                        .file-uploader-placeholder {
+                            width: 110px;
+                            height: 110px;
+                            border: 0;
+                            margin: 10px 10px 10px 0;
+                            .lib-css(border-radius, 10px, 1);
+                        }
+
+                        .file-uploader-placeholder {
+                            border: 1px solid #e6e6e6;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: flex-end;
+                            justify-items: center;
+                            align-items: center;
+
+                            &.placeholder-document {
+                                &:before {
+                                    font-size: 26px;
+                                    top: 26px;
+                                    content: var(--icon-plus);
+                                    font-family: var(--font-hotai-icons);
+                                    color: @theme__color__primary;
+                                }
+                            }
+
+                            .file-uploader-placeholder-text {
+                                font-size: 16px;
+                                line-height: 24px;
+                                letter-spacing: 1px;
+                                color: @primary__color;
+                                padding: 0 5px;
+                                margin-bottom: 30px;
+                            }
+                        }
+
+                        .file-uploader-preview {
+                            position: relative;
+                            display: flex;
+
+                            .preview-image {
+                                background: #f2f2f2;
+                                border: 1px solid #f2f2f2;
+                                width: 100%;
+                                border-radius: 10px;
+                                overflow: hidden;
+                                width: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                box-sizing: border-box;
+
+                                img{
+                                    border-radius: 10px;
+                                }
+                            }
+
+                            .actions {
+                                position: absolute;
+                                right: 8px;
+                                top: 8px;
+                                display: inline-flex;
+
+                                span {
+                                    display: none;
+                                }
+                            }
+
+                            .action-remove {
+                                width: 16px;
+                                height: 16px;
+                                background: none;
+                                border: 0;
+                                padding: 0;
+                                color: var(--color-text-base);
+
+                                &:before {
+                                    &:extend(.abs-hotai-icon all);
+                                    content: '\e911';
+                                    font-size: 16px;
+                                    line-height: 16px;
+                                    vertical-align: top;
+                                }
+
+                                &:hover{
+                                    color: var(--color-red-base);
+                                }
+                            }
+                        }
+
+                        .file-uploader-filename,
+                        .file-uploader-meta {
+                            display: none;
+                        }
+                    }
+
+                    .file-uploader-area {
+                        position: absolute;
+                        z-index: 2;
+                        background: rgba(0, 0, 0, 0.1);
+                        width: 100%;
+                        height: 100%;
+                        justify-content: center;
+                        align-items: center;
+                        display: none;
+                        .lib-css(border-radius, 10px, 1);
+
+                        .file-uploader-button {
+                            display: none;
+                        }
+
+                        .file-uploader-spinner {
+                            margin: 0;
+                        }
+                    }
+
+                    &._loading {
+                        .file-uploader-area {
+                            .lib-vendor-prefix-display(flex);
+                        }
+                    }
+                }
+            }
+
+            .field {
+                div.mage-error {
+                    &:extend(.abs-caption2 all);
+                    margin-top: 4px;
+
+                    &:before {
+                        content: @icon-warning;
+                        font-family: @icons__font-name;
+                        margin-right: 4px;
+                        display: inline-block;
+                        .lib-css(transform, translateY(1px), 1);
+                    }
+                }
+            }
+        }
+
+        .actions-toolbar {
+            .action {
+                &:extend(.abs-caption1-medium all);
+
+                &.primary {
+                    border-radius: 100px;
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+
+    #helpdesk-form {
+        margin-top: 35px;
+
+        .form-panel {
+            padding: 40px 40px 60px 40px;
+            background: @form__background-color;
+            border-radius: var(--radius-m);
+        }
+
+        .fieldset {
+            > .field {
+                &.field-nick-name {
+                    width: ~"calc(50% - 12px)";
+                    float: left;
+                    margin-right: 24px;
+                }
+
+                &.field-email {
+                    width: ~"calc(50% - 12px)";
+                }
+
+                &.field-telephone {
+                    clear: left;
+                }
+            }
+        }
+
+        .attachment-note {
+            &:extend(.abs-caption1 all);
+            color: @secondary__color__light;
+        }
+
+        .actions-toolbar {
+            .lib-vendor-prefix-display(flex);
+            justify-content: center;
+            margin-top: 40px;
+
+            .action.primary {
+                margin: 0;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+// <=768px
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .form-style-primary {
+        .fieldset {
+            > .field {
+                margin: 0 0 16px;
+
+                input[type="text"],
+                input[type="password"],
+                input[type="url"],
+                input[type="tel"],
+                input[type="search"],
+                input[type="number"],
+                input[type*="date"],
+                input[type="email"],
+                select {
+                    font-size: 14px;
+                    line-height: 22px;
+                }
+
+                textarea {
+                    font-size: 14px;
+                    line-height: 22px;
+                }
+
+                .file-uploader {
+                    .file-uploader-summary {
+                        float: left;
+
+                        .file-uploader-preview,
+                        .file-uploader-placeholder {
+                            width: 82px;
+                            height: 82px;
+                        }
+
+                        .file-uploader-placeholder {
+                            &.placeholder-document {
+                                &:before {
+                                    font-size: 22px;
+                                    top: 18px;
+                                }
+                            }
+
+                            .file-uploader-placeholder-text {
+                                font-size: 14px;
+                                line-height: 22px;
+                                margin-bottom: 18px;
+                            }
+                        }
+
+                        .file-uploader-preview {
+                            .actions {
+                                top: 4px;
+                                right: 4px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .form-new-ticket-hint {
+        margin-top: 24px;
+    }
+
+    #helpdesk-form {
+        margin-top: 32px;
+
+        .form-panel {
+            padding: 0;
+            background: none;
+        }
+
+        .fieldset {
+            > .field {
+                &.field-nick-name {
+                    width: 100%;
+                    margin-right: 0;
+                }
+
+                &.field-email {
+                    width: 100%;
+                }
+            }
+        }
+
+        .attachment-note {
+            font-size: 12px;
+            line-height: 18px;
+        }
+    }
+
+    [lang="en"] {
+        .form-style-primary .fieldset > .field .file-uploader .file-uploader-summary .file-uploader-placeholder .file-uploader-placeholder-text {
+            letter-spacing: 0;
+            text-wrap: nowrap;
+        }
+    }
+
+    .helpdesk-ticket-index {
+        .customer-header-wrapper {
+            display: none;
+        }
+
+        #maincontent {
+            padding-left: 24px;
+            padding-right: 24px;
+
+            .sidebar {
+                &.sidebar-main {
+                    display: none;
+                }
+            }
+
+            .page-title-wrapper {
+                position: relative;
+
+                &:after {
+                    content: '';
+                    height: 1px;
+                    width: 100vw;
+                    background: var(--color-gray-light5);;
+                    display: block;
+                    position: absolute;
+                    left: -24px;
+                    bottom: 10px;
+                }
+
+                h1 {
+                    color: @primary__color;
+                }
+
+                .page-title {
+                    border-bottom: 0;
+                }
+            }
+        }
+
+        // Custom only for ticket page, can move to general for all my account pages
+        &.account {
+            .breadcrumbs {
+                //display: block;
+                position: relative;
+                margin: 0;
+                z-index: 1;
+                min-height: 0;
+                display: none;
+
+                .items {
+                    position: absolute;
+                    left: 17px;
+                    top: 13px;
+
+                    > li {
+                        &:first-child {
+                            display: inline-block;
+                        }
+
+                        &:nth-child(n + 2) {
+                            display: none;
+                        }
+                    }
+
+                    .item:not(:last-child):after,
+                    .item:not(:last-child):before {
+                        display: none;
+                    }
+
+                    .item a {
+                        font-size: 0;
+                        color: @primary__color;
+                        .lib-css(transform, scaleX(-1), 1);
+                        .lib-icon-font(
+                            @_icon-font-content: '\e903',
+                            @_icon-font-size: 24px,
+                            @_icon-font-line-height: 24px,
+                            @_icon-font-margin: 0
+                        );
+                    }
+                }
+            }
+        }
+    }
+}
+
+// <=640px
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .helpdesk-ticket-index {
+        #maincontent {
+            .page-title-wrapper {
+                &:after {
+                    bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// 1024px
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    .helpdesk-ticket-index.page-layout-2columns-left .columns .column.main {
+        padding-left: 0;
+    }
+}

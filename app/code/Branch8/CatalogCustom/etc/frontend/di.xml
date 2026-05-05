@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magento\Checkout\Controller\Cart\Index" type="Branch8\CatalogCustom\Controller\Cart\Index"/>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="AddProductToCart" type="Branch8\CatalogCustom\Plugin\Cartplugin" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Webkul\Marketplace\Block\Product\Helper\Form\Gallery\Content">
+        <plugin name="change_template_plugin_gallery" type="Branch8\CatalogCustom\Plugin\ChangeTemplatePlugin" sortOrder="1"/>
+    </type>
+    <preference for="Magento\Checkout\Controller\Cart\Add" type="Branch8\CatalogCustom\Controller\Cart\Add"/>
+</config>

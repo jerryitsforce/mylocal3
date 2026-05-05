@@ -1,0 +1,114 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+        <section id="marketplace">
+
+            <group id="branch8_product_approval" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Marketplace Product Approval</label>
+                <field id="exclude_attributes" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Exclude Attributes</label>
+                    <frontend_model>Branch8\MarketplaceProduct\Block\System\Config\Attributes</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment/>
+                </field>
+                <field id="role_approval" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Admin Roles need Approval</label>
+                    <source_model>Branch8\MarketplaceProduct\Model\Source\AdminRoles</source_model>
+                </field>
+                <!--<field id="attribute_selector" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Attributes Selector</label>
+                    <source_model>Branch8\MarketplaceProduct\Model\Source\ProductAttributeSeller</source_model>
+                </field>-->
+                <field id="version_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clear version log after (days)</label>
+                    <validate>required-entry validate-number</validate>
+                </field>
+                <field id="enable_negative_gross_profit" translate="label" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled Negative Gross Profit</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="branch8_dealer_approval" translate="label"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Dealer Approval</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="receiver" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Receiver email address</label>
+                    <comment>Example: a@admin.com;b@admin.com (separate by ;)</comment>
+                </field>
+                <field id="file_prefix" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Prefix of file name</label>
+                    <comment>Example: PRODUCT_APPROVAL_</comment>
+                </field>
+            </group>
+            <group id="branch8_product_popup" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Product Popup</label>
+                <field id="check_price_change" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Show Check Price Change</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment/>
+                </field>
+            </group>
+            <group id="producthint_settings">
+                <field id="product_hint_status" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_category" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_name" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_des" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_sdes" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_sku" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_price" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_qty" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_stock" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_tax" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_weight" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_image" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="product_enable" showInDefault="0" showInWebsite="0" showInStore="0"/>
+                <field id="hint_attributes" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Hint Attributes</label>
+                    <frontend_model>Branch8\MarketplaceProduct\Block\System\Config\Hints</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <comment/>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_catalog">
+            <group id="massaction_settings">
+                <field id="hide_enable_product" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Hide Enable Product Mass Action for Seller</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="hide_disable_product" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Hide Disable Product Mass Action for Seller</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="product_approval_setting" translate="label"  sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Approval Settings</label>
+                <field id="hide_variation_cost" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Hide Variation Cost in Grid</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="hide_variation_price" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Hide Variation Price in Grid</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_marketplaceproduct" translate="label" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Branch8_MarketplaceProduct</label>
+                <field id="log_types" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\MarketplaceProduct\Model\Config\Source\LogType</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+	</system>
+</config>

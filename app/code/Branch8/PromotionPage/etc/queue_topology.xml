@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="db">
+        <binding id="branch8CatalogRuleProductAssignBinding" topic="branch8.catalog.rule.product.assign" destinationType="queue" destination="branch8_catalog_rule_product_assign"/>
+        <binding id="branch8VipProductAssignBinding" topic="branch8.vip.product.assign" destinationType="queue" destination="branch8_vip_product_assign"/>
+    </exchange>
+</config>

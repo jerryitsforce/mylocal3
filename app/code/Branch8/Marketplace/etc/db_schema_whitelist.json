@@ -1,0 +1,21 @@
+{
+    "marketplace_saleslist": {
+        "constraint": {
+            "MARKETPLACE_SALESLIST_ORDER_ID_ORDER_ITEM_ID": true
+        },
+        "index": {
+            "MARKETPLACE_SALESLIST_SELLER_ID": true,
+            "MARKETPLACE_SALESLIST_MAGEPRO_SKU": true
+        },
+        "column": {
+            "magepro_sku": true,
+            "base_cost": true,
+            "commission_percent": true
+        }
+    },
+    "marketplace_orders": {
+        "index": {
+            "MARKETPLACE_ORDERS_SELLER_ID": true
+        }
+    }
+}

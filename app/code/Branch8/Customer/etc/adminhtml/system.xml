@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="customer">
+            <group id="create_account">
+                <field id="default_organization" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Default Organization</label>
+                    <source_model>Branch8\Customer\Model\Config\Source\Organization</source_model>
+                    <comment>Ecommerce Organization</comment>
+                </field>
+            </group>
+
+            <group id="idle_time" translate="label" type="text" sortOrder="200" showInDefault="1">
+                <label>Idle Time</label>
+                <field id="timeout" translate="label" type="text" sortOrder="10" showInDefault="1">
+                    <label>Auto Logout After X Minute(s)</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment>Leave it blank to disable auto logout</comment>
+                </field>
+            </group>
+            <group id="online_customers" translate="label" type="text" sortOrder="10" showInDefault="1">
+                <field id="track_activity_by_queue" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Track activity by queue</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="sales">
+            <group id="status_setting" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Order status setting</label>
+                <field id="final_success_status" translate="label" sortOrder="15" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Last status for success order</label>
+                    <source_model>Magento\SalesArchive\Model\Order\Status\Source</source_model>
+                    <can_be_empty>0</can_be_empty>
+                    <comment>Used for upgrading/downgrading customer level</comment>
+                </field>
+            </group>
+        </section>
+        <section id="hotai_auth">
+            <group id="hotaipay" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="100" translate="label">
+                <label>HotaiPay</label>
+                <field id="hotaipay_top_content" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hotai Pay - Top Content</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="hotaipay_bottom_content" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hotai Pay - Bottom Content</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="hotaipay_bottom" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hotai Pay - Bottom</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+            <group id="hotaipay_customer" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="110" translate="label">
+                <label>HotaiPay - Customer Page</label>
+                <field id="hotaipay_bottom_content" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Hotai Pay - Bottom Content</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="web">
+            <group id="cookie">
+                <field id="cookie_block" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cookie Content Block</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="hotai_account_page" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Customer Account Page</label>
+            <tab>branch8</tab>
+            <resource>Branch8_Customer::config</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>General</label>
+                <field id="custom_block" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Content Block</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="browsing_history" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Search Browsing History Block</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+            <group id="popup_content" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                <label>Popup Content Settings</label>
+                <field id="price_change" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Price Change Alert</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+                <field id="point_reminder" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Point Reminder Content</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+
+            <group id="membership" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Membership</label>
+                <field id="membership_level_description" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Membership Level Description</label>
+                    <frontend_model>Branch8\Customer\Block\Adminhtml\MembershipLevelDescription</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+
+                <field id="membership_level_instruction_block" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Membership Level Instruction Block</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+
+            <group id="member_ticket" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>Member Tickets</label>
+                <field id="ticket_detail_note" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ticket Detail Note</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Block</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="api_credential" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Organization API credential</label>
+            <tab>branch8</tab>
+            <resource>Branch8_Customer::api_config</resource>
+            <group id="organization" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="30" translate="label">
+                <label>Organization API Credential</label>
+                <field id="hotai_emp" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Hotai EMP Organization</label>
+                    <source_model>Branch8\Customer\Model\Config\Source\Organization</source_model>
+                    <comment>Hotai Employee Organization</comment>
+                </field>
+                <field id="ec" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>EC Organization</label>
+                    <source_model>Branch8\Customer\Model\Config\Source\Organization</source_model>
+                    <comment>Ecommerce Organization</comment>
+                </field>
+                <field id="aes_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>AES Key</label>
+                </field>
+                <field id="aes_iv" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>AES IV</label>
+                </field>
+                <field id="ip_whitelist" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>IP Whitelist</label>
+                </field>
+            </group>
+            <group id="car_owner" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="30" translate="label">
+                <field id="is_active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <label>Car Owner</label>
+                <field id="url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>URL</label>
+                </field>
+                <field id="subscription_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Ocp Apim Subscription Key</label>
+                </field>
+                <field id="app_id" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>App ID</label>
+                </field>
+                <field id="toyota_org" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Toyota ORG</label>
+                    <source_model>Branch8\Customer\Model\Config\Source\Organization</source_model>
+                    <comment>Toyota Organization</comment>
+                </field>
+                <field id="lexus_org" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Lexus ORG</label>
+                    <source_model>Branch8\Customer\Model\Config\Source\Organization</source_model>
+                    <comment>Lexus Organization</comment>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <class>separator-top</class>
+            <label>Debug Log</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiCore::debug_log</resource>
+            <group id="branch8_customer" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Customer</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\Customer\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

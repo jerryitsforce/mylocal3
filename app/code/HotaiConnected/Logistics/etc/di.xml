@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Grid and Form Collections -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="logistics_settings_listing_data_source" xsi:type="string">HotaiConnected\Logistics\Model\ResourceModel\LogisticsSettings\Grid\Collection</item>
+                <item name="logistics_settings_form_data_source" xsi:type="string">HotaiConnected\Logistics\Model\ResourceModel\LogisticsSettings\Form\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Configure Grid Collection -->
+    <type name="HotaiConnected\Logistics\Model\ResourceModel\LogisticsSettings\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">logistics_settings</argument>
+            <argument name="resourceModel" xsi:type="string">HotaiConnected\Logistics\Model\ResourceModel\LogisticsSettings</argument>
+        </arguments>
+    </type>
+
+    <!-- Virtual Type for Form Collection -->
+    <virtualType name="HotaiConnected\Logistics\Model\ResourceModel\LogisticsSettings\Form\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">logistics_settings</argument>
+            <argument name="resourceModel" xsi:type="string">HotaiConnected\Logistics\Model\ResourceModel\LogisticsSettings</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Pickup Service -->
+    <preference for="HotaiConnected\Logistics\Api\PickupServiceInterface" type="HotaiConnected\Logistics\Model\Service\PickupService"/>
+    <preference for="HotaiConnected\Logistics\Api\Data\PickupRequestInterface" type="HotaiConnected\Logistics\Model\Data\PickupRequest"/>
+    <preference for="HotaiConnected\Logistics\Api\Data\PickupResponseInterface" type="HotaiConnected\Logistics\Model\Data\PickupResponse"/>
+
+    <!-- Pickup Service Factory Configuration -->
+    <type name="HotaiConnected\Logistics\Model\Service\PickupServiceFactory">
+        <arguments>
+            <argument name="services" xsi:type="array">
+                <item name="新竹物流" xsi:type="string">HotaiConnected\Logistics\Model\Service\HctPickupService</item>
+                <!-- Add more logistics companies here -->
+            </argument>
+        </arguments>
+    </type>
+</config>

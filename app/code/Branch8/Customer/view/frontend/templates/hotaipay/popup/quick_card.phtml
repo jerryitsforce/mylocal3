@@ -1,0 +1,66 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\Index $block
+ */
+?>
+<div id="modal-quick-card" class="modal-hide">
+  <div class="modal-custom-content">
+    <ul>
+      <li><?= $block->escapeHtml(__('此服務提供「中國信託持卡人」快速綁定中信卡，如欲綁定非中信卡，請返回上一頁使用「一般綁卡」服務。')) ?></li>
+      <li><?= $block->escapeHtml(__('系統將依您所填之身分證字號＆生日向中國信託商業銀行取得您的信用卡資訊，並於簡訊驗證通過後進行綁定，以確保您的信用卡支付安全。')) ?></li>
+    </ul>
+    <form class="quick-card-form" action="<?= $block->getUrl('hotaipay/creditcard/fastadd') ?>" name="setup_creditcard_fast"
+      id="setup_creditcard_fast" method="post" enctype="multipart/form-data">
+      <input name="redirectUrl" value="<?= $block->getUrl('member/hotaipay') ?>" type="hidden"
+        id="setup_creditcard_fast_data" />
+      <fieldset class="fieldset">
+        <div class="field required">
+          <label for="id" class="label">
+            <span><?= $block->escapeHtml(__("身分證字號")); ?></span>
+          </label>
+          <div class="control">
+            <input type="text" class="input-text required-entry" data-validate="{required:true, 'validate-taiwan-id': true, 'validate-fullwidth-special': true}"
+              id="setup_creditcard_fast_id" name="idNo" aria-required="true"
+              placeholder="<?= $block->escapeHtml("請輸入身分證字號")?>">
+          </div>
+        </div>
+        <div class="field required">
+          <label for="birthday" class="label">
+            <span><?= $block->escapeHtml(__("生日")); ?></span>
+          </label>
+          <div class="control">
+            <div class="control-field field-year">
+              <input type="number" maxlength="4" name="birthdayTemp[]" data-validate="{required:true, 'validate-birthday':true}" class="input-text" name="year" id="year" placeholder="<?= $block->escapeHtml("YYYY")?>"/>
+            </div>
+            <div class="control-field field-month">
+              <input type="number" maxlength="2" name="birthdayTemp[]" data-validate="{required:true, 'validate-birthday':true}" class="input-text" name="month" id="month" placeholder="<?= $block->escapeHtml("MM")?>"/>
+            </div>
+            <div class="control-field field-day">
+              <input type="number" maxlength="2" name="birthdayTemp[]" data-validate="{required:true, 'validate-birthday':true}" class="input-text" name="day" id="day" placeholder="<?= $block->escapeHtml("DD")?>"/>
+            </div>
+            <input type="hidden" data-validate="{required:true}" id="setup_creditcard_fast_birthday" name="birthday" />
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <?php
+      $warning = $block->getFastAddCardWarning();
+    ?>
+    <?php if($warning): ?>
+      <div class="creditcard-member-card-note creditcard-member-card-warning">
+        <p class="creditcard-member-card-note-text"><?= $warning ?></p>
+      </div>
+    <?php endif; ?>
+  </div>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8SetupCreditCard": {
+          "modalId": "modal-quick-card",
+          "modalTriggerBtnId": "binding_creditcard_fast_btn",
+          "formId": "setup_creditcard_fast"
+        }
+    }
+  }
+</script>

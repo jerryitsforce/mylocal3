@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="branch8_variations_price" view_id="branch8_variations_price_view" class="Branch8\OptionsWithStockAndImages\Model\Indexer\VariationPrice">
+        <title>Branch8 Variations Price Indexer</title>
+        <description>Re-calculates final price for Branch8 options with catalog rules</description>
+        <dependencies>
+            <indexer id="catalog_product_price"/>
+        </dependencies>
+    </indexer>
+    <indexer id="catalog_data_exporter_product_prices" view_id="cde_product_prices_feed" class="Magento\ProductPriceDataExporter\Model\Indexer\ProductPriceFeedIndexer">
+        <dependencies>
+            <indexer id="branch8_variations_price"/>
+        </dependencies>
+    </indexer>
+</config>

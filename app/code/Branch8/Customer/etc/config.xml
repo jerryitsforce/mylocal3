@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <customer>
+            <online_customers>
+                <track_activity_by_queue>1</track_activity_by_queue>
+            </online_customers>
+        </customer>
+    </default>
+</config>

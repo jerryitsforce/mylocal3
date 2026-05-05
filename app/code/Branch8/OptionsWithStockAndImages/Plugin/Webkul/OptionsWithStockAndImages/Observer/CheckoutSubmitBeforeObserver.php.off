@@ -1,0 +1,203 @@
+<?php
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+declare(strict_types=1);
+
+namespace Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer;
+
+use Branch8\OptionsWithStockAndImages\Model\Actions\GetQuoteItemCombo;
+use Branch8\OptionsWithStockAndImages\Model\Actions\GetStockCombo;
+use Branch8\OptionsWithStockAndImages\Model\IsPreorderItem;
+use Magento\Framework\Exception\LocalizedException;
+
+class CheckoutSubmitBeforeObserver2
+{
+    /**
+     * @var \Branch8\OptionsWithStockAndImages\Helper\Salable
+     */
+    protected $customOptionSalableHelper;
+    private IsPreorderItem $isPreorderItem;
+    private GetStockCombo $getStockCombo;
+    private GetQuoteItemCombo $getQuoteItemCombo;
+
+    /**
+     * @param \Branch8\OptionsWithStockAndImages\Helper\Salable $customOptionSalableHelper
+     * @param GetQuoteItemCombo $getQuoteItemCombo
+     * @param GetStockCombo $getStockCombo
+     * @param IsPreorderItem $isPreorderItem
+     */
+    public function __construct(
+        \Branch8\OptionsWithStockAndImages\Helper\Salable $customOptionSalableHelper,
+        GetQuoteItemCombo                                 $getQuoteItemCombo,
+        GetStockCombo                                     $getStockCombo,
+        IsPreorderItem                                    $isPreorderItem
+    )
+    {
+        $this->isPreorderItem = $isPreorderItem;
+        $this->getStockCombo = $getStockCombo;
+        $this->getQuoteItemCombo = $getQuoteItemCombo;
+        $this->customOptionSalableHelper = $customOptionSalableHelper;
+    }
+
+    public function aroundExecute(
+        \Webkul\OptionsWithStockAndImages\Observer\CheckoutSubmitBeforeObserver $subject,
+        \Closure                                                                $proceed,
+        \Magento\Framework\Event\Observer                                       $observer
+    )
+    {
+        $connection = $this->customOptionSalableHelper->getConnection();
+        $connection->beginTransaction();
+        try {
+            $productCombArr = [];
+            $subject->success = true;
+            $cart = $observer->getEvent()->getData('quote');
+            $notAvailableArr = [];
+            /**
+             * @var $item \Magento\Quote\Model\Quote\Item
+             */
+            foreach ($cart->getAllItems() as $item) {
+                if ((bool)$item->getData('available_to_checkout') === false) {
+                    continue;
+                }
+                $comb = "";
+                $product = $item->getProduct();
+                if (!$product) {
+                    continue;
+                }
+                if (is_null($product->getOptions())) {
+                    continue;
+                }
+                $productRowId = $item->getProduct()->getRowId();
+                $isPreorderItem = $this->isPreorderItem->execute($item);
+                // preorder and combo has stock <0
+                if ($isPreorderItem) {
+                    if ($this->getStockPreorder($item) <= 0) {
+                        continue;
+                    } else {
+                        $combo = $this->getQuoteItemCombo->get($item);
+                        throw new LocalizedException(
+                            __(
+                                'We do not have %1 as many as you are trying to order.',
+                                $combo ? sprintf("%s (%s) ", $item->getName(), $combo) : $item->getName()
+                            )
+                        );
+                    }
+                }
+
+                if (!isset($productCombArr[$productRowId])) {
+                    $productCombArr[$productRowId] = [];
+                }
+                $optionData = [];
+                foreach ($product->getOptions() as $option) {
+                    $optType = $option->getType();
+                    if ($optType == "drop-down" || $optType == "drop_down" || $optType == "radio") {
+                        $optionId = $option->getId();
+                        $optionData[$optionId] = [];
+                        foreach ($option->getValues() as $value) {
+                            $valueId = $value->getId();
+                            $optionData[$optionId][$valueId] = $value->getDefaultTitle();
+                        }
+                    }
+                }
+                $itemOptions = "";
+                foreach ($item->getOptions() as $option) {
+                    if ($option->getCode() == "info_buyRequest") {
+                        $itemOptions = $option->getValue();
+                        break;
+                    }
+                }
+                if (!empty($itemOptions)) {
+                    $result = $this->checkAvailability(
+                        $subject,
+                        $itemOptions,
+                        $productCombArr,
+                        $optionData,
+                        $comb,
+                        $productRowId,
+                        $item
+                    );
+                    if (!empty($result)) {
+                        $notAvailableArr = array_merge($notAvailableArr, $result);
+                    }
+                }
+            }
+
+            if (isset($notAvailableArr) && !empty($notAvailableArr)) {
+                $notAvailableArr = array_unique($notAvailableArr);
+                $notAvailable = implode(", ", $notAvailableArr);
+                throw new LocalizedException(
+                    __(
+                        'We do not have %1 as many as you are trying to order.',
+                        $notAvailable
+                    )
+                );
+            }
+
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            $subject->logger->info($e->getMessage());
+            throw $e;
+        }
+    }
+
+    /**
+     * @param \Magento\Quote\Model\Quote\Item $item
+     * @return int|null
+     * @throws LocalizedException
+     */
+    private function getStockPreorder(\Magento\Quote\Model\Quote\Item $item)
+    {
+        $product = $item->getProduct();
+        if ($product) {
+            $combo = $this->getQuoteItemCombo->get($item);
+            return $this->getStockCombo->execute((int)$product->getRowId(), $combo);
+        } else {
+            throw new LocalizedException(__('No product found'));
+        }
+    }
+
+    /**
+     * Check Availability
+     *
+     * @param string $itemOptions
+     * @param array $productCombArr
+     * @param array $optionData
+     * @param string $comb
+     * @param int $productId
+     * @param \Magento\Checkout\Model\Cart $item
+     *
+     * @return array $notAvailableArr
+     */
+    private function checkAvailability($subject, $itemOptions, $productCombArr, $optionData, $comb, $productId, $item)
+    {
+        //CALL METHOD checkAvailability IN SALABLE HELPER, PRELAUNCH PULUGIN AROUND checkAvailability
+        return $this->customOptionSalableHelper->checkAvailability($itemOptions, $productCombArr, $optionData, $comb, $productId, $item);
+//        $notAvailableArr = [];
+//        $options = json_decode($itemOptions);
+//        if (isset($options->options)) {
+//            foreach ($options->options as $key => $value) {
+//                if (isset($optionData[$key]) && isset($optionData[$key][$value])) {
+//                    $comb .= $optionData[$key][$value]."_";
+//                }
+//            }
+//            $comb = trim($comb, "_");
+//            $variation = $subject->helper->getCombData($productId, $comb);
+//            if ($variation->getId()) {
+//                if (isset($productCombArr[$productId][$comb])) {
+//                    $productCombArr[$productId][$comb] += $item->getQty();
+//                } else {
+//                    $productCombArr[$productId][$comb] = $item->getQty();
+//                }
+//                if (($variation->getStock()-$productCombArr[$productId][$comb])<0) {
+//                    $subject->success = false;
+//                    $notAvailableArr[] = $item->getName()." (".$comb.")";
+//                    $productCombArr[$productId][$comb] -= $item->getQty();
+//                }
+//            }
+//        }
+//        return $notAvailableArr;
+    }
+}

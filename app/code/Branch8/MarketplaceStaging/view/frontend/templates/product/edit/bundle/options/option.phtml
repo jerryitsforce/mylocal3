@@ -1,0 +1,174 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpBundleProduct
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+
+?>
+<?php
+/**
+ * @var $block \Branch8\MarketplaceStaging\Block\Product\Edit\Bundle\Catalog\Option
+ */
+?>
+
+<script id="staging-bundle-option-template" type="text/x-magento-template">
+    <div id="staging_<?= $block->escapeHtml($block->getFieldId()) ?>_<%- data.index %>" class="option-box">
+        <div class="fieldset-wrapper admin__collapsible-block-wrapper opened"
+            id="staging_<?= $block->escapeHtml($block->getFieldId()) ?>_<%- data.index %>-wrapper">
+            <div class="fieldset-wrapper-title">
+                <strong class="admin__collapsible-title"
+                    data-toggle="collapse"
+                    data-target="#staging_<?= $block->escapeHtml($block->getFieldId()) ?>_<%- data.index %>-content">
+                    <span><%- data.default_title %></span>
+                </strong>
+                <div class="actions">
+                    <button type="button" title="<?= $block->escapeHtml(__('Delete Option')); ?>"
+                        class="action-delete bundle-delete-options"
+                        id="staging_<?= $block->escapeHtml($block->getFieldId()) ?>_<%- data.index %>_delete"
+                        onclick ='bStageOption.remove(event)'>
+                        <span><?= $block->escapeHtml(__('Delete Option')); ?></span>
+                    </button>
+                </div>
+                <div data-role="draggable-handle" class="dragable-handle"></div>
+            </div>
+            <div class="fieldset-wrapper-content in collapse"
+                id="staging_<?= $block->escapeHtml($block->getFieldId()) ?>_<%- data.index %>-content">
+                <fieldset class="fieldset">
+                    <fieldset class="fieldset-alt">
+                        <div class="field field-option-title required">
+                            <label class="label"
+                                for="staging_id_<?= $block->escapeHtml($block->getFieldName()) ?>_<%- data.index %>_title">
+                                <?= $block->escapeHtml(__('Option Title')); ?>
+                            </label>
+                            <div class="control">
+                            <?php if (1):?>
+                            <input class="input-text required-entry bundle-option-title"
+                                    type="text"
+                                    name="<?= $block->escapeHtml($block->getFieldName()) ?>[<?= $block->escapeHtml($block->getFieldName()) ?>][<%- data.index %>][title]"
+                                    id="staging_id_<?= $block->escapeHtml($block->getFieldName()) ?>_<%- data.index %>_title"
+                                    value="<%- data.title %>"
+                                    data-original-value="<%- data.title %>"
+                                    />
+                            <?php else: ?>
+                            <input class="input-text required-entry"
+                                type="text"
+                            name="<?= $block->escapeHtml($block->getFieldName()) ?>[<?= $block->escapeHtml($block->getFieldName()) ?>][<%- data.index %>][default_title]"
+                            id="staging_id_<?= $block->escapeHtml($block->getFieldName()) ?>_<%- data.index %>_default_title"
+                                value="<%- data.default_title %>"
+                                data-original-value="<%- data.default_title %>" />
+                            <?php endif; ?>
+                            <input type="hidden"
+                                id="staging_<?= $block->escapeHtml($block->getFieldId()) ?>_id_<%- data.index %>"
+                                name="<?= $block->escapeHtml($block->getFieldName()) ?>[<?= $block->escapeHtml($block->getFieldName()) ?>][<%- data.index %>][option_id]"
+                                    value="<%- data.option_id %>" />
+                            <input type="hidden"
+                                name="<?= $block->escapeHtml(
+                                    $block->getFieldName()
+                                ) ?>[<%- data.index %>][delete]"
+                                    value=""
+                                    data-state="deleted" />
+                            </div>
+                        </div>
+                        <div class="field field-option-input-type-bundle required">
+                            <label class="label"
+                                for="staging_<?= $block->escapeHtml($block->getFieldId()) . '_<%- data.index %>_type' ?>">
+                                <?= $block->escapeHtml(__('Input Type')) ?>
+                            </label>
+                            <div class="control">
+                                    <?= /* @noEscape */ $block->getTypeSelectHtml() ?>
+                            </div>
+                        </div>
+                        <div class="field field-option-req">
+                            <div class="control">
+                                <input type="checkbox"
+                                       class="is-required admin__control-checkbox"
+                                       checked="checked"
+                                       id="staging-field-option-req" />
+                                <label for="staging-field-option-req">
+                                <?= $block->escapeHtml(__('Required'))?>
+                                </label>
+                                <span style="display:none"><?= /* @noEscape */ $block->getRequireSelectHtml() ?></span>
+                            </div>
+                        </div>
+                        <div class="field field-option-position no-display">
+                            <label class="label" for="staging-field-option-position">
+
+                            </label>
+                            <div class="control">
+                                <input class="input-text validate-zero-or-greater"
+                                    type="hidden"
+                                    name="<?= $block->escapeHtml(
+                                        $block->getFieldName()
+                                    ) ?>[<%- data.index %>][position]"
+                                       value="<%- data.position %>"
+                                       id="staging-field-option-position" />
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="no-products-message">
+                        <?= $block->escapeHtml(__('There are no products in this option.'))?>
+                    </div>
+                    <div class="actions">
+                        <button id="staging_<?= $block->escapeHtml($block->getFieldId()).'_<%- data.index %>_add_button' ;?>"
+                            title="Add Products to option" type="button"
+                            class="add staging-add-selection"
+                            data-ui-id="admin-product-options-add-buttons">
+                                <span><?= $block->escapeHtml(__('Add Products To Option')); ?></span>
+                            </button>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div id="staging_<?= $block->escapeHtml($block->getFieldId())?>_search_<%- data.index %>"
+        class="selection-search"></div>
+    </div>
+</script>
+
+<?= /* @noEscape */ $block->getSelectionHtml(); ?>
+
+<?php
+$bundleInfo = [];
+$i = 0;
+foreach ($block->getOptions() as $_option) {
+    /** @var $_option \Magento\Bundle\Model\Option */
+    $bundleInfo[$i]['info'] = $_option->toArray();
+    if ($selections = $_option->getSelections()) {
+        foreach ($selections as $_selection) {
+            /** @var $_selection \Magento\Catalog\Model\Product */
+            $_selection->setName($block->escapeHtml($_selection->getName()));
+            $selectionData = [];
+            $selectionData['selection_id'] = $_selection->getSelectionId();
+            $selectionData['option_id'] = $_selection->getOptionId();
+            $selectionData['product_id'] = $_selection->getProductId();
+            $selectionData['name'] = $_selection->getName();
+            $selectionData['sku'] = $_selection->getSku();
+            $selectionData['price'] = $_selection->getPrice();
+            $selectionData['is_default'] = $_selection->getIsDefault();
+            $selectionData['selection_price_value'] = $_selection->getSelectionPriceValue();
+            $selectionData['selection_qty'] = $_selection->getSelectionQty();
+            $selectionData['position'] = $_selection->getPosition();
+            $bundleInfo[$i]['selection'][]['info'] = $selectionData;
+        }
+    }
+    $i++;
+}
+$formData = [
+    'fieldId' => $block->escapeHtml($block->getFieldId()),
+    'bundleInfo' => $bundleInfo
+];
+$serializedFormData = $block->jsonEncodeData($formData);
+?>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Branch8_MarketplaceStaging/js/bundle/init": <?= /* @noEscape */ $serializedFormData; ?>
+    }
+}
+</script>

@@ -1,0 +1,88 @@
+<?xml version="1.0" ?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">branch8_sellerdocument_file_listing.branch8_sellerdocument_file_listing_data_source</item>
+		</item>
+	</argument>
+	<settings>
+		<spinner>branch8_sellerdocument_file_columns</spinner>
+		<deps>
+			<dep>branch8_sellerdocument_file_listing.branch8_sellerdocument_file_listing_data_source</dep>
+		</deps>
+	</settings>
+	<dataSource name="branch8_sellerdocument_file_listing_data_source" component="Magento_Ui/js/grid/provider">
+		<settings>
+			<storageConfig>
+				<param name="indexField" xsi:type="string">file_id</param>
+			</storageConfig>
+			<updateUrl path="mui/index/render"/>
+		</settings>
+		<aclResource>Branch8_SellerDocument::File</aclResource>
+		<dataProvider name="branch8_sellerdocument_file_listing_data_source" class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+			<settings>
+				<requestFieldName>id</requestFieldName>
+				<primaryFieldName>file_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource>
+	<listingToolbar name="listing_top">
+		<settings>
+			<sticky>true</sticky>
+		</settings>
+		<bookmark name="bookmarks"/>
+		<columnsControls name="columns_controls"/>
+		<filters name="listing_filters"/>
+		<paging name="listing_paging"/>
+	</listingToolbar>
+	<columns name="branch8_sellerdocument_file_columns">
+		<selectionsColumn name="ids">
+			<settings>
+				<indexField>file_id</indexField>
+			</settings>
+		</selectionsColumn>
+		<column name="file_id">
+			<settings>
+				<filter>text</filter>
+				<sorting>asc</sorting>
+				<label translate="true">ID</label>
+			</settings>
+		</column>
+		<column name="file_name">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">File Name</label>
+			</settings>
+		</column>
+		<column name="file_path">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">File Path</label>
+			</settings>
+		</column>
+		<column name="uploaded_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Uploaded At</label>
+			</settings>
+		</column>
+		<column name="seller_id">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Seller ID</label>
+			</settings>
+		</column>
+		<column name="status">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Status</label>
+			</settings>
+		</column>
+		<column name="comment">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">Comment</label>
+			</settings>
+		</column>
+	</columns>
+</listing>

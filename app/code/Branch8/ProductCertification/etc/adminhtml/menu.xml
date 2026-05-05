@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_ProductCertification::certification_root"
+             title="Product Certifications"
+             module="Branch8_ProductCertification"
+             sortOrder="50"
+             parent="Magento_Catalog::catalog"
+             resource="Branch8_ProductCertification::certification"/>
+        <add id="Branch8_ProductCertification::certification_manage"
+             title="Certification Types"
+             module="Branch8_ProductCertification"
+             sortOrder="10"
+             parent="Branch8_ProductCertification::certification_root"
+             action="branch8_certification/type/index"
+             resource="Branch8_ProductCertification::certification_manage"/>
+    </menu>
+</config>

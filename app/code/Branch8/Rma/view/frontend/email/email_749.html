@@ -1,0 +1,59 @@
+<!--@subject 換貨申請失敗通知 @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>{{trans "換貨申請失敗通知"}}</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {{trans "親愛的%customer_name您好，<br/>我們很抱歉通知您，由於 %decline_details，您的換貨申請未能成功處理，因此將商品寄還給您。" decline_details=$decline_details customer_name=$customer_name |raw}}
+</p>
+
+<table cellpadding="0" cellspacing="0" class="order-info order-exchange-failed m-bottom__m">
+    <thead>
+    <tr>
+        <th>訂單明細</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">{{trans "訂單編號"}}</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var order_link}}">{{var order_id}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">{{trans "訂單日期"}}</td>
+                    <td class="value">{{var order_date}}</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">{{trans "實付金額"}}</td>
+                    <td class="value">{{var order_total}}</td>
+                </tr>
+                <tr class="order_items">
+                    <td class="label">{{trans "訂購商品"}}</td>
+                    <td class="value">
+                        {{var order_items|raw}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    {{trans '若有其他問題，請至 帳號管理 > <a target="_blank" class="link-primary" href="%order_link">訂單查詢</a> 瀏覽完整訂單內容。' order_link=$order_link |raw}}
+</p>
+
+{{template config_path="design/email/footer_template"}}

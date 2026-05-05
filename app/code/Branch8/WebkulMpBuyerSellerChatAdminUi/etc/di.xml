@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="chat_history_listing_data_source" xsi:type="string">Branch8\WebkulMpBuyerSellerChatAdminUi\Model\ResourceModel\Message\Grid\Collection</item>
+                <item name="chat_profiles_listing_data_source" xsi:type="string">Branch8\WebkulMpBuyerSellerChatAdminUi\Model\ResourceModel\Profiles\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\WebkulMpBuyerSellerChatAdminUi\Model\ResourceModel\Message\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_chat_history</argument>
+            <argument name="eventPrefix" xsi:type="string">marketplace_chat_history_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">marketplace_chat_history_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\MessageData</argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\WebkulMpBuyerSellerChatAdminUi\Model\ResourceModel\Profiles\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_chat_profile_info</argument>
+            <argument name="eventPrefix" xsi:type="string">marketplace_chat_profile_info_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">marketplace_chat_profile_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\WebkulMpBuyerSellerChat\Model\ResourceModel\ChatProfileInformation</argument>
+        </arguments>
+    </type>
+</config>

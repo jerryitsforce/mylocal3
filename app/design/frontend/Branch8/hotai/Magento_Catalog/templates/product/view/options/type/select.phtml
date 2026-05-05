@@ -1,0 +1,75 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php /* @var $block \Magento\Catalog\Block\Product\View\Options\Type\Select */ ?>
+<?php
+$_option = $block->getOption();
+$class = ($_option->getIsRequire()) ? ' required' : '';
+$helper = $this->helper('\Branch8\Catalog\Helper\Data');
+$product = $block->getProduct();
+$isTicketBatch = $_option->getTitle() === \Branch8\HotaiCore\Helper\VirtualProduct::TICKET_BATCH_SETTING_OPTION_TITLE;
+// $availableBatchs = $helper->getTicketAvailableBatchData($product->getId());
+?>
+<?php if($isTicketBatch): ?>
+  <div class="field<?= /* @noEscape */ $class ?> batch-ticket <?= $product->getTypeId()?>" data-bind="scope: 'batches_view'">
+    <label class="label" for="select_<?= $block->escapeHtmlAttr($_option->getId()) ?>" id="batches-label-<?= $block->escapeHtml($product->getId()) ?>" style="display: none;">
+        <!-- <span><?= $block->escapeHtml($_option->getTitle()) ?></span> -->
+         <span><?= __('選項') ?></span>
+    </label>
+    <div class="control" id="batches-option-<?= $block->escapeHtml($product->getId()) ?>" style="display: none;">
+        <?= $block->getValuesHtml() ?>
+        <div id="options-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container" class="custom-options-wrapper"></div>
+        <div class="product-batches" data-role="product-batches" data-product-id="<?= $block->escapeHtml($product->getId()) ?>">
+          <ul class="batch-list" data-bind="foreach: { data: batches, as: 'batch' }">
+            <li class="batch-item">
+              <div data-bind='attr: {id: "batch_setting_id_"+batch.setting_id , "data-batch-id": batch.setting_id, "data-batch-code": batch.batch_code}, click: function(batch, event){
+                              $parent.selectedBatch(batch, event);
+                          }' class="batch-setting-id">
+                <span data-bind="text: batch.batch_code"></span>
+              </div>
+            </li>
+          </ul>
+        </div>
+    </div>
+    <!-- ko ifnot: isReady() -->
+    <div class="batch-loading-mask">
+      <div class="loader">
+        <span class="spinner"></span> 
+        <span class="loader-text"><?= __('Loading...') ?></span>
+      </div>
+    </div>
+    <!-- /ko -->
+  </div>
+  <script type="text/x-magento-init">
+    {
+      "*": {
+        "Magento_Ui/js/core/app": {
+          "components": {
+            "batches_view": {
+              "component": "Magento_Catalog/js/batches",
+              "productId": "<?= $block->escapeHtml($product->getId()) ?>"
+            }
+          }
+        }
+      }
+    }
+  </script>
+<?php else: ?>
+<div class="field<?= /* @noEscape */ $class ?> <?= $product->getTypeId()?>">
+    <label class="label" for="select_<?= $block->escapeHtmlAttr($_option->getId()) ?>">
+        <span><?= $block->escapeHtml($_option->getTitle()) ?></span>
+    </label>
+    <div class="control">
+        <?= $block->getValuesHtml() ?>
+        <?php if ($_option->getIsRequire()) :?>
+            <?php if ($_option->getType() == \Magento\Catalog\Api\Data\ProductCustomOptionInterface::OPTION_TYPE_RADIO || $_option->getType() == \Magento\Catalog\Api\Data\ProductCustomOptionInterface::OPTION_TYPE_CHECKBOX) :?>
+                <span id="options-<?= $block->escapeHtmlAttr($_option->getId()) ?>-container"></span>
+            <?php endif; ?>
+        <?php endif;?>
+    </div>
+</div>
+<?php endif; ?>

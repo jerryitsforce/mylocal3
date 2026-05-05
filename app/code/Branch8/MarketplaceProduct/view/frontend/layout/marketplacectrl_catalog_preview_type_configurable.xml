@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="catalog_product_view_type_configurable"/>
+    <body>
+        <referenceBlock name="product.info.options.wrapper">
+            <referenceBlock name="product.info.options.swatches" remove="true"/>
+            <block class="Branch8\MarketplaceProduct\Block\Product\Renderer\Configurable" name="branch8.product.info.options.swatches" before="-" template="Branch8_MarketplaceProduct::product/view/renderer/configurable.phtml">
+                <arguments>
+                    <argument name="configurable_view_model" xsi:type="object">Magento\Swatches\ViewModel\Product\Renderer\Configurable</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

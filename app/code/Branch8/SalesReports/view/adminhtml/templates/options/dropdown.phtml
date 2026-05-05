@@ -1,0 +1,70 @@
+<?php
+/**
+ * @var $block \Branch8\SalesReports\Block\Adminhtml\BasicDropdown
+ * @var $escaper \Magento\Framework\Escaper
+ */
+$componentId = rand(0, 10000000);
+$validationUrl = $block->getUrl($block->getData('validationUrl'));
+$searchUrl = $block->getUrl($block->getData('searchUrl'));
+$prefixName = $block->getData('prefix_name') ? $block->getData('prefix_name') : uniqid('');
+$id = $prefixName . $componentId;
+?>
+<div class="admin__fieldset-wrapper opened" id="wrapper-<?= $id ?>">
+    <div class="admin__fieldset-wrapper-content">
+        <fieldset class="admin__fieldset" style="padding:0 0">
+            <div class="admin__field field">
+                <div class="admin__field-control control">
+                    <div id="<?= $id ?>-select" class="admin__field"
+                         data-bind="scope:'<?php echo $id; ?>'" data-index="index">
+                        <!-- ko foreach: elems() -->
+                        <input name="<?=$block->getData('input_hidden_field')?>" data-bind="value: value"
+                               id="<?=$block->getData('input_hidden_field')?>" data-form-part="customer_form"
+                               type="hidden"/>
+                        <!-- ko template: elementTmpl --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "<?= $id ?>": {
+                        "component": "uiComponent",
+                        "children": {
+                            "seller_select": {
+                                "component": "Branch8_SalesReports/js/components/dropdown",
+                                "config": {
+                                    "filterOptions": true,
+                                    "disableLabel": true,
+                                    "chipsEnabled": true,
+                                    "multiple":true,
+                                    "showPath":false,
+                                    "levelsVisibility": "1",
+                                    "searchOptions":true,
+                                    "elementTmpl": "Branch8_SalesReports/dropdown/ui-select",
+                                    "options": <?= json_encode($block->getOptions()) ?>,
+                                    "value": <?= json_encode($escaper->escapeHtml($block->getSelected())); ?>,
+                                    "validationUrl":"<?= $validationUrl ?>",
+                                    "searchUrl":"<?= $searchUrl ?>",
+                                    "filterRateLimit":1000,
+                                    "filterRateLimitMethod":"notifyWhenChangesStop",
+                                    "config": {
+                                        "dataScope": "select_category",
+                                        "sortOrder": 10
+                                    },
+                                    "jsFormObject": "<?php echo $this->getJsFormObject(); ?>"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</script>
+

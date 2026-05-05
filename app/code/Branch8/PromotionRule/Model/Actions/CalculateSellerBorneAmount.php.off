@@ -1,0 +1,360 @@
+<?php
+
+namespace Branch8\PromotionRule\Model\Actions;
+
+use Magento\CatalogRule\Model\ResourceModel\Rule\Collection as CatalogRuleCollection;
+use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as CatalogRuleCollectionFactory;
+use Magento\CatalogRule\Model\Rule;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Data\Collection;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote\Item as QuoteItem;
+use Magento\Quote\Model\QuoteRepository;
+use Magento\Sales\Model\Order;
+use Magento\SalesRule\Model\ResourceModel\Rule\Collection as SalesRuleCollection;
+use Magento\SalesRule\Model\ResourceModel\Rule\CollectionFactory as SalesRuleCollectionFactory;
+use Webkul\Marketplace\Helper\Data as MarketplaceHelper;
+
+class CalculateSellerBorneAmount
+{
+    /**
+     * @var AdapterInterface
+     */
+    private AdapterInterface $connection;
+
+    /**
+     * @var MarketplaceHelper
+     */
+    private MarketplaceHelper $marketplaceHelper;
+
+    /**
+     * @var PriceCurrencyInterface
+     */
+    private PriceCurrencyInterface $priceCurrency;
+
+    /**
+     * @var QuoteRepository
+     */
+    private QuoteRepository $quoteRepository;
+
+    /**
+     * @var CatalogRuleCollectionFactory
+     */
+    private CatalogRuleCollectionFactory $catalogRuleCollectionFactory;
+
+    /**
+     * @var SalesRuleCollectionFactory
+     */
+    private SalesRuleCollectionFactory $saleRuleCollectionFactory;
+
+    /**
+     * @param ResourceConnection $resourceConnection
+     * @param MarketplaceHelper $marketplaceHelper
+     * @param PriceCurrencyInterface $priceCurrency
+     * @param QuoteRepository $quoteRepository
+     * @param CatalogRuleCollectionFactory $catalogRuleCollectionFactory
+     * @param SalesRuleCollectionFactory $saleRuleCollectionFactory
+     */
+    public function __construct(
+        ResourceConnection           $resourceConnection,
+        MarketplaceHelper            $marketplaceHelper,
+        PriceCurrencyInterface       $priceCurrency,
+        QuoteRepository              $quoteRepository,
+        CatalogRuleCollectionFactory $catalogRuleCollectionFactory,
+        SalesRuleCollectionFactory   $saleRuleCollectionFactory
+    )
+    {
+        $this->connection = $resourceConnection->getConnection();
+        $this->marketplaceHelper = $marketplaceHelper;
+        $this->priceCurrency = $priceCurrency;
+        $this->quoteRepository = $quoteRepository;
+        $this->catalogRuleCollectionFactory = $catalogRuleCollectionFactory;
+        $this->saleRuleCollectionFactory = $saleRuleCollectionFactory;
+    }
+
+    /**
+     * @param Order $order
+     * @param Quote $quote
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function execute(Order $order, Quote $quote): void
+    {
+        $customerGroupId = (int)$order->getCustomerGroupId();
+        $websiteId = (int)$order->getStore()->getWebsiteId();
+        $products = [];
+        $productItems = [];
+
+        foreach ($order->getAllItems() as $item) {
+            $products[$item->getId()] = ['product' => $item->getProduct(), 'qty' => $item->getQtyOrdered()];
+            $productItems[$item->getQuoteItemId()] = $item->getId();
+        }
+
+        $catalogRuleDiscountSharingParts = $this->calculateCatalogDiscountSharingParts($products, $websiteId, $customerGroupId);
+        $saleRulesDiscountSharingParts = $this->calculateDiscountSharingBySaleRules($quote, $order,$products, $websiteId, $customerGroupId);
+        $connection = $this->connection;
+        foreach ($products as $itemId => $productToCalc) {
+            $sellerTotal = ($sellerBorneCatalogRule[$itemId] ?? 0) + ($sellerBorneSaleRule[$itemId] ?? 0);
+            $platformTotal = ($platformBorneCatalogRule[$itemId] ?? 0) + ($platformBorneSaleRule[$itemId] ?? 0);
+
+            $connection->update(
+                'sales_order_item',
+                [
+                    'seller_borne_catalogrule_amount' => $sellerBorneCatalogRule[$itemId] ?? 0,
+                    'seller_borne_salesrule_amount' => $sellerBorneSaleRule[$itemId] ?? 0,
+                    'seller_borne_total_amount' => $sellerTotal,
+                    'platform_borne_catalogrule_amount' => $platformBorneCatalogRule[$itemId] ?? 0,
+                    'platform_borne_salesrule_amount' => $platformBorneSaleRule[$itemId] ?? 0,
+                    'platform_borne_total_amount' => $platformTotal,
+                ],
+                ['item_id = ?' => $itemId]
+            );
+        }
+
+        $connection->update(
+            'sales_order',
+            [
+                'seller_borne_catalogrule_amount' => $sellerBorneCatalogRuleTotalAmount,
+                'seller_borne_salesrule_amount' => $sellerBorneSaleRuleTotalAmount,
+                'seller_borne_total_amount' => $sellerBorneCatalogRuleTotalAmount + $sellerBorneSaleRuleTotalAmount,
+                'platform_borne_catalogrule_amount' => $platformBorneCatalogRuleTotalAmount,
+                'platform_borne_salesrule_amount' => $platformBorneSaleRuleTotalAmount,
+                'platform_borne_total_amount' => $platformBorneCatalogRuleTotalAmount + $platformBorneSaleRuleTotalAmount,
+            ],
+            ['entity_id = ?' => $order->getId()]
+        );
+    }
+
+    /**
+     * @param Quote $quote
+     * @param Order $order
+     * @param $products
+     * @param $websiteId
+     * @param $customerGroupId
+     * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    private function calculateDiscountSharingBySaleRules(Quote $quote, Order $order, $products, $websiteId, $customerGroupId)
+    {
+        $salesRuleIds = [];
+        $cartDiscounts = [];
+        $sellerBorneSaleRule = [];
+        $platformBorneSaleRule = [];
+        $sellerBorneSaleRuleTotalAmount = 0;
+        $platformBorneSaleRuleTotalAmount = 0;
+
+        /** @var QuoteItem $quoteItem */
+        foreach ($quote->getAllItems() as $quoteItem) {
+            $sRuleIds = $quoteItem->getAppliedRuleIds() ?: [];
+            if (is_string($sRuleIds)) {
+                $sRuleIds = explode(',', (string)$sRuleIds);
+            }
+            if (is_array($sRuleIds)) {
+                $salesRuleIds = array_merge($salesRuleIds, $sRuleIds);
+            }
+            foreach ((array)$quoteItem->getExtensionAttributes()->getDiscounts() as $discount) {
+                $ruleId = $discount->getRuleId();
+                $quoteItemId = $quoteItem->getId();
+                $cartDiscounts[$ruleId][$quoteItemId] = $discount;
+            }
+        }
+        $salesRuleIds = array_unique($salesRuleIds);
+        $salesRules = $this->getActiveSalesRules($salesRuleIds, $websiteId, $customerGroupId);
+        $quoteToOrderItemMap = [];
+        foreach ($quote->getAllItems() as $oldQuoteItem) {
+            $sku = $oldQuoteItem->getSku();
+            $price = (float)$oldQuoteItem->getPrice();
+            $qty = (float)$oldQuoteItem->getQty();
+            foreach ($order->getAllItems() as $orderItem) {
+                if ($orderItem->getSku() === $sku &&
+                    (float)$orderItem->getPrice() === $price &&
+                    (float)$orderItem->getQtyOrdered() === $qty) {
+                    $quoteToOrderItemMap[$oldQuoteItem->getId()] = $orderItem->getId();
+                    break;
+                }
+            }
+        }
+        foreach ($salesRules as $salesRule) {
+            $isSellerBorne = (bool)$salesRule->getData('seller_borne_discount');
+            $bornePercentage = (float)$salesRule->getData('borne_discount_percentage');
+            $sellerIds = $salesRule->getData('seller_ids');
+            $sellerIds = is_string($sellerIds) ? explode(',', $sellerIds) : (array)$sellerIds;
+
+            if (isset($cartDiscounts[$salesRule->getId()])) {
+                foreach ($cartDiscounts[$salesRule->getId()] as $quoteItemId => $discount) {
+                    if (!isset($quoteToOrderItemMap[$quoteItemId])) {
+                        continue;
+                    }
+                    $itemId = $quoteToOrderItemMap[$quoteItemId];
+                    $quoteItem = $quote->getItemById($quoteItemId);
+                    if (!$quoteItem) continue;
+
+                    $productId = $quoteItem->getProductId();
+                    $sellerId = $this->marketplaceHelper->getSellerIdByProductId($productId);
+
+                    $amount = (float)$discount->getDiscountData()->getAmount();
+                    $amount = $this->priceCurrency->roundPrice($amount, 0);
+
+                    if ($isSellerBorne && in_array($sellerId, $sellerIds)) {
+                        $sellerShare = $this->priceCurrency->roundPrice($amount * $bornePercentage / 100, 0);
+                        $platformShare = $amount - $sellerShare;
+                    } else {
+                        $sellerShare = 0;
+                        $platformShare = $amount;
+                    }
+                    $sellerBorneSaleRule[$itemId] = ($sellerBorneSaleRule[$itemId] ?? 0) + $sellerShare;
+                    $platformBorneSaleRule[$itemId] = ($platformBorneSaleRule[$itemId] ?? 0) + $platformShare;
+                    $sellerBorneSaleRuleTotalAmount += $sellerShare;
+                    $platformBorneSaleRuleTotalAmount += $platformShare;
+                }
+            }
+        }
+        return [
+            'sellerBorneSaleRule' => $sellerBorneSaleRule,
+            'platformBorneSaleRule' => $platformBorneSaleRule,
+            'sellerBorneSaleRuleTotalAmount' => $sellerBorneSaleRuleTotalAmount,
+            'platformBorneSaleRuleTotalAmount' => $platformBorneSaleRuleTotalAmount
+        ];
+    }
+
+
+    /**
+     * @param $products
+     * @param $websiteId
+     * @param $customerGroupId
+     * @return array
+     */
+    private function calculateCatalogDiscountSharingParts($products, $websiteId, $customerGroupId)
+    {
+        $sellerBorneCatalogRule = [];
+        $platformBorneCatalogRule = [];
+        $sellerBorneCatalogRuleTotalAmount = 0;
+        $platformBorneCatalogRuleTotalAmount = 0;
+        foreach ($products as $itemId => $productToCalc) {
+            $qty = $productToCalc['qty'] ?? 0;
+            if ($qty <= 0) continue;
+            $product = $productToCalc['product'];
+            $productId = (int)$product->getId();
+            $sellerId = $this->marketplaceHelper->getSellerIdByProductId($productId);
+            $currentProductPrice = (float)$product->getPrice();
+            $beforeCalcPrice = $currentProductPrice * $qty;
+
+            $catalogRuleIds = $this->getCatalogAppliedRuleIds($productId, $websiteId, $customerGroupId);
+            $catalogRules = $this->getActiveCatalogRules($catalogRuleIds, $websiteId, $customerGroupId);
+            foreach ($catalogRules as $catalogRule) {
+                $currentProductPrice = $this->calculateRuleProductPrice($catalogRule, $currentProductPrice, (int)$qty);
+                $discountAmount = $beforeCalcPrice - $currentProductPrice;
+                $isSellerBorne = (bool)$catalogRule->getData('seller_borne_discount');
+                $bornePercentage = (float)$catalogRule->getData('borne_discount_percentage');
+                $sellerIds = $catalogRule->getData('seller_ids');
+                $sellerIds = is_string($sellerIds) ? explode(',', $sellerIds) : (array)$sellerIds;
+
+                if ($discountAmount > 0) {
+                    if ($isSellerBorne && in_array($sellerId, $sellerIds)) {
+                        $sellerShare = $this->priceCurrency->roundPrice($discountAmount * $bornePercentage / 100, 0);
+                        $platformShare = $discountAmount - $sellerShare;
+                    } else {
+                        $sellerShare = 0;
+                        $platformShare = $discountAmount;
+                    }
+
+                    $sellerBorneCatalogRule[$itemId] = ($sellerBorneCatalogRule[$itemId] ?? 0) + $sellerShare;
+                    $platformBorneCatalogRule[$itemId] = ($platformBorneCatalogRule[$itemId] ?? 0) + $platformShare;
+                    $sellerBorneCatalogRuleTotalAmount += $sellerShare;
+                    $platformBorneCatalogRuleTotalAmount += $platformShare;
+                }
+                $beforeCalcPrice = $currentProductPrice;
+            }
+        }
+        return [
+            'sellerBorneCatalogRule' => $sellerBorneCatalogRule,
+            'platformBorneCatalogRule' => $platformBorneCatalogRule,
+            'sellerBorneCatalogRuleTotalAmount' => $sellerBorneCatalogRuleTotalAmount,
+            'platformBorneCatalogRuleTotalAmount' => $platformBorneCatalogRuleTotalAmount
+        ];
+    }
+
+    /**
+     * Returns catalog applied rule IDs.
+     *
+     * @param int $productId
+     * @param int $websiteId
+     * @param int $customerGroupId
+     *
+     * @return array
+     */
+    private function getCatalogAppliedRuleIds(int $productId, int $websiteId, int $customerGroupId): array
+    {
+        $table = $this->connection->getTableName('catalogrule_product');
+        $select = $this->connection->select()
+            ->from($table, ['rule_id'])
+            ->where('product_id = ?', $productId)
+            ->where('website_id = ?', $websiteId)
+            ->where('customer_group_id = ?', $customerGroupId);
+        return $this->connection->fetchCol($select);
+    }
+
+    /**
+     * Get active catalog rules.
+     *
+     * @param array $ruleIds
+     * @param int $websiteId
+     * @param int $customerGroupId
+     *
+     * @return CatalogRuleCollection
+     */
+    private function getActiveCatalogRules(array $ruleIds, int $websiteId, int $customerGroupId): CatalogRuleCollection
+    {
+        return $this->catalogRuleCollectionFactory->create()
+            ->addWebsiteFilter($websiteId)
+            ->addCustomerGroupFilter($customerGroupId)
+            ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('rule_id', ['in' => $ruleIds])
+            ->setOrder('sort_order', Collection::SORT_ORDER_ASC);
+    }
+
+    /**
+     * Calculate rule product price.
+     *
+     * @param Rule $rule
+     * @param float $currentProductPrice
+     * @param int $qty
+     *
+     * @return float
+     */
+    private function calculateRuleProductPrice(Rule $rule, float $currentProductPrice, int $qty): float
+    {
+        $price = match ($rule->getSimpleAction()) {
+            'to_fixed' => min($rule->getDiscountAmount(), $currentProductPrice),
+            'to_percent' => $currentProductPrice * $rule->getDiscountAmount() / 100,
+            'by_fixed' => max(0, $currentProductPrice - $rule->getDiscountAmount()),
+            'by_percent' => $currentProductPrice * (1 - $rule->getDiscountAmount() / 100),
+            default => 0,
+        };
+
+        $price = $this->priceCurrency->roundPrice($price, 0);
+        return $price * $qty;
+    }
+
+    /**
+     * Get active sales rules.
+     *
+     * @param array $ruleIds
+     * @param int $websiteId
+     * @param int $customerGroupId
+     *
+     * @return SalesRuleCollection
+     */
+    private function getActiveSalesRules(array $ruleIds, int $websiteId, int $customerGroupId): SalesRuleCollection
+    {
+        return $this->saleRuleCollectionFactory->create()
+            ->addWebsiteFilter($websiteId)
+            ->addCustomerGroupFilter($customerGroupId)
+            ->addFieldToFilter('is_active', 1)
+            ->addFieldToFilter('rule_id', ['in' => $ruleIds])
+            ->setOrder('sort_order', Collection::SORT_ORDER_ASC);
+    }
+}

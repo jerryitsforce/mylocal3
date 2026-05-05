@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Model\ResourceModel\Order\Grid\Collection">
+        <plugin name="braintreeSalesOrderGrid" type="\PayPal\Braintree\Plugin\SalesOrderGridPlugin" disabled="true"/>
+    </type>
+    
+    <!-- Add manual invoice fields to sales order grid collection -->
+    <type name="Magento\Sales\Model\ResourceModel\Order\Grid\Collection">
+        <plugin name="add_manual_invoice_fields" 
+                type="Branch8\SalesOrderGrid\Plugin\Framework\View\Element\UiComponent\DataProvider\CollectionFilter"
+                sortOrder="10"/>
+    </type>
+</config>

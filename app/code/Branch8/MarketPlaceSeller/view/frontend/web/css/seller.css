@@ -1,0 +1,10 @@
+.password-principle {
+    display: inline-block;
+    float: left;
+    margin: 20px;
+    margin-left: 30px;
+}
+.password-principle span {
+    color: #333333;
+    font-weight: bold;
+}

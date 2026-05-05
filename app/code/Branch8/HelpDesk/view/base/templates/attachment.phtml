@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var \Branch8\HelpDesk\Model\Attachment $attachment
+ * @var $block \Magento\Framework\View\Element\Template
+ */
+$attachment = $block->getAttachment();
+?>
+<div class="file-uploader-summary">
+    <div class="helpdesk-file-uploader-preview">
+        <a target="_blank" title="<?= $attachment->getName() ?>"
+           class="preview-link preview-<?= $attachment->getType() ?>"
+           href="<?= $attachment->getFullPath() ?>"
+        >
+            <?php if ($attachment->getType() == 'image'): ?>
+                <img alt="<?= $attachment->getName() ?>"
+                     src="<?= $attachment->getFullPath() ?>"/>
+            <?php elseif ($attachment->getType() == \Branch8\HelpDesk\Model\Attachment::TYPE_ZIP): ?>
+                <div class="zip-icon">
+                    <div class="zip-label">ZIP</div>
+                </div>
+            <?php endif ?>
+        </a>
+    </div>
+    <div class="file-uploader-filename"><?= $attachment->getName() ?></div>
+</div>

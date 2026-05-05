@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<ul class="breadcrumbs">
+  <li class="item">
+    <a href="<?= $escaper->escapeHtml($block->getUrl('hotai_point/detail')) ?>">
+      <span><?= $escaper->escapeHtml(__('回到和泰Points')) ?></span>
+    </a>
+  </li>
+</ul>

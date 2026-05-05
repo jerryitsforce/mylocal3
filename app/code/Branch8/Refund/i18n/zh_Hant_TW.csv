@@ -1,0 +1,5 @@
+"Cannot Refund This Order.","無法退款"
+"Cron Inquiry Check: Refund CurrentState Status From CTBC changes to %1","﹝退款狀態 - CurrentState 代碼﹞ "
+"Refund Request Amount <= 0 or Payment Cannot Refund.","﹝退款排程確認﹞退款金額 <= 0 或此支付方式無法退款。"
+"Credit memo #%1 was created by %2.","退款單 #%1 由 %2 建立。"
+"Credit memo #%1 was created by %2 (via API).","退款單 #%1 由 %2 建立（透過 API）。"

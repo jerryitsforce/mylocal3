@@ -1,0 +1,13 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<ul class="breadcrumbs">
+  <li class="item">
+    <a href="<?= $escaper->escapeHtml($block->getUrl('hotaipay/creditcard/listaction')) ?>">
+      <span><?= $escaper->escapeHtml(__('回到支付管理')) ?></span>
+    </a>
+  </li>
+</ul>

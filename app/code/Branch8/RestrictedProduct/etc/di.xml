@@ -1,0 +1,57 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<!--	<preference for="Amasty\Groupcat\Helper\Data" type="Branch8\RestrictedProduct\Rewrite\Amasty\Groupcat\Helper\Data"/>-->
+	<type name="Magento\Catalog\Api\ProductRepositoryInterface">
+		<plugin name="Branch8_RestrictedProduct_Plugin_Magento_Catalog_Api_ProductRepositoryInterface" type="Branch8\RestrictedProduct\Plugin\Magento\Catalog\Api\ProductRepositoryInterface" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Amasty\Groupcat\Model\RuleRepository">
+		<plugin name="Branch8_RestrictedProduct_Plugin_Amasty_Groupcat_Model_RuleRepository" type="Branch8\RestrictedProduct\Plugin\Amasty\Groupcat\Model\RuleRepository" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\CatalogDataExporter\Model\Provider\Product\AttributeMetadata">
+		<plugin name="Branch8_RestrictedProduct_Plugin_Magento_CatalogDataExporter_Model_Provider_Product_AttributeMetadata" type="Branch8\RestrictedProduct\Plugin\Magento\CatalogDataExporter\Model\Provider\Product\AttributeMetadata" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
+		<plugin name="Branch8_RestrictedProduct_Plugin_Magento_CatalogInventory_Model_Quote_Item_QuantityValidator" type="Branch8\RestrictedProduct\Plugin\Magento\CatalogInventory\Model\Quote\Item\QuantityValidator" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Amasty\Groupcat\Model\ProductRuleProvider">
+		<plugin name="branch8_fix_bug_seller_create_product" type="Branch8\RestrictedProduct\Plugin\Amasty\Groupcat\Model\ProductRuleProvider" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Amasty\Groupcat\Model\Rule\RuleProcessor">
+		<plugin name="Branch8_RestrictedProduct_Plugin_Amasty_Groupcat_Model_Rule_RuleProcessor" type="Branch8\RestrictedProduct\Plugin\Amasty\Groupcat\Model\Rule\RuleProcessor" sortOrder="10" disabled="false"/>
+	</type>
+	<virtualType name="ProductEavAttributesProvider" type="Magento\CatalogDataExporter\Model\Provider\EavAttributes\EavAttributesProvider">
+        <arguments>
+            <argument name="queryBuilder" xsi:type="object">Magento\CatalogDataExporter\Model\Query\Eav\ProductAttributeQueryBuilder</argument>
+            <argument name="includeAttributes" xsi:type="array">
+                <item name="hide_product_on_search" xsi:type="string">hide_product_on_search</item>
+            </argument>
+        </arguments>
+    </virtualType>
+	<preference for="Magento\CatalogDataExporter\Model\Provider\Product\Displayable" type="Branch8\RestrictedProduct\Rewrite\Magento\CatalogDataExporter\Model\Provider\Product\Displayable"/>
+    <preference for="Amasty\Groupcat\Plugin\Catalog\Model\ResourceModel\Product\Collection"
+                type="Branch8\RestrictedProduct\Rewrite\Amasty\Groupcat\Plugin\Catalog\Model\ResourceModel\Product\Collection"/>
+
+    <type name="Branch8\RestrictedProduct\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RestrictedProduct\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">restrictedProductLogHandler</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\RestrictedProduct\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RestrictedProduct\CustomerData\RestrictedProductIds">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\RestrictedProduct\Logger\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RestrictedProduct\Cron\RunReindex">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\RestrictedProduct\Logger\Logger</argument>
+        </arguments>
+    </type>
+</config>

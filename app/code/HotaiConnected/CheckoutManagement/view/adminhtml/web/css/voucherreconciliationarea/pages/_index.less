@@ -1,0 +1,45 @@
+// =============================================
+//  Voucher Reconciliation Area - Page Layout
+// =============================================
+//  此檔案僅包含頁面層級的佈局樣式
+//  組件樣式已移至：
+//  - components/table/cells/_table-cells-common.less
+//
+//  @updated 2025-01-XX - 初始版本
+// =============================================
+
+.voucher-reconciliation-area {
+    // Top actions bar
+    &__top-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.6rem;
+        letter-spacing: .025em;
+    }
+
+    // Filters toggle (Magento admin override)
+    & .admin__data-grid-filters-wrap {
+        display: none;
+        
+        &._show {
+            display: block;
+        }
+    }
+
+    // Table actions
+    &__table {
+        &__actions {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+}
+
+
+
+

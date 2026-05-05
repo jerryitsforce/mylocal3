@@ -1,0 +1,26 @@
+<?php
+
+/**
+ * @see \Branch8\HelpDeskNotification\Adminhtml\Block\Window $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<ul class="message-system-list"
+    data-mage-init='{
+        "Branch8_HelpDeskNotification/js/noticeUnprocessedTicketForm": {
+            "autoOpen": true,
+            "buttons": false,
+            "modalClass": "modal-system-messages",
+            "title": "<?= $block->escapeHtmlAttr($block->getHeaderText()) ?>",
+            "dismissUrl": "<?= $block->escapeUrl($block->getDismissUrl()) ?>"
+        }
+    }'>
+    <li class="message message-warning warning">
+        <?= ($block->getNoticeMessageText()) ?><br/>
+        <a href="<?= $block->escapeUrl($block->getTiketHelpDeskLink()) ?>">
+            <?= $block->escapeHtml(__('Go Details')) ?>
+        </a>
+    </li>
+</ul>
+<?= /* @noEscape */
+$secureRenderer->renderStyleAsTag('display:none', '.message-system-list'); ?>

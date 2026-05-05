@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Api\GroupRepositoryInterface">
+        <plugin name="branch8_get_group_fields" type="Branch8\Customer\Plugin\GetGroupOtherFields"/>
+    </type>
+    <type name="Magento\Customer\Model\ResourceModel\GroupRepository">
+        <plugin name="branch8_save_group_fields" type="Branch8\Customer\Plugin\SaveGroupOtherFields"/>
+    </type>
+<!--    <type name="Magento\Customer\Model\Group">-->
+<!--        <plugin name="b8_custom_get_group_code" type="Branch8\Customer\Plugin\GetGroupCode"/>-->
+<!--    </type>-->
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="branch_customer_group_label_icon"
+                type="Branch8\Customer\Plugin\CustomerData"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="organization_listing_data_source" xsi:type="string">OrganizationCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <!--    <virtualType name="OrganizationCollection" type="Branch8\Customer\Ui\DataProvider\Organization\ListingDataProvider">-->
+    <virtualType name="OrganizationCollection" type="Branch8\Customer\Ui\DataProvider\Organization\Listing\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_customer_organization</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Customer\Model\ResourceModel\Organization</argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Branch8\Customer\Api\CustomerInterface" type="Branch8\Customer\Model\Api\CustomerRepository"/>
+    <preference for="Branch8\Customer\Api\CustomerRequestInterface" type="Branch8\Customer\Model\Api\CustomerRequest"/>
+    <preference for="Branch8\Customer\Api\CustomerResponseInterface" type="Branch8\Customer\Model\Api\CustomerResponse"/>
+    <preference for="Branch8\Customer\Api\CustomerManagementInterface" type="Branch8\Customer\Model\Api\CustomerManagement"/>
+    <preference for="Branch8\Customer\Api\Data\BrowsingHistoryProductInterface" type="Branch8\Customer\Model\Api\Data\BrowsingHistoryProduct"/>
+
+    <preference for="Magento\Customer\Model\CustomerRegistry" type="Branch8\Customer\Model\CustomerRegistry"/>
+    <preference for="Magento\Customer\Model\ResourceModel\CustomerRepository" type="Branch8\Customer\Model\ResourceModel\CustomerRepository"/>
+    <preference for="Magento\Customer\Model\Customer" type="Branch8\Customer\Model\Customer"/>
+    <preference for="Magento\Customer\Controller\Account\CreatePost" type="Branch8\Customer\Override\Controller\Account\CreatePost"/>
+    <preference for="Magento\Customer\Controller\Account\LoginPost" type="Branch8\Customer\Override\Controller\Account\LoginPost"/>
+    <preference for="Magento\Customer\Controller\Address\Index" type="Branch8\Customer\Override\Controller\Address\Index"/>
+    <preference for="Magento\Customer\Model\ResourceModel\Address\Relation" type="Branch8\Customer\Model\ResourceModel\Address\Relation"/>
+    <preference for="Magento\Customer\Model\Customer\Attribute\Source\Group" type="Branch8\Customer\Override\Model\Customer\Attribute\Source\Group"/>
+    <type name="Webkul\SellerSubAccount\Helper\Data">
+        <plugin name="branch8_seller_sub_account_helper_data" type="Branch8\Customer\Plugin\SellerSubAccountHelperData"/>
+    </type>
+    <type name="Magento\Customer\Model\EmailNotification">
+        <plugin name="branch8_custom_new_email_subaccount_buyer_seller" type="Branch8\Customer\Plugin\EmailNotification"/>
+    </type>
+    <type name="Magento\Customer\Model\AccountManagement">
+        <plugin name="branch8_prevent_send_forgot_password_email_to_buyer" type="Branch8\Customer\Plugin\AccountManagement"/>
+    </type>
+    <type name="Magento\Newsletter\Model\Subscriber">
+        <plugin name="branch8_prevent_send_newsletter_email_to_buyer" type="Branch8\Customer\Plugin\Newsletter\Model\Subscriber"/>
+    </type>
+    <type name="Magento\Reports\Model\ResourceModel\Product\Index\AbstractIndex">
+		<plugin name="Branch8_Customer_Plugin_Magento_Reports_Model_ResourceModel_Product_Index_AbstractIndex" type="Branch8\Customer\Plugin\Magento\Reports\Model\ResourceModel\Product\Index\AbstractIndex" sortOrder="10" disabled="false"/>
+	</type>
+
+    <type name="Branch8\Customer\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Customer\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">carOwnerLogHandler</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\Customer\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

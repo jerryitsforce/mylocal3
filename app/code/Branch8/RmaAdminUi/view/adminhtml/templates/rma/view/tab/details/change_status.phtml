@@ -1,0 +1,134 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $helper \Branch8\Rma\Helper\Data
+ * @var $statusResolver \Branch8\Sales\ViewModel\StatusResolver
+ * @var $order \Magento\Sales\Model\Order
+ */
+$rmaDetails = $block->getRmaDetails();
+$rmaId = $rmaDetails->getId();
+$rmaModel = $block->getRmaModel();
+$statusResolver=$block->getData('status_resolver');
+$helper = $this->helper(\Branch8\Rma\Helper\Data::class);
+$rmaItemId = $helper->getRmaItems($rmaId)->getItemId();
+$isTicket = $rmaModel->isTicket($rmaItemId);
+$status = $rmaDetails->getStatus();
+$finalStatus = $block->getFinalStatus();
+$order = $block->getOrder();
+$hasCreditNemo = (int)$rmaDetails->getMemoId() !== 0 || ($order && $order->getCreditmemosCollection() && count($order->getCreditmemosCollection()) > 0);
+$allStatus = $rmaModel->getAllNextStatusOptions($status,
+    $isTicket,
+    $rmaDetails->getIsReplaceAgain(),
+    $statusResolver->canAdjustShippingStatus(),
+    $hasCreditNemo
+);
+$reasonsToDecline = $rmaModel->getAllReasonsForDecline();
+$declineReasonId = $rmaDetails->getDeclineReasonId();
+$sellerName = $helper->getCustomerName($rmaId);
+$alertStatus = [
+    \Branch8\Rma\Model\Rma\Status::REPLACE_REVIEW_PROCESSING,
+    \Branch8\Rma\Model\Rma\Status::REPLACE_SHIPPING_ARRIVED,
+    \Branch8\Rma\Model\Rma\Status::RETURN_REVIEW_PROCESSING
+];
+?>
+<?php if ($allStatus): ?>
+    <div class="wk-mprma-container wk-mprma-view">
+        <div class="wk-title">
+            <?= $escaper->escapeHtml(__("Change RMA Status")); ?>
+        </div>
+        <form method="post"
+              action="<?= $escaper->escapeUrl($block->getUrl('mprmasystem/rma/change')); ?>"
+              id="wk_rma_close_form" class="form-inline" enctype="multipart/form-data"
+              data-mage-init='{"validation":{}}'>
+            <fieldset class="fieldset wk-mprma-fieldset wk-close-filedset">
+                <div class="field">
+
+                    <?php if ($finalStatus == 0): ?>
+                        <input type="hidden" value="<?= $escaper->escapeHtml($helper->encrypt($rmaId)); ?>"
+                               name="rma_id">
+                        <input name="form_key" type="hidden" value="<?= /* @noEscape */ $block->getFormKey() ?>"/>
+                        <div class="admin__field field field-changed_status  required">
+                            <div class="admin__field-control control">
+                                <select id="changed_status" name="changed_status"
+                                        class="input-text required-entry select admin__control-select"
+                                        data-role="changed-status">
+                                    <?php foreach ($allStatus as $key => $status): ?>
+                                        <option value="<?= $escaper->escapeHtml($key); ?>">
+                                            <?= $escaper->escapeHtml(__($status)); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <?php if (in_array($key, $alertStatus)): ?>
+                                <div>
+                                    <span style="font-style:oblique;Color:red;"><?php echo $escaper->escapeHtml(__('Press the button to skip shipping to customer stage.'));?></span>
+                                </div>
+                            <?php endif;?>
+                        </div>
+
+                        <div class="admin__field field field-decline_reasons required"
+                             data-role="decline-reasons-wrapper" style="display: none">
+                            <label for="decline_reasons"
+                                   class="label  admin__field-label"><span><?= __('Decline Reason:') ?></span></label>
+                            <div class="control">
+                                <select id="decline_reasons" name="decline_reason_id"
+                                        class="input-text required-entry select admin__control-select"
+                                        data-group="decline-field"
+                                >
+                                    <option value=""><?= __('Please select') ?></option>
+                                    <?php foreach ($reasonsToDecline as $key => $reason): ?>
+                                        <option value="<?= $escaper->escapeHtml($key); ?>">
+                                            <?= $escaper->escapeHtml($reason); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="admin__field field field-decline_reason_detail required"
+                             data-role="decline-reasons-wrapper" style="display: none">
+                            <label for="decline_reason_detail"
+                                   class="label admin__field-label">
+                                <span><?= __('Decline Reason Detail:') ?></span>
+                            </label>
+                            <div class="control">
+                                <textarea name="decline_reason_detail" data-validate="{required:true}"
+                                          class="wk-rma-msg input-text required-entry
+                                    validate-no-html-tags select admin__control-textarea"
+                                          data-group="decline-field"></textarea>
+                            </div>
+                        </div>
+                        <div class="wk-action-btn">
+                            <button title="Save" class="action save primary wk-save" type="submit">
+                                <span><?= $escaper->escapeHtml(__("Save")); ?></span>
+                            </button>
+                        </div>
+
+                    <?php else: ?>
+                        <?= $escaper->escapeHtml($helper->getCloseRmaLabel($finalStatus, $sellerName)); ?>
+                    <?php endif; ?>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <?php
+    $scriptString = <<<script
+
+    require([
+        "jquery",
+        "prototype"
+    ], function(jQuery){
+
+    //<![CDATA[
+        jQuery('#wk_rma_close_form').on('submit', function(e){
+            jQuery(this).find(":submit").attr('disabled', 'disabled');
+        });
+    //]]>
+
+    });
+    script;
+    ?>
+    <?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>
+<?php endif; ?>

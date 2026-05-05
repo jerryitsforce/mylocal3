@@ -1,0 +1,9 @@
+<?php
+/**
+ * @var $block \Webkul\MpBuyerSellerChat\Block\CoreConfigModel
+ */
+
+?>
+<script class="script-reinit">
+  window.chatboxCoreConfig = <?= /* @noEscape */ \Laminas\Json\Json::encode($block->getCustomChatBoxCoreConfig()); ?>;
+</script>

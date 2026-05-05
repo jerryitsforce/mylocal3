@@ -1,0 +1,90 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!-- ko if: isCalculated() && quoteIsVirtual == 0 -->
+<!-- ko if: isBothPricesDisplayed() -->
+<tr class="totals shipping excl">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="text: title + ' ' + excludingTaxMessage"></span>
+        <!-- ko if: haveToShowCoupon() -->
+        <span class="label description" data-bind="text: getCouponDescription()"></span>
+        <!-- /ko -->
+        <span class="value" data-bind="text: getShippingMethodTitle()"></span>
+    </th>
+    <td class="amount">
+            <span class="price"
+                  data-bind="text: getExcludingValue(), attr: {'data-th': excludingTaxMessage}"></span>
+    </td>
+</tr>
+<tr class="totals shipping incl">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="text: title"></span>
+        <!-- ko if: haveToShowCoupon() -->
+        <span class="label description" data-bind="text: getCouponDescription()"></span>
+        <!-- /ko -->
+        <span class="value" data-bind="text: getShippingMethodTitle()"></span>
+    </th>
+    <td class="amount">
+            <span class="price"
+                  data-bind="text: getIncludingValue(), attr: {'data-th': title + ' ' + excludingTaxMessage}"></span>
+    </td>
+</tr>
+<!-- ko foreach: { data: getDetailShipping(), as: 'item' } -->
+<tr class="shipping-sub">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="i18n: item.seller_name"></span>
+        <span class="order-type" data-bind="i18n: item.order_type"></span>
+    </th>
+    <td class="amount">
+        <span class="price"
+              data-bind="text: item.fee"></span>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: isIncludingDisplayed() -->
+<tr class="totals shipping incl">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="i18n: title"></span>
+        <!-- ko if: haveToShowCoupon() -->
+        <span class="label description" data-bind="text: getCouponDescription()"></span>
+        <!-- /ko -->
+        <span class="value" data-bind="text: getShippingMethodTitle()"></span>
+    </th>
+    <td class="amount">
+            <span class="price"
+                  data-bind="text: getIncludingValue(), attr: {'data-th': title}"></span>
+    </td>
+</tr>
+<!-- ko foreach: { data: getDetailShipping(), as: 'item' } -->
+<tr class="shipping-sub">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="i18n: item.seller_name"></span>
+        <span class="order-type" data-bind="i18n: item.order_type"></span>
+    </th>
+    <td class="amount">
+        <span class="price"
+              data-bind="text: item.fee"></span>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- /ko -->
+<!-- ko if: isExcludingDisplayed() -->
+<tr class="totals shipping excl">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="i18n: title"></span>
+        <!-- ko if: haveToShowCoupon() -->
+        <span class="label description" data-bind="text: getCouponDescription()"></span>
+        <!-- /ko -->
+        <span class="value" data-bind="text: getShippingMethodTitle()"></span>
+    </th>
+    <td class="amount">
+            <span class="price"
+                  data-bind="text: getValue(), attr: {'data-th': title}"></span>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- /ko -->

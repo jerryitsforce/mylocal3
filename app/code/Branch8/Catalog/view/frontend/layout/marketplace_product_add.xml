@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Branch8_Catalog::js/create-edit-is-hidden.js" />
+        <script src="Branch8_Catalog::js/create-edit-commission.js" />
+        <script src="Branch8_Catalog::js/restrict-ticket-qty.js" />
+        <script src="Branch8_Catalog::js/marketplace-voucher-lookup.js" />
+        <script src="Branch8_Catalog::js/editor_update_fields.js" />
+    </head>
+</page>

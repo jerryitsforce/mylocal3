@@ -1,0 +1,185 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $viewModel \Branch8\LimitPurchased\ViewModel\Product\LimitPurchased
+ */
+$viewModel = $block->getData('view_model');
+$product = $block->getProduct();
+
+if ($product) {
+    $maxQty = $viewModel->getMaxAllowedQty($product);
+    $productId = $product->getId();
+} else {
+    $maxQty = null;
+    $productId = null;
+}
+?>
+<?php if ($maxQty !== null && $maxQty >= 0): ?>
+    <script>
+        require(['jquery', 'mage/translate', 'mage/validation', 'Magento_Customer/js/customer-data'], function ($, $t, validation, customerData) {
+            $(document).ready(function () {
+                var originalMaxQty = <?= (int)$maxQty ?>;
+                var productId = <?= (int)$productId ?>;
+                var qtyInput = $('#qty');
+                var adjustedMaxQty = originalMaxQty;
+                
+
+                // Use Magento's built-in cart section (already loaded, instant access)
+                var cartSection = customerData.get('cart');
+                
+                function updateMaxQty() {
+                    var cartData = cartSection();
+                    
+                    if (!cartData || !cartData.items) {
+                        
+                        // Force reload cart section
+                        customerData.reload(['cart'], false);
+                        
+                        // Wait for reload and try again
+                        setTimeout(function() {
+                            var reloadedCartData = cartSection();
+                            
+                            if (reloadedCartData && reloadedCartData.items) {
+                                calculateAndApplyMaxQty(reloadedCartData);
+                            } else {
+                                adjustedMaxQty = originalMaxQty;
+                            }
+                        }, 500);
+                        return;
+                    }
+                    
+                    calculateAndApplyMaxQty(cartData);
+                }
+                
+                function calculateAndApplyMaxQty(cartData) {
+                    
+                    // Calculate cart qty from cart items
+                    var cartQty = 0;
+                    $.each(cartData.items, function(index, item) {
+                        if (item.product_id == productId) {
+                            cartQty += parseFloat(item.qty) || 0;
+                        }
+                    });
+                    
+                    adjustedMaxQty = Math.max(0, originalMaxQty - cartQty);
+                    
+                    // Update the limit message text with adjusted qty
+                    var qtyMessage = $('.limit-qty-text-popup');
+                    if (qtyMessage.length > 0 && originalMaxQty >= 0) {
+                        var messageText = '<?= $block->escapeJs(__('A single order for this product (including all its variations) is limited to %1 pieces.', '__MAX_QTY__')) ?>';
+                        messageText = messageText.replace('__MAX_QTY__', originalMaxQty);
+                        qtyMessage.text(messageText).show();
+                    }
+                    
+                    
+                    // Update the input max attribute
+                    if (qtyInput.length) {
+                        qtyInput.attr('max', adjustedMaxQty);
+                    }
+                    
+                    // Re-validate if there's already a value
+                    if (qtyInput.length && qtyInput.val()) {
+                        $('[id*="qty-error"]').remove();
+                        validateQty();
+                    }
+                }
+                
+                // Initial update
+                updateMaxQty();
+                
+                // Hide mage-error message elements below qty input
+                if (qtyInput.length) {
+                    setInterval(function() {
+                        $('#qty-error.mage-error').hide();
+                    }, 100);
+                }
+                
+                // Subscribe to cart changes (auto-update when cart changes)
+                cartSection.subscribe(function() {
+                    updateMaxQty();
+                });
+                
+                // Instead of using Magento validator, directly manipulate the .limit-qty-text-popup element
+                function validateQty() {
+                    var currentQty = parseFloat(qtyInput.val()) || 0;
+                    var qtyMessage = $('.limit-qty-text-popup');
+                    var qtyContainer = qtyInput.closest('.control');
+                    
+                    if (qtyMessage.length > 0) {
+                        if (currentQty > adjustedMaxQty) {
+                            qtyMessage.addClass('error');
+                            qtyContainer.addClass('error');
+                            $(".fullpoint-pdp-box-tocart .control").addClass('error');
+                            return false;
+                        } else {
+                            qtyMessage.removeClass('error');
+                            qtyContainer.removeClass('error');
+                            $(".fullpoint-pdp-box-tocart .control").removeClass('error');
+                            return true;
+                        }
+                    }
+                    return true;
+                }
+                
+                // Bind validation to input events
+                if (qtyInput.length) {
+                    qtyInput.on('blur change keyup', function() {
+                        validateQty();
+                    });
+                    
+                    // Also validate on form submit
+                    var form = qtyInput.closest('form');
+                    if (form.length) {
+                        form.on('submit', function(e) {
+                            if (!validateQty()) {
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                    }
+                    
+                    // Initial validation
+                    validateQty();
+                }
+                // Global Prefix Removal Script
+                // This ensures that 'LIMIT_PURCHASE_ERROR|' is never displayed to the user
+                function removeLimitPrefix() {
+                    // Optimize: Only search within specific containers where messages likely appear
+                    var containers = $('.messages, .page.messages, .modal-content, .cart.item .message, .validation-advice');
+                    
+                    if (containers.length) {
+                        containers.find(":contains('LIMIT_PURCHASE_ERROR|')").addBack(":contains('LIMIT_PURCHASE_ERROR|')").each(function() {
+                            // Double check text content to avoid false positives and only modify leaf nodes or direct containers if possible
+                            var html = $(this).html();
+                            if (html && html.indexOf('LIMIT_PURCHASE_ERROR|') !== -1) {
+                                $(this).html(html.replace(/LIMIT_PURCHASE_ERROR\|/g, ''));
+                            }
+                        });
+                    }
+                }
+                
+                // Run initially
+                removeLimitPrefix();
+                
+                // Run periodically but less frequently (e.g., 1s) to catch dynamic layout changes without heavy load
+                setInterval(removeLimitPrefix, 1000);
+
+                // Observe global messages container specifically (most efficient way)
+                var globalMessages = $('.page.messages, .messages');
+                if (globalMessages.length) {
+                    var observer = new MutationObserver(function(mutations) {
+                        removeLimitPrefix();
+                    });
+                    
+                    globalMessages.each(function() {
+                         observer.observe(this, {
+                            childList: true,
+                            subtree: true,
+                            characterData: true
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

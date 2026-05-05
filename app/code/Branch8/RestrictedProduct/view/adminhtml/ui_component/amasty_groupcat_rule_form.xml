@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Customer Group Catalog for Magento 2
+ */-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="restriction_action">
+        <field name="forbidden_action">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="switcherConfig" xsi:type="array">
+                        <item name="rules" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="value" xsi:type="number">0</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="2" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_specificed_url</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">hide</item>
+                                    </item>
+                                    <item name="3" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_specificed_url</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">setValidation</item>
+                                        <item name="params" xsi:type="array">
+                                            <item name="0" xsi:type="string">required-entry</item>
+                                            <item name="1" xsi:type="string">0</item>
+                                        </item>
+                                    </item>
+                                    <item name="4" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_page_id_for_guest</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">hide</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="1" xsi:type="array">
+                                <item name="value" xsi:type="number">1</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="2" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_specified_url</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">hide</item>
+                                    </item>
+                                    <item name="3" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_specificed_url</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">setValidation</item>
+                                        <item name="params" xsi:type="array">
+                                            <item name="0" xsi:type="string">required-entry</item>
+                                            <item name="1" xsi:type="string">0</item>
+                                        </item>
+                                    </item>
+                                    <item name="4" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_page_id_for_guest</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">show</item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="2" xsi:type="array">
+                                <item name="value" xsi:type="string">1000</item>
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_specificed_url</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">show</item>
+                                    </item>
+                                    <item name="1" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_specificed_url</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">setValidation</item>
+                                        <item name="params" xsi:type="array">
+                                            <item name="0" xsi:type="string">required-entry</item>
+                                            <item name="1" xsi:type="string">1</item>
+                                        </item>
+                                    </item>
+                                    <item name="2" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_page_id</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">hide</item>
+                                    </item>
+                                    <item name="3" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_page_id</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">setValidation</item>
+                                        <item name="params" xsi:type="array">
+                                            <item name="0" xsi:type="string">required-entry</item>
+                                            <item name="1" xsi:type="string">0</item>
+                                        </item>
+                                    </item>
+                                    <item name="4" xsi:type="array">
+                                        <item name="target" xsi:type="string">${ $.parentName }.forbidden_page_id_for_guest</item>
+                                        <item name="__disableTmpl" xsi:type="array">
+                                            <item name="target" xsi:type="boolean">false</item>
+                                        </item>
+                                        <item name="callback" xsi:type="string">hide</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Branch8\RestrictedProduct\Model\Rule\ForbiddenActionOptionsProvider</item>
+            </argument>
+        </field>
+        <field name="forbidden_page_id_for_guest">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">CMS page redirect to (for guest)</item>
+                    <item name="additionalClasses" xsi:type="string">amgroupcat-field-select</item>
+                    <item name="fieldGroup" xsi:type="string">bool</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="value" xsi:type="string">0</item>
+                    <item name="source" xsi:type="string">groupcat_rule</item>
+                    <item name="dataScope" xsi:type="string">forbidden_page_id_for_guest</item>
+                    <item name="notice" xsi:type="string" translate="true">Customers will be redirected to this CMS page when they try to access a forbidden page (only for guest)</item>
+                </item>
+                <item name="options" xsi:type="object">Amasty\Groupcat\Model\Rule\CmsPageOptionsProvider</item>
+            </argument>
+        </field>
+        <field name="forbidden_specificed_url">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Specified Url</item>
+                    <item name="additionalClasses" xsi:type="string">amgroupcat-field-select</item>
+                    <item name="fieldGroup" xsi:type="string">bool</item>
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">groupcat_rule</item>
+                    <item name="dataScope" xsi:type="string">forbidden_specificed_url</item>
+                    <item name="notice" xsi:type="string" translate="true">Customers will be redirected to this url when they try to access a forbidden page</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

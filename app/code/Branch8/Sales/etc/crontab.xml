@@ -1,0 +1,99 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<group id="sales">
+		<job name="sales_status_shipping_status_complete" instance="Branch8\Sales\Cron\UpdateStatusToComplete" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_shipping_status_arrived" instance="Branch8\Sales\Cron\UpdateStatusToArrived" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_shipping_status_tallying" instance="Branch8\Sales\Cron\UpdateStatusToTallying" method="execute">
+			<schedule>30 00 * * *</schedule>
+		</job>
+		<job name="sales_status_ticket_rma_avail" instance="Branch8\Sales\Cron\UpdateTicketRmaStatus" method="execute">
+			<schedule>30 00 * * *</schedule>
+		</job>
+		<job name="sales_status_all_order_status_update" instance="Branch8\Sales\Cron\UpdateParentAndSubOrderStatus" method="execute">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+		<job name="sales_status_applying_replace_review" instance="Branch8\Sales\Cron\UpdateStatusToApplyingReplaceReview" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_applying_return_review" instance="Branch8\Sales\Cron\UpdateStatusToApplyingReturnReview" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_replace_shipping_arrived" instance="Branch8\Sales\Cron\UpdateStatusToReplaceShippingArrived" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_replaced" instance="Branch8\Sales\Cron\UpdateStatusToReplaced" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_picked" instance="Branch8\Sales\Cron\UpdateStatusToPicked" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="sales_status_pending_payment" instance="Branch8\Sales\Cron\UpdateStatusToPendingPayment" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="payment_check" instance="Branch8\Sales\Cron\PaymentCheck" method="execute">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+		<job name="sales_status_flagship_fake_order" instance="Branch8\Sales\Cron\UpdateFlagshipFakeOrderStatus" method="execute">
+			<schedule>* * * * *</schedule>
+		</job>
+		<job name="sales_status_gift_order_processing" instance="Branch8\Sales\Cron\UpdateGiftOrderStatusToProcessing" method="execute">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+		<job name="sales_status_gift_order_info_complete" instance="Branch8\Sales\Cron\UpdateGiftOrderStatusToInfoComplete" method="execute">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+		<job name="sales_status_update_pending_complete_and_invoice_done_to_complete" instance="Branch8\Sales\Cron\UpdatePendingCompleteAndInvoiceDoneToComplete" method="execute">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+		<job name="fill_in_postcode_for_old_rma_address" instance="Branch8\Sales\Cron\FillInPostcodeForOldRmaAddress" method="execute">
+			<schedule>0 4 * * *</schedule>
+		</job>
+		<job name="update_sub_order_gift_confirmed" instance="Branch8\Sales\Cron\UpdateSubOrderGiftConfirmed" method="execute">
+			<schedule>* * * * *</schedule>
+		</job>
+
+		<!-- FORTEST Fake Cron, Need to remove after UAT-->
+		<job name="for_test_sales_status_shipping_status_complete" instance="Branch8\Sales\Cron\ForTestUpdateStatusToComplete" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_shipping_status_arrived" instance="Branch8\Sales\Cron\ForTestUpdateStatusToArrived" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_shipping_status_tallying" instance="Branch8\Sales\Cron\ForTestUpdateStatusToTallying" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_ticket_rma_avail" instance="Branch8\Sales\Cron\ForTestUpdateTicketRmaStatus" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_all_order_status_update" instance="Branch8\Sales\Cron\ForTestUpdateParentAndSubOrderStatus" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_applying_replace_review" instance="Branch8\Sales\Cron\ForTestUpdateStatusToApplyingReplaceReview" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_applying_return_review" instance="Branch8\Sales\Cron\ForTestUpdateStatusToApplyingReturnReview" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_replace_shipping_arrived" instance="Branch8\Sales\Cron\ForTestUpdateStatusToReplaceShippingArrived" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_replaced" instance="Branch8\Sales\Cron\ForTestUpdateStatusToReplaced" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_picked" instance="Branch8\Sales\Cron\ForTestUpdateStatusToPicked" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+		<job name="for_test_sales_status_pending_payment" instance="Branch8\Sales\Cron\ForTestUpdateStatusToPendingPayment" method="execute">
+			<schedule>0 0 1 9 1</schedule>
+		</job>
+	</group>
+    <group id="default">
+        <job name="aggregate_product_report_viewed_data" instance="Branch8\Sales\Cron\AggregateProductReportViewedData" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

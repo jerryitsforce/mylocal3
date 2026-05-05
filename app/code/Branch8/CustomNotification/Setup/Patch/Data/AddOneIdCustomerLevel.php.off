@@ -1,0 +1,78 @@
+<?php
+
+namespace Branch8\CustomNotification\Setup\Patch\Data;
+
+
+use Branch8\CustomNotification\Model\ConfigData;
+use Magento\Customer\Setup\Patch\Data\DefaultCustomerGroupsAndAttributes;
+use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Setup\Patch\PatchRevertableInterface;
+use Magento\Framework\App\Config\Storage\WriterInterface;
+
+class AddOneIdCustomerLevel implements DataPatchInterface, PatchRevertableInterface
+{
+
+    /**
+     * @var ModuleDataSetupInterface
+     */
+    private $moduleDataSetup;
+
+    private WriterInterface $writter;
+
+    /**
+     * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param WriterInterface $writer
+     */
+    public function __construct(
+        ModuleDataSetupInterface $moduleDataSetup,
+        WriterInterface          $writer
+    )
+    {
+        $this->moduleDataSetup = $moduleDataSetup;
+        $this->writter = $writer;
+    }
+
+
+    public function apply()
+    {
+        $this->moduleDataSetup->getConnection()->startSetup();
+        $connection = $this->moduleDataSetup->getConnection();
+        $this->moduleDataSetup->getConnection()->insert(
+            $this->moduleDataSetup->getTable('branch8_customer_organization'),
+            ['name' => '指定會員-One ID', 'sort_order' => 1000, 'hotai1_name' => 'one_id']
+        );
+        $lastInsertId = $connection->lastInsertId('branch8_customer_organization');
+        $this->moduleDataSetup->getConnection()->insert(
+            $this->moduleDataSetup->getTable('customer_group'),
+            ['customer_group_code' => '指定會員-One ID', 'tax_class_id' => 3, 'organization' => $lastInsertId]
+        );
+        $lastInsertId = $connection->lastInsertId('customer_group');
+        $this->writter->save(ConfigData::XML_PATH_ONE_ID_GROUP_CONFIG, $lastInsertId);
+        $this->moduleDataSetup->getConnection()->endSetup();
+    }
+
+    public static function getDependencies()
+    {
+        return [
+            DefaultCustomerGroupsAndAttributes::class
+        ];
+    }
+
+    /**
+     *
+     */
+    public function revert()
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+
+}

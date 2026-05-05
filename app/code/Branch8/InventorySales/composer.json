@@ -1,0 +1,22 @@
+{
+    "name": "branch8/module-inventorysales",
+    "description": "Magento InventorySales",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Branch8",
+            "email": "dev@branch8.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Branch8\\InventorySales\\": ""
+        }
+    }
+}

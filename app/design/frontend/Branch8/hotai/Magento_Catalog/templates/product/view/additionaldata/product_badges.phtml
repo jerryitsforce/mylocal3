@@ -1,0 +1,18 @@
+<?php
+/**
+ * @var $block Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Branch8\Catalog\Helper\Data::class);
+$_product = $block->getProduct();
+$helperLabel = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+?>
+<div class="product badges">
+    <?php if ($helperLabel->isProductInVipCategory($_product)): ?>
+        <span class="vip-label">VIP</span>
+    <?php endif; ?>
+</div>

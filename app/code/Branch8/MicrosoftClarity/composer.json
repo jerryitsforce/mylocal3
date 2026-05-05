@@ -1,0 +1,17 @@
+{
+  "name": "branch8/module-microsoft-clarity",
+  "description": "Module that enables your site to integrate with Microsoft's Clarity, a web analytics/behaviour monitoring platform",
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": [
+    "MIT"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\MicrosoftClarity\\": ""
+    }
+  }
+}

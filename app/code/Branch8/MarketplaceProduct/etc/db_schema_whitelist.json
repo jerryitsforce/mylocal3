@@ -1,0 +1,95 @@
+{
+    "marketplace_product_version": {
+        "column": {
+            "id": true,
+            "status": true,
+            "cost": true,
+            "price": true,
+            "special_price": true,
+            "product_id": true,
+            "product_sku": true,
+            "product_name": true,
+            "additional_information": true,
+            "reviewer_id": true,
+            "created_at": true,
+            "updated_at": true,
+            "commission_percent": true,
+            "is_price_cost_change": true,
+            "is_cost_changed": true,
+            "is_special_price_changed": true,
+            "is_price_cost_changed": true,
+            "reviewer_email": true,
+            "is_new_product": true,
+            "dealer_processed": true,
+            "user_updated": true,
+            "approve_error_message": true,
+            "approval_flow_status": true,
+            "approval_log": true,
+            "is_variation_commission_rate_negative": true
+        },
+        "index": {
+            "MARKETPLACE_PRODUCT_VERSION_PRODUCT_ID": true,
+            "MARKETPLACE_PRODUCT_VERSION_STATUS": true,
+            "MARKETPLACE_PRODUCT_VERSION_APPROVAL_FLOW_STATUS": true,
+            "MARKETPLACE_PRD_VERSION_IS_VARIATION_COMMISSION_RATE_NEGATIVE": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "quote": {
+        "column": {
+            "is_price_changed": true
+        }
+    },
+    "product_initial_info": {
+        "column": {
+            "product_id": true,
+            "price": true,
+            "special_price": true,
+            "cost": true,
+            "init_gross_profit": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "marketplace_product": {
+        "column": {
+            "attribute_selected": true,
+            "dealer_approve_status": true,
+            "new_need_approve": true
+        }
+    },
+    "marketplace_userdata": {
+        "column": {
+            "flag_cpapi": true
+        }
+    },
+    "marketplace_product_temp": {
+        "column": {
+            "product_id": true,
+            "information": true,
+            "temp_id": true,
+            "seller_id": true,
+            "status": true,
+            "thumbnail": true,
+            "name": true,
+            "type": true,
+            "sku": true,
+            "quantity": true,
+            "cost": true,
+            "price": true,
+            "special_price": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "catalog_product_entity": {
+        "column": {
+            "admin_user_updated": true
+        }
+    }
+}

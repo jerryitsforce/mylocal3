@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */-->
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="amshopby_brand_list_by_brand" class="Branch8\Brand\Block\Widget\BrandList" is_email_compatible="true"
+            placeholder_image="Magento_Cms::images/widget_block.png">
+        <label translate="true">Amasty Brand List - by Brands</label>
+        <description translate="true">List of your brand attribute options. Links lead to Brand Pages.</description>
+        <parameters>
+            <parameter name="show_images" xsi:type="select" visible="true" source_model="Magento\Config\Model\Config\Source\Yesno">
+                <label translate="true">Show Brand Logo</label>
+            </parameter>
+            <parameter name="image_width" xsi:type="text" visible="true">
+                <label translate="true">Image Max Width, px</label>
+                <value>100</value>
+            </parameter>
+            <parameter name="image_height" xsi:type="text" visible="true">
+                <label translate="true">Image Max Height, px</label>
+                <description translate="true">Optional.</description>
+            </parameter>
+            <parameter name="title" xsi:type="text" visible="true" sort_order="50">
+                <label translate="true">Title</label>
+            </parameter>
+            <parameter name="filter_brand" xsi:type="multiselect" visible="true" source_model="Branch8\Brand\Model\Source\BrandAttribute" required="true">
+                <label translate="true">Filter Brands</label>
+            </parameter>
+            <parameter name="category" xsi:type="select" visible="true" source_model="Branch8\Brand\Model\Source\CategoryList">
+                <label translate="true">Category</label>
+            </parameter>
+            <parameter name="template" xsi:type="select" visible="true">
+                <label translate="true">Template</label>
+                <options>
+                    <option name="default" value="widget/brand_list/index.phtml" selected="true">
+                        <label translate="true">Listing</label>
+                    </option>
+                    <option name="slider" value="widget/brand_list/slider.phtml">
+                        <label translate="true">Listing with slider</label>
+                    </option>
+                </options>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

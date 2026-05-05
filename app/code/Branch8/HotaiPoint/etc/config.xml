@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <hotai_point>
+            <general>
+                <trans_desc_white_list></trans_desc_white_list>
+            </general>
+            <ftp>
+                <enable>1</enable>
+                <sync_folder_path>/DT/</sync_folder_path>
+                <remove_sync_backup_file_after_x_days>60</remove_sync_backup_file_after_x_days>
+            </ftp>
+            <tracking_log>
+                <return_point_fields_clean_tracking>1</return_point_fields_clean_tracking>
+            </tracking_log>
+        </hotai_point>
+        <hotai_account_page>
+            <hotai_point>
+                <max_date_range_filter>90</max_date_range_filter>
+            </hotai_point>
+        </hotai_account_page>
+    </default>
+</config>

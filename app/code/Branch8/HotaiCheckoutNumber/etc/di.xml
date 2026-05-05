@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Ecpay\General\Helper\Services\Config\InvoiceService">
+        <plugin name="hotai_checkout_number_set_for_ecpay_invoice" type="Branch8\HotaiCheckoutNumber\Plugin\SetCheckoutNumberAfterEcpayInvoice"/>
+    </type>
+</config>

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" extends="pagebuilder_base_form_with_background_video">
+    <dataSource name="pagebuilder_slide_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_PageBuilder/js/content-type/products/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider name="pagebuilder_slide_form_data_source" class="Magento\PageBuilder\Model\ContentType\DataProvider">
+            <settings>
+                <requestFieldName/>
+                <primaryFieldName/>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="ga4_settings" sortOrder="44">
+        <settings>
+            <label translate="true">Google Analytics 4</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="creative_name" sortOrder="10" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Creative Name</label>
+                <dataScope>creative_name</dataScope>
+            </settings>
+        </field>
+        <field name="creative_slot" sortOrder="20" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Creative Slot</label>
+                <dataScope>creative_slot</dataScope>
+            </settings>
+        </field>
+        <field name="promotion_id" sortOrder="40" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Promotion ID</label>
+                <dataScope>promotion_id</dataScope>
+            </settings>
+        </field>
+        <field name="promotion_name" sortOrder="50" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Promotion Name</label>
+                <dataScope>promotion_name</dataScope>
+            </settings>
+        </field>
+        <field name="item_list_id" sortOrder="60" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Item List ID</label>
+                <dataScope>item_list_id</dataScope>
+            </settings>
+        </field>
+        <field name="item_list_name" sortOrder="70" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Item List Name</label>
+                <dataScope>item_list_name</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="product_recommendations" sortOrder="45">
+        <settings>
+            <label translate="true">Selection</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="condition_option" sortOrder="20" formElement="select" component="Magento_PageBuilder/js/form/element/condition-options">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Select Products By</label>
+                <elementTmpl>Magento_PageBuilder/form/element/visual-select</elementTmpl>
+                <exports>
+                    <link name="category_idsVisible">${$.parentName}.category_ids:visible</link>
+                    <link name="conditionVisible">${$.parentName}.conditions_form:visible</link>
+                    <link name="skuVisible">${$.parentName}.sku:visible</link>
+                    <link name="value">${$.parentName}.sort_order:filter</link>
+                </exports>
+                <dataScope>condition_option</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <option name="0" xsi:type="array">
+                                <item name="size" xsi:type="string">small</item>
+                                <item name="value" xsi:type="string">category_ids</item>
+                                <item name="title" xsi:type="string" translate="true">Category</item>
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <item name="size" xsi:type="string">small</item>
+                                <item name="value" xsi:type="string">sku</item>
+                                <item name="title" xsi:type="string" translate="true">SKU</item>
+                            </option>
+                            <option name="2" xsi:type="array">
+                                <item name="size" xsi:type="string">small</item>
+                                <item name="value" xsi:type="string">condition</item>
+                                <item name="title" xsi:type="string" translate="true">Condition</item>
+                            </option>
+                            <option name="3" xsi:type="array">
+                                <item name="size" xsi:type="string">small</item>
+                                <item name="value" xsi:type="string">none</item>
+                                <item name="title" xsi:type="string" translate="true">None</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="category_ids" component="Magento_Catalog/js/components/new-category" sortOrder="30" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <label translate="true">Category</label>
+                <dataScope>category_ids</dataScope>
+                <componentType>field</componentType>
+                <visible>false</visible>
+                <listens>
+                    <link name="${ $.namespace }.${ $.namespace }:responseData">setParsed</link>
+                </listens>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Catalog\Ui\Component\Product\Form\Categories\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="sku" sortOrder="40" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="condition_operator" xsi:type="string">()</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Product SKUs</label>
+                <dataScope>sku</dataScope>
+                <visible>false</visible>
+                <exports>
+                    <link name="condition_operator">${ $.provider }:data.sku-condition_operator</link>
+                </exports>
+                <notice translate="true">Comma separated product SKUs.</notice>
+                <elementTmpl>Magento_PageBuilder/form/element/input-no-maxlength</elementTmpl>
+            </settings>
+        </field>
+        <htmlContent name="conditions_form" sortOrder="50" template="Magento_PageBuilder/form/element/widget-conditions" component="Magento_PageBuilder/js/form/element/html">
+            <settings>
+                <visible>false</visible>
+                <additionalClasses>
+                    <class name="admin__field">true</class>
+                </additionalClasses>
+            </settings>
+            <block name="conditions_form" class="Magento\PageBuilder\Block\Adminhtml\Form\Element\ProductConditions">
+                <arguments>
+                    <argument name="formNamespace" xsi:type="string">pagebuilder_slide_form</argument>
+                    <argument name="attribute" xsi:type="string">condition_source</argument>
+                    <argument name="label" xsi:type="string" translate="true">Condition</argument>
+                </arguments>
+            </block>
+        </htmlContent>
+        <field name="sort_order" sortOrder="60" formElement="select" component="Magento_PageBuilder/js/form/element/select-filtered-options">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">position</item>
+                    <item name="excludeOptions" xsi:type="array">
+                        <item name="condition" xsi:type="string">position,position_by_sku</item>
+                        <item name="sku" xsi:type="string">position</item>
+                        <item name="category_ids" xsi:type="string">position_by_sku</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Sort By</label>
+                <dataScope>sort_order</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\PageBuilder\Model\Catalog\Sorting\Options"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <container name="product_count_group" component="Magento_Ui/js/form/components/group" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="products_count" sortOrder="10" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="default" xsi:type="number">5</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>number</dataType>
+                    <label translate="true">Number of Products to Display</label>
+                    <additionalClasses>
+                        <class name="admin__field-small">true</class>
+                    </additionalClasses>
+                    <dataScope>products_count</dataScope>
+                    <validation>
+                        <rule name="validate-number" xsi:type="boolean">true</rule>
+                        <rule name="less-than-equals-to" xsi:type="number">999</rule>
+                        <rule name="greater-than-equals-to" xsi:type="number">1</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="product_totals" sortOrder="20" formElement="input" component="Magento_PageBuilder/js/form/element/product-totals">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="default" xsi:type="string">of ${ $.totalProductCount } total</item>
+                        <item name="url" xsi:type="url" path="pagebuilder/form/element_producttotals"/>
+                    </item>
+                </argument>
+                <settings>
+                    <elementTmpl>Magento_PageBuilder/form/element/product-totals</elementTmpl>
+                    <dataType>text</dataType>
+                    <additionalClasses>
+                        <class name="admin__field-product-tooltip">true</class>
+                    </additionalClasses>
+                    <tooltip>
+                        <description translate="true">
+                            <![CDATA[
+                                    <p>The products displayed may vary from this total due to several factors, including but not limited to:</p>
+                                    <ul>
+                                        <li>Disabled status</li>
+                                        <li>Visibility configuration (not visible in catalog)</li>
+                                        <li>Stock availability (out of stock)</li>
+                                        <li>Website assignment</li>
+                                    </ul>
+                                ]]>
+                        </description>
+                    </tooltip>
+                    <imports>
+                        <link name="conditionOption">ns = ${ $.ns }, index = condition_option:value</link>
+                        <link name="conditionValue">ns = ${ $.ns }, index = conditions_form:value</link>
+                    </imports>
+                    <listens>
+                        <link name="${ $.ns }.${ $.ns }.product_recommendations.category_ids:value">updateProductTotals</link>
+                        <link name="${ $.ns }.${ $.ns }.product_recommendations.sku:value">updateProductTotals</link>
+                    </listens>
+                </settings>
+            </field>
+        </container>
+        <component component="Branch8_PageBuilder/js/form/element/block-chooser" name="block_chooser" sortOrder="80">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="requestParameter" xsi:type="string">unitId</item>
+                    <item name="dataUrlConfigPath" xsi:type="string">content_types.block.additional_data.chooserConfig.dataUrl</item>
+                    <item name="modalName" xsi:type="string">ns = ${ $.ns }, index = modal</item>
+                    <item name="buttonTitle" xsi:type="string" translate="true">Select</item>
+                    <item name="buttonRmTitle" xsi:type="string" translate="true">Remove</item>
+                    <item name="displayMetadata" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <imports>
+                    <link name="id">${ $.ns }.${ $.ns }.product_recommendations.unit_id:value</link>
+                </imports>
+            </settings>
+        </component>
+        <field name="unit_id" formElement="hidden" sortOrder="90">
+            <settings>
+                <dataType>text</dataType>
+                <imports>
+                    <link name="value">${ $.ns }.${ $.ns }.modal.pagebuilder_product_recommendations_select_grid:externalValue</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="title" sortOrder="100" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Title</label>
+                <dataScope>title</dataScope>
+            </settings>
+        </field>
+        <field name="link_text" sortOrder="110" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Link Text</label>
+                <dataScope>link_text</dataScope>
+            </settings>
+        </field>
+        <field name="link" sortOrder="120" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Link Url</label>
+                <dataScope>link</dataScope>
+            </settings>
+        </field>
+        <field name="show_recommend" sortOrder="130" formElement="checkbox">
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Show Recommendation</label>
+                <dataScope>show_recommend</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">hide</map>
+                            <map name="true" xsi:type="string">show</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="in_page" sortOrder="140" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="string">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Load In Page</label>
+                <dataScope>in_page</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="string">0</map>
+                            <map name="true" xsi:type="string">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+    </fieldset>
+    <modal name="modal" sortOrder="60">
+        <settings>
+            <options>
+                <option name="title" xsi:type="string" translate="true">Select Product Recommendation</option>
+                <option name="buttons" xsi:type="array">
+                    <item name="0" xsi:type="array">
+                        <item name="text" xsi:type="string" translate="true">Cancel</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="string">closeModal</item>
+                        </item>
+                    </item>
+                    <item name="1" xsi:type="array">
+                        <item name="text" xsi:type="string">Add Selected</item>
+                        <item name="class" xsi:type="string">action-primary</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">${ $.name }.pagebuilder_product_recommendations_select_grid</item>
+                                <item name="actionName" xsi:type="string">save</item>
+                            </item>
+                            <item name="1" xsi:type="string">closeModal</item>
+                        </item>
+                    </item>
+                </option>
+            </options>
+        </settings>
+        <insertListing name="pagebuilder_product_recommendations_select_grid" sortOrder="10">
+            <settings>
+                <externalData>unitId_unitName</externalData>
+                <externalProvider>${ $.ns }.pagebuilder_product_recommendations_select_grid_data_source</externalProvider>
+                <loading>false</loading>
+                <selectionsProvider>${ $.ns }.${ $.ns }.columns.ids</selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>unitId</dataScope>
+                <ns>pagebuilder_product_recommendations_select_grid</ns>
+                <dataLinks>
+                    <imports>false</imports>
+                    <exports>true</exports>
+                </dataLinks>
+            </settings>
+        </insertListing>
+        <htmlContent name="html_content">
+            <settings>
+                <additionalClasses>
+                    <class name="html-content-class">true</class>
+                </additionalClasses>
+            </settings>
+            <block name="html_content_block" class="Magento\Backend\Block\Template">
+                <arguments>
+                    <argument name="template" xsi:type="string">Magento_PageBuilderProductRecommendations::navigate.phtml</argument>
+                </arguments>
+            </block>
+        </htmlContent>
+    </modal>
+</form>

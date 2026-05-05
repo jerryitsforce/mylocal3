@@ -1,0 +1,44 @@
+
+<?php
+/**
+ * @project    HotaiConnected
+ * @package    Branch8
+ * @author     cuongho803@gmail.com
+ * @date       02/03/2026
+ */
+/**
+ * @var $viewModel \Branch8\MarketPlaceProductDiscussionCustomer\ViewModel\Product
+ * @var $block \Magento\Catalog\Block\Product\View
+ */
+$product = $block->getProduct();
+$viewModel = $block->getViewModel();
+?>
+
+<?= $block->getChildHtml('page.main.title') ?>
+<div class="thread-main-wrapper thread-product-wrapper">
+    <div class="thread-product-top">
+        <div class="thread-product-info">
+            <div class="thread-product-img">
+                <img
+                    width="135"
+                    height="135"
+                    src="<?php echo $block->getImage($product, 'product_small_image')->getImageUrl(); ?>"
+                    alt="<?php echo $block->escapeHtmlAttr($product->getName()); ?>"
+                />
+            </div>
+            <div class="thread-product-desc">
+                <h2 class="thread-product-name">
+                    <?php echo $block->escapeHtml($product->getName()); ?>
+                </h2>
+                <div class="thread-product-spec">
+                    <?= $escaper->escapeHtml(__('規格1墨西哥紅椒什錦堅果 / 規格2雙活菌蔓越莓+墨西哥紅椒什錦堅')) ?>
+                </div>
+            </div>
+        </div>
+        <div class="thread-product-bottom">
+            <?= $block->getChildHtml('b8wkosivariation') ?>
+        </div>
+    </div>
+    <?= $block->getChildHtml('product_discussion_thread_new_form') ?>
+</div>    
+

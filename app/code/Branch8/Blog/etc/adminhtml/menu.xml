@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_Blog::blog" title="Better Blog" module="Branch8_Blog" sortOrder="110" resource="Branch8_Blog::blog" parent="Magento_Backend::content"/>
+        <add id="Branch8_Blog::post" title="Manage Posts" module="Branch8_Blog" sortOrder="10" action="branch8_blog/post" resource="Branch8_Blog::post" parent="Branch8_Blog::blog"/>
+        <!--<add id="Branch8_Blog::tag" title="Manage Tags" module="Branch8_Blog" sortOrder="20" action="branch8_blog/tag" resource="Branch8_Blog::tag" parent="Branch8_Blog::blog"/>-->
+        <add id="Branch8_Blog::topic" title="Manage Topics" module="Branch8_Blog" sortOrder="30" action="branch8_blog/topic" resource="Branch8_Blog::topic" parent="Branch8_Blog::blog"/>
+        <add id="Branch8_Blog::category" title="Categories" module="Branch8_Blog" sortOrder="40" action="branch8_blog/category" resource="Branch8_Blog::category" parent="Branch8_Blog::blog"/>
+        <add id="Branch8_Blog::author" title="Manage Authors" module="Branch8_Blog" sortOrder="50" action="branch8_blog/author" resource="Branch8_Blog::author" parent="Branch8_Blog::blog"/>
+        <add id="Branch8_Blog::comment" title="Manage Comments" module="Branch8_Blog" sortOrder="60" action="branch8_blog/comment" resource="Branch8_Blog::comment" parent="Branch8_Blog::blog"/>
+        <add id="Branch8_Blog::configuration" title="Configuration" module="Branch8_Blog" sortOrder="1000" action="adminhtml/system_config/edit/section/blog" resource="Branch8_Blog::configuration" parent="Branch8_Blog::blog"/>
+    </menu>
+</config>

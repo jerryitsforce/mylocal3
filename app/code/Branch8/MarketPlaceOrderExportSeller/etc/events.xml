@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="hotai_order_invoice_logs_save_before">
+        <observer name="add_seller_information"
+                  instance="Branch8\MarketPlaceOrderExportSeller\Observer\AssignSellerInformation" />
+    </event>
+
+</config>

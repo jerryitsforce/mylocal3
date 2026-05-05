@@ -1,0 +1,34 @@
+<?php
+/**
+* @var $block \Branch8\OneStepCheckout\Block\Adminhtml\Order\AdditionalInfo
+*/
+$order = $block->getOrder();
+$referrer_code = $order->getData('referrer_code');
+$order_note = $order->getData('order_note');
+if ($referrer_code || $order_note) :
+?>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Additional Information')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-additional-info">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= $block->escapeHtml(__('Information')) ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <?php if ($referrer_code): ?>
+                <div id="referrer_code">
+                    <label><?= __('Referrer Code');?></label><span> : <?= $block->escapeHtml($referrer_code)?></span>
+                </div>
+                <?php endif; ?>
+                <?php if ($order_note): ?>
+                <div id="order_note">
+                    <label><?= __('Order Note');?></label><span> : <?= $block->escapeHtml($order_note)?></span>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>

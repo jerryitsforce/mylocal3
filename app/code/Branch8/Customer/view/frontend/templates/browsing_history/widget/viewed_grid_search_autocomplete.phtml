@@ -1,0 +1,45 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @deprecated
+ */
+
+/**
+ * @var $block \Magento\Reports\Block\Product\Viewed
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+if ($exist = ($block->getRecentlyViewedProducts() && $block->getRecentlyViewedProducts()->getSize())) {
+    $type = 'widget-viewed';
+    $mode = 'grid';
+
+    $type = $type . '-' . $mode;
+
+    $image = 'recently_viewed_products_grid_content_widget';
+    $title = __('Recently Viewed');
+    $items = $block->getRecentlyViewedProducts();
+    $_helper = $this->helper(\Magento\Catalog\Helper\Output::class);
+
+    $showDetails = false;
+    $showWishlist = false;
+    $showCompare = false;
+    $showCart = false;
+
+}
+?>
+<?php
+$scriptString = <<<script
+    window.browsingHistory = {
+        title: "{$block->escapeJs($block->getTitle())}",
+        viewAllText: "{$block->escapeJs($block->getButtonLabel())}",
+        viewAllUrl: "{$block->escapeJs($block->getUrl('member/browsinghistory'))}",
+        displayLimit: {$block->escapeJs($block->getLimit())},
+    }
+script;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>

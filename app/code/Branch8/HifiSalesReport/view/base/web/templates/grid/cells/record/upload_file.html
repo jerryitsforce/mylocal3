@@ -1,0 +1,45 @@
+<form id="hifi-sales-report-upload-main-file-form-<%-recordId%>" class="hifi-sales-report-upload-main-file-form" target="_self" method="post" enctype="multipart/form-data" action="<%-uploadMainFileFormAction%>">
+    <div class="modal-body">
+        <div class="bootbox-body">
+            <div class="input_container" style="margin-bottom: 5px;">
+                <label for="file">Main File:</label><br>
+                <input type="file" name="file">
+            </div>
+            <input type="hidden" name="record_id" value="<%-recordId%>">
+            <input name="form_key" type="hidden" value="<%-formkey%>">
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <span class="error"></span>
+        <button type="reset" class="btn btn-default">
+            <span><%-resetLabel%></span>
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <span><%-uploadMainFileLabel%></span></button>
+        <span class="clear"></span>
+    </div>
+</form>
+<hr>
+<form id="hifi-sales-report-upload-detail-file-form-<%-recordId%>" class="hifi-sales-report-upload-detail-file-form" target="_self" method="post" enctype="multipart/form-data" action="<%-uploadDetailFileFormAction%>">
+    <div class="modal-body">
+        <div class="bootbox-body">
+            <div class="input_container" style="margin-bottom: 5px;">
+                <label for="file">Detail File:</label><br>
+                <input type="file" name="file">
+            </div>
+            <input type="hidden" name="record_id" value="<%-recordId%>">
+            <input name="form_key" type="hidden" value="<%-formkey%>">
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <span class="error"></span>
+        <button type="reset" class="btn btn-default">
+            <span><%-resetLabel%></span>
+        </button>
+        <button type="submit" class="btn btn-primary">
+            <span><%-uploadDetailFileLabel%></span></button>
+        <span class="clear"></span>
+    </div>
+</form>

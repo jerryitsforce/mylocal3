@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="customer_ticket" resource="default" engine="innodb" comment="用戶持有票券">
+        <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID"/>
+        <column xsi:type="int" name="type" unsigned="true" nullable="true"
+                comment="虛擬商品類型(對應Branch8_HotaiCore::VirtualProductType)"/>
+        <column xsi:type="varchar" name="ticket_table_name" nullable="false" length="255" comment="專屬table的表名"/>
+        <column xsi:type="int" name="ticket_table_record_id" unsigned="true" nullable="true"
+                comment="在專屬table中的主鍵ID"/>
+        <column xsi:type="varchar" name="batch_code" nullable="true" length="255"
+                comment="貨號(部分廠牌的票券可能沒有)"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="true" comment="持有的用戶ID"/>
+        <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="true"
+                comment="歸屬的sales order item ID"/>
+        <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="true"
+                comment="歸屬的Magento商品ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="true" comment="賣家ID"/>
+        <column xsi:type="varchar" name="ticket_unique_content" nullable="false" length="255" comment="票券的唯一序號"/>
+        <column xsi:type="datetime" name="use_start_time" on_update="false" nullable="true"
+                comment="核銷(商品可實際使用)開始日期"/>
+        <column xsi:type="datetime" name="use_end_time" on_update="false" nullable="true"
+                comment="核銷(商品可實際使用)結束日期"/>
+        <column xsi:type="int" name="status" nullable="true" default="0"
+                comment="當前狀態(見\Branch8\HotaiCore\Model\Ticket\Status)"/>
+        <column xsi:type="text" name="memo" nullable="true" comment="備註"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="true" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="true" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="record_id"/>
+        </constraint>
+        <index referenceId="INDEX_TYPE_TICKET_TABLE_RECORD_ID" indexType="btree">
+            <column name="type"/>
+            <column name="ticket_table_record_id"/>
+        </index>
+        <index referenceId="INDEX_TYPE_CUSTOMER_STATUS_START_END" indexType="btree">
+            <column name="type"/>
+            <column name="customer_id"/>
+            <column name="status"/>
+            <column name="use_start_time"/>
+            <column name="use_end_time"/>
+        </index>
+        <index referenceId="INDEX_TYPE_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="INDEX_TYPE_SALES_ORDER_ITEM_ID" indexType="btree">
+            <column name="sales_order_item_id"/>
+        </index>
+        <index referenceId="INDEX_TYPE_BELONG_TO_PRODUCT_ID" indexType="btree">
+            <column name="belong_to_product_id"/>
+        </index>
+        <index referenceId="INDEX_TYPE_TABLE_NAME" indexType="btree">
+            <column name="ticket_table_name"/>
+        </index>
+        <index referenceId="INDEX_TYPE_TICKET_TABLE_REFERENCE_RECORD_ID" indexType="btree">
+            <column name="ticket_table_record_id"/>
+        </index>
+        <index referenceId="INDEX_TYPE_TICKET_UNIQUE_CONTENT" indexType="btree">
+            <column name="ticket_unique_content"/>
+        </index>
+        <index referenceId="INDEX_TYPE_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+    <table name="customer_ticket_over_due" resource="default" engine="innodb" comment="用戶持有過期票券">
+        <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID"/>
+        <column xsi:type="int" name="type" unsigned="true" nullable="false"
+                comment="虛擬商品類型(對應Branch8_HotaiCore::VirtualProductType)"/>
+        <column xsi:type="varchar" name="ticket_table_name" nullable="false" length="255" comment="專屬table的表名"/>
+        <column xsi:type="int" name="ticket_table_record_id" unsigned="true" nullable="false"
+                comment="在專屬table中的主鍵ID"/>
+        <column xsi:type="varchar" name="batch_code" nullable="true" length="255"
+                comment="貨號(部分廠牌的票券可能沒有)"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="持有的用戶ID"/>
+        <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="false"
+                comment="歸屬的sales order item ID"/>
+        <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="false"
+                comment="歸屬的Magento商品ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="賣家ID"/>
+        <column xsi:type="varchar" name="ticket_unique_content" nullable="false" length="255" comment="票券的唯一序號"/>
+        <column xsi:type="datetime" name="use_start_time" on_update="false" nullable="true"
+                comment="核銷(商品可實際使用)開始日期"/>
+        <column xsi:type="datetime" name="use_end_time" on_update="false" nullable="true"
+                comment="核銷(商品可實際使用)結束日期"/>
+        <column xsi:type="int" name="status" nullable="false" default="0"
+                comment="當前狀態(見\Branch8\HotaiCore\Model\Ticket\Status)"/>
+        <column xsi:type="text" name="memo" nullable="true" comment="備註"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="record_id"/>
+        </constraint>
+        <index referenceId="INDEX_TYPE_TICKET_TABLE_RECORD_ID" indexType="btree">
+            <column name="type"/>
+            <column name="ticket_table_record_id"/>
+        </index>
+        <index referenceId="INDEX_TYPE_CUSTOMER_STATUS_START_END" indexType="btree">
+            <column name="type"/>
+            <column name="customer_id"/>
+            <column name="status"/>
+            <column name="use_start_time"/>
+            <column name="use_end_time"/>
+        </index>
+    </table>
+</schema>

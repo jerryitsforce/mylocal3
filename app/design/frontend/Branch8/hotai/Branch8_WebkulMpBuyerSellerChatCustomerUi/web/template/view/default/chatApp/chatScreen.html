@@ -1,0 +1,66 @@
+<div class="chat-screen"
+     data-bind="visible:visible,attr:{'id':'chat-screen-'+conversationData().conversationUniqueId}">
+    <div class="messages" data-bind="event: { scroll: debounceHandleScroll }">
+        <!-- ko if: messages().length > 0  -->
+        <ul data-role="messages-form"
+            data-bind="attr:{'id':'messageFrame-'+conversationData().conversationUniqueId}">
+            <!-- ko foreach: messages -->
+            <li data-bind="attr: { class: $data.senderUniqueId==$parent.conversationData().customerUniqueId?'replies':'sent',
+            'id':'message-'+unique_id}">
+                <img class="profile"
+                     data-bind="attr:{src:$parent.getMessageImage($data)}"
+                     alt=""/>
+
+                <!-- ko if: messageType=='text'  -->
+                <div class="message" data-bind="normalizeText:message"></div>
+                <!-- /ko -->
+                <!-- ko if: messageType=='html' -->
+                <div class="message" data-bind="html:$parent.UNTIL.messageTextToHtml(message)"></div>
+                <!-- /ko -->
+                <!-- ko if: messageType=='image'   -->
+                <div class="message">
+                    <a target="_blank" data-bind="attr:{href:$parent.UNTIL.getMetaValue('url',meta)}">
+                        <img data-bind="attr:{src:$parent.UNTIL.getMetaValue('url',meta)}"
+                             style="max-height:150px;" class="message-image"/>
+                    </a>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: messageType=='video'   -->
+                <div class="message">
+                    <video controls>
+                        <source
+                            data-bind="
+                            attr:{src:$parent.UNTIL.getMetaValue('url',meta),
+                               type:$parent.UNTIL.getMetaValue('type',meta)
+                            }"/>
+                    </video>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: messageType=='file'   -->
+                <div class="message">
+                    <a target="_blank" data-bind="attr:{href:$parent.generalConfig.mediaUr+message}">
+                        <span data-bind="text:$parent.generalConfig.downLoadFileText"></span>
+                    </a>
+                </div>
+                <!-- /ko -->
+            </li>
+            <!-- /ko -->
+        </ul>
+        <!-- /ko -->
+    </div>
+    <div class="message-input" data-bind="attr:{'id':'write-form-'+conversationData().conversationUniqueId}">
+        <div class="wrap write-form-wrapper">
+            <form method="post"
+                  data-bind="submit: sendMessage, attr: {id: 'reply_form_'+conversationData().conversationUniqueId}">
+                <render args="typingMessageTemplate"></render>
+                <textarea type="text" id="text" rows="2" name="message" spellcheck="false"
+                          data-bind="event:{keypress: replyByEnter,keyup:debounceHandleTypingMessage},
+                     attr: { placeholder: $t('Write your message...') }"></textarea>
+                <div class="tool-bar">
+                    <render args="fileUploadTemplate"></render>
+                    <i class="fa fa-paper-plane fa-2x" aria-hidden="true" data-bind="click:getFormAndSubmit"></i>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

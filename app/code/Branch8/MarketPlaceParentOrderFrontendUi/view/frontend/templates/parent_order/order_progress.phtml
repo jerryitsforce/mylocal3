@@ -1,0 +1,77 @@
+<?php
+
+/** @var \Branch8\Sales\Block\ParentOrder\Items $block */
+
+$data = json_encode([
+    "updateUrl" => $block->getUrl('customsales/order/statusupdate'),
+]);
+$itemBlock = $block->getItemsBlock();
+?>
+<?php if ($this->getItem()): ?>
+    <?php
+    $subOrder = $itemBlock->getSubOrderById($this->getItem()->getOrderId());
+    $trackingInfo = $block->getLogisticInfo($subOrder, $this->getItem()->getId());
+    ?>
+    <?php $progressType = $itemBlock->getProgressType($subOrder);?>
+    <?php $currentDotPhase = $itemBlock->getStatusDotPhase($this->getItem());?>
+    <?php $currentDotPhaseNumber = 0;?>
+    <?php foreach ($itemBlock->getProgressBar($subOrder, $this->getItem()) as $key => $dot): ?>
+        <?php if ($currentDotPhase == $dot['Status']): ?>
+            <?php
+                $currentDotPhaseNumber = $key;
+                break;
+            ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <div class="progressbar-wrapper">
+    <ol class="ProgressBar">
+        <?php foreach ($itemBlock->getProgressBar($subOrder, $this->getItem()) as $key => $dot): ?>
+            <?php
+            $statusClass = '';
+            if ($currentDotPhaseNumber == $key) {
+                $statusClass = '-current';
+            } elseif ($currentDotPhaseNumber < $key) {
+                $statusClass = '-disabled';
+            }
+            ?>
+            <?php if ($dot['Status'] !== null): ?>
+            <li class="ProgressBar-step <?= $statusClass ?>" data-current="<?= $currentDotPhaseNumber == $key? '1' : '0'?>" data-status="<?= $dot['Status']?>" data-time="<?= isset($dot['Time'])? $block->formatDateToTimeZone($dot['Time']) : ''?>" data-type="<?= $itemBlock->getProgressType($subOrder)?>">
+                <div class="ProgressBar-icon-outer">
+                    <div class="ProgressBar-icon"></div>
+                </div>
+
+                <?php if (!empty($trackingInfo) && $dot['Label'] == 'shipping'): ?>
+                    <?php $trackingInfo = reset($trackingInfo); ?>
+                    <?php if(isset($trackingInfo['logistics_company_url']) && $trackingInfo['logistics_company_url'] != ''):?>
+                        <a data-progress-url="<?= $block->escapeUrl($trackingInfo['logistics_company_url']) ?>" href="<?= $block->escapeUrl($trackingInfo['logistics_company_url']) ?>" data-tracking-number="<?= $trackingInfo['tracking_number'] ?? '' ?>" target="_blank" class="ProgressBar-stepLabel copy-button"><?= $block->escapeHtml(__($dot['Label'])) ?></a>
+                    <?php else: ?>
+                        <span data-tracking-number="<?= $trackingInfo['tracking_number'] ?? '' ?>" target="_blank" class="ProgressBar-stepLabel copy-button"><?= $block->escapeHtml(__($dot['Label'])) ?></span>
+                    <?php endif; ?>
+                <?php else: ?>
+                <span class="ProgressBar-stepLabel"><?=$block->escapeHtml(__($dot['Label']))?></span>
+                <?php endif;?>
+                <?php if (isset($dot['Time'])): ?>
+                    <?php
+                        $dateTime = $block->formatDateToTimeZone($dot['Time']);
+                        $date = date('m/d', strtotime($dateTime));
+                        $time = date('H:i', strtotime($dateTime));
+                    ?>
+                    <span class="ProgressBar-stepTime"><?=$date?></span>
+                    <span class="ProgressBar-stepTime"><?=$time?></span>
+                <?php else:?>
+                    <span class="ProgressBar-stepTime">---</span>
+                <?php endif;?>
+            </li>
+            <?php endif;?>
+        <?php endforeach;?>
+    </ol>
+    </div>
+<?php endif;?>
+
+<script type="text/x-magento-init">
+    {
+        "body": {
+             "Branch8_Sales/js/updateOrderStatus": <?=/* @noEscape */$data?>
+    }
+}
+</script>

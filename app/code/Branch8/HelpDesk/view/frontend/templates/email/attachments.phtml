@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var $block \Branch8\HelpDesk\Block\Ticket\Email\Attachments */
+$attachments = $block->getAttachments();
+if (!$attachments) {
+    return;
+}
+?>
+
+<table class="email-items">
+    <tr>
+        <?php
+        /**
+         * @var $attachment \Branch8\HelpDesk\Model\Attachment
+         */
+        ?>
+        <?php foreach ($attachments as $attachment): ?>
+            <td class="item-info">
+                <?php if ($attachment->getType() === 'image'): ?>
+                    <a href="<?= $block->escapeHtml($attachment->getFullPath()) ?>">
+                        <img width=50 height="50" src="<?= $block->escapeHtml($attachment->getFullPath()) ?>"/>
+                    </a>
+                <?php endif ?>
+            </td>
+        <?php endforeach; ?>
+    </tr>
+</table>
+

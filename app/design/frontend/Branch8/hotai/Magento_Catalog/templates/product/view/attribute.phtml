@@ -1,0 +1,96 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product view template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Magento\Catalog\Helper\Output::class);
+$_product = $block->getProduct();
+
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+
+$_call = $block->getAtCall();
+$_code = $block->getAtCode();
+$_className = $block->getCssClass();
+$_attributeLabel = $block->getAtLabel();
+$_attributeType = $block->getAtType();
+$_attributeTitle = $block->getTitle();
+$_attributeAddAttribute = $block->getAddAttribute();
+$_showMore = $block->getShowMore()?? 'false';
+
+$renderLabel = true;
+// if defined as 'none' in layout, do not render
+if ($_attributeTitle == 'none') {
+    $renderLabel = false;
+}
+
+if ($_attributeLabel && $_attributeLabel == 'default') {
+    $_attributeLabel = $_product->getResource()->getAttribute($_code)->getStoreLabel();
+}
+if ($_attributeType && $_attributeType == 'text') {
+    $_attributeValue = ($_helper->productAttribute($_product, $_product->$_call(), $_code))
+        ? $_product->getAttributeText($_code)
+        : '';
+} else {
+    $_attributeValue = $_helper->productAttribute($_product, $_product->$_call(), $_code);
+}
+?>
+
+<?php if ($_attributeValue) :?>
+<div class="product attribute <?= $block->escapeHtmlAttr($_className) ?>">      
+    <?php if ($renderLabel) :?>
+        <div class="label"><?= $block->escapeHtml($_attributeTitle) ?></div>
+    <?php endif; ?>
+    <?php 
+        $html = $_attributeValue;
+        if($_code === 'short_description'){
+            $lines = explode("\n", $html); 
+            $html = "<ul>";
+            foreach ($lines as $line) {
+                $trimmedLine = trim($line);
+                if (!empty($trimmedLine)) {
+                    $html .= "<li>" . strip_tags($trimmedLine) . "</li>";
+                }
+            }
+            $html .= "</ul>";
+        }
+        
+        if($_code === 'sku'){
+            if (str_contains($html, 'HOTAI')) {
+                $check = explode('-', $html);
+                if (strlen($check[0]) >= 6) {
+                    $html = str_replace($check[0].'-', '', $html);
+                }
+            }
+        }
+    ?>
+    <?php if ($_showMore === 'true') :?>
+        <div class="value product-value-<?= $block->escapeHtmlAttr($_className) ?>"  data-mage-init='{"b8PDPViewMore": {"minHeightMobile": 587, "minHeightDesktop": 712}}'> 
+            <div class="product-value-inner">
+                <?= /* @noEscape */ $html ?>
+            </div>
+            <?php if ($_showMore === 'true') :?>   
+                <div class="pdp-show-more">
+                    <button href="#" class="action more" data-action="show-more"><?= __('顯示全部') ?></button>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php else :?>  
+    <div class="value" <?= /* @noEscape */ $_attributeAddAttribute ?>>
+        <?= /* @noEscape */ $html ?>
+    </div>
+    
+    <?php endif; ?>   
+</div>
+<?php endif; ?>

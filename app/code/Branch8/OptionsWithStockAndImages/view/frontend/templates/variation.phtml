@@ -1,0 +1,50 @@
+<!-- /**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_OptionsWithStockAndImages
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */  -->
+ <?php
+ /**
+  * @var $block \Branch8\OptionsWithStockAndImages\Block\Variation
+  */
+ if ($block->isModuleEnable()) {
+     if ($block->isOWSIProduct()) {
+         $_productId = $block->getCurrentProduct()->getId();
+         $_productRowId = $block->getCurrentProduct()->getRowId();
+         /** @var $block \Magento\Swatches\Block\Product\Renderer\Configurable */
+         /** @var \Magento\Swatches\ViewModel\Product\Renderer\Configurable $configurableViewModel */
+         $configurableViewModel = $block->getConfigurableViewModel();
+            ?>
+        <div class="swatch-opt" data-role="wk-swatch-options"></div>
+        <input id="productRowId" type="hidden" value="<?= $escaper->escapeHtml($_productRowId) ?>" >
+        <script type="text/x-magento-init">
+            {
+            "[data-role=wk-swatch-options]": {
+                "Branch8_OptionsWithStockAndImages/js/swatch-renderer": {
+                    "isSimpleProduct": "<?= $escaper->escapeHtml($block->isSimpleProduct()) ?>",
+                    "isConfigurableProduct": "<?= $escaper->escapeHtml($block->isConfigurableProduct()) ?>",
+                    "isDownloadableProduct": "<?= $escaper->escapeHtml($block->isDownloadableProduct()) ?>",
+                    "jsonConfig": <?= /* @noEscape */ $block->getOptionsJsonConfig() ?>,
+                    "jsonSwatchConfig": <?= /* @noEscape */ $block->getOptionsJsonSwatchConfig() ?>,
+                    "mediaCallback": "<?= $escaper->escapeJs($escaper->escapeUrl($block->getOptionsMediaCallback()))?>",
+                    "gallerySwitchStrategy": "<?= $escaper->escapeJs($block->getOptionsVar()) ?: 'replace'; ?>",
+                    "jsonSwatchImageSizeConfig": <?= /* @noEscape */ $block->getOptionsJsonSwatchSizeConfig() ?>,
+                    "showTooltip": <?= $escaper->escapeJs($configurableViewModel->getShowSwatchTooltip()) ?>,
+                    "priceHolderSelector":"[data-product-id='<?=$escaper->escapeHtml($_productId)?>'][data-role=priceBox]",
+                    "isBundleProduct": "<?= $escaper->escapeHtml($block->isBundleProduct()) ?>"
+                }
+            },
+            "*" : {
+                "Magento_Swatches/js/catalog-add-to-cart": {}
+            }
+        }
+        </script>
+        <?php }
+ }
+    ?>
+
+

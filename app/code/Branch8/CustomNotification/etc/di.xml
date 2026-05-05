@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Magenest\NotificationBox\Model\Notification\DataProvider"
+                type="Branch8\CustomNotification\Model\Notification\DataProvider"/>
+    <preference for="Magenest\NotificationBox\Helper\Helper" type="Branch8\CustomNotification\Helper\Helper"/>
+    <preference for="Magenest\NotificationBox\Model\Cron" type="Branch8\CustomNotification\Model\Cron"/>
+    <preference for="Magenest\NotificationBox\Observer\SendNotification"
+                type="Branch8\CustomNotification\Observer\SendNotification"/>
+    <preference for="Magenest\NotificationBox\Controller\Adminhtml\NotificationType\RestoreDefaultNotification"
+                type="Branch8\CustomNotification\Controller\Adminhtml\NotificationType\RestoreDefaultNotification"/>
+    <type name="Branch8\CustomNotification\Model\ResourceModel\History\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">magenest_customer_notification</argument>
+            <argument name="eventPrefix" xsi:type="string">b8notification_history</argument>
+            <argument name="eventObject" xsi:type="string">b8notification_history_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Magenest\NotificationBox\Model\ResourceModel\CustomerNotification</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="b8notification_history_listing_data_source" xsi:type="string">Branch8\CustomNotification\Model\ResourceModel\History\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportExport\Model\Import\SampleFileProvider">
+        <arguments>
+            <argument name="samples" xsi:type="array">
+                <item name="oneIdList" xsi:type="string">Branch8_CustomNotification</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\CustomNotification\Model\OneId\ValidateManager">
+        <arguments>
+            <argument name="rules" xsi:type="array">
+                <item name="validateOneId" xsi:type="object">Branch8\CustomNotification\Model\OneId\ValidateOneId</item>
+                <item name="validateOneIdExist" xsi:type="object">Branch8\CustomNotification\Model\OneId\ValidateOneIdExist</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

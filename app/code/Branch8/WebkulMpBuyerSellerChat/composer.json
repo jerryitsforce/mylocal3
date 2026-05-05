@@ -1,0 +1,22 @@
+{
+    "name": "branch8/module-branch8webkullmpbuyersellerchat",
+    "version": "1.0.0",
+    "description": "This is an module add extra function for webkull-mpbuyersellerchat",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*",
+        "magento/module-sales": "103.0.*",
+        "webkul/marketplace-buyer-seller-chat": "4.0.0"
+    },
+    "license": [
+        ""
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Branch8\\Sales\\": ""
+        }
+    }
+}

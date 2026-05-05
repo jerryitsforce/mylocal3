@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\CommentHistory\Full" 
+                name="order.comments.list" 
+                template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/commenthistory.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

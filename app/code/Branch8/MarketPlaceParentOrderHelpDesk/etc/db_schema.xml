@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_helpdesk_ticket">
+        <column xsi:type="varchar" name="parent_order" length="512" nullable="true" comment="Parent Order"/>
+    </table>
+</schema>

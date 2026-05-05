@@ -1,0 +1,166 @@
+<div class="new-ticket-messages">
+    <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    <!-- ko foreach: getRegion('before') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+<div class="form-new-ticket-hint">
+    <span data-bind="i18n:'If you have any questions about orders or products, please go to'"></span>
+    <a data-bind="attr: {href: getUrlOrderHistory()}"><span data-bind="i18n:'Order Management'"></span></a> >
+    <span data-bind="i18n:'Contact Seller'"></span>
+    <span data-bind="i18n:'to inquire.'"></span>
+</div>
+<div class="block lrw-block lrw-account-summary-listing">
+    <div class="block-content" data-bind="blockLoader: isLoading">
+        <form id="helpdesk-form" class="form helpdesk-form form-style-primary"
+              data-bind="mageInit: {'validation': {}}, event: {submit: createTicket },afterRender:afterRender"
+              enctype="multipart/form-data">
+            <div class="form-panel">
+                <fieldset class="fieldset">
+                    <div class="field required field-nick-name">
+                        <label class="label" for="customer_name">
+                            <span data-bind="i18n: 'Nick Name'"></span>
+                        </label>
+                        <div class="control">
+                            <input name="customer_name"
+                                   title="Nick Name"
+                                   id="customer_name"
+                                   data-bind="attr: { placeholder: $t('請輸入姓名') }, value: customer().name"
+                                   data-validate="{'required': true, 'validate-fullwidth-special': true}"
+                                   class="input-text"
+                                   type="text"
+                            />
+                        </div>
+                    </div>
+                    <div class="field required field-email">
+                        <label class="label" for="email">
+                            <span data-bind="i18n: 'Email'"></span>
+                        </label>
+                        <div class="control">
+                            <input title="Email"
+                                   id="email_masked"
+                                   data-bind="attr: { placeholder: $t('請輸入電子郵件') }, value: customer().email_masked"
+                                   class="input-text"
+                                   type="text"
+                            />
+                            <input name="email"
+                                   title="Email"
+                                   id="email"
+                                   data-bind="attr: { placeholder: $t('請輸入電子郵件') }, value: customer().email"
+                                   data-validate="{'required':true, 'validate-email':true, 'validate-email-fullwidth-special': true}"
+                                   class="input-text hide"
+                                   type="text"
+                            />
+                        </div>
+                    </div>
+                    <div class="field required field-telephone">
+                        <label class="label" for="telephone">
+                            <span data-bind="i18n: 'Phone Number'"></span>
+                        </label>
+                        <div class="control">
+                            <input title="Telephone"
+                                   id="telephone_masked"
+                                   data-bind="attr: { placeholder: $t('請輸入手機號碼') }, value: customer().phone_masked"
+                                   class="input-text"
+                                   type="text"
+                            />
+                            <input name="phone"
+                                   title="Telephone"
+                                   id="telephone"
+                                   minlength="10"
+                                   maxlength="10"
+                                   data-bind="attr: { placeholder: $t('請輸入手機號碼') }, value: customer().phone"
+                                   data-validate="{required: true, 'required-number': true, 'validate-number':true, 'validate-tw-phone': true, 'validate-fullwidth-special': true}"
+                                   class="input-text hide"
+                                   type="text"
+                            />
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <label class="label" for="title">
+                            <span data-bind="i18n: 'Title'"></span>
+                        </label>
+                        <div class="control">
+                            <input name="title"
+                                title="Title"
+                                id="title"
+                                data-validate="{'required':true, 'validate-fullwidth-special': true, maxlength: 20}"
+                                class="input-text"
+                                type="text"
+                                data-bind="attr: { placeholder: $t('Please enter a title')}"
+                            />
+                        </div>
+                    </div>
+                    <div class="field  required">
+                        <label class="label" for="category">
+                            <span data-bind="i18n: 'Problems encountered'"></span>
+                        </label>
+                        <div class="control">
+                            <select id="category"
+                                name="category_id"
+                                class="select"
+                                data-validate="{'required':true}"
+                                data-bind="event: {change: selectOnChange()}, options: getCategoryOptions(),
+                                optionsValue: 'value',
+                                optionsText: 'label',
+                                optionsCaption: $t('-- Please Select Category --')"
+                            >
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field message required">
+                        <label class="label" for="content-area">
+                            <span data-bind="i18n: 'Content'"></span>
+                        </label>
+                        <div class="control">
+                            <textarea name="content" id="content_area"
+                                  class="input-text"
+                                  rows="4"
+                                  data-validate="{'required':true, 'validate-fullwidth-special': true, maxlength: 300}"
+                                  aria-required="true"
+                                  data-bind="attr: { placeholder: $t('Please enter content (word limit: 300 words)')}"></textarea>
+                        </div>
+                    </div>
+                    <div class="field attachment">
+                        <label class="label">
+                            <span data-bind="i18n: 'Picture'"></span>
+                        </label>
+                        <div class="attachment-note">
+                            <span class="no-display" data-bind="i18n: 'Upload file'"></span>
+                            <span data-bind="i18n: '※ Upload restrictions'"></span> <br>
+                            <span data-bind="text: configurations.allowFileTypeText"></span> <br>
+                            <span data-bind="text: configurations.fileSizeText"></span>
+                        </div>
+                        <div class="control">
+                            <!-- ko foreach: getRegion('attachment') -->
+                            <!-- ko template: getTemplate() --><!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                        <div class="control">
+                            <!-- ko foreach: getRegion('attachment1') -->
+                            <!-- ko template: getTemplate() --><!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                    <!-- ko foreach: getRegion('additional-login-form-fields') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </fieldset>
+                <div data-bind="text: console.log($data)"></div>
+
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" title="Submit"
+                            class="button action primary action-primary"
+                            data-bind="enable:canPost"
+                    >
+                        <span translate="'Submit'"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_cart_product_add_before">
+        <observer name="b8_validate_addtotart_from_system" instance="Branch8\Prelaunch\Observer\BeforeAddToCart" />
+    </event>
+    <event name="branch8_split_order_item_success">
+        <observer name="b8_validate_addtotart_from_old_system" instance="Branch8\Prelaunch\Observer\BeforePlaceMasterQuote" />
+    </event>
+    <event name="order_cancel_after">
+        <observer name="b8_cancel_order_call_update_stock" instance="Branch8\Prelaunch\Observer\AfterCancelOrder" />
+    </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="b8_return_order_call_update_stock" instance="Branch8\Prelaunch\Observer\RmaReturned" />
+    </event>
+    <event name="sales_order_creditmemo_rerund_financial_review">
+        <observer name="b8_return_order_call_update_stock" instance="Branch8\Prelaunch\Observer\RmaReturnedFinancialReview" />
+    </event>
+</config>

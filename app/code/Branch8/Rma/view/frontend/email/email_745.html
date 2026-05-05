@@ -1,0 +1,71 @@
+<!--@subject 訂單退貨申請通知信 @-->
+{{template config_path="design/email/header_template"}}
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>訂單退貨申請通知信</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    親愛的○○(昵稱)您好，<br/>
+    謝謝您對HOTAI購的支持，我們已收到您的退貨申請。
+</p>
+
+<table cellpadding="0" cellspacing="0" class="order-info order-return-request m-bottom__m">
+    <thead>
+    <tr>
+        <th>訂單明細</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">訂單編號</td>
+                    <td class="value">
+                        <a target="_blank" href="#">SS00000000000</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">訂單日期</td>
+                    <td class="value">YYYY/MM/DD HH:MM</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">預計退還金額</td>
+                    <td class="value">$7,060</td>
+                </tr>
+                <tr class="order_points">
+                    <td class="label">預計退還點數</td>
+                    <td class="value">279點</td>
+                </tr>
+                <tr class="order_shipping-method">
+                    <td class="label">退貨物流方式</td>
+                    <td class="value">宅配</td>
+                </tr>
+                <tr class="order_items">
+                    <td class="label">訂購商品</td>
+                    <td class="value">
+                        1. 【漢來美食】沙茶炆鳳爪 300g(5盒組) X 1<br/>
+                        2. 【水果狼】韓國麝香葡萄 5-6房/4KG原裝箱 X 3
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    我們將聯繫整合物流至您收件地點收取退貨商品，請留意近期手機訊息與退貨狀態。<br>
+    請至 帳號管理 > <a target="_blank" class="link-primary" href="#">訂單查詢</a> 瀏覽完整訂單內容。
+</p>
+<p>
+    如您還有購買其他商品需求，<br/>
+    請至HOTAI購再次訂購，謝謝您的支持。
+</p>
+{{template config_path="design/email/footer_template"}}

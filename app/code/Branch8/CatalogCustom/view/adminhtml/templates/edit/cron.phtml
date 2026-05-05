@@ -1,0 +1,228 @@
+<?php
+/**
+ * Copyright © 2019 Wyomind. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+/** @var \Wyomind\DataFeedManager\Block\Adminhtml\Feeds\Edit\Tab\Cron $block */
+?>
+<!-- Cron schedule selector template -->
+<div class="entry-edit form-inline">
+    <fieldset id="cron_fieldset" class="fieldset ">
+        <legend class="legend">
+            <span><?php /* @noEscape */ echo __('Settings'); ?></span>
+        </legend>
+        <br/>
+        <div class="fieldset" id="cron-setting">
+            <input id="cron_expr" name="cron_expr" class="input-text debug" type="hidden"
+                   value='<?php /* @noEscape */ echo $block->getDFMCronExpr(); ?>'>
+            <table>
+                <thead>
+                <tr>
+                    <th><?php /* @noEscape */ echo __('Days of the week'); ?></th>
+                    <th colspan="4"><?php /* @noEscape */ echo __('Hours of the day'); ?></th>
+                </tr>
+                </thead>
+                <tr>
+                    <td class="cron-d-box">
+                        <label class="data-grid-checkbox-cell-inner">
+                            <input class="admin__control-checkbox cron-box day" value="Monday" id="d-Monday" type="checkbox"/>
+                            <label for="d-Monday">&nbsp;<?php /* @noEscape */ echo __('Monday'); ?></label>
+                        </label>
+                    </td>
+                    <td rowspan="7" class="hours">
+                        <table>
+                            <?php for ($h = 0; $h < 12; $h++) : ?>
+                                <?php $am = str_pad($h, 2, "0", STR_PAD_LEFT); ?>
+                                <?php $pm = $h + 12; ?>
+                                <tr>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:00' id='h-<?php /* @noEscape */ echo $am; ?>00' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>00">&nbsp;<?php /* @noEscape */ echo __($am . ":00 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:05' id='h-<?php /* @noEscape */ echo $am; ?>05' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>05">&nbsp;<?php /* @noEscape */ echo __($am . ":05 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:10' id='h-<?php /* @noEscape */ echo $am; ?>10' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>10">&nbsp;<?php /* @noEscape */ echo __($am . ":10 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:15' id='h-<?php /* @noEscape */ echo $am; ?>15' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>15">&nbsp;<?php /* @noEscape */ echo __($am . ":15 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:20' id='h-<?php /* @noEscape */ echo $am; ?>20' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>20">&nbsp;<?php /* @noEscape */ echo __($am . ":20 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:25' id='h-<?php /* @noEscape */ echo $am; ?>25' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>25">&nbsp;<?php /* @noEscape */ echo __($am . ":25 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:30' id='h-<?php /* @noEscape */ echo $am; ?>30' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>30">&nbsp;<?php /* @noEscape */ echo __($am . ":30 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:40' id='h-<?php /* @noEscape */ echo $am; ?>40' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>40">&nbsp;<?php /* @noEscape */ echo __($am . ":40 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:45' id='h-<?php /* @noEscape */ echo $am; ?>45' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>45">&nbsp;<?php /* @noEscape */ echo __($am . ":45 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:50' id='h-<?php /* @noEscape */ echo $am; ?>50' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>50">&nbsp;<?php /* @noEscape */ echo __($am . ":50 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $am; ?>:55' id='h-<?php /* @noEscape */ echo $am; ?>55' />
+                                            <label for="h-<?php /* @noEscape */ echo $am; ?>55">&nbsp;<?php /* @noEscape */ echo __($am . ":55 AM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:00' id='h-<?php /* @noEscape */ echo $pm; ?>00' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>00">&nbsp;<?php /* @noEscape */ echo __($am . ":00 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:05' id='h-<?php /* @noEscape */ echo $pm; ?>05' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>05">&nbsp;<?php /* @noEscape */ echo __($am . ":05 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:10' id='h-<?php /* @noEscape */ echo $pm; ?>10' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>10">&nbsp;<?php /* @noEscape */ echo __($am . ":10 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:15' id='h-<?php /* @noEscape */ echo $pm; ?>15' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>15">&nbsp;<?php /* @noEscape */ echo __($am . ":15 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:20' id='h-<?php /* @noEscape */ echo $pm; ?>20' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>20">&nbsp;<?php /* @noEscape */ echo __($am . ":20 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:25' id='h-<?php /* @noEscape */ echo $pm; ?>25' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>25">&nbsp;<?php /* @noEscape */ echo __($am . ":25 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:30' id='h-<?php /* @noEscape */ echo $pm; ?>30' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>30">&nbsp;<?php /* @noEscape */ echo __($am . ":30 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:35' id='h-<?php /* @noEscape */ echo $pm; ?>35' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>35">&nbsp;<?php /* @noEscape */ echo __($am . ":35 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:40' id='h-<?php /* @noEscape */ echo $pm; ?>40' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>40">&nbsp;<?php /* @noEscape */ echo __($am . ":40 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:45' id='h-<?php /* @noEscape */ echo $pm; ?>45' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>45">&nbsp;<?php /* @noEscape */ echo __($am . ":45 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:50' id='h-<?php /* @noEscape */ echo $pm; ?>50' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>50">&nbsp;<?php /* @noEscape */ echo __($am . ":50 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                    <td class="cron-h-box">
+                                        <label class="data-grid-checkbox-cell-inner">
+                                            <input class="cron-box hour admin__control-checkbox" type="checkbox"
+                                                   value='<?php /* @noEscape */ echo $pm; ?>:55' id='h-<?php /* @noEscape */ echo $pm; ?>55' />
+                                            <label for="h-<?php /* @noEscape */ echo $pm; ?>55">&nbsp;<?php /* @noEscape */ echo __($am . ":55 PM"); ?></label>
+                                        </label>
+                                    </td>
+                                </tr>
+                            <?php endfor; ?>
+                        </table>
+                    </td>
+                    <?php $days = [__('Tuesday'), __('Wednesday'), __('Thursday'), __('Friday'), __('Saturday'), __('Sunday')]; ?>
+                    <?php foreach ($days as $day) : ?>
+                <tr>
+                    <td class="cron-d-box">
+                        <label class="data-grid-checkbox-cell-inner">
+                            <input class='admin__control-checkbox cron-box day' value='<?php /* @noEscape */ echo $day; ?>'
+                                   id="d-<?php /* @noEscape */ echo $day; ?>" type="checkbox"/>
+                            <label for="d-<?php /* @noEscape */ echo $day; ?>">&nbsp;<?php /* @noEscape */ echo $day; ?></label>
+                        </label>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        </div>
+    </fieldset>
+</div>
+<script>
+    require(["jquery", "dfm_cron"], function ($, cron) {
+        'use strict';
+        $(document).on('change', '.cron-box', function () {
+            $(this).parent().toggleClass('selected');
+            cron.updateExpr();
+        });
+        cron.loadExpr();
+    });
+</script>

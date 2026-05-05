@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">marketplacectrl_products_list.product_approval_management_listing_data_source</item>
+            <item name="deps" xsi:type="string">marketplacectrl_products_list.product_approval_management_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">marketplacectrl_products_columns</item>
+    </argument>
+    <dataSource name="product_approval_management_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="name" xsi:type="string">product_approval_management_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="addFilterStrategies" xsi:type="array">
+                <item name="is_new_product" xsi:type="object">Branch8\MarketplaceProduct\Ui\DataProvider\IsNewProduct</item>
+            </argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">entity_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <paging name="listing_paging"/>
+        <filters name="listing_filters">
+            <filterSelect
+                name="name"
+                provider="${ $.parentName }"
+                sortOrder="10"
+                component="Magento_Ui/js/form/element/ui-select"
+                template="ui/grid/filters/elements/ui-select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="showCheckbox" xsi:type="boolean">true</item>
+                        <item name="chipsEnabled" xsi:type="boolean">true</item>
+                        <item name="multiple" xsi:type="boolean">true</item>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                        <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Seller Name</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\HotaiCore\Ui\Component\Listing\Filters\Options\SellerShopName"/>
+                    <label translate="true">Seller Name</label>
+                    <dataScope>name</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, index = name:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="disapprove" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\MassActionDenny">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">disapprove</item>
+                        <item name="label" xsi:type="string" translate="true">Disapprove</item>
+                        <item name="url" xsi:type="url" path="marketplacectrl/product/massDisapprove"/>
+                        <item name="aclResource" xsi:type="string">Branch8_MarketplaceProduct::disapprove</item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Disapprove</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to disapprove selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="approve" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\MassActionApprove">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">approve</item>
+                        <item name="label" xsi:type="string" translate="true">Approve</item>
+                        <item name="url" xsi:type="url" path="marketplacectrl/product/massApprove"/>
+                        <item name="aclResource" xsi:type="string">Branch8_MarketplaceProduct::approve</item>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Approve</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to approve selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="dealer_disapprove" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\MassDealerDeny">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">dealer_disapprove</item>
+                        <item name="label" xsi:type="string" translate="true">Dealer Disapprove</item>
+                        <item name="url" xsi:type="url" path="marketplacectrl/product/massDealerDisapprove"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Dealer Disapprove</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to disapprove selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="dealer_approve" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\MassDealerApprove">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">dealer_approve</item>
+                        <item name="label" xsi:type="string" translate="true">Dealer Approve</item>
+                        <item name="url" xsi:type="url" path="marketplacectrl/product/massDealerApprove"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Dealer Approve</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to approve selected items?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+    </listingToolbar>
+    <columns name="marketplacectrl_products_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sortOrder" xsi:type="number">1</item>
+                    <item name="sortable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="sku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">SKU</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="sortable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="approval_flow_status" >
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\MarketplaceProduct\Model\Config\Source\ApprovalFlowStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">Approval Status</item>
+                    <item name="sortOrder" xsi:type="number">7</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_new_product" >
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\MarketplaceProduct\Model\Product\Source\IsNewProduct</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">New Product?</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+        </column>
+        <column name="name" class="Webkul\Marketplace\Ui\Component\Listing\Columns\Customerlink">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/link</item>
+                    <item name="label" xsi:type="string" translate="true">Seller Name</item>
+                    <item name="viewUrlPath" xsi:type="string">customer/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">seller_id</item>
+                    <item name="sortOrder" xsi:type="number">15</item>
+                </item>
+            </argument>
+        </column>
+        <column name="base_gross_profit">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Base Gross Profit</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </column>
+        <column name="gross_profit_level">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Gross Profit Level</item>
+                    <item name="sortOrder" xsi:type="number">25</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="pro_prev" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Thumbnail">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/thumbnail</item>
+                    <item name="indexField" xsi:type="string">mageproduct_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Product Image</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <column name="product_name" class="Webkul\Marketplace\Ui\Component\Listing\Columns\Productlink">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/link</item>
+                    <item name="label" xsi:type="string" translate="true">Product Name</item>
+                    <item name="sortOrder" xsi:type="number">33</item>
+                    <item name="filter" xsi:type="string">text</item>
+                </item>
+            </argument>
+        </column>
+        <column name="qty">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Stock Qty</item>
+                    <item name="sortOrder" xsi:type="number">36</item>
+                </item>
+            </argument>
+        </column>
+        <column name="product_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Catalog\Model\Product\Attribute\Source\Status</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Product Status</item>
+                    <item name="sortOrder" xsi:type="number">37</item>
+                </item>
+            </argument>
+        </column>
+        <column name="init_gross_profit" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\InitGrossProfit">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">Initial Gross Profit %</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+        </column>
+        <column name="gross_profit" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\GrossProfit">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\MarketplaceProduct\Model\Config\Source\GrossProfit</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Gross Profit %</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+        </column>
+        <column name="special_price" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Special Price</item>
+                    <item name="sortOrder" xsi:type="number">45</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="initial_special_price" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Initial Special Price</item>
+                    <item name="sortOrder" xsi:type="number">46</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="cost" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Cost</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="initial_cost" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Initial Cost</item>
+                    <item name="sortOrder" xsi:type="number">51</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="product_price" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Price</item>
+                    <item name="sortOrder" xsi:type="number">55</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="initial_price" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Initial Price</item>
+                    <item name="sortOrder" xsi:type="number">56</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </column>
+        <column name="change_summary" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\SummaryChange">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Change Summary</item>
+                    <item name="sortOrder" xsi:type="number">999</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="submission_time" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Submission Time</item>
+                    <item name="sortOrder" xsi:type="number">65</item>
+                </item>
+            </argument>
+        </column>
+        <column name="first_enabled_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">First on board datetime</item>
+                    <item name="sortOrder" xsi:type="number">66</item>
+                </item>
+            </argument>
+        </column>
+        <column name="tax_class">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Tax\Model\TaxClass\Source\Product</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Tax Class</item>
+                    <item name="sortOrder" xsi:type="number">66</item>
+                </item>
+            </argument>
+        </column>
+        <column name="admin_user_updated">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Last Updated User</item>
+                    <item name="sortOrder" xsi:type="number">999</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="dealer_approve_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\MarketplaceProduct\Model\Product\Source\Status</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Dealer Approval Status</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+            </argument>
+        </column>
+
+        <actionsColumn name="pro_deny" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\ProductDeny">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_MarketplaceProduct/js/grid/columns/prodeny</item>
+                    <item name="indexField" xsi:type="string">mageproduct_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Deny</item>
+                    <item name="aclResource" xsi:type="string">Branch8_MarketplaceProduct::disapprove</item>
+                    <item name="sortOrder" xsi:type="number">16</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="pro_approve" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\ProductApprove">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_MarketplaceProduct/js/grid/columns/proapprove</item>
+                    <item name="indexField" xsi:type="string">mageproduct_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Approve</item>
+                    <item name="aclResource" xsi:type="string">Branch8_MarketplaceProduct::approve</item>
+                    <item name="sortOrder" xsi:type="number">17</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="dealer_approve" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\DealerApprove">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_MarketplaceProduct/js/grid/columns/proapprove</item>
+                    <item name="indexField" xsi:type="string">mageproduct_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Dealer Approve</item>
+                    <item name="sortOrder" xsi:type="number">85</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="dealer_deny" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\DealerDeny">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/prodeny</item>
+                    <item name="indexField" xsi:type="string">mageproduct_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true"> Dealer Deny</item>
+                    <item name="sortOrder" xsi:type="number">90</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="product_view" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\ProductView">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/link</item>
+                    <item name="label" xsi:type="string" translate="true">Product View</item>
+                    <item name="sortOrder" xsi:type="number">95</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="requestPath" xsi:type="string">marketplacectrl/catalog/preview</item>
+                </item>
+            </argument>
+        </actionsColumn>
+        <actionsColumn name="change_log" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\ChangeLog">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Change Log</item>
+                    <item name="sortOrder" xsi:type="number">100</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+        <column name="is_cost_changed">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">Is Cost Change</item>
+                    <item name="sortOrder" xsi:type="number">105</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_special_price_changed">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">Is Special Price Change</item>
+                    <item name="sortOrder" xsi:type="number">110</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_price_cost_changed">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="editor" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="label" xsi:type="string" translate="true">Is Price/ Cost change</item>
+                    <item name="fieldClass" xsi:type="string">isPriceCostChange</item>
+                    <item name="sortOrder" xsi:type="number">10000</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="headerTmpl" xsi:type="string">Branch8_MarketplaceProduct/grid/columns/hide-header</item>
+                </item>
+            </argument>
+        </column>
+        <column name="gross_profit_range">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Gross Profit Range</item>
+                    <item name="sortOrder" xsi:type="number">10001</item>
+                    <item name="editor" xsi:type="array">
+                        <item name="editorType" xsi:type="string">price</item>
+                        <item name="validation" xsi:type="array">
+                            <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                    <item name="draggable" xsi:type="boolean">false</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="fieldClass" xsi:type="string">grossProfitRange</item>
+                    <item name="headerTmpl" xsi:type="string">Branch8_MarketplaceProduct/grid/columns/hide-header</item>
+                </item>
+            </argument>
+        </column>
+        <column name="variation_price" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\VariationPrice">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="label" xsi:type="string" translate="true">Variation Price</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">120</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="variation_cost"  class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\VariationCost">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="label" xsi:type="string" translate="true">Variation Cost</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">125</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="approve_error_message">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Approve Error Message</item>
+                    <item name="sortOrder" xsi:type="number">999</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="approval_log" class="Branch8\MarketplaceProduct\Ui\Component\Listing\Columns\ApprovalLog">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Approval Log</item>
+                    <item name="sortOrder" xsi:type="number">1001</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

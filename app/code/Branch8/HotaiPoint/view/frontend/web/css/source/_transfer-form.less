@@ -1,0 +1,217 @@
+// step switch style
+.hotai-point-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    & .hotai-point-form  {
+        display: none;
+        & > fieldset, & > div {
+            margin: 0;
+        }
+    }
+
+    &[data-current-step="1"] {
+        & .hotai-point-form[data-step="1"] {
+            display: block;
+        }
+    }
+
+    &[data-current-step="2"] {
+        & .hotai-point-form[data-step="2"] {
+            display: block;
+        }
+    }
+    & .hotai-point-additional-content {
+        margin: 0;
+    }
+
+    & .hotai-point-transfer-confirm-container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        & .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            & button {
+                width: 130px;
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+        & .hotai-point-transfer-confirm-container {
+            flex-direction: column-reverse;
+            & .actions {
+                gap: 20px;
+            }
+        }
+    }
+
+}
+
+
+// form stylle
+.hotai-point-form {
+    display: grid;
+    gap: 20px;
+    & .fieldset-card {
+        background-color: var(--color-gray-light1);
+        padding: 40px;
+        border-radius: 25px;
+        position: unset;
+        box-sizing: border-box;
+    }
+
+    & .m-0 {
+        margin: 0;
+    }
+
+    & .transfer-confirm-details {
+        
+        & .section-content {
+            width: 100%;
+            text-align: center;
+        }
+
+        & .current-point {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column ;
+            gap: 20px;
+
+            &-text {
+                display: block;
+                font-size: 14px;
+            }
+        }
+
+        & .hotai-customer-points, & .hotai-customer-points::before {
+            color: var(--color-red-base);
+        }
+
+        & .transfer-info {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 15px;
+            &-title {
+                font-size: 12px;
+                font-weight: 400;
+            }
+
+            &-phone {
+                font-size: 18px;
+                font-weight: 700;
+            }
+        }
+
+    }
+
+    & .sms-verification-code {
+        border: none;
+        & > .fieldset {
+            padding: 0;
+            margin: 0;
+        }
+        &-text {
+            font-size: 14px;
+            line-height: 22px;
+            font-weight: 400;
+            color: var(--color-gray-solid1);
+        }
+
+        &-input-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            position: relative;
+            margin-top: 10px;
+            font-size: 14px;
+            letter-spacing: 2px;
+            & .label {
+                width: 45px;
+            }
+
+            & #sms-verification-code {
+                text-transform: uppercase;
+            }
+        }
+
+        &-resend-container {
+            display: flex;
+            justify-content: flex-end;
+            & button {
+                padding: 0;
+                border-width: 0;
+                border-radius: 0;
+                border-bottom: 1px solid var(--color-red-base);
+            }
+            & .wait-message {
+                font-size: 12px;
+                color: var(--color-gray-solid1);
+            }
+
+            &[data-waiting="true"] {
+                & button {
+                    display: none;
+                }
+            }
+            &[data-waiting="false"] {
+                & .wait-message {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    & .warning-message {
+        padding: 8px 12px 8px 30px;
+        background-color: var(--color-gray-light5);
+        border-radius: 16px;
+        position: relative;
+        &::before {
+            position: absolute;
+            left: 20px;
+            top: 15px;
+            -webkit-font-smoothing: antialiased;
+            font-style: normal;
+            font-weight: normal;
+            line-height: 1;
+            speak: none;
+            font-family: var(--font-hotai-icons);
+            color: var(--color-gray-solid1);
+            content: var(--icon-warning);
+        }
+        & ul {
+            margin: 0;
+            & li {
+                font-size: 12px;
+                color: var(--color-gray-solid1);
+                margin: 0;
+                & a {
+                    color: var(--color-red-base);
+                }
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+        & .fieldset-card-md {
+            background-color: var(--color-gray-light1);
+            padding: 40px;
+            border-radius: 25px;
+            position: unset;
+            box-sizing: border-box;
+        }
+
+        & .sms-verification-code {
+            & > fieldset.fieldset {
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "wishlist_item": {
+        "column": {
+            "price": true,
+            "is_send_mail_price_change": true
+        },
+        "index": {
+            "WISHLIST_ITEM_IS_SEND_MAIL_PRICE_CHANGE": true
+        }
+    }
+}

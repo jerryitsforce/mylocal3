@@ -1,0 +1,88 @@
+<?php
+/** @var \MageSuite\Magepack\Block\BundlesLoader $block */
+
+$commonBundleUrl = $block->getCommonBundleUrl();
+$pageBundlesUrls = $block->getPageBundlesUrls();
+$prefetchBundlesUrls = $block->getPrefetchBundlesUrls();
+?>
+
+<?php if ($commonBundleUrl): ?>
+<?php
+if (str_ends_with($commonBundleUrl, '.js') && !str_ends_with($commonBundleUrl, '.min.js')) {
+    $commonBundleUrl = substr_replace($commonBundleUrl, '.min.js', -3);
+}
+?>
+<link rel="prefetch" as="script" href="<?= $commonBundleUrl; ?>"/>
+<?php endif; ?>
+
+<?php foreach($pageBundlesUrls as $pageBundleUrl): ?>
+<?php
+if (str_ends_with($pageBundleUrl, '.js') && !str_ends_with($pageBundleUrl, '.min.js')) {
+    $pageBundleUrl = substr_replace($pageBundleUrl, '.min.js', -3);
+}
+?>
+<link rel="prefetch" as="script" href="<?= $pageBundleUrl; ?>"/>
+<?php endforeach; ?>
+
+<?php
+$pathsConfig = [];
+$commonBundle = $block->getData('common_bundle');
+if ($commonBundle && isset($commonBundle['bundle_path'])) {
+    $path = preg_replace('/\.js$/', '', $commonBundle['bundle_path']);
+    $pathsConfig[$path] = $path . '.min';
+    $pathsConfig[$path . '.min'] = $path . '.min';
+    $pathsConfig[$path . '.min.min'] = $path . '.min';
+}
+$pageBundles = $block->getData('page_bundles');
+if (!empty($pageBundles)) {
+    foreach ($pageBundles as $pageBundle) {
+        if (isset($pageBundle['bundle_path'])) {
+            $path = preg_replace('/\.js$/', '', $pageBundle['bundle_path']);
+            $pathsConfig[$path] = $path . '.min';
+            $pathsConfig[$path . '.min'] = $path . '.min';
+            $pathsConfig[$path . '.min.min'] = $path . '.min';
+        }
+    }
+}
+$prefetchBundles = $block->getData('prefetch_bundles');
+if (!empty($prefetchBundles)) {
+    foreach ($prefetchBundles as $prefetchBundle) {
+        $path = preg_replace('/\.js$/', '', $prefetchBundle);
+        $pathsConfig[$path] = $path . '.min';
+        $pathsConfig[$path . '.min'] = $path . '.min';
+        $pathsConfig[$path . '.min.min'] = $path . '.min';
+    }
+}
+?>
+<?php if (!empty($pathsConfig)): ?>
+<script>
+require.config({
+    paths: <?= json_encode($pathsConfig) ?>
+});
+</script>
+<?php endif; ?>
+
+<?php if (!empty($prefetchBundlesUrls)): ?>
+<script>
+(function(root, doc) {
+    var headElement,
+        bundleLink,
+        bundleUrls = <?= json_encode($prefetchBundlesUrls); ?>,
+        idleCallback = root.requestIdleCallback || root.setTimeout;
+    // Prefetch all bundles via link tags when browser gets idle.
+    if (headElement = doc.querySelector('head')) {
+        root.addEventListener('load', function() {
+            idleCallback(function() {
+                bundleUrls.forEach(function(bundleUrl) {
+                    bundleLink = doc.createElement('link');
+                    bundleLink.rel = 'prefetch';
+                    bundleLink.as = 'script';
+                    bundleLink.href = bundleUrl;
+                    headElement.appendChild(bundleLink);
+                });
+            });
+        });
+    }
+}(window, document))
+</script>
+<?php endif; ?>

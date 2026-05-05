@@ -1,0 +1,109 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="has-ga4-data" attr="data.main.attributes" ko-style="data.main.style" css="data.main.css">
+    <a if="data.link.attributes().href" attr="data.link.attributes" ko-style="data.link.style" css="data.link.css">
+        <div css="data.wrapper.css"
+        ko-style="data.wrapper.style" data-bind="attr: { class: 'pagebuilder-banner-rounded-corner align-' + data.rounded_corner.attributes()['data-align']}">
+            <div css="data.wrapper.css"
+                ko-style="data.wrapper.style"
+                class="pagebuilder-banner-content">
+                    <div class="pagebuilder-overlay" attr="data.overlay.attributes" ko-style="data.overlay.style" css="data.overlay.css">
+                        <div class="pagebuilder-rounded-corner-content">
+                            <!-- ko with: data.content -->
+                            <!-- ko with: {attributes: attributes, style: style, css: css, dataContentUnsanitizedHtml: html} -->
+                            <div attr="attributes" ko-style="style" css="css" html="dataContentUnsanitizedHtml"></div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- ko if: data.main.attributes()['data-show-button'] !== 'never' -->
+                            <!-- ko with: data.button -->
+                            <!-- ko with: {attributes: attributes, style: style, css: css, dataButtonUnsanitizedHtml: html} -->
+                            <button type="button"
+                                    class="pagebuilder-banner-button"
+                                    attr="attributes"
+                                    ko-style="style"
+                                    css="css"
+                                    html="dataButtonUnsanitizedHtml">
+                            </button>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+            <div attr="data.wrapper.attributes"
+                ko-style="data.wrapper.style"
+                css="data.wrapper.css"
+                class="pagebuilder-banner-wrapper">
+                <div if="data.video_overlay.attributes()['data-video-overlay-color']"
+                class="video-overlay"
+                attr="data.video_overlay.attributes"
+                ko-style="data.video_overlay.style"></div>
+                <div class="rounded-corner"
+                data-bind="style: { color: data.rounded_corner.attributes()['data-background-color']}">
+                <svg class="box-desc-rounder" width="201" height="207" viewBox="0 0 201 207" xmlns="http://www.w3.org/2000/svg"> <path d="M201 0H0V207C10 86 99 6 201 0Z" fill="currentColor"/> </svg>
+                </div>
+                <img if="data.rounded_corner.attributes()['data-desktop-image'][0]"
+                data-bind="attr:{src: data.rounded_corner.attributes()['data-desktop-image'][0].url, alt: data.rounded_corner.attributes()['data-desktop-image'][0].name}"
+                class="pagebuilder-mobile-hidden" loading="lazy" />
+                <img if="data.rounded_corner.attributes()['data-mobile-image'][0]"
+                data-bind="attr:{src: data.rounded_corner.attributes()['data-mobile-image'][0].url, alt: data.rounded_corner.attributes()['data-mobile-image'][0].name}"
+                    class="pagebuilder-mobile-only" loading="lazy" />
+            </div>
+        </div>
+    </a>
+    <div ifnot="data.link.attributes().href" attr="data.empty_link.attributes" ko-style="data.empty_link.style" css="data.empty_link.css">
+        <div css="data.wrapper.css"
+        ko-style="data.wrapper.style" data-bind="attr: { class: 'pagebuilder-banner-rounded-corner align-' + data.rounded_corner.attributes()['data-align']}">
+            <div css="data.wrapper.css"
+                ko-style="data.wrapper.style"
+                class="pagebuilder-banner-content">
+                    <div class="pagebuilder-overlay" attr="data.overlay.attributes" ko-style="data.overlay.style" css="data.overlay.css">
+                        <div class="pagebuilder-rounded-corner-content">
+                            <!-- ko with: data.content -->
+                            <!-- ko with: {attributes: attributes, style: style, css: css, dataContentUnsanitizedHtml: html} -->
+                            <div attr="attributes" ko-style="style" css="css" html="dataContentUnsanitizedHtml"></div>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- ko if: data.main.attributes()['data-show-button'] !== 'never' -->
+                            <!-- ko with: data.button -->
+                            <!-- ko with: {attributes: attributes, style: style, css: css, dataButtonUnsanitizedHtml: html} -->
+                            <button type="button"
+                                    class="pagebuilder-banner-button"
+                                    attr="attributes"
+                                    ko-style="style"
+                                    css="css"
+                                    html="dataButtonUnsanitizedHtml">
+                            </button>
+                            <!-- /ko -->
+                            <!-- /ko -->
+                            <!-- /ko -->
+                        </div>
+                    </div>
+                </div>
+            <div attr="data.wrapper.attributes"
+                ko-style="data.wrapper.style"
+                css="data.wrapper.css"
+                class="pagebuilder-banner-wrapper">
+                <div if="data.video_overlay.attributes()['data-video-overlay-color']"
+                class="video-overlay"
+                attr="data.video_overlay.attributes"
+                ko-style="data.video_overlay.style"></div>
+                <div class="rounded-corner"
+                data-bind="style: { color: data.rounded_corner.attributes()['data-background-color']}">
+                <svg class="box-desc-rounder" width="201" height="207" viewBox="0 0 201 207" xmlns="http://www.w3.org/2000/svg"> <path d="M201 0H0V207C10 86 99 6 201 0Z" fill="currentColor"/> </svg>
+                </div>
+                <img if="data.rounded_corner.attributes()['data-desktop-image'][0]"
+                data-bind="attr:{src: data.rounded_corner.attributes()['data-desktop-image'][0].url, alt: data.rounded_corner.attributes()['data-desktop-image'][0].name}"
+                class="pagebuilder-mobile-hidden" loading="lazy" />
+                <img if="data.rounded_corner.attributes()['data-mobile-image'][0]"
+                data-bind="attr:{src: data.rounded_corner.attributes()['data-mobile-image'][0].url, alt: data.rounded_corner.attributes()['data-mobile-image'][0].name}"
+                    class="pagebuilder-mobile-only" loading="lazy" />
+            </div>
+        </div>
+    </div>
+</div>

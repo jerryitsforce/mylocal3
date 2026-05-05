@@ -1,0 +1,24 @@
+<?php
+$dataHelper = $this->helper(Branch8\ProductAlert\Helper\Data::class);
+$alertContent = $dataHelper->getAlertContent();
+?>
+<!-- Modal -->
+<div id="productAlert" class="product-alert-modal modal-hide">
+    <input type="hidden" name="eighteen_url" value="<?= $block->escapeUrl($block->getUrl('eighteen/customer/update')) ?>">
+    <input type="hidden" name="confirm_url" value="<?= $block->escapeUrl($block->getUrl('eighteen/confirm/index')) ?>">
+    <div class="modal-custom-content">
+        <?= $alertContent ?>
+        <div class="modal-actions">
+            <button id="confirmBtn" class="action primary"><?= $block->escapeHtml(__('Sure')) ?></button>
+            <button class="action btn-close"><?= $block->escapeHtml(__('Cancel')) ?></button>
+        </div>
+    </div>
+    
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "branch/productalert" : {}
+        }
+    }
+</script>

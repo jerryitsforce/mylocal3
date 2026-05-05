@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:noNamespaceSchemaLocation="seller_2fa.xsd">
+    <seller_2fa_urls>
+        <item module="Webkul_SellerSubAccount">
+            <url>sellersubaccount_account_manage</url>
+            <url>sellersubaccount_account_new</url>
+            <url>sellersubaccount_account_save</url>
+            <url>sellersubaccount_account_edit</url>
+            <url>sellersubaccount_account_massDelete</url>
+        </item>
+        <item module="Webkul_MarketplacePreorder">
+            <url>vmppreorder_seller_configuratio</url>
+            <url>mppreorder_seller_save</url>
+            <url>mppreorder_seller_orders</url>
+            <url>mppreorder_seller_sendmail</url>
+        </item>
+        <item  module="Webkul_MpMassUpload">
+            <url>mpmassupload_dataflow_profile</url>
+            <url>mpmassupload_dataflow_profile_save</url>
+            <url>mpmassupload_dataflow_profile_delete</url>
+            <url>mpmassupload_dataflow_profile_edit</url>
+            <url>mpmassupload_dataflow_profile_massDelete</url>
+            <url>mpmassupload_dataflow_product_export</url>
+            <url>mpmassupload_dataflow_product_finish</url>
+            <url>mpmassupload_dataflow_product_options</url>
+            <url>mpmassupload_dataflow_product_profile</url>
+            <url>mpmassupload_dataflow_product_run</url>
+            <url>mpmassupload_dataflow_product_upload</url>
+            <url>mpmassupload_dataflow_product_view</url>
+            <url>mpmassupload_dataflow_profilelisting_delete</url>
+            <url>mpmassupload_dataflow_profilelisting_massdelete</url>
+            <url>mpmassupload_dataflow_profilelisting_profilelisting</url>
+        </item>
+        <item module="Branch8_Marketplace">
+            <url>b8marketplace_import_validate</url>
+            <url>b8marketplace_import_execute</url>
+            <url>b8marketplace_import_importtrackingtemplate</url>
+            <url>b8marketplace_order_invoice_create</url>
+            <url>b8marketplace_order_cancel</url>
+            <url>b8marketplace_order_createshipment</url>
+            <url>b8marketplace_order_downloadordernotification</url>
+            <url>b8marketplace_order_faileddelivery</url>
+            <url>b8marketplace_order_orderitem</url>
+            <url>b8marketplace_order_rma</url>
+            <url>b8marketplace_order_savetrackingnumber</url>
+        </item>
+        <item module="Branch8_WebkulMpBuyerSellerChatSellerUi">
+            <url>mpchatsystem_ajax_loadsellerchatconversation</url>
+        </item>
+        <item module="Webkul_MpRmaSystem">
+            <url>mprmasystem_seller_allrma</url>
+            <url>mprmasystem_seller_rma</url>
+            <url>mprmasystem_customer_printpdf</url>
+            <url>mprmasystem_rma_conversation</url>
+        </item>
+        <item module="Branch8_Rma">
+            <url>reqrma_rma_change</url>
+            <url>reqrma_rma_refund</url>
+        </item>
+        <item module="Branch8_MarketplaceProduct">
+            <url>marketplacectrl_temp_productlist</url>
+            <url>marketplacectrl_temp_massDelete</url>
+            <url>marketplacectrl_temp_massReview</url>
+            <url>marketplacectrl_temp_massClone</url>
+            <url>marketplacectrl_inventoryimport_index</url>
+            <url>marketplacectrl_inventoryimport_upload</url>
+        </item>
+    </seller_2fa_urls>
+</config>

@@ -1,0 +1,54 @@
+<?php
+/**
+ * @var $block \Magento\Backend\Block\Template
+ */
+$parentOrder = $block->getParentBlock()->getParentOrder();
+$parentDetail = $parentOrder->getDetail();
+$confirmHelper = $this->helper(\Branch8\GiftToFriend\Helper\Confirm::class);
+if($parentDetail->getData('is_gift_order')){
+    $address = null;
+    $shippingAddress = $parentOrder->getShippingAddress();
+    if($shippingAddress && $shippingAddress->getId()){
+        $address = $shippingAddress;
+    }else{
+        $address = $parentOrder->getBillingAddress();
+    }
+    $isConfirmed = $parentDetail->getData('is_gift_confirmed');
+?>
+
+    <section class="admin__page-section">
+        <div class="admin__page-section-item order-information">
+            <div class="admin__page-section-title">
+                <span class="title"><?= __('Gift Order Information') ?></span>
+            </div>
+            <div class="admin__page-section-content">
+                <table class="admin__table-secondary order-information-table">
+                    <tbody>
+                    <tr>
+                        <th><? echo __('Gift Link');?></th>
+                        <th><?php echo $confirmHelper->getConfirmationUrl($parentDetail);?></th>
+                    </tr>
+                    <tr>
+                        <th><? echo __('Gift Claim Expiration Date');?></th>
+                        <th><?php echo $confirmHelper->getOrderExpiredDate($parentDetail->getGiftExpiredAt());?></th>
+                    </tr>
+                    <tr>
+                        <th><? echo __('Gift Address Submitted By');?></th>
+                        <th><?php echo $address->getFirstname();?></th>
+                    </tr>
+                    <tr>
+                        <th><? echo __('Gift Address Confirmed');?></th>
+                        <th><?php echo (int)$isConfirmed ? 'Yes':'No';?></th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="admin__page-section" style="clear:both">
+
+    </section>
+<?php
+}
+?>

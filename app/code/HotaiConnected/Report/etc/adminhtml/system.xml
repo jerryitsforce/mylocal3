@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="hotaiconnected" translate="label" sortOrder="500">
+            <label>Hotai Connected</label>
+        </tab>
+        <section id="hotaiconnected_report" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>Report</label>
+            <tab>hotaiconnected</tab>
+            <resource>Magento_Config::config</resource>
+
+            <group id="slack" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Slack Settings</label>
+                <field id="report_webhook_url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Daily Report Webhook URL</label>
+                    <comment>Slack webhook URL for daily report notifications (SQL Monitor)</comment>
+                </field>
+                <field id="command_webhook_url" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Command Webhook URL</label>
+                    <comment>Slack webhook URL for CLI command notifications (Pending Employee Report)</comment>
+                </field>
+            </group>
+
+            <group id="pending_employee" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Pending Employee Report</label>
+                <field id="api_url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Find Member API URL</label>
+                    <comment><![CDATA[<strong>Required.</strong> find-member API endpoint URL (用於 report:pending-employee:generate)]]></comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="search_api_url" translate="label comment" type="text" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Search Member API URL</label>
+                    <comment><![CDATA[<strong>Required.</strong> search-member API endpoint URL (用於 report:pending-employee:sync)]]></comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="app_id" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>APP_ID</label>
+                    <comment><![CDATA[<strong>Required.</strong> API APP_ID header value]]></comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="app_key" translate="label comment" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>AppKey</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment><![CDATA[<strong>Required.</strong> API AppKey header value (encrypted)]]></comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="export_path" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Export Path</label>
+                    <comment>CSV export directory path (relative to Magento root)</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

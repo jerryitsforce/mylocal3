@@ -1,0 +1,35 @@
+<?php
+/** @var \Branch8\CustomNotification\Block\Notification $block */
+$notification = $block->getData('notification');
+$image = $notification['icon'];
+$arrow_icon = $block->escapeUrl($block->getViewFileUrl('Branch8_CustomNotification::images/swiper.svg'));
+$helper = $this->helper(\Magenest\NotificationBox\Helper\Helper::class);
+?>
+<div id="<?= $notification['entity_id'] ?>" class="table-row">
+    <div class="table-column status">
+        <?php if (!$notification['status']):?>
+            <span class="dot"></span>
+        <?php endif; ?>
+    </div>
+    <div class="table-column image">
+        <img title="<?= $block->escapeHtml(__('移除')) ?>"
+             alt="<?= $block->escapeHtml(__('移除')) ?>" src="<?= $image ?>" />
+    </div>
+    <div class="table-column description">
+        <div class="title">
+            <span class="desc">
+                <?php echo $notification['full_description'] ?>
+            </span>
+        </div>
+        <div class="date">
+            <?php echo $helper->showTime($notification['created_at']); ?>
+        </div>
+    </div>
+    <div class="table-column actions">
+        <a href="<?= $block->escapeUrl($block->getUrl('notibox/handleNotification/viewNotification', ['id' => $notification['entity_id']])) ?>"
+           class="action">
+            <img src="<?= $arrow_icon ?>" title="<?= $block->escapeHtml(__('移除')) ?>"
+                 alt="<?= $block->escapeHtml(__('移除')) ?>" />
+        </a>
+    </div>
+</div>

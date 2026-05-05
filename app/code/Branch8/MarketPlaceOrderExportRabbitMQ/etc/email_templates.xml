@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="order_export_asynchronous_admin_email_template"
+              label="Order Export Admin Template" file="admin_email.html"
+              type="html" module="Branch8_MarketPlaceOrderExportRabbitMQ"
+              area="frontend"/>
+    <template id="order_export_asynchronous_seller_email_template"
+              label="Order Export Seller Template" file="seller_email.html"
+              type="html" module="Branch8_MarketPlaceOrderExportRabbitMQ"
+              area="frontend"/>
+    <template id="email_notification_asynchronous_admin_email_template"
+              label="Order Notification Admin Template" file="admin_notification_email.html"
+              type="html" module="Branch8_MarketPlaceOrderExportRabbitMQ"
+              area="frontend"/>
+    <template id="email_notification_asynchronous_seller_email_template"
+              label="Order Notification Seller Template" file="seller_notification_email.html"
+              type="html" module="Branch8_MarketPlaceOrderExportRabbitMQ"
+              area="frontend"/>
+</config>

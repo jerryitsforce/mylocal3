@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="marketplace" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1">
+            <group id="mpsplitorder" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1">
+                <group id="parent_order_configuration" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Parent Order Configuration</label>
+                    <field id="show_status_admin" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Show Status on Admin</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>parent_order/parent_order_configuration/show_status_admin</config_path>
+                    </field>
+                </group>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_marketplaceparentorderadminui" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Market Place Parent Order Admin UI</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\MarketPlaceParentOrderAdminUi\Model\Config\Source\LogTypes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

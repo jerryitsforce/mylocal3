@@ -1,0 +1,276 @@
+<?php
+/**
+ * @var Branch8\GiftToFriend\Block\Confirmation\RecipientConfirmmation $block
+ */
+
+$giftConfirmHelper = $this->helper(\Branch8\GiftToFriend\Helper\Confirm::class);
+
+/** @var Magento\Customer\Helper\Address $addressHelper */
+$addressHelper = $block->getData('addressHelper');
+/** @var \Magento\Directory\Helper\Data $directoryHelper */
+$directoryHelper = $block->getData('directoryHelper');
+/** @var \Magento\Customer\ViewModel\Address\RegionProvider $regionProvider */
+$regionProvider = $block->getRegionProvider();
+
+$orderDetail = $block->getOrderDetail();
+$order = $block->getOrder();
+// var_dump($orderDetail);
+$orderCode = $block->getGiftCode();
+$isBuyerFilled = $block->isBuyerFilled((int) $orderDetail->getGiftAddressType());
+$isExpired = $block->isExpired($orderDetail);
+$contactServiceUrl = $block->getContactServiceUrl($order);
+// var_dump($orderDetail->getGiftAddressType());
+?>
+<?php if($orderDetail): ?>
+  <?php 
+    $expiredDate = $giftConfirmHelper->getOrderExpiredDate($orderDetail->getGiftExpiredAt(), 'Y/m/d H:i');
+    $name = '';
+    $region = 0;
+    $city = '';
+    $street = [''];
+    $phone = '';
+    $defaultRegionId = $region;
+    $defaultCity = $city;
+
+    if($isBuyerFilled) {
+      $filledAddress = $block->getAddressInfo($block->getOrder());
+      $filledAddressFields = explode(',', $orderDetail->getGiftAddressFieldsFilled()?? '');
+      if($filledAddress) {
+        $name = in_array('name', $filledAddressFields) ? $filledAddress->getFirstname() : '';
+        $region = in_array('region', $filledAddressFields) ? $filledAddress->getRegionId() : 0;
+        $city = in_array('city', $filledAddressFields) ? $filledAddress->getCity() : '';
+        $street = in_array('street', $filledAddressFields) ? $filledAddress->getStreet() : [''];
+        $phone = in_array('telephone', $filledAddressFields) ? $filledAddress->getTelephone() : '';
+        $defaultRegionId = $region;
+        $defaultCity = $city;
+        // $phone = $filledAddress->getTelephone();
+      }
+    }
+  ?>
+  <?php if($isExpired): ?>
+    <div class="giftbox-confirmed-header giftbox-confirmation-expried">
+      <div class="giftbox-confirmed-img">
+        <img src="<?php echo $block->getViewFileUrl('Branch8_GiftToFriend::images/gift-box-icon.svg'); ?>" alt="<?php echo __('Gift Box'); ?>" />
+      </div>
+      <h1 class="giftbox-confirmed-title"><?= $block->escapeHtml(__("喔喔！")); ?> <br/><?= $block->escapeHtml(__("你錯過禮物接收時間了")); ?></h1>
+      <p class="giftbox-confirmed-subtitle"><?= $block->escapeHtml(__("由於您尚未在有效期限內填寫收件資訊，這個贈禮連結已經過期了")); ?></p>
+      <div class="giftbox-confirmed-actions">
+        <a href="<?= $block->getUrl('') ?>" class="action secondary" title="<?= $block->escapeHtml(__("逛逛和泰購")) ?>">
+          <span><?= $block->escapeHtml(__("逛逛和泰購")) ?></span>
+        </a>
+        <a href="<?= $block->getUrl('gift-order/giftbox/giftform') ?>" class="action primary" title="<?= $block->escapeHtml(__("查看禮物盒")) ?>">
+          <span><?= $block->escapeHtml(__("查看禮物盒")) ?></span>
+        </a>
+      </div>
+    </div>
+  <?php else: ?>
+    <div class="giftbox-confirm-order">
+      <div class="giftbox-confirm-order-img">
+        <img src="<?php echo $block->getViewFileUrl('Branch8_GiftToFriend::images/gift-box-icon.svg'); ?>" alt="<?php echo __('Gift Box'); ?>" />
+      </div>
+      <h2 class="giftbox-confirm-order-title">
+          <span><?= $block->escapeHtml(__("%1 送禮物來啦！", $orderDetail->getCustomerName()))?></span>
+      </h2>
+      <?= $block->getChildHtml('gift_confirmation_order_items'); ?>
+      <div class="giftbox-confirm-order-note">
+        <p><?= $block->escapeHtml(__("親愛的收件人，請於"));?> <span class="number"><?= $expiredDate ?></span> <?= $block->escapeHtml(__("前填寫收件資訊並進行手機號碼驗證，若未在期限內填寫資料，禮物將會被取消唷")) ?></p>
+      </div>
+    </div>
+    <form class="form-giftbox-confirm"
+              action="<?= $block->getConfirmActionUrl(); ?>"
+              method="post"
+              id="address-form"
+              enctype="multipart/form-data"
+              data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>">
+      <?= $block->getBlockHtml('formkey') ?>
+      <input type="hidden" name="order_code" id="order_code" value="<?= $escaper->escapeHtmlAttr($orderCode) ?>" />
+      <div class="giftbox-confirm-address">
+        <div class="giftbox-confirm-header giftbox-confirm-address-header">
+          <h2 class="giftbox-confirm-title"><?= $block->escapeHtml(__("1.填寫收件人資訊")); ?></h2>
+          <p class="giftbox-confirm-note"><?= $block->escapeHtml(__("請放心，您所填寫的所有個人資料僅供您自己查看，送禮人將無法看到或訪問這些信息")); ?></p>
+        </div>
+        <div class="giftbox-confirm-form giftbox-confirm-address-form">
+          <fieldset class="fieldset">
+            <div class="field field-name required">
+                <label class="label" for="name">
+                    <span><?= $block->escapeHtml(__("姓名"))?></span>
+                </label>
+                <div class="control">
+                    <input type="text" 
+                          name="name" 
+                          value="<?= $name ?>" 
+                          title="<?= $block->escapeHtml(__("請輸入姓名"))?>" 
+                          data-validate="{required:true, 'validate-fullwidth-special': true}" 
+                          class="input-text required-entry" 
+                          placeholder="<?= $block->escapeHtml(__("請輸入姓名"))?>" 
+                          id="name" 
+                          aria-required="true"/>
+                </div>
+            </div>    
+            <?php if(!$block->isVirtual()):?>
+            <div class="field country required hidden" style="display: none;">
+              <label class="label" for="country"><span><?= $block->escapeHtml(__('國家')) ?></span>
+              </label>
+              <div class="control">
+                <?= $block->getCountryHtmlSelect() ?>
+              </div>
+            </div>
+            <div class="field city region required">
+              <label class="label" for="region_id">             
+                <span><?= $block->escapeHtml(__("地址"))?></span>
+              </label>
+              <div class="d-flex">
+                <div class="control">
+                    <select id="region_id" name="region_id" title="<?= $block->escapeHtml(__("地址"))?>" class="region_id required-entry no-selected" aria-required="true" defaultvalue="0" style="display: inline-block;">
+                      <option value=""><?= $block->escapeHtml(__("請選擇縣市"))?></option>
+                    </select>
+                    <input type="text" name="region" value="" title="<?= $block->escapeHtml(__("地址"))?>" placeholder="請選擇縣市" data-validate="{required:true}" class="input-text validate-not-number-first" id="region" aria-required="true" style="display: none;">
+                </div>
+                <div class="control">
+                  <input type="text" name="city" value="" title="<?= $block->escapeHtml(__("地址"))?>" data-validate="{required:true}" class="input-text required-entry" placeholder="<?= $block->escapeHtml(__("請選擇鄉鎮市區"))?>" id="city" aria-required="true" style="display: none;">
+                  <select class="required-entry validate-unsupported-city no-selected" name="city_id" id="city_id">
+                    <option value=""><?= $block->escapeHtml(__("請選擇鄉鎮市區"))?></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field street required ">
+                <div class="control">
+                    <input type="text" 
+                          name="street" 
+                          data-validate="{required:true, 'validate-fullwidth-special': true}" 
+                          value="<?= $street[0] ?>" 
+                          title="<?= $block->escapeHtml(__("地址"))?>" 
+                          id="street" 
+                          placeholder="<?= $block->escapeHtml(__("請輸入收件地址"))?>" 
+                          class="input-text required-entry" 
+                          aria-required="true"/>
+                </div>
+            </div>
+            <?php endif; ?>
+          </fieldset>
+        </div>
+      </div>
+      <div class="giftbox-confirm-search">
+        <div class="giftbox-confirm-header giftbox-confirm-search-header">
+          <h2 class="giftbox-confirm-title"><?= $block->escapeHtml(__("2.填寫驗證碼")); ?></h2>
+        </div>
+        <div class="giftbox-confirm-form giftbox-confirm-search-form">
+          <fieldset class="fieldset"> 
+            <div class="field phone_number required">
+                <label for="phone_number" class="label">
+                    <span><?= $block->escapeHtml(__("手機號碼"))?></span>
+                </label>
+                <div class="field-has-action">
+                  <div class="control">
+                    <input type="number"
+                          name="phone_number"
+                          data-validate="{required:true, 'required-number': true, 'validate-number':true, 'validate-tw-phone': true,'validate-fullwidth-special': true}"
+                          id="phone_number"
+                          minlength="10"
+                          maxlength="10"
+                          placeholder="<?= $block->escapeHtml(__('請輸入手機號碼')) ?>"
+                          value="<?= $phone ?>"
+                          title="<?= $block->escapeHtmlAttr(__('手機號碼')) ?>"
+                          class="input-text required-entry"
+                            aria-required="true"
+                    />
+                  </div>
+                  <div class="control-actions">
+                      <button type="button" class="action primary <?= $phone === ''? 'disabled' : '' ?>" id="gift-confirm-send-code-button" title="<?= $block->escapeHtml(__("發送驗證碼"))?>">
+                          <span class="send-confirm"><?= $block->escapeHtml(__("發送驗證碼"))?></span>
+                          <span class="confirming"><span id="confirming-countdown-time-btn"></span><?= $block->escapeHtml(__("秒後可重新發送"))?></span>
+                      </button>
+                  </div>
+                </div>
+            </div>
+            <div class="field field-code required">
+                <div class="giftbox-confirm-countdown">
+                  <div class="giftbox-confirm-coundown-info">
+                    <span><?= $block->escapeHtml(__("驗證碼有效時間"))?></span> <span id="giftbox-countdown-time"></span>
+                  </div>
+                  <div class="giftbox-confirm-coundown-expired">
+                    <?= $block->escapeHtml(__("驗證碼已過期請重新發送"))?>
+                  </div>
+                </div>
+                <label class="label" for="sms_code">
+                    <span><?= $block->escapeHtml(__("驗證碼"))?></span>
+                </label>
+                <div class="control">
+                    <input type="text" 
+                          name="sms_code" 
+                          value="" 
+                          title="<?= $block->escapeHtml(__("驗證碼"))?>" 
+                          data-validate="{required:true, 'validate-fullwidth-special': true}" 
+                          class="input-text required-entry" 
+                          placeholder="<?= $block->escapeHtml(__("請輸入驗證碼"))?>" 
+                          id="sms_code" 
+                          disabled="disabled"
+                          aria-required="true"/>
+                </div>
+            </div>  
+          </fieldset>
+          <!-- <div class="giftbox-confirm-search-form-message message message-error" id="giftbox-confirm-search-form-message">
+            <p><?= $block->escapeHtml(__("Please clicking to send verification code"))?></p>
+          </div> -->
+          <div class="giftbox-confirm-search-form-note" id="giftbox-confirm-search-form-note">
+            <p><?= $block->escapeHtml(__("若未收到驗證碼請"))?><a href="<?= $contactServiceUrl; ?>" title="<?= $block->escapeHtml(__("聯絡客服"))?>"><?= $block->escapeHtml(__("聯絡客服"))?></a><?= $block->escapeHtml(__("協助處理")) ?></p>
+          </div>
+        </div>
+      </div>
+      <div class="actions-toolbar giftbox-confirm-actions">
+        <div class="primary">
+            <button type="button" class="action primary disabled" id="giftbox-confirm-submit-button" title="<?= $block->escapeHtml(__("確認送出"))?>">
+                <span><?= $block->escapeHtml(__("確認送出"))?></span>
+            </button>
+        </div>
+      </div>
+    </form>
+    <div id="modal-gift-sending-code-limitation" class="modal-hide">
+      <div class="modal-custom-content">
+        <div id="giftSendingCodeMsg" class="error-content"><?= $block->escapeHtml(__("驗證碼發送次數已達%1次，請稍等%2時後再試，如需協助請", $block->getMaxSmsRequests(), $block->getLimitationTimePeriod()))?><a href="<?= $contactServiceUrl; ?>" title="<?= $block->escapeHtml(__("聯絡客服"))?>"><?= $block->escapeHtml(__("聯絡客服"))?></a><?= $block->escapeHtml(__("協助處理")) ?></div>
+      </div>
+    </div>
+    <div id="modal-gift-failed-confirmation" class="modal-hide">
+      <div class="modal-custom-content">
+        <div id="giftConfirmingFailMsg" class="error-content"><?= $block->escapeHtml(__("您輸入的驗證碼有誤或是已過期，請重新輸入有效的驗證碼，如需協助請"))?><a href="<?= $contactServiceUrl; ?>" title="<?= $block->escapeHtml(__("聯絡客服"))?>"><?= $block->escapeHtml(__("聯絡客服"))?></a><?= $block->escapeHtml(__("協助處理")) ?></div>
+        <div id="giftConfirmingReloadMsg" class="error-content" style="display: none;"></div>
+      </div>
+    </div>
+    <?php
+    $regionJson = /* @noEscape */ $regionProvider->getRegionJson();
+    $regionId = (int) $block->getRegionId();
+    $countriesWithOptionalZip = /* @noEscape */ $directoryHelper->getCountriesWithOptionalZip(true);
+    ?>
+    <script type="text/x-magento-init">
+        {
+          "#address-form": {
+              "addressValidation": {
+              },
+              "giftBoxConfirmForm": {
+                "isVirtual": <?= $block->isVirtual() ? 'true' : 'false' ?>,
+                "formActionUrl": "<?= $block->getConfirmActionUrl() ?>",
+                "sendSMSActionUrl": "<?= $block->getSendSMSActionUrl() ?>",
+                "giftOrderConfirmationSuccessUrl": "<?php echo $block->giftOrderConfirmationSuccessUrl();?>",
+                "smsLeftTime": "<?= $block->getSmsLifetime() ?>"
+              }
+          },
+          "#country": {
+              "giftDirectoryRegionUpdater": {
+                "optionalRegionAllowed": true,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#address-form",
+                "regionJson": <?= /* @noEscape */ $regionJson ?>,
+                "defaultRegion": <?= /* @noEscape */ $defaultRegionId ?>,
+                "defaultRegionId": "<?= $defaultRegionId ?>",
+                "defaultCity": "<?= $defaultCity ?>",
+                "countriesWithOptionalZip": <?=  /* @noEscape */ $countriesWithOptionalZip ?>
+              }
+          }
+        }
+    </script>
+  <?php endif; ?>
+<?php endif; ?>
+<?= $block->getChildHtml('gift_recipient_confirmation_note'); ?>

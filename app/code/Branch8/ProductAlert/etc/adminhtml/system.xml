@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="product_alert" translate="label" type="text" sortOrder="140" showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="1">
+            <label>18+ Product Alert</label>
+            <tab>branch8</tab>
+            <resource>Branch8_ProductAlert::config</resource>
+            <group id="general_settings" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General Settings</label>
+                <field id="image" translate="label" type="image" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Upload Image</label>
+                    <backend_model>Branch8\ProductAlert\Model\Config\Backend\Image</backend_model>
+                    <base_url type="media">images</base_url>
+                </field>
+                <field id="text" translate="label" type="editor" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Alert Text</label>
+                    <frontend_model>Branch8\ProductAlert\Block\Adminhtml\System\Config\Form\Editor</frontend_model>
+                    <attribute type="pr_editor_height">200px</attribute>
+                </field>
+                <field id="show_vip_filter" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Show Vip Filter</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

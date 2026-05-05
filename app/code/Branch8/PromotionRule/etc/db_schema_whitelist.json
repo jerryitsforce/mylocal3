@@ -1,0 +1,78 @@
+{
+    "catalogrule": {
+        "column": {
+            "seller_borne_discount": true,
+            "seller_ids": true,
+            "borne_discount_percentage": true
+        }
+    },
+    "salesrule": {
+        "column": {
+            "seller_borne_discount": true,
+            "seller_ids": true,
+            "borne_discount_percentage": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "seller_borne_catalogrule_amount": true,
+            "seller_borne_salesrule_amount": true,
+            "seller_borne_total_amount": true,
+            "platform_borne_catalogrule_amount": true,
+            "platform_borne_salesrule_amount": true,
+            "platform_borne_total_amount": true,
+            "applied_catalog_rule_ids": true,
+            "cartrule_borne_info": true,
+            "catalogrule_borne_info": true,
+            "catalog_rules_borne_info": true,
+            "cart_rules_borne_info": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "seller_borne_catalogrule_amount": true,
+            "seller_borne_salesrule_amount": true,
+            "seller_borne_total_amount": true,
+            "platform_borne_catalogrule_amount": true,
+            "platform_borne_salesrule_amount": true,
+            "platform_borne_total_amount": true,
+            "applied_catalog_rule_ids": true,
+            "sale_rule_discount_breakdown": true,
+            "cartrule_borne_info": true,
+            "catalogrule_borne_info": true,
+            "catalog_rules_borne_info": true,
+            "cart_rules_borne_info": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "applied_catalog_rule_ids": true,
+            "seller_borne_catalogrule_amount": true,
+            "seller_borne_salesrule_amount": true,
+            "seller_borne_total_amount": true,
+            "platform_borne_catalogrule_amount": true,
+            "platform_borne_salesrule_amount": true,
+            "platform_borne_total_amount": true,
+            "sale_rule_discount_breakdown": true,
+            "cartrule_borne_info": true,
+            "catalogrule_borne_info": true,
+            "catalog_rules_borne_info": true,
+            "cart_rules_borne_info": true
+        }
+    },
+    "quote": {
+        "column": {
+            "seller_borne_catalogrule_amount": true,
+            "seller_borne_salesrule_amount": true,
+            "seller_borne_total_amount": true,
+            "platform_borne_catalogrule_amount": true,
+            "platform_borne_salesrule_amount": true,
+            "platform_borne_total_amount": true,
+            "applied_catalog_rule_ids": true,
+            "cartrule_borne_info": true,
+            "catalogrule_borne_info": true,
+            "catalog_rules_borne_info": true,
+            "cart_rules_borne_info": true
+        }
+    }
+}

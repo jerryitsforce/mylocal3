@@ -1,0 +1,19 @@
+<?php
+$contract = $block->getContract();
+if($contract->getId()){
+?>
+<div class="admin__fieldset">
+    <div class="admin__field">
+        <div class="admin__field-label">
+            <label>
+                <span>Active</span>
+            </label>
+        </div>
+        <div class="admin__field-control">
+            <?php echo ($contract->getIsActive()) ? 'Yes' : 'No';?>
+        </div>
+    </div>
+</div>
+<?php
+}
+?>

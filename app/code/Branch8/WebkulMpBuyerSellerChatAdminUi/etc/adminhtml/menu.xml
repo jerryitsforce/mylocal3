@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+
+        <add id="Branch8_WebkulMpBuyerSellerChatAdminUi::profiles"
+             translate="title" title="Chat Profiles"
+             module="Branch8_WebkulMpBuyerSellerChatAdminUi" sortOrder="11"
+             parent="Webkul_MpBuyerSellerChat::menu" action="mpchatsystem/profiles"
+             resource="Webkul_MpBuyerSellerChat::profiles"/>
+        <remove id="Webkul_MpBuyerSellerChat::block" />
+
+    </menu>
+
+</config>

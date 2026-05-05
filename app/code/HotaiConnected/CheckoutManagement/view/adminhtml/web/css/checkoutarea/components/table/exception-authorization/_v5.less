@@ -1,0 +1,253 @@
+// =============================================
+//  Exception Authorization V5 Styles
+// =============================================
+//  例外授權名單 V5 版型樣式
+//
+//  包含：
+//  - V5 主容器樣式
+//  - V5 Header 樣式
+// =============================================
+
+@import '_variables.less';
+
+.nested-content-body {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    color: @ea-v4-text;
+
+    // =============================================
+    //  V5: Exception Authorization Card Styles
+    // =============================================
+    .exception-auth-v5 {
+        background: @ea-v4-surface-alt;
+        border: 1px solid @ea-v4-border;
+        border-radius: 5px;
+        padding: 10px 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        overflow-x: auto;
+        max-width: 100%;
+
+        &__header {
+            padding-bottom: 16px;
+            border-bottom: 1px solid fade(@ea-v4-border-strong, 35%);
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            font-size: 14px;
+            color: @ea-v4-text-strong;
+        }
+
+        &__title {
+            margin: 0;
+        }
+
+        &__summary {
+            margin: 0;
+            font-size: 12px;
+            color: @ea-v4-text-muted;
+        }
+
+        // =============================================
+        //  V5: Table Styles (Div-based)
+        // =============================================
+        &-table {
+            width: 100%;
+            min-width: max-content;
+            background: @ea-v4-surface;
+            border: 1px solid fade(@ea-v4-border-strong, 30%);
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    // =============================================
+    //  V5: List Styles (獨立於 exception-auth-v5 容器外)
+    // =============================================
+    .exception-auth-v5-list {
+
+        // 共用樣式
+        &__tbody-col, &__thead-col {
+            padding: 10px 12px;
+            flex: 0 0 100px;
+            min-width: 100px;
+            &[data-key="index"] {
+                flex: 0 0 45px;
+                min-width: 45px;
+            }
+
+            &[data-key="shop_title"] {
+                flex: 0 0 150px;
+            }
+
+            &[data-key="salesperson_role_name"] {
+                flex: 0 0 300px;
+            }
+
+            &[data-key="show_value"] {
+                flex: 1 1 auto;
+                min-width: 0;
+                width: 100%;
+            }
+        }
+
+        &__thead {
+            background: fade(@ea-v4-surface-muted, 50%);
+            border-bottom: 2px solid fade(@ea-v4-border-strong, 40%);
+            display: flex;
+            width: 100%;
+
+            &__left {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: row;
+                min-width: 0;
+                border-right: 1px solid fade(@ea-v4-border-strong, 20%);
+            }
+
+            &__right {
+                flex: 0 0 400px;
+                display: flex;
+                flex-direction: row;
+                min-width: 0;
+            }
+
+            &-col {
+                text-align: left;
+                font-size: 12px;
+                font-weight: 600;
+                color: @ea-v4-text-strong;
+                .ea-v4-label(); 
+            }
+        }
+
+        &__tbody {
+            display: flex;
+            flex-direction: column;
+
+            &-row {
+                display: flex;
+                width: 100%;
+                border-bottom: 1px solid fade(@ea-v4-border-strong, 20%);
+
+                // 奇偶數行背景色區分
+                &:nth-child(odd) {
+                    background: @ea-v4-surface;
+                }
+
+                &:nth-child(even) {
+                    background: fade(@ea-v4-surface-muted, 20%);
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                &:hover {
+                    background: fade(@ea-v4-surface-muted, 30%);
+                }
+            }
+
+            &-col {
+                font-size: 13px;
+                color: @ea-v4-text;
+
+                &[data-key="reason"] {
+                    flex: 1 1 auto;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 4px;
+
+                    textarea {
+                        // 基本樣式：看起來像 div
+                        margin: 0;
+                        padding: 0;
+                        border: none;
+                        background: transparent;
+                        resize: none;
+                        outline: none;
+                        cursor: default;
+                        
+                        // 文字樣式
+                        font-size: 12px;
+                        line-height: 1.4;
+                        color: inherit;
+                        font-family: inherit;
+                        
+                        // 尺寸與溢出控制
+                        width: 100%;
+                        overflow: hidden;
+                        
+                        // 文字換行處理
+                        white-space: pre-wrap;
+                        word-wrap: break-word;
+                    }
+                }
+
+                &__label {
+                    font-size: 11px;
+                    font-weight: 600;
+                    color: @ea-v4-text-muted;
+                    .ea-v4-label();
+                    margin: 0;
+                    display: block;
+                }
+
+                &__options {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                }
+
+                &__option {
+                    display: grid;
+                    grid-template-columns: 2fr 1fr;
+                    gap: 10px 30px;
+                    font-size: 12px;
+
+                    &-label {
+                        color: @ea-v4-text-muted;
+                        font-weight: 600;
+                        min-width: 60px;
+                    }
+
+                    &-value {
+                        color: @ea-v4-text;
+                    }
+                }
+            }
+        }
+
+        &__left {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            border-right: 1px solid fade(@ea-v4-border-strong, 20%);
+
+            &-top {
+                display: flex;
+                width: 100%;
+                border-bottom: 1px solid fade(@ea-v4-border-strong, 20%);
+            }
+
+            &-bottom {
+                display: flex;
+                width: 100%;
+            }
+        }
+
+        &__right {
+            flex: 0 0 400px;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+    }
+}

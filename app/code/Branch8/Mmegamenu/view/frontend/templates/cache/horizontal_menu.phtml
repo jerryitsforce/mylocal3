@@ -1,0 +1,16 @@
+<?php
+/** @var \Magento\Framework\Escaper $escaper */
+
+$megaMenu = $this->getMegamenuItems();
+?>
+<?php if(count($megaMenu)>0):?>
+    <ul id="horizontal-menu-<?= $escaper->escapeHtmlAttr($this->getMenuId()) ?>" class="horizontal-menu nav nav-pills nav-main">
+        <?php if(count($megaMenu)>0): ?>
+            <?php $i=0; foreach($megaMenu as $item): $i++ ?>
+                <li class="<?= $escaper->escapeHtmlAttr($this->getClass($item)) ?>">
+                    <?= $this->getMenuHtml($item) ?>
+                </li>
+            <?php endforeach ?>
+        <?php endif ?>
+    </ul>
+<?php endif ?>

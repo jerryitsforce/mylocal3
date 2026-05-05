@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+       <head>
+              <link src="Branch8_SellerContactInformation::js/default_commission.js" />
+       </head>
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\ContactInfoTab" name="seller_edit_contact_info_tab_view" 
+                  after="seller_edit_paymentinfo_tab_view" />
+            <block class="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\ShippingSettingsTab" name="seller_edit_shipping_settings_tab_view"
+                   after="seller_edit_commission_tab_view"/>
+            <block class="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\SalespersonSettingsTab" name="seller_edit_salesperson_settings_tab_view"
+                   after="seller_edit_shipping_settings_tab_view"/>
+            <block class="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\DestructionDocumentTab" name="seller_edit_destruction_document_tab_view"
+                   after="seller_edit_shipping_settings_tab_view"/>
+            <block class="Webkul\Marketplace\Block\Adminhtml\FlagsTab" name="seller_edit_flags_tab_view"
+                   after="seller_edit_product_tab_view"/>
+        </referenceBlock>
+        <move element="seller_edit_attributeset_tab_view" destination="customer_form" before="seller_edit_assign_category_tab_view" />
+        <referenceBlock name="flags" remove="true"/>
+    </body>
+</page>

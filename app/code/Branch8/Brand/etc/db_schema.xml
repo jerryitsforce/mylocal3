@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_amshopby_option_setting" resource="default">
+        <column xsi:type="varchar" name="en_alphabet" length="50" comment="English Alphabet"/>
+        <column xsi:type="varchar" name="ch_alphabet" length="50" comment="Chinese Alphabet"/>
+    </table>
+</schema>

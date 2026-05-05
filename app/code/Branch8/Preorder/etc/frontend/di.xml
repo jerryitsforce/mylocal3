@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Webkul\MarketplacePreorder\Controller\Index\Check">
+        <plugin name="branch8_preorder_modify_check_preorder" type="Branch8\Preorder\Plugin\Webkul\Preorder\Controller\Index\Check" sortOrder="10" disabled="false"  />
+    </type>
+</config>

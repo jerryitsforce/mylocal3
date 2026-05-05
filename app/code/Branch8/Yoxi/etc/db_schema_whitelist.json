@@ -1,0 +1,58 @@
+{
+    "yoxi_ticket_record": [],
+    "yoxi_batch_setting": [],
+    "yoxi_batch_setting_v2": {
+        "column": {
+            "setting_id": true,
+            "seller_id": true,
+            "belong_to_product_id": true,
+            "batch_code": true,
+            "safety_stock": true,
+            "sale_start_time": true,
+            "sale_end_time": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "due_days": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "YOXI_BATCH_SETTING_V2_BATCH_CODE": true,
+            "YOXI_BATCH_SETTING_V2_BELONG_TO_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    },
+    "yoxi_ticket_record_v2": {
+        "column": {
+            "record_id": true,
+            "batch_setting_id": true,
+            "serial_number": true,
+            "seller_id": true,
+            "belong_to_product_id": true,
+            "quote_item_id": true,
+            "sales_order_item_id": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "due_days": true,
+            "used_date": true,
+            "used_transaction_no": true,
+            "used_count": true,
+            "returned_date": true,
+            "status": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "YOXI_TICKET_RECORD_V2_BELONG_TO_PRODUCT_ID": true,
+            "YOXI_TICKET_RECORD_V2_BATCH_SETTING_ID_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "YOXI_TICKET_RECORD_V2_SERIAL_NUMBER": true,
+            "FK_37B38817132889D0FABBFE09A9E0D932": true,
+            "YOXI_TICKET_RECORD_V2_BELONG_TO_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true,
+            "FK_C926D9D749F0915BC8A9D3320902884F": true
+        }
+    }
+}

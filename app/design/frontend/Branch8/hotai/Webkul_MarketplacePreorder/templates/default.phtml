@@ -1,0 +1,28 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MarketplacePreorder
+ * @author    Webkul
+ * @copyright Copyright (c)  Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+/**
+ *  @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<?php
+$scriptString = <<<SCRIPT
+    require([
+        'Magento_Customer/js/customer-data', 'mage/storage'
+    ], function (customerData, storage) {
+        var sections = ['cart', 'wishlist', 'last-ordered-items'];
+        if (storage !== undefined && storage.remove !== undefined) {
+            customerData.invalidate(sections);
+            customerData.reload(sections, true);
+        }
+    });
+SCRIPT;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptString, false) ?>

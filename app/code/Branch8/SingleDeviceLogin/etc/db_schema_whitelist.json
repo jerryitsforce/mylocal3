@@ -1,0 +1,33 @@
+{
+    "branch8_singledevice_customer_device": {
+        "column": {
+            "customer_id": true,
+            "device_id": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_SINGLEDEVICE_CSTR_DEVICE_CSTR_ID_CSTR_ENTT_ENTT_ID": true
+        }
+    },
+    "branch8_singledevice_customer_session": {
+        "column": {
+            "entity_id": true,
+            "customer_id": true,
+            "token": true,
+            "device_type": true,
+            "updated_at": true,
+            "user_agent": true
+        },
+        "index": {
+            "BRANCH8_SINGLEDEVICE_CUSTOMER_SESSION_CUSTOMER_ID": true,
+            "BRANCH8_SINGLEDEVICE_CUSTOMER_SESSION_TOKEN": true,
+            "BRANCH8_SINGLEDEVICE_CUSTOMER_SESSION_DEVICE_TYPE": true,
+            "BRANCH8_SINGLEDEVICE_CUSTOMER_SESSION_CUSTOMER_ID_DEVICE_TYPE": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_SINGLEDEVICE_CSTR_SESS_CSTR_ID_TOKEN_DEVICE_TYPE": true
+        }
+    }
+}

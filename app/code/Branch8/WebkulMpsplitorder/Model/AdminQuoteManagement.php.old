@@ -1,0 +1,654 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\WebkulMpsplitorder\Model;
+
+use Branch8\WebkulMpsplitorder\Model\AddressAction;
+use Branch8\WebkulMpsplitorder\Model\Services\ExtractQuoteItemSellerAction;
+use Magento\Customer\Api\Data\GroupInterface;
+use Magento\Framework\App\ObjectManager;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\Quote as QuoteEntity;
+
+/**
+ * This class modify webkul code,
+ * Will alway create parent order even if do not have any product seller in cart
+ * used in Backend
+ * @TODO
+ * Refactor Webkull code in future
+ */
+class AdminQuoteManagement extends \Webkul\Mpsplitorder\Model\AdminQuoteManagement
+{
+
+    private $shippingAmount = 0;
+    /**
+     * @var TransferMasterQuoteDataToSubQuoteDataService|mixed
+     */
+    private mixed $transferMasterQuoteService = null;
+
+    /**
+     * @var SubQuoteShippingMethodResolver
+     */
+    private $shippingResolver = null;
+
+    /**
+     * @param QuoteEntity $quote
+     * @return array
+     */
+    public function extractQuoteItemSeller(Quote $quote)
+    {
+        return $this->_objectManager->get(
+            ExtractQuoteItemSellerAction::class
+        )->extract($quote);
+    }
+
+    /**
+     * @return AddressAction
+     */
+    public function getAddressActionClass()
+    {
+        return $this->_objectManager->get(AddressAction::class);
+    }
+
+    /**
+     * @return $this
+     */
+    private function reset()
+    {
+        $this->shippingAmount = 0;
+        $this->tempdiscount = 0;
+        $this->tempBasediscount = 0;
+        $this->taxAmount = 0;
+        $this->baseTaxAmount = 0;
+        $this->itemidsMap = [];
+        $this->previtemIds = [];
+        $this->discountArr = [];
+        $this->baseDiscountArr = [];
+        $this->priceArr = [];
+        return $this;
+    }
+
+    /**
+     * @param QuoteEntity $masterQuote
+     * @param array $finalArray
+     * @param $store
+     * @param $currency
+     * @param $masterQuoteBillingInformation
+     * @param $masterQuoteShippingInformation
+     * @param $checkoutMethod
+     * @param $shippingAmountPerItem
+     * @param $customer
+     * @param $paymentMethod
+     * @param $mpSelectedMethods
+     * @param $couponSellerWise
+     * @param $paymentType
+     * @param $cardType
+     * @param $shippingAll
+     * @param $couponCode
+     * @return array
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    private function createOrders(
+        Quote $masterQuote,
+        array $finalArray,
+              $store,
+              $currency,
+              $masterQuoteBillingInformation,
+              $masterQuoteShippingInformation,
+              $checkoutMethod,
+              $shippingAmountPerItem,
+              $customer,
+              $paymentMethod,
+              $mpSelectedMethods,
+              $couponSellerWise,
+              $paymentType,
+              $cardType,
+              $shippingAll,
+              $couponCode
+    )
+    {
+        $orderIds = [];
+        $lastOrderId = '';
+        foreach ($finalArray as $sellerId => $types) {
+
+            foreach ($types as $type => $items) {
+                {
+                    $this->reset();
+                    $this->coreSession->unsMpAssignItemId();
+                    // Start New Sales Order Quote
+                    /**
+                     * @var $newSubQuote Quote
+                     */
+                    $newSubQuote = $this->quoteFactory->create();
+                    $newSubQuote->setStore($store)
+                        ->setCurrency($currency)
+                        ->setCheckoutMethod($checkoutMethod)
+                        ->setSendCconfirmation(1);
+                    $this->assignItem(
+                        $items,
+                        $newSubQuote,
+                        $this->shippingAmount,
+                        $shippingAmountPerItem
+                    );
+                    // Set Sales Order Billing Address
+                    $b_company = $b_fax = $s_fax = $s_company = '';
+                    if (isset($masterQuoteBillingInformation) && array_key_exists('company', $masterQuoteBillingInformation)) {
+                        $b_company = $masterQuoteBillingInformation['company'];
+                    }
+                    if (isset($masterQuoteBillingInformation) && array_key_exists('fax', $masterQuoteBillingInformation)) {
+                        $b_fax = $masterQuoteBillingInformation['fax'];
+                    }
+                    if (isset($masterQuoteShippingInformation) && array_key_exists('company', $masterQuoteShippingInformation)) {
+                        $s_company = $masterQuoteShippingInformation['company'];
+                    }
+                    if (isset($masterQuoteShippingInformation) && array_key_exists('fax', $masterQuoteShippingInformation)) {
+                        $s_fax = $masterQuoteShippingInformation['fax'];
+                    }
+                    $billingAddress = $this->getAddressActionClass()->addBillingAddress(
+                        $newSubQuote,
+                        $masterQuoteBillingInformation,
+                        $b_company,
+                        $b_fax
+                    );
+                    // Set Sales Order Shipping Address
+                    $shippingAddress = $this->getAddressActionClass()->addShippingAddress(
+                        $newSubQuote,
+                        $masterQuoteShippingInformation,
+                        $s_company,
+                        $s_fax
+                    );
+                    if ($checkoutMethod == 'guest') {
+                        $newSubQuote->setCheckoutMethod('guest')
+                            ->setData('customer_id', null)
+                            ->setCustomerEmail($masterQuoteBillingInformation['email'])
+                            ->setCustomerIsGuest(true)
+                            ->setCustomerGroupId(GroupInterface::NOT_LOGGED_IN_ID);
+                    } else {
+                        $customerModel = $customer;
+                        if ($customer instanceof \Magento\Customer\Model\Customer) {
+                            $customerModel = $customer->getDataModel();
+                        }
+                        $newSubQuote->assignCustomerWithAddressChange(
+                            $customerModel,
+                            $billingAddress,
+                            $shippingAddress
+                        );
+                    }
+                    // Collect Rates and Set Shipping & Payment Method
+                    $subQuoteShippingInformation = $this->calShippingMethodForSubQuote(
+                        $newSubQuote,
+                        $masterQuoteShippingInformation,
+                        $this->shippingAmount,
+                        $sellerId,
+                        $mpSelectedMethods,
+                        $shippingAll
+                    );
+                    $this->quoteRepository->save($newSubQuote);
+                    //replacing current inactive quote with new active quote
+                    //it will collect rates based on quote items
+                    $this->checkoutSession->replaceQuote($newSubQuote);
+                    $shippingAddress = $newSubQuote->getShippingAddress();
+                    $shippingAddress->setCollectShippingRates(true)
+                        ->collectShippingRates()
+                        ->setShippingMethod($subQuoteShippingInformation['shipping_method']);
+                    $newSubQuote->setPaymentMethod($paymentMethod);
+                    $newSubQuote->setInventoryProcessed(false);
+                    $newSubQuote->save();
+                    $address = $newSubQuote->getShippingAddress();
+                    $rates = $address->collectShippingRates()
+                        ->getGroupedAllShippingRates();
+                    foreach ($rates as $carrier) {
+                        foreach ($carrier as $rate) {
+                            $rate->setPrice($this->shippingAmount);
+                            $rate->save();
+                        }
+                    }
+                    $address->setCollectShippingRates(false);
+                    $address->save();
+                    // Set Sales Order Payment
+                    $importData['method'] = $paymentMethod;
+                    if (!empty($cardType)) {
+                        $importData['cardType'] = $cardType;
+                    }
+                    if (!empty($paymentType)) {
+                        $importData['paymentType'] = $paymentType;
+                    }
+                    $newSubQuote->getPayment()->importData($importData);
+                    $newSubQuote->setIsActive(1);
+                    $newSubQuote->setCustomDiscount(-$this->tempdiscount);
+                    $newSubQuote->setBaseCustomDiscount(-$this->tempBasediscount);
+                    // if MpSellerCoupon Enabled and Seller Coupons are applied also
+                    if (!empty($couponSellerWise)) {
+                        $couponCode = $couponSellerWise[$sellerId];
+                    }
+                    $this->coreSession->setData('discount_description', $couponCode);
+                    $this->coreSession->setData('item_discount', $this->discountArr);
+                    $this->coreSession->setData('item_base_discount', $this->baseDiscountArr);
+                    if (!empty($couponCode)) {
+                        $newSubQuote->setCouponCode($couponCode);
+                    }
+                    // Collect Totals & Save Quote
+                    $newSubQuote->collectTotals()->save();
+                    // Create Order From Quote
+                    $newSubQuote = $this->quoteRepository->get($newSubQuote->getId());
+                    /**
+                     * Transfer general information from Master Quote To SubQuote
+                     */
+                    $newSubQuote = $this->getTransferMasterQuoteService()->transfer(
+                        $masterQuote,
+                        $newSubQuote
+                    );
+                    $order = \Magento\Quote\Model\QuoteManagement::submit($newSubQuote);
+                    $orderId = $order->getId();
+                    $orderIds[] = $orderId;
+                    $lastOrderId = $orderId;
+                    $order = $this->orderRepository->get($orderId);
+                    if ($order->getId() && !$order->getCustomerId()) {
+                        $order->setCustomerId($customer->getId());
+                        $order->setCustomerIsGuest(0);
+                        $this->orderRepository->save($order);
+                    }
+                    if ($this->tempdiscount && empty($couponSellerWise)) {
+                        $order->setDiscountAmount(-$this->tempdiscount);
+                        $order->setBaseDiscountAmount(-$this->tempBasediscount);
+                    }
+                    $order->setCouponCode($couponCode);
+                    if ($couponCode == null) {
+                        $order->setDiscountDescription($couponCode);
+                    }
+                    $order->setTaxAmount($this->taxAmount);
+                    $order->setBaseTaxAmount($this->baseTaxAmount);
+                    $order->save();
+                    $grandTotal = $order->getSubtotal() + $order->getTaxAmount()
+                        + $order->getDiscountAmount() + $order->getShippingAmount();
+                    $order->setGrandTotal($grandTotal);
+                    $order->setBaseGrandTotal($grandTotal);
+                    $this->orderRepository->save($order);
+                    $newSubQuote->save();
+                }
+            }
+            return [
+                $orderIds,
+                $lastOrderId
+            ];
+        }
+    }
+
+    /**
+     * Submit
+     *
+     * @param QuoteEntity $quote
+     * @param array $orderData
+     * @return int
+     */
+    public function submit(QuoteEntity $quote, $orderData = [])
+    {
+        try {
+            if ($this->mpSplitOrderHelper->getIsActive() == 0) {
+                $this->coreSession->setData('orderids', '');
+                $orderId = parent::submit($quote);
+                return $orderId;
+            }
+            $this->coreSession->setData('split_sellers', 0);
+            $oldParentOrderId = $this->coreSession->getOldParentOrderId();
+            $shippingAll = $this->coreSession->getShippingInfo();
+            $this->coreSession->setData('grand_total', $quote->getGrandTotal());
+            $couponCode = $quote->getCouponCode();
+            list($finalArray, $splitShip, $itemArray, $typeCount) = $this->extractQuoteItemSeller($quote);
+            $this->coreSession->setData('split_sellers', count($finalArray));
+            $this->coreSession->setData('old_quote', json_encode($quote->getData()));
+            $orderedArray = [
+                'shipping_method' => $quote->getShippingAddress()->getShippingMethod(),
+                'shipping_tax_amount' => $quote->getShippingAddress()->getData('shipping_tax_amount'),
+                'shipping_amount' => $quote->getShippingAddress()->getShippingAmount(),
+            ];
+            $currenQuoteId = $this->_checkoutSession->getQuoteId();
+            $currency = $quote->getCurrency();
+            $masterQuoteBillingAddress = $quote->getBillingAddress()->getData();
+            $masterQuoteShippingAddress = $quote->getShippingAddress()->getData();
+            if (!isset($masterQuoteBillingAddress['postcode'])) {
+                $masterQuoteBillingAddress['postcode'] = '';
+            }
+            if (!isset($masterQuoteShippingAddress['postcode'])) {
+                $masterQuoteShippingAddress['postcode'] = '';
+            }
+            if ($splitShip) {
+                $shippingAmountPerItem = $masterQuoteShippingAddress['base_shipping_amount'] / $splitShip;
+            } else {
+                $shippingAmountPerItem = 0;
+            }
+            $checkoutMethod = $quote->getCheckoutMethod();
+            $this->checkoutMethd = $checkoutMethod;
+            $paymentMethod = $quote->getPayment()->getMethod();
+            $additional = $quote->getPayment()->getAdditionalInformation();
+            if (array_key_exists('cardType', $additional)) {
+                $cardType = $additional['cardType'];
+            } else {
+                $cardType = '';
+            }
+            if (array_key_exists('paymentType', $additional)) {
+                $paymentType = $additional['paymentType'];
+            } else {
+                $paymentType = '';
+            }
+            $quote = $this->quoteFactory->create()->load($currenQuoteId);
+            /*      $masterQuote->setIsActive(0)->delete();*/
+            $store = $this->storeManager->getStore();
+            $currentCustomer = $this->checkCustomer($masterQuoteBillingAddress);
+            $this->customr = $currentCustomer;
+            $this->billingAddress2 = $masterQuoteBillingAddress;
+            $this->coreSession->setIsSpiltOrder(1);
+            $couponSellerWise = [];
+            $mpSelectedMethods = $this->coreSession->getSelectedMethods();
+            list($orderIds, $lastOrderId) = $this->createOrders(
+                $quote,
+                $finalArray,
+                $store,
+                $currency,
+                $masterQuoteBillingAddress,
+                $masterQuoteShippingAddress,
+                $checkoutMethod,
+                $shippingAmountPerItem,
+                $currentCustomer,
+                $paymentMethod,
+                $mpSelectedMethods,
+                $couponSellerWise,
+                $paymentType,
+                $cardType,
+                $shippingAll,
+                $couponCode
+            );
+            $this->updateOrderItems($orderIds);
+            $this->splitOrderQuoteManagement->updateCouponUsages(
+                $couponCode,
+                $this->customr->getId()
+            );
+            $quote->setIsActive(0)->save();
+            $parentOrder = $this->saveParentOrder($orderIds, $lastOrderId);
+            $this->cacheSessionForSuccessPage(
+                $itemArray,
+                $orderIds,
+                $orderedArray,
+                $lastOrderId,
+                $parentOrder->getId()
+            );
+            $this->eventManager->dispatch('adminhtml_after_create_new_order', [
+                'old_parent_order_id' => $oldParentOrderId,
+                'new_parent' => $parentOrder
+            ]);
+        } catch (\Exception $e) {
+            /**
+             * Deactive Master Quote for any issues
+             */
+            if (isset($quote)) {
+                $quote->setIsActive(0)->save();
+            }
+            $this->splitorderLogger->info($e->getMessage());
+            $this->splitorderLogger->info($e->getTraceAsString());
+            $this->_messageManager->addError($e->getMessage());
+            $this->coreSession->unsIsSpiltOrder();
+        }
+    }
+
+    /**
+     * @param $orderIds
+     * @return void
+     */
+    private function updateOrderItems($orderIds)
+    {
+        $items = $this->itemFactory->create()
+            ->getCollection()->addFieldToFilter('order_id', ['in' => $orderIds]);
+        foreach ($items as $_item) {
+            $amountWithDiscount = $_item->getRowTotal() - $_item->getDiscountAmount();
+            $taxAmount = ($amountWithDiscount * $_item->getTaxPercent()) / 100;
+            $_item->setTaxAmount($taxAmount);
+            $_item->setBaseTaxAmount($taxAmount);
+            $_item->save();
+        }
+    }
+
+    /**
+     * @param $itemArray
+     * @param $orderIds
+     * @param $orderedArray
+     * @param $lastOrderId
+     * @param $parentOrderId
+     * @return void
+     */
+    private function cacheSessionForSuccessPage(
+        $itemArray,
+        $orderIds,
+        $orderedArray,
+        $lastOrderId,
+        $parentOrderId
+    )
+    {
+        $this->coreSession->setData('orderids', implode(',', $orderIds));
+        $this->coreSession->setData('item', $itemArray);
+        $this->coreSession->setData('shipping_info', $orderedArray);
+        $this->coreSession->setData('lastOrderId', $lastOrderId);
+        $this->checkoutSession->setData('shippingInfo', 0);
+        $this->checkoutSession->setData('parentOrderId', $parentOrderId);
+        $this->checkoutSession->setData('subOrderIds',  implode(',', $orderIds));
+    }
+
+    /**
+     * @param $orderIds
+     * @param $lastOrderId
+     * @return \Webkul\Mpsplitorder\Model\Mpsplitorder
+     * @throws \Exception
+     */
+    private function saveParentOrder($orderIds, $lastOrderId)
+    {
+        $splitOrderCollection = $this->mpsplitorderFactory->create();
+        $splitOrderCollection->setOrderIds(implode(',', $orderIds));
+        $splitOrderCollection->setLastOrderId($lastOrderId);
+        $this->coreSession->unsIsSpiltOrder();
+        $splitOrderCollection->setPaymentStatus(0);
+        return $splitOrderCollection->save();
+    }
+
+    /**
+     * @return TransferMasterQuoteDataToSubQuoteDataService|mixed
+     */
+    private function getTransferMasterQuoteService()
+    {
+        if ($this->transferMasterQuoteService === null) {
+            $this->transferMasterQuoteService = ObjectManager::getInstance()->get(
+                TransferMasterQuoteDataToSubQuoteDataService::class
+            );
+        }
+        return $this->transferMasterQuoteService;
+    }
+
+    /**
+     * @param $items
+     * @param $newQuote
+     * @param $shippingAmount
+     * @param $shippingAmountPerItem
+     * @return void
+     */
+    public function assignItem($items, $newQuote, $shippingAmount, $shippingAmountPerItem)
+    {
+        $this->tempdiscount = 0;
+        $this->tempBasediscount = 0;
+        $this->taxAmount = 0;
+        $this->baseTaxAmount = 0;
+        $this->itemidsMap = [];
+        $this->previtemIds = [];
+        $this->discountArr = [];
+        $this->baseDiscountArr = [];
+        $this->priceArr = [];
+        $this->shippingamount = $shippingAmount;
+        foreach ($items as $item) {
+            $this->tempdiscount += floatval($item['discount']);
+            $this->tempBasediscount += floatval($item['base_discount']);
+            $this->taxAmount += floatval($item['tax_amount']);
+            $this->baseTaxAmount += floatval($item['base_tax_amount']);
+            if (isset($item['shippable']) && $item['shippable']) {
+                $this->shippingamount += $item['shippable'] * $shippingAmountPerItem;
+            }
+            $product = $this->productFactory->create()->load($item['product']);
+            if (isset($item['request']['mpassignproduct_id']) &&
+                $item['request']['mpassignproduct_id'] != "") {
+                $product->setPrice($item['request']['price']);
+                $this->coreSession->setMpAssignItemId($item['item_id']);
+            }
+            //check for Advertisment product
+            foreach ($item['request'] as $req) {
+                if (isset($req['block_position']) && $req['block_position'] != "") {
+                    $product->setPrice($req['price']);
+                }
+            }
+            if (isset($item['request']['options'])) {
+                foreach ($item['request']['options'] as $tempKey => $tempOptions) {
+                    if (isset($tempOptions['date_internal'])) {
+                        $item['request']['options'][$tempKey] = $tempOptions['date_internal'];
+                    }
+                }
+            }
+
+            $tempItemIds = [];
+            $oldExtraField = $item['extra_field_data'] ?? [];
+            $newItem = $newQuote->addProduct($product, new \Magento\Framework\DataObject($item['request']), 'full');
+            /**
+             * Copy old custom field to new item
+             */
+            if ($newItem instanceof Quote\Item) {
+                foreach ($oldExtraField as $key => $field) {
+                    $newItem->setData($key, $field);
+                };
+            }
+            if ($this->checkoutMethd == 'guest') {
+
+                $newQuote->setCustomerId(null)
+                    ->setCustomerEmail($this->billingAddress2['email'])
+                    ->setCustomerIsGuest(true)
+                    ->setCustomerGroupId(GroupInterface::NOT_LOGGED_IN_ID);
+
+            } else {
+                $newQuote->setCustsetCustomerId($this->customr->getId());
+            }
+
+            $newQuote->save();
+            foreach ($newQuote->getAllItems() as $tempitem) {
+
+                if (!$tempitem->getParentItem()) {
+                    $tempItemIds[] = $tempitem->getId();
+                    $currentTempIds = array_diff($tempItemIds, $this->previtemIds);
+                    if (!empty($currentTempIds)) {
+                        $currentTempId = array_shift($currentTempIds);
+                        $this->previtemIds[] = $currentTempId;
+                        $this->itemidsMap[$item['item_id']] = $currentTempId;
+
+                        $this->discountArr[$currentTempId] = $item['discount'];
+                        $this->baseDiscountArr[$currentTempId] = $item['base_discount'];
+                        $this->priceArr[$currentTempId] = $item['price'];
+                    }
+                }
+
+                if ($tempitem->getProductId() == $item['product']) {
+                    $tempitem->setData('discount_percent', $item['discount_percent']);
+                    $tempitem->setData('base_discount_amount', $item['discount']);
+                    $tempitem->setData('discount_amount', $item['base_discount']);
+                    $tempitem->save();
+                }
+            }
+            foreach ($newQuote->getAllItems() as $tempitem) {
+                if (!$tempitem->getParentItem() && isset($priceArr[$tempitem->getId()])) {
+                    $tempitem->setPrice($this->priceArr[$tempitem->getId()]);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * @param Quote $subQuote
+     * @param array $masterQuoteShippingInformation
+     * @param $shippingAmount
+     * @param $sellerId
+     * @param $mpSelectedMethods
+     * @param $shippingAll
+     * @return array|void
+     */
+    private function calShippingMethodForSubQuote(
+        Quote $subQuote,
+        array &$masterQuoteShippingInformation,
+              $shippingAmount,
+              $sellerId,
+              $mpSelectedMethods,
+              $shippingAll
+    )
+    {
+        $sellerShipping = [];
+        $shipCode = $masterQuoteShippingInformation['shipping_method'];
+        $isMultipleShipping = $masterQuoteShippingInformation['shipping_method'] === 'mpmultishipping_mpmultishipping';
+        $sellerShipping[$shipCode] = [
+            "seller_id" => $sellerId,
+            "methodcode" => $shipCode,
+            "shipping_ammount" => $shippingAmount,
+            'submethod' => [
+                $shipCode => [
+                    "method" => $masterQuoteShippingInformation['shipping_description'],
+                    "cost" => $shippingAmount,
+                    "base_amount" => $this->shippingAmount,
+                    "error" => 0
+                ]
+            ]
+        ];
+        if ($isMultipleShipping && (is_array($mpSelectedMethods) && !empty($mpSelectedMethods))) {
+            $this->calculateShippingAmount(
+                $mpSelectedMethods,
+                $sellerId,
+                $this->itemIdsMap
+            );
+            return $masterQuoteShippingInformation;
+        }
+
+        if (!$isMultipleShipping && !empty($shippingAll)) {
+            $this->setspMethod(
+                $masterQuoteShippingInformation,
+                $shippingAll,
+                $mpSelectedMethods,
+                $sellerId
+            );
+            return $masterQuoteShippingInformation;
+        }
+        /**
+         * Do not know this code from webkul for what , just copy
+         */
+        $shippingData = [
+            'title' => $masterQuoteShippingInformation['shipping_description'],
+            'cost' => $shippingAmount,
+            'method' => $masterQuoteShippingInformation['shipping_method'],
+            'sellership' => $sellerShipping
+        ];
+        $this->checkoutSession->setData('shippingInfo', $shippingData);
+        $originShippingMethod = $masterQuoteShippingInformation['shipping_method'];
+        $subQuoteShippingInformationParams = $masterQuoteShippingInformation;
+        $masterQuoteShippingInformation['shipping_method'] = 'splitship_splitship';
+        return $this->getShippingResolver()->resolveShippingMethod(
+            $subQuote,
+            $originShippingMethod,
+            $subQuoteShippingInformationParams,
+            $shippingAmount
+        );
+    }
+
+
+    /**
+     * @return SubQuoteShippingMethodResolver
+     */
+    private function getShippingResolver()
+    {
+        if ($this->shippingResolver == null) {
+            $this->shippingResolver = ObjectManager::getInstance()->get(
+                SubQuoteShippingMethodResolver::class
+            );
+        }
+        return $this->shippingResolver;
+    }
+}

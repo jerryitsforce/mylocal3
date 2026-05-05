@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sales_email>
+            <order>
+                <enabled>0</enabled>
+            </order>
+            <order_comment>
+                <enabled>0</enabled>
+            </order_comment>
+        </sales_email>
+        <parent_order>
+            <parent_order_configuration>
+                <show_status_admin>1</show_status_admin>
+            </parent_order_configuration>
+        </parent_order>
+    </default>
+
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Webkul_SpinToWin::spintowin" title="Spin to Win" sortOrder="10">
+                    <resource id="Webkul_SpinToWin::manage" title="Manage Spin to Win" sortOrder="1"/>
+                    <resource id="Branch8_Spin2Win::reports" title="Spin To Win Reports" sortOrder="5"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

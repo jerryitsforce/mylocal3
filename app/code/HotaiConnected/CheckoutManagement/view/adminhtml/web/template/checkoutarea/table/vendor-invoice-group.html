@@ -1,0 +1,59 @@
+<div class="vendor-invoice__group" 
+     data-index="<%- index %>"
+     data-state="<%= hasValue ? 'readonly' : 'addable' %>">
+    <div class="vendor-invoice__row">
+        <% if (!editable) { %>
+            <div class="vendor-invoice__field"><%- value %></div>
+        <% } else { %>
+            <div class="vendor-invoice__field">
+                <input type="text" 
+                    class="admin__control-text vendor-invoice__input" 
+                    value="<%- value %>" 
+                    maxlength="10"
+                    data-row-id="<%- rowId %>"
+                    data-index="<%- index %>"
+                    data-country="<%- country %>"
+                    pattern="[A-Z]{2}[0-9]{8}"
+                    required
+                    <% if (hasValue) { %>disabled<% } %>
+                    />
+
+                <button type="button" 
+                        class="vendor-invoice__btn vendor-invoice__btn--edit action-default"
+                        data-row-id="<%- rowId %>"
+                        data-index="<%- index %>"
+                >
+                    <%- editText %>
+                </button>
+                <button type="button" 
+                        class="vendor-invoice__btn vendor-invoice__btn--confirm action-default"
+                        data-row-id="<%- rowId %>"
+                        data-index="<%- index %>"
+                >
+                    <%- confirmText %>
+                </button>
+                <button type="button" 
+                        class="vendor-invoice__btn vendor-invoice__btn--cancel action-default"
+                        data-row-id="<%- rowId %>"
+                        data-index="<%- index %>"
+                >
+                    <%- cancelText %>
+                </button>
+            </div>
+            <button type="button" 
+                    class="vendor-invoice__btn vendor-invoice__btn--plus action-default"
+                    data-row-id="<%- rowId %>"
+                    data-index="<%- index %>"
+            >
+                +
+            </button>
+            <button type="button" 
+                    class="vendor-invoice__btn vendor-invoice__btn--minus action-default"
+                    data-row-id="<%- rowId %>"
+                    data-index="<%- index %>"
+            >
+                -
+            </button>
+        <% } %>
+    </div>
+</div>

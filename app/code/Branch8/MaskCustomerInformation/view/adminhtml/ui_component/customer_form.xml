@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="address">
+        <container name="customer_default_billing_address_wrapper">
+            <component name="customer_default_billing_address_content"
+                       component="Branch8_MaskCustomerInformation/js/address/secure-customer-address"
+                       template="Branch8_MaskCustomerInformation/default-address">
+
+            </component>
+        </container>
+        <container name="customer_default_shipping_address_wrapper" template="Magento_Customer/default-address-wrapper">
+            <component name="customer_default_shipping_address_content"
+                       component="Branch8_MaskCustomerInformation/js/address/secure-customer-address"
+                       template="Branch8_MaskCustomerInformation/default-address">
+            </component>
+        </container>
+    </fieldset>
+</form>

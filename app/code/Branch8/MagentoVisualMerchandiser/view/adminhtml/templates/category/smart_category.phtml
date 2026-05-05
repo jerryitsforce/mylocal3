@@ -1,0 +1,15 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+/* @var $block \Magento\VisualMerchandiser\Block\Adminhtml\Category\SmartCategory */
+?>
+<div class="smart-category-switcher">
+    <?= $block->getChildHtml('smart_category_onoff') ?>
+    <?= $block->getChildHtml('use_advance_rule_switcher') ?>
+    <?= $block->getChildHtml('smart_category_rules') ?>
+    <div id="advance-smart-category-rules" class="manage-rules-panel hidden">
+        <?= $block->getChildHtml('advance_smart_category_rules') ?>
+    </div>
+</div>

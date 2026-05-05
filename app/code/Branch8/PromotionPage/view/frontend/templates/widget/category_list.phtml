@@ -1,0 +1,72 @@
+<?php
+/**
+ * @var $block \Branch8\PromotionPage\Widget\CategoryList
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+<div class="block widget block-categories-list">
+    <div class="block-content">
+        <?php $categories = $block->getSubcategories(); ?>
+        <?php 
+        $itemSize = $block->getSize();
+        $pageSize = $block->getPageSize(); 
+        $totalPage = ceil($itemSize / $pageSize);
+        ?>
+        <?php if ($totalPage): ?>
+            <?php if ($totalPage > 1): ?>
+            <div class="toolbar-top">
+                <?= $block->getPagerHtml() ?>
+            </div>
+            <?php endif; ?>
+            <ul class="category-list">
+                <?php foreach ($categories as $category): ?>
+                    <li class="category-item">
+                        <a href="<?= $escaper->escapeUrl($category->getUrl()) ?>" class="category-link">
+                            <?php if ($imageUrl = $category->getImageUrl()): ?>
+                                <div class="category-image">
+                                    <img src="<?= $escaper->escapeUrl($imageUrl) ?>" alt="<?= $escaper->escapeHtml($category->getName()) ?>" />
+                                </div>
+                            <?php endif; ?>
+                            <span class="category-name"><?= $escaper->escapeHtml($category->getName()) ?></span>
+                        </a>
+                        <?php
+                        $startTime = $category->getCustomAttribute('catalog_price_rule_date_from') ? $category->getCustomAttribute('catalog_price_rule_date_from')->getValue() : null;
+                        $endTime = $category->getCustomAttribute('catalog_price_rule_date_to') ? $category->getCustomAttribute('catalog_price_rule_date_to')->getValue() : null;
+
+                        if (!$startTime) {
+                            $startTime = date('Y-m-d H:i:s');
+                        }
+                        $formattedStartTime = date('m/d', strtotime($startTime));
+                        $formattedEndTime = $endTime ? date('m/d', strtotime($endTime)) : null;
+
+                        if ($formattedStartTime):
+                            ?>
+                            <div class="category-time-range">
+                                <?php if ($formattedEndTime): ?>
+                                    <?= $block->escapeHtml(sprintf('%s - %s', $formattedStartTime, $formattedEndTime)) ?>
+                                <?php else: ?>
+                                    <?= $block->escapeHtml($formattedStartTime) ?>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+            <?php if ($totalPage > 1): ?>
+            <div class="toolbar-bottom">
+                <?= $block->getPagerHtml() ?>
+                <button id="load-more" class="action secondary action-secondary action-loadmore" data-event-page="1"><span><?= __("更多活動")?></span></button>
+            </div>
+            <?php endif; ?>
+            <script type="text/x-magento-init">
+                {
+                    "*": {
+                        "b8_loadmore": {
+                            "pageSize": <?= $block->getPageSize() ?>
+                        }
+                    }
+                }
+            </script>
+        <?php endif; ?>
+    </div>
+</div>

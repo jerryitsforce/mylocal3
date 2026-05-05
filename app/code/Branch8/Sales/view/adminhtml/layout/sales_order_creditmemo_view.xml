@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceBlock name="form" template="Branch8_Sales::order/creditmemo/view/form.phtml"/>
+    <referenceBlock name="creditmemo_items" template="Branch8_Sales::order/creditmemo/view/items.phtml"/>
+    <referenceBlock name="creditmemo_items.default" template="Branch8_Sales::order/creditmemo/view/items/renderer/default.phtml"/>
+
+</page>

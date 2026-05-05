@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+
+    <type name="Magento\SalesRule\Model\Quote\Discount">
+        <plugin name="Branch8_WebkulMpsplitorder::ignoreCollectSaleRuleSubQuote"
+                type="Branch8\WebkulMpsplitorder\Plugin\Magento\SalesRule\Model\Quote\DiscountPlugin" sortOrder="1"/>
+    </type>
+
+   <type name="Magento\Quote\Model\QuoteManagement">
+       <plugin name="mpsplitorder_quote_managment"
+               type="Webkul\Mpsplitorder\Model\QuoteManagement" sortOrder="1" disabled="true"/>
+        <plugin name="branch8_mpsplitorder_quote_managment"
+                type="Branch8\WebkulMpsplitorder\Model\QuoteManagementPlugin" sortOrder="1" disabled="false"/>
+    </type>
+    <type name="Magento\AsyncOrder\Model\AsyncPaymentInformationCustomerPublisher">
+        <plugin name="branch8_save_payment_information_and_place_order"
+            type="Branch8\WebkulMpsplitorder\Model\AsyncPaymentInformationCustomerPublisher" sortOrder="1" disabled="false"/>
+    </type>
+
+    <type name="Branch8\WebkulMpsplitorder\Model\CreateSubOrdersAction">
+        <arguments>
+            <argument name="logger" xsi:type="object">Webkul\Mpsplitorder\Logger\Mpsplitorder</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="SplitOrderHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/split_order/error.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SplitOrderLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">SplitOrderLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">SplitOrderHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+
+    <type name="Branch8\WebkulMpsplitorder\Model\QuoteManagementPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">SplitOrderLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Checkout\Model\PaymentInformationManagement">
+        <plugin name="Branch8_WebkulMpsplitorder::checkQuoteErrorBeforePlaceOrder"
+                type="Branch8\WebkulMpsplitorder\Plugin\Magento\Quote\Model\PaymentMethodManagementPlugin"
+                sortOrder="1"
+                disabled="false"/>
+    </type>
+</config>

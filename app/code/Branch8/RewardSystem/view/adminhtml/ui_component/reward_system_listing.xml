@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">reward_system_listing.reward_system_listing_data_source</item>
+        </item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">new</item>
+                <item name="label" xsi:type="string" translate="true">Add Automated Reward</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/edit</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>reward_system_listing_columns</spinner>
+        <deps>
+            <dep>reward_system_listing.reward_system_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="reward_system_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\RewardSystem\Ui\DataProvider\Event\ListingDataProvider</argument>
+            <argument name="name" xsi:type="string">reward_system_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <exportButton name="export_button"/>
+        <filterSearch name="fulltext">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </filterSearch>
+        <filters name="listing_filters" />
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="enable">
+                <settings>
+                    <url path="rewardsystem/reward/massEnable"/>
+                    <type>Enable</type>
+                    <label translate="true">Enable</label>
+                </settings>
+            </action>
+            <action name="disable">
+                <settings>
+                    <url path="rewardsystem/reward/massDisable"/>
+                    <type>Disable</type>
+                    <label translate="true">Disable</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="reward_system_listing_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">reward_system_listing.reward_system_listing.reward_system_listing_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">view</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids" component="Magento_Sales/js/grid/columns/multiselect">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="entity_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="title">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Title</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="status" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+                <visible>true</visible>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="trigger_condition" class="Branch8\RewardSystem\Ui\Component\Listing\Column\Trigger">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Triggers</item>
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                </item>
+            </argument>
+            <settings>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="reward_type" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Branch8\RewardSystem\Model\Config\Source\RewardType"/>
+                <dataType>select</dataType>
+                <label translate="true">Reward Type</label>
+                <visible>true</visible>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="start_date">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Address</label>
+            </settings>
+        </column>
+        <column name="start_date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Start Date</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="end_date" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">End Date</label>
+            </settings>
+        </column>
+        <column name="delete" class="Branch8\RewardSystem\Ui\Component\Listing\Column\Delete">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Delete</item>
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                </item>
+            </argument>
+            <settings>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <actionsColumn name="edit" class="Branch8\RewardSystem\Ui\Component\Listing\Column\UrlAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="viewUrlPath" xsi:type="string">rewardsystem/reward/edit</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="label" xsi:type="string">Edit</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+        <actionsColumn name="report" class="Branch8\RewardSystem\Ui\Component\Listing\Column\UrlAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="viewUrlPath" xsi:type="string">rewardsystem/reward/report</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="label" xsi:type="string">Report</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

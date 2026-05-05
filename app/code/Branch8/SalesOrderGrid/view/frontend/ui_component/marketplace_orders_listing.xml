@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <dataSource name="marketplace_orders_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\Marketplace\Ui\DataProvider\OrdersHistoryDataProvider</argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters" component="Branch8_SalesOrderGrid/js/grid/filters/filters">
+
+        </filters>
+    </listingToolbar>
+    <columns name="orders_columns">
+        <!-- Disable Column-->
+        <column name="quote_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <!-- End Disable Column-->
+        <!-- Modifying Display Columns-->
+        <column name="actual_seller_amount" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Base Total</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the total amount of the order</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="purchased_actual_seller_amount">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Purchased Total</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the total amount of the order (purchase currency)</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="subtotal" class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Subtotal">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">[GRID]Subtotal</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order subtotal amount</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="shipping_and_handling" class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\ShippingAndHandling">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order shipping amount</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Shipping and Handling</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="subtotal_incl_tax" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">[GRID]Subtotal</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order subtotal amount</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="shipping_incl_tax" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order shipping amount</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Shipping and Handling</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="shipping_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Shipping Address</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Shipping Address</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="customer_email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter customer email</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Email</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="product_type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select Product Type</item>
+                    <item name="filterSelectType" xsi:type="string">multiselect</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Catalog\Model\Product\Type"/>
+                <dataType>select</dataType>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <label translate="true">[GRID]Product Type</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="logistics_company">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Logistics Company</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">[GRID]Logistics Company</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="created_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order purchase date</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Purchase Date</label>
+            </settings>
+        </column>
+        <column name="magerealorder_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please input Order Id</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Order Number</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="magepro_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Product Name</item>
+                </item>
+            </argument>
+        </column>
+        <!--<column name="sku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter SKU</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]SKU</label>
+            </settings>
+        </column>-->
+        <column name="customer_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Customer Name</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Customer Name</label>
+            </settings>
+        </column>
+
+        <column name="status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Select...</item>
+                    <item name="filterSelectType" xsi:type="string">multiselect</item>
+                </item>
+            </argument>
+            <settings>
+                <options class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Status\SellerOrderListStatus"/>
+                <label translate="true">[GRID]Order Status</label>
+            </settings>
+        </column>
+        <column name="rma_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please choose RMA status</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipping_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Shipping Name</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Ship-to Name</label>
+            </settings>
+        </column>
+        <column name="total_invoiced">
+            <settings>
+                <filter/>
+                <dataType>text</dataType>
+                <label translate="true">Invoice Amount</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="point_used_total">
+            <settings>
+                <filter/>
+                <dataType>text</dataType>
+                <label translate="true">Using Point</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="customer_phone_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Phone Number</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Phone Number</label>
+            </settings>
+        </column>
+        <column name="base_grand_total" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter base grand total</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="grand_total" class="Magento\Sales\Ui\Component\Listing\Column\PurchasedPrice">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter grand total</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <!-- Modifying Display Columns-->
+        <column name="base_cost" component="Branch8_SalesOrderGrid/js/grid/columns/baseCost">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please input cost</item>
+                    <item name="bodyTmpl" xsi:type="string">Branch8_SalesOrderGrid/grid/cells/baseCost</item>
+                    <item name="resizeEnabled" xsi:type="boolean">true</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">200</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Cost</label>
+            </settings>
+        </column>
+        <column name="commission_percent" component="Branch8_SalesOrderGrid/js/grid/columns/commisionPercent">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please input commision percent</item>
+                    <item name="bodyTmpl" xsi:type="string">Branch8_SalesOrderGrid/grid/cells/comissionPercent</item>
+                    <item name="resizeEnabled" xsi:type="boolean">true</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">200</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Commission Percent</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

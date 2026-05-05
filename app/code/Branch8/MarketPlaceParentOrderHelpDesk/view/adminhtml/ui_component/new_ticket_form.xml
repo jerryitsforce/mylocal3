@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="customer">
+        <field name="order">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </field>
+        <field name="parent_order" formElement="select"
+               component="Branch8_HelpDesk/js/view/find-your-order"
+               class="Branch8\HelpDesk\Ui\Component\Backend\Form\Field\FindYourOrder"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="pageLimit" xsi:type="string">50</item>
+                    <item name="showPath" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="string">false</item>
+                    <item name="searchOptions" xsi:type="boolean">true</item>
+                    <item name="filterOptions" xsi:type="string">true</item>
+                    <item name="filterOptionsFocus" xsi:type="string">true</item>
+                    <item name="searchUrl" xsi:type="string">helpdesk/ticket/LoadRecentOrders</item>
+                    <item name="selectedPlaceholders" xsi:type="array">
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Type to find order (Order Id,Shipping,Billing ...</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <dataType>text</dataType>
+                <label translate="true">Order</label>
+                <dataScope>parent_order</dataScope>
+                <imports>
+                    <link name="checkCustomerId">${ $.provider }:${ $.parentScope }.customer_id</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+
+</form>

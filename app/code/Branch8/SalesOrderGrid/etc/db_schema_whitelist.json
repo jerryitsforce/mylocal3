@@ -1,0 +1,71 @@
+{
+    "sales_order_grid": {
+        "column": {
+            "subtotal_incl_tax": true,
+            "shipping_incl_tax": true,
+            "shipping_method": true,
+            "all_item_skus": true,
+            "all_items_cost": true,
+            "all_items_commission_percent": true,
+            "customer_phone_number": true
+        },
+        "index": {
+            "SALES_ORDER_GRID_ORDER_APPROVAL_STATUS": true,
+            "SALES_ORDER_GRID_CUSTOMER_PHONE_NUMBER": true
+        }
+    },
+    "marketplace_rma_details": {
+        "index": {
+            "MARKETPLACE_RMA_DETAILS_ORDER_ID": true
+        }
+    },
+    "marketplace_orders": {
+        "index": {
+            "MARKETPLACE_ORDERS_SELLER_PENDING_NOTIFICATION": true
+        }
+    },
+    "marketplace_product": {
+        "index": {
+            "MARKETPLACE_PRODUCT_MAGEPRODUCT_ID": true,
+            "MARKETPLACE_PRODUCT_STORE_ID": true,
+            "MARKETPLACE_PRODUCT_SELLER_ID": true,
+            "MARKETPLACE_PRODUCT_STATUS": true,
+            "MARKETPLACE_PRODUCT_IS_APPROVED": true,
+            "MARKETPLACE_PRODUCT_SELLER_PENDING_NOTIFICATION": true,
+            "MARKETPLACE_PRODUCT_ADMIN_PENDING_NOTIFICATION": true,
+            "MARKETPLACE_PRODUCT_DEALER_APPROVE_STATUS": true
+        }
+    },
+    "marketplace_saleslist": {
+        "index": {
+            "MARKETPLACE_SALESLIST_CPPROSTATUS": true,
+            "MARKETPLACE_SALESLIST_MAGEBUYER_ID": true,
+            "MARKETPLACE_SALESLIST_PARENT_ITEM_ID": true,
+            "MARKETPLACE_SALESLIST_MAGEREALORDER_ID": true,
+            "MARKETPLACE_SALESLIST_PAID_STATUS": true,
+            "MARKETPLACE_SALESLIST_IS_SHIPPING": true,
+            "MARKETPLACE_SALESLIST_IS_COUPON": true,
+            "MARKETPLACE_SALESLIST_IS_PAID": true,
+            "MARKETPLACE_SALESLIST_IS_WITHDRAWAL_REQUESTED": true
+        }
+    },
+    "marketplace_product_temp": {
+        "index": {
+            "MARKETPLACE_PRODUCT_TEMP_SELLER_ID": true,
+            "MARKETPLACE_PRODUCT_TEMP_PRODUCT_ID": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "customer_phone_number": true
+        },
+        "index": {
+            "SALES_ORDER_CUSTOMER_PHONE_NUMBER": true
+        }
+    },
+    "quote": {
+        "column": {
+            "customer_phone_number": true
+        }
+    }
+}

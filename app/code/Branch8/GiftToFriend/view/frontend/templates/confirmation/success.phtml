@@ -1,0 +1,53 @@
+<?php
+/**
+ * @var Branch8\GiftToFriend\Block\Confirmation\ConfirmSuccess $block
+ */
+$customerInfoHelper = $this->helper('Branch8\Customer\Helper\Info');
+$orderDetail = $block->getOrderDetail();
+$order = $block->getOrder();
+$isVirtual = $block->isVirtual($order);
+?>
+<div class="giftbox-confirmed-header">
+  <div class="giftbox-confirmed-img">
+    <img src="<?php echo $block->getViewFileUrl('Branch8_GiftToFriend::images/gift-box-success-icon.svg'); ?>" alt="<?php echo __('Gift Box'); ?>" />
+  </div>
+  <h1 class="giftbox-confirmed-title"><?= $block->escapeHtml(__('收到你的資料囉！')); ?></h1>
+  <p class="giftbox-confirmed-subtitle"><?= $block->escapeHtml(__('已收到你的資料，請近期留意收貨，你可以隨時透過同一個送禮連結查詢禮物')); ?></p>
+  <div class="giftbox-confirmed-actions">
+    <a href="<?= $block->getUrl('') ?>" class="action secondary" title="<?= $block->escapeHtml(__('逛逛和泰購')) ?>">
+      <span><?= $block->escapeHtml(__('逛逛和泰購')) ?></span>
+    </a>
+    <a href="<?= $block->getUrl('gift-order/giftbox/listing') ?>" class="action primary" title="<?= $block->escapeHtml(__('查詢我的禮物')) ?>">
+      <span><?= $block->escapeHtml(__('查詢我的禮物')) ?></span>
+    </a>
+  </div>
+</div>
+<?php if($order): ?>
+<div class="giftbox-confirmed-order">
+  <h2 class="giftbox-confirmed-order-title"><?= $block->escapeHtml(__('收件人資訊')); ?></h2>
+  <div class="giftbox-confirmed-order-info">
+    <div class="giftbox-confirmed-order-info-item">
+      <span class="giftbox-confirmed-order-info-label"><?= $block->escapeHtml(__('訂單編號')); ?></span>
+      <span class="giftbox-confirmed-order-info-value"> <?= $block->escapeHtml(__("No.%1",
+                                  $orderDetail->getData('hotai_parent_order_number') ?
+                                      $orderDetail->getData('hotai_parent_order_number') : $orderDetail->getData('increment_id')
+                              )) ?></span>
+    </div>
+    <div class="giftbox-confirmed-order-info-item">
+      <span class="giftbox-confirmed-order-info-label"><?= $block->escapeHtml(__('姓名')); ?></span>
+      <span class="giftbox-confirmed-order-info-value"><?= $block->renderBillingInfo($order, 'name'); ?></span>
+    </div>
+    <div class="giftbox-confirmed-order-info-item">
+      <span class="giftbox-confirmed-order-info-label"><?= $block->escapeHtml(__('手機號碼')); ?></span>
+      <span class="giftbox-confirmed-order-info-value"><?= $block->renderBillingInfo($order, 'phone'); ?></span>
+    </div>
+    <?php if(!$isVirtual): ?>
+    <div class="giftbox-confirmed-order-info-item">
+      <span class="giftbox-confirmed-order-info-label"><?= $block->escapeHtml(__('地址')); ?></span>
+      <span class="giftbox-confirmed-order-info-value"><?= $block->renderBillingInfo($order, 'street'); ?></span>
+    </div>
+    <?php endif; ?>
+   </div> 
+</div>
+<?php endif; ?>
+<?= $block->getChildHtml(); ?>

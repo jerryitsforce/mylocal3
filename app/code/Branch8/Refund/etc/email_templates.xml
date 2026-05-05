@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="sales_email_refund_success_template" label="Successful Refund Notification Email Template" file="success_refund_notification.html" type="html" module="Branch8_Refund" area="frontend"/>
+    <template id="sales_email_refund_decline_template" label="Decline Refund Notification Email Template" file="decline_refund_notification.html" type="html" module="Branch8_Refund" area="frontend"/>
+    <template id="sales_email_refund_abnormal_template" label="Abnormal Refund Notification Email Template" file="abnormal_refund_notification.html" type="html" module="Branch8_Refund" area="frontend"/>
+    <template id="sales_email_refund_cancel_template" label="Cancel Notification Email Template" file="cancel_refund_notification.html" type="html" module="Branch8_Refund" area="frontend"/>
+    <template id="sales_email_refund_trigger_fail_template" label="Refund Trigger Fail Notification Email Template" file="refund_trigger_fail_notification.html" type="html" module="Branch8_Refund" area="frontend"/>
+</config>

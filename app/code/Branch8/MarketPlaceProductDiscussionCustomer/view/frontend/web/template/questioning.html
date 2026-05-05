@@ -1,0 +1,25 @@
+<div class="block-cus-threads" data-bind="afterRender:afterRender.bind($data)">
+    <div class="block-content" data-bind="blockLoader: isLoading" id="questions-tab-wrapper">
+        <div class="thread-tabs" role="tablist">
+            <!-- ko foreach: { data: tabs, as: 'tab' } -->
+            <div class="thread-tab"
+                 data-bind="css: {'item title': 'item title', 'active': tab.code===$parent.activeTab()} "
+                 data-role="collapsible">
+                <a class="thread-tab-switch" data-toggle="trigger"
+                   data-bind="attr:{href:'#tab-'+tab.code}"
+                >
+                    <span class="title" data-bind="text:tab.title"></span>
+                    <span class="counter" data-bind="text:$parent.getCounterText(tab.code)"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="thread-tab-contents">
+            <!-- ko foreach: { data: tabs, as: 'tab' } -->
+            <div class="item content thread-tab-content" data-role="content" data-bind="attr:{'id':'tab-'+tab.code}">
+                <each args="$parent.getRegion($parent.name+'.'+tab.code)" render=""></each>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

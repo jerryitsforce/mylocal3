@@ -1,0 +1,22 @@
+<?php
+/** @var $block \Branch8\Customer\Block\AutoLogout\IdleTimeChecker */
+$timeout = $block->getIdleTimeout();
+?>
+<?php if ($timeout && !$block->isHotaiApp()): ?>
+<div id="logout-notification-modal" class="modal-hide">
+    <div class="modal-custom-content">
+        <p><?= $block->escapeHtml(__('嗨！你已經被登出囉！請重新登入')) ?></p>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8AutoLogout": {
+                "timeout": "<?= $block->escapeJs($timeout) ?>",
+                "modalId": "logout-notification-modal",
+                "isLoggedIn": "<?= /* @noEscape */ $block->isLoggedIn() ? 'true' : 'false' ?>"
+            }
+        }
+    }
+</script>
+<?php endif; ?>

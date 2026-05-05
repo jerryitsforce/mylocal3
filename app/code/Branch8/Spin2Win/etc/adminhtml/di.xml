@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Segment\Save"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Segment\Save"/>
+    <preference for="Webkul\SpinToWin\Block\Adminhtml\Segment\Edit"
+        type="Branch8\Spin2Win\Rewrite\Block\Adminhtml\Segment\Edit"/>
+
+    <preference for="Webkul\SpinToWin\Block\Adminhtml\Spin\Edit\Tabs"
+        type="Branch8\Spin2Win\Rewrite\Block\Adminhtml\Spin\Edit\Tabs"/>
+    <preference for="Webkul\SpinToWin\Block\Adminhtml\Segment\Segments"
+        type="Branch8\Spin2Win\Rewrite\Block\Adminhtml\Segment\Segments"/>
+    <preference for="Webkul\SpinToWin\Block\Adminhtml\Spin\Edit\Tab\Layout"
+        type="Branch8\Spin2Win\Rewrite\Block\Adminhtml\Spin\Edit\Tab\Layout"/>
+
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\SaveLayout"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\SaveLayout"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\SaveWheel"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\SaveWheel"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\Save"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\Save"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\SaveButton"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\SaveButton"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\Edit"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\Edit"/>
+    <preference for="Webkul\SpinToWin\Block\Adminhtml\Spin\Edit"
+        type="Branch8\Spin2Win\Rewrite\Block\Adminhtml\Spin\Edit"/>
+
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\Delete"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\Delete"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\MassDelete"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\MassDelete"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\MassDisable"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\MassDisable"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Manage\MassEnable"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Manage\MassEnable"/>
+    <preference for="Webkul\SpinToWin\Controller\Adminhtml\Segment\MassDelete"
+        type="Branch8\Spin2Win\Rewrite\Controller\Adminhtml\Segment\MassDelete"/>
+
+    <virtualType name="CampaignReportCollection" type="Branch8\Spin2Win\Ui\DataProvider\SpinInfor\Listing\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">spintowin_info</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Spin2Win\Model\ResourceModel\SpinInfor</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Webkul\SpinToWin\Block\Adminhtml\Segment\Renderer\Action">
+        <plugin name="branch8_add_delete_segment" type="Branch8\Spin2Win\Plugin\Block\Adminhtml\Segment\Renderer\Action" sortOrder="10" disabled="false"  />
+    </type>
+</config>

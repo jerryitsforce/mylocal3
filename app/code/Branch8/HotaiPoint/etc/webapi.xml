@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+    <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+
+    <route url="/V1/hotaipoint/transfer" method="POST">
+        <service class="Branch8\HotaiPoint\Api\AjaxInterface" method="transferPointAjax"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/hotaipoint/getmemberotp" method="POST">
+        <service class="Branch8\HotaiPoint\Api\AjaxInterface" method="getMemberOTPSendAjax"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/hotaipoint/register" method="POST">
+        <service class="Branch8\HotaiPoint\Api\AjaxInterface" method="registerPointAjax"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

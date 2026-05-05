@@ -1,0 +1,64 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\MaskCustomerInformation\Plugin\Magento\Customer\Ui\Component;
+
+use Branch8\MaskCustomerInformation\Model\Customer\Rule;
+use Branch8\MaskCustomerInformation\Model\PermissionInterface;
+
+class DataProviderPlugin
+{
+
+    private \Magento\Framework\Stdlib\ArrayManager $arrayManager;
+    private Rule $rule;
+    private PermissionInterface $permission;
+
+    /**
+     * @param PermissionInterface $permission
+     * @param \Magento\Framework\Stdlib\ArrayManager $arrayManager
+     * @param Rule $rule
+     */
+    public function __construct(
+        PermissionInterface                       $permission,
+        \Magento\Framework\Stdlib\ArrayManager $arrayManager,
+        Rule                                   $rule
+    )
+    {
+        $this->rule = $rule;
+        $this->permission = $permission;
+        $this->arrayManager = $arrayManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterGetMeta($subject, $result)
+    {
+        if ($this->permission->canView()) {
+            return $result;
+        }
+        $this->disabelEditor($result);
+        return $result;
+    }
+
+    /**
+     * @param $result
+     * @return void
+     */
+    private function disabelEditor(&$result)
+    {
+        $disableFields = [
+            'name',
+            'billing_telephone',
+            'billing_firstname',
+            'billing_lastname',
+            'billing_full',
+            'shipping_full'
+        ];
+        $fields = [];
+        foreach ($disableFields as $field) {
+            $fields[$field]['arguments']['data']['config']['editor'] = false;
+        }
+        $result['customer_listing']['children']['customer_columns']['children'] = $fields;
+    }
+}

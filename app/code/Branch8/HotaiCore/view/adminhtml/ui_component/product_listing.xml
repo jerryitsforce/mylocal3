@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters">
+            <filterSelect
+                name="seller_shop_name"
+                provider="${ $.parentName }"
+                sortOrder="100"
+                component="Magento_Ui/js/form/element/ui-select"
+                template="ui/grid/filters/elements/ui-select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="showCheckbox" xsi:type="boolean">true</item>
+                        <item name="chipsEnabled" xsi:type="boolean">true</item>
+                        <item name="multiple" xsi:type="boolean">true</item>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                        <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Seller Shop Name</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\HotaiCore\Ui\Component\Listing\Filters\Options\SellerShopName"/>
+                    <label translate="true">Seller Shop Name</label>
+                    <dataScope>seller_shop_name</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, index = seller_shop_name:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+            <filterSelect
+                name="preorder_mode"
+                provider="${ $.parentName }"
+                sortOrder="120">
+                <settings>
+                    <options class="Branch8\MarketplaceProduct\Model\Source\PreorderMode"/>
+                    <dataScope>preorder_mode</dataScope>
+                    <caption translate="true">Select Preorder Mode</caption>
+                    <label translate="true">Preorder Mode</label>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">product_listing.product_listing.product_columns.ids</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <action name="mass_clone">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">clone</item>
+                        <item name="label" xsi:type="string" translate="true">Clone Product</item>
+                        <item name="url" xsi:type="url" path="hotai_core/product/massClone"/>
+                        <item name="confirm" xsi:type="array">
+                            <item name="title" xsi:type="string" translate="true">Clone Product</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure you want to clone selected products?</item>
+                        </item>
+                    </item>
+                </argument>
+            </action>
+            <action name="is_hidden">
+                <settings>
+                    <type>is_hidden</type>
+                    <label translate="true">Change Hidden</label>
+                    <confirm>
+                        <message translate="true">Are you sure you want to do this action ?</message>
+                    </confirm>
+                    <actions>
+                        <action name="0">
+                            <type>yes</type>
+                            <label translate="true">Yes</label>
+                            <url path="hotai_core/product/massHidden">
+                                <param name="status">2</param>
+                            </url>
+                        </action>
+                        <action name="1">
+                            <type>no</type>
+                            <label translate="true">No</label>
+                            <url path="hotai_core/product/massHidden">
+                                <param name="status">1</param>
+                            </url>
+                        </action>
+                    </actions>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+    <columns name="product_columns" class="Branch8\HotaiCore\Ui\Component\Listing\Columns\Import"> 
+        <column name="seller_shop_name">
+            <settings>
+                <label translate="true">Seller Shop Name</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <actionsColumn name="hotai_core_import_action" class="Branch8\HotaiCore\Ui\Component\Listing\Columns\Import">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Branch8_HotaiCore/js/grid/columns/import</item>
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">HotaiCore Import</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

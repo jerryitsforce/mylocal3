@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\Cart\ImageProvider">
+        <plugin name="branch_add_more_image"
+                type="Branch8\ProductAlert\Plugin\ImageData"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Checkout\CustomerData\AbstractItem">
+        <plugin name="branch_custom_add_alert"
+                type="Branch8\ProductAlert\Plugin\DefaultItemData"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Customer\CustomerData\Customer">
+        <plugin name="branch_customer_data_eighteen"
+                type="Branch8\ProductAlert\Plugin\CustomerData"
+                sortOrder="10"/>
+    </type>
+    <preference for="Webkul\MarketplacePreorder\Block\Rewrite\Customer\Wishlist"
+                type="Branch8\ProductAlert\Block\Rewrite\Customer\Wishlist"/>
+</config>

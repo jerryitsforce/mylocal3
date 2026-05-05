@@ -1,0 +1,19 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Post\View;
+use Branch8\Blog\Helper\Image;
+use Branch8\Blog\Model\Config\Source\Comments\Type;
+use Magento\Framework\Escaper;
+
+/** @var View $block */
+/** @var Escaper $escaper */
+$_post = $block->getPost();
+?>
+<span><i class="fa fa-calendar-times-o">&nbsp;</i>
+    <?= $escaper->escapeHtml($block->getDateFormat($_post->getPublishDate())) ?>
+</span>

@@ -1,0 +1,149 @@
+<?php
+
+/** @var \Branch8\HotaiPoint\Block\Detail\Index $block */
+$pointHelper = $block->getPointHelper();
+$pointTransferUrl  = $pointHelper->getPointTransferUrl();
+$pointRegistrationUrl = $pointHelper->getPointRegistrationUrl();
+$pointConversionUrl = $pointHelper->getPointConversionUrl();
+?>
+
+<div class="hotai-point-actions">
+    <?php if($pointTransferUrl) : ?>
+    <a id="transfer-point-link" class="point-link" href="<?=$pointTransferUrl?>"><?= __('點數移轉') ?></a>
+    <?php endif; ?>
+    <?php if($pointRegistrationUrl) : ?>
+    <a id="registration-point-link" class="point-link" href="<?=$pointRegistrationUrl?>"><?= __('點數登錄') ?></a>
+    <?php endif; ?>
+    <?php if($pointConversionUrl) : ?>
+    <a id="convert-point-link" class="point-link" href="javascript:void(0)" data-redirect-url="<?=$pointConversionUrl?>"><?= __('點數轉換') ?></a>
+    <?php endif; ?>
+
+    <div id="confirm-redirect-convert-modal" class="modal-hide">
+        <div class="modal-custom-content">
+            <div class="section-title">
+                <p><?= $block->escapeHtml(__('我們將引導你至和泰會員中心進行點數轉換...')) ?></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-redirect-transfer-modal" class="modal-hide">
+        <div class="modal-custom-content">
+            <div class="section-title">
+                <p><?= $block->escapeHtml(__('我們將引導你至和泰會員中心進行點數移轉...')) ?></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-redirect-registration-modal" class="modal-hide">
+        <div class="modal-custom-content">
+            <div class="section-title">
+                <p><?= $block->escapeHtml(__('我們將引導你至和泰會員中心進行點數登錄...')) ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/modal',
+        '!domReady'
+    ], function($, modal) {
+        const isHotaiApp = $('body').hasClass('hotai-app');
+
+        $('#transfer-point-link').on('click', function() {
+            // var redirectUrl = $(this).data('redirect-url');
+            // window.location.href = redirectUrl;
+            // var modalElement = $('#confirm-redirect-transfer-modal');
+
+
+            // var options = {
+            //     type: 'popup',
+            //     responsive: true,
+            //     innerScroll: true,
+            //     modalClass: 'modal-custom confirm-redirect-modal',
+            //     responsiveClass: '',
+            //     title:$.mage.__('點數移轉'),
+            //     buttons: [
+            //         {
+            //             text: $.mage.__('確定前往'),
+            //             class: 'action primary action-primary',
+            //             click: function () {
+            //                 window.location.href = redirectUrl;
+            //                 this.closeModal();
+            //             }
+            //         }
+            //     ]
+            // };
+
+
+            // var popup = modal(options, modalElement);
+            // modalElement.modal('openModal');
+        });
+
+        $('#registration-point-link').on('click', function() {
+            // var redirectUrl = $(this).data('redirect-url');
+            // var modalElement = $('#confirm-redirect-registration-modal');
+
+
+            // var options = {
+            //     type: 'popup',
+            //     responsive: true,
+            //     innerScroll: true,
+            //     modalClass: 'modal-custom confirm-redirect-modal',
+            //     responsiveClass: '',
+            //     title:$.mage.__('點數登錄'),
+            //     buttons: [
+            //         {
+            //             text: $.mage.__('確定前往'),
+            //             class: 'action primary action-primary',
+            //             click: function () {
+            //                 window.location.href = redirectUrl;
+            //                 this.closeModal();
+            //             }
+            //         }
+            //     ]
+            // };
+
+
+            // var popup = modal(options, modalElement);
+            // modalElement.modal('openModal');
+        });
+
+        $('#convert-point-link').on('click', function() {
+            var redirectUrl = $(this).data('redirect-url');
+            var modalElement = $('#confirm-redirect-convert-modal');
+
+
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'modal-custom confirm-redirect-modal',
+                responsiveClass: '',
+                title:$.mage.__('點數轉換'),
+                buttons: [
+                    {
+                        text: $.mage.__('確定前往'),
+                        class: 'action primary action-primary',
+                        click: function () {
+                            if (isHotaiApp) {
+                                 window.ReactNativeWebView?.postMessage(JSON.stringify({
+                                     type: 'OPEN_EXTERNAL_URL',
+                                     data: redirectUrl
+                                 }));
+                            } else {
+                                window.location.href = redirectUrl;
+                            }
+                            this.closeModal();
+                        }
+                    }
+                ]
+            };
+
+
+            var popup = modal(options, modalElement);
+            modalElement.modal('openModal');
+        });
+    });
+</script>
+

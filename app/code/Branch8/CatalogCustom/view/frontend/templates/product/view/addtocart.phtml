@@ -1,0 +1,150 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php
+    $buttonTitle = $_product->getData('individual_product')?__('Buy Now') :__('Add to Cart');
+    $isLimitEnabled = $_product->getLimitPurchasedEnable();
+    $checkoutFullPointHelper = $this->helper('Branch8\Checkout\Helper\FullpointCheckout');
+    $fullPointInfo = $checkoutFullPointHelper->fullpointProductCheckoutData($_product->getId());
+    $isFullPointCheckout = false;
+    if (
+        isset($fullPointInfo['is_virtual']) && $fullPointInfo['is_virtual'] === true &&
+        isset($fullPointInfo['is_full_point']) && $fullPointInfo['is_full_point'] === true &&
+        isset($fullPointInfo['is_enable_full_point_checkout']) && $fullPointInfo['is_enable_full_point_checkout'] === "1" &&
+        isset($fullPointInfo['is_logged_in']) && $fullPointInfo['is_logged_in'] === true
+    ) {
+       $isFullPointCheckout = true;
+    }
+?>
+<div class="box-tocart<?php if (!$_product->isSaleable()){ echo ' disabled'; }?>">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+            <div class="field qty">
+                <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                <div class="control">
+                    <span class="increase down"><?php /* @escapeNotVerified */ echo __('Down') ?></span>
+
+
+                    <input type="number"
+                        name="qty"
+                        id="qty"
+                        min="0"
+                        value="<?= $block->getProductDefaultQty() * 1 ?>"
+                        title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                        class="input-text qty"
+                        data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                    />
+                    <span class="increase up"><?php /* @escapeNotVerified */ echo __('Up') ?></span>
+                </div>
+                <!-- Popup text container always rendered if enabled, but hidden/empty until AJAX loads -->
+                 <?php if ($isLimitEnabled): ?>
+                     <div class="limit-qty-text-popup" style="display:none;">
+                        <!-- Content injected by JS -->
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <div class="actions-sticky-bar">
+            <div class="sticky-inner">
+                <div class="actions">
+                <?php if ($_product->isSaleable()) :?>
+                    <?php if(!$_product->getData('individual_product')): ?>
+                    <button type="submit"
+                        data-individual="<?php echo $_product->getData('individual_product'); ?>"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action tocart<?php if($_product->getData('individual_product')){ echo ' primary'; } ?>"
+                            id="product-addtocart-button" disabled>
+                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                    </button>
+                    <?php endif; ?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtml(__('Buy Now')) ?>"
+                            class="action primary buynow" <?php if($isFullPointCheckout): ?> data-full-point="<?php echo $isFullPointCheckout ? '1' : '0'; ?>" <?php endif; ?>
+                            id="product-buynow-button" disabled>
+                        <span><?= $block->escapeHtml(__('Buy Now')) ?></span>
+                    </button>
+                <?php else: ?>
+                    <button type="button" title="<?= $block->escapeHtml(__('Restocking')) ?>" class="action primary" id="product-oos-button" disabled>
+                        <span><?= $block->escapeHtml(__('Restocking')) ?></span>
+                    </button>
+                <?php endif; ?>
+                <?= $block->getChildHtml('', true) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="referer_url" id="referer_url" value="" />
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>
+<script>
+    require([
+        'jquery',
+        'mage/url',
+        'mage/translate',
+        'mage/mage',
+        'Magento_Catalog/product/view/validation',
+        'Magento_Catalog/js/catalog-add-to-cart'
+    ], function ($, urlBuilder, $t) {
+        'use strict';
+
+        let clickedBuyNow = null;
+
+        const addToCartBtn = document.getElementById("product-addtocart-button");
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener("click", function() {
+                clickedBuyNow = null;
+                window.isBuyNow = false;
+                window.cartRedirectUrl = "";
+            });
+        }
+
+        const buyNowBtn = document.getElementById("product-buynow-button");
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener("click", function() {
+                clickedBuyNow = this;
+                window.isBuyNow = true;
+                window.cartRedirectUrl = "<?= $block->getUrl('checkout/cart'); ?>";
+                if($(this).attr('data-full-point') === '1'){
+                    window.cartRedirectUrl = "<?= $block->getUrl('fullpoint-checkout'); ?>";
+                }
+                console.log('Buy Now clicked', window.isBuyNow, window.cartRedirectUrl);
+            });
+        }
+
+
+        $('#product_addtocart_form').mage('validation', {
+            radioCheckboxClosest: '.nested',
+            submitHandler: function (form) {
+                var individualProduct = <?php echo $_product->getData('individual_product'); ?>;
+                var addToCartButtonTextDefault = (individualProduct == 1 || clickedBuyNow) ? "<?= __('Buy Now'); ?>" : "<?= __('Add to Cart'); ?>";
+                var addToCartButtonTextWhileAdding = (individualProduct == 1 || clickedBuyNow) ? "<?= __('Buying...'); ?>" : "<?= __('Adding...'); ?>";
+                var addToCartButtonTextAdded = (individualProduct == 1 || clickedBuyNow) ? "<?= __('Bought'); ?>" : "<?= __('Added'); ?>";
+                var widget = $(form).catalogAddToCart({
+                    bindSubmit: false,
+                    "addToCartButtonSelector": window.isBuyNow ? '.action.buynow' : '.action.tocart',
+                    "addToCartButtonTextDefault": addToCartButtonTextDefault,
+                    "addToCartButtonTextWhileAdding": addToCartButtonTextDefault,
+                    "addToCartButtonTextAdded": addToCartButtonTextDefault
+                });
+                widget.catalogAddToCart('submitForm', $(form));
+
+                clickedBuyNow = null;
+
+                return false;
+            }
+        });
+    });
+</script>

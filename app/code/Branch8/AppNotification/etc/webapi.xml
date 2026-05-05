@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Save token -->
+    <route url="/V1/fcm/token/add" method="POST">
+        <service class="Branch8\AppNotification\Api\CustomerFcmTokenManagementInterface" method="saveToken"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <!-- Delete token -->
+    <route url="/V1/fcm/token/remove" method="POST">
+        <service class="Branch8\AppNotification\Api\CustomerFcmTokenManagementInterface" method="deleteToken"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <!-- Delete token -->
+    <route url="/V1/customer/notifications" method="POST">
+        <service class="Branch8\AppNotification\Api\CustomerNotificationManagementInterface" method="getList"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+
+    <!-- Delete token -->
+    <route url="/V1/customer/unread-notifications" method="GET">
+        <service class="Branch8\AppNotification\Api\CustomerNotificationManagementInterface" method="getUnreadCount"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+
+    <route url="/V1/customer/notification/mark-as-read" method="POST">
+        <service class="Branch8\AppNotification\Api\CustomerNotificationManagementInterface" method="markAsRead"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+        <data>
+            <parameter name="customerId" force="true">%customer_id%</parameter>
+        </data>
+    </route>
+</routes>

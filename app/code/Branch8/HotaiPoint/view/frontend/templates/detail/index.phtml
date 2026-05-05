@@ -1,0 +1,609 @@
+<?php
+
+/** @var \Branch8\HotaiPoint\Block\Detail\Index $block */
+$tabsData = [
+    [
+        'value' => 'tab-expiring',
+        'title' => __('即將到期')
+    ],
+    [
+        'value' => 'tab-history',
+        'title' => __('累點紀錄')
+    ],
+    [
+        'value' => 'tab-redeemed',
+        'title' => __('兌點/失效紀錄')
+    ]
+];
+
+$activeTab = $block->getActiveTab();
+$currentPoint = $block->getHotaiPoint();
+$closetExpirePoint = $block->getClosetExpiringPoints();
+$pointRuleCmsBlockId = $block->getPointHelper()->getPointRuleCmsBlockId();
+
+$pointExpireSoonCollection = $historyCollection = $pointRedeemedCollection = null;
+switch ($activeTab) {
+    case $tabsData[0]['value']:
+        $pointExpireSoonCollection = $block->getExpiringSoonCollection();
+        break;
+    case $tabsData[1]['value']:
+        $historyCollection = $block->getHotaiPointHistoryCollection();
+        break;
+    case $tabsData[2]['value']:
+        $pointRedeemedCollection = $block->getRedeemedCollection();
+        break;
+}
+
+$notice = [
+    'text' => __('目前尚無點數紀錄唷！'),
+    'imgUrl' => [
+        'default' => $this->getViewFileUrl('images/no-record.png'),
+        'mobile' => $this->getViewFileUrl('images/no-record-m.png')
+    ]
+];
+
+$pointExpireSoonCollection = $historyCollection = $pointRedeemedCollection = null;
+$activeTab = $block->getActiveTab();
+
+try {
+    $HotaiPointHelper = $this->helper(\Branch8\HotaiPoint\Helper\Data::class);
+    $loginSuccessBlock = $block->getLayout()->createBlock(\HotaiConnected\Account\Block\Login\Success::class);
+    $currentPoint = $loginSuccessBlock->getHotaiPoint();
+    $closetExpirePoint = $block->getClosetExpiringPoints();
+    $pointRuleCmsBlockId = $block->getPointHelper()->getPointRuleCmsBlockId();
+
+    switch ($activeTab) {
+        case $tabsData[0]['value']:
+            $pointExpireSoonCollection = $block->getExpiringSoonCollection();
+            break;
+        case $tabsData[1]['value']:
+            $historyCollection = $block->getHotaiPointHistoryCollection();
+            break;
+        case $tabsData[2]['value']:
+            $pointRedeemedCollection = $block->getRedeemedCollection();
+            break;
+    }
+
+} catch (\Throwable $e) {
+    $HotaiPointHelper = null;
+    $currentPoint = -1;
+    $closetExpirePoint = [];
+    $pointRuleCmsBlockId = false;
+}
+
+?>
+<div class="breadcrumbs md-none">
+    <ul class="items">
+        <li class="item">
+            <a href="/customer/account" title="<?= __('Member Information') ?>"><?= __('會員中心') ?></a>
+        </li>
+        <li class="item d-none">
+            <strong><?= __('Hotai point') ?></strong>
+        </li>
+    </ul>
+</div>
+
+<div class="hotai-point-detail-container" data-tab="<?= $block->getActiveTab() ?>">
+    <div class="current-point-container">
+        <div class="section-content">
+            <div class="current-point">
+                <div class="hotai-points-logo">
+                    <img src="<?= $this->getViewFileUrl('images/hotai-points-logo.png') ?>" alt="<?= $block->escapeHtmlAttr(__('hotai Points')) ?>" />
+                </div>
+                <div class="hotai-points-logo-white">
+                    <img src="<?= $this->getViewFileUrl('images/hotai-points-logo-white.png') ?>" alt="<?= $block->escapeHtmlAttr(__('hotai Points white')) ?>" />
+                </div>
+
+                <?php if($currentPoint < 0): ?>
+                    <span class="hotai-customer-points">--</span>
+                <?php else: ?>
+                    <?= $block->getPointHelper()->formatPoints($currentPoint, false) ?>
+                <?php endif; ?>
+            </div>
+
+            <?php if(!empty($closetExpirePoint)): ?>
+            <div class="points-expire-soon">
+                <span class="points-expire-soon-message">
+                    <?= __('將有%1點於 %2 到期', $HotaiPointHelper->formatPoints($closetExpirePoint['point'], false, false, false), $closetExpirePoint['date']) ?>
+                </span>
+            </div>
+            <?php endif; ?>
+
+            <?php if($currentPoint < 0): ?>
+                <div class="points-expire-soon">
+                    <span class="points-expire-soon-message">到期點數因系統維護中暫無法顯示</span>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <?php if($currentPoint >= 0): ?>
+
+    <div class="hotai-point-detail-tabs">
+        <?php foreach ($tabsData as $tab): ?>
+            <a data-tab="<?= $tab['value'] ?>" href="<?= $block->getUrl('*/*', ['_current' => true, '_query' => ['t' => $tab['value']]]) ?>"><?= $tab['title'] ?></a>
+        <?php endforeach; ?>
+    </div>
+
+
+    <div id="<?= $tabsData[0]['value'] ?>" class="hotai-point-detail-table" data-tab="<?= $tabsData[0]['value'] ?>">
+
+        <?php if (!empty($pointExpireSoonCollection) && $pointExpireSoonCollection->getSize() > 0): ?>
+            <div class="point-tables">
+                <table class="data table table-points-expire-soon history">
+                    <thead>
+                    <tr>
+                        <th scope="col"><?=$escaper->escapeHtml(__('點數到期日'))?></th>
+                        <th scope="col"><?=$escaper->escapeHtml(__('到期點數'))?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($pointExpireSoonCollection->getItems() as $item): ?>
+                        <?= $block->getLayout()->createBlock(\Branch8\HotaiPoint\Block\Detail\Row\ExpiringSoonRow::class)->setData($item->getData())->toHtml() ?>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="item-pagination">
+                <div class="hotai-point-paging-toolbar toolbar bottom">
+                <?= $block->getCollectionPagerHtml($pointExpireSoonCollection, 'hotaipoints.expiring.collection.pager', $tabsData[0]['value'])?>
+                </div>
+                <?php if ($block->hasMore($pointExpireSoonCollection)): ?>
+                <div class="load-more-container md-none">
+                    <button class="action outline-primary action-loadmore" data-tab-id="<?= $tabsData[0]['value'] ?>">
+                        <span><?= __("Load More") ?></span>
+                    </button>
+                </div>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <div class="wrapper-empty">
+                <picture>
+                    <source media="(min-width:769px)" srcset="<?= $notice['imgUrl']['default'];?>">
+                    <img src="<?= $notice['imgUrl']['mobile'];?>" alt="<?= $notice['text'] ?>"/>
+                </picture>
+                <h6 class="notice"><?= $notice['text'] ?></h6>
+            </div>
+        <?php endif; ?>
+
+    </div>
+
+    <div id="<?= $tabsData[1]['value'] ?>" class="hotai-point-detail-table" data-tab="<?= $tabsData[1]['value'] ?>">
+        <div class="filter-toolbar">
+            <button class="history-filter-btn" data-tab-id="<?= $tabsData[1]['value'] ?>">
+                <span><?= __('篩選')?></span>
+            </button>
+        </div>
+        <?php if (!empty($historyCollection) && $historyCollection->getSize() > 0): ?>
+            <div class="point-tables">
+                <table class="data table table-point-records history">
+                    <thead>
+                    <tr>
+                        <th scope="col"><?=$escaper->escapeHtml(__('來源'))?></th>
+                        <th scope="col" class="hide-on-mobile th"><?=$escaper->escapeHtml(__('日期'))?></th>
+                        <th scope="col"><?=$escaper->escapeHtml(__('點數累績'))?></th>
+                        <th scope="col" class="hide-on-mobile th"><?=$escaper->escapeHtml(__('點數到期日'))?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($historyCollection->getItems() as $index => $history): ?>
+                        <?php $history->setData('uniqueId', uniqid());?>
+                        <?= $block->getLayout()->createBlock(\Branch8\HotaiPoint\Block\Detail\Row\PointHistoryRow::class)->addData($history->getData())->toHtml() ?>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="item-pagination">
+                <div class="hotai-point-paging-toolbar toolbar bottom d-none md-block">
+                    <?= $block->getCollectionPagerHtml($historyCollection, 'hotaipoints.history.collection.pager', $tabsData[1]['value'])?>
+                </div>
+                <?php if ($block->hasMore($historyCollection)): ?>
+                <div class="load-more-container md-none">
+                    <button class="action outline-primary action-loadmore" data-tab-id="<?= $tabsData[1]['value'] ?>">
+                        <span><?= __("Load More") ?></span>
+                    </button>
+                </div>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <div class="wrapper-empty">
+                <img src="<?= $notice['imgUrl']['default'];?>"/>
+                <h6 class="notice"><?= $notice['text'] ?></h6>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <div id="<?= $tabsData[2]['value'] ?>" class="hotai-point-detail-table" data-tab="<?= $tabsData[2]['value'] ?>">
+        <div class="filter-toolbar">
+            <button class="history-filter-btn" data-tab-id="<?= $tabsData[2]['value'] ?>">
+                <span><?= __('篩選')?></span>
+            </button>
+        </div>
+        <?php if (!empty($pointRedeemedCollection) && $pointRedeemedCollection->getSize() > 0): ?>
+            <div class="point-tables">
+                <table class="data table table-points-expired history">
+                    <thead>
+                    <tr>
+                        <th scope="col"><?=$escaper->escapeHtml(__('來源'))?></th>
+                        <th scope="col" class="hide-on-mobile th"><?=$escaper->escapeHtml(__('日期'))?></th>
+                        <th scope="col"><?=$escaper->escapeHtml(__('點數累績'))?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($pointRedeemedCollection->getItems() as $history): ?>
+                            <?php $history->setData('uniqueId', uniqid()) ?>
+                            <?= $block->getLayout()->createBlock(\Branch8\HotaiPoint\Block\Detail\Row\PointRedeemedRow::class)->addData($history->getData())->toHtml() ?>
+                    <?php endforeach;?>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="item-pagination">
+                <div class="hotai-point-paging-toolbar account-toolbar toolbar bottom d-none md-block">
+                    <?= $block->getCollectionPagerHtml($pointRedeemedCollection, 'hotaipoints.redeemed.collection.pager', $tabsData[2]['value'])?>
+                </div>
+                <?php if ($block->hasMore($pointRedeemedCollection)): ?>
+                <div class="load-more-container md-none">
+                    <button class="action outline-primary action-loadmore" data-tab-id="<?= $tabsData[2]['value'] ?>">
+                        <span><?= __('Load More') ?></span>
+                    </button>
+                </div>
+                <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <div class="wrapper-empty">
+                <img src="<?= $notice['imgUrl']['default'];?>"/>
+                <h6 class="notice"><?= $notice['text'] ?></h6>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- <?php if ($pointRuleCmsBlockId) : ?>
+    <div class="point-rule">
+        <div class="section-title"><?= __('規則說明') ?></div>
+        <div class="section-content">
+            <?=
+                $this->getLayout()
+                    ->createBlock('Magento\Cms\Block\Block')
+                    ->setBlockId($pointRuleCmsBlockId)
+                    ->toHtml();
+            ?>
+        </div>
+    </div>
+    <?php endif; ?> -->
+
+    <div id="point-history-filter-modal" class="modal-hide">
+        <div class="modal-custom-content">
+            <div class="section-title">
+                <span class="title">
+                    <?= $block->escapeHtml(__('搜尋日期')) ?>
+                </span>
+            </div>
+            <form id="date-range-filter">
+                <div class="field search-time">
+                    <div class="control time-range">
+                        <div class="input-control">
+                            <div class="box-input">
+                                <input type="text" name="to_date" id="to-date" class="form-control"
+                                    data-validate="{'validate-date-format': true}"
+                                    placeholder="<?= $block->escapeHtml(__("搜尋日期")) ?>"
+                                    autocomplete="off"
+                                >
+                            </div>
+                            <div class="date-container roll-date"></div>
+                        </div>
+                    </div>
+                    <div id="date-range-errors"></div>
+                </div>
+                <div class="section-remark">
+                    <span class="tooltip">依查詢日顯示前90天的點數紀錄 (如：查詢2021/03/31，
+                    顯示2021/01/01-2021/03/31的點數紀錄)</span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <?php endif; ?>
+</div>
+
+
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/modal',
+        'plugins/rollDate',
+        'mage/url',
+        'underscore',
+        'mage/validation',
+        '!domReady'
+    ], function($, modal, rollDate, urlBuilder, _) {
+
+        const dateRangeForm = $('#date-range-filter');
+
+        dateRangeForm.mage('validation', {
+            errorPlacement: function(error, element) {
+                $('#date-range-errors').html(error)
+            }
+        });
+
+        let filterState = {
+            'tab-expiring': {
+                curPage: <?= /* @noEscape */ $block->getCurPage('tab-expiring') ?>,
+                to:  '<?= /* @noEscape */ $block->getFilterDate('tab-expiring', 'to')?->format('Y/m/d') ?>',
+            },
+            'tab-history': {
+                curPage: <?= /* @noEscape */ $block->getCurPage('tab-history') ?>,
+                to:  '<?= /* @noEscape */ $block->getFilterDate('tab-history', 'to')?->format('Y/m/d') ?>',
+            },
+            'tab-redeemed': {
+                curPage: <?= /* @noEscape */ $block->getCurPage('tab-redeemed') ?>,
+                to:  '<?= /* @noEscape */ $block->getFilterDate('tab-redeemed', 'to')?->format('Y/m/d') ?>',
+            },
+        }
+
+
+        $(document).on('click', '.action-loadmore', function (e) {
+            e.preventDefault();
+            const self = this;
+            const body = $('body')
+            const tabId = $(this).data('tab-id');
+            const tabFilterState = filterState[tabId];
+            const currentPage = tabFilterState.curPage;
+            body.loader('show');
+            // Retrieve current page and calculate next page
+            if (isNaN(currentPage)) {
+                console.error('Invalid current page number');
+                body.loader('hide');
+                return;  // Exit if the current page is not a number
+            }
+
+            const nextPage = tabFilterState.curPage + 1;
+
+            // Validate page size
+            if (isNaN(pageSize) || pageSize <= 0) {
+                console.error('Invalid page size');
+                alert($.mage.__('Invalid page size.'));
+                body.loader('hide');
+                return;  // Exit if page size is not valid
+            }
+
+            // AJAX call to load more categories
+            $.ajax({
+                url: urlBuilder.build('hotai_point/detail/ajax'),
+                type: 'POST',
+                data: {
+                    'tab': tabId,
+                    'curPage': nextPage,
+                    'to': tabFilterState.to
+                },
+                success: function (response) {
+                    try {
+                        // Check if the response is successful
+                        if (response.success) {
+
+                            $(`#${tabId} table tbody`).append(response.html);
+
+                            if (!response.hasMore) {
+                                console.log($(this).closest('.load-more-container'));
+                                $(self).closest('.load-more-container').remove();
+                            }
+                            updateFilterCurPage(tabId, nextPage);
+                        } else {
+                            console.warn('Response returned as unsuccessful');
+                        }
+                    } catch (err) {
+                        console.error('Error processing response: ', err);
+                    } finally {
+                        body.loader('hide');
+                    }
+            },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // Handle AJAX error
+                    console.error('AJAX request failed: ', textStatus, errorThrown);
+                    body.loader('hide');
+        }
+            });
+        });
+
+
+        $(document).on('click', '.has-collapsible-content', function() {
+            const expandableContent = $(this).data('expand-content-row');
+            const expandableContents = $(`.${expandableContent}`);
+            const isHidden = expandableContents.hasClass('hidden');
+
+            expandableContents.addClass('hidden');
+            $(this).removeClass('expanded');
+
+            if (isHidden) {
+                $(this).addClass('expanded');
+                expandableContents.removeClass('hidden');
+            }
+        });
+
+
+        function updateDateFilter(tabId, to) {
+            filterState = {
+                ...filterState,
+                [tabId]: {
+                    curPage: 1, //reset page to 1
+                    to
+                }
+            }
+        }
+
+        function updateFilterCurPage(tabId, curPage) {
+            filterState = {
+                ...filterState,
+                [tabId]: {
+                    ...filterState[tabId],
+                    curPage
+                }
+            }
+        }
+
+        function getChangedFilterState() {
+            let changedFilterState = {};
+            for (const [key, value] of Object.entries(filterState)) {
+                if(value.curPage !== 1 || value.to !== '') {
+                    changedFilterState[key] = value;
+                }
+            }
+            console.log(filterState, changedFilterState)
+            return changedFilterState
+        }
+
+        /**
+         * return date in format yyyy-mm-dd -> make query params look better
+         * @param date
+         * @returns {string}
+         */
+        function formatDate(date) {
+            const fullYear = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            return fullYear + '-' + (month <= 9 ? '0': '') + month + '-' + (day <= 9 ? '0': '') + day;
+        }
+
+        function getTabUrl(tabId) {
+            const currentUrl = new URL(window.location.href);
+
+            currentUrl.searchParams.set('t', tabId);
+            const state = filterState[tabId];
+
+            if(state.curPage > 1) {
+                currentUrl.searchParams.set('p', state.curPage);
+            } else {
+                currentUrl.searchParams.delete('p');
+            }
+
+            if(state.to !== '') {
+                currentUrl.searchParams.set('to', formatDate(new Date(state.to)));
+            } else {
+                currentUrl.searchParams.delete('to');
+            }
+
+            return currentUrl.toString();
+        }
+
+        $('.history-filter-btn').on('click', function() {
+            var modalElement = $('#point-history-filter-modal');
+            const tabId = $(this).data('tab-id');
+            initDateScroll(tabId);
+
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'modal-custom hotai-point-history-filter-modal',
+                responsiveClass: '',
+                title:$.mage.__('篩選器'),
+                buttons: [
+                    {
+                        text: $.mage.__('重新篩選'),
+                        class: 'action secondary action-dismiss',
+                        click: function () {
+                            $('#to-date').val('')
+                            // 取得get
+                            const currentUrl = new URL(window.location.href);
+                            const to = currentUrl.searchParams.get('to');
+                            if(!_.isEmpty(to)) {
+                                updateDateFilter(tabId, '');
+                                window.location.href = getTabUrl(tabId);
+                            }
+                            this.closeModal();
+                        }
+                    },
+                    {
+                        text: $.mage.__('確定'),
+                        class: 'action primary action-primary filter-form-submit',
+                        click: function () {
+                            const to = $('#to-date').val();
+
+                            if(_.isEmpty(to)) {
+                                updateDateFilter(tabId, '');
+                                this.closeModal();
+                                return;
+                            }
+
+                            if (dateRangeForm.validation() && dateRangeForm.validation('isValid')) {
+                                updateDateFilter(tabId, to);
+                                window.location.href = getTabUrl(tabId);
+                                this.closeModal();
+                            } else {
+                                $('.filter-form-submit').attr('disabled', 'disabled')
+                            }
+                        }
+                    }
+                ]
+            };
+
+            var popup = modal(options, modalElement);
+            modalElement.modal('openModal');
+
+            modalElement.on('modalclosed', function() {
+                window.ReactNativeWebView?.postMessage(JSON.stringify({ type: "MODAL_CLOSED", data: true }));
+            });
+
+            window.ReactNativeWebView?.postMessage(JSON.stringify({ type: "MODAL_OPENED", data: true }));
+        });
+
+
+        function initDateScroll(tabId) {
+            new rollDate({
+                el: '#to-date',
+                format: 'YYYY/MM/DD',  //design
+                beginYear: 2020,
+                endYear: new Date().getFullYear(),
+                value: filterState[tabId].to,
+                lang: {
+                    title: '<div class="header-title">To Date</div>',
+                    confirm: '確定',
+                    year: '',
+                    month: '',
+                    day: ''
+                },
+
+                init2: function () {
+                    // setTimeout(function () {
+                    //     let rollDateContainer = $(".rolldate-container");
+                    //     $('#to-date').parents(".input-control").find(".date-container").append(rollDateContainer);
+                    // }, 200)
+                },
+
+                init: function () {
+                    // if($(window).width() > 768){
+                    //     const element = document.getElementById('to-date');
+                    //     const rect = element.getBoundingClientRect();
+
+
+                    //     setTimeout(function() {
+                    //         $(".rolldate-container .rolldate-panel").css("top", top + 50);
+                    //         $(".rolldate-container .rolldate-panel").css("left", left);
+                    //     }, 100);
+                    // }
+                },
+
+                confirm: function (date) {
+                    $("#to-date").val(date);
+                    $('.date-container').find(".rolldate-container").remove();
+                    if($(dateRangeForm).validation() && $(dateRangeForm).validation('isValid')) {
+                        $('.filter-form-submit').removeAttr('disabled');
+                    } else {
+                        $('.filter-form-submit').attr('disabled', true);
+                    }
+                },
+                cancel: function () {
+                    $('.date-container').find(".rolldate-container").remove();
+                },
+                hide: function () {
+                    $('.date-container').find(".rolldate-container").remove();
+                },
+            });
+        }
+    });
+</script>
+

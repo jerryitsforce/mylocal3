@@ -1,0 +1,109 @@
+{
+    "marketplace_chat_profile_info": {
+        "column": {
+            "entity_id": true,
+            "object_id": true,
+            "name": true,
+            "email": true,
+            "entity_type": true,
+            "unique_id": true,
+            "image": true,
+            "chat_status": true,
+            "registered_as": true,
+            "nickname": true
+        },
+        "index": {
+            "MARKETPLACE_CHAT_PROFILE_INFO_EMAIL": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MARKETPLACE_CHAT_PROFILE_INFO_OBJECT_ID_ENTT_TYPE_REGISTERED_AS": true
+        }
+    },
+    "marketplace_chat_conversation": {
+        "column": {
+            "conversation_id": true,
+            "total_messages": true,
+            "total_unread_messages": true,
+            "unique_id": true,
+            "creator_profile_id": true,
+            "status": true,
+            "created_at": true,
+            "type": true,
+            "last_update": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_F249BB55DC5228F75E3C4B13B49D7643": true
+        }
+    },
+    "marketplace_chat_participant": {
+        "column": {
+            "entity_id": true,
+            "conversation_id": true,
+            "profile_id": true,
+            "total_unread_messages": true,
+            "last_read_message": true,
+            "expire_reminder_date": true,
+            "retried": true,
+            "last_unread_message": true,
+            "last_unread_received_at": true,
+            "mail_sent": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MARKETPLACE_CHAT_PARTICIPANT_CONVERSATION_ID_PROFILE_ID": true,
+            "FK_6A35AE07077B48C6DC37F0907ABA6C25": true,
+            "FK_55D3E575445DEF66813AE0811420C743": true,
+            "FK_39142737A06617A8CE37FC61641B32A7": true,
+            "FK_68E9DEAE8075F37C52D9913281667212": true
+        }
+    },
+    "marketplace_chat_history": {
+        "column": {
+            "conversation_id": true,
+            "unique_id": true,
+            "message_type": true,
+            "meta": true,
+            "date": true,
+            "conversation_unique_id": true
+        },
+        "index": {
+            "MARKETPLACE_CHAT_HISTORY_UNIQUE_ID": true
+        },
+        "constraint": {
+            "FK_B0F5845B62FDC786572FBF1A0987309A": true
+        }
+    },
+    "marketplace_chat_message_recipient": {
+        "column": {
+            "id": true,
+            "receiver_unique_id": true,
+            "message_chat_history_id": true,
+            "is_read": true
+        },
+        "constraint": {
+            "MARKETPLACE_CHAT_MESSAGE_RECIPIENT_MESSAGE_CHAT_HISTORY_ID": true,
+            "FK_2D4F0218C14B8A28C0C4714ECB2F4DBA": true,
+            "PRIMARY": true
+        }
+    },
+    "marketplace_chat_message_notify_msg_schedule": {
+        "column": {
+            "id": true,
+            "participant_id": true,
+            "status": true,
+            "messages": true,
+            "scheduled_at": true,
+            "executed_at": true,
+            "finished_at": true
+        },
+        "index": {
+            "IDX_3281E56CC6066F72D9F038B800E2D278": true
+        },
+        "constraint": {
+            "FK_86EB5EC54AE13593CCED350D86F94A7F": true,
+            "PRIMARY": true
+        }
+    }
+}

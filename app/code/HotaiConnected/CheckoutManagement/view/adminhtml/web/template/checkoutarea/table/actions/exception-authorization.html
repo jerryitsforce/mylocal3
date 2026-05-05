@@ -1,0 +1,75 @@
+<!--
+/**
+ * Exception Authorization Popup Content for Magento_Ui/js/modal/confirm
+ */
+-->
+<form class="ui-modal-form__body" id="exception-authorization-form">
+    
+    <!-- 下載模板 -->
+    <div class="ui-modal-form__item d-flex">
+        <label class="ui-modal-form__label">
+            <span><%- $t('Download %1').replace('%1', $t('File Format')) %></span>
+        </label>
+        <div class="ui-modal-form__content">
+            <a id="download-template-button" class="download-template primary" href="/media/exception_example.xlsx" download>
+                <i class="icon icon-download"></i>
+                <span><%- $t('Download') %></span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 上傳檔案 -->
+    <div class="ui-modal-form__item">
+        <label class="ui-modal-form__label required">
+            <span><%- $t('Please select a file to upload.') %></span>
+        </label>
+        <div class="ui-modal-form__content">
+            <input type="file" 
+                   name="file" 
+                   id="file" 
+                   class="form-control"
+                   data-validate="{required: true}"
+                   data-msg-required="<%- $t('This is a required field.') %>">
+        </div>
+    </div>
+
+    <!-- 原因 -->
+    <div class="ui-modal-form__item">
+        <label class="ui-modal-form__label required">
+            <span><%- $t('Reason for Exception Handling') %></span>
+        </label>
+        <div class="ui-modal-form__content">
+            <textarea 
+                rows="5"
+                name="explanation"
+                id="explanation"
+                class="form-control"
+                placeholder="<%- $t('Enter the reason for exception handling') %>"
+                data-validate="{required: true}"
+                data-msg-required="<%- $t('This is a required field') %>"
+                ></textarea>
+        </div>
+    </div>
+
+    <!-- 結帳批次 -->
+    <!-- <div class="ui-modal-form__item">
+        <label class="ui-modal-form__label required">
+            <span><%- $t('Checkout Batch') %></span>
+        </label>
+        <div class="ui-modal-form__content">
+            <input type="text" 
+                    id="checkout_batch" 
+                    name="checkout_batch" 
+                    class="form-control date-input" 
+                    maxlength="20"
+                    placeholder="<%- $t('Please enter Checkout Batch') %>"
+                    data-validate="{required: true}"
+                    data-msg-required="<%- $t('This is a required field.') %>"
+                    >
+        </div>
+    </div> -->
+
+    <!-- 特約商名稱 -->
+    <div class="ui-modal-form__item authorized-dealer-names-display d-none"></div>
+</form>
+

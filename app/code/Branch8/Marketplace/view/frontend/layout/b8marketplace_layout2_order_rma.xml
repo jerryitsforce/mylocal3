@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="seller-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="marketplace_styles"/>
+    <body>
+        <referenceBlock name="seller.page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">New Rma</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="seller.content">
+            <block
+                class="Branch8\Marketplace\Block\Order\Rma"
+                name="marketplace.seller.rma"
+                template="Branch8_Marketplace::order/rma.phtml"
+                cacheable="false">
+                <arguments>
+                    <argument name="rma_model" xsi:type="object">Branch8\Marketplace\ViewModel\RmaModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

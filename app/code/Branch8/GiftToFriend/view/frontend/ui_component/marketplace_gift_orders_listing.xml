@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">marketplace_gift_orders_listing.marketplace_gift_orders_listing_data_source</item>
+            <item name="deps" xsi:type="string">marketplace_gift_orders_listing.marketplace_gift_orders_listing_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">orders_columns</item>
+    </argument>
+    <dataSource name="marketplace_gift_orders_listing_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\GiftToFriend\Ui\DataProvider\SellerGiftOrder</argument>
+            <argument name="name" xsi:type="string">marketplace_gift_orders_listing_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="marketplace/mui_index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="storageConfig" xsi:type="array">
+                      <item name="saveUrl" xsi:type="url" path="marketplace/mui_bookmark/save"/>
+                        <item name="deleteUrl" xsi:type="url" path="marketplace/mui_bookmark/delete"/>
+                        <item name="namespace" xsi:type="string">marketplace_gift_orders_listing</item>
+                    </item>
+                </item>
+            </argument>
+        </bookmark>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="orders_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">giftOrdersHistoryGrid</item>
+                        <item name="target" xsi:type="string">selectOrders</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <selectionsColumn name="orderIds">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">order_id</item>
+                    <item name="sortOrder" xsi:type="number">0</item>
+                    <item name="preserveSelectionsOnFilter" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="magerealorder_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Gift Order Number</label>
+            </settings>
+        </column>
+        <column name="buyer_phone_number">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Buyer's Phone Number</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="customer_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Gift Member</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="recipient_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Name</label>
+            </settings>
+        </column>
+        <column name="recipient_telephone">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Phone Number</label>
+            </settings>
+        </column>
+        <column name="shipping_address" class="Magento\Sales\Ui\Component\Listing\Column\Address">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Address</label>
+            </settings>
+        </column>
+        <column name="magepro_name" class="Branch8\SalesOrderGrid\Override\Marketplace\Seller\OrderGrid\OrderHistoryProDetails">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/link</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Product Name</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                </item>
+            </argument>
+        </column>
+        <column name="is_gift_confirmed" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Gift Status</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Creation Time</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="gift_confirmed_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Form Submission Time</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Webkul\Marketplace\Ui\Component\Listing\Columns\OrderviewAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">order_id</item>
+                    <item name="viewUrlPath" xsi:type="string">marketplace/order/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                    <item name="label" xsi:type="string" translate="true">View</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

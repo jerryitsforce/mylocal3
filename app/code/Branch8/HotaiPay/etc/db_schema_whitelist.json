@@ -1,0 +1,101 @@
+{
+    "marketplace_mpsplitorder": {
+        "column": {
+            "increment_id": true,
+            "state": true,
+            "status": true,
+            "coupon_code": true,
+            "cc_token_id": true,
+            "cc_type": true,
+            "cc_owner": true,
+            "cc_last_4": true,
+            "mac": true,
+            "grand_total": true,
+            "txn": true,
+            "reqjsonpwd": true,
+            "get_txn_err_result": true,
+            "get_payment_result": true,
+            "additional_information": true,
+            "old_quote": true,
+            "created_at": true,
+            "updated_at": true
+        }
+    },
+    "sales_parent_order_payment": {
+        "column": {
+            "entity_id": true,
+            "parent_id": true,
+            "base_amount_ordered": true,
+            "base_amount_paid": true,
+            "base_amount_refunded": true,
+            "base_amount_canceled": true,
+            "quote_payment_id": true,
+            "cc_token_id": true,
+            "cc_type": true,
+            "cc_owner": true,
+            "cc_last_4": true,
+            "mac": true,
+            "txn": true,
+            "reqjsonpwd": true,
+            "get_txn_err_result": true,
+            "get_payment_result": true,
+            "additional_information": true,
+            "created_at": true,
+            "updated_at": true,
+            "bin_info_code": true,
+            "co_branded": true
+        },
+        "index": {
+            "SALES_PARENT_ORDER_PAYMENT_PARENT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_1BB134505F9E19E4FE344F958C9AF806": true
+        }
+    },
+    "hotaipay_creditcard": {
+        "column": {
+            "creditcard_id": true,
+            "is_main": true,
+            "member_one_id": true,
+            "creditcard_toke_id": true,
+            "type": true,
+            "bank_desc": true,
+            "number_mask": true,
+            "affinity_code": true,
+            "customer_id": true,
+            "created_at": true,
+            "updated_at": true,
+            "alias_name": true,
+            "is_default": true,
+            "is_debit": true,
+            "is_ctbc": true,
+            "is_ht": true,
+            "bank": true,
+            "bin_info_code": true,
+            "bin": true
+        },
+        "index": {
+            "HOTAIPAY_CREDITCARD_MEMBER_ONE_ID": true,
+            "HOTAIPAY_CREDITCARD_CUSTOMER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "HOTAIPAY_CREDITCARD_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true
+        }
+    },
+    "hotaipay_message": {
+        "column": {
+            "message_id": true,
+            "type": true,
+            "status": true,
+            "error_code": true,
+            "description": true,
+            "front_display_des": true,
+            "is_fraud": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

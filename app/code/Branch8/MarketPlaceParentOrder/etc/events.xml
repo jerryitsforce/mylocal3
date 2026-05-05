@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+<!--
+    Moved to use Branch8\MarketPlaceParentOrder\Model\Action instead
+-->
+    <!-- <event name="marketplace_mpsplitorder_submit_after">
+        <observer name="branch8_marketplaceparentorder_save_information"
+                  instance="Branch8\MarketPlaceParentOrder\Observer\PopulateParentOrderData" />
+    </event>-->
+    <event name="sales_parent_order_detail_save_after">
+        <observer name="sales_grid_parent_order_sync_insert"
+                  instance="SalesParentOrderIndexGridSyncInsertObserver" />
+    </event>
+   <!-- <event name="sales_order_save_after">
+        <observer name="update_status_parent_order"
+                  instance="Branch8\MarketPlaceParentOrder\Observer\UpdateStatusParentOrder" />
+    </event>-->
+    <!--<event name="marketplace_mpsplitorder_save_commit_after">
+        <observer name="auto_resolve_order_status"
+                  instance="Branch8\MarketPlaceParentOrder\Observer\ParentOrderSaveCommitComeback"/>
+    </event>-->
+
+</config>

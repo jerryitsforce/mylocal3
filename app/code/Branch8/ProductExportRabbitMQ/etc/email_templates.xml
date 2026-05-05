@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="product_export_asynchronous_admin_email_template"
+              label="Product Export Admin Template" file="admin_email.html"
+              type="html" module="Branch8_ProductExportRabbitMQ"
+              area="frontend"/>
+    <template id="product_export_asynchronous_seller_email_template"
+              label="Product Export Seller Template" file="seller_email.html"
+              type="html" module="Branch8_ProductExportRabbitMQ"
+              area="frontend"/>
+</config>

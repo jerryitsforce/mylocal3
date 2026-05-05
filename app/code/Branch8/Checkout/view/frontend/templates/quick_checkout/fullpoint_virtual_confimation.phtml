@@ -1,0 +1,170 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product view template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View
+ */
+
+/** @var Escaper $escaper */
+?>
+<?php 
+$_item = $block->getItem();
+$_product = $_item->getProduct();
+$quote = $_item->getQuote();
+$_options = $block->getOptionList();
+// $block->calcTotal();
+$quickCartItemViewModel = $block->getQuickCartItemViewModel() ? $block->getQuickCartViewModel() : \Magento\Framework\App\ObjectManager::getInstance()->get(
+  \Branch8\QuickEditCartItem\ViewModel\Cart::class
+);
+
+$hasAvailableIssueWithTicketBatch = false;
+$isTicketBatch = false;
+foreach($_options as $option){
+  if($option['label'] === \Branch8\HotaiCore\Helper\VirtualProduct::TICKET_BATCH_SETTING_OPTION_TITLE){
+    $isTicketBatch = true;
+    $ticketOptionValue = html_entity_decode($option['value']);
+    break;
+  }
+}
+$checkIsTicketProduct = $this->helper(\Branch8\Checkout\Helper\Data::class);
+if($isTicketBatch) {
+  $productId = $_product->getId();
+  $availableToBatchData = $checkIsTicketProduct->getTicketAvailableBatchData($productId);
+  $requestQty = $block->getQty();
+  $checkTicketAvailable = $checkIsTicketProduct->checkIfQuantityEnoughByCustomOptionAndRequestQuantity($productId, $ticketOptionValue, $requestQty);
+  if (!empty($availableToBatchData) && is_array($checkTicketAvailable) && isset($checkTicketAvailable['result']) && $checkTicketAvailable['result'] === false) {
+    if($checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_PRODUCT_NOT_A_BATCH_IMPORT_TICKET ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_BATCH_SETTING_NOT_FOUND ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_OUT_OF_SALE_TIME_WINDOW ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_QUANTITY_VIRTUAL_PRODUCT_TYPE_NOT_SUPPORTED ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_BATCH_SETTING_EXIST_BUT_ZERO_QUANTITY_LEFT){
+      $hasAvailableIssueWithTicketBatch = true;
+    }
+  }
+}
+
+$jsonIcon = $this->getViewFileUrl('images/animation-cart-empty.json');
+$checkoutData = $this->prepairCheckoutData();
+$checkoutConfig = $this->getCheckoutConfig();
+?>
+<div class="fullpoint-confirmation-title-wrapper">
+  <div class="fullpoint-confirmation-icon">
+    <dotlottie-player class="player" src="<?= $jsonIcon ?>" background="transparent" speed="1" direction="1"
+        playMode="normal" loop autoplay></dotlottie-player>
+  </div>
+  <h2 class="fullpoint-confirmation-title"><?= __("正在結帳...") ?></h2>
+</div>
+<div class="fullpoint-confirmation">
+  <div class="fullpoint-item">
+    <div class="fullpoint-item-photo">
+      <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml();?>
+    </div>
+    <div class="fullpoint-item-details">
+      <strong class="fullpoint-item-name"><?= $escaper->escapeHtml($_product->getName()) ?></strong>
+      <div class="fullpoint-item-options <?= $_options? '' : 'no-options'?> <?= $isTicketBatch && $hasAvailableIssueWithTicketBatch? 'has-batch-error' : ''?>">
+        <?php if ($_options) : ?>
+          <div data-role="item-options-<?= $_item->getId() ?>">
+              <?= $block->getLayout()->createBlock(
+                  \Magento\Framework\View\Element\Template::class,
+                  'item_option_' . $_item->getId(),
+                  [
+                      'data' => [
+                          'option_list' => $block->getOptionList(),
+                          'quick_cart_item_view_model' => $quickCartItemViewModel,
+                          'item' => $_item
+                      ]
+                  ]
+              )->setItem($_item)->setTemplate('Branch8_SplitCart::cart/item/default/options.phtml')->toHtml() ?>
+          </div>
+          <?php if($isTicketBatch && $hasAvailableIssueWithTicketBatch) : ?>
+            <span class="batch-error-msg"><?= __("此規格目前無法選擇，請選擇其他規格") ?></span>
+          <?php endif; ?>
+        <?php endif; ?>
+      </div>
+      <div class="fullpoint-item-qty">
+        x <span><?php echo $block->getQty();?></span> 
+        <div class="fullpoint-item-price">
+          <span><?php echo $this->helper('Magento\Framework\Pricing\Helper\Data')->currency($_item->getPriceInclTax());?></span>
+        </div>
+      </div>  
+    </div>
+  </div>
+  
+  <?php
+  $subTotal = 0;
+  $grandTotal = 0;
+  $discountTotal = 0;
+  foreach($checkoutConfig['totalsData']['total_segments'] as $_totalSegment){
+    if($_totalSegment['code'] == 'subtotal'){
+      $subTotal = $_totalSegment['value'];
+    }
+    if($_totalSegment['code'] == 'grand_total'){
+      $grandTotal = $_totalSegment['value'];
+    }
+    if($_totalSegment['code'] == 'discount'){
+      $discountTotal = $_totalSegment['value'];
+    }
+  }
+  if(isset($checkoutConfig['totalsData']['extension_attributes']['amrule_discount_breakdown']) && count($checkoutConfig['totalsData']['extension_attributes']['amrule_discount_breakdown'])){
+    $discountBreakdown = $checkoutConfig['totalsData']['extension_attributes']['amrule_discount_breakdown'];
+  ?>
+  <div class="fullpoint-total-item fullpoint-subtotal">
+    <span class="fullpoint-label"><?= __("Total Points") ?></span>
+    <span class="fullpoint-price"><?php echo $this->convertToPoint($subTotal);?></span>
+  </div>
+  <div class="fullpoint-total-item fullpoint-discount">
+    <span class="fullpoint-label"><?= __("Discount") ?></span>
+    <span class="fullpoint-price"><?php echo $this->convertToPoint($discountTotal);?></span>
+  </div>
+  <?php foreach($discountBreakdown as $_discountItem){
+    ?>
+  <div class="fullpoint-discount-breakdown">
+    <span class="breakdown-label"><?php echo $_discountItem['rule_name'];?></span>
+    <span class="breakdown-price"><?php echo $this->convertToPoint($_discountItem['rule_amount']);?></span>
+  </div>
+  <?php }?>
+  <div class="fullpoint-total">
+    <span class="fullpoint-total-label"><?= __("實付點數") ?></span>
+    <span class="fullpoint-total-price"><?php echo $this->convertToPoint($quote->getPointUsedTotal());?></span>
+  </div>
+  <?php }else{?>
+    <div class="fullpoint-total">
+      <span class="fullpoint-total-label"><?= __("實付點數") ?></span>
+      <span class="fullpoint-total-price"><?php echo (int)$quote->getPointUsedTotal();?></span>
+    </div>
+  <?php }?>
+</div>
+<div class="fullpoint-actions">
+  <button type="button" class="action fullpoint-cancel-payment"><?= __("取消付款") ?><span><?= __("(") ?><span id="fullpoint_cancel_countdown">5</span><?= __("秒)") ?></span></button>
+</div>
+<script>
+  window.checkoutConfig = <?php echo json_encode($checkoutConfig);?>;
+  window.isCustomerLoggedIn = window.checkoutConfig.isCustomerLoggedIn;
+  window.customerData = window.checkoutConfig.customerData;
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8CheckoutFullpoint": {
+              "cancelUrl": "<?php echo $this->getUrl('checkout/cart/fullpointBackQty');?>",
+              "processUrl": "<?php echo $this->getUrl('rest/V1/carts/mine/payment-information');?>",
+              "productUrl": "<?php echo $_product->getUrlModel()->getUrl($_product, []);?>",
+              "checkoutSuccessUrl": "<?php echo $this->getUrl('checkout/onepage/success');?>",
+              "checkoutFailureUrl": "<?php echo $this->getUrl('checkout/onepage/failure');?>",
+              "processData": {
+                "cartId": <?php echo $checkoutData['cartId'];?>,
+                "billingAddress": <?php echo json_encode($checkoutData['billingAddress']);?>,
+                "paymentMethod": <?php echo json_encode($checkoutData['paymentMethod']);?>
+              }
+            }
+        }
+    }
+</script>

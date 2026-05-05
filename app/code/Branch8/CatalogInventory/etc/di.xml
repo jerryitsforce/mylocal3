@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Magento\GroupedProduct\Block\Product\View\Type\Grouped" type="Branch8\CatalogInventory\Rewrite\Magento\GroupedProduct\Block\Product\View\Type\Grouped"/>
+	<type name="Magento\InventoryCatalogFrontendUi\Model\IsSalableQtyAvailableForDisplaying">
+		<plugin name="Branch8_CatalogInventory_Plugin_Magento_InventoryCatalogFrontendUi_Model_IsSalableQtyAvailableForDisplaying" type="Branch8\CatalogInventory\Plugin\Magento\InventoryCatalogFrontendUi\Model\IsSalableQtyAvailableForDisplaying" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Framework\Console\CommandListInterface">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="UpdateSalableQuantity" xsi:type="object">Branch8\CatalogInventory\Console\Command\UpdateSalableQuantity</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

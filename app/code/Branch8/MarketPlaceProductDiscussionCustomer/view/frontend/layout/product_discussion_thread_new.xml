@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="thread-custom-page"/>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">我要提問</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Magento\Catalog\Block\Product\View"
+                   name="product.discussion.thread.new.info" as="product_discussion_thread_new_info"
+                   template="Branch8_MarketPlaceProductDiscussionCustomer::discussion/product.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Branch8\MarketPlaceProductDiscussionCustomer\ViewModel\Thread</argument>
+                </arguments>
+                <block class="Branch8\OptionsWithStockAndImages\Block\Variation" name="b8wkosivariation"
+                       template="Branch8_MarketPlaceProductDiscussionCustomer::discussion/variation.phtml">
+                    <arguments>
+                        <argument name="configurable_view_model" xsi:type="object">Magento\Swatches\ViewModel\Product\Renderer\Configurable</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Framework\View\Element\Template"
+                   name="product.discussion.thread.new.form" as="product_discussion_thread_new_form"
+                   template="Branch8_MarketPlaceProductDiscussionCustomer::discussion/form.phtml"
+                    cacheable="false">
+                    <arguments>
+                        <argument name="jsLayout" xsi:type="array">
+                            <item name="components" xsi:type="array">
+                                <item name="createQuestionForm" xsi:type="array">
+                                    <item name="component" xsi:type="string">Branch8_MarketPlaceProductDiscussionCustomer/js/product/disscussion/new-question-form</item>
+                                    <item name="config" xsi:type="array">
+                                        <item name="configurations" xsi:type="helper"
+                                            helper="Branch8\MarketPlaceProductDiscussionCustomer\ViewModel\Thread::getConfig"/>
+                                    </item>
+                                </item>
+                            </item>
+                        </argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+        <move element="page.main.title" destination="product.discussion.thread.new.info" />
+    </body>
+</page>

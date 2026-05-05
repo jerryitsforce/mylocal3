@@ -1,0 +1,22 @@
+{
+    "name": "branch8/module-rma",
+    "description": "Return and Refund",
+    "type": "magento2-module",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "branch8",
+            "email": "dev@branch8.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Branch8\\Rma\\": ""
+        }
+    }
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <!-- Debug logging options (merged into Branch8 debug section) -->
+        <section id="branch8_debug" translate="label" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Debug Log</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiCore::debug_log</resource>
+            <group id="branch8_hopes" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Hopes</label>
+                <field id="log_type" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <comment>Select which classes should write logs.</comment>
+                    <source_model>Branch8\Hopes\Model\Config\Source\LogType</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+
+        <tab id="branch8" translate="label" sortOrder="150">
+            <label>Hotai</label>
+        </tab>
+        <section id="hopes" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Hopes</label>
+            <tab>branch8</tab>
+            <resource>Branch8_Hopes::config</resource>
+            <group id="convenience_store" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Convenience Store</label>
+                <field id="rma_receiver" translate="label comment" sortOrder="48" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default RMA Receiver</label>
+                    <comment>預設 RMA 收件人名稱</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="rma_phone" translate="label comment" sortOrder="49" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default RMA Phone</label>
+                    <comment>10 碼數字，系統將自動移除非數字字元</comment>
+                    <validate>required-entry validate-digits validate-length minimum-length-10 maximum-length-10</validate>
+                </field>
+                <field id="rma_reason" translate="label comment" sortOrder="50" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default RMA Reason</label>
+                    <comment>預設廠退 RMA 原因</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="rma_address" translate="label comment" sortOrder="51" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default RMA Address (one per line)</label>
+                    <comment>每行一筆地址，將會轉換成陣列並組合地址</comment>
+                    <validate>required-entry</validate>
+                </field>
+            </group>
+            <group id="tcat" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>TCat</label>
+                <field id="rcver_name" translate="label comment" sortOrder="10" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Receiver Name</label>
+                    <comment>收件人姓名</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="rcver_phone" translate="label comment" sortOrder="20" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Receiver Phone</label>
+                    <comment>收件人電話</comment>
+                    <validate>required-entry validate-digits validate-length minimum-length-10 maximum-length-10</validate>
+                </field>
+                <field id="rcver_cellphone" translate="label comment" sortOrder="30" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Receiver Cellphone</label>
+                    <comment>收件人手機</comment>
+                </field>
+                <field id="rcver_suda6" translate="label comment" sortOrder="40" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Receiver Suda6</label>
+                    <comment>收件人 Suda6 代碼</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="rcver_address" translate="label comment" sortOrder="50" type="textarea" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Receiver Address</label>
+                    <comment>收件人地址</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="customer_id" translate="label comment" sortOrder="60" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer ID</label>
+                    <comment>TCat 客戶 ID</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="climate" translate="label comment" sortOrder="70" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Climate</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="distance" translate="label comment" sortOrder="80" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Distance</label>
+                    <validate>required-entry</validate>
+                </field>
+            </group>
+            <group id="sin" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>SIN</label>
+                <field id="seller_groups" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>File Name to Seller Code (SIN API output division)</label>
+                    <comment>Map file name (output key) to seller code. Each row: File Name + Seller Code. Default: 01->HTC01, 02->HTC02, 03->HTC03, 04->HTC04, 05->HTC05. Add more as needed.</comment>
+                    <frontend_model>Branch8\Hopes\Block\Adminhtml\System\Config\SinSellerGroups</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+

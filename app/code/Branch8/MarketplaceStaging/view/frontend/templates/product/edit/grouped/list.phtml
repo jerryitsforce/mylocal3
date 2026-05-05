@@ -1,0 +1,87 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpGroupedProduct
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<script type="text/x-magento-template" id="staging-group-product-template">
+<tr title="#" class="pointer" data-role="row" id="row-<%- data.id %>">
+    <td data-column="info" class="col-draggable col-info">
+        <span class="draggable-handle"></span>
+        <input
+            type="hidden"
+            name="links[associated][<%- data.id %>][id]"
+            value="<%- data.id %>"
+            data-role="id" />
+        <input
+            type="hidden"
+            name="links[associated][<%- data.id %>][position]"
+            value="<%- data.position %>"
+            data-role="position" />
+    </td>
+    <td data-column="id" class="col-id">
+        <%- data.id %>
+    </td>
+    <td data-column="name" class="editable col-name">
+        <%- data.name %>
+    </td>
+    <td data-column="sku" class="col-sku">
+        <%- data.sku %>
+    </td>
+    <td data-column="price" class="col-price">
+        <%- data.price %>
+    </td>
+    <td data-column="qty" class="editable col-qty col-number">
+        <input
+            type="text"
+            class="admin__control-text"
+            name="links[associated][<%- data.id %>][qty]"
+            value="<%- data.qty %>">
+    </td>
+    <td data-column="actions" class="col-actions" id='delete-grouped-row'>
+        <button
+            id = "delete-<%- data.id %>"
+            type="button"
+            class="action-delete"
+            data-role="delete"></button>
+    </td>
+</tr>
+</script>
+<div class="grid-container no-display">
+    <table class="admin__control-table" data-role="staging-grouped-product-grid"
+        data-products='<?= /* @noEscape */ \Laminas\Json\Json::encode(
+            $block->getAssociatedProducts()
+        ); ?>'>
+        <thead>
+            <tr class="headings">
+                <th data-column="info" class="col-draggable no-link col-info">
+                    <span></span>
+                </th>
+                <th data-column="id" class="no-link col-id">
+                    <span><?= /* @noEscape */__('Id') ?></span>
+                </th>
+                <th data-column="name" class="no-link col-name">
+                    <span><?= /* @noEscape */__('Name') ?></span>
+                </th>
+                <th data-column="sku" class="no-link col-sku">
+                    <span><?= /* @noEscape */__('SKU') ?></span>
+                </th>
+                <th data-column="price" class="no-link col-price">
+                    <span><?= /* @noEscape */__('Price') ?></span>
+                    </th>
+                <th data-column="qty" class="no-link col-qty">
+                    <span><?= /* @noEscape */__('Default Qty') ?></span>
+                </th>
+                <th data-column="actions" class="last no-link col-actions">
+                <span></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\HifiSalesReport\Api\Data\HifiSalesReportRecordInterface" type="Branch8\HifiSalesReport\Model\HifiSalesReportRecord"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="hifi_sales_report_record_listing_data_source" xsi:type="string">Branch8\HifiSalesReport\Model\ResourceModel\HifiSalesReportRecord\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HifiSalesReport\Model\ResourceModel\HifiSalesReportRecord\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">hifi_sales_report_record</argument>
+            <argument name="eventPrefix" xsi:type="string">hifi_sales_report_record_eventPrefix</argument>
+            <argument name="eventObject" xsi:type="string">hifi_sales_report_record_eventObject</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\HifiSalesReport\Model\ResourceModel\HifiSalesReportRecord</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="hifi_sales_report_sub_record_listing_data_source" xsi:type="string">Branch8\HifiSalesReport\Model\ResourceModel\HifiSalesReportSubRecord\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HifiSalesReport\Model\ResourceModel\HifiSalesReportSubRecord\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">hifi_sales_report_sub_record</argument>
+            <argument name="eventPrefix" xsi:type="string">hifi_sales_report_sub_record_eventPrefix</argument>
+            <argument name="eventObject" xsi:type="string">hifi_sales_report_sub_record_eventObject</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\HifiSalesReport\Model\ResourceModel\HifiSalesReportSubRecord</argument>
+        </arguments>
+    </type>
+</config>

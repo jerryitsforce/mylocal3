@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<li class="link member">
+  <a title="<?= $block->escapeHtml(__('Member Center')) ?>"
+  href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>">
+    <?= $block->escapeHtml(__('Member Center')) ?>
+  </a>
+</li>
+<li class="link order">
+  <a title="<?= $block->escapeHtml(__('My Orders')) ?>"
+  href="<?= $block->escapeUrl($block->getUrl('sales/parentOrder/history')) ?>">
+    <?= $block->escapeHtml(__('My Orders')) ?>
+  </a>
+</li>
+<li class="link ticket">
+  <a title="<?= $block->escapeHtml(__('My Tickets')) ?>"
+  href="<?= $block->escapeUrl($block->getUrl('member/ticket/index')) ?>">
+    <?= $block->escapeHtml(__('My Tickets')) ?>
+  </a>
+</li>

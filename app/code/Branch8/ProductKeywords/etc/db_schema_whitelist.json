@@ -1,0 +1,24 @@
+{
+    "catalog_keyword": {
+        "column": {
+            "entity_id": true,
+            "keyword": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CATALOG_KEYWORD_KEYWORD": true
+        }
+    },
+    "catalog_keyword_product": {
+        "column": {
+            "entity_id": true,
+            "keyword_id": true,
+            "product_id": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CATALOG_KEYWORD_PRODUCT_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ROW_ID": true,
+            "CATALOG_KEYWORD_PRODUCT_KEYWORD_ID_CATALOG_KEYWORD_ENTITY_ID": true
+        }
+    }
+}

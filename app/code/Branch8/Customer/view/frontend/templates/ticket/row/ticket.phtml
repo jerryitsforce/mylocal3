@@ -1,0 +1,73 @@
+<?php
+/** @var \Branch8\Customer\Block\Ticket\Row\Ticket $block */
+$item = $block->getData('item');
+$product = $block->getProduct($item->getData('belong_to_product_id'));
+
+$photoClass = [
+    \Branch8\HotaiCore\Model\Ticket\Status::STATUS_OVER_DUE => 'expired',
+    \Branch8\HotaiCore\Model\Ticket\Status::STATUS_USED => 'used',
+    \Branch8\HotaiCore\Model\Ticket\Status::STATUS_UNUSED => 'unused'
+];
+$giftTicketHelper = $this->helper(\Branch8\Customer\Helper\Ticket::class);
+$isGiftTicket = $giftTicketHelper->isGiftEventTicket($item);
+if($isGiftTicket){
+    $imageData = json_decode($item['image_url'], true);
+    $ticketImage = '';
+    $period = $block->getPeriodTimeText($item);
+    if(isset($imageData[0]) && isset($imageData[0]['url'])){
+        $ticketImage = $imageData[0]['url'];
+    }else{
+        $imageHelper = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Catalog\Helper\Image::class);
+        $ticketImage = $imageHelper->getDefaultPlaceholderUrl('thumbnail');
+    }
+    $ticketName = $item['name'];
+    $description = $item['description'];
+}else{
+    $ticketImage = $block->getProductImage($product);
+    $ticketName = $product? $product->getName(): '';
+    $description = '';
+    $period = $block->getPeriodTimeText($item);
+    if($product && $product->getCustomAttribute('specification')){
+        $description = $product->getCustomAttribute('specification')->getValue();
+    }
+    
+}
+$ticketUrl = $block->getTicketDetailUrl($item);
+
+$ticketType = $block->getData('type');
+$remainDate = $block->getRemainDay($item->getData('use_end_time'));
+?>
+<?php if ($product || $isGiftTicket) : ?>
+<div class="ticket-items <?= $photoClass[$ticketType] ?? '' ?>">
+    <a href="<?= $ticketUrl ?>" title="<?= $ticketName ?>">
+        <div class="ticket-item-photo <?= $photoClass[$ticketType] ?? '' ?>">
+            test
+            <img height="100%" width="100%" src="<?= $ticketImage ?>">
+            <?php if (in_array($ticketType, [\Branch8\HotaiCore\Model\Ticket\Status::STATUS_USED])) : ?>
+                <span class="ticket-used"><?= __('已使用') ?></span>
+            <?php elseif (in_array($ticketType, [\Branch8\HotaiCore\Model\Ticket\Status::STATUS_OVER_DUE])) : ?>
+                <span class="ticket-expired"><?= __('已過期') ?></span>
+            <?php endif; ?>
+        </div>
+
+        <div class="ticket-item-content">
+            <p class="ticket-item-name"><?= $ticketName ?></p>
+            
+            <?php if($period):?>
+                <div class="ticket-item ticket-item-period">
+                    <span class="label"><?= __('使用期限 :') ?></span>
+                    <span class="value"><?= $period ?></span>
+                </div>
+            <?php endif; ?>
+
+            <?php if($remainDate > 0 && $ticketType == \Branch8\HotaiCore\Model\Ticket\Status::STATUS_UNUSED):?>
+                <div class="ticket-item issue"><?= __('%1日後到期', $remainDate) ?></div>
+            <?php endif; ?>
+        </div>
+
+        <div class="ticket-items-link">
+            <span class="icon-arrow-next"></span>
+        </div>
+    </a>
+</div>
+<?php endif; ?>

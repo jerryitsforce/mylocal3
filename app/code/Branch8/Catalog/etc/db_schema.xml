@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="search_query" resource="default" engine="innodb" comment="Search query table">
+        <column xsi:type="smallint" name="is_pin_search_term" unsigned="false" nullable="false"
+                identity="false" default="0" comment="Is pin search term"/>
+    </table>
+    <table name="b8_tracking_price_cost_change" resource="default" engine="innodb"
+           comment="Customer organization">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Table Primary column"/>
+        <column xsi:type="int" name="product_id" nullable="false" comment="Product ID"/>
+        <column xsi:type="varchar" name="sku" nullable="false" length="255" comment="Product SKU"/>
+        <column xsi:type="decimal" name="current_cost" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Current Cost"/>
+        <column xsi:type="decimal" name="new_cost" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="New Cost"/>
+        <column xsi:type="decimal" name="current_price" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Current Price"/>
+        <column xsi:type="decimal" name="new_price" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="New Price"/>
+        <column xsi:type="varchar" name="action_log" nullable="false" comment="The action make change"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="B8_TRACKING_PRICE_COST_CHANGE_PRODUCTID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+        <index referenceId="B8_TRACKING_PRICE_COST_CHANGE_SKU" indexType="btree">
+            <column name="sku"/>
+        </index>
+    </table>
+    <table name="quote_item">
+        <column xsi:type="int" name="main_category" nullable="true" comment="Main Category Id"/>
+        <column xsi:type="varchar" name="main_category_name" nullable="true" comment="Main Category"/>
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="int" name="main_category" nullable="true" comment="Main Category Id"/>
+        <column xsi:type="varchar" name="main_category_name" nullable="true" comment="Main Category Name"/>
+        <column xsi:type="decimal" name="commission_percent" nullable="true" unsigned="false" scale="4" precision="12"
+                comment="Commission percent"/>
+        <index referenceId="SALES_ORDER_ITEM_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+    <table name="catalog_product_preorder" resource="default" engine="innodb"
+           comment="Catalog Product Preorder">
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Status"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+        <index referenceId="CATALOG_PRODUCT_PREORDER_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+    <table name="catalog_product_copy_tracking" resource="default" engine="innodb" comment="Catalog Product Copy Tracking">
+        <column name="product_id" xsi:type="int" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column name="has_draft" xsi:type="smallint" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Product Has A Draft"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CAT_PRD_COPY_TRACKING_PRD_ID_CAT_PRD_ENTT_ENTT_ID"
+                    table="catalog_product_copy_tracking" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+    </table>
+    <table name="catalog_product_entity_datetime">
+        <column xsi:type="bigint" name="value_id" unsigned="false" nullable="false" identity="true" comment="Value ID"/>
+    </table>
+    <table name="catalog_product_entity_decimal">
+        <column xsi:type="bigint" name="value_id" unsigned="false" nullable="false" identity="true" comment="Value ID"/>
+    </table>
+    <table name="catalog_product_entity_int">
+        <column xsi:type="bigint" name="value_id" unsigned="false" nullable="false" identity="true" comment="Value ID"/>
+    </table>
+    <table name="catalog_product_entity_text">
+        <column xsi:type="bigint" name="value_id" unsigned="false" nullable="false" identity="true" comment="Value ID"/>
+    </table>
+    <table name="catalog_product_entity_varchar">
+        <column xsi:type="bigint" name="value_id" unsigned="false" nullable="false" identity="true" comment="Value ID"/>
+    </table>
+    <table name="branch8_product_change_history" resource="default" engine="innodb" comment="Product Change History">
+        <column xsi:type="int" name="history_id" nullable="false" identity="true" unsigned="true" comment="History ID"/>
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" comment="Product ID"/>
+        <column xsi:type="text" name="changed_field" nullable="false" comment="Changed Field"/>
+        <column xsi:type="text" name="before_value" nullable="false" comment="Before Value"/>
+        <column xsi:type="text" name="after_value" nullable="false" comment="After Value"/>
+        <column xsi:type="varchar" name="changed_by" length="20" nullable="false" comment="Changed By (Admin/Seller/System)"/>
+        <column xsi:type="int" name="changed_by_id" padding="10" unsigned="true" nullable="true" comment="ID of User"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="text" name="updated_in_bulk" nullable="true" comment="Updated in Bulk"/>
+        <column xsi:type="text" name="trace_log" nullable="true" comment="Trace Log for Developer Debugging"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="history_id"/>
+        </constraint>
+        <index referenceId="BRANCH8_PRODUCT_CHANGE_HISTORY_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+
+</schema>

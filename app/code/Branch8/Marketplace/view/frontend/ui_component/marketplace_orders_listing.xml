@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="massinvoice">
+                <settings>
+                    <actionDisable>true</actionDisable>
+                </settings>
+            </action>
+            <action name="massship">
+                <settings>
+                    <actionDisable>true</actionDisable>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+    <columns name="orders_columns">
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sorting" xsi:type="string">desc</item>
+                </item>
+            </argument>
+        </column>
+        <column name="magepro_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                </item>
+            </argument>
+        </column>
+        <column name="magepro_sku" class="Branch8\Marketplace\Ui\Component\Listing\Column\Skus">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sortable" xsi:type="boolean">true</item>
+                    <item name="label" xsi:type="string" translate="true">Product SKU/Code</item>
+                    <item name="sortOrder" xsi:type="number">31</item>
+                </item>
+            </argument>
+        </column>
+        <column name="customer_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Order Buyer Name</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                </item>
+            </argument>
+        </column>
+        <column name="customer_phone_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Buyer Phone Number</item>
+                    <item name="sortOrder" xsi:type="number">51</item>
+                </item>
+            </argument>
+        </column>
+        <column name="title" class="Branch8\Marketplace\Ui\Component\Listing\Column\ShipmentTitle">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Logistics Name</item>
+                    <item name="sortOrder" xsi:type="number">53</item>
+                </item>
+            </argument>
+        </column>
+        <column name="track_number" class="Branch8\Marketplace\Ui\Component\Listing\Column\ShipmentNumber">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Order Tracking Number</item>
+                    <item name="sortOrder" xsi:type="number">54</item>
+                </item>
+            </argument>
+        </column>
+        <column name="order_items" class="Branch8\Marketplace\Ui\Component\Listing\Column\OrderItems">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="label" xsi:type="string" translate="true">Order Items</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="number">62</item>
+                </item>
+            </argument>
+        </column>
+        <column name="rma_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Branch8\HotaiCore\Model\Config\Source\RmaStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">RMA Status</item>
+                    <item name="sortOrder" xsi:type="number">65</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
+        <column name="actual_seller_amount">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Actual Seller Amount</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="purchased_actual_seller_amount">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Purchased Actual Seller Amount</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="quote_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Quote Id</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                    <item name="filter" xsi:type="string">textRange</item>
+                </item>
+            </argument>
+        </column>
+        <column name="base_grand_total" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Base Total</item>
+                    <item name="sortOrder" xsi:type="number">31</item>
+                </item>
+            </argument>
+        </column>
+        <column name="grand_total" class="Magento\Sales\Ui\Component\Listing\Column\PurchasedPrice">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Purchased Total</item>
+                    <item name="sortOrder" xsi:type="number">32</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>

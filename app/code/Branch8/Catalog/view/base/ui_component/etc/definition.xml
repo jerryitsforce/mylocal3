@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<components xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_definition.xsd">
+
+    <wysiwyg class="Magento\Ui\Component\Form\Element\Wysiwyg" component="Magento_Ui/js/form/element/wysiwyg" template="ui/form/wysiwyg">
+        <settings>
+            <validation>
+                <rule name="validate-no-utf8mb4-characters" xsi:type="boolean">false</rule>
+            </validation>
+        </settings>
+    </wysiwyg>
+</components>

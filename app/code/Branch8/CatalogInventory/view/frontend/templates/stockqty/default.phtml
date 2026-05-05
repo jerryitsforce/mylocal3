@@ -1,0 +1,15 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var $block \Magento\CatalogInventory\Block\Stockqty\DefaultStockqty
+ */
+?>
+<?php if ($block->isMsgVisible()) : ?>
+    <div class="availability only" title="<?= $block->escapeHtmlAttr(__('Inventory less than %1 units', ($block->getThresholdQty()))) ?>">
+        <?= /* @noEscape */ __('Inventory less than %1 units', "{$block->escapeHtml($block->getThresholdQty())}") ?>
+    </div>
+<?php endif ?>

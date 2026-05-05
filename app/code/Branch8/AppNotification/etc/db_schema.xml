@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="customer_fcm_token" resource="default" engine="innodb" comment="Customer FCM Token">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="true" comment="Customer ID"/>
+        <column xsi:type="int" name="store_id" unsigned="true" nullable="true" comment="Store ID"/>
+        <column xsi:type="varchar" name="token" length="255" nullable="false" comment="FCM Token"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="boolean" name="is_subscribed" nullable="false" default="1" comment="Is Subscribed"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+
+        <constraint xsi:type="foreign" referenceId="CUSTOMER_FCM_TOKEN_CUSTOMER_ID_FK"
+                    table="customer_fcm_token" column="customer_id"
+                    referenceTable="customer_entity" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+
+        <constraint xsi:type="unique" referenceId="CUSTOMER_FCM_CUSTOMER_ID_STORE_ID_TOKEN">
+            <column name="customer_id"/>
+            <column name="store_id"/>
+        </constraint>
+
+        <index referenceId="CUSTOMER_FCM_TOKEN_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+
+        <index referenceId="CUSTOMER_FCM_TOKEN_CUST_TOKEN" indexType="btree">
+            <column name="customer_id"/>
+            <column name="token"/>
+        </index>
+
+        <index referenceId="CUSTOMER_FCM_TOKEN_CUST_IS_SUBSCRIBED" indexType="btree">
+            <column name="customer_id"/>
+            <column name="is_subscribed"/>
+        </index>
+    </table>
+</schema>

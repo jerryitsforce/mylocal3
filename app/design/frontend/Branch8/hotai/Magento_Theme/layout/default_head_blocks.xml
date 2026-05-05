@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <remove src="fonts/opensans/light/opensans-300.woff2"/>
+        <remove src="fonts/opensans/regular/opensans-400.woff2"/>
+        <remove src="fonts/opensans/semibold/opensans-600.woff2"/>
+        <remove src="fonts/opensans/bold/opensans-700.woff2"/>
+        <remove src="fonts/Luma-Icons.woff2"/>
+        <!-- <font src="fonts/NotoSansCJKtc/regular/NotoSansCJKtc-Regular.woff2"/>
+        <font src="fonts/NotoSansCJKtc/medium/NotoSansCJKtc-Medium.woff2"/>
+        <font src="fonts/NotoSansCJKtc/bold/NotoSansCJKtc-Bold.woff2"/> -->
+        <remove src="fonts/icons/Hotai-Icons.woff2"/>
+        <!-- <link src="//fonts.googleapis.com/css2?family=Outfit:wght@400..700&amp;display=swap" rel="stylesheet" src_type="url"/> -->
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <css src="Magento_Theme::css/perfect-scrollbar.css"/>
+    </head>
+    <body>
+        <referenceBlock name="head.additional">
+            <!-- Google Fonts -->
+            <block class="Magento\Framework\View\Element\Template" name="google.fonts" template="Magento_Theme::html/google-fonts.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

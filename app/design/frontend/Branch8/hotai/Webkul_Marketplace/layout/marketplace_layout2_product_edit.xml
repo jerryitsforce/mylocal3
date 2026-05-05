@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="seller-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <block class="Webkul\Marketplace\Block\Product\Create" name="branch8_yoxi_ticket"
+               template="Branch8_Yoxi::product/yoxi_ticket.phtml" cacheable="false">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+            </arguments>
+        </block>
+        <referenceContainer name="branch8_yoxi_ticket">
+            <uiComponent name="branch8_yoxi_ticket_record_overview"/>
+        </referenceContainer>
+
+        <block class="Webkul\Marketplace\Block\Product\Create" name="branch8_general_ticket"
+               template="Branch8_GeneralNotifyTicket::product/general_ticket.phtml" cacheable="false">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+            </arguments>
+        </block>
+        <referenceContainer name="branch8_general_ticket">
+            <uiComponent name="branch8_general_ticket_record_overview"/>
+        </referenceContainer>
+
+        <block class="Webkul\Marketplace\Block\Product\Create" name="branch8_family_bonus"
+               template="Branch8_FamilyBonusPin::product/family_bonus.phtml" cacheable="false">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+            </arguments>
+        </block>
+        <referenceContainer name="branch8_family_bonus">
+            <uiComponent name="branch8_family_bonus_record_overview"/>
+        </referenceContainer>
+
+        <block class="Webkul\Marketplace\Block\Product\Create" name="branch8_general_non_ticket"
+               template="Branch8_GeneralNonNotifyTicket::product/general_non_ticket.phtml" cacheable="false">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+            </arguments>
+        </block>
+        <referenceContainer name="branch8_general_non_ticket">
+            <uiComponent name="branch8_general_non_ticket_record_overview"/>
+        </referenceContainer>
+
+        <move element="branch8_yoxi_ticket" destination="seller.content" before="marketplace_product_related_product" />
+        <move element="branch8_general_ticket" destination="seller.content" after="branch8_yoxi_ticket" />
+        <move element="branch8_family_bonus" destination="seller.content" after="branch8_general_ticket" />
+        <move element="branch8_general_non_ticket" destination="seller.content" after="branch8_family_bonus" />
+    </body>
+</page>

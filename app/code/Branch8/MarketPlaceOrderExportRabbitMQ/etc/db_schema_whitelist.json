@@ -1,0 +1,78 @@
+{
+    "branch8_order_export_profile": {
+        "column": {
+            "entity_id": true,
+            "profile_type": true,
+            "receiver_email": true,
+            "receiver_name": true,
+            "user_id": true,
+            "seller_id": true,
+            "order_ids": true,
+            "meta": true,
+            "created_at": true,
+            "total_batch": true,
+            "current_batch": true,
+            "publish_at": true,
+            "executed_at": true,
+            "file_path": true,
+            "phpid": true,
+            "status": true,
+            "complete_at": true,
+            "total_batches": true,
+            "email_sent": true
+        },
+        "index": {
+            "BRANCH8_ORDER_EXPORT_PROFILE_USER_ID": true,
+            "BRANCH8_ORDER_EXPORT_PROFILE_SELLER_ID": true,
+            "BRANCH8_ORDER_EXPORT_PROFILE_PHPID": true,
+            "BRANCH8_ORDER_EXPORT_PROFILE_STATUS": true,
+            "BRANCH8_ORDER_EXPORT_PROFILE_RECEIVER_EMAIL_RECEIVER_NAME": true,
+            "BRANCH8_ORDER_EXPORT_PROFILE_EMAIL_SENT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_order_export_profile_batches": {
+        "column": {
+            "batch_id": true,
+            "parent_id": true,
+            "batch_status": true,
+            "order_ids": true,
+            "executed_at": true,
+            "complete_at": true,
+            "file_path": true,
+            "phpid": true,
+            "queuid": true
+        },
+        "index": {
+            "BRANCH8_ORDER_EXPORT_PROFILE_BATCHES_PHPID": true,
+            "BRANCH8_ORDER_EXPORT_PROFILE_BATCHES_BATCH_STATUS": true
+        },
+        "constraint": {
+            "FK_1D9D28A8422CA4BC9CA3662C833BFC3C": true,
+            "PRIMARY": true
+        }
+    },
+    "branch8_order_notification_profile": {
+        "column": {
+            "entity_id": true,
+            "profile_type": true,
+            "receiver_email": true,
+            "receiver_name": true,
+            "user_id": true,
+            "seller_id": true,
+            "created_at": true,
+            "publish_at": true,
+            "executed_at": true,
+            "file_path": true
+        },
+        "index": {
+            "BRANCH8_ORDER_NOTIFICATION_PROFILE_USER_ID": true,
+            "BRANCH8_ORDER_NOTIFICATION_PROFILE_SELLER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

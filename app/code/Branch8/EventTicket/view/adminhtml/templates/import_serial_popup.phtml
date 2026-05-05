@@ -1,0 +1,200 @@
+<div id="popup-import-serial">
+    <div class="modal-inner-content">
+        <h2><div><?php echo __('Pool:');?> <span id="popup-event-title"></span></div></h2>
+        <div class="import-serial-sample"> <a href="<?php echo $this->getUrl('eventticket/event/importSerialTemplate');?>" target="_blank"><?php echo __('Download Import Sample File');?></a></div>
+        <div>
+            <form id="form-import-serial" method="POST">
+                <input type="hidden" name="event_id" id="popup_import_serial_event_id" value="" />
+                <?php echo $block->getBlockHtml('formkey')?>
+
+                <p class="import-row _required">
+                    <label class="admin__field-label">
+                        <span><?php echo __('Batch code');?></span>
+                    </label>
+                    <div>
+                        <input type="text" data-validate="{required:true}" required="true" name="batch_code" class="admin__control-text" id="batch_code" maxlength="255">
+                    </div>
+                </p>
+
+                <p class="import-row _required">
+                    <label class="admin__field-label">
+                        <span><?php echo __('Start date');?></span>
+                    </label>
+                <div>
+                    <input type="text" data-validate="{required:true}" required="true" name="start_date" class="admin__control-text"
+                           id="batch_code_start_date" placeholder="yyyy-mm-dd hh:mm:ss" readonly autocomplete="off">
+                </div>
+                </p>
+
+                <p class="import-row _required">
+                    <label class="admin__field-label">
+                        <span><?php echo __('End date');?></span>
+                    </label>
+                <div>
+                    <input type="text" data-validate="{required:true}" required="true" name="end_date" class="admin__control-text"
+                           id="batch_code_end_date" placeholder="yyyy-mm-dd hh:mm:ss" readonly autocomplete="off" >
+                </div>
+                </p>
+
+                <p class="import-row _required">
+                    <label class="admin__field-label">
+                        <span><?php echo __('Import file');?></span>
+                    </label>
+                    <div>
+                        <input type="file" name="import_serial_file" id="import_serial_file">
+                    </div>
+                </p>
+                <p class="import-row">
+                    <input type="button" id="import_btn" value="Import" class="action-default primary"/>
+                </p>
+                <div id="result-error" class="message message-error error hidden"></div>
+                <div id="result-success" class="message message-success success hidden"></div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "#form-import-serial": {
+            "validation": {}
+        }
+    }
+</script>
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'plugins/DOMPurify',
+            'mage/mage',
+            'mage/calendar'
+        ],
+        function($, modal, DOMPurify) {
+            var jQ = $.noConflict();
+            jQ('#batch_code_start_date').datetimepicker(
+                {
+                    dateFormat: "yy-mm-dd",
+                    timeFormat: "HH:mm:ss"
+                }
+            );
+            jQ('#batch_code_end_date').datetimepicker(
+                {
+                    dateFormat: "yy-mm-dd",
+                    timeFormat: "HH:mm:ss"
+                }
+            );
+            function resetMessage(){
+                jQ('#result-error').html('');
+                jQ('#result-success').html('');
+                jQ('#result-success').addClass('hidden');
+                jQ('#result-error').addClass('hidden');
+            }
+            function validateImport(){
+                var isValidImport = true;
+                if(jQ('#batch_code').val() == ''){
+                    jQ('#result-error').html(DOMPurify.sanitize('<?php echo __('Please input batch code.');?>'));
+                    return false;
+                }
+
+                if($('#batch_code_start_date').val().trim() == ''){
+                    jQ('#result-error').html(DOMPurify.sanitize('<?php echo __('Please input start date.');?>'));
+                    return false;
+                }
+
+                var curDateTime = new Date();
+                var endDateTime = new Date($('#batch_code_end_date').datepicker('getDate'));
+                if(endDateTime < curDateTime){
+                    jQ('#result-error').html(DOMPurify.sanitize('<?php echo __('End date should be in the future.');?>'));
+                    return false;
+                }
+
+                var startDateTime = new Date($('#batch_code_start_date').datepicker('getDate'));
+                var endDateTime = new Date($('#batch_code_end_date').datepicker('getDate'));
+                if (endDateTime < startDateTime) {
+                    jQ('#result-error').html(DOMPurify.sanitize('<?php echo __('End date should be greater than Start date.');?>'));
+                    return false;
+                }
+
+                if(jQ('#import_serial_file').val() == ''){
+                    jQ('#result-error').html(DOMPurify.sanitize('<?php echo __('Please input import file.');?>'));
+                    return false;
+                }
+
+                return isValidImport;
+            }
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Import Serial Number',
+                buttons: [{
+                    text: jQ.mage.__('Close'),
+                    class: 'modal-close',
+                    click: function (){
+                        this.closeModal();
+                    }
+                }]
+            };
+            modal(options, jQ('#popup-import-serial'));
+            jQ(document).on("click", ".import-serial-btn", function(){
+                jQ('#form-import-serial').trigger("reset");
+                resetMessage();
+                var popupData = jQ(this).attr('data');
+                try{
+                    var popupDataArr = JSON.parse(popupData);
+                    jQ('#popup-event-title').text(popupDataArr.title);
+                    jQ('#popup_import_serial_event_id').val(popupDataArr.id);
+                }catch(err) {
+
+                }
+
+                jQ("#popup-import-serial").modal("openModal");
+            });
+            jQ('#import_btn').click(function(){
+
+                resetMessage();
+                if(!validateImport()){
+
+                    jQ('#result-error').removeClass('hidden');
+                    jQ('#result-success').html('');
+                    jQ('#result-success').addClass('hidden');
+                    return;
+                }
+                jQ('#result-error').html(DOMPurify.sanitize(''));
+                var dataForm = jQ('#form-import-serial');
+                var res = dataForm.mage('validation', {});
+                var form = new FormData(document.getElementById('form-import-serial'));
+
+                jQ.ajax({
+                    type: "POST",
+                    url: "<?php echo $this->getUrl('eventticket/ticket/import');?>",
+                    processData: false,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    data: form,
+                    showLoader: true,
+                    dataType: 'json',
+                    success: function (response) {
+                        if(response.error == false){
+                            jQ('#result-error').html('');
+                            jQ('#result-error').addClass('hidden');
+                            jQ('#result-success').html(DOMPurify.sanitize(response.msg));
+                            jQ('#result-success').removeClass('hidden');
+                            jQ('#form-import-serial').trigger("reset");
+                        }else{
+                            jQ('#result-error').html(DOMPurify.sanitize(response.msg));
+                            jQ('#result-error').removeClass('hidden');
+                            jQ('#result-success').html('');
+                            jQ('#result-success').addClass('hidden');
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            });
+
+        }
+    );
+</script>

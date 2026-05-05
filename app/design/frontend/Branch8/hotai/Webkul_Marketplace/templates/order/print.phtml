@@ -1,0 +1,107 @@
+<?php
+/**
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getHelper();
+$isPartner = $helper->isSeller();
+$allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub', 'sup', 'ul'];
+if ($isPartner == 1) {
+    $orderId = $block->getRequest()->getParam('id');
+    $order = $block->getOrder();
+    $paymentMethod = '';
+    if ($order->getPayment()) {
+        $paymentMethod = $order->getPayment()->getMethodInstance()->getTitle();
+    }
+
+    $marketplaceOrders = $block->getSellerOrderInfo($orderId);
+    if (count($marketplaceOrders)) { ?>
+        <div class="wk_mp_design">
+            <div class="fieldset wk_mp_fieldset" id="wk_mp_print_order">
+                <div class="order-details-items ordered">
+                    <div class="order-title">
+                        <strong><?= /* @noEscape */ __('Items Ordered') ?></strong>
+                    </div>
+                    <?= $block->getChildHtml('marketplace_order_items') ?>
+                </div>
+                <?php if ($helper->getSellerProfileDisplayFlag()) { ?>
+                    <div class="block block-order-details-view buyer-information">
+                        <div class="block-title">
+                            <strong><?= /* @noEscape */ __('Buyer Information') ?></strong>
+                        </div>
+                        <div class="block-content">
+                            <div class="box-content">
+                                <div class="box">
+                                    <div class="wk_row">
+                                        <span class="label">
+                                            <?= /* @noEscape */ __('Customer Name')?> : </span>
+                                        <span class="value"><?= $escaper->escapeHtml($order->getCustomerName()); ?></span>
+                                    </div>
+                                    <div class="wk_row">
+                                        <span class="label"><?= /* @noEscape */ __('Email')?> : </span>
+                                        <span class="value">
+                                            <?= $escaper->escapeHtml($order->getCustomerEmail()); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                <div class="block block-order-details-view order-information">
+                    <div class="block-title">
+                        <strong><?= /* @noEscape */ __('Order Information') ?></strong>
+                    </div>
+                    <div class="block-content">
+                        <?php if ($helper->getSellerProfileDisplayFlag()) { ?>
+                            <?php if ($block->isOrderCanShip($order)): ?>
+                                <div class="box box-order-shipping-address">
+                                    <strong class="box-title"><span>
+                                        <?= /* @noEscape */ __('Shipping Address') ?></span></strong>
+                                    <div class="box-content">
+                                        <address><?= $block->escapeHtml($block->getFormattedAddress($order->getShippingAddress()), $allowedAddressHtmlTags); ?></address>
+                                    </div>
+                                </div>
+
+                                <div class="box box-order-shipping-method">
+                                    <strong class="box-title">
+                                        <span><?= /* @noEscape */ __('Shipping Method') ?></span>
+                                    </strong>
+                                    <div class="box-content">
+                                        <?php if ($order->getShippingDescription()): ?>
+                                            <?= $escaper->escapeHtml($order->getShippingDescription()) ?>
+                                        <?php else: ?>
+                                            <?= /* @noEscape */ __('No shipping information available'); ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <div class="box box-order-billing-address">
+                                <strong class="box-title">
+                                    <span><?= /* @noEscape */ __('Billing Address') ?></span>
+                                </strong>
+                                <div class="box-content">
+                                    <address><?= $block->escapeHtml($block->getFormattedAddress($order->getBillingAddress()), $allowedAddressHtmlTags); ?></address>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <div class="box box-order-billing-method">
+                            <strong class="box-title">
+                                <span><?= /* @noEscape */ __('Payment Method') ?></span>
+                            </strong>
+                            <div class="box-content">
+                                <?= $escaper->escapeHtml($paymentMethod); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+} else { ?>
+    <h2 class="wk_mp_error_msg">
+        <?= /* @noEscape */ __("To Become Seller Please Contact to Admin."); ?>
+    </h2>
+    <?php
+} ?>

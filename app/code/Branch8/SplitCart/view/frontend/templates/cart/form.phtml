@@ -1,0 +1,176 @@
+<?php
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/**  @var $block Grid */
+
+use Magento\Checkout\Block\Cart\Grid;
+use Tigren\SplitCart\Helper\Data;
+use Branch8\SplitCart\Helper\Data as SplitCartHelperData;
+
+?>
+<?php
+$pointMoneyCollectHelper = $this->helper(\Branch8\PointMoneyCollect\Helper\Data::class);
+$mergedCells = ($this->helper(Magento\Tax\Helper\Data::class)->displayCartBothPrices() ? 2 : 1);
+
+/** @var $splitCartHelper Data */
+$splitCartHelper = $this->helper(Tigren\SplitCart\Helper\Data::class);
+$isAllAvailableToCheckout = $splitCartHelper->isAllAvailableToCheckout($block->getQuote());
+
+
+/** @var $splitCartHelperData SplitCartHelperData */
+$splitCartHelperData = $this->helper(Branch8\SplitCart\Helper\Data::class);
+$allShippingMethods = implode(',',$splitCartHelperData->getAllShippingMethods());
+$flagshipSalesHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+
+?>
+<?= $block->getChildHtml('form_before') ?>
+<?= $block->getChildHtml('cart_tabs') ?>
+<form action="<?= $block->escapeUrl($block->getUrl('checkout/cart/updatePost')) ?>"
+      method="post"
+      id="form-validate"
+      data-mage-init='{"Magento_Checkout/js/action/update-shopping-cart":
+              {"validationURL" : "<?= $block->escapeUrl($block->getUrl('checkout/cart/updateItemQty')) ?>",
+              "updateCartActionContainer": "#update_cart_action_container"}
+          }'
+      class="form form-cart pre-processing">
+    <?= $block->getBlockHtml('formkey') ?>
+    <?php
+    $limitPurchasedViewModel = $block->getData('limit_purchased_view_model');
+    $limitData = $limitPurchasedViewModel ? $limitPurchasedViewModel->getItemLimits() : [];
+    ?>
+    <input type="hidden" id="limit-purchased-metadata" value='<?= json_encode($limitData) ?>' />
+    
+    <div class="cart secondary actions">
+        <div class="select-all">
+            <input
+            type="checkbox"
+            class="checkbox select-all-cart" id="select_all_cart"/>
+            <label for="select_all_cart"><?= $block->escapeHtml(__('Select All')) ?></label>
+        </div>
+        <button type="button" class="action secondary action-small delete-products" id="delete_selected_products_button">
+            <span><?= $block->escapeHtml(__('Delete Products')) ?></span>
+        </button>
+    </div>
+    <div class="cart table-wrapper<?= $mergedCells == 2 ? ' detailed' : '' ?>">
+        <?php if ($block->getPagerHtml()): ?>
+            <div class="cart-products-toolbar cart-products-toolbar-top toolbar"
+                 data-attribute="cart-products-toolbar-top"><?= $block->getPagerHtml() ?>
+            </div>
+        <?php endif ?>
+        <table id="shopping-cart-table"
+               class="cart items data table"
+               data-shipping-methods="<?= $allShippingMethods ?>"
+               data-mage-init='{"shoppingCart":{"emptyCartButton": ".cart.actions .action.clear",
+               "updateCartActionContainer": "#update_cart_action_container"}}'>
+            <caption class="table-caption"><?= $block->escapeHtml(__('Shopping Cart Items')) ?></caption>
+            <tbody>
+                <tr>
+                    <td>
+                        <?php foreach ($block->getGroupItemsFollowSeller() as $sellerId => $_sellerItem): ?>
+                            <?php
+                            $sellerShippingMethod = '';
+                            if(strpos($sellerId, \Branch8\FlagshipStore\Helper\Sales::CART_FLAGSHIP_STORE_PREFIX) === 0){
+                                $flagshipSellerData = $flagshipSalesHelper->getFlagshipStoreData($sellerId);
+                                $sellerShopUrl = $flagshipSellerData['url'];
+                                $sellerTitle = $flagshipSellerData['name'];
+                                $sellerShippingMethod = implode(',', $flagshipSalesHelper->getIntersectionSellerShippingMethod($sellerId));
+                            }else{
+                                $seller = $splitCartHelperData->getSellerBySellerId($sellerId);
+                                $sellerShopUrl = $seller && $seller['shop_url']? $splitCartHelperData->getSellerShopUrl($seller['shop_url']) : '' ;
+                                $sellerTitle = $seller && $seller['shop_title']? $seller['shop_title']: ($seller && $seller['shop_url']? $seller['shop_url']: '') ;
+                                if($seller){
+                                    $sellerShippingMethod = (string)$seller['shipping_methods'];
+                                }
+                            }
+                            ?>
+
+                            <?php foreach ($_sellerItem as $type => $_typeItems): ?>
+                            <table class="cart-seller-items" data-sid="<?php echo $sellerId;?>">
+                                <thead>
+                                    <tr>
+                                        <th class="col" scope="col">
+                                            <input
+                                                type="checkbox"
+                                                class="checkbox split-cart-check-all" id="subcart<?= $type?>" value="<?= $type?>"
+                                                <?= $splitCartHelperData->isAvailableCheckoutAllCartType($_typeItems) ? "checked" : '' ?>/>
+                                        </th>
+                                        <th class="col seller" colspan="3">
+                                            <div class="seller-info">
+                                                <a class="seller-link" href="<?= $sellerShopUrl ?>" title=<?= $block->escapeHtml($sellerTitle) ?>><?= $block->escapeHtml($sellerTitle) ?></a>
+                                                 <span class="seller-line">|</span>
+                                                <span class="seller-type"><?= __($type) ?></span>
+                                            </div>
+                                            <div class="free-shipping-info" id="free-shipping-info_<?php echo $type;?>">
+                                            <?php echo ($type != SplitCartHelperData::TYPE_VIRTUAL && $type != SplitCartHelperData::TYPE_PREORDER_VIRTUAL) ? $block->getLayout()->getBlock('shipping_info')
+                                                ->setData('cartType', $type)
+                                                ->setData('items', $_typeItems)
+                                                ->setData('sellerShippingMethods', $sellerShippingMethod)
+                                                ->toHtml() : ''; ?>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <?php foreach ($_typeItems as $_item): ?>
+                                    <?= $block->getItemHtml($_item) ?>
+                                <?php endforeach ?>
+                            </table>
+                            <?php endforeach ?>
+                        <?php endforeach ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <?php if ($block->getPagerHtml()): ?>
+            <div class="cart-products-toolbar cart-products-toolbar-bottom toolbar"
+                 data-attribute="cart-products-toolbar-bottom"><?= $block->getPagerHtml() ?>
+            </div>
+        <?php endif ?>
+    </div>
+    <div class="cart main actions">
+        <?php if ($block->getContinueShoppingUrl()): ?>
+            <a class="action continue"
+            href="<?= $block->escapeUrl($block->getContinueShoppingUrl()) ?>"
+            title="<?= $block->escapeHtml(__('Continue Shopping')) ?>">
+                <span><?= $block->escapeHtml(__('Continue Shopping')) ?></span>
+            </a>
+        <?php endif; ?>
+        <?php if ($block->getViewModel()->isClearShoppingCartEnabled()): ?>
+            <button type="button"
+                    name="update_cart_action"
+                    data-cart-empty=""
+                    value="empty_cart"
+                    title="<?= $block->escapeHtml(__('Clear Shopping Cart')) ?>"
+                    class="action clear" id="empty_cart_button">
+                <span><?= $block->escapeHtml(__('Clear Shopping Cart')) ?></span>
+            </button>
+        <?php endif ?>
+        <button type="submit"
+                name="update_cart_action"
+                data-cart-item-update=""
+                value="update_qty"
+                title="<?= $block->escapeHtml(__('Update Shopping Cart')) ?>"
+                class="action update">
+            <span><?= $block->escapeHtml(__('Update Shopping Cart')) ?></span>
+        </button>
+        <input type="hidden" value="" id="update_cart_action_container" data-cart-item-update="" />
+    </button>
+</form>
+
+<?= $block->getChildHtml('checkout.cart.order.actions') ?>
+<?= $block->getChildHtml('shopping.cart.table.after') ?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_SplitCart/js/cartEvents": {
+
+          }
+      }
+    }
+</script>
+

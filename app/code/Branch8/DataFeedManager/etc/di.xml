@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Wyomind\DataFeedManager\Model\ResourceModel\Product\Collection"
+                type="Branch8\DataFeedManager\Rewrite\Model\ResourceModel\Product\Collection"/>
+    <type name="Wyomind\DataFeedManager\Block\Adminhtml\Feeds\Edit\Tab\Filters">
+        <plugin name="Amasty_CheckoutCore::restrictModuleOSCInMenu"
+                type="Branch8\DataFeedManager\Plugin\Wyomind\DataFeedManager\Block\Adminhtml\Feeds\Edit\Tab\FiltersPlugin" />
+    </type>
+</config>

@@ -1,0 +1,31 @@
+#ui-datepicker-div {
+    & .ui-datepicker-calendar {
+        & .ui-state-active,
+        & .ui-state-default,
+        & .ui-state-hover {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        & .ui-state-hover:hover {
+            background-color: #cac7c7;
+        }
+    }
+
+    .ui-datepicker-buttonpane {
+        display: flex;
+        gap: 20px;
+    }
+
+    .ui-datepicker-title {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        & > select {
+            margin: 0;
+            width: 100%;
+        }
+    }
+}

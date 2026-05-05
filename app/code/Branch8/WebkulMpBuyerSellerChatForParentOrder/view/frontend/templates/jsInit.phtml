@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var $viewModel \Branch8\WebkulMpBuyerSellerChatForParentOrder\ViewModel\ChatConfig
+ */
+$viewModel = $block->getViewModel();
+?>
+
+<script type="text/x-magento-init">
+    {
+        ".table.table-order-items": {
+            "Branch8_WebkulMpBuyerSellerChatForParentOrder/js/customerSellerChatLink": <?= $viewModel->getChatLinkWidgetConfig() ?>
+    }
+}
+</script>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Hotai Connected Co.,Ltd All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="HotaiConnected_GroupApi">
+        <sequence>
+            <module name="Magento_Sales"/>
+            <module name="Magento_Customer"/>
+            <module name="HotaiConnected_MssqlBridge"/>
+        </sequence>
+    </module>
+</config>

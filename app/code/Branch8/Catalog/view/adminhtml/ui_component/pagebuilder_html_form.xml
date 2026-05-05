@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" extends="pagebuilder_base_form">
+    <fieldset name="general" sortOrder="20">
+        <field name="html" formElement="textarea" sortOrder="10" component="Magento_PageBuilder/js/form/element/html-code" class="Magento\PageBuilder\Component\Form\HtmlCode">
+            <settings>
+                <validation>
+                    <rule name="validate-no-utf8mb4-characters" xsi:type="boolean">false</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+</form>

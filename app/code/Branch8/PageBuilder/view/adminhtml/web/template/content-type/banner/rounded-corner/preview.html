@@ -1,0 +1,71 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="pagebuilder-content-type pagebuilder-banner type-nested" attr="data.main.attributes" ko-style="data.main.style" css="data.main.css" event="{ mouseover: onMouseOver, mouseout: onMouseOut }, mouseoverBubble: false">
+    <render args="getOptions().template"></render>
+    <div css="data.wrapper.css"
+    ko-style="data.wrapper.style" data-bind="attr: { class: 'pagebuilder-banner-rounded-corner align-' + data.rounded_corner.attributes()['data-align']}">
+        <div css="data.wrapper.css"
+                ko-style="data.wrapper.style"
+                class="pagebuilder-banner-content">
+                <div class="pagebuilder-overlay" css="data.overlay.css" attr="data.overlay.attributes" ko-style="data.overlay.style">
+                    <div class="pagebuilder-collage-content" event="mousedown: activateEditor">
+                        <div class="pagebuilder-banner-text-content">
+                            <div if="isWysiwygSupported()"
+                                class="inline-wysiwyg"
+                                ko-style="data.content.style"
+                                css="data.content.css"
+                                attr="data.content.attributes"
+                                afterRender="afterRenderWysiwyg"
+                                contenteditable="true"
+                                event="mousedown: stopEvent, click: activateEditor, dblclick: handleDoubleClick">
+                            </div>
+                            <div if="isWysiwygSupported()" class="placeholder-text" ifnot="data.content.html" translate="'Edit Banner Text'"></div>
+                            <textarea ifnot="isWysiwygSupported()" class="inline-wysiwyg-textarea" afterRender="initTextarea" event="{keyup: onTextareaKeyUp, focus: onTextareaFocus, blur: onTextareaBlur, mousedown: stopEvent}" attr="placeholder: $t('Edit Banner Text')"></textarea>
+                        </div>
+                        <a if="data.main.attributes()['data-show-button'] !== 'never'"
+                            type="button"
+                            class="pagebuilder-banner-button"
+                            attr="data.button.attributes"
+                            ko-style="data.button.style"
+                            css="data.button.css">
+                            <span data-bind="liveEdit: { field: 'button_text', placeholder: buttonPlaceholder, selectAll: true }"></span>
+                        </a>
+                    </div>
+                </div>
+        </div>
+
+
+    <div class="pagebuilder-banner-wrapper"
+        attr="data.wrapper.attributes"
+        ko-style="Object.assign({}, data.wrapper.style(), {backgroundImage: getBackgroundImage()})"
+        css="Object.assign(data.wrapper.css(), {
+        'jarallax': data.wrapper.attributes()['data-background-type'] == 'video'
+        })"
+        event="{mouseover: onMouseOverWrapper, mouseout: onMouseOutWrapper, mousedown: activateEditor}"
+        afterRender="initParallax">
+    <div if="data.video_overlay.attributes()['data-video-overlay-color']"
+            class="video-overlay"
+            attr="data.video_overlay.attributes"
+            ko-style="data.video_overlay.style"></div>
+            <div class="rounded-corner" 
+                data-bind="style: { color: data.rounded_corner.attributes()['data-background-color']}">
+                <svg class="box-desc-rounder" width="201" height="207" viewBox="0 0 201 207" xmlns="http://www.w3.org/2000/svg"> <path d="M201 0H0V207C10 86 99 6 201 0Z" fill="currentColor"/> </svg>
+                </div>
+                <img if="data.rounded_corner.attributes()['data-desktop-image'][0]"
+                data-bind="attr:{src: data.rounded_corner.attributes()['data-desktop-image'][0].url, alt: data.rounded_corner.attributes()['data-desktop-image'][0].name}"
+                class="pagebuilder-mobile-hidden" />
+                <img if="data.rounded_corner.attributes()['data-mobile-image'][0]"
+                data-bind="attr:{src: data.rounded_corner.attributes()['data-mobile-image'][0].url, alt: data.rounded_corner.attributes()['data-mobile-image'][0].name}"
+                    class="pagebuilder-mobile-only" />
+    <scope args="getUploader().getUiComponent()">
+        <render></render>
+    </scope>
+    
+    </div>
+</div>
+</div>

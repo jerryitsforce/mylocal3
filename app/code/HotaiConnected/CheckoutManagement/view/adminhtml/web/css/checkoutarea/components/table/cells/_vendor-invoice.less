@@ -1,0 +1,177 @@
+// =============================================
+//  Vendor Invoice Cell Component (BEM)
+// =============================================
+//  用於：Tabulator cell [tabulator-field="invoice_numbers"]
+//  模板：template/checkoutarea/table/vendor-invoice-group.html
+//  邏輯：js/checkoutarea/components/table/vendor-invoice-actions.js
+//
+//  BEM 結構：
+//  Block: .vendor-invoice
+//  Elements: __group, __row, __field, __input, __btn
+//  Modifiers: --confirm, --plus, --minus
+//
+//  HTML 結構：
+//  <div class="vendor-invoice">
+//    <div class="vendor-invoice__group" data-state="editable|readonly">
+//      <div class="vendor-invoice__row">
+//        <div class="vendor-invoice__field">
+//          <input class="vendor-invoice__input">
+//          <button class="vendor-invoice__btn vendor-invoice__btn--confirm">
+//        </div>
+//        <button class="vendor-invoice__btn vendor-invoice__btn--plus">
+//        <button class="vendor-invoice__btn vendor-invoice__btn--minus">
+//      </div>
+//    </div>
+//  </div>
+//
+//  @updated 2025-10-28 - 重構：移動至 table/cells/ 以與整體架構對稱
+//  @updated 2025-10-28 - 重構：修正 BEM 架構，移除 __container，Block 直接對應 HTML
+//  @updated 2025-10-27 - 重構：採用 BEM 架構重構 vendor-invoice 元件
+// =============================================
+
+// 限制在 Tabulator cell 範圍內（避免全域污染）
+.tabulator-cell {
+
+    .vendor-invoice {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        
+        // Element: Group (可重複的群組項目)
+        &__group {
+            width: 100%;
+            
+            // State: Readonly (唯讀狀態 - 透過 data-state 控制)
+            // 當發票已確認後，隱藏確認和刪除按鈕
+            &[data-state="readonly"] {
+                .vendor-invoice__btn--confirm,
+                .vendor-invoice__btn--cancel {
+                    display: none;
+                }
+            }
+
+            // State: Addable (新增狀態 - 透過 data-state 控制)
+            // 當發票尚未確認時，隱藏編輯和刪除按鈕
+            &[data-state="addable"] {
+                .vendor-invoice__btn--edit,
+                .vendor-invoice__btn--cancel {
+                    display: none;
+                }
+
+                // 只有一個群組時，隱藏刪除按鈕
+                &:only-child .vendor-invoice__btn--minus {
+                    display: none;
+                }
+            }
+
+            // State: Editable (編輯狀態 - 透過 data-state 控制)
+            // 當發票正在編輯時，隱藏確認和刪除按鈕
+            &[data-state="editable"] {
+                .vendor-invoice__btn--edit,
+                .vendor-invoice__btn--minus {
+                    display: none;
+                }
+
+                .vendor-invoice__btn--confirm {
+                    border-right-width: 1px;
+                }
+            }
+        }
+        
+        // Element: Row (這一列的容器 - 包含 field 和 +/- 按鈕)
+        &__row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        // Element: Field (欄位 - 包含 input 和 confirm button)
+        &__field {
+            display: flex;
+            align-items: center;
+            width: 200px;
+            border: 1px solid #949494;
+            & input, & button {
+                border-width: 0;
+            }
+
+            & input {
+                border-right: 1px solid #949494;
+            }
+
+            &.mage-error {
+                border: 1px solid #e02b27;
+                & input, & button {
+                    border-color: #e02b27;
+                    border-top-width: 0;
+                    border-bottom-width: 0;
+                }
+
+                & button {
+                    border-right-width: 0;
+                }
+
+                & input {
+                    border-left-width: 0;
+                }
+            }
+        }
+        
+        // Element: Input (輸入框)
+        &__input {
+            flex: 1;
+            margin-right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            font-size: 1.3rem;
+            height: 33px;
+            text-transform: uppercase;
+            border-right: none;
+            
+            // Disabled state
+            &:disabled {
+                background-color: #f0f0f0;
+            }
+        }
+        
+        // Magento Error Message (驗證錯誤訊息)
+        &__group > div.mage-error {
+            color: #e02b27;
+            font-size: 1.2rem;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        
+        // Element: Button (按鈕基礎樣式)
+        &__btn {
+            height: 33px;
+            
+            // Modifier: Confirm (確認按鈕特殊樣式)
+            // Modifier: cancel (清除按鈕特殊樣式)
+            // Modifier: Edit (編輯按鈕特殊樣式)
+            &--confirm,
+            &--cancel,
+            &--edit {
+                margin-left: 0;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                width: auto;
+                // border-left: none;
+                padding: 0 10px;
+            }
+            
+            // Modifier: Plus & Minus (新增/移除按鈕 - 圓形樣式)
+            &--plus,
+            &--minus {
+                width: 33px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+    }
+
+}

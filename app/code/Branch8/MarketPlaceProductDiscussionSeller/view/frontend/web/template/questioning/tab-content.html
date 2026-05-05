@@ -1,0 +1,14 @@
+<div class="seller-thread-list-wrapper"  data-bind="foreach:items">
+    <!-- ko template: {
+name: 'Branch8_MarketPlaceProductDiscussionSeller/questioning/item',
+data: $data
+} --><!-- /ko -->
+</div>
+<!-- ko if: items().length === 0  -->
+<div class="seller-thread-list-wrapper no-item" data-bind="i18n:'No Items Found'"></div>
+<!-- /ko -->
+<div class="seller-thread-pager">
+    <!-- ko foreach: getRegion(name+'.'+'paging') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>

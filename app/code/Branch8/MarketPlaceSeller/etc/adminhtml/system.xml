@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="email_notification" translate="label" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Email Notifications</label>
+            <tab>branch8</tab>
+            <resource>Webkul_Marketplace::config_marketplace</resource>
+            <group id="order_daily_notification_to_seller" translate="label"  sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Order Daily Notification to Seller</label>
+                <field id="enable" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="english_header" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Include English in Header?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="copy_to" translate="label comment" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Send Email Copy To</label>
+                    <comment>Comma-separated.</comment>
+                    <validate>validate-emails</validate>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="copy_method" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Send Email Copy Method</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Method</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="scheduler" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schedule Order Notification Email</label>
+                    <comment>Example: 0 * * * *</comment>
+                </field>
+                <field id="flow_status" translate="label" type="multiselect" sortOrder="80" showInDefault="1" showInWebsite="1">
+                    <label>Filter Order by Flow Status</label>
+                    <source_model>\Branch8\MarketPlaceSeller\Model\Config\Source\FlowStatus</source_model>
+                </field>
+                <field id="file_prefix" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Prefix of file name</label>
+                    <comment>Example: 怡業_訂單待出貨及退貨申請中列表_</comment>
+                </field>
+            </group>
+            <group id="return_report_settings" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Return/Exchange Report Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Daily Report</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="emails" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Recipient Emails</label>
+                    <comment>Enter comma-separated email addresses.</comment>
+                </field>
+                <field id="scheduler" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Schedule Order Notification Email</label>
+                    <comment>Example: 0 * * * *</comment>
+                </field>
+                <field id="file_prefix" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Prefix of file name</label>
+                    <comment>Example: 退貨_換貨_</comment>
+                </field>
+            </group>
+        </section>
+
+        <section id="seller_info" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="group_management" translate="label"  sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Group management</label>
+                <field id="default_seller_group" type="select" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Default seller group</label>
+                    <source_model>Magento\Customer\Model\Config\Source\Group</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_marketplaceseller" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_MarketPlaceSeller</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\MarketPlaceParentOrderEcPayLogisticIntegration\Model\Config\Source\LogOption</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

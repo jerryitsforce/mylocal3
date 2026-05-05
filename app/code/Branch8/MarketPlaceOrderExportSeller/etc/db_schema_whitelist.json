@@ -1,0 +1,10 @@
+{
+    "ecpay_invoice_hotai_order_invoice_logs": {
+        "column": {
+            "seller_id": true,
+            "seller_code": true,
+            "seller_company_name": true,
+            "seller_shop_name": true
+        }
+    }
+}

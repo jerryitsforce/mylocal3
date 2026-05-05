@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_wishlist_stock_alert" resource="default" engine="innodb" comment="Wishlist Stock Alert Tracking">
+        <column xsi:type="int" name="alert_id" unsigned="true" nullable="false" identity="true" comment="Alert ID"/>
+        <column xsi:type="int" name="wishlist_item_id" unsigned="true" nullable="false" comment="Wishlist Item ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="varchar" name="product_name" length="1024" nullable="false" comment="Product Name"/>
+        <column xsi:type="varchar" name="combo" length="1024" nullable="false" default="NONE" comment="Combo Variantion"/>
+        <column xsi:type="smallint" name="was_out_of_stock_when_added" unsigned="true" nullable="false" default="0" comment="Was OOS When Added"/>
+        <column xsi:type="smallint" name="notification_sent" unsigned="true" nullable="false" default="0" comment="Notification Sent"/>
+        <column xsi:type="int" name="saleable_qty_when_added" unsigned="true" nullable="false" default="0" comment="Saleable Quantity When Added"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated At"/>
+        <column xsi:type="timestamp" name="notified_at" nullable="true" comment="Notified At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="alert_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="BRANCH8_ALERT_WISHLIST_ITEM_ID"
+                    table="branch8_wishlist_stock_alert" column="wishlist_item_id"
+                    referenceTable="wishlist_item" referenceColumn="wishlist_item_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="BRANCH8_ALERT_CUSTOMER_ID"
+                    table="branch8_wishlist_stock_alert" column="customer_id"
+                    referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="BRANCH8_ALERT_PRODUCT_ID"
+                    table="branch8_wishlist_stock_alert" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+
+        <constraint referenceId="BRANCH8_WISHLIST_STOCK_ALERT_CUSTOMER_PRODUCT_COMBO" type="unique">
+            <column name="customer_id"/>
+            <column name="product_id"/>
+            <column name="combo"/>
+        </constraint>
+
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_WISHLIST_ITEM_ID" indexType="btree">
+            <column name="wishlist_item_id"/>
+        </index>
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_CUSTOMER_PRODUCT" indexType="btree">
+            <column name="customer_id"/>
+            <column name="product_id"/>
+        </index>
+
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_NOTIFICATION_STATUS" indexType="btree">
+            <column name="was_out_of_stock_when_added"/>
+            <column name="notification_sent"/>
+        </index>
+    </table>
+    <table name="branch8_wishlist_stock_alert_email_queue" resource="default" engine="innodb"
+           comment="Wishlist Restock Email Queue">
+        <column xsi:type="int" name="queue_id" unsigned="true"
+                nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="customer_id" nullable="false"/>
+        <column xsi:type="varchar" name="customer_email" length="512" nullable="true" default="" comment="Customer Email"/>
+        <column xsi:type="int" name="store_id" unsigned="true" nullable="false" comment="Store ID"/>
+        <column xsi:type="longtext" name="data" nullable="false"/>
+        <column xsi:type="varchar" name="queue_type" length="24"
+                nullable="true"
+                comment="cron,rabbitmq"/>
+        <column xsi:type="varchar" name="queue_code" length="512"
+                nullable="true"
+                comment="Only available when use rabbitmq"/>
+
+        <column xsi:type="text" name="message"
+                nullable="true"
+                comment="Error Message"/>
+
+        <column xsi:type="text" name="trace"
+                nullable="true"
+                comment="Trace"/>
+
+        <column xsi:type="smallint" name="status" default="0"
+                comment="0=pending,1=sent,2=failed"/>
+        <column xsi:type="timestamp" name="created_at"
+                default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="timestamp" name="sent_at"
+                nullable="true"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="queue_id"/>
+        </constraint>
+        <constraint referenceId="BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_UNIQUE" type="unique">
+            <column name="customer_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_FULLTEXT" indexType="fulltext">
+            <column name="customer_email"/>
+        </index>
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_QUEUE_TYPE" indexType="btree">
+            <column name="queue_type"/>
+        </index>
+        <constraint referenceId="BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_UNIQUE" type="unique">
+            <column name="customer_id"/>
+            <column name="store_id"/>
+        </constraint>
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_CUSTOMER_EMAIL" indexType="btree">
+            <column name="customer_email"/>
+        </index>
+        <index referenceId="BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_QUEUE_TYPE_CODE" indexType="btree">
+            <column name="queue_code"/>
+        </index>
+    </table>
+</schema>

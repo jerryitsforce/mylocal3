@@ -1,0 +1,43 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- MediaGalleryUi Plugin -->
+    <type name="Magento\MediaGalleryUi\Model\UploadImage">
+        <plugin name="hotai_upload_validation"
+                type="HotaiConnected\MediaGalleryValidation\Plugin\UploadImagePlugin"
+                sortOrder="10"
+                disabled="false"/>
+    </type>
+
+    <!-- Catalog Product Gallery Upload Plugin -->
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Gallery\Upload">
+        <plugin name="hotai_catalog_upload_validation"
+                type="HotaiConnected\MediaGalleryValidation\Plugin\CatalogUploadPlugin"
+                sortOrder="10"
+                disabled="false"/>
+    </type>
+
+    <!-- Branch8 MarketplaceProduct Plugin -->
+    <type name="Branch8\MarketplaceProduct\Controller\Product\Gallery\Upload">
+        <plugin name="hotai_branch8_marketplace_validation"
+                type="HotaiConnected\MediaGalleryValidation\Plugin\MarketplaceUploadPlugin"
+                sortOrder="10"
+                disabled="false"/>
+    </type>
+
+    <!-- Webkul Marketplace Plugin -->
+    <type name="Webkul\Marketplace\Controller\Wysiwyg\Gallery\Upload">
+        <plugin name="hotai_webkul_marketplace_validation"
+                type="HotaiConnected\MediaGalleryValidation\Plugin\WebkulMarketplaceUploadPlugin"
+                sortOrder="10"
+                disabled="false"/>
+    </type>
+
+
+    <type name="Branch8\MarketplaceStaging\Controller\Variation\Upload">
+        <plugin name="hotai_webkul_marketplace_validation"
+                type="HotaiConnected\MediaGalleryValidation\Plugin\VariantionUploadPlugin"
+                sortOrder="10"
+                disabled="false"/>
+    </type>
+</config>

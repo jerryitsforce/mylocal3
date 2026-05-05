@@ -1,0 +1,33 @@
+{
+  "name": "magentocode/magento2-cli-media-tool",
+  "description": "Magento 2 CLI media analysis and cleanup tool.",
+  "type": "magento2-module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sergii Ivashchenko",
+      "homepage": "http://www.sivaschenko.com/"
+    },
+    {
+      "name": "Brian Neff",
+      "homepage": "http://www.magentocode.com/"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repo.magento.com/"
+    }
+  ],
+  "require": {
+    "magento/module-catalog": ">100.0.0"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "MagentoCode\\CliMediaTool\\": ""
+    }
+  }
+}

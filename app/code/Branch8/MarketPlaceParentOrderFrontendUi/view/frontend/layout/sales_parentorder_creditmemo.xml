@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="sales_order_creditmemo_renderers"/>
+    <update handle="customer_account"/>
+    <update handle="sales_order_item_price"/>
+    <update handle="sales_parentorder_info_links"/>
+    <body>
+        <referenceContainer name="page.main.title">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Info" name="parentorder.status"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/order_status.phtml"/>
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Info" name="parentorder.date"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/order_date.phtml"/>
+            <container name="order.actions.container" htmlTag="div" htmlClass="actions-toolbar order-actions-toolbar">
+                <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Info\Buttons" as="buttons"
+                       name="sales.parentorder.info.buttons"
+                       cacheable="false"/>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="sales.parentorder.info.buttons">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Info\Buttons\Rss"
+                   as="buttons.rss"
+                   name="sales.parentorder.info.buttons.rss" cacheable="false"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Creditmemo"
+                   name="sales.order.creditmemo" cacheable="false" after="sales.parentorder.info.links">
+                <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Creditnemo\Items"
+                       name="creditmemo_items" template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/creditmemo/items.phtml">
+                    <block class="Magento\Framework\View\Element\RendererList" name="sales.order.creditmemo.renderers" as="renderer.list"/>
+                </block>
+            </block>
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Info"
+                   as="info" name="sales.parentorder.info"
+                   after="sales.parentorder.shipment"/>
+        </referenceContainer>
+        <referenceBlock name="additional.product.info">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="marketplace_seller_sales_item"/>
+        </referenceBlock>
+        <referenceBlock name="marketplace_seller_sales_item">
+            <action method="setTemplate" ifconfig="marketplace/profile_settings/seller_profile_display">
+                <argument name="template" xsi:type="string">Webkul_Marketplace::sales/item/default.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="profile_helper" xsi:type="object">Webkul\Marketplace\ViewModel\Profile</argument>
+            </arguments>
+        </referenceBlock>
+        <block class="Magento\Framework\View\Element\Template" name="additional.product.info"
+               template="Magento_Theme::template.phtml"/>
+    </body>
+</page>

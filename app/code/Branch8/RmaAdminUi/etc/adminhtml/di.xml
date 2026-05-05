@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\MpRmaSystem\Block\Adminhtml\Reasons\Edit\Form"
+                type="Branch8\RmaAdminUi\Override\Webkul\MpRmaSystem\Block\Adminhtml\Reasons\Edit\Form"/>
+
+    <type name="Webkul\MpRmaSystem\Block\Adminhtml\Rma\View\Tab\Details">
+        <plugin name="Branch8_RmaAdminUi::changeTemplae"
+                type="Branch8\RmaAdminUi\Plugin\Webkul\MpRmaSystem\Block\Adminhtml\Rma\View\Tab\DetailsPlugin"
+                sortOrder="1" disabled="false"  />
+    </type>
+</config>

@@ -1,0 +1,47 @@
+<!--ko if: chatEnabled() === true -->
+<div class="model-search-bar" style="display: block">
+    <span class="fa fa-search"></span>
+    <input type="text"
+           data-bind="value: searchContact, valueUpdate: 'keyup',attr :{placeholder: $t('Search Customer')}"></input>
+</div>
+<!-- ko if: isServerRunning() === false -->
+<span class="server-error seller-end"
+      data-bind="i18n: 'Chat server is not working.', css : window.dashboard">
+
+</span>
+<!-- /ko -->
+<div class="chatList" style="display: block" data-bind="afterRender: loadConversations">
+    <ol class="chat-customer-list"
+        data-bind="foreach: filteredConversationList">
+        <li class="customer-info"
+            data-bind="click: $parent.activeChatWindow.bind($parent)">
+            <span style="position:absolute"
+                  data-bind="attr : {id:'status-'+customerUniqueId, class:'chat_status '+$parent.STATUS.getChatStatusLabel(customerChatStatus)}"></span>
+            <span class="user_image">
+                <img data-bind="attr: {src: customerImage, id:'profile-'+customerUniqueId}"
+                     style="height:36px; width:36px;"/>
+            </span>
+            <span class="user-info">
+                <span class="name" data-bind="text: customerName"></span>
+                <span class="email" data-bind="text: customerEmail"></span>
+            </span>
+            <!-- ko if: $parent.checkIsBlocked($parent, $data) == false -->
+            <span class="user-action" data-bind="click: function(){
+                        $parent.showblockUserBox($parent, $data)
+                        }, clickBubble:false">
+                <i class="fa fa-ban fa-2x" aria-hidden="true" data-bind="attr :{title: $t('Block')}"></i>
+            </span>
+            <!-- /ko -->
+            <!-- ko if: $parent.checkIsBlocked($parent, $data) == true -->
+            <span class="user-action"
+                  data-bind="click: function(){$parent.blockUser($parent, $data)}, clickBubble:false">
+                            <i class="fa fa-unlock-alt" aria-hidden="true" data-bind="attr :{title: $t('Unblock')}"></i>
+                        </span>
+            <!-- /ko -->
+            <p class="unread badge" data-bind="text:sellerTotalUnreadMessages,
+                            visible: sellerTotalUnreadMessages > 0"></p>
+            <hr class="line-after-customer-details">
+        </li>
+    </ol>
+</div>
+<!-- /ko -->

@@ -1,0 +1,26 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="admin__field">
+    <label class="admin__field-label">
+        <span translate="'Product Recommendation'"></span>
+    </label>
+    <div class="admin__field-control">
+        <div class="pagebuilder-block-chooser">
+            <div text="getUnitNameForRecUnit()"></div>
+            <div class="actions">
+                <span ko-scope="getButton()" class="chooser-button">
+                    <render/>
+                </span>
+                <span data-bind="visible: rmVisible()" class="remove-button">
+                    <button type="button" class="action-remove" data-bind="click: rmUnitSelect">
+                        <span translate="'Remove'"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

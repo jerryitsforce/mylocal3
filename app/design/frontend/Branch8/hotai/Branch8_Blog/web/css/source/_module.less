@@ -1,0 +1,172 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+@import  'module/_blog.less';
+@import  'module/_list.less';
+@import  'module/_post.less';
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+  .blog-post-index,
+  .blog-topic-view,
+  .blog-category-view{
+      .page-header.headroom{
+          transition: transform 300ms linear, top 300ms linear, visibility 0ms;
+      }
+      .page-header.headroom--unpinned{
+          visibility: hidden;
+      }
+
+      .page-header.headroom--top {
+        background: transparent;
+      }
+
+      .blog-list-header{
+        margin-top: -60px;
+        border-radius: 0 0 36px 0;
+        overflow: hidden;
+      }
+
+      .blog-list-info{
+        min-height: 248px;
+        padding-top: 60px;
+        box-sizing: border-box;
+        background-size: cover;
+        background-position: right bottom;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+  }
+
+  .blog-list-header{
+    .blog-list-content{
+      padding: 20px var(--layout-indent__width);
+      box-sizing: border-box;
+      width: 100%;
+      color: #ffffff;
+
+      .page-title{
+        color: #ffffff;
+        margin-bottom: 4px;
+      }
+    }
+
+    .blog-list-desc{
+      letter-spacing: 1px;
+    }
+  }
+
+  .blog-rss{
+    &:extend(.abs-visually-hidden all);
+  }
+
+
+}
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+  .blog-list-header{
+    .blog-list-content{
+      .page-title{
+        font-size: 24px;
+        line-height: 1.41666666666667;
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+  .blog-post-index,
+  .blog-topic-view,
+  .blog-category-view {
+      .header .dropdown .dropdown-toggle {
+          background: none;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .navigation {
+          z-index: 14;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+          &::before {
+              display: none;
+          }
+
+          .nav-main {
+              // padding: 11px 16px;
+          }
+      }
+
+      .nav-main li.level0>a,
+      .nav-main .menu-cats>a::after {
+          color: var(--color-white);
+      }
+
+      .nav-main li.level0:hover>a {
+          background-color: rgba(255, 255, 255, 0.1);
+          border-radius: 100px;
+      }
+
+      .nav-main .menu-flagship {
+          >a>span.icon-next {
+              display: block;
+              position: absolute;
+              left: -20px;
+              width: 2px;
+              height: 16px;
+              background: rgba(255, 255, 255, 0.1);
+          }
+      }
+
+      .blog-list-header{
+        margin-top: -134px;
+        border-radius: 0 0 80px 0;
+      }
+
+      .blog-list-info{
+        min-height: 454px;
+        padding-top: 134px;
+      }
+  }
+  .blog-list-header{
+    .blog-list-content{
+      box-sizing: border-box;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: var(--layout__max-width);
+
+      .page-title{
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__l) {
+  .blog-post-index,
+  .blog-topic-view,
+  .blog-category-view {
+    .blog-list-header{
+      margin-top: -162px;
+    }
+
+    .blog-list-info{
+      padding-top: 162px;
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+  .blog-list-header{
+    .blog-list-desc{
+      font-size: 18px;
+      line-height: 1.55555555555556;
+      letter-spacing: 2px;
+    }
+  }
+}

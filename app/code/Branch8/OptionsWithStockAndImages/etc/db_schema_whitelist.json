@@ -1,0 +1,94 @@
+{
+    "wk_osi_variations": {
+        "column": {
+            "entity_id": true,
+            "comb": true,
+            "weight": true,
+            "image": true,
+            "stock": true,
+            "product_id": true,
+            "sku": true,
+            "is_sync": true,
+            "is_lock_sku": true,
+            "product_item_id": true,
+            "ready_to_ship_qty": true,
+            "follow_simple_sku_cost_setting": true,
+            "cost_setting": true,
+            "commission_percent": true,
+            "cost": true,
+            "price": true,
+            "follow_simple_sku_price_setting": true,
+            "mageproduct_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "WK_OSI_VARIATIONS_PRODUCT_ID": true,
+            "WK_OSI_VARIATIONS_MAGEPRODUCT_ID": true
+        }
+    },
+    "wk_osi_swatch": {
+        "column": {
+            "entity_id": true,
+            "title": true,
+            "option_id": true,
+            "is_swatch": true,
+            "product_id": true
+        },
+        "index": {
+            "WK_OSI_SWATCH_PRODUCT_ID": true,
+            "WK_OSI_SWATCH_OPTION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "WK_OSI_SWATCH_PRODUCT_ID_CAT_PRD_ENTT_ENTT_ID": true,
+            "WK_OSI_SWATCH_OPTION_ID_CATALOG_PRODUCT_OPTION_OPTION_ID": true,
+            "WK_OSI_SWATCH_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID": true
+        }
+    },
+    "catalog_product_option_type_value": {
+        "column": {
+            "option_type_id": true,
+            "option_id": true,
+            "sku": true,
+            "is_bought": true,
+            "is_visible": true,
+            "sort_order": true,
+            "product_item_id": true
+        },
+        "index": {
+            "CATALOG_PRODUCT_OPTION_TYPE_VALUE_OPTION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CAT_PRD_OPT_TYPE_VAL_OPT_ID_CAT_PRD_OPT_OPT_ID": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "option_sku": true,
+            "variation_sku": true,
+            "spec_title": true,
+            "combo": true
+        }
+    },
+    "branch8_variations_price_index": {
+        "column": {
+            "variation_comb": true,
+            "product_id": true,
+            "customer_group_id": true,
+            "website_id": true,
+            "final_price": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_VARIATIONS_PRICE_IDX_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "combo": true
+        }
+    }
+}

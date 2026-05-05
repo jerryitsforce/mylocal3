@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="sales_address_convert_parent_order_address">
+            <field name="customer_address_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="region_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="customer_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="fax">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="region">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="postcode">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="lastname">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="street">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="city">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="email">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="telephone">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="country_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="firstname">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="address_type">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="prefix">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="middlename">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="suffix">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="company">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="vat_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="vat_is_valid">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="vat_request_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="vat_request_date">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="vat_request_success">
+                <aspect name="to_parent_order_address"/>
+            </field>
+            <field name="giftregistry_item_id">
+                <aspect name="to_parent_order_address"/>
+            </field>
+        </fieldset>
+        <fieldset id="sales_order_detail_copy_parent_order">
+            <field name="state">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="status">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_id">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_email">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_is_guest">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_name">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="store_id">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="remote_ip">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="store_name">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_group_id">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="shipping_description">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="order_currency_code">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_is_guest">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="is_virtual">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="shipping_method">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="customer_note">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="order_note">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="referrer_code">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_carruer_num">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_carruer_type">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_customer_company">
+                <aspect name="to_parent_order"/>
+            </field>
+            <field name="ecpay_invoice_customer_identifier">
+                <aspect name="to_parent_order"/>
+            </field>
+        </fieldset>
+    </scope>
+</config>

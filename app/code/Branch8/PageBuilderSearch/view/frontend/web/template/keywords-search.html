@@ -1,0 +1,12 @@
+<div class="block widget block-keywords-search-list grid">
+    <div class="keyword-list">
+        <!-- ko foreach: { data: getSearchKeywords(), as: 'item' } -->
+        <a class="keyword" data-bind="text: item.text, attr: {href: item.url}, title: item.text"></a>
+        <!-- /ko -->
+    </div>
+    <div class="primary">
+        <button type="button" class="action refresh-keyword" data-bind="click: refresh">
+            <span data-bind="i18n: '換一批'"></span>
+        </button>
+    </div>
+</div>

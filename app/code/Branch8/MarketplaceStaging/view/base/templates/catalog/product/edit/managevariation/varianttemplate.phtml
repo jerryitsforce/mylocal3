@@ -1,0 +1,402 @@
+<?php
+/**
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $block \Branch8\MarketplaceStaging\Block\CustomOption\Variation
+ */
+?>
+<script id="wk-variation-form-template" type="text/x-magento-template">
+
+    <form class="wk-variation-form" id="wk-variation-form">
+        <%
+            var comb = data.combination;
+            var skus = data.skus;
+            var defaultData=data.defaultData;
+            var followSimpleSkuCostSetting=data.followSimpleSkuCostSetting || true;
+            var followSimpleSkuPriceSetting=data.followSimpleSkuPriceSetting || true;
+        %>
+        <div class="data-grid-search-control-wrap">
+            <input id="variation-search" class="admin__control-text data-grid-search-control" type="text"
+                   placeholder="<?= $escaper->escapeHtml(__('Search by keyword')) ?>">
+        </div>
+
+        <div id="pagination">
+            <div class="admin__control-table-pagination">
+                <div class="form-group"><select style="float: left; margin-left: 15px; margin-top: 5px;"
+                                                class="form-control pageNum-select maxRows admin__control-select">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="5000"><?= $escaper->escapeHtml('Show ALL Rows') ?></option>
+                    </select>
+                    <label style="display: inline-block;line-height: 33px;" class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('per page')) ?>
+                    </label>
+                    <input style="width: 18px; height: 18px; margin: 15px 0px 0 30px; vertical-align: middle;"
+                           class="admin__control-support-text" type="checkbox" id="follow_simple_sku_cost_setting">
+                    <label style="display: inline-block; line-height: 33px;" for="follow_simple_sku_cost_setting"
+                           class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('Follow Simple SKU Cost Setting')) ?>
+                    </label>
+                    <input style="width: 18px; height: 18px; margin: 15px 0px 0 30px; vertical-align: middle;"
+                           class="admin__control-support-text" type="checkbox" id="follow_simple_sku_price_setting">
+                    <label style="display: inline-block; line-height: 33px;" for="follow_simple_sku_price_setting"
+                           class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('Follow Simple SKU Price Setting')) ?>
+                    </label>
+                    <div class="admin__data-grid-pager" style="float: right;">
+                        <button class="action-previous pre-pag-btn" type="button"
+                                title="Previous Page" disabled=""></button>
+                        <input class="admin__control-text currenpage" type="number">
+                        <label class="admin__control-support-text pagenumlabel">of 1</label>
+                        <button class="action-next nxt-pag-btn" type="button" title="Next Page" disabled=""></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="note" style="text-align: center;clear: both;color: #e02b27;font-size: 16px;padding: 10px">
+            <b><?= __('Please ensure that all the required fields have been filled in: Cost, Stock, SKU, Price.') ?></b>
+        </div>
+        <table id="variation-tbl" class="data-grid wk-variation-table">
+            <thead>
+            <tr>
+                <th class="data-grid-th"><%- data.title %></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Image')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Salable Qty')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Ready to ship Qty')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Cost setting')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Commission Rate')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Cost')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Price')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Sku')) ?></th>
+                <th class="data-grid-th"><?= $escaper->escapeHtml(__('Is Sync Status')) ?></th>
+            </tr>
+            </thead>
+            <%
+                var rowClass = "_even-row";
+            %>
+            <% _.each(data.combination, function(label, index) { %>
+                <%
+                    var combLabel = label;
+                    var oldCombLabel = data.oldComb[index];
+                    if (index%2!=0) {
+                        rowClass = "_odd-row";
+                    }
+                    var prevData = _.find(data.currentVariationComboData, function(item) {
+                        if (!item || item.comb === undefined || item.comb === null) return false;
+                        var itemComb = String(item.comb).replace(/_$/, '');
+                        var currentComb = String(combLabel).replace(/_$/, '');
+                        return itemComb === currentComb;
+                    });
+                %>
+                <% if (typeof prevData != "undefined") {
+                        var row_sku = skus[combLabel];
+                        if (prevData.weight==null || isNaN(prevData.weight)) {
+                            prevData.weight = '';
+                        }
+                        if (prevData.is_sync==null || isNaN(prevData.is_sync)) {
+                            prevData.is_sync = 0;
+                        }
+                        if (prevData.is_lock_sku==null || isNaN(prevData.is_lock_sku)) {
+                            prevData.is_lock_sku = 0;
+                        }
+                        if (prevData.sku != null) {
+                             row_sku = prevData.sku;
+                        }
+                        if (prevData.stock === null || prevData.stock === undefined) {
+                            prevData.stock = 0;
+                        }
+                        if (prevData.ready_to_ship_qty === null || prevData.ready_to_ship_qty === undefined) {
+                            prevData.ready_to_ship_qty = 0;
+                        }
+                        if (prevData.price === null || prevData.price === undefined) {
+                            prevData.price = 0;
+                        }
+                        if (prevData.cost === null || prevData.cost === undefined) {
+                            prevData.cost = 0;
+                        }
+                %>
+                    <tr class="data-row <%- rowClass %>">
+                    <td>
+                        <input class="admin__control-text wkv-comb" type="hidden" value="<%- combLabel %>"
+                               name="wkvariation[<%- index %>][comb]"/><%- combLabel %>
+                    </td>
+                    <td>
+                        <div class="data-grid-file-uploader">
+                            <% var imageCount = 0; %>
+                            <% _.each(prevData.file, function(imageValue, imageIndex) { %>
+                                <% if (imageValue) {
+                                     imageCount++;
+                                     var isTempFile=/\.tmp$/i.test(imageValue);
+                                     var newValue = imageValue.replace(/\.tmp$/, "");
+                                     var imageUrl=isTempFile ? window.tempMediaUrl+newValue : mediaUrl+ newValue;
+
+
+                                %>
+                                        <div class="wk-img-box data-grid-file-uploader-inner">
+                                            <span class="wkosi-image-delete"></span>
+                                            <input class="wkv-file" type="hidden"
+                                                   name="wkvariation[<%- index %>][file][<%- imageIndex %>]"
+                                                   value="<%- imageValue %>">
+                                            <img class="file-uploader-image" src="<%- imageUrl %>">
+                                        </div>
+                                <% } else { %>
+                                        <input class="wkv-file" type="hidden" name="wkvariation[<%- index %>][file][]">
+                                 <% }
+                            }); %>
+                            <div class="data-grid-file-uploader-inner file-uploader-area">
+                                <input class="file-uploader-input wkv-image" data-id="<%- index %>"
+                                       data-image-count="<%- imageCount %>" type="file"
+                                       id="wk-variation-row-<%- index %>image"
+                                       name="wkvariation[<%- index %>][image]" multiple="multiple">
+                                <label class="file-uploader-button" for="wk-variation-row-<%- index %>image">
+                                    <span>Upload Image</span>
+                                </label>
+                                <span class="file-uploader-spinner"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <% if (data.weightDisabled) { %>
+                            <input class="admin__control-text wkv-weight wkosi-disabled" readonly type="hidden"
+                                   name="wkvariation[<%- index %>][weight]" value="0"/>
+                        <% } else { %>
+                            <input id="wkv-weight-<%- index %>" class="admin__control-text wkv-weight" type="hidden"
+                                   name="wkvariation[<%- index %>][weight]"
+                                   value="<%- prevData.weight %>"/>
+                        <% } %>
+                            <input id="wkv-follow_simple_sku_cost_setting-<%- index %>"
+                                   class="admin__control-text wkv-follow_simple_sku_cost_setting" type="hidden"
+                                   name="wkvariation[<%- index %>][follow_simple_sku_cost_setting]"
+                                   value="<%- prevData.follow_simple_sku_cost_setting %>"/>
+                            <input id="wkv-follow_simple_sku_price_setting-<%- index %>"
+                                   class="admin__control-text wkv-follow_simple_sku_price_setting" type="hidden"
+                                   name="wkvariation[<%- index %>][follow_simple_sku_price_setting]"
+                                   value="<%- prevData.follow_simple_sku_price_setting %>"/>
+                            <input id="wkv-stock-<%- index %>"
+                            <% if (prevData.is_sync == 1) { %>
+                                 disabled
+                            <% } %>
+                            class="admin__control-text wkv-stock"
+                            type="text"
+                            name="wkvariation[<%- index %>][stock]"
+                            value="<%- prevData.stock %>"
+                            data-validate="{'required':true, 'validate-number':true}"
+
+                            />
+                     </td>
+                    <td>
+                        <input id="wkv-ready_to_ship_qty-<%- index %>"
+                               readonly
+                               class="admin__control-text wkv-ready_to_ship_qty"
+                               type="text"
+                               name="wkvariation[<%- index %>][ready_to_ship_qty]"
+                               value="<%- prevData.ready_to_ship_qty %>"/>
+                    </td>
+                    <td>
+                        <select id="wkv-cost_setting-<%- index %>" data-id="<%- index %>"
+                                class="admin__control-select wkv-cost_setting">
+                            <option value="1"
+                            <% if (prevData.cost_setting == 1) { %>selected="selected"<% }
+                            %>><?= $escaper->escapeHtml(__('Fixed commission')) ?></option>
+                            <option value="0"
+                            <% if (prevData.cost_setting == 0) { %>selected="selected"<% }
+                            %>><?= $escaper->escapeHtml(__('Manually input')) ?></option>
+                        </select>
+                        <input id="wkv-cost_setting-input-<%- index %>" class="admin__control-text wkv-cost_setting-input"
+                               type="hidden"
+                               name="wkvariation[<%- index %>][cost_setting]" value="<%- prevData.cost_setting %>">
+                    </td>
+                    <td>
+                        <input data-id="<%- index %>" id="wkv-commission_percent-<%- index %>"
+                               class="admin__control-text wkv-commission_percent"
+                               type="text"
+                               name="wkvariation[<%- index %>][commission_percent]"
+                               value="<%- prevData.commission_percent %>"
+                               data-validate="{'required':true, 'validate-number':true, 'validate-greater-than-zero':true}"
+                        />
+                        <p data-id="<%- index %>" id="wkv-commission_source-<%- index %>"></p>
+                    </td>
+                    <td>
+                        <input id="wkv-cost-<%- index %>"
+                               data-id="<%- index %>"
+                               class="admin__control-text wkv-cost"
+                               type="text"
+                               name="wkvariation[<%- index %>][cost]"
+                               value="<%- prevData.cost %>"
+                               data-validate="{'required':true, 'validate-number':true, 'validate-greater-than-zero':true}"
+                        />
+                    </td>
+                    <td>
+                        <input id="wkv-price-<%- index %>"
+                               data-id="<%- index %>"
+                               class="admin__control-text wkv-price"
+                               type="text"
+                               name="wkvariation[<%- index %>][price]"
+                               value="<%- prevData.price %>"
+                               data-validate="{'required':true, 'validate-number':true, 'validate-greater-than-zero':true}"
+                        />
+                    </td>
+                    <td>
+                        <input id="wkv-sku-<%- index %>"
+                        <% if (prevData.is_sync == 1 || prevData.is_lock_sku == 1) { %>
+                        disabled
+                        <% } %>
+                        class="admin__control-text wkv-sku no-duplicate"
+                        type="text"
+                        name="wkvariation[<%- index %>][sku]"
+                        value="<%- row_sku %>"
+                        data-validate="{'required':true,'validate-no-sku-duplicate':true}"
+                        />
+                        <input id="wkv-is_lock_sku-<%- index %>"
+                               class="admin__control-text wkv-is_lock_sku"
+                               type="hidden"
+                               name="wkvariation[<%- index %>][is_lock_sku]"
+                               value="<%- prevData.is_lock_sku %>">
+                    </td>
+                    <td>
+                        <div class="admin__actions-switch">
+                            <input id="wkv-is-sync-<%- index %>"
+                            <% if (prevData.is_sync == 1) { %>
+                            checked="checked"
+                            <% } %>
+                            data-id="<%- index %>"
+                            data-sku="<%- row_sku %>"
+                            name="wkvariation[<%- index %>][is_sync]"
+                            value="1"
+                            class="admin__actions-switch-checkbox switch-is-sync"
+                            type="checkbox" />
+                            <label class="admin__actions-switch-label"
+                                   for="wkv-is-sync-<%- index %>">
+                                    <span data-text-on="Yes"
+                                          data-text-off="No"
+                                          class="admin__actions-switch-text"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <% } else { %>
+                    <tr class="data-row <%- rowClass %>">
+                        <td>
+                            <input class="admin__control-text wkv-comb" type="hidden" value="<%- combLabel %>"
+                                   name="wkvariation[<%- index %>][comb]">
+                            <%- combLabel %>
+                        </td>
+                        <td>
+                            <div class="data-grid-file-uploader">
+                                <div class="data-grid-file-uploader-inner file-uploader-area">
+                                    <input class="file-uploader-input wkv-image" data-image-count="0"
+                                           data-id="<%- index %>" type="file" id="wk-variation-row-<%- index %>image"
+                                           name="wkvariation[<%- index %>][image]" multiple="multiple">
+                                    <label class="file-uploader-button" for="wk-variation-row-<%- index %>image">
+                                        <span>Upload Image</span>
+                                    </label>
+                                    <span class="file-uploader-spinner"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <% if (data.weightDisabled) { %>
+                            <input class="admin__control-text wkv-weight wkosi-disabled" readonly
+                                   type="hidden" name="wkvariation[<%- index %>][weight]" value="0">
+                            <% } else { %>
+                            <input id="wkv-weight-<%- index %>" class="admin__control-text wkv-weight" type="hidden"
+                                   name="wkvariation[<%- index %>][weight]">
+                            <% } %>
+                            <input id="wkv-follow_simple_sku_cost_setting-<%- index %>"
+                                   class="admin__control-text wkv-follow_simple_sku_cost_setting" type="hidden"
+                                   name="wkvariation[<%- index %>][follow_simple_sku_cost_setting]" value="1">
+                            <input id="wkv-follow_simple_sku_price_setting-<%- index %>"
+                                   class="admin__control-text wkv-follow_simple_sku_price_setting" type="hidden"
+                                   name="wkvariation[<%- index %>][follow_simple_sku_price_setting]"  value="1">
+                            <input id="wkv-stock-<%- index %>" class="admin__control-text wkv-stock" type="text"
+                                   name="wkvariation[<%- index %>][stock]"
+                                   data-validate="{'required':true, 'validate-number':true}"
+                            />
+                        </td>
+                        <td>
+                            <input id="wkv-ready_to_ship_qty-<%- index %>" class="admin__control-text wkv-ready_to_ship_qty"
+                                   type="text"
+                                   readonly
+                                   name="wkvariation[<%- index %>][ready_to_ship_qty]">
+                        </td>
+                        <td>
+                            <select id="wkv-cost_setting-<%- index %>" data-id="<%- index %>"
+                                    class="admin__control-select wkv-cost_setting">
+                                <option value="1"
+                                <% if (defaultData.costSetting == 1) { %>selected="selected"<% }
+                                %>><?= $escaper->escapeHtml(__('Fixed commission')) ?></option>
+                                <option value="0"
+                                <% if (defaultData.costSetting == 0) { %>selected="selected"<% }
+                                %>><?= $escaper->escapeHtml(__('Manually input')) ?></option>
+                            </select>
+                            <input id="wkv-cost_setting-input-<%- index %>" class="admin__control-text wkv-cost_setting-input"
+                                   type="hidden"
+                                   value="<%- defaultData.costSetting %>"
+                                   name="wkvariation[<%- index %>][cost_setting]">
+                        </td>
+                        <td>
+                            <input data-id="<%- index %>" id="wkv-commission_percent-<%- index %>"
+                                   class="admin__control-text wkv-commission_percent" type="text"
+                                   name="wkvariation[<%- index %>][commission_percent]"
+                                   value="<%- defaultData.commissionPercent %>"
+                                   data-validate="{'required':true, 'validate-number':true, 'validate-greater-than-zero':true}"
+                            >
+                            <p data-id="<%- index %>" id="wkv-commission_source-<%- index %>"></p>
+                        </td>
+                        <td>
+                            <input id="wkv-cost-<%- index %>" data-id="<%- index %>" class="admin__control-text wkv-cost"
+                                   type="text"
+                                   name="wkvariation[<%- index %>][cost]"
+                                   value="<%- defaultData.cost %>"
+                                   data-validate="{'required':true, 'validate-number':true, 'validate-greater-than-zero':true}"
+                            />
+                        </td>
+                        <td>
+                            <input id="wkv-price-<%- index %>" data-id="<%- index %>" class="admin__control-text wkv-price"
+                                   type="text"
+                                   name="wkvariation[<%- index %>][price]"
+                                   value="<%- defaultData.price %>"
+                                   data-validate="{'required':true, 'validate-number':true, 'validate-greater-than-zero':true}"
+                            />
+                        </td>
+                        <td>
+                            <input id="wkv-sku-<%- index %>" class="admin__control-text wkv-sku no-duplicate" type="text"
+                                   name="wkvariation[<%- index %>][sku]" value="<%- skus[combLabel] %>"
+                                   data-validate="{'required':true,'validate-no-sku-duplicate':true}"
+                            >
+                            <input id="wkv-is_lock_sku-<%- index %>" class="admin__control-text wkv-is_lock_sku" type="hidden"
+                                   name="wkvariation[<%- index %>][is_lock_sku]" value="0">
+                        </td>
+                        <td>
+                            <div class="admin__actions-switch">
+                                <input id="wkv-is-sync-<%- index %>"
+                                       data-id="<%- index %>"
+                                       data-sku="<%- row_sku %>"
+                                       name="wkvariation[<%- index %>][is_sync]"
+                                       value="1"
+                                       class="admin__actions-switch-checkbox switch-is-sync"
+                                       type="checkbox"/>
+                                <label class="admin__actions-switch-label"
+                                       for="wkv-is-sync-<%- index %>">
+                                            <span data-text-on="Yes"
+                                                  data-text-off="No"
+                                                  class="admin__actions-switch-text"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                <% } %>
+            <% }); %>
+        </table>
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination"></ul>
+            </nav>
+        </div>
+        <div class="rows_count">Showing 0 to 5 of 0 entries</div>
+
+    </form>
+</script>

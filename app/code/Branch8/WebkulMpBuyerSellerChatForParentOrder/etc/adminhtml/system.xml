@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="buyer_seller_chat" translate="label comment" type="text" sortOrder="305" showInDefault="1"
+                 showInWebsite="1" showInStore="1">
+            <group id="parent_order" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Parent Order</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Show Chat Link</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <group id="contact_links" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Chat Link</label>
+                    <field id="hide_for_order_statues" translate="label comment"
+                           sortOrder="1" type="multiselect"
+                           showInDefault="1" showInWebsite="1" showInStore="0">
+                        <label>Hide Chat Link For Order Statues</label>
+                        <source_model>Branch8\WebkulMpBuyerSellerChatForParentOrder\Model\Sales\Config\Source\Order\Status</source_model>
+                        <config_path>customer/contact_links/hide_for_order_statues</config_path>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

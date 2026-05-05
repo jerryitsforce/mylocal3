@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">sales_parent_order_form.sales_parent_order_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Order View</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="cancel"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\Cancel"/>
+            <button name="back"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\Back"/>
+            <button name="reorder"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\Reorder"/>
+            <button name="hold"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\Hold"/>
+            <button name="unHold"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\UnHold"/>
+            <button name="sendmail"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\Sendmail"/>
+            <button name="startEdit"
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Buttons\StartEdit"/>
+        </buttons>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+        <deps>
+            <dep>sales_parent_order_form.sales_parent_order_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="sales_parent_order_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <validateUrl path="customer/index/validate"/>
+            <submitUrl path="customer/index/save"/>
+        </settings>
+        <dataProvider class="Branch8\MarketPlaceParentOrderAdminUi\Model\ParentOrder\DataProvider"
+                      name="sales_parent_order_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>index_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <htmlContent name="parent_order_edit_tab_view_content">
+        <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information"
+               name="parent_order_edit_tab_view"
+               template="Branch8_MarketPlaceParentOrderAdminUi::tab/view.phtml">
+            <arguments>
+                <argument name="sort_order" xsi:type="number">10</argument>
+                <argument name="tab_label" xsi:type="string" translate="true">Order View</argument>
+            </arguments>
+            <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation"
+                   name="order_info"
+                   template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information.phtml">
+                <block class="Magento\Backend\Block\Template"
+                       name="addresses"
+                       template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/addresses.phtml">
+                </block>
+                <block class="Magento\Backend\Block\Template"
+                       name="payment"
+                       template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/payment.phtml">
+
+                </block>
+                <block class="Magento\Backend\Block\Template" name="tracks"
+                       template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/tracks.phtml">
+                </block>
+                <block class="Magento\Backend\Block\Template" name="gift.information"
+                       template="Branch8_GiftToFriend::parent_order/tab/view/information/gift_information.phtml">
+                </block>
+                <block class="Magento\Backend\Block\Template" name="gift.information"
+                       template="Branch8_GiftToFriend::parent_order/tab/view/information/gift_information.phtml">>
+
+                </block>
+                <block
+                    class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation\SubOrders"
+                    name="sub_orders"
+                    template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/sub_orders.phtml">
+                    <block
+                        class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation\SubOrders\Items"
+                        name="order_items">
+                        <arguments>
+                            <argument name="columns" xsi:type="array">
+                                <item name="product" xsi:type="string" translate="true">Product</item>
+                                <item name="status" xsi:type="string" translate="true">Item Status</item>
+                                <item name="price-original" xsi:type="string" translate="true">Original Price</item>
+                                <item name="price" xsi:type="string" translate="true">Price</item>
+                                <item name="cost" xsi:type="string" translate="true">Cost</item>
+                                <item name="hotai-point" xsi:type="string" translate="true">Point</item>
+                                <item name="ordered-qty" xsi:type="string" translate="true">Qty</item>
+                                <item name="subtotal" xsi:type="string" translate="true">Subtotal</item>
+<!--
+                                <item name="tax-amount" xsi:type="string" translate="true">Tax Amount</item>
+-->
+                                <item name="tax-percent" xsi:type="string" translate="true">Tax Percent</item>
+                                <item name="discount" xsi:type="string" translate="true">Discount Amount</item>
+                                <item name="special_price" xsi:type="string" translate="true">Special Price</item>
+<!--                                <item name="catalog-special-price-discount" xsi:type="string" translate="true">Catalog rule/ Special price Discount</item>-->
+                                <item name="total" xsi:type="string" translate="true">Row Total</item>
+                            </argument>
+                        </arguments>
+                        <block class="Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer"
+                               as="default" name="default_order_items_renderer"
+                               template="Branch8_MarketPlaceParentOrderAdminUi::order/view/items/renderer/default.phtml">
+                            <arguments>
+                                <argument name="columns" xsi:type="array">
+                                    <item name="product" xsi:type="string" translate="false">col-product</item>
+                                    <item name="status" xsi:type="string" translate="false">col-status</item>
+                                    <item name="price-original" xsi:type="string" translate="false">col-price-original
+                                    </item>
+                                    <item name="price" xsi:type="string" translate="false">col-price</item>
+                                    <item name="base_cost" xsi:type="string" translate="false">col-cost</item>
+                                    <item name="point" xsi:type="string" translate="false">col-point</item>
+                                    <item name="qty" xsi:type="string" translate="false">col-ordered-qty</item>
+                                    <item name="subtotal" xsi:type="string" translate="false">col-subtotal</item>
+<!--
+                                    <item name="tax-amount" xsi:type="string" translate="false">col-tax-amount</item>
+-->
+                                    <item name="tax-percent" xsi:type="string" translate="false">col-tax-percent</item>
+                                    <item name="discont" xsi:type="string" translate="false">col-discont</item>
+                                    <item name="special_price" xsi:type="string" translate="false">col-special-price</item>
+<!--                                    <item name="catalog-special-price-discount" xsi:type="string" translate="false">col-catalog-special-price-discount</item>-->
+                                    <item name="total" xsi:type="string" translate="false">col-total</item>
+                                </argument>
+                            </arguments>
+                        </block>
+
+                        <block class="Magento\Tax\Block\Adminhtml\Items\Price\Renderer" name="column_price" template="Magento_Tax::items/price/unit.phtml" group="column"/>
+                        <block class="Magento\Tax\Block\Adminhtml\Items\Price\Renderer" name="column_subtotal" template="Magento_Tax::items/price/row.phtml" group="column"/>
+                        <block class="Magento\Tax\Block\Adminhtml\Items\Price\Renderer" name="column_total" template="Magento_Tax::items/price/total.phtml" group="column"/>
+
+                        <block class="Magento\Sales\Block\Adminhtml\Items\Column\Qty" name="column_qty"
+                               template="Branch8_Sales::items/column/qty.phtml" group="column"/>
+                        <block class="Magento\Sales\Block\Adminhtml\Items\Column\Name" name="column_name"
+                               template="Magento_Sales::items/column/name.phtml" group="column"/>
+                        <block class="Magento\Framework\View\Element\Text\ListText" name="order_item_extra_info"/>
+                    </block>
+
+                </block>
+                <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation\EcPayInvoices"
+                       name="ecpay_invoices"
+                       template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/ecpay_invoices.phtml">
+                    <arguments>
+                        <argument  xsi:type="object" name="view_model">Branch8\MarketPlaceParentOrderAdminUi\ViewModel\EcpayInvoiceConfigBuilder</argument>
+                    </arguments>
+                </block>
+                <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation"
+                       name="additional_information"
+                       template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/additional_information.phtml">
+                </block>
+                <block class="Magento\Backend\Block\Template"
+                       name="total"
+                       template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/total.phtml">
+                    <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\History"
+                           name="history"
+                           template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/information/history.phtml">
+                        <arguments>
+                            <argument name="status_resolver_model" xsi:type="object">Branch8\Sales\ViewModel\StatusResolver</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </block>
+    </htmlContent>
+    <fieldset name="invoices">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Invoices</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="parent-order-invoices-form">true</class>
+            </additionalClasses>
+        </settings>
+        <insertListing name="sales_parent_order_invoice_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>sales_parent_order_invoice_grid.sales_parent_order_invoice_grid_data_source
+                </externalProvider>
+                <selectionsProvider>
+                    sales_parent_order_invoice_grid.sales_parent_order_invoice_grid.sales_order_invoice_columns.ids
+                </selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>sales_parent_order_invoice_grid</dataScope>
+                <ns>sales_parent_order_invoice_grid</ns>
+                <exports>
+                    <link name="sub_ids">${ $.externalProvider }:params.sub_ids</link>
+                </exports>
+                <imports>
+                    <link name="sub_ids">sales_parent_order_form.sales_parent_order_form_data_source:data.order_ids
+                    </link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="creditnemos">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Credit Memos</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="parent-order-creditnemos-form">true</class>
+            </additionalClasses>
+        </settings>
+        <insertListing name="sales_parent_order_creditnemo_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>sales_parent_order_creditnemo_grid.sales_parent_order_creditnemo_grid_data_source
+                </externalProvider>
+                <selectionsProvider>
+                    sales_parent_order_creditnemo_grid.sales_parent_order_creditnemo_grid_data_source.sales_parent_order_creditmemo_columns.ids
+                </selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>sales_parent_order_creditnemo_grid</dataScope>
+                <ns>sales_parent_order_creditnemo_grid</ns>
+                <exports>
+                    <link name="sub_ids">${ $.externalProvider }:params.sub_ids</link>
+                </exports>
+                <imports>
+                    <link name="sub_ids">sales_parent_order_form.sales_parent_order_form_data_source:data.order_ids
+                    </link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="shipments">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Shipments</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="parent-order-shipments-form">true</class>
+            </additionalClasses>
+        </settings>
+        <insertListing name="sales_parent_order_shipment_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>sales_parent_order_shipment_grid.sales_parent_order_shipment_grid_data_source
+                </externalProvider>
+                <selectionsProvider>
+                    sales_parent_order_shipment_grid.sales_parent_order_shipment_grid_data_source.sales_parent_order_shipment_columns.ids
+                </selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>sales_parent_order_shipment_grid</dataScope>
+                <ns>sales_parent_order_shipment_grid</ns>
+                <exports>
+                    <link name="sub_ids">${ $.externalProvider }:params.sub_ids</link>
+                </exports>
+                <imports>
+                    <link name="sub_ids">sales_parent_order_form.sales_parent_order_form_data_source:data.order_ids
+                    </link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="rma">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Returns</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="parent-order-shipments-form">true</class>
+            </additionalClasses>
+        </settings>
+        <insertListing name="sales_parent_order_rma_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>sales_parent_order_rma_grid.sales_parent_order_rma_grid_data_source</externalProvider>
+                <selectionsProvider>
+                    sales_parent_order_rma_grid.sales_parent_order_rma_grid_data_source.sales_parent_order_rma_columns.ids
+                </selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>sales_parent_order_rma_grid</dataScope>
+                <ns>sales_parent_order_rma_grid</ns>
+                <exports>
+                    <link name="sub_ids">${ $.externalProvider }:params.sub_ids</link>
+                </exports>
+                <imports>
+                    <link name="sub_ids">sales_parent_order_form.sales_parent_order_form_data_source:data.order_ids
+                    </link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+    <fieldset name="comments">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Comments</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="parent-order-comment-form">true</class>
+            </additionalClasses>
+        </settings>
+        <insertListing name="sales_parent_order_history_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>sales_parent_order_history_grid.sales_parent_order_history_grid_data_source</externalProvider>
+                <selectionsProvider>
+                    sales_parent_order_history_grid.sales_parent_order_history_grid_data_source.sales_parent_order_history_columns.ids
+                </selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>sales_parent_order_history_grid</dataScope>
+                <ns>sales_parent_order_history_grid</ns>
+                <exports>
+                    <link name="sub_ids">${ $.externalProvider }:params.sub_ids</link>
+                </exports>
+                <imports>
+                    <link name="sub_ids">sales_parent_order_form.sales_parent_order_form_data_source:data.order_ids
+                    </link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+   <!-- <htmlContent name="parent_order_edit_tab_comment_history">
+        <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\CommentHistory"
+               name="parent_order_edit_comment_history"
+               template="Branch8_MarketPlaceParentOrderAdminUi::tab/view.phtml">
+            <arguments>
+                <argument name="sort_order" xsi:type="number">100</argument>
+                <argument name="tab_label" xsi:type="string" translate="true">Comment History</argument>
+            </arguments>
+            <uiComponent name="sales_parent_order_history_grid"/>
+           <block class="Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\CommentHistory\Full"
+                   name="full_history"
+                   template="Branch8_MarketPlaceParentOrderAdminUi::tab/view/commenthistory.phtml">
+            </block>
+        </block>
+    </htmlContent>-->
+</form>

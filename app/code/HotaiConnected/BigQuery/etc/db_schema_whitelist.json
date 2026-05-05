@@ -1,0 +1,33 @@
+{
+    "raw_product_view_log": {
+        "column": {
+            "event_id": true,
+            "uid": true,
+            "product_id": true,
+            "device_category": true,
+            "platform": true,
+            "event_timestamp": true,
+            "created_at": true
+        },
+        "index": {
+            "RAW_PRODUCT_VIEW_LOG_UID": true,
+            "RAW_PRODUCT_VIEW_LOG_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "static_keyword_list": {
+        "column": {
+            "entity_id": true,
+            "keyword": true,
+            "created_at": true
+        },
+        "index": {
+            "STATIC_KEYWORD_LIST_KEYWORD": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

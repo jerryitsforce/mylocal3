@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+	<menu>
+		<add id="Branch8_Cron::cron_manual_execution" title="Cron Manual Execution Log" module="Branch8_Cron" sortOrder="31" action="cron/cronmanualexecution/index" resource="Magento_Backend::content" parent="Mageplaza_CronSchedule::mpcronschedule"/>
+	</menu>
+</config>

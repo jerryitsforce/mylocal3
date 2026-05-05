@@ -1,0 +1,302 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Customer\Block\Address\Edit $block */
+/** @var \Magento\Customer\ViewModel\Address $viewModel */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Magento\Customer\ViewModel\Address\RegionProvider $regionProvider */
+
+use Branch8\OneStepCheckout\Model\Source\HotaiAddressType;
+
+$viewModel = $block->getViewModel();
+$regionProvider = $block->getRegionProvider();
+$enabledIcon = $block->getViewFileUrl("Magento_Customer::images/enable.svg");
+$disabledIcon = $block->getViewFileUrl("Magento_Customer::images/disable.svg");
+
+?>
+<?php $_company = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Company::class) ?>
+<?php $_telephone = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Telephone::class) ?>
+<?php $_fax = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Fax::class) ?>
+<?php $_country_id = $block->getAttributeData()->getFrontendLabel('country_id'); ?>
+<?php $_street = $block->getAttributeData()->getFrontendLabel('street'); ?>
+<?php $_city = $block->getAttributeData()->getFrontendLabel('city'); ?>
+<?php $_region = $block->getAttributeData()->getFrontendLabel('region'); ?>
+<?php $_selectRegion = 'Please select a region, state or province.'; ?>
+<?php $_displayAll = $block->getConfig('general/region/display_all'); ?>
+
+<?php $_vatidValidationClass = $viewModel->addressGetAttributeValidationClass('vat_id'); ?>
+<?php $_cityValidationClass = $viewModel->addressGetAttributeValidationClass('city'); ?>
+<?php $_postcodeValidationClass_value = $viewModel->addressGetAttributeValidationClass('postcode'); ?>
+<?php $_postcodeValidationClass = $_postcodeValidationClass_value; ?>
+<?php $_streetValidationClass = $viewModel->addressGetAttributeValidationClass('street'); ?>
+<?php $_streetValidationClassNotRequired = $_streetValidationClass !== null ?
+    trim(str_replace('required-entry', '', $_streetValidationClass)) : ''; ?>
+<?php $_regionValidationClass = $viewModel->addressGetAttributeValidationClass('region'); ?>
+
+<?php
+$address = $block->getAddress();
+if($address->getId()) {
+    $hotaiAddressType = $address->getCustomAttribute('hotai_address_type')?->getValue() ?? HotaiAddressType::ADDRESS_TYPE_NORMAL;
+} else {
+    $hotaiAddressType = $block->getRequest()->getParam('type') ?? HotaiAddressType::ADDRESS_TYPE_NORMAL;
+}
+$hotaiAddressType = $block->escapeHtml($hotaiAddressType);
+$isConvenienceStore = $hotaiAddressType == HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE;
+$customer = $block->getCustomer();
+$defaultConvenienceStore = $customer->getCustomAttribute('default_convenience_store')?->getValue();
+$isPrimaryAddress = $isConvenienceStore ? ($defaultConvenienceStore == $address->getId()) : $block->isDefaultShipping();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->create('Magento\Customer\Model\Session');
+$storeData = $customerSession->getStoreData();
+$storeAddress = $customerSession->getCheckoutAddress();
+$addressId = $block->getAddress()->getId();
+
+$dummyLastname= 'Hotai';
+$bullet = '<svg width="100%" height="100%" viewBox="0 0 4 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect y="6" width="4" height="14" rx="2" fill="#CCCCCC"/>
+            </svg>';
+?>
+
+<form class="form-address-edit <?= $hotaiAddressType ?>"
+      action="<?= $escaper->escapeUrl($block->getSaveUrl()) ?>"
+      method="post"
+      id="address-form"
+      data-id="<?= $escaper->escapeHtmlAttr($block->getAddress()->getId()) ?>"
+      enctype="multipart/form-data"
+      data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset">
+        <?= $block->getBlockHtml('formkey') ?>
+        <input type="hidden" name="success_url" value="<?= $escaper->escapeUrl($block->getSuccessUrl()) ?>">
+        <input type="hidden" name="error_url" value="<?= $escaper->escapeUrl($block->getErrorUrl()) ?>">
+        <input type="hidden" id="hotai_address_type" name="hotai_address_type" value="<?=$hotaiAddressType?>">
+
+        <?php $nameBlock = $block->getLayout()->createBlock(\Magento\Customer\Block\Widget\Name::class); ?>
+        <div class="field field-name-firstname required">
+            <label class="label" for="<?= $block->escapeHtmlAttr($nameBlock->getFieldId('firstname')) ?>">
+                <?=$bullet;?>
+                <span><?= __('收件人姓名') ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="<?= $block->escapeHtmlAttr($nameBlock->getFieldId('firstname')) ?>"
+                    name="<?= $block->escapeHtmlAttr($nameBlock->getFieldName('firstname')) ?>"
+                    value="<?= $addressId? $block->escapeHtmlAttr($block->getAddress()->getFirstname()) : '' ?>"
+                    title="<?= __('請輸入姓名') ?>"
+                    data-validate='{"required":true, "validate-fullwidth-special": true}'
+                    class="input-text <?= $block->escapeHtmlAttr($nameBlock->getAttributeValidationClass('firstname')) ?>"
+                    placeholder="<?= __('請填寫收件人全名 (物流配送需真實姓名)') ?>"
+                    <?= $hotaiAddressType === HotaiAddressType::ADDRESS_TYPE_CONVENIENCE_STORE
+                        ? 'data-msg-required="' . __('Please provide the real name that matches your ID for store staff verification to ensure successful pickup.') . '"'
+                        : ''
+                    ?>
+                />
+            </div>
+        </div>
+
+        <div class="field field-name-lastname required hidden">
+            <label class="label" for="<?= $block->escapeHtmlAttr($nameBlock->getFieldId('lastname')) ?>">
+                <?=$bullet;?>
+                <span><?= $block->escapeHtml($block->getStoreLabel('lastname')) ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="<?= $block->escapeHtmlAttr($nameBlock->getFieldId('lastname')) ?>"
+                    name="<?= $block->escapeHtmlAttr($nameBlock->getFieldName('lastname')) ?>"
+                    value="<?= $block->escapeHtmlAttr($block->getAddress()->getLastname() ?? $dummyLastname) ?>"
+                    title="<?= $block->escapeHtmlAttr($nameBlock->getStoreLabel('lastname')) ?>"
+                    data-validate='{"required":true, "validate-fullwidth-special": true}'
+                    class="input-text
+                    <?= $block->escapeHtmlAttr($nameBlock->getAttributeValidationClass('lastname')) ?>"
+                >
+            </div>
+        </div>
+
+<!--        <div class="field email required">-->
+<!--            <label class="label" for="email">-->
+<!--                <span>--><?php //echo /* @noEscape */ __('Email') ?><!--</span>-->
+<!--            </label>-->
+<!--            <div class="control">-->
+<!--                <input type="text"-->
+<!--                       name="email"-->
+<!--                       id="email"-->
+<!--                       placeholder="--><?php //echo __('請輸入電子郵件') ?><!--"-->
+<!--                       class="input-text validate-email required-entry">-->
+<!--            </div>-->
+<!--        </div>-->
+
+        <?php if ($_telephone->isEnabled()): ?>
+            <?= $_telephone->setTelephone($block->getAddress()->getTelephone())->toHtml() ?>
+        <?php endif ?>
+
+        <div class="field country required hidden">
+            <label class="label" for="country">
+                <?=$bullet;?>
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('country_id') ?></span>
+            </label>
+            <div class="control">
+                <?= $block->getCountryHtmlSelect('TW' ) ?>
+            </div>
+        </div>
+
+        <?php if (!$isConvenienceStore): ?>
+        <div class="field city region required">
+            <label class="label" for="region_id">
+                <?=$bullet;?>
+                <span><?= /* @noEscape */ __('Address') ?></span>
+            </label>
+            <div class="d-flex">
+                <div class="control">
+                    <select id="region_id" name="region_id"
+                            title="<?= /* @noEscape */ $_region ?>"
+                            class="validate-select region_id"
+                            data-validate='{"required":true}'
+                        <?= /* @noEscape */ !$_displayAll ? ' disabled="disabled"' : '' ?>>
+                        <option value=""><?= $escaper->escapeHtml(__($_selectRegion)) ?></option>
+                    </select>
+
+                    <input type="text"
+                        id="region"
+                        name="region"
+                        value="<?= $escaper->escapeHtmlAttr($block->getRegion()) ?>"
+                        title="<?= /* @noEscape */ $_region ?>"
+                        placeholder="<?= __('請選擇縣市') ?>"
+                        data-validate='{"required":true}'
+                        class="input-text validate-not-number-first
+                        <?= $escaper->escapeHtmlAttr($_regionValidationClass) ?>"
+                        <?= !$_displayAll ? ' disabled="disabled"' : '' ?>/>
+                </div>
+
+                <div class="control">
+                    <input type="text"
+                        name="city"
+                        value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
+                        title="<?= $escaper->escapeHtmlAttr(__('City')) ?>"
+                        data-validate='{"required":true}'
+                        class="input-text <?= $escaper->escapeHtmlAttr($_cityValidationClass) ?>"
+                        placeholder="<?= __('鄉鎮市區') ?>"
+                        id="city">
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="field street required <?= $isConvenienceStore ? 'hidden' : '' ?>">
+            <div class="control">
+                <input type="text"
+                       name="street[0]"
+                       data-validate='{"required":true, "validate-fullwidth-special": true}'
+                       value="<?= $escaper->escapeHtmlAttr($block->getStreetLine(1)) ?>"
+                       title="<?= /* @noEscape */ $_street ?>"
+                       id="street_1"
+                       placeholder="<?= __('請輸入收件地址') ?>"
+                       class="input-text <?= $escaper->escapeHtmlAttr($_streetValidationClass) ?>"/>
+            </div>
+        </div>
+
+        <div class="field zip required hidden">
+            <label class="label" for="zip">
+                <span><?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?></span>
+            </label>
+            <div class="control">
+                <input type="text"
+                       name="postcode"
+                       value="<?= $escaper->escapeHtmlAttr($block->getAddress()->getPostcode() ?? '000') ?>"
+                       title="<?= /* @noEscape */ $block->getAttributeData()->getFrontendLabel('postcode') ?>"
+                       id="zip"
+                       class="input-text validate-zip-international
+                        <?= $escaper->escapeHtmlAttr($_postcodeValidationClass) ?>">
+                <div role="alert" class="message warning">
+                    <span></span>
+                </div>
+                <?= /* @noEscape */ $secureRenderer->renderStyleAsTag("display: none;", 'div.message.warning') ?>
+            </div>
+        </div>
+
+
+        <?php if($isConvenienceStore) : ?>
+
+            <input id="city" name="city" value="<?= $block->getAddress()->getCity()?>" class="hidden"/>
+            <input id="cvs_store_code" name="cvs_store_code" value="<?= $block->getAddressCustomAttributeValue('cvs_store_code') ?>" class="hidden"/>
+            <input id="cvs_store_name" name="cvs_store_name" value="<?= $block->getAddressCustomAttributeValue('cvs_store_name') ?>" class="hidden"/>
+            <input id="cvs_store_servicetype" name="cvs_store_servicetype" value="<?= $block->getAddressCustomAttributeValue('cvs_store_servicetype') ?>" class="hidden"/>
+            <input id="cvs_store_outside" name="cvs_store_outside" value="<?= $block->getAddressCustomAttributeValue('cvs_store_outside') ?>" class="hidden"/>
+
+            <div class="field store required">
+                <label class="label" for="select-store-button">
+                    <?=$bullet;?>
+                    <span><?= /* @noEscape */ __('門市名稱') ?></span>
+                </label>
+                <div class="control d-flex">
+                    <span id="store-name" class="store-name<?= $block->getAddress()->getCity() ? '' : ' hidden' ?>"><?= $escaper->escapeHtmlAttr($block->getAddress()->getCity()? '711 '.$block->getAddress()->getCity(): '') ?></span>
+                    <button type="button" id="select-store-button">
+                        <span><?= /* @noEscape */ __('選擇超商門市') ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="field store-address<?= $block->getStreetLine(1) ? '' : ' hidden'?>">
+                <label class="label" for="store-address-text">
+                    <?=$bullet;?>
+                    <span><?= /* @noEscape */ __('門市地址') ?></span>
+                </label>
+                <div class="control">
+                    <span id="store-address-text"><?= $escaper->escapeHtmlAttr($block->getStreetLine(1)) ?></span>
+                </div>
+            </div>
+        <?php endif;  ?>
+
+        <div class="field choice set shipping">
+            <label class="label" for="primary_shipping">
+                <?=$bullet;?>
+                <span><?= $escaper->escapeHtml(__('設為預設地址')) ?></span>
+            </label>
+            <div class="switch custom-checkbox">
+                <input id="primary_shipping" name="<?= $isConvenienceStore ? 'default_convenience_store' : 'default_shipping'?>" value="<?= $isPrimaryAddress ? 1 : 0?>"
+                    type="checkbox" <?= $isPrimaryAddress ? 'checked' : '' ?> />
+                <label for="primary_shipping" class="slider"></label>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit"
+                    class="action save primary"
+                    data-action="save-address"
+                    disabled="disabled"
+                    title="<?= $escaper->escapeHtmlAttr(__('儲存')) ?>">
+                <span><?= $escaper->escapeHtml(__('儲存')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+
+<script type="text/x-magento-init">
+    {
+        "#address-form": {
+            "addressValidation": {
+                "postCodes": <?= /* @noEscape */ $block->getPostCodeConfig()->getSerializedPostCodes() ?>
+            },
+            "b8AddressForm": {
+                "storeData": <?= /* @noEscape */ $storeData ? json_encode($storeData) : json_encode([]) ?>,
+                "storeAddress": <?= /* @noEscape */ $storeAddress ? json_encode($storeAddress) : json_encode([]) ?>
+            }
+        },
+        "#country": {
+            "directoryRegionUpdater": {
+                "optionalRegionAllowed": <?= /* @noEscape */ $_displayAll ? 'true' : 'false' ?>,
+                "regionListId": "#region_id",
+                "regionInputId": "#region",
+                "postcodeId": "#zip",
+                "form": "#address-form",
+                "regionJson": <?= /* @noEscape */ $regionProvider->getRegionJson(); ?>,
+                "defaultRegion": "<?= (int) $block->getRegionId() ?>",
+                "countriesWithOptionalZip": <?= /* @noEscape */ $viewModel->dataGetCountriesWithOptionalZip(true) ?>,
+                "hotaiAddressType": "<?= /* @noEscape */ $hotaiAddressType ?>"
+            }
+        }
+    }
+</script>

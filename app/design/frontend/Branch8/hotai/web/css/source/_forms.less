@@ -1,0 +1,467 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+@legend-border-bottom: 1px solid @color-gray-light6;
+@form-field__vertical-indent__desktop: 29px;
+@form-calendar-icon__color: @primary__color;
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .fieldset {
+        .lib-form-fieldset();
+
+        &:last-child {
+            margin-bottom: @indent__base;
+        }
+
+        > .field,
+        > .fields > .field {
+            .lib-form-field();
+            &.no-label {
+                > .label {
+                    .lib-visually-hidden();
+                }
+            }
+
+            &.choice {
+                .label {
+                    display: inline;
+                    font-weight: normal;
+                    margin: 0;
+                }
+            }
+
+            .label {
+                .column:not(.main) & {
+                    font-weight: normal;
+                }
+            }
+
+            .field.choice {
+                margin-bottom: @indent__s;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .legend + .fieldset,
+    .legend + div {
+        clear: both;
+    }
+
+    .legend {
+        > span {
+            margin-right: @indent__xs;
+        }
+    }
+
+    fieldset.field {
+        border: 0;
+        padding: 0;
+    }
+
+    .field {
+        &.date {
+            .time-picker {
+                display: inline-block;
+                margin-top: @indent__s;
+                white-space: nowrap;
+            }
+        }
+
+        .message {
+            &.warning {
+                margin-top: @indent__s;
+            }
+        }
+    }
+
+    .select-styling() {
+        .lib-css(appearance, none, 1);
+        appearance: none;
+        background-size: 30px 60px;
+        text-indent: .01em;
+        text-overflow: '';
+
+        &::-ms-expand {
+            display: none;
+        }
+    }
+
+    input[type="text"]:is(:-webkit-autofill, :autofill),
+    input[type="password"]:is(:-webkit-autofill, :autofill),
+    input[type="url"]:is(:-webkit-autofill, :autofill),
+    input[type="tel"]:is(:-webkit-autofill, :autofill),
+    input[type="search"]:is(:-webkit-autofill, :autofill),
+    input[type="number"]:is(:-webkit-autofill, :autofill),
+    input[type*="date"]:is(:-webkit-autofill, :autofill),
+    input[type="email"]:is(:-webkit-autofill, :autofill) {
+      -webkit-box-shadow: 0 0 0 30px white inset !important;
+    }
+
+    select {
+        .select-styling();
+        background-size: 40px;
+    }
+
+    select.control-multiselect {
+        height: auto;
+    }
+
+    .field-error,
+    div.mage-error {
+        margin-top: 10px;
+        color: var(--color-red-light3);
+    }
+
+    .field-error {
+        .lib-form-validation-note();
+    }
+
+    .product-options-wrapper {
+        .date {
+            &.required {
+                div[for*='options'] {
+                    &.mage-error {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+
+    //  TEMP
+
+    .field .tooltip {
+        .lib-tooltip(right);
+        .tooltip-content {
+            min-width: 200px;
+            white-space: normal;
+        }
+    }
+
+    input:focus ~ .tooltip .tooltip-content,
+    select:focus ~ .tooltip .tooltip-content {
+        display: block;
+    }
+
+    ._has-datepicker {
+        ~ .ui-datepicker-trigger {
+            .lib-button-reset();
+            .lib-icon-font(
+            @_icon-font-content: @icon-calendar,
+            @_icon-font-color: @primary__color__lighter,
+            @_icon-font-size: @icon-calendar__font-size,
+            @_icon-font-line-height: @icon-calendar__font-size,
+            @_icon-font-display: block,
+            @_icon-font-text-hide: true
+            );
+            display: inline-block;
+            margin-top: -4px;
+            vertical-align: middle;
+
+            &:focus {
+                box-shadow: none;
+                outline: 0;
+            }
+        }
+    }
+
+    .field.date,
+    .field-dob {
+        ._has-datepicker {
+            &:extend(.abs-field-date-input all);
+        }
+    }
+
+    //
+    //  Sidebar forms
+    //  ---------------------------------------------
+
+    .sidebar {
+        .fieldset {
+            margin: 0;
+
+            > .field:not(.choice) >,
+            .fields > .field {
+                &:not(:last-child) {
+                    margin: 0 0 @form-field__vertical-indent;
+                }
+
+                .label {
+                    margin: 0 0 4px;
+                    padding: 0 0 @indent__xs;
+                    text-align: left;
+                    width: 100%;
+                }
+
+                .control {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+    input[type=checkbox],
+    input[type=radio]{
+        position: relative;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        min-width: 20px;
+        height: 20px;
+        border: 2px solid @border-color__base;
+        vertical-align: middle;
+        top: auto;
+        margin-top: 0;
+
+        &:checked,
+        &[checked="checked"]{
+            border-color: @theme__color__primary;
+        }
+
+        &:hover{
+            border-color: @theme__color__primary;
+        }
+
+        &:focus{
+            box-shadow: none;
+        }
+
+        + label{
+            vertical-align: middle;
+        }
+    }
+
+    input[type=checkbox]{
+        border-radius: 4px;
+
+        &:checked,
+        &[checked="checked"]{
+            background-color: @theme__color__primary;
+            .lib-icon-font(
+                @_icon-font-content: '\e94a',
+                @_icon-font-size: 9px,
+                @_icon-font-line-height: 18px,
+                @_icon-font-color: @color-white,
+                @_icon-font-color-hover: @color-white,
+                @_icon-font-color-active: @color-white,
+            );
+
+            &:before{
+                position: absolute;
+                top: 0;
+                left: 2px;
+            }
+        }
+    }
+
+    input[type=radio]{
+        border-radius: 50%;
+
+        &:checked,
+        &[checked="checked"]{
+            &:before{
+                content: '';
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                background: @theme__color__primary;
+                border-radius: 50%;
+                position: absolute;
+                top: 3px;
+                left: 3px;
+            }
+        }
+    }
+
+    .actions-switch {
+        display: inline-block;
+        vertical-align: middle;
+
+        input[type=checkbox]{
+            &:extend(.abs-visually-hidden all);
+
+            &:checked,
+            &[checked="checked"]{
+                &:before{
+                    content: none;
+                }
+            }
+        }
+
+        .actions-switch-indicator{
+            bottom: 0;
+        }
+
+        .actions-switch-text{
+            font-size: 14px;
+            line-height: 18px;
+        }
+    }
+
+    .field-control,
+    .control{
+        .actions-switch{
+            height: 22px;
+            * {
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    .wk-mp-design,
+    .marketplace-staging-product {
+        input[type="text"],
+        input[type="password"],
+        input[type="url"],
+        input[type="tel"],
+        input[type="search"],
+        input[type="number"],
+        input[type*="date"],
+        input[type="email"] {
+            height: 32px;
+            font-size: 14px;
+            width: 100% !important;
+            border-radius: 1px;
+            border-color: #adadad;
+            &._has-datepicker {
+                width: 20rem !important;
+            }
+        }
+        select {
+            font-size: 14px;
+            border-radius: 1px;
+            border-color: #adadad;
+        }
+        textarea {
+            font-size: 14px;
+            border-radius: 1px;
+            border-color: #adadad;
+        }
+        ._has-datepicker~.ui-datepicker-trigger:before {
+            font-size: 32px;
+            line-height: 32px;
+            color: #514943;
+        }
+        ._has-datepicker+.ui-datepicker-trigger {
+            position: relative;
+            margin-left: -7px;
+        }
+        ._has-datepicker~.ui-datepicker-trigger:hover {
+            background-color: inherit !important;
+        }
+        ._with-tooltip,
+        ._with-tooltip-top {
+            input[type="text"],
+            input[type="password"],
+            input[type="url"],
+            input[type="tel"],
+            input[type="search"],
+            input[type="number"],
+            input[type*="date"],
+            input[type="email"],
+            select,
+            textarea,
+            > table,
+            > .admin__action-multiselect-tree
+            {
+                max-width: calc(~'100% - 45px');
+            }
+        }
+    }
+    .wk-mp-design {
+        .fieldset {
+            > .field:not(.choice):not(.product-images) {
+                > .label {
+                    float: left !important;
+                    width: 25% !important;
+                    text-align: right;
+                }
+                > .control {
+                    float: left;
+                    width: calc(~'50% - 20px') !important;
+                    margin-left: 20px;
+                    overflow: inherit;
+                }
+            }
+        }
+        .select2-container--default .select2-selection--single {
+            height: 32px;
+            border-radius: 1px;
+            border-color: #adadad;
+        }
+
+        .admin__control-radio:checked + label:after{
+            top: 3px;
+        }
+
+        .field{
+            .admin__control-radio + label:before,
+            .admin__control-checkbox + label:before{
+                margin: 0 8px 0 0;
+            }
+            .admin__action-multiselect-dropdown {
+                top: 4px;
+            }
+        }
+
+        .skuavailable,
+        .skunotavailable {
+            padding: 0;
+        }
+    }
+    .wk-mp-column .wk-mp-design {
+        .fieldset {
+            > .legend{
+                padding-bottom: 12px;
+                float: none;
+            }
+        }
+
+        .wk-mp-fixed{
+            margin-bottom: 0;
+        }
+    }
+    .select2-container--default .select2-search--dropdown .select2-search__field {
+        height: 32px;
+        border-radius: 1px;
+    }
+    .select2-results__option {
+        margin-bottom: 0;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .legend {
+        .lib-css(border-bottom, @legend-border-bottom);
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="url"],
+    input[type="tel"],
+    input[type="search"],
+    input[type="number"],
+    input[type*="date"],
+    input[type="email"] {
+        height: 44px;
+        font-size: 16px;
+    }
+}

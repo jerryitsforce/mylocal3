@@ -1,0 +1,81 @@
+<div id="popup-return-modal-cancel-rma" class="modal-dialog modal-dialog-scrollable" style="display:none;">
+    <p>
+        <?= __('你確定要取消退貨申請嗎？若你取消退貨申請，我們將不再處理你的退貨事宜。') ?>
+    </p>
+</div>
+<div id="popup-exchange-modal-cancel-rma" class="modal-dialog modal-dialog-scrollable" style="display:none;">
+    <p>
+        <?= __('你確定要取消換貨申請嗎？若你取消換貨申請，我們將不再處理你的換貨事宜。') ?>
+    </p>
+</div>
+<input type="hidden" id="rma_id_to_cancel" value="" />
+<script class="script-reinit">
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+        ],
+        function($, modal) {
+
+            var optionsReturn = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                responsiveClass: '',
+                modalClass: 'popup-cancel-rma',
+                title: '<?= __('Cancel Return Request')?>',
+                buttons: [
+                    {
+                        text: '<?= __('Think Again') ?>',
+                        class: 'popup-cancel-rma-btn',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    },
+                    {
+                        text: '<?= __('Confirm Cancellation') ?>',
+                        class: 'action save primary wk-save popup-cancel-rma-btn',
+                        click: async function () {
+                            event.preventDefault();
+                            var rmaFormToSubmit = $('#rma_id_to_cancel').val();
+                            $(rmaFormToSubmit).submit();
+                        }
+                    }
+
+                ]
+            };
+
+            var popupCancelRMA = modal(optionsReturn, $('#popup-return-modal-cancel-rma'));
+
+            var optionsExchange = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                modalClass: 'popup-cancel-rma',
+                responsiveClass: '',
+                title: '<?= __('Cancel Exchange Request') ?>',
+                buttons: [
+                    {
+                        text: '<?= __('Think Again') ?>',
+                        class: 'popup-cancel-rma-btn',
+                        click: function () {
+                            this.closeModal();
+                        }
+                    },
+                    {
+                        text: '<?= __('Confirm Cancellation') ?>',
+                        class: 'action save primary wk-save popup-cancel-rma-btn',
+                        click: async function () {
+                            event.preventDefault();
+                            var rmaFormToSubmit = $('#rma_id_to_cancel').val();
+                            $(rmaFormToSubmit).submit();
+                        }
+                    }
+
+                ]
+            };
+
+            var popupCancelRMAExchange = modal(optionsExchange, $('#popup-exchange-modal-cancel-rma'));
+        }
+    );
+</script>

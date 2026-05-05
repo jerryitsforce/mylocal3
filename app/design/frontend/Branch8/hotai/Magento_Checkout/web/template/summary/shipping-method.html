@@ -1,0 +1,10 @@
+<!-- ko if: isCalculated() && quoteIsVirtual == 0 -->
+<tr class="totals shipping-method">
+    <th class="mark" scope="row">
+        <span class="label" data-bind="text: title"></span>
+    </th>
+    <td class="amount">
+        <span class="value" data-bind="text: getShippingMethodTitle()"></span>
+    </td>
+</tr>
+<!-- /ko -->

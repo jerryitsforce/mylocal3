@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magetop
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magetop.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.magetop.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Magetop
+ * @package     Magetop_Quickview
+ * @copyright   Copyright (c) Magetop (https://www.magetop.com/)
+ * @license     https://www.magetop.com/LICENSE.txt
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" ifconfig="magetop_quickview/general/enable_product_listing">
+    <update handle="catalog_product_view" />
+    <update handle="catalog_delivery_info"/>
+    <body>
+        <referenceBlock name="header.container" remove="true" />
+        <referenceBlock name="page.top" remove="true" />
+        <referenceBlock name="footer-container" remove="true" />
+        <referenceContainer name="head" remove="true"/>
+        <referenceContainer name="header" remove="true"/>
+        <referenceContainer name="menu" remove="true"/>
+		<referenceContainer name="magetop.demo.notices" remove="true"/>
+        <referenceContainer name="footer" remove="true"/>
+        <referenceBlock name="copyright" remove="true" />
+        <referenceBlock name="authentication-popup" remove="true" />
+        <referenceContainer name="content">
+            <block class="Magento\Catalog\Block\Product\View\Type\Simple" ifconfig="magetop_quickview/general/enable_goto_product_button" name="goto.product" template="Magetop_Quickview::gotoproduct.phtml" before="-" />
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Magetop\Quickview\Block\Initialize" name="magetop.quickview.beforebodyend" template="Magetop_Quickview::beforebodyend.phtml" />
+        </referenceContainer>
+        <referenceBlock name="product.info.addtocart" class="Magetop\Quickview\Block\Product\View" template="Magetop_Quickview::product/view/addtocart.phtml">
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart.additional" class="Magetop\Quickview\Block\Product\View" template="Magetop_Quickview::product/view/addtocart.phtml">
+        </referenceBlock>
+    </body>
+</page>

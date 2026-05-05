@@ -1,0 +1,63 @@
+<?php
+/** @var \Branch8\HifiSalesReport\Block\Adminhtml\Display\QuickView $block */
+?>
+
+<div class="admin__page-section-title">
+    <span class="title"><?= $escaper->escapeHtml(__('Hifi Quick View')) ?></span>
+</div>
+<div class="template" style="display: flex;">
+    <div style="width: 70%;">
+        <table class="data-grid">
+            <thead>
+                <tr>
+                    <th class="data-grid-th">HIFI拋帳會科設定</th>
+                    <th class="data-grid-th">發票(含稅)</th>
+                    <th class="data-grid-th">發票(稅金5%)</th>
+                    <th class="data-grid-th">發票(未稅)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <?php foreach ($block->orderItemProductSummaryData as $data): ?>
+                    <td><?=$data?></td>
+                    <?php endforeach; ?>
+                </tr>
+                <tr>
+                    <?php foreach ($block->orderItemPointSummaryData as $data): ?>
+                    <td><?=$data?></td>
+                    <?php endforeach; ?>
+                </tr>
+                <tr>
+                    <td>合計</td>
+                    <?php foreach ($block->orderItemTotalSummaryData as $data): ?>
+                    <td style="color: red;"><?=$data?></tds>
+                    <?php endforeach; ?>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width: 5%;" ></div>
+    <div style="width: 25%;">
+        <table class="data-grid">
+            <thead>
+            <tr>
+                    <th class="data-grid-th">收款方式</th>
+                    <th class="data-grid-th">訂單金額</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <?php foreach ($block->orderCreditSummaryData as $data): ?>
+                    <td><?=$data?></td>
+                    <?php endforeach; ?>
+                </tr>
+                <tr>
+                    <td>總計</td>
+                    <?php foreach ($block->orderTotalSummaryData as $data): ?>
+                    <td style="color: red;"><?=$data?></td>
+                    <?php endforeach; ?>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

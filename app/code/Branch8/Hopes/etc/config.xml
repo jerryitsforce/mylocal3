@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_hopes>
+                <enable>0</enable>
+                <log_type>false</log_type>
+            </branch8_hopes>
+        </branch8_debug>
+        <hopes>
+            <convenience_store>
+                <rma_receiver>羅少伶</rma_receiver>
+                <rma_phone>0981988386</rma_phone>
+                <rma_reason>廠退資料</rma_reason>
+                <rma_address>臺北市中山區松江路433號12樓</rma_address>
+            </convenience_store>
+            <tcat>
+                <rcver_name>和泰聯網精品退貨組</rcver_name>
+                <rcver_phone>0225080786</rcver_phone>
+                <rcver_cellphone></rcver_cellphone>
+                <rcver_suda6>37821A</rcver_suda6>
+                <rcver_address>桃園市楊梅區高獅路560號</rcver_address>
+                <customer_id>5538411401</customer_id>
+                <climate>0001</climate>
+                <distance>00</distance>
+            </tcat>
+            <sin>
+                <seller_groups><![CDATA[[{"file_name":"01","seller_code":"HTC01"},{"file_name":"02","seller_code":"HTC02"},{"file_name":"03","seller_code":"HTC03"},{"file_name":"04","seller_code":"HTC04"},{"file_name":"05","seller_code":"HTC05"}]]]></seller_groups>
+            </sin>
+        </hopes>
+        <carriers>
+            <hotai_711>
+                <email_get_product>carriers_hotai_711_email_get_product</email_get_product>
+            </hotai_711>
+        </carriers>
+    </default>
+</config>

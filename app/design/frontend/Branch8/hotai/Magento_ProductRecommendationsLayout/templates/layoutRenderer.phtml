@@ -1,0 +1,99 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php
+/* @var $block \Magento\ProductRecommendationsLayout\Block\Renderer */
+$pagePlacement = $block->getData('pagePlacement');
+$placeholderUrl = $block->getPlaceholderUrl('image');
+$currencyConfiguration = $block->getCurrencyConfiguration();
+$isAlternateEnvironmentEnabled = $block->isAlternateEnvironmentEnabled();
+$priceFormat = $block->getPriceFormat();
+$dataHelper = $this->helper(Branch8\ProductAlert\Helper\Data::class);
+$imageAlert = $dataHelper->getProductAlertImage();
+$dataLabel = $this->helper(Branch8\PromotionPage\Helper\Data::class);
+$productIdsPreOrder = @implode(',', $dataLabel->checkIsPreorder());
+$productIdsVip = @implode(',', $dataLabel->getProductIdMatchVipLabel());
+$imageInfo = $dataLabel->getInfoImage('new_products_content_widget_grid');
+?>
+
+<div data-bind="scope:'product_recommendations_<?= /* @noEscape */ $pagePlacement; ?>'" class="product-recommendations-<?= /* @noEscape */ $pagePlacement; ?>">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<style>
+    .products-overlay.recommendation{
+        background-image: url(<?= $imageAlert ?>);
+    }
+</style>
+
+<?php if (in_array($block->getNameInLayout(), [
+    'product_recommendations_product_below_content',
+    'product_recommendations_category_before_content',
+    'product_recommendations_category_below_content',
+])) : ?>
+    <?php
+        $curProductId = null;
+        $curProductName = null;
+        $escapers = ["\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c"];
+        $replacements = ["\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t", "\\f", "\\b"];
+        if ($block->getNameInLayout() == 'product_recommendations_product_below_content') {
+            /** @var \Branch8\GA4\ViewModel\ProductViewModel $viewModel */
+            $viewModel = $block->getViewModel();
+            $product = $viewModel->getProduct();
+            $curProductId = $product?->getId();
+            $curProductName = $product?->getName();
+            $curProductName = $curProductName ? str_replace($escapers, $replacements, trim($curProductName)) : '';
+        }
+    ?>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "product_recommendations_<?= /* @noEscape */ $pagePlacement; ?>": {
+                            "component": "Magento_ProductRecommendationsLayout/js/layoutRenderer",
+                            "pagePlacement": "<?= /* @noEscape */ $pagePlacement; ?>",
+                            "placeholderUrl": "<?= /* @noEscape */ $placeholderUrl; ?>",
+                            "priceFormat": <?= /* @noEscape */ $priceFormat; ?>,
+                            "currencyConfiguration": <?= /* @noEscape */ $currencyConfiguration; ?>,
+                            "isAlternateEnvironmentEnabled": <?= /* @noEscape */ json_encode($isAlternateEnvironmentEnabled); ?>,
+                            "productIdsPreOrder": "<?= htmlspecialchars($productIdsPreOrder); ?>",
+                            "productIdsVip": "<?= htmlspecialchars($productIdsVip); ?>",
+                            "curProductId": "<?= $curProductId ?>",
+                            "curProductName": "<?= $curProductName ?>",
+                            "blockName": "<?= $block->getNameInLayout() ?>",
+                            "imageWidth": "<?= $imageInfo['image_width'] ?>",
+                            "imageHeight": "<?= $imageInfo['image_height'] ?>"
+                        }
+                    }
+                }
+            }
+        }
+</script>
+<?php else : ?>
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "product_recommendations_<?= /* @noEscape */ $pagePlacement; ?>": {
+                            "component": "Magento_ProductRecommendationsLayout/js/layoutRenderer",
+                            "pagePlacement": "<?= /* @noEscape */ $pagePlacement; ?>",
+                            "placeholderUrl": "<?= /* @noEscape */ $placeholderUrl; ?>",
+                            "priceFormat": <?= /* @noEscape */ $priceFormat; ?>,
+                            "currencyConfiguration": <?= /* @noEscape */ $currencyConfiguration; ?>,
+                            "isAlternateEnvironmentEnabled": <?= /* @noEscape */ json_encode($isAlternateEnvironmentEnabled); ?>,
+                            "productIdsPreOrder": "<?= htmlspecialchars($productIdsPreOrder); ?>",
+                            "productIdsVip": "<?= htmlspecialchars($productIdsVip); ?>",
+                            "imageWidth": "<?= $imageInfo['image_width'] ?>",
+                            "imageHeight": "<?= $imageInfo['image_height'] ?>"
+                        }
+                    }
+                }
+            }
+        }
+</script>
+<?php endif; ?>

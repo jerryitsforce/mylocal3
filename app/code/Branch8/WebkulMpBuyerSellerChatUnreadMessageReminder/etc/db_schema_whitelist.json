@@ -1,0 +1,21 @@
+{
+    "marketplace_chat_notification_queue": {
+        "column": {
+            "id": true,
+            "customer_id": true,
+            "conversation_id": true,
+            "messages": true,
+            "scheduled_at": true,
+            "status": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "MARKETPLACE_CHAT_NOTIFICATION_QUEUE_CUSTOMER_CONV_STATUS": true,
+            "MARKETPLACE_CHAT_NOTIFICATION_QUEUE_SCHEDULED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

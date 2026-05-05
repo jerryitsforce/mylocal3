@@ -1,0 +1,25 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Html\Footer;
+use Magento\Framework\Escaper;
+
+/** @var Footer $block */
+/** @var Escaper $escaper */
+$helper = $block->getHelperData();
+?>
+<?php if ($helper->isEnabled()) : ?>
+    <?php if ($helper->getBlogConfig('display/footer')) : ?>
+        <li>
+            <a <?= /** @noEscape */ $block->getLinkAttributes() ?>>
+                <?= $escaper->escapeHtml($block->getLabel()); ?>
+                <?= ($block->getCounter()) ? '<span>' . $escaper->escapeHtml($block->getCounter()) . '</span>' : ''; ?>
+            </a>
+        </li>
+    <?php endif; ?>
+    <?= $block->getChildHtml('blog_footer_add') ?>
+<?php endif; ?>

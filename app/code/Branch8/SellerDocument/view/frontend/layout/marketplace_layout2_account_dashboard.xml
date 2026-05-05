@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="seller-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="seller.content">
+            <block class="Webkul\Marketplace\Block\Account\Dashboard" name="marketplace_seller_popup_account_setup" 
+                template="Branch8_SellerDocument::layout2/account/dashboard/popup_account_setup.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

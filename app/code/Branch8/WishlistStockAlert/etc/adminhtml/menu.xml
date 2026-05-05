@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <!-- Main Menu -->
+        <add id="Branch8_WishlistStockAlert::root"
+             title="Wishlist Alert"
+             module="Branch8_WishlistStockAlert"
+             sortOrder="100"
+             parent="Magento_Backend::marketing"
+             resource="Branch8_WishlistStockAlert::manage"/>
+
+        <!-- Email Queue -->
+        <add id="Branch8_WishlistStockAlert::queue"
+             title="Email Queue"
+             module="Branch8_WishlistStockAlert"
+             sortOrder="10"
+             parent="Branch8_WishlistStockAlert::root"
+             action="wishlist_alert/queue/index"
+             resource="Branch8_WishlistStockAlert::manage"/>
+
+        <add id="Branch8_WishlistStockAlert::items"
+             title="Alert Items"
+             module="Branch8_WishlistStockAlert"
+             sortOrder="10"
+             parent="Branch8_WishlistStockAlert::root"
+             action="wishlist_alert/item/list"
+             resource="Branch8_WishlistStockAlert::manage"/>
+
+    </menu>
+</config>

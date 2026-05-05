@@ -1,0 +1,16 @@
+{
+    "branch8_blacklist_keywords": {
+        "column": {
+            "entity_id": true,
+            "keyword": true,
+            "created_at": true
+        },
+        "index": {
+            "BRANCH8_BLACKLIST_KEYWORDS_KEYWORD": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_BLACKLIST_KEYWORDS_KEYWORD": true
+        }
+    }
+}

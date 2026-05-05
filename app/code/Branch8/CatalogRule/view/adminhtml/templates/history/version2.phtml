@@ -1,0 +1,81 @@
+<div id="rule_new_version">
+    <div>
+        <h2>Version Information</h2>
+        <?php
+        $versionData = $this->getData('history_record');
+        $originalDate = new \DateTime($versionData['created_at'], new \DateTimeZone('UTC'));
+        $obj = \Magento\Framework\App\ObjectManager::getInstance();
+        $localeTime = $obj->get(\Magento\Framework\Stdlib\DateTime\TimezoneInterface::class);
+        $storeDate = $localeTime->date($originalDate);
+        ?>
+        <div><?php echo __('Time');?>: <?php echo $storeDate->format('Y-m-d H:i:s');?></div>
+        <div><?php echo __('Submitter');?>: <?php echo $versionData['submitter'];?></div>
+        <div><?php echo __('Approver');?>: <?php echo $versionData['approver'];?></div>
+</div>
+    <?= $block->getChildHtml('catalog_rule_form_compare2'); ?>
+</div>
+<script>
+    <?php
+    $logRecord = $this->getData('history_record');
+    $approvedData = $logRecord['approved_data'];
+    $approvedDataArr = json_decode($approvedData, true);
+    
+    if(isset($approvedDataArr['related_banners'])){
+        $newBannerData = $approvedDataArr['related_banners'];
+    }else{
+        $newBannerData = [];
+    }
+    foreach($newBannerData as &$nBanner){
+        $nBanner = (int)$nBanner;
+    }
+    if(!isset($approvedDataArr['seller_ids'])){
+        $logSellerIds = [];
+    }else{
+        if(!is_array($approvedDataArr['seller_ids'])){
+            if($approvedDataArr['seller_ids'] === null){
+                $logSellerIds = [];
+            }else{
+                $logSellerIds = explode(',', $approvedDataArr['seller_ids']);
+            }
+        }else{
+            $logSellerIds = $approvedDataArr['seller_ids'];
+        }
+        
+    }
+    sort($logSellerIds);
+
+    $prevLogRecord = $this->getData('prev_history_record');
+    $prevApprovedData = $prevLogRecord['approved_data'];
+    $prevApprovedDataArr = json_decode($prevApprovedData, true);
+    if(isset($prevApprovedDataArr['related_banners'])){
+        $ruleBannerData = $prevApprovedDataArr['related_banners'];
+    }else{
+        $ruleBannerData = [];
+    }
+    foreach($ruleBannerData as &$rBanner){
+        $rBanner = (int)$rBanner;
+    }
+    
+    if(!isset($prevApprovedDataArr['seller_ids'])){
+        $prevSellerIds = [];
+    }else{
+        if(!is_array($prevApprovedDataArr['seller_ids'])){
+            if($prevApprovedDataArr['seller_ids'] == null){
+                $prevSellerIds = [];
+            }else{
+                $prevSellerIds = explode(',', $prevApprovedDataArr['seller_ids']);
+            }
+        }else{
+            $prevSellerIds = $prevApprovedDataArr['seller_ids'];
+        }
+        
+    }
+    sort($prevSellerIds);
+    ?>
+    var ruleBanners = <?php echo json_encode($ruleBannerData);?>;
+    var newBanners = <?php echo json_encode($newBannerData);?>;
+    var ruleConditions = <?php echo json_encode($prevApprovedDataArr['actions_serialized']);?>;
+    var newConditions = <?php echo json_encode($approvedDataArr['actions_serialized']);?>;
+    var ruleSellerIds = '<?php echo json_encode($prevSellerIds);?>';
+    var newSellerIds = '<?php echo json_encode($logSellerIds);?>';
+</script>

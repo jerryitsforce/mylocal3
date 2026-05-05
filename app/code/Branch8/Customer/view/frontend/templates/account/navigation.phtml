@@ -1,0 +1,30 @@
+<?php
+/**
+ * @var \Magento\Customer\Block\Account\Navigation $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$title = $escaper->escapeHtml($block->getTitle());
+$sorter = $block->getSorter();
+$sortedLinks = [];
+if ($sorter) {
+    $sortedLinks = $sorter->sortLinks($block->getLayout()->getChildBlocks($block->getNameInLayout()));
+}
+?>
+<div class="block block-account-nav <?= $block->getCssClass() ?>">
+    <?php if ($title): ?>
+        <div class="title">
+            <strong><?= $title ?></strong>
+        </div>
+    <?php endif; ?>
+    <div class="content">
+        <ul class="nav items">
+            <?php if ($sortedLinks): ?>
+                <?php foreach ($sortedLinks as $link): ?>
+                    <?= $link->toHtml(); ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?= $block->getChildHtml(); ?>
+            <?php endif ?>
+        </ul>
+    </div>
+</div>

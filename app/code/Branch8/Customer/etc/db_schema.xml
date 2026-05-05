@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_customer_organization" resource="default" engine="innodb"
+           comment="Customer organization">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Organization ID"/>
+        <column xsi:type="varchar" name="name" nullable="false" length="255" comment="Organization name"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" comment="Created At"/>
+        <column xsi:type="int" name="hotai_auth_id" nullable="true" comment="ID on Hotai Auth"/>
+        <column xsi:type="varchar" name="hotai1_name" nullable="false" length="255" comment="Mapping Hotai API Name"/>
+        <constraint xsi:type="unique" referenceId="ORGANIZATION_API_MAPPING_NAME_UNIQUE">
+            <column name="hotai1_name"/>
+        </constraint>
+
+        <column xsi:type="int" name="sort_order" nullable="true" default="500" comment="Position"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+    <table name="branch8_customer_other_organization" resource="default" engine="innodb"
+           comment="Customer other organization">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Other Organization ID"/>
+        <column xsi:type="int" name="customer_id" nullable="false" comment="Customer ID"/>
+        <column xsi:type="int" name="organization_id" nullable="false" comment="Organization ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="B8_CUSTOMER_OTHER_ORGANIZATION_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="B8_CUSTOMER_OTHER_ORGANIZATION_ORGANIZATION_ID" indexType="btree">
+            <column name="organization_id"/>
+        </index>
+    </table>
+    <table name="branch8_level_historys" resource="default" engine="innodb"
+           comment="Customer organization">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Organization ID"/>
+        <column xsi:type="int" name="customer_id" nullable="false" comment="Customer ID"/>
+        <column xsi:type="int" name="current_level" nullable="false" comment="Current level"/>
+        <column xsi:type="int" name="new_level" nullable="false" comment="New level"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" comment="Created At"/>
+        <column xsi:type="text" name="details" nullable="false" comment="Detail for history" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="B8_LEVEL_HISTORY_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+    </table>
+    <table name="sales_order" resource="default">
+        <column xsi:type="smallint" name="level" disabled="true" nullable="false" comment="This order help customer upgrade to specify customer group"/>
+<!--        <index referenceId="B8_SALES_ORDER_LEVEL" indexType="btree">-->
+<!--            <column name="level"/>-->
+<!--        </index>-->
+    </table>
+    <table name="customer_group" resource="default">
+        <column xsi:type="int" name="organization" nullable="false" comment="Organization of group" />
+        <column xsi:type="varchar" name="fullname" length="255" nullable="false" comment="Group fullname" />
+        <column xsi:type="int" name="nxt_level" nullable="true" comment="Next level"/>
+        <column xsi:type="int" name="prev_level" nullable="true" comment="Prev level"/>
+        <column xsi:type="int" name="period" nullable="false" comment="Level Period" />
+        <column xsi:type="text" name="conditions" nullable="true" comment="Condition to Upgrade level" />
+        <column xsi:type="varchar" name="label" length="255" nullable="false" comment="Group label" />
+        <column xsi:type="varchar" name="icon" length="255" nullable="true" comment="Group icon" />
+        <index referenceId="B8_CUSTOMER_GROUP_ORGANIZATION" indexType="btree">
+            <column name="organization"/>
+        </index>
+    </table>
+    <table name="customer_pending_employee" resource="default" engine="innodb"
+           comment="Pending employee records for missing members">
+        <column xsi:type="int" name="entity_id" unsigned="false" nullable="false" identity="true" comment="Pending Employee ID"/>
+        <column xsi:type="varchar" name="cellphone" nullable="false" length="20" comment="Employee Cellphone"/>
+        <column xsi:type="boolean" name="isEnabled" nullable="false" default="true" comment="Is Enabled"/>
+        <column xsi:type="varchar" name="organizationIdentity" nullable="true" length="10" comment="Organization Identity"/>
+        <column xsi:type="varchar" name="categoryIdentity" nullable="false" length="10" comment="Category Identity"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" comment="Created At"/>
+        <column xsi:type="datetime" name="updated_at" nullable="false" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="CUSTOMER_PENDING_EMPLOYEE_CELLPHONE" indexType="btree">
+            <column name="cellphone"/>
+        </index>
+        <index referenceId="CUSTOMER_PENDING_EMPLOYEE_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    <table name="organization_info" resource="default" engine="innodb" comment="Organization Info">
+        <column xsi:type="varchar" name="organization_identity" nullable="false" length="10" comment="Organization Identity"/>
+        <column xsi:type="varchar" name="company_name" nullable="false" length="100" comment="Company Name"/>
+        <column xsi:type="int" name="org_rank" nullable="true" default="0" comment="Organization Rank"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="organization_identity"/>
+        </constraint>
+    </table>
+    <table name="customer_entity">
+        <column xsi:type="varchar" name="buyer_email" length="255" nullable="true" comment="Buyer Email" />
+        <column xsi:type="int" name="default_convenience_store" nullable="true" comment="Default shipping address for convenience store pickup" />
+        <column xsi:type="varchar" name="phone_number" nullable="true" length="40" comment="Phone Number" />
+        <column xsi:type="datetime" name="cron_level_run_on" nullable="true" comment="Cron Level Run At"/>
+        <index referenceId="CUSTOMER_ENTITY_BUYER_EMAIL" indexType="btree">
+            <column name="buyer_email"/>
+        </index>
+        <constraint xsi:type="unique" referenceId="CUSTOMER_ENTITY_EMAIL_WEBSITE_ID">
+            <column name="email"/>
+            <column name="website_id"/>
+        </constraint>
+        <column xsi:type="varchar" name="seller_phone" length="255" nullable="true" comment="Seller phone" />
+        <index referenceId="CUSTOMER_ENTITY_SELLER_PHONE" indexType="btree">
+            <column name="seller_phone"/>
+        </index>
+        <index referenceId="CUSTOMER_ENTITY_CRON_LEVEL_RUN_ON" indexType="btree">
+            <column name="cron_level_run_on"/>
+        </index>
+        <column xsi:type="int" name="prev_org" nullable="true" comment="Previous Organization" />
+        <index referenceId="CUSTOMER_ENTITY_IS_ACTIVE" indexType="btree">
+            <column name="is_active"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="hotaiconnected" translate="label" sortOrder="100">
+            <label>Hotai Connected</label>
+        </tab>
+        <section id="financial_reconciliation" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Financial Reconciliation</label>
+            <tab>hotaiconnected</tab>
+            <resource>HotaiConnected_FinancialReconciliation::config_financial_reconciliation</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Configuration</label>
+                <field id="session_salt" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Session Encryption Salt</label>
+                    <comment>A unique string used for encrypting/decrypting session IDs. Change this periodically for security.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

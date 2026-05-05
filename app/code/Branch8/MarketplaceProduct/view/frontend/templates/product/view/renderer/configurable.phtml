@@ -1,0 +1,25 @@
+<?php
+/** @var $block \Branch8\MarketplaceProduct\Block\Product\Renderer\Configurable */
+/** @var $configurableViewModel \Magento\Swatches\ViewModel\Product\Renderer\Configurable */
+/** @var $escaper \Magento\Framework\Escaper */
+$configurableViewModel = $block->getConfigurableViewModel()
+?>
+<div class="swatch-opt" data-role="swatch-options"></div>
+
+<script type="text/x-magento-init">
+    {
+        "[data-role=swatch-options]": {
+            "Magento_Swatches/js/swatch-renderer": {
+                "jsonConfig": <?= /* @noEscape */ $swatchOptions = $block->getJsonConfig() ?>,
+                "jsonSwatchConfig": <?= /* @noEscape */ $swatchOptions = $block->getJsonSwatchConfig() ?>,
+                "mediaCallback": "<?= $escaper->escapeJs($escaper->escapeUrl($block->getMediaCallback())) ?>",
+                "gallerySwitchStrategy": "<?= $escaper->escapeJs($block->getVar('gallery_switch_strategy', 'Magento_ConfigurableProduct')) ?: 'replace'; ?>",
+                "jsonSwatchImageSizeConfig": <?= /* @noEscape */ $block->getJsonSwatchSizeConfig() ?>,
+                "showTooltip": <?= $block->escapeJs($configurableViewModel->getShowSwatchTooltip()) ?>
+            }
+        },
+        "*" : {
+            "Magento_Swatches/js/catalog-add-to-cart": {}
+        }
+    }
+</script>

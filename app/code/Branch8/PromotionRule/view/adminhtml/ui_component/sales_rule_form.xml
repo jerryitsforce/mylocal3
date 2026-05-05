@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="rule_information">
+        <field name="seller_borne_discount" formElement="checkbox" sortOrder="200">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>boolean</dataType>
+                <label translate="true">Seller-borne Discount</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="seller_ids" sortOrder="201">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Seller Name</item>
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="component" xsi:type="string">Magento_Catalog/js/components/new-category</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="chipsEnabled" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="string">1</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="listens" xsi:type="array">
+                        <item name="newOption" xsi:type="string">toggleOptionSelected</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Branch8\PromotionRule\Ui\Component\Rule\Form\Seller\Options</item>
+            </argument>
+            <settings>
+                <dataScope>seller_ids</dataScope>
+                <imports>
+                    <link name="visible">${ $.parentName}.seller_borne_discount:checked</link>
+                </imports>
+            </settings>
+        </field>
+        <field name="borne_discount_percentage" formElement="input" sortOrder="202">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">sales_rule</item>
+                    <item name="default" xsi:type="number">100</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-integer" xsi:type="boolean">true</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                    <rule name="validate-number-range" xsi:type="string">0.00-100.00</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Borne Discount %</label>
+                <dataScope>borne_discount_percentage</dataScope>
+                <tooltip>
+                    <description translate="true">Default is 100%. If the rate is shared with HT Connected, please enter the remaining value.</description>
+                </tooltip>
+                <notice translate="true">
+                    Default is 100%. If the rate is shared with HT Connected, please enter the remaining value.
+                </notice>
+                <imports>
+                    <link name="visible">${ $.parentName}.seller_borne_discount:checked</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="labels">
+        <field name="store_labels[0]" formElement="input">
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+</form>

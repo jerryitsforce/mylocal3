@@ -1,0 +1,140 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+?>
+<?php
+$_product = $block->getProduct();
+?>
+<?php
+    $buttonTitle = $_product->getData('individual_product')?__('Buy Now') :__('Add to Cart');
+    $directCls = $_product->getData('individual_product')? 'direct': 'okok';
+    if ($block->getRequest()->getHeader("referer") &&
+        $block->getRequest()->getHeader("referer") == $block->getUrl("wishlist")) {
+        $buttonTitle = __("Sure");
+    }
+
+    // 限購功能 - 使用 ViewModel
+    $viewModel = \Magento\Framework\App\ObjectManager::getInstance()->get(\Branch8\LimitPurchased\ViewModel\Product\LimitPurchased::class);
+    $limitPurchasedQty = $viewModel->getMaxAllowedQty($_product);
+
+    // 決定是否啟用數量限制 (如果 $limitPurchasedQty 不為 null 且 > 0)
+    $shouldLimitQty = ($limitPurchasedQty !== null && $limitPurchasedQty >= 0);
+?>
+
+<div class="box-tocart<?php if (!$_product->isSaleable()){ echo ' disabled'; }?>">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+            <div class="field qty <?= $shouldLimitQty ? 'limit-qty' : ''; ?>">
+                <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+                <div class="control">
+                    <span class="increase down"><?php /* @escapeNotVerified */ echo __('Down') ?></span>
+                    <input type="number"
+                        name="qty"
+                        id="qty"
+                        min="0"
+                        value="<?= $block->getProductDefaultQty() * 1 ?>"
+                        title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                        class="input-text qty"
+                        data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                    />
+
+                    <span class="increase up"><?php /* @escapeNotVerified */ echo __('Up') ?></span>
+                </div>
+                <?php if ($shouldLimitQty): ?>
+                    <div class="limit-qty-text-popup">
+                        <?php echo __('A single order for this product (including all its variations) is limited to %1 pieces.', $limitPurchasedQty) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="actions-sticky-bar">
+            <div class="sticky-inner">
+                <div class="actions <?= $directCls ?>">
+                <?php if ($_product->isSaleable()) :?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                            class="action tocart<?php if($_product->getData('individual_product')){ echo ' primary'; } ?>"
+                            id="product-addtocart-button" disabled>
+                        <span><?= $block->escapeHtml($buttonTitle) ?></span>
+                    </button>
+                    <button type="submit"
+                            title="<?= $block->escapeHtml(__('Buy Now')) ?>"
+                            class="action primary buynow"
+                            id="product-buynow-button">
+                        <span><?= $block->escapeHtml(__('Buy Now')) ?></span>
+                    </button>
+                <?php else: ?>
+                    <button type="button" title="<?= $block->escapeHtml(__('Restocking')) ?>" class="action primary" id="product-oos-button" disabled>
+                        <span><?= $block->escapeHtml(__('Restocking')) ?></span>
+                    </button>
+                <?php endif; ?>
+                <?= $block->getChildHtml('', true) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><input type="hidden" name="referer_url" id="referer_url" value="" />
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>
+<script>
+    require([
+        'jquery',
+        'mage/mage',
+        'Magento_Catalog/product/view/validation',
+        'Magento_Catalog/js/catalog-add-to-cart'
+    ], function ($) {
+        'use strict';
+        let clickedBuyNow = null;
+
+        const addToCartBtn = document.getElementById("product-addtocart-button");
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener("click", function() {
+                clickedBuyNow = null;
+                window.isBuyNow = false;
+                window.cartRedirectUrl = "";
+            });
+        }
+
+        const buyNowBtn = document.getElementById("product-buynow-button");
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener("click", function() {
+                clickedBuyNow = this;
+                window.isBuyNow = true;
+                window.cartRedirectLink = "<?= $block->getUrl('checkout/cart'); ?>"
+            });
+        }
+
+        $('#product_addtocart_form').mage('validation', {
+            radioCheckboxClosest: '.nested',
+            submitHandler: function (form) {
+                var individualProduct = <?php echo $_product->getData('individual_product'); ?>;
+                var addToCartButtonTextDefault = (individualProduct == 1 || clickedBuyNow) ? "<?= __('Buy Now'); ?>" : "<?= __('Add to Cart'); ?>";
+                var addToCartButtonTextWhileAdding = (individualProduct == 1 || clickedBuyNow) ? "<?= __('Buying...'); ?>" : "<?= __('Adding...'); ?>";
+                var addToCartButtonTextAdded = (individualProduct == 1 || clickedBuyNow) ? "<?= __('Bought'); ?>" : "<?= __('Added'); ?>";
+                var widget = $(form).catalogAddToCart({
+                    bindSubmit: false,
+                    "addToCartButtonSelector": window.isBuyNow ? '.action.buynow' : '.action.tocart',
+                    "addToCartButtonTextDefault": addToCartButtonTextDefault,
+                    "addToCartButtonTextWhileAdding": addToCartButtonTextDefault,
+                    "addToCartButtonTextAdded": addToCartButtonTextDefault
+                });
+                widget.catalogAddToCart('submitForm', $(form));
+
+                clickedBuyNow = null;
+
+                return false;
+            }
+        });
+    });
+</script>

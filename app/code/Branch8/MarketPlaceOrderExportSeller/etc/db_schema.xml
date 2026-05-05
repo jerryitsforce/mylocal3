@@ -1,0 +1,11 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="ecpay_invoice_hotai_order_invoice_logs">
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="true" comment="Seller Id"/>
+        <column xsi:type="varchar" name="seller_code" length="255" nullable="true" comment="Seller Code"/>
+        <column xsi:type="varchar" name="seller_company_name" length="255" nullable="true" comment="Seller Company Name"/>
+        <column xsi:type="varchar" name="seller_shop_name" length="255" nullable="true" comment="Seller Shop Name"/>
+        <index referenceId="ECPAY_INVOICE_HOTAI_ORDER_INVOICE_LOGS_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">branch8_family_bonus_record_overview.branch8_family_bonus_record_overview_data_source</item>
+            <item name="deps" xsi:type="string">branch8_family_bonus_record_overview.branch8_family_bonus_record_overview_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">family_bonus_columns</item>
+    </argument>
+    <dataSource name="branch8_family_bonus_record_overview_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\FamilyBonusPin\Ui\DataProvider\Product\TicketRecordOverviewDataProvider</argument>
+            <argument name="name" xsi:type="string">branch8_family_bonus_record_overview_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">record_id</argument>
+
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="marketplace/mui_index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="cacheRequests" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="statefull" xsi:type="array">
+                        <item name="applied" xsi:type="boolean">false</item>
+                    </item>
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array" />
+                    </item>
+                    <item name="observers" xsi:type="array">
+                        <item name="filters" xsi:type="object">Magento\Catalog\Ui\Component\Listing\Filters</item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="family_bonus_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">TicketRecordOverviewGrid</item>
+                        <item name="target" xsi:type="string">selectReview</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+        <column name="batch_code" sortOrder="10">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Batch code</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="safety_stock" sortOrder="20">
+            <settings>
+                <label translate="true">Safety stock</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="sale_start_time" sortOrder="30">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Sale start time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="sale_end_time" sortOrder="40">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Sale end time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="use_start_time" sortOrder="50">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Use start time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="use_end_time" sortOrder="60">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Use end time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="total_count" sortOrder="70">
+            <settings>
+                <label translate="true">Total count</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="sold_count" sortOrder="80">
+            <settings>
+                <label translate="true">Sold count</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="used_count" sortOrder="90">
+            <settings>
+                <label translate="true">Used count</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,29 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product view template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php $_product = $block->getProduct(); ?>
+<?php if ($_product->isSaleable()) :?>
+<div id="alert_low_qty" class="alert-low-qty"></div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_Catalog/js/alertLowStock": {
+                "info": "<?php echo urlencode($block->getProduct()->getSku()); ?>",
+                "selector": "#alert_low_qty",
+                "url": "<?php echo $this->getUrl('catalog/product/lowStockCheck');?>"
+            }
+        }
+    }
+</script>
+<?php endif; ?>

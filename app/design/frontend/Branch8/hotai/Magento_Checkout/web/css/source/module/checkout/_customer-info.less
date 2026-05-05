@@ -1,0 +1,148 @@
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .opc-section {
+    &.buyer-information {
+      padding-bottom: 24px;
+    }
+  }
+
+  .buyer-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 16px 0;
+  }
+
+  .buyer-detail-field {
+    display: flex;
+    flex-direction: row;
+    gap: 0 24px;
+
+    .label {
+      min-width: 60px;
+    }
+  }
+
+  .opc-wrapper {
+    .form-shipping-address {
+      .pickup-address-default {
+        .fieldset {
+          .field {
+            width: 100%;
+            margin: 0;
+
+            > .label {
+              display: none;
+            }
+          }
+        }
+
+        .address-info,
+        #same-as-purchaser-address-form {
+          margin: -24px 0 0;
+          padding-left: 76px;
+
+          .fieldset {
+            gap: 8px 0;    
+            align-items: flex-start;
+
+            div[name$=".city_id"], 
+            div[name$=".city"], 
+            .field.street {
+              margin: 0;
+            }
+          }
+
+          .form-action {
+            margin-top: 16px;
+          }
+        }
+
+        .address-info {
+          padding-left: 84px;
+        }
+      }
+    }
+  }
+  
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .opc-section {
+    &.buyer-information {
+      padding-top: 41px;
+      padding-bottom: 35px;
+    }
+  }
+
+  .buyer-detail-field {
+    .label {
+      min-width: 70px;
+    }
+  }
+
+  .opc-wrapper {
+    .form-shipping-address .pickup-address-default {
+      .pickup-default-selected {
+        .label {
+          min-width: 70px;
+        }
+      }
+      
+      .address-info,
+      #same-as-purchaser-address-form {
+        margin: -26px 0 0;
+        padding-left: 86px;
+
+        .fieldset {
+          gap: 12px 0;
+
+          div[name$=".city_id"], 
+          div[name$=".city"] {
+            width: 50%;
+            box-sizing: border-box;
+            padding-left: 6px;
+          }
+
+          div[name$=".region"],
+          div[name$=".region_id"] {
+            width: 50%;
+            box-sizing: border-box;
+            padding-right: 6px;
+
+            ~ .field:not(.street) {
+              width: 50%;
+              box-sizing: border-box;
+              padding-left: 6px;
+            }
+          }
+        }
+      }
+
+      
+      .address-info {
+        padding-left: 94px;
+      }
+    }
+  }
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+
+}

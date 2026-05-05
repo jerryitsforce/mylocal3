@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="export_product_xls">
+                <settings>
+                    <label translate="true">Modify Product XLS</label>
+                    <url path="productgridexport/export/productExport"/>
+                    <type>export_product_xls</type>
+                </settings>
+            </action>
+            <action name="export_inventory_report">
+                <settings>
+                    <label translate="true">Export Product Inventory CSV</label>
+                    <url path="productgridexport/export/productInventoryExport"/>
+                    <type>export_inventory_report</type>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+</listing>

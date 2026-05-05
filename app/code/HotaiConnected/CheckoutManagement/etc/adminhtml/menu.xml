@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <!-- 主選單設定 -->
+        <add id="HotaiConnected_CheckoutManagement::menu" sortOrder="10" title="Financial Reconciliation" module="HotaiConnected_CheckoutManagement"
+             resource="HotaiConnected_FinancialReconciliation::finance_automation"/>
+
+        <!-- Checkout Area / 結帳專區 -->
+        <add id="HotaiConnected_CheckoutManagement::checkout_area" title="Checkout Area" module="HotaiConnected_CheckoutManagement" sortOrder="10"
+             parent="HotaiConnected_CheckoutManagement::menu" action="checkout_management/checkoutarea"
+             resource="HotaiConnected_FinancialReconciliation::checkout_area"/>
+        
+        <!-- Export Order Checkout Data / 訂單結帳匯出 -->
+        <add id="HotaiConnected_CheckoutManagement::export_order_checkout_data" title="Export Order Checkout Data" module="HotaiConnected_CheckoutManagement" sortOrder="20"
+             parent="HotaiConnected_CheckoutManagement::menu" action="checkout_management/exportordercheckoutdata"
+             resource="HotaiConnected_FinancialReconciliation::order_checkout_export"/>
+        
+        <!-- Approval Functionality / 審核功能 -->
+        <add id="HotaiConnected_CheckoutManagement::approval_functionality" title="Approval Functionality" module="HotaiConnected_CheckoutManagement" sortOrder="30"
+             parent="HotaiConnected_CheckoutManagement::menu" action="checkout_management/approvalfunctionality"
+             resource="HotaiConnected_FinancialReconciliation::review_function"/>
+        
+        <!-- Voucher Reconciliation Area / 票券對帳專區 -->
+        <add id="HotaiConnected_CheckoutManagement::voucher_reconciliation_area" title="Voucher Reconciliation Area" module="HotaiConnected_CheckoutManagement" sortOrder="40"
+             parent="HotaiConnected_CheckoutManagement::menu" action="checkout_management/voucherreconciliationarea"
+             resource="HotaiConnected_FinancialReconciliation::ticket_reconciliation"/>
+    </menu>
+</config>
+

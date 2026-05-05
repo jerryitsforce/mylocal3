@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_singledevice_customer_device" resource="default" engine="innodb" comment="Single Device Login Customer Device">
+        <column name="customer_id" xsi:type="int" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column name="device_id" xsi:type="varchar" length="36" nullable="false" comment="Device ID"/>
+        <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" on_update="true" nullable="false" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="customer_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="BRANCH8_SINGLEDEVICE_CUSTOMER_DEVICE_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID"
+                    table="branch8_singledevice_customer_device"
+                    column="customer_id"
+                    referenceTable="customer_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+    </table>
+
+    <table name="branch8_singledevice_customer_session" resource="default" engine="innodb" comment="Single Device Login Customer Device">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column name="customer_id" xsi:type="int" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column name="token" xsi:type="varchar" length="36" nullable="false" comment="Session ID"/>
+        <column name="device_type" xsi:type="varchar" length="8" nullable="false" comment="web|app"/>
+        <column name="updated_at" xsi:type="timestamp" default="CURRENT_TIMESTAMP" on_update="true" nullable="false" comment="Updated At"/>
+        <column name="user_agent" xsi:type="varchar" length="104" nullable="true" comment="user agent"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="UNIQUE_CUSTOMER_SESION_ID_DEVICE_TYPE" disabled="false">
+            <column name="customer_id"/>
+            <column name="token"/>
+            <column name="device_type"/>
+        </constraint>
+        <index referenceId="b8_singledevice_customer_session_customer_id" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="b8_singledevice_customer_session_id" indexType="btree">
+            <column name="token"/>
+        </index>
+        <index referenceId="b8_singledevice_customer_device_type" indexType="btree">
+            <column name="device_type"/>
+        </index>
+        <index referenceId="b8_singledevice_customerid_device_type" indexType="btree">
+            <column name="customer_id"/>
+            <column name="device_type"/>
+        </index>
+    </table>
+</schema>

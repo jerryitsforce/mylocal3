@@ -1,0 +1,92 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// @codingStandardsIgnoreFile
+
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Recent
+ * @var $_order \Branch8\MarketPlaceParentOrder\Model\ParentOrder
+ */
+?>
+<div class="block block-dashboard-orders">
+    <?php
+    $_orders = $block->getOrders();
+    $count = count($_orders);
+    ?>
+    <div class="block-title order">
+        <strong><?= $block->escapeHtml(__('Recent Orders')) ?></strong>
+        <?php if ($count > 0) : ?>
+            <a class="action view" href="<?= $block->escapeUrl($block->getUrl('sales/parentOrder/history')) ?>">
+                <span><?= $block->escapeHtml(__('View All')) ?></span>
+            </a>
+        <?php endif; ?>
+    </div>
+    <div class="block-content">
+        <?= $block->getChildHtml() ?>
+        <?php if ($count > 0) : ?>
+            <div class="table-wrapper orders-recent">
+                <table class="data table table-order-items recent" id="my-orders-table">
+                    <caption class="table-caption"><?= $block->escapeHtml(__('Recent Orders')) ?></caption>
+                    <thead>
+                    <tr>
+                        <th scope="col" class="col id"><?= $block->escapeHtml(__('Order #')) ?></th>
+                        <th scope="col" class="col date"><?= $block->escapeHtml(__('Date')) ?></th>
+                        <th scope="col" class="col shipping"><?= $block->escapeHtml(__('Ship To')) ?></th>
+                        <th scope="col" class="col total"><?= $block->escapeHtml(__('Order Total')) ?></th>
+                        <?php if ($block->showStatus()): ?>
+                            <th scope="col" class="col status"><?= $block->escapeHtml(__('Status')) ?></th>
+                        <?php endif ?>
+                        <th scope="col" class="col actions"><?= $block->escapeHtml(__('Action')) ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($_orders as $_order) : ?>
+                        <tr>
+                            <td data-th="<?= $block->escapeHtml(__('Order #')) ?>"
+                                class="col id"><?= $block->escapeHtml($_order->getRealOrderId()) ?></td>
+                            <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
+                                class="col date"><?= $block->escapeHtml($block->formatDate($_order->getDetail()->getCreatedAt())) ?></td>
+                            <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>" class="col shipping">
+                                <?= $_order->getShippingAddress() ? $block->escapeHtml(
+                                    $_order->getShippingAddress()->getName()) : "&nbsp;"
+                                ?>
+                            </td>
+                            <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
+                                class="col total">
+                                <?= $_order->formatPrice(
+                                    $block->getGrandTotal($_order)
+                                ) ?>
+                            </td>
+                            <?php if ($block->showStatus()): ?>
+                                <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
+                                    class="col status"><?= $block->escapeHtml($_order->getDetail()->getFrontendStatusLabel()) ?>
+                                </td>
+                            <?php endif ?>
+                            <td data-th="<?= $block->escapeHtml(__('Actions')) ?>" class="col actions">
+                                <a href="<?= $block->escapeUrl($block->getViewUrl($_order)) ?>" class="action view">
+                                    <span><?= $block->escapeHtml(__('View Order')) ?></span>
+                                </a>
+                                <?php if ($block->canReorder($_order)) : ?>
+                                    <a href="#" data-post='<?= $block->getReorderPostData($_order) ?>'
+                                       class="action order">
+                                        <span><?= $block->escapeHtml(__('Reorder')) ?></span>
+                                    </a>
+                                <?php endif ?>
+                                <a target="_blank"
+                                   href="<?= $block->getPrintUrl($_order) ?>"><?= __('Print Order') ?></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php else : ?>
+            <div class="message info empty"><span><?= $block->escapeHtml(__('You have placed no orders.')) ?></span>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>

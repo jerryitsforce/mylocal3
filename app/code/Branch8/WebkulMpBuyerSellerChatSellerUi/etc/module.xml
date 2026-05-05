@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Module/etc/module.xsd">
+    <module name="Branch8_WebkulMpBuyerSellerChatSellerUi">
+    	<sequence>
+    		<module name="Webkul_MpBuyerSellerChat"/>
+            <module name="Branch8_WebkulMpBuyerSeller"/>
+		</sequence>
+    </module>
+</config>

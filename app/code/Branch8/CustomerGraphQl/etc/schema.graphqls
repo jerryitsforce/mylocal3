@@ -1,0 +1,8 @@
+
+type Customer @doc(description: "Defines the customer name, addresses, and other details.") {
+    hotai_point: Int! @doc(description: "The Hotai point of the customer.") @resolver(class: "\\Branch8\\CustomerGraphQl\\Model\\Resolver\\HotaiPoint")
+    ticket_count: Int! @doc(description: "The tickets associated with the customer.") @resolver(class: "\\Branch8\\CustomerGraphQl\\Model\\Resolver\\CustomerTicketCount")
+    fullname: String! @doc(description: "The full name of the customer.") @resolver(class: "\\Branch8\\CustomerGraphQl\\Model\\Resolver\\Fullname")
+    label: String! @doc(description: "The label of the customer.") @resolver(class: "\\Branch8\\CustomerGraphQl\\Model\\Resolver\\Label")
+    icon: String! @doc(description: "The icon of the customer.") @resolver(class: "\\Branch8\\CustomerGraphQl\\Model\\Resolver\\Icon")
+}

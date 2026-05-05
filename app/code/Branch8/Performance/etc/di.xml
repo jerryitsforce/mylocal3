@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Optimize Amasty Groupcat Product Indexer -->
+    <type name="Amasty\Groupcat\Model\Indexer\Product\IndexBuilder">
+        <plugin name="branch8_optimize_groupcat_indexer" type="Branch8\Performance\Plugin\Amasty\Groupcat\OptimizeIndexBuilder" sortOrder="10"/>
+    </type>
+    
+    <!-- Optimize Branch8 RestrictedProduct Indexer -->
+    <type name="Branch8\RestrictedProduct\Helper\Data">
+        <plugin name="branch8_cache_restricted_product_data" type="Branch8\Performance\Plugin\Branch8\RestrictedProduct\CacheRestrictedProductData" sortOrder="10"/>
+    </type>
+</config>

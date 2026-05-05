@@ -1,0 +1,17 @@
+<?php 
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+$jsonLoader = $this->getViewFileUrl('images/animation-onboard.json');
+?>
+<div class="custom-loader">
+  <dotlottie-player class="player" src="<?= $jsonLoader ?>" background="transparent" speed="1" direction="1" playMode="normal" loop autoplay></dotlottie-player>
+  <span class="loader-text"><?= __('開始我的旅程') ?></span>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8MemberLoader": {}
+        }
+    }
+</script>

@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+?>
+<div id="modal-cart-remind-popup" class="modal-hide">
+  <div class="modal-custom-content">
+    <p class="generic-msg"><?= $block->escapeHtml(__('我們注意到購物車內的某些商品狀態異常，暫時無法結帳。請回到購物車調整後再次進行結帳，謝謝您對HOTAI購商品的支持！')) ?></p>
+    <p class="limit-msg" style="display:none;"><?= $block->escapeHtml(__('商品數量超出了單筆訂單限購，或已達會員購買上限，請調整數量後再進行結帳')) ?></p>
+  </div>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "cartRemindPopup": {
+          "modalId": "modal-cart-remind-popup"
+        }
+    }
+}
+</script>

@@ -1,0 +1,69 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+
+/** @var \PHPCuong\Faq\Block\Faq\Faq $block */
+$params = $block->getParams();
+$tabIndex = isset($params['tab']) ? $params['tab'] : 0;
+$tabIndex = $block->escapeHtml($tabIndex);
+$tabId = isset($params['tabid']) ? $params['tabid'] : null;
+$tabId = $block->escapeHtml($tabId);
+$checkIndex = 0;
+foreach ($block->getFaqCategoriesList() as $index => $category) {
+    if($block->getTotalFaqsByCategory($category['category_id']) > 0) {
+        if($tabId && $tabId == $category['category_id']) {
+            $tabIndex = $checkIndex;
+            break;
+        }
+        $checkIndex++;
+    }
+}
+?>
+
+<div class="faq-category">
+    <!-- Tab navigation -->
+    <div class="faq-tab-navigation-wrapper">
+        <ul class="faq-tab-navigation" data-mage-init='{"mage/tabs": {"openedState": "active","active": <?= /* @noEscape  */ $tabIndex ?>}}' data-default-tab="<?php echo $tabIndex; ?>">
+            <?php $i = 0; foreach ($block->getFaqCategoriesList() as $index => $category): ?>
+                <?php if ($block->getTotalFaqsByCategory($category['category_id']) > 0): ?>
+                    <li class="faq-tab <?php echo $i == $tabIndex ? 'active' : ''; ?>" data-role="collapsible" data-category-id="<?php echo $category['category_id']; ?>" >
+                        <a href="#tab-<?php echo $i; ?>" data-category-id="<?php echo $category['category_id']; ?>" data-toggle="trigger">
+                            <?php echo __($category['title']); ?>
+                        </a>
+                    </li>
+                    <?php $i++; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <!-- Tab contents -->
+    <div class="faq-tab-content-wrapper" data-role="content">
+        <div class="faq-tab-content active">
+            <ol class="items faqs-list">
+                <li class="item placeholder"><?= __("Loading FAQs")?>...</li> <!-- Placeholder -->
+            </ol>
+        </div>
+    </div>
+
+    <div class="load-more-wrapper">
+        <button id="load-more" class="action secondary action-secondary action-loadmore" data-faq-page="1">
+            <span><?= __("更多活動")?></span>
+        </button>
+    </div>
+
+    <!-- Pagination -->
+    <div class="faq-pagination"></div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "PHPCuong_Faq/js/account/faq": {}
+        }
+    }
+</script>

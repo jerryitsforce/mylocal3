@@ -1,0 +1,33 @@
+<?php if ($block->isEnabled() && $block->hasCertifications()): ?>
+<div class="product-certification">
+    <div class="label"><?= $block->escapeHtml(__('認證字號')) ?></div>
+    <div  class="value product-certification">
+        <div class="cert-logo-list">
+        <?php $i=0; foreach ($block->getCertificationRows() as $row): ?>
+            <?php if (!empty($row['icon_url'])): ?>
+            <div class="cert-logo-item">
+                <img class="branch8-cert-icon"
+                    src="<?= $block->escapeUrl($row['icon_url']) ?>"
+                    alt="<?= $block->escapeHtml($row['name']) ?>"
+                    width="36" height="36"/>
+            </div>
+            <?php endif; ?>
+        <?php $i++; endforeach; ?>
+        </div>
+        <ul class="cert-name-list">
+            <?php foreach ($block->getCertificationRows() as $row): ?>
+            <li class="cert-name-item">
+                <span class="cert-name"><?= $block->escapeHtml($row['name']) ?> : </span>
+                <span class="cert-value">
+                    <?php if (trim($row['value']) !== ''): ?>
+                        <?= $block->escapeHtml($row['value']) ?>
+                    <?php else: ?>
+                        <?= $block->escapeHtml($block->getCompliesLabel()) ?>
+                    <?php endif; ?>
+                </span>
+            </li>
+            <?php endforeach; ?>
+        </ul>   
+    </div>
+</div>
+<?php endif; ?>

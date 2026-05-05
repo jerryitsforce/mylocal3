@@ -1,0 +1,59 @@
+<!--
+    Branch8 Product Certification Panel template.
+    Bound through the certification-panel.js UI component.
+-->
+<div class="branch8-certification-panel" data-bind="visible: isVisible">
+
+    <!-- Loading spinner -->
+    <div class="branch8-cert-loading" data-bind="visible: isLoading" style="padding:10px; color:#888;">
+        <span>Loading certifications…</span>
+    </div>
+
+    <!-- ko if: !isLoading() -->
+
+    <!-- ko foreach: certifications -->
+    <div class="branch8-cert-item"
+        style="border:1px solid #e0e0e0; border-radius:4px; padding:12px; margin-bottom:10px;">
+
+        <!-- Checkbox row -->
+        <div class="branch8-cert-header" style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+            <input type="checkbox" data-bind="checked: isChecked,
+                               attr: {
+                                   id: 'branch8_cert_' + $data.id
+                               }" />
+            <!-- ko if: $data.icon_url -->
+            <img data-bind="attr: {src: $data.icon_url, alt: $data.name}"
+                style="width:24px; height:24px; object-fit:contain;" />
+            <!-- /ko -->
+            <label data-bind="text: $data.name, attr: {for: 'branch8_cert_' + $data.id}"
+                style="font-weight:600; margin:0; cursor:pointer;"></label>
+        </div>
+
+        <!-- Detail fields — only visible when checked -->
+        <!-- ko if: isChecked -->
+        <div class="branch8-cert-fields" style="margin-top:10px; padding-left:34px;">
+
+            <!-- Certification Number / Description -->
+            <div class="admin__field" style="margin-bottom:6px;">
+                <label class="admin__field-label">
+                    <span data-bind="i18n: 'Certification Number / Description'"></span>
+                </label>
+                <div class="admin__field-control">
+                    <input type="text" class="admin__control-text" data-bind="value: value,
+                                      valueUpdate: 'keyup',
+                                      attr: {
+                                          placeholder: $parent.getPlaceholder()
+                                      }" style="width:100%; max-width:520px;" />
+                    <p class="admin__field-note" style="color:#888; font-size:12px; margin-top:4px;"
+                        data-bind="text: $parent.hintText"></p>
+                </div>
+            </div>
+
+        </div>
+        <!-- /ko -->
+
+    </div>
+    <!-- /ko -->
+
+    <!-- /ko -->
+</div>

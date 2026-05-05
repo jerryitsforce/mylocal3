@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Branch8\HelpDesk\Api\Data\LessDataMessageInterface">
+        <attribute code="attachments" type="Branch8\HelpDesk\Api\Data\AttachmentInterface[]" />
+    </extension_attributes>
+    <extension_attributes for="Branch8\HelpDesk\Api\Data\MessageInterface">
+        <attribute code="attachments" type="Branch8\HelpDesk\Api\Data\AttachmentInterface[]" />
+    </extension_attributes>
+    <extension_attributes for="Branch8\HelpDesk\Api\Data\TicketInterface">
+        <attribute code="attachments" type="Branch8\HelpDesk\Api\Data\AttachmentInterface[]" />
+    </extension_attributes>
+</config>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+   <update handle="customer_account"/>
+    <head>
+        <title>商品問答</title>
+    </head>
+    <body>
+        <!-- <referenceContainer name="sidebar.main">
+            <referenceBlock  name="customer_nav_top">
+                <block class="Branch8\Customer\Block\Account\Link"
+                       name="customer-nav-top-product-question-link" template="Branch8_Customer::account/link.phtml"
+                       ifconfig="product_discussion/general/enabled"
+                >
+                    <arguments>
+                        <argument name="path" xsi:type="string">product_discussion/member/questioning</argument>
+                        <argument name="label" xsi:type="string" translate="true">商品問答</argument>
+                        <argument name="css_class" xsi:type="string">product-question</argument>
+                        <argument name="sortOrder" xsi:type="number">60</argument>
+                    </arguments>
+                </block>
+            </referenceBlock>
+        </referenceContainer> -->
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="questioning"
+                   template="Branch8_MarketPlaceProductDiscussionCustomer::customer/discussions.phtml"
+                   cacheable="false">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="questioning" xsi:type="array">
+                                <item name="component" xsi:type="string">Branch8_MarketPlaceProductDiscussionCustomer/js/customer/questioning</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="configurations" xsi:type="helper"
+                                          helper="Branch8\MarketPlaceProductDiscussionCustomer\ViewModel\Customer::getConfig"/>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

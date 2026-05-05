@@ -1,0 +1,86 @@
+<div class="payment-method payment-method-item-title" data-bind="css: {'_active': (getCode() == isChecked())}, class: 'payment-method payment-method-item-title '+getCode(), attr: {'data-number': getCode()}">
+    <div class="payment-method-title field choice">
+        <label class="radio-label">
+            <input type="radio" name="payment[method]" class="radio"
+                data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()" />
+            <span class="radio-mark"></span>
+            <span data-bind="i18n: getTitle()"></span>
+        </label>
+    </div>
+</div>
+
+<div class="payment-method payment-method-item-content" data-bind="css: {'_active': (getCode() == isChecked())}, class: 'payment-method payment-method-item-content '+getCode()">
+    <div class="payment-method-content">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <!-- ko if: creditCardDetailData().length > 0 -->
+            <div class="card-list">
+            <!-- ko foreach: { data: creditCardDetailData(), as: 'card'} -->
+                <div data-bind="attr: {class: 'card-item ' + $parent.getCardInvalidClass(card) }">
+                    <!-- ko if: card['DefaultCard'] -->
+                       <!-- ko ifnot: $parent.isValidCard(card)-->
+                       <input type="radio" name="payment[creditcard_list]" class="radio" data-bind="attr: { value: card['Id']}, event: {change: $parent.selectOption}">
+                       <!-- /ko -->
+                       <!-- ko if: $parent.isValidCard(card)-->
+                           <input type="radio" name="payment[creditcard_list]" class="radio" data-bind="attr: { value: card['Id'], checked: true}, event: {change: $parent.selectOption}, afterRender: $parent.selectOption(card)">
+                       <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko ifnot: card['DefaultCard'] -->
+                    <input type="radio" name="payment[creditcard_list]" class="radio" data-bind="attr: { value: card['Id']}, checked: $parent.creditCardList, event: {change: $parent.selectOption}">
+                    <!-- /ko -->
+                    <div data-bind="attr: {class: 'card-item-info ' + $parent.getCardInvalidClass(card) }">
+                        <span data-bind="attr: {class: 'card-default ' + $parent.getDefaultClass(card['DefaultCard']) }"></span>
+                        <span data-bind="attr: {class: 'card-type ' + $parent.getCardTypeClass(card['CardType']) }"><span data-bind="text: card['CardType']" ></span></span> 
+                        <span data-bind="text: $parent.getCardNoMask(card['CardNoMask'])" class="card-no"></span> 
+                        <span data-bind="text: card['BankDesc']" class="card-bank-desc"></span>
+                        <!-- ko ifnot: $parent.isValidCard(card)-->
+                          <div class="card-warning">
+                            <span class="warning" data-bind="i18n: 'Card expired, please contact your card issuer.'"></span>
+                          </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            <!--/ko-->
+            </div>
+            <!-- <div class="card-co-branded">
+                <span data-bind="text: getCoBranded()" ></span>
+            </div> -->
+        <!-- /ko -->
+
+        <div class="form-card-wrapper">
+            <!-- ko if: creditCardDetailData().length == 0 -->
+            <span data-bind="i18n: 'No Credit Card'"></span>
+            <!-- /ko -->
+            <form method="post" data-bind="attr: {action: setupCreditCardUrl()}" class="inline form-card"
+                enctype="multipart/form-data">
+                <input type="hidden" name="coBranded" data-bind="attr: {value: getCoBranded()}"/>
+                <input type="hidden" name='redirectUrl' data-bind="attr: {value: setRedirectUrl()}"/>
+                <input type="hidden" class="link-button" data-bind="attr: {value: getSetupCreditCardValue()}"/>
+                <button type="submit" class="action btn-submit"><span data-bind="i18n: getSetupCreditCardValue()"></span></button>
+            </form>
+        </div>
+    </div>
+    <div class="actions-toolbar payment-method-action">
+        <div class="container">
+            <div class="checkout-agreements-block">
+                <!-- ko foreach: $parent.getRegion('before-place-order') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+                <button class="action primary checkout" type="submit" data-bind="
+                            click: placeOrder,
+                            attr: {title: $t('Place Order')},
+                            css: {disabled: !isPlaceOrderActionAllowed()},
+                            enable: (getCode() == isChecked())
+                            " disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

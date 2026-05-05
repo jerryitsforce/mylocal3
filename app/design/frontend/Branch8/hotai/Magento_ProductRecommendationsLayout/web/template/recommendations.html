@@ -1,0 +1,266 @@
+<div class="widget block block-static-block" if="recs().length">
+    <div class="block widget block-products-list grid">
+        <div class="block-content">
+                <div each="data: recs(), afterRender: loadJsAfterKoRender">
+                    <div class="unit-element" data-bind="attr : {'data-unit-id' : unitId, 'data-ga4-event-uid': ga4EventUid }">
+                        <div class="block-title title" if="products.length">
+                            <b>
+                                <span class="block-related-heading" role="heading" aria-level="2" text="storefrontLabel"></span>
+                            </b>
+                        </div>
+                        <div class="products wrapper grid products-grid">
+                            <ol class="products list items product-items" each="products">
+                                <!-- ko if: !attributes.hide_product_on_search || attributes.hide_product_on_search[0] === 'false' -->
+                                <li class="item product product-item has-ga4-data" data-bind="attr: {'data-position': $index, 'data-product-id': productId, 'data-item-list-id' : $parent.itemListId, 'data-item-list-name' : $parent.itemListName, 'data-promotion-id' : $parent.promotionId, 'data-promotion-name' : $parent.promotionName}">
+                                    <div class="product-item-info" data-container="product-grid">
+                                        <!-- ko if: $parents[1].isAlternateEnvironmentEnabled -->
+                                        <a tabindex="-1"
+                                        class="product photo product-item-photo"
+                                        data-bind="attr : {'data-sku' : sku, 'data-unit-id' : $parent.unitId, href: 'javascript:void(0);' }, css: { 'product-item-photo-oos':  (!isPreOrder && ( (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) )) }"
+                                        >
+                                            <span class="product-image-container">
+                                                <span class="product-image-wrapper" data-bind='style: {paddingBottom: "100%"}'>
+                                                    <img attr="src: image.url, alt: name" class="product-image-photo"/>
+                                                </span>
+                                            </span>
+                                            <!-- ko ifnot: isPreOrder -->
+                                                <!-- ko if: (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) -->
+                                                <div class="action-stock unavailable"><span data-bind="i18n: '缺貨中'"></span></div>
+                                                <!-- /ko -->
+                                            <!-- /ko -->
+                                        </a>
+                                        <!-- /ko -->
+                                        <input type="hidden" class="ga4-item-json" style="display: none" data-bind="value: JSON.stringify({
+                                            index: $index(),
+                                            item_id: parseInt(productId),
+                                            item_name: name,
+                                            affiliation: attributes?.seller_shop_name?.[0] || '',
+                                            currency: currency,
+                                            item_brand: attributes?.brand?.[0] || '',
+                                            item_category: attributes?.livesearch_categories?.[0] || 'not_available',
+                                            item_category2: attributes?.livesearch_categories?.[1] || 'not_available',
+                                            item_category3: attributes?.livesearch_categories?.[2] || 'not_available',
+                                            item_category4: attributes?.livesearch_categories?.[3] || 'not_available',
+                                            price: parseFloat(prices?.minimum?.final || 0),
+                                            discount: parseFloat((prices?.minimum?.regular || 0) > (prices?.minimum?.final || 0) ? (prices?.minimum?.regular || 0) - (prices?.minimum?.final || 0) : 0),
+                                            quantity: 1
+                                        })">
+                                        <!-- ko if: !$parents[1].isAlternateEnvironmentEnabled -->
+                                        <!-- ko if: image && image.url -->
+                                        <a tabindex="-1"
+                                        class="product photo product-item-photo"
+                                           data-bind="attr : {
+                                                'data-sku' : sku,
+                                                'data-unit-id' : $parent.unitId,
+                                                href: url
+                                            }, css: { 'product-item-photo-oos':  (!isPreOrder && ( (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) )) }"
+                                        >
+                                            <span class="product-image-container">
+                                                <!-- ko if: attributes.eighteen_product && attributes.eighteen_product[0] === 'true' -->
+                                                <span class="products-overlay recommendation"></span>
+                                                <!-- /ko -->
+                                                <span class="product-image-wrapper" data-bind='style: {paddingBottom: "100%"}'>
+                                                    <img attr="src: image.url, alt: name" class="product-image-photo"/>
+                                                </span>
+                                            </span>
+                                            <!-- ko ifnot: isPreOrder -->
+                                                <!-- ko if: (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) -->
+                                                <div class="action-stock unavailable"><span data-bind="i18n: '缺貨中'"></span></div>
+                                                <!-- /ko -->
+                                            <!-- /ko -->
+                                    </a>
+                                    <!-- /ko -->
+
+                                        <!-- ko if: !image || !image.url -->
+                                        <a tabindex="-1"
+                                            class="product photo product-item-photo"
+                                            data-bind="attr : {
+                                                'data-sku' : sku,
+                                                'data-unit-id' : $parent.unitId,
+                                                href: url
+                                            }, css: { 'product-item-photo-oos':  (!isPreOrder && ( (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) )) }"
+                                        >
+                                            <span class="product-image-container">
+                                                <!-- ko if: attributes.eighteen_product && attributes.eighteen_product[0] === 'true' -->
+                                                    <span class="products-overlay recommendation"></span>
+                                                <!-- /ko -->
+                                                <span class="product-image-wrapper" data-bind='style: {paddingBottom: "100%"}'>
+                                                    <img attr="src: $parents[1].placeholderUrl, alt: name" class="product-image-photo"/>
+                                                </span>
+                                            </span>
+                                            <!-- ko ifnot: isPreOrder -->
+                                                <!-- ko if: (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) -->
+                                                <div class="action-stock unavailable"><span data-bind="i18n: '缺貨中'"></span></div>
+                                                <!-- /ko -->
+                                             <!-- /ko -->
+                                    </a>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                    <div class="product details product-item-details">
+                                        <!-- ko if: $parents[1].isAlternateEnvironmentEnabled -->
+                                        <strong class="product name product-item-name">
+                                            <!-- ko if: isVip -->
+                                            <span class="product-badge vip-label"  data-bind="text: $t('VIP')"></span>
+                                            <!-- /ko -->
+                                            <!-- ko if: isPreOrder -->
+                                            <span class="product-badge preorder"  data-bind="text: $t('Preorder')"></span>
+                                            <!-- /ko -->
+                                            <a class="product-item-link"
+                                               data-bind="attr : {'data-sku' : sku, 'data-unit-id' : $parent.unitId, href: 'javascript:void(0);' }"
+                                            >
+                                                <span html="name"></span>
+                                            </a>
+                                        </strong>
+                                        <!-- /ko -->
+
+                                        <!-- ko if: !$parents[1].isAlternateEnvironmentEnabled -->
+                                        <strong class="product name product-item-name">
+                                            <!-- ko if: isVip -->
+                                            <span class="product-badge vip-label" data-bind="text: $t('VIP')"></span>
+                                            <!-- /ko -->
+                                            <!-- ko if: isPreOrder -->
+                                            <span class="product-badge preorder"  data-bind="text: $t('Preorder')"></span>
+                                            <!-- /ko -->
+                                            <a class="product-item-link"
+                                               data-bind="attr : {
+                                                    'data-sku' : sku,
+                                                    'data-unit-id' : $parent.unitId,
+                                                    href: url
+                                                }"
+                                            >
+                                                <span html="name"></span>
+                                            </a>
+                                        </strong>
+                                        <!-- /ko -->
+
+                                        <div class="price-box price-final_price" data-role="priceBox">
+                                            <!-- ko if: prices && prices.minimum && prices.minimum.final -->
+                                            <!-- ko if: type !== 'grouped' -->
+                                            <!-- ko if: prices.minimum.final < prices.minimum.regular -->
+                                            <span class="normal-price">
+                                                                <span class="price-container price-final_price">
+                                                                    <span id="product-price" class="price-wrapper">
+                                                                        <span class="special-price price-including-tax">
+                                                                            <span class="price" data-bind="text: $parents[1].priceUnits.formatPrice( prices.minimum.final, $parents[1].priceFormat)">
+                                                                            </span>
+                                                                        </span>
+                                                                        <span class="old-price price-including-tax">
+                                                                            <span class="price" data-bind="text: $parents[1].priceUnits.formatPrice( prices.minimum.regular, $parents[1].priceFormat)">
+                                                                            </span>
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                            <!-- /ko -->
+                                            <!-- ko if: !(prices.minimum.final < prices.minimum.regular) -->
+                                            <span class="normal-price">
+                                                                <span class="price-container price-final_price">
+                                                                    <span id="product-price" class="price-wrapper">
+                                                                        <span class="price-including-tax">
+                                                                            <span class="price" data-bind="text: $parents[1].priceUnits.formatPrice( prices.minimum.final, $parents[1].priceFormat)">
+                                                                            </span>
+                                                                        </span>
+                                                                    </span>
+                                                                </span>
+                                                            </span>
+                                            <!-- /ko -->
+                                            <!-- /ko -->
+
+                                            <!-- ko if: type === 'grouped' -->
+                                            <span class="normal-price">
+                                                        <span class="price-container price-final_price">
+                                                            <span id="product-price" class="price-wrapper">
+                                                                <span class="price"
+                                                                      data-bind="text: $parents[1].priceUnits.formatPrice( prices.minimum.final, $parents[1].priceFormat)"
+                                                                ></span>
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                            <!-- /ko -->
+                                            <!-- /ko -->
+                                        </div>
+                                        <div class="product-item-inner" data-bind="if: $data.productId && $data.addToCartAllowed, css: { 'stock-unavailable':  (attributes.index_stock_status && (attributes.index_stock_status[0] === '缺貨' || attributes.index_stock_status[0] === 'Out of Stock' || attributes.index_stock_status[0] === '4855')) || (attributes.livesearch_instock && (attributes.livesearch_instock[0] === 'false' || attributes.livesearch_instock[0] === '0')) }">
+                                            <div class="product-item-actions">
+                                                <div class="actions-primary">
+                                                    <form
+                                                        data-role="tocart-form"
+                                                        attr="action: addToCart.url"
+                                                        method="post"
+                                                    >
+                                                        <input
+                                                            type="hidden"
+                                                            name="product"
+                                                            attr="value: productId"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="uenc"
+                                                            attr="value: addToCart.postUenc"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="form_key"
+                                                            attr="value: addToCart.form_key"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="item_list_id"
+                                                            attr="value: $parent.itemListId"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="item_list_name"
+                                                            attr="value: $parent.itemListName"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="promotion_id"
+                                                            attr="value: $parent.promotionId"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="promotion_name"
+                                                            attr="value: $parent.promotionName"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="form_type"
+                                                            value="product_card"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            name="position"
+                                                            attr="value: $index"
+                                                        />
+                                                        <button
+                                                            type="submit"
+                                                            title="Add to Cart"
+                                                            class="action tocart primary"
+                                                            data-bind="attr : { 'data-sku' : sku, 'data-unit-id': $parent.unitId }"
+                                                        >
+                                                            <span>Add to Cart</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- /ko -->
+                        </ol>
+                        <!-- If we need pagination -->
+                        <div class="swiper-pagination"></div>
+
+                        <!-- If we need navigation buttons -->
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="reload-recommendations bottom-actions" style="display: none;">
+                <button type="button" class="action">查看全部推薦</button>
+            </div>
+        </div>
+    </div>
+</div>

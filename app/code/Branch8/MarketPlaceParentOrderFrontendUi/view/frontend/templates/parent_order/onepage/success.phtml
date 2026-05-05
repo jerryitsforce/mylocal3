@@ -1,0 +1,150 @@
+<?php
+
+/**
+ * @var $block Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Onepage\Success
+ * @var $escaper Magento\Framework\Escaper
+ */
+$giftHelper = $this->helper(\Branch8\GiftToFriend\Helper\Data::class);
+$giftConfirmHelper = $this->helper(\Branch8\GiftToFriend\Helper\Confirm::class);
+
+$giftEnabled = $giftHelper->isFeatureEnable();
+if ($giftEnabled) {
+    $parentOrder = $block->getParentOrder()->getDetail();
+    $expiredDate = $giftConfirmHelper->getOrderExpiredDate($parentOrder->getGiftExpiredAt(), 'Y/m/d');
+    $giftConfirmUrl = $giftConfirmHelper->getConfirmationUrl($parentOrder);
+    $giftAddressType = $parentOrder->getData('gift_address_type');
+}
+?>
+
+<?php 
+$jsonOrderSuccess = $this->getViewFileUrl('images/animation-order-success.json');
+$jsonGiftAnimation = $this->getViewFileUrl('images/animation-gift.json');
+?>
+
+<div class="checkout-success checkout-order-confirmation">
+    <?php if ($block->getOrderId()): ?>
+        <div class="success-messages order-confirmation-messages">
+            <?php if($giftEnabled && $giftConfirmUrl !== '') :?>
+                <h2 class="page-title order-success-gift-box-page-title"><?= $block->escapeHtml(__('距離禮物送出還差兩步！')); ?></h2>  
+                <div class="order-success-gift-box-steps">
+                    <div class="order-success-gift-box-steps__step finished">
+                        <span class="step-number"><span>1</span></span>
+                        <span class="step-text"><?= $block->escapeHtml(__('付款已完成')); ?></span>
+                    </div>
+                    <div class="order-success-gift-box-steps__step step2-in-progress" id="step2InProgress">
+                        <div class="order-success-gift-box-steps__img">
+                            <dotlottie-player class="player" src="<?= $jsonGiftAnimation ?>" background="transparent" speed="1" direction="1"
+                            playMode="normal" loop autoplay></dotlottie-player>
+                        </div>
+                    </div>
+                    <div class="order-success-gift-box-steps__step step2-finished finished" id="step2Finished">
+                        <span class="step-number"><span>2</span></span>
+                        <span class="step-text"><?= $block->escapeHtml(__('複製/分享連結')); ?></span>
+                    </div>
+                    <div class="order-success-gift-box-steps__step">
+                        <span class="step-number"><span>3</span></span>
+                        <span class="step-text"><?= $block->escapeHtml(__('收禮人填寫收件資料')); ?></span>
+                    </div>
+                </div>
+                <div class="order-success-gift-box">
+                    <div class="order-success-gift-box__content">
+                        <?php if($giftAddressType == 2): ?>
+                        <h3 class="order-success-gift-box__title"><?= $block->escapeHtml(__('請將下方連結發給收禮人完成收件資料填寫')) ?></h3>
+                        <?php else: ?>
+                        <h3 class="order-success-gift-box__title"><?= $block->escapeHtml(__('請將下方連結發給收禮人確認收件資料')) ?></h3>
+                        <?php endif; ?>
+                        <div class="order-success-gift-box__link">
+                           <?= $block->escapeHtml($giftConfirmUrl) ?>
+                        </div>
+                        <div class="order-success-gift-box__copy">
+                            <button class="action primary copy" id="confirmLinkCopy" data-clipboard-text="<?= $block->escapeHtml($giftConfirmUrl) ?>">
+                                <span class="action-copy-text"><?= $block->escapeHtml(__('複製連結')) ?></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="order-success-gift-box__note">
+                        <ul class="order-success-gift-box__note-desc">
+                            <li><?= $block->escapeHtml(__('收件者填寫收禮資訊期限：')) ?><span class="number"><?= $expiredDate ?></span> <?= $block->escapeHtml(__('(逾期未完成將自動取消並退款)')) ?></li>
+                            <li><?= $block->escapeHtml(__('送禮連結之後也可於「訂單管理」頁面重新取得')) ?></li>
+                        </ul>
+                    </div>
+                    <!-- <div class="order-success-gift-box__share">
+                        <h3 class="order-success-gift-box__share-title"><span><?= $block->escapeHtml(__('或分享至聊天室')) ?></span></h3>
+                        <div class="order-success-gift-box__share-icons">
+                            <a class="order-success-gift-box__share-btn share-facebook" href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($giftConfirmUrl) ?>" target="_blank" rel="noopener noreferrer">
+                                <span><?= $block->escapeHtml(__('Share on Facebook')) ?></span>
+                            </a>
+                            <a class="order-success-gift-box__share-btn share-line" href="https://line.me/R/msg/text/?<?= urlencode($giftConfirmUrl) ?>" target="_blank" rel="noopener noreferrer">
+                                <span><?= $block->escapeHtml(__('Share on Line')) ?></span>
+                            </a>
+                            <a class="order-success-gift-box__share-btn share-instagram" href="#" target="_blank" rel="noopener noreferrer">
+                                <span><?= $block->escapeHtml(__('Share on Instagram')) ?></span>
+                            </a>
+                            <a class="order-success-gift-box__share-btn share-telegram" href="https://t.me/share/url?url=<?= urlencode($giftConfirmUrl) ?>" target="_blank" rel="noopener noreferrer">
+                                <span><?= $block->escapeHtml(__('Share on Telegram')) ?></span>
+                            </a>
+                        </div>
+                    </div> -->
+                </div>
+                <div id="order-success-gift-box-confirm-modal" class="modal-hide">
+                    <div class="modal-custom-content">
+                        <p><?= $block->escapeHtml(__('關掉頁面也別擔心，可在「訂單管理」頁面重新取得送禮連結！')) ?></p>
+                    </div>
+                </div>
+                <script type="text/x-magento-init">
+                    {
+                        "*": {
+                            "b8GiftActions": {}
+                        }
+                    }
+                </script>
+            <?php else: ?>
+                <div class="order-confirmation-icon">
+                    <dotlottie-player class="player" src="<?= $jsonOrderSuccess ?>" background="transparent" speed="1" direction="1"
+                    playMode="normal" loop autoplay></dotlottie-player>
+                </div>
+                <h2 class="page-title"><?= $block->escapeHtml(__('Order has been established')); ?></h2>    
+                <?php if ($block->getCanViewOrder()): ?>
+                    <p class="hidden"><?= $escaper->escapeHtml(__('Your order number is:')) ?>
+                        <a href="<?= /* @noEscape */
+                        $block->getViewOrderUrl() ?>"
+                        class="order-number">
+                            <strong>
+                                <?= /* @noEscape */
+                                $block->getOrderId() ?>
+                            </strong>
+                        </a>
+                    </p>
+                <?php else: ?>
+                    <p class="hidden">
+                        <?= $escaper->escapeHtml(__('Your order # is:')) ?>
+                        <span>
+                            <?= /* @noEscape */
+                            $block->getOrderId() ?>
+                        </span>
+                    </p>
+                <?php endif; ?>
+                <p><?= $escaper->escapeHtml(__('Dear member of Hetai Group, thank you for your order. You have completed the transaction process of this order. We will process the order and arrange shipment for you as soon as possible!')) ?></p>
+                <?php $feedbackContents = $block->getFeedbackContents(); ?>
+                <?php if (!empty($feedbackContents)): ?>
+                    <div class="order-feedback-contents" style="background-color: rgba(197,23,30,0.06); border-radius: 16px;">
+                        <?php foreach ($feedbackContents as $content): ?>
+                            <p class="feedback-content"><?= $escaper->escapeHtml($content) ?></p>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+                <div class="actions-toolbar">
+                    <a class="action primary btn-icon-right btn-icon-arrow-right" href="<?= /* @noEscape */
+                        $block->getUrl() ?>">
+                        <span><?= $escaper->escapeHtml(__('Continue Shopping')) ?></span>
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
+        <?= $block->getChildHtml('checkout.cart.remaining') ?>
+        <?= $block->getChildHtml('details') ?>
+    <?php endif; ?>
+
+    <?= $block->getAdditionalInfoHtml() ?>
+    <?= $block->getChildHtml('cms') ?>
+</div>

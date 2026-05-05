@@ -1,0 +1,120 @@
+<?php
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var $block \Magento\Backend\Block\Template */
+
+// 根據 _icons.less 定義的所有 icon 類別
+$icons = [
+    'upload', 'download', 'cms', 'customers', 'dashboard', 'logo', 'product', 'promotions',
+    'reports', 'sales', 'stores', 'systems', 'close-mage', 'menu-item', 'info', 'lock',
+    'loop', 'plus', 'recover', 'refresh', 'remove-small', 'retweet', 'unlocked', 'warning',
+    'arrow-left', 'arrow-right', 'back-arrow', 'calendar', 'caret-down', 'caret-left',
+    'caret-right', 'caret-up', 'ccw', 'check-mage', 'clock', 'delete', 'edit', 'error',
+    'help', 'history', 'not-installed', 'disabled', 'dot', 'export', 'import', 'gripper',
+    'forward', 'backward', 'expand-close', 'expand-open', 'home', 'lego', 'tool', 'updater',
+    'notification-02', 'account', 'arrowdown', 'filter', 'search', 'views', 'tag', 'camera',
+    'grid', 'list-menu', 'cart', 'screen', 'video', 'reset', 'clip'
+];
+?>
+<div class="icon-showcase">
+    <div class="icon-showcase__header">
+        <h1><?= __('Available Icon Styles') ?></h1>
+        <p><?= __('This page displays all available icon styles that can be used in the system.') ?></p>
+        <p><strong><?= __('Total Icons: %1', count($icons)) ?></strong></p>
+    </div>
+
+    <div class="icon-showcase__content">
+        <div class="icon-showcase__section">
+            <h2><?= __('Icons') ?></h2>
+            <div class="icon-showcase__grid">
+                <?php foreach ($icons as $icon): ?>
+                    <div class="icon-showcase__item">
+                        <div class="icon-showcase__icon">
+                            <span class="icon icon-<?= $block->escapeHtmlAttr($icon) ?>"></span>
+                        </div>
+                        <div class="icon-showcase__info">
+                            <div class="icon-showcase__name"><?= $block->escapeHtml($icon) ?></div>
+                            <div class="icon-showcase__class">.icon-<?= $block->escapeHtml($icon) ?></div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.icon-showcase {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.icon-showcase__header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e3e3e3;
+    padding-bottom: 20px;
+}
+
+.icon-showcase__header h1 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.icon-showcase__header p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.icon-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.icon-showcase__item {
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    background: #fff;
+    transition: box-shadow 0.3s ease;
+}
+
+.icon-showcase__item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-showcase__icon {
+    margin-bottom: 15px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-showcase__info {
+    margin-top: 10px;
+}
+
+.icon-showcase__name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.icon-showcase__class {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #666;
+    background: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 3px;
+    display: inline-block;
+}
+</style>

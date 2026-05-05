@@ -1,0 +1,79 @@
+<!--@subject 退款成功通知 @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>{{trans "退款成功通知"}}</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {{trans "親愛的%customer_name您好，<br/>您的訂單編號 %increment_id 已於 %refunded_at 完成退款作業，退款金額為 %refunded_amount，刷退信用卡為%payment_info，再請煩您確認。另外，若您的訂單有點數折抵會立即退還至您的和泰會員帳號。"
+        customer_name=$customer_name
+        increment_id=$increment_id
+        refunded_at=$refunded_at
+        refunded_amount=$refunded_amount
+        payment_info=$payment_info | raw }}
+</p>
+
+<table cellpadding="0" cellspacing="0" class="order-info order-refund-success m-bottom__m">
+    <thead>
+    <tr>
+        <th>{{trans "訂單明細"}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">{{trans "訂單編號"}}</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var order_link}}">{{var increment_id}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">{{trans "訂單日期"}}</td>
+                    <td class="value">{{var order_date}}</td>
+                </tr>
+                {{depend refunded_amount}}
+                    <tr class="order_total">
+                        <td class="label">{{trans "預計退還金額"}}</td>
+                        <td class="value">{{var refunded_amount}}</td>
+                    </tr>
+                {{/depend}}
+                {{depend refunded_point}}
+                <tr class="order_points">
+                    <td class="label">{{trans "預計退還點數"}}</td>
+                    <td class="value">{{var refunded_point}}{{trans "點"}}</td>
+                </tr>
+                {{/depend}}
+
+                {{depend shipping_description}}
+                <tr class="order_shipping-method">
+                    <td class="label">{{trans "物流方式"}}</td>
+                    <td class="value">{{var shipping_description}}</td>
+                </tr>
+                {{/depend}}
+                <tr class="order_items">
+                    <td class="label">{{trans "訂購商品"}}</td>
+                    <td class="value">
+                        {{var memo_items|raw}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p>
+    {{trans '若您是以信用卡付款，其退款項目已向授權銀行申請退款，作業程序將視各家銀行工作天數而不同，您可向發卡銀行洽詢該信用卡之入款情形，請留意近期手機訊息與帳單金額。<br>請至 帳號管理 > <a target="_blank" class="link-primary" href="%order_link">訂單查詢</a> 瀏覽完整訂單內容。' order_link=$order_link |raw}}
+</p>
+
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2025 Branch8. All rights reserved.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="customer.extension_attributes.shipping_subsidy" sortOrder="100"
+              class="Branch8\ShippingSubsidy\Ui\Component\Form\ShippingSubsidyFieldset">
+        <settings>
+            <label translate="true">Shipping Subsidy</label>
+            <collapsible>false</collapsible>
+        </settings>
+
+        <container name="shipping_subsidy_enabled_group" component="Magento_Ui/js/form/components/group" sortOrder="5">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Enable Custom Subsidy</item>
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="shipping_subsidy_enabled" sortOrder="10" formElement="select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="number">0</item>
+                        <item name="notice" xsi:type="string" translate="true">Once disabled, it means this seller does not participate in shipping subsidies</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>boolean</dataType>
+                    <dataScope>shipping_subsidy_enabled</dataScope>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+            <field name="use_default_shipping_subsidy_enabled" sortOrder="20" formElement="checkbox"
+                   component="Branch8_ShippingSubsidy/js/form/element/use-default">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="number">1</item>
+                        <item name="targetField" xsi:type="string">${ $.parentName }.shipping_subsidy_enabled</item>
+                        <item name="description" xsi:type="string" translate="true">Use Default Config</item>
+                    </item>
+                </argument>
+                <settings>
+                    <imports>
+                        <link name="defaultValue">${ $.provider }:data.customer.extension_attributes.shipping_subsidy.shipping_subsidy_enabled_group.default_value</link>
+                    </imports>
+                    <dataType>boolean</dataType>
+                    <label translate="true">Use Default Config</label>
+                    <dataScope>use_default_shipping_subsidy_enabled</dataScope>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <valueMap>
+                                <map name="false" xsi:type="number">0</map>
+                                <map name="true" xsi:type="number">1</map>
+                            </valueMap>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+        </container>
+        <container name="shipping_subsidy_mode_group" component="Magento_Ui/js/form/components/group" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Subsidy Mode</item>
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="shipping_subsidy_mode" sortOrder="10" formElement="select">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="string">percent</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>text</dataType>
+                    <dataScope>shipping_subsidy_mode</dataScope>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Branch8\ShippingSubsidy\Model\Config\Source\SubsidyMode"/>
+                        </settings>
+                    </select>
+                </formElements>
+            </field>
+            <field name="use_default_subsidy_mode" sortOrder="20" formElement="checkbox"
+                   component="Branch8_ShippingSubsidy/js/form/element/use-default">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="number">1</item>
+                        <item name="targetField" xsi:type="string">${ $.parentName }.shipping_subsidy_mode</item>
+                        <item name="description" xsi:type="string" translate="true">Use Default Config</item>
+                    </item>
+                </argument>
+                <settings>
+                    <imports>
+                        <link name="defaultValue">${ $.provider }:data.customer.extension_attributes.shipping_subsidy.shipping_subsidy_mode_group.default_value</link>
+                    </imports>
+                    <dataType>boolean</dataType>
+                    <label translate="true">Use Default Config</label>
+                    <dataScope>use_default_subsidy_mode</dataScope>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <valueMap>
+                                <map name="false" xsi:type="number">0</map>
+                                <map name="true" xsi:type="number">1</map>
+                            </valueMap>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+        </container>
+        <container name="shipping_subsidy_home_delivery_group" component="Magento_Ui/js/form/components/group" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Home Delivery Subsidy</item>
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="shipping_subsidy_home_delivery" sortOrder="10" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>text</dataType>
+                    <dataScope>shipping_subsidy_home_delivery</dataScope>
+                    <validation>
+                        <rule name="validate-number" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="use_default_home_delivery" sortOrder="20" formElement="checkbox"
+                   component="Branch8_ShippingSubsidy/js/form/element/use-default">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="number">1</item>
+                        <item name="targetField" xsi:type="string">${ $.parentName }.shipping_subsidy_home_delivery</item>
+                        <item name="description" xsi:type="string" translate="true">Use Default Config</item>
+                    </item>
+                </argument>
+                <settings>
+                    <imports>
+                        <link name="defaultValue">${ $.provider }:data.customer.extension_attributes.shipping_subsidy.shipping_subsidy_home_delivery_group.default_value</link>
+                    </imports>
+                    <dataType>boolean</dataType>
+                    <label translate="true">Use Default Config</label>
+                    <dataScope>use_default_home_delivery</dataScope>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <valueMap>
+                                <map name="false" xsi:type="number">0</map>
+                                <map name="true" xsi:type="number">1</map>
+                            </valueMap>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+        </container>
+        <container name="shipping_subsidy_store_pickup_group" component="Magento_Ui/js/form/components/group" sortOrder="30">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Store Pickup Subsidy</item>
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+            <field name="shipping_subsidy_store_pickup" sortOrder="10" formElement="input">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataType>text</dataType>
+                    <dataScope>shipping_subsidy_store_pickup</dataScope>
+                    <validation>
+                        <rule name="validate-number" xsi:type="boolean">true</rule>
+                    </validation>
+                </settings>
+            </field>
+            <field name="use_default_store_pickup" sortOrder="20" formElement="checkbox"
+                   component="Branch8_ShippingSubsidy/js/form/element/use-default">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="source" xsi:type="string">customer</item>
+                        <item name="default" xsi:type="number">1</item>
+                        <item name="targetField" xsi:type="string">${ $.parentName }.shipping_subsidy_store_pickup</item>
+                        <item name="description" xsi:type="string" translate="true">Use Default Config</item>
+                    </item>
+                </argument>
+                <settings>
+                    <imports>
+                        <link name="defaultValue">${ $.provider }:data.customer.extension_attributes.shipping_subsidy.shipping_subsidy_store_pickup_group.default_value</link>
+                    </imports>
+                    <dataType>boolean</dataType>
+                    <label translate="true">Use Default Config</label>
+                    <dataScope>use_default_store_pickup</dataScope>
+                </settings>
+                <formElements>
+                    <checkbox>
+                        <settings>
+                            <valueMap>
+                                <map name="false" xsi:type="number">0</map>
+                                <map name="true" xsi:type="number">1</map>
+                            </valueMap>
+                        </settings>
+                    </checkbox>
+                </formElements>
+            </field>
+        </container>
+        <container name="shipping_subsidy_note" sortOrder="100">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string"/>
+                </item>
+            </argument>
+            <htmlContent name="shipping_subsidy_note_content">
+                <block name="shipping_subsidy_note_block"
+                       class="Branch8\ShippingSubsidy\Block\Adminhtml\Customer\ShippingSubsidyNote"/>
+            </htmlContent>
+        </container>
+    </fieldset>
+</form>

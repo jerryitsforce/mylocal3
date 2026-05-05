@@ -1,0 +1,109 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpBundleProduct
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ * @var $block \Branch8\MarketplaceStaging\Block\Product\Create
+ */
+$productType = $block->getRequest()->getParam('type');
+$productId = (int)$block->getRequest()->getParam('id');
+$viewModelHelper = $block->getViewModel();
+$product = $block->getProduct();
+$productTypeEdit = $product->getTypeId();
+$skuType = $viewModelHelper->getSkuType();
+$skuChecked = "";
+$priceChecked = "";
+$weightChecked = "";
+$priceDisabled = "";
+$weightDisabled = "";
+if ($productId > 0) {
+    $priceDisabled = "disabled";
+    $optionBoxName = 'bundle_product_edit';
+    $bundleProductOptions['price_type'] = $product->getPriceType();
+    $bundleProductOptions['weight_type'] = $product->getWeightType();
+    $bundleProductOptions['sku_type'] = $product->getSkuType();
+    if ($bundleProductOptions['sku_type'] == 0) {
+        $skuChecked = "checked";
+    }
+    if ($bundleProductOptions['price_type'] == 0) {
+        $priceChecked = "checked";
+    }
+    if ($bundleProductOptions['weight_type'] == 0) {
+        $weightChecked = "checked";
+    }
+} else {
+    $optionBoxName = "bundle_product_add";
+    $skuChecked = "checked";
+    $priceChecked = "checked";
+    $weightChecked = "checked";
+}
+
+?>
+<?php if ($productType == \Magento\Bundle\Model\Product\Type::TYPE_CODE
+    ||
+    $productTypeEdit == \Magento\Bundle\Model\Product\Type::TYPE_CODE
+    ): ?>
+    <?php if ($skuType == 'static'): ?>
+        <div class="field required staging-wk-dynamic-sku">
+            <label class="label "><?= $block->escapeHtml(__('Dynamic Sku')) ?>:</label>
+            <div class="control">
+                <label class="switch">
+                <input type="checkbox" id="staging_sku_type" name="product[sku_type]"
+                value = <?= $block->escapeHtml(($productId > 0) ? $bundleProductOptions['sku_type'] : "0"); ?>
+                <?= $block->escapeHtml($skuChecked); ?> >
+                </label>
+            </div>
+        </div>
+    <?php endif; ?>
+    <div class="field required staging-wk-dynamic-price">
+        <label class="label " ><?= $block->escapeHtml(__('Dynamic Price')) ?>:</label>
+        <div class="control">
+            <label class="switch">
+                <input type="checkbox" id="staging_price_type" name="product[price_type]"
+                value = <?= $block->escapeHtml(($productId > 0) ? $bundleProductOptions['price_type'] : "0"); ?>
+                <?= $block->escapeHtml($priceChecked); ?>
+                <?= $block->escapeHtml($priceDisabled);?> >
+            </label>
+        </div>
+    </div>
+    <div class="field required staging-wk-dynamic-weight">
+        <label class="label " ><?= $block->escapeHtml(__('Dynamic Weight')) ?>:</label>
+        <div class="control">
+            <label class="switch">
+                <input type="checkbox" id="staging_weight_type" name="product[weight_type]"
+                value = <?= $block->escapeHtml(($productId > 0) ? $bundleProductOptions['weight_type'] : "0"); ?>
+               <?= $block->escapeHtml($weightChecked) ?>
+                <?= $block->escapeHtml($weightDisabled);?>>
+            </label>
+        </div>
+    </div>
+
+    <div class='wk-mpbundle-main-body'>
+        <?= /* @noEscape */ $block->getChildHtml($optionBoxName); ?>
+    </div>
+    <?php
+
+    $optionElements = [
+    "priceClass" => ".staging-wk-dynamic-price",
+    "skuClass" => ".staging-wk-dynamic-sku",
+    "weightClass" => ".staging-wk-dynamic-weight",
+    "taxClass" => "#stage-wk-bodymain #tax-class-id",
+    "isWeightChecked" => $weightChecked,
+    "type" => $productType,
+    "productId" => $productId
+    ];
+    $serializedData = $viewModelHelper->jsonEncodeData($optionElements);
+    ?>
+
+<script type="text/x-magento-init">
+{
+"*":{
+        "stagePlaceOptions":<?= /* @noEscape */ $serializedData; ?>
+    }
+}
+</script>
+<?php endif; ?>

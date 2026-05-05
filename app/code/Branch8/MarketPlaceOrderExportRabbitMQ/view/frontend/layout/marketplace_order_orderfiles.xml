@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="seller-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="marketplace_styles"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Marketplace Product List</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <!-- <block class="Webkul\Marketplace\Block\Product\Productlist" name="marketplace_product_list" template="product/myproductlist.phtml" cacheable="false"/> -->
+            <uiComponent name="marketplace_orders_orderfiles_listing"/>
+            <block class="Magento\Framework\View\Element\Template" name="marketplace_product_list_js" template="Webkul_Marketplace::layout2/product/list/js.phtml" cacheable="false" before="-"/>
+
+        </referenceContainer>
+    </body>
+</page>

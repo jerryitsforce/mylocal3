@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Logger -->
+    <virtualType name="HotaiConnected\Report\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/hotaiconnected_report.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="HotaiConnectedReportLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">HotaiConnected\Report\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Pending Employee Commands -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="pending_employee_report" xsi:type="object">HotaiConnected\Report\Console\Command\PendingEmployeeReportCommand</item>
+                <item name="pending_employee_sync" xsi:type="object">HotaiConnected\Report\Console\Command\PendingEmployeeSyncCommand</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="HotaiConnected\Report\Model\SlackNotifier">
+        <arguments>
+            <argument name="logger" xsi:type="object">HotaiConnectedReportLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="HotaiConnected\Report\Model\PendingEmployee\ApiClient">
+        <arguments>
+            <argument name="logger" xsi:type="object">HotaiConnectedReportLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="HotaiConnected\Report\Model\PendingEmployee\ReportGenerator">
+        <arguments>
+            <argument name="logger" xsi:type="object">HotaiConnectedReportLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="HotaiConnected\Report\Model\PendingEmployee\CsvExporter">
+        <arguments>
+            <argument name="logger" xsi:type="object">HotaiConnectedReportLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="HotaiConnected\Report\Model\PendingEmployee\SearchApiClient">
+        <arguments>
+            <argument name="logger" xsi:type="object">HotaiConnectedReportLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="HotaiConnected\Report\Model\PendingEmployee\SyncService">
+        <arguments>
+            <argument name="logger" xsi:type="object">HotaiConnectedReportLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- 註冊所有 Report (enabled: true=啟用, false=停用) -->
+    <type name="HotaiConnected\Report\Model\ReportManager">
+        <arguments>
+            <argument name="reports" xsi:type="array">
+                <!-- 沒有發票主檔紀錄的訂單 -->
+                <item name="missing_invoice" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\MissingInvoiceReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 沒有customer_ticket的相關訂單 -->
+                <item name="missing_customer_ticket" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\MissingCustomerTicketReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 有用點數但沒有deduction紀錄 -->
+                <item name="missing_point_deduction" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\MissingPointDeductionReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 取消訂單,有用點數沒有return紀錄 -->
+                <item name="canceled_order_missing_point_return" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\CanceledOrderMissingPointReturnReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 已給票券但訂單狀態還在processing -->
+                <item name="ticket_issued_but_processing" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\TicketIssuedButProcessingReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 球池票券與customer_ticket狀態不一致 -->
+                <item name="ticket_status_inconsistent" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\TicketStatusInconsistentReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 重複票券查詢 -->
+                <item name="duplicate_ticket" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\DuplicateTicketReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 超取宅配地址不一致 -->
+                <item name="shipping_address_mismatch" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\ShippingAddressMismatchReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 沒用點數又沒付款資訊的訂單 -->
+                <item name="no_point_no_payment" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\NoPointNoPaymentReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 票券訂單，非純點交易檢查 -->
+                <item name="ticket_order_non_pure_point" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\TicketOrderNonPurePointReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 訂單returned沒有return單號 -->
+                <item name="returned_order_missing_return_trace_no" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\ReturnedOrderMissingReturnTraceNoReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 沒付錢的訂單，異常訂單狀態 -->
+                <item name="unpaid_abnormal_status" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\UnpaidAbnormalStatusReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 點數訂單兌點狀態檢查 -->
+                <item name="point_order_redemption_status" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\PointOrderRedemptionStatusReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 禮物票券訂單登入後沒拿到 -->
+                <item name="gift_ticket_not_received" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\GiftTicketNotReceivedReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 禮物訂單/票券/收禮人資訊為空 -->
+                <item name="gift_order_empty_recipient" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\GiftOrderEmptyRecipientReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 下單人非收禮人,且票券非收禮人 -->
+                <item name="gift_ticket_wrong_recipient" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\GiftTicketWrongRecipientReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 票券狀態不一致 -->
+                <item name="ticket_pool_status_inconsistent" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\TicketPoolStatusInconsistentReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- Qware 票券資訊缺失報表 (URL 或密碼為空) -->
+                <item name="qware_ticket_info_missing" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\QwareTicketInfoMissingReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 活動折扣異常報表 (special_price < price_incl_tax) -->
+                <item name="negative_campaign_discount" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\NegativeCampaignDiscountReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 員工身份但組別不符報表 (group_id != 20) -->
+                <item name="employee_group_mismatch" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\EmployeeGroupMismatchReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 訂單虛擬狀態不一致報表 (so.is_virtual != soi.is_virtual) -->
+                <item name="virtual_status_inconsistent" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\VirtualStatusInconsistentReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 票券未完成訂單報表 -->
+                <item name="incomplete_ticket_order" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\IncompleteTicketOrderReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- SMS 發送失敗監控 -->
+                <item name="sms_error_log" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\SmsErrorLogReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+                <!-- 非下單當日兌點檢查 -->
+                <item name="non_order_day_redemption" xsi:type="array">
+                    <item name="class" xsi:type="object">HotaiConnected\Report\Model\Report\NonOrderDayRedemptionReport</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

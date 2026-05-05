@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="gift_order" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Gift Order</label>
+            <tab>branch8</tab>
+            <resource>Magento_Sales::config_sales</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                <label>General</label>
+                <field id="is_active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Active</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="expired_period" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Order Expired</label>
+                    <comment>Unit is day</comment>
+                </field>
+                <field id="sms_environment" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>SMS Prod Environment</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sms_order_confirm_template" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>SMS Template Order Confirmation</label>
+                    <comment>%code is confirmation code</comment>
+                </field>
+                <field id="sms_gift_box_template" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>SMS Template Order Confirmation</label>
+                    <comment>%code is confirmation code</comment>
+                </field>
+                <field id="sms_period" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>SMS code lifetime</label>
+                    <comment>Number is minute.</comment>
+                </field>
+                <field id="giftbox_session_lifttime" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Gift Box session lifetime</label>
+                    <comment>Number is minute.</comment>
+                </field>
+            </group>
+            <group id="placeholder_address" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="30" translate="label">
+                <label>Placeholder Address</label>
+                <field id="firstname" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Firstname</label>
+                </field>
+                <field id="lastname" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Lastname</label>
+                </field>
+                <field id="telephone" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Phone</label>
+                </field>
+                <field id="region_id" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Region</label>
+                    <source_model>Branch8\Checkout\Model\Config\Source\TaiwanCity</source_model>
+                </field>
+                <field id="city_id" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>City</label>
+                    <source_model>Branch8\GiftToFriend\Model\Config\Source\CityEmt</source_model>
+                </field>
+                <field id="city" translate="label" type="hidden" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>City Text</label>
+                </field>
+                <field id="street" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Street</label>
+                </field>
+                <field id="custom_placeholder" translate="label" type="button" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>Branch8\GiftToFriend\Block\Adminhtml\System\Config\CustomPlaceHelper</frontend_model>
+                </field>
+            </group>
+            <group id="security" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="30" translate="label">
+                <label>SMS security</label>
+                <field id="protection_type" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>SMS Protection Type</label>
+                    <source_model>Branch8\GiftToFriend\Model\Config\Source\ResetMethod</source_model>
+                </field>
+                <field id="max_request" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Max Number of SMS Requests</label>
+                </field>
+                <field id="max_request_in" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Max Request In</label>
+                    <comment>Number is seconds.</comment>
+                </field>
+                <field id="min_time" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Min Time Between SMS Requests</label>
+                    <comment>Number is minute.</comment>
+                </field>
+            </group>
+            <group id="customer_service_form" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="30" translate="label">
+                <label>Customer Service Form</label>
+                <field id="gift_category" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Gift Cagegory</label>
+                    <source_model>Branch8\HelpDesk\Model\Ticket\Source\Category</source_model>
+                </field>
+                <field id="faq_category" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>FAQ Category</label>
+                    <source_model>PHPCuong\Faq\Model\Config\Source\Category</source_model>
+                </field>
+            </group>
+            <group id="sales_presentative_api" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="30" translate="label">
+                <label>Sales Presentative API</label>
+                <field id="url" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>API URL</label>
+                </field>
+                <field id="key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>API Key</label>
+                </field>
+                <field id="is_active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0"
+                       showInStore="0">
+                    <label>Push to Hotai</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_gifttofriend" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_GiftToFriend</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\GiftToFriend\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

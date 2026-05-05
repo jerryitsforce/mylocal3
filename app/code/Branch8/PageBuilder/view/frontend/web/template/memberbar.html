@@ -1,0 +1,40 @@
+<!-- ko if: isLogin() -->
+<div class="member-bar-section-inner login">
+    <div class="member-bar-section-content">
+        <div class="member-bar-top">
+            <h3 data-bind="i18n: getWelcomeText()"></h3>
+            <p><span data-bind="i18n: getSecondText()"></span></p>
+        </div>
+        <div class="member-bar-middle">
+            <div class="point">
+                <a data-bind="attr: {href: pointUrl}">
+                    <span data-bind="html: customer().customer_point_icon" class="customer-num"></span> <span data-bind="i18n: pointtext"></span>
+                </a>
+            </div>
+            <div class="ticket">
+                <a data-bind="attr: {href: ticketUrl}">
+                    <span data-bind="text: customer().totalticket" class="customer-num"></span> <span data-bind="i18n: tickettext"></span>
+                </a>
+            </div>
+        </div>
+        <div class="member-bar-bottom">
+            <a class="a-button action-small" data-bind="i18n: firstbutton, attr: {href: firstbuttonurl, title: firstbutton}"></a>
+            <a class="a-button action-small" data-bind="i18n: secondbutton, attr: {href: secondbuttonurl, title: secondbutton}"></a>
+        </div>
+    </div>
+</div>
+<!-- /ko -->
+<!-- ko ifnot: isLogin() -->
+    <div class="member-bar-section-inner nonlogin">
+        <div class="member-bar-section-content">
+            <div class="member-bar-top">
+                <h3 data-bind="i18n: getNonLoginWelcomeText()"></h3>
+            </div>
+            <div class="member-bar-bottom">
+                <a class="a-button" data-bind="i18n: nonloginfirstbutton, attr: {href: nonloginfirstbuttonurl, title: nonloginfirstbutton}" data-mage-init='{"b8ConfirmPopup" : {}}'></a>
+                <a class="action primary" data-bind="i18n: nonloginsecondbutton, attr: {href: nonloginsecondbuttonurl, title: nonloginsecondbutton}"></a>
+            </div>
+        </div>
+
+    </div>
+<!-- /ko -->

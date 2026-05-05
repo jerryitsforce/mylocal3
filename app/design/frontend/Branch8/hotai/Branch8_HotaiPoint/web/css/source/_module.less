@@ -1,0 +1,176 @@
+@import 'module/_member-point.less';
+@import 'module/_form-page.less';
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Variables
+//  _____________________________________________
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .hotai-toplink{
+    .hotai-totalpoints{
+      display: inline-flex;
+    }
+    .hotai-customer-points{
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      vertical-align: middle;
+
+      img{
+        max-height: 18px;
+        min-width: 18px;
+        width: auto;
+      }
+    }
+  }
+
+  .point-floating-button{
+    font-size: 12px;
+    line-height: 1.5;
+    position: fixed;
+    right: 11px;
+    z-index: 30;
+
+    span.link{
+      color: @color-white;
+      background: @theme__color__primary;
+      border-radius: 100%;
+      width: 74px;
+      height: 74px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      text-decoration: none;
+      box-sizing: border-box;
+      padding: 10px;
+      box-shadow: 0px 0px 10px 1px rgba(35, 24, 21, 0.1);
+      z-index: 30;
+      cursor: pointer;
+
+      .page-footer &{
+        color: @color-white;
+      }
+    }
+
+    .action.close{
+      background: white;
+      border-radius: 100%;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+      text-align: center;
+      color: @primary__color;
+
+      .lib-icon-font(
+          @_icon-font-content: '\e911',
+          @_icon-font-size: 20px,
+          @_icon-font-line-height: 24px
+      );
+
+      &:hover{
+        color: @theme__color__primary;
+      }
+    }
+
+    &.closed{
+      display: none;
+    }
+  }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .hotai-toplink{
+      .dropdown-toggle {
+          padding: 5px 8px;
+          background-color:#A60811;
+          color: @color-white;
+          border-radius: 100px;
+          display: inline-flex;
+          text-align: center;
+          font-weight: 700;
+          align-items: center;
+          font-family: @font-family__secondary;
+          height: 22px;
+          vertical-align: middle;
+      }
+
+      &.active,
+      &:hover{
+          .dropdown-toggle  {
+              background-color: @color-white;
+              color: @theme__color__primary;
+          }
+      }
+
+      &.dropdown{
+          .dropdown-list{
+              right: -66px;
+
+              &:before,
+              &:after{
+                display: none;
+              }
+          }
+      }
+  }
+
+  .point-floating-button{
+    bottom: 158px;
+  }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .hotai-toplink{
+    .hotai-customer-points{
+      img{
+        max-height: 32px;
+        min-width: 32px;
+      }
+    }
+  }
+
+  .point-floating-button{
+    right: 11px;
+    bottom: 100px;
+    span.link{
+      width: 98px;
+      height: 98px;
+      font-size: 14px;
+      line-height: 18px;
+      padding-bottom: 17px;
+      .lib-icon-font(
+        @_icon-font-content: '\e905',
+        @_icon-font-size: 26px,
+        @_icon-font-line-height: 26px
+      );
+      display: flex;
+
+      &:before{
+        margin-bottom: 2px;
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+}

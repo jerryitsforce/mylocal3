@@ -1,0 +1,8 @@
+{
+    "salesrule": {
+        "column": {
+            "display_on_frontend": true,
+            "feedback_content": true
+        }
+    }
+}

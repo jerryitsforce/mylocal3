@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="cms_block">
+        <column xsi:type="int" name="visibility" unsigned="false" nullable="false" default="0" />
+    </table>
+    <table name="magento_banner">
+        <column xsi:type="int" name="visibility" unsigned="false" nullable="false" default="0" />
+    </table>
+    <table name="cms_page">
+        <column xsi:type="int" name="visibility" unsigned="false" nullable="false" default="0" />
+    </table>
+</schema>

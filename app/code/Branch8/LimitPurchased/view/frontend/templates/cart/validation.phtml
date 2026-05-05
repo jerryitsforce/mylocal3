@@ -1,0 +1,317 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $viewModel \Branch8\LimitPurchased\ViewModel\Cart\LimitPurchased
+ */
+$viewModel = $block->getData('view_model');
+$data = $viewModel->getItemLimits();
+$itemLimits = $data['limits'] ?? [];
+$productMap = $data['products'] ?? [];
+?>
+
+<script>
+    require(['jquery', 'mage/translate', 'jquery/validate', 'mage/validation'], function ($, $t) {
+        var itemLimits = <?= json_encode($itemLimits) ?>;
+        var productMap = <?= json_encode($productMap) ?>;
+
+        var methodName = 'validate_limit_purchased';
+
+        $.validator.addMethod(
+            methodName,
+            function (value, element) {
+                var itemId = null;
+                
+                // Try data-cart-item-id
+                var dataId = $(element).data('cart-item-id');
+                if (dataId && itemLimits.hasOwnProperty(dataId)) {
+                    itemId = dataId;
+                }
+
+                // Try parsing ID
+                if (!itemId) {
+                    var inputId = $(element).attr('id');
+                    if (inputId) {
+                        var match = inputId.match(/cart-(\d+)-qty/);
+                        if (match && itemLimits.hasOwnProperty(match[1])) {
+                            itemId = match[1];
+                        }
+                    }
+                }
+
+                // Try parsing Name
+                if (!itemId) {
+                        var inputName = $(element).attr('name');
+                        if (inputName) {
+                            var match = inputName.match(/cart\[(\d+)\]\[qty\]/);
+                            if (match && itemLimits.hasOwnProperty(match[1])) {
+                                itemId = match[1];
+                            }
+                        }
+                }
+
+                if (itemId) {
+                    var maxQty = itemLimits[itemId];
+                    var inlineLimit = $(element).data('limit-qty');
+                    if (inlineLimit !== undefined && inlineLimit !== null && inlineLimit !== '') {
+                        maxQty = Number(inlineLimit);
+                    }
+                    var currentProductId = productMap[itemId];
+                    var totalQty = 0;
+
+                    // only check if item is checked
+                    var currentCheckbox = $('#split-cart-item-checkbox-' + itemId);
+                    var hasLimitError = $(element).closest('tbody').hasClass('has-limit-error');
+
+                    // Aggregate quantity for all items with same product ID (only check items)
+                    if (currentProductId) {
+                        $.each(productMap, function(id, prodId) {
+                            if (prodId == currentProductId) {
+                                var qty = 0;
+                                if (id == itemId) {
+                                    qty = Number(value);
+                                    totalQty += qty;
+                                } else {
+                                    // only add qty of sibling if it is checked
+                                    var otherInput = $('#cart-' + id + '-qty');
+                                    var otherCheckbox = $('#split-cart-item-checkbox-' + id);
+                                    
+                                    if (otherInput.length && otherCheckbox.length && otherCheckbox.is(':checked')) {
+                                        totalQty += Number(otherInput.val());
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        totalQty = Number(value);
+                    }
+
+                    var result = totalQty <= Number(maxQty);
+                    return result;
+                }
+                // Handle case where item not in itemLimits but has inline limit
+                var inlineLimit = $(element).data('limit-qty');
+                if (inlineLimit !== undefined && inlineLimit !== null && inlineLimit !== '') {
+                    var result = Number(value) <= Number(inlineLimit);
+                    return result;
+                }
+                
+                return true;
+            },
+            function (params, element) {
+                var itemId = null;
+                var dataId = $(element).data('cart-item-id');
+                if (dataId && itemLimits.hasOwnProperty(dataId)) itemId = dataId;
+                if (!itemId) {
+                        var inputId = $(element).attr('id');
+                        if (inputId) {
+                            var match = inputId.match(/cart-(\d+)-qty/);
+                            if (match && itemLimits.hasOwnProperty(match[1])) itemId = match[1];
+                        }
+                }
+                if (!itemId) {
+                        var inputName = $(element).attr('name');
+                        if (inputName) {
+                            var match = inputName.match(/cart\[(\d+)\]\[qty\]/);
+                            if (match && itemLimits.hasOwnProperty(match[1])) itemId = match[1];
+                        }
+                }
+                
+                var maxQty = 0;
+                if (itemId && itemLimits.hasOwnProperty(itemId)) {
+                    maxQty = itemLimits[itemId];
+                }
+                var inlineLimit = $(element).data('limit-qty');
+                if (inlineLimit !== undefined && inlineLimit !== null && inlineLimit !== '') {
+                    maxQty = Number(inlineLimit);
+                }
+                var singleOrderLimitMsg = '<?= $escaper->escapeJs(__('Single-order limit: %1 units per product (including all variants)')) ?>';
+                var mainMsg = singleOrderLimitMsg.replace('%1', maxQty);
+                
+                return mainMsg;
+            }
+        );
+
+
+        function updateMetadataFromDOM() {
+            var metadataEl = $('#limit-purchased-metadata');
+            if (metadataEl.length) {
+                try {
+                    var data = JSON.parse(metadataEl.val());
+                    if (data && data.limits) itemLimits = data.limits;
+                    if (data && data.products) productMap = data.products;
+                } catch (e) {
+                    console.error("LimitPurchased: Error parsing metadata from DOM", e);
+                }
+            }
+        }
+
+        function applyValidation(isPageLoad) {
+            updateMetadataFromDOM();
+            var allQtyInputs = $('input[data-role="cart-item-qty"]:not([data-validate-limit-applied])');
+            if (!allQtyInputs.length) return;
+
+            var form = allQtyInputs.first().closest('form.form-cart');
+            if (!form.length) form = $('.form.form-cart');
+
+            allQtyInputs.each(function() {
+                var qtyInput = $(this);
+                qtyInput.attr('data-validate-limit-applied', 'true');
+                qtyInput.removeAttr('max');
+                
+                var validateData = qtyInput.attr('data-validate');
+                var validateJson = validateData ? (function(){ try { return JSON.parse(validateData); } catch (e) { return {}; } })() : {};
+                validateJson[methodName] = true;
+                qtyInput.attr('data-validate', JSON.stringify(validateJson));
+                
+                // Force registration of the rule if the form is already validated
+                if (form.length && form.data('validator')) {
+                    try {
+                        qtyInput.rules('add', {
+                            [methodName]: true
+                        });
+                    } catch(e) {}
+                }
+            });
+
+            if (form.length && !form.data('validator')) {
+                 try { form.validation({}); } catch(e) {}
+            }
+
+            // Single unified timeout to run validation across all processed inputs
+            setTimeout(function() {
+                 if (form.length && form.data('validator')) {
+                     var isAnyInvalid = false;
+                     allQtyInputs.each(function() {
+                         try {
+                             if ($(this).val() && !$(this).valid()) {
+                                 isAnyInvalid = true;
+                             }
+                         } catch(e) {}
+                     });
+                     
+                     // Trigger Popup if Page Load and Invalid
+                     if (isPageLoad && isAnyInvalid) {
+                          var $modal = $('#modal-cart-remind-popup');
+                          if ($modal.length) {
+                              $modal.find('.generic-msg').hide();
+                              $modal.find('.limit-msg').show();
+                              $modal.modal('setTitle', $.mage.__('商品超過購買數量限制'));
+                              $modal.modal('openModal');
+                          }
+                     }
+                 }
+            }, 500);
+
+            allQtyInputs.each(function() {
+                var qtyInput = $(this);
+                // Add listener to re-validate siblings on change or custom trigger
+                qtyInput.off('change.validate_siblings validate_siblings').on('change.validate_siblings validate_siblings', function() {
+                    var currentInput = $(this);
+                    
+                    // Simple ID extraction assuming cart-ID-qty pattern
+                    var currentId = null;
+                    var inputId = currentInput.attr('id');
+                    if (inputId) {
+                        var matches = inputId.match(/cart-(\d+)-qty/);
+                        if (matches) {
+                            currentId = matches[1];
+                        }
+                    }
+                    
+                    if (currentId && productMap[currentId]) {
+                         var currentProdId = productMap[currentId];
+                         // Validate siblings sharing the same product ID
+                         $.each(productMap, function(id, prodId) {
+                             if (prodId == currentProdId && id != currentId) {
+                                 var sibling = $('#cart-' + id + '-qty');
+                                 // Check if sibling is initialized with validation to avoid errors
+                                 if (sibling.length && sibling.data('validator') || (sibling.closest('form').data('validator'))) {
+                                     try {
+                                        sibling.valid();
+                                     } catch(e) {}
+                                 }
+                             }
+                         });
+                    }
+                });
+            });
+        }
+
+        $(document).ready(function () {
+            applyValidation(true);
+            
+            // Listen for checkbox changes to immediately re-validate
+            $(document).on('change', 'input.split-cart-item-checkbox, input.split-cart-check-all, input#select_all_cart', function() {
+                var form = $(this).closest('form.form-cart');
+                if (!form.length) form = $('.form.form-cart'); // Fallback if checkbox is outside form
+                
+                if (form.length && form.data('validator')) {
+                    // Delay slightly to let other splitCart checked sync complete
+                    setTimeout(function() {
+                        form.find('input[data-role="cart-item-qty"]').each(function() {
+                            $(this).valid(); // Force re-validation of all items
+                        });
+
+                        var isFormValid = true;
+                        form.find('input[data-role="cart-item-qty"]').each(function() {
+                            var itemId = $(this).data('cart-item-id');
+                            var checkbox = $('#split-cart-item-checkbox-' + itemId);
+                            // Only block checkout for items that are actually selected
+                            if (!checkbox.length || checkbox.is(':checked')) {
+                                if ($(this).hasClass('mage-error') || $(this).attr('aria-invalid') === 'true') {
+                                    isFormValid = false;
+                                }
+                            }
+                        });
+                        
+                        // Disable button immediately so user knows cart is blocked on frontend
+                        if (!isFormValid) {
+                            $('button[data-role=proceed-to-checkout]').addClass('disabled').attr('disabled', true);
+                        } else {
+                            // Only enable if no other system errors exist
+                            enforceCheckoutState();
+                        }
+                    }, 100);
+                }
+            });
+
+            // Enforce disabled button state continuously as long as limit errors exist
+            var enforceCheckoutState = function() {
+                var hasLimitErrorForChecked = false;
+                
+                $('input[data-role="cart-item-qty"]').each(function() {
+                    var input = $(this);
+                    var itemId = input.data('cart-item-id');
+                    var checkbox = $('#split-cart-item-checkbox-' + itemId);
+                    
+                    // Only care about checked items
+                    if (!checkbox.length || checkbox.is(':checked')) {
+                         var errId = input.attr('id') + '-error';
+                         var errEl = $('#' + errId);
+                         if (errEl.length && errEl.is(':visible')) {
+                             // Check if it's a limit error message
+                             if (errEl.find('.limit-purchased-extra-msg').length || 
+                                 errEl.text().indexOf('部分商品超過限購數量') !== -1 ||
+                                 errEl.text().indexOf('最多只能購買') !== -1 ||
+                                 errEl.text().indexOf('purchase up to') !== -1) {
+                                 hasLimitErrorForChecked = true;
+                             }
+                         }
+                    }
+                });
+                
+                if (hasLimitErrorForChecked) {
+                    $('button[data-role=proceed-to-checkout]').addClass('disabled').attr('disabled', true);
+                }
+            };
+
+            // Run verification automatically
+            setInterval(enforceCheckoutState, 500);
+            
+        });
+
+        $(document).on('contentUpdated', function () {
+            applyValidation(false);
+        });
+    });
+</script>

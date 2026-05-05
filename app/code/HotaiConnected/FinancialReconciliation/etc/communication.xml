@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="hotaiconnected.reconciliation.revenue.export" request="string"/>
+    <topic name="hotaiconnected.reconciliation.order.export" request="string"/>
+    <topic name="hotaiconnected.reconciliation.ticket.export" request="string"/>
+</config>

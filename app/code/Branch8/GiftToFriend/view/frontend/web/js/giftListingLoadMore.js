@@ -1,0 +1,116 @@
+define([
+    'jquery',
+    'mage/url',
+    'plugins/DOMPurify',
+    'tabs',
+    'matchMedia',
+    'mage/translate',
+    'domReady!',
+    'mage/loader'
+], function ($,urlBuilder, DOMPurify) {
+  $.widget('b8.giftListingLoadMore', {
+    options: {
+      giftBoxActionEle: '.giftbox-listing-actions',
+      loadMoreBtn: '#giftbox-listing-more-button',
+      pageSize: 10
+    },
+
+    _create: function () {
+      this._initGiftListing();
+      this._bindEvents();
+    },
+
+    _initGiftListing: function () {
+      // Initialize gift listing functionality
+      console.log('Gift Listing Initialized');
+    },
+
+    _bindEvents: function () {
+      // var self = this;
+      // $(document).on('click', this.options.loadMoreBtn, function (event) {
+      //   event.preventDefault();
+      //   self.processLoadMore();
+      // });
+
+      var self = this;
+      var jQ = $.noConflict();
+      var latest = false;
+      jQ(document).on('click', this.options.loadMoreBtn, function (e) {
+        e.preventDefault();
+
+        jQ('body').loader('show');
+        var currentPage = parseInt(jQ(this).attr('data-event-page'));
+        // console.log('Current page: ', currentPage);
+        if (isNaN(currentPage)) {
+          console.error('Invalid current page number');
+          jQ('body').loader('hide');
+          return;  // Exit if the current page is not a number
+        }
+
+        var nextPage = currentPage + 1;
+        var pageSize = self.options.pageSize;
+        
+        // console.log('Current page: ', currentPage, nextPage, pageSize, latest);
+
+        // Validate page size
+        if (isNaN(pageSize) || pageSize <= 0) {
+          console.error('Invalid page size');
+          alert($.mage.__('Invalid page size.'));
+          jQ('body').loader('hide');
+          return;  // Exit if page size is not valid
+        }
+
+        if(latest){
+          jQ('body').loader('hide');
+          return;
+        }
+
+        // AJAX call to load more categories
+        jQ.ajax({
+          url: urlBuilder.build('gift-order/giftbox/viewmore'),
+          type: 'GET',
+          data: {
+              'event-page': nextPage,
+              'pageSize': pageSize
+          },
+          success: function (response) {
+              try {
+                  // console.log('Response: ', response, response.success, response.has_more , !response.has_more? 'ok':'no');
+                  // Check if the response is successful
+                  if (response.success) {
+                      const sanitizedHtml = DOMPurify.sanitize(response.html);
+                      jQ('#moreItems').before(sanitizedHtml);
+                      // console.log('Loaded more items successfully', nextPage);
+                      // jQ(self.options.loadMoreBtn).addClass('active');
+                      jQ(self.options.loadMoreBtn).attr('data-event-page', nextPage);
+
+                      // Hide the button if no more categories to load
+                      if (!response.has_more) {
+                          jQ(self.options.giftBoxActionEle).addClass('latest').hide();
+                          latest = true;
+                      }
+                  } else {
+                      console.warn('Response returned as unsuccessful');
+                      alert($.mage.__('Unable to load more orders.'));
+                  }
+              } catch (err) {
+                  console.error('Error processing response: ', err);
+                  alert($.mage.__('An error occurred while loading more orders.'));
+              } finally {
+                  jQ('body').loader('hide');
+              }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+              // Handle AJAX error
+              console.error('AJAX request failed: ', textStatus, errorThrown);
+              alert($.mage.__('Error while loading more orders. Please try again later.'));
+              jQ('body').loader('hide');
+          }
+        });
+      });
+    }
+
+  });
+
+  return $.b8.giftListingLoadMore;
+});

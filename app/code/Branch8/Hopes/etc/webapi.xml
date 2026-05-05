@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+	<route url="/V1/branch8-hopes/orderstackdetails" method="POST">
+		<service class="Branch8\Hopes\Api\OrderStackDetailsManagementInterface" method="getOrderStackDetails"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/updateshippingtracknumber" method="POST">
+		<service class="Branch8\Hopes\Api\UpdateShippingTrackNumberManagementInterface" method="postUpdateShippingTrackNumber"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/orderstackshipmentsin" method="POST">
+		<service class="Branch8\Hopes\Api\OrderStackShipmentSinManagementInterface" method="getOrderStackShipmentSin"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/updateshipmentsrp" method="POST">
+		<service class="Branch8\Hopes\Api\UpdateShipmentSrpManagementInterface" method="postUpdateShipmentSrp"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/updateshipmenteta" method="POST">
+		<service class="Branch8\Hopes\Api\UpdateShipmentEtaManagementInterface" method="postUpdateShipmentEta"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/updateshipmentein" method="POST">
+		<service class="Branch8\Hopes\Api\UpdateShipmentEinManagementInterface" method="postUpdateShipmentEin"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/updateshipmentpps" method="POST">
+		<service class="Branch8\Hopes\Api\UpdateShipmentPPSManagementInterface" method="postUpdateShipmentPPS"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/createrma" method="POST">
+		<service class="Branch8\Hopes\Api\CreateRmaManagementInterface" method="postCreateRma"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/rmadetails" method="POST">
+		<service class="Branch8\Hopes\Api\RmaDetailsManagementInterface" method="getRmaDetails"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/updatereturnstatus" method="POST">
+		<service class="Branch8\Hopes\Api\UpdateReturnStatusManagementInterface" method="postUpdateReturnStatus"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/rmavoidinvoice" method="POST">
+		<service class="Branch8\Hopes\Api\RmaVoidInvoiceManagementInterface" method="getRmaVoidInvoice"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/tcateod" method="POST">
+		<service class="Branch8\Hopes\Api\TCatEodManagementInterface" method="posTCatEod"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/tcatsod" method="POST">
+		<service class="Branch8\Hopes\Api\TCatSodManagementInterface" method="postTCatSod"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+	<route url="/V1/branch8-hopes/tcat-create-rmashippingnumber" method="POST">
+		<service class="Branch8\Hopes\Api\TCatCreateRmaShippingNumberManagementInterface" method="postTCatCreateRmaShippingNumberManagement"/>
+		<resources>
+			<resource ref="self"/>
+		</resources>
+	</route>
+</routes>

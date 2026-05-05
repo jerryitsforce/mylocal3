@@ -1,0 +1,119 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .product-options-wrapper .fieldset > .field {
+    &.batch-ticket {
+      .product-custom-option {
+        display: none;
+      }
+    }
+  }
+  .batch-loading-mask {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    .loader {
+      &::after {
+        content: '';
+        display: inline-block;
+        &:extend(.abs-loader-spinner all);
+      }
+      > * {
+        display: none;
+      }
+    }
+  }
+
+  .product-batches {
+    // border-top: 1px solid var(--color-gray-light4);
+    display: flex;
+    flex-direction: row;
+    // padding: 0 16px 15px;
+    gap: 0 16px;
+    // border-bottom: 1px solid var(--color-gray-light4);
+    // margin: 0 0 19px;
+  }
+
+  .batch-list {
+    display: flex;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
+
+  .batch-item {
+    margin: 0;
+  }
+
+  .batch-title {
+    &:extend(.abs-body-text-medium all);
+    margin: 0;
+    padding: 0;
+    min-width: 72px;
+  }
+
+  .batch-setting-id {
+    &:extend(.abs-caption2-medium all);
+    background: var(--color-gray-light5);
+    padding: 4px 10px;
+    border-radius: var(--TagS);
+    color: var(--color-gray-solid2);
+    cursor: pointer;
+
+    &.active {
+      background: var(--color-black-solid);
+      color: var(--color-white);
+    }
+
+    &.disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  }
+
+}
+
+
+//
+//  Desktop
+//  _____________________________________________
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .batch-title {
+    &:extend(.abs-tb-caption1-medium all);
+  }
+
+  .batch-setting-id {
+    &:extend(.abs-tb-caption1-medium all);
+  }
+
+  .product-batches {
+    // margin: 0 0 20px;
+    // padding: 0 0 20px;
+  }
+
+  .batch-list {
+    gap: 16px;
+  }
+
+}
+
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+  .batch-title {
+    &:extend(.abs-dk-caption1-medium all);
+  }
+
+  .batch-setting-id {
+    &:extend(.abs-dk-caption1-medium all);
+  }
+
+}

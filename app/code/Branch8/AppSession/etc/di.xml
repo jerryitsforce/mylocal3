@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Session\Config\ConfigInterface">
+        <plugin name="modify_cookie_lifetime_for_app"
+                type="Branch8\AppSession\Plugin\Session\ModifyCookieLifetime"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\JwtUserToken\Model\Config\ConfigReader">
+        <plugin name="b8_app_session_jwt_user_token_config_reader_plugin"
+                type="Branch8\AppSession\Plugin\JwtUserToken\ConfigReaderPlugin"/>
+    </type>
+    <type name="Magento\Framework\Session\SaveHandler\Redis\Config">
+        <plugin name="branch8_app_session_redis_config_plugin"
+                type="Branch8\AppSession\Plugin\Session\RedisConfigPlugin"/>
+    </type>
+    <type name="Magento\Framework\App\Config\ScopeConfigInterface">
+        <plugin name="branch8_session_config_plugin"
+                type="Branch8\AppSession\Plugin\ScopeConfigPlugin"/>
+    </type>
+</config>

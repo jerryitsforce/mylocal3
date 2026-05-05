@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Branch8.
+ *
+ * @category  Branch8
+ * @package   Branch8_PageBuilder
+ * @author    Branch8: Dev Team
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="DefaultWYSIWYGValidator">
+        <arguments>
+            <argument name="allowedAttributes" xsi:type="array">
+                <item name="data-visible-for-none-order" xsi:type="string">data-visible-for-none-order</item>
+                <item name="data-recommendation-id" xsi:type="string">data-recommendation-id</item>
+                <item name="data-title" xsi:type="string">data-title</item>
+                <item name="data-link-text" xsi:type="string">data-link-text</item>
+                <item name="data-link" xsi:type="string">data-link</item>
+                <item name="data-show-recommend" xsi:type="string">data-show-recommend</item>
+                <item name="data-products-count" xsi:type="string">data-products-count</item>
+                <item name="data-sort-order" xsi:type="string">data-sort-order</item>
+                <item name="data-condition-option" xsi:type="string">data-condition-option</item>
+                <item name="data-conditions-encoded" xsi:type="string">data-conditions-encoded</item>
+                <item name="data-display" xsi:type="string">data-display</item>
+                <item name="data-creative-name" xsi:type="string">data-creative-name</item>
+                <item name="data-creative-slot" xsi:type="string">data-creative-slot</item>
+                <item name="data-promotion-id" xsi:type="string">data-promotion-id</item>
+                <item name="data-promotion-name" xsi:type="string">data-promotion-name</item>
+                <item name="data-item-list-id" xsi:type="string">data-item-list-id</item>
+                <item name="data-item-list-name" xsi:type="string">data-item-list-name</item>
+                <item name="data-background-tag-image" xsi:type="string">data-background-tag-image</item>
+                <item name="loading" xsi:type="string">loading</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\PageBuilder\Model\WidgetInitializerConfig">
+        <arguments>
+            <argument name="config" xsi:type="array">
+                <item name="products" xsi:type="array">
+                    <item name="grid" xsi:type="array">
+                        <item name="component" xsi:type="string">Branch8_PageBuilder/js/content-type/products/appearance/grid/widget</item>
+                        <item name="appearance" xsi:type="string">grid</item>
+                    </item>
+                </item>
+                <item name="image" xsi:type="array">
+                    <item name="full-width" xsi:type="array">
+                        <item name="component" xsi:type="string">Branch8_PageBuilder/js/content-type/image/appearance/full-width/widget</item>
+                        <item name="appearance" xsi:type="string">full-width</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<include xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_include.xsd">
+    <group id="email_settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+           showInStore="1">
+        <label>Email Setting</label>
+        <field id="sender_email_identity" translate="label" type="select" sortOrder="0" showInDefault="1"
+               showInWebsite="1" showInStore="1">
+            <label>Email Sender</label>
+            <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+        </field>
+        <field id="email_receiver" translate="label" type="text" sortOrder="5" showInDefault="1"
+               showInWebsite="1" showInStore="1">
+            <label>Customer Service Mail</label>
+            <comment>If you use multiple separate by comma. Note: when sending to many email the load time will
+                increase
+            </comment>
+        </field>
+        <field id="disable_attachments" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+               showInWebsite="1" showInStore="1">
+            <label>Stop Include attachments inside Mail</label>
+            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+            <config_path>helpdesk/email_settings/disable_attachments</config_path>
+        </field>
+        <group id="admin_setting" translate="label" showInDefault="1" showInWebsite="1" sortOrder="10">
+            <label>Admin Setting</label>
+            <field id="admin_enable_sendmail" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Enable Send Mail</label>
+                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+            </field>
+            <field id="admin_new_ticket_template" translate="label" type="select" sortOrder="25" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Template for New Ticket</label>
+                <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+            </field>
+            <field id="admin_new_message_template" translate="label" type="select" sortOrder="25" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Template for New Message</label>
+                <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+            </field>
+            <field id="user_ticket_assigned_template" translate="label" type="select" sortOrder="25" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Template User To Ticket Template</label>
+                <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+            </field>
+        </group>
+        <group id="customer_setting" translate="label" showInDefault="1" showInWebsite="1" sortOrder="20">
+            <label>Customer Setting</label>
+            <field id="customer_enable_sendmail" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Enable Send Mail</label>
+                <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+            </field>
+            <field id="customer_new_ticket_template" translate="label" type="select" sortOrder="25" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Template for New Ticket</label>
+                <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+            </field>
+            <field id="customer_new_message_template" translate="label" type="select" sortOrder="30" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Template for New Message</label>
+                <comment>When customer comment on ticket , notify to Admin with this email</comment>
+                <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+            </field>
+            <field id="customer_new_status_template" translate="label" type="select" sortOrder="80" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Customer New Status Template</label>
+                <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                <comment>When ticket change status notify to Customer with this email</comment>
+            </field>
+            <field id="customer_new_status_notify" translate="label" type="multiselect" sortOrder="100" showInDefault="1"
+                   showInWebsite="1" showInStore="1">
+                <label>Customer Notify Statuses</label>
+                <source_model>Branch8\HelpDesk\Model\Ticket\Status</source_model>
+            </field>
+        </group>
+    </group>
+</include>

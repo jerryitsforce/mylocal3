@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <remove src="Webkul_MpRmaSystem::css/styles.css"/>
+        <css src="Branch8_Rma::css/styles.css"/>
+<!--
+        <css src="Branch8_Rma::css/switcher.css" />
+-->
+    </head>
+    <body>
+        <referenceBlock name="mprmasystem_seller_rma_layout2" class="Branch8\Rma\Block\Seller\Rma">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_Rma::seller/rma.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="rma_model" xsi:type="object">Branch8\Rma\ViewModel\Rma</argument>
+            </arguments>
+            <block name="switch_resolution" class="Magento\Framework\View\Element\Template" template="Branch8_Rma::rma/switchResolution.phtml">
+                <arguments>
+                    <argument name="rma_model" xsi:type="object">Branch8\Rma\ViewModel\Rma</argument>
+                </arguments>
+            </block>
+         </referenceBlock>
+
+         <!-- <block class="Branch8\Rma\Block\Seller\Rma" name="branch8.rma.seller" as="virtual" template="Branch8_Rma::seller/rma.phtml" /> -->
+    </body>
+</page>

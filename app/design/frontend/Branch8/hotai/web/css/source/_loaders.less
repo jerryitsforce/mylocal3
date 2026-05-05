@@ -1,0 +1,136 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    .load.indicator {
+        .lib-loader();
+        position: absolute;
+
+        > span {
+            display: none;
+        }
+    }
+
+    .loading-mask {
+        .lib-loading-mask();
+        // background: rgba(255, 255, 255, .5);
+        background: var(--bg-overlay);
+        display: flex;
+
+        .loader {
+            &:extend(.abs-loader-spinner all);
+            > img {
+                display: none;
+                .lib-loading-mask();
+            }
+
+            > p {
+                display: none;
+            }
+        }
+    }
+
+    body {
+        > .loading-mask {
+            z-index: @loader-overlay__z-index;
+
+            &:not([style*="display: none"]) ~ .page-wrapper{
+                // Should show one loading at one time
+                .wk-loading-mask{
+                    display: none;
+                }
+            }
+        }
+
+        &.redirecting{
+            overflow: hidden;
+            > .loading-mask{
+                background: var(--color-white);
+            }
+
+            .page-header{
+                .lib-css(transform, none, 1);
+                z-index: 10001;
+            }
+        }
+    }
+
+    ._block-content-loading {
+        position: relative;
+    }
+
+    [data-role='main-css-loader'] {
+        display: none;
+    }
+
+    body .admin__data-grid-loading-mask{
+        .spinner{
+            .lib-loading-mask();
+            &:extend(.abs-loader-spinner all);
+            height: auto;
+        }
+    }
+
+    div.wk-loading-mask{
+        background: var(--bg-overlay);
+
+        .wk-loader{
+            &:extend(.abs-loader-spinner all);
+        }
+    }
+
+    .ds-widgets{
+        .ds-sdk-loading .ds-sdk-loading__spinner, 
+        .ds-plp-loadmore .loading .spinner{
+            &:extend(.abs-loader-spinner all);
+        }
+
+        .ds-sdk-loading .ds-sdk-loading__spinner{
+            svg, span{
+                display: none;
+            } 
+        }
+
+        .ds-plp-loadmore .ds-plp__button.loading{
+            pointer-events: none;
+        }
+    }
+}
+
+// > 769px
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body {
+        &.redirecting{
+            .navigation{
+                top: 68px;
+                position: fixed;
+                z-index: 10000;
+            }
+
+            .navigation.hovering:after{
+                content: none;
+            }
+
+            .nav-main li.dropdown:hover .dropdown-menu-content, .nav-main li.dropdown.active .dropdown-menu-content{
+                display: none;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    body {
+        &.redirecting{
+            .navigation{
+                top: 96px;
+            }
+        }
+    }
+}

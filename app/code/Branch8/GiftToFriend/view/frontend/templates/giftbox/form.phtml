@@ -1,0 +1,113 @@
+<?php
+/**
+ * @var Branch8\GiftToFriend\Block\GiftBox\Form $block
+ */
+$customerServiceUrl = $block->getContactServiceUrl(null);
+?>
+<div class="giftbox-search-header">
+  <h1 class="giftbox-search-title"><?= $block->escapeHtml(__('查詢我的禮物')); ?></h1>
+  <p class="giftbox-search-subtitle"><?= $block->escapeHtml(__('無論是訪客還是會員我們都希望更進一步驗證您的資訊確保安全')); ?></p>
+</div>
+<form class="form-giftbox-confirm"
+          action="<?= $block->getConfirmActionUrl() ?>"
+          method="post"
+          id="address-form"
+          enctype="multipart/form-data"
+          data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>">
+  <?= $block->getBlockHtml('formkey') ?>
+  <div class="giftbox-confirm-search">
+    <div class="giftbox-confirm-form giftbox-confirm-search-form">
+      <fieldset class="fieldset"> 
+        <div class="field phone_number required">
+            <label for="phone_number" class="label">
+                <span><?= $block->escapeHtml(__("手機號碼"))?></span>
+            </label>
+            <div class="field-has-action">
+              <div class="control">
+                <input type="number"
+                      name="phone_number"
+                      data-validate="{required:true, 'required-number': true, 'validate-number':true, 'validate-tw-phone': true,'validate-fullwidth-special': true}"
+                      id="phone_number"
+                      minlength="10"
+                      maxlength="10"
+                      placeholder="<?= $block->escapeHtml(__('請輸入手機號碼')) ?>"
+                      value=""
+                      title="<?= $block->escapeHtmlAttr(__('手機號碼')) ?>"
+                      class="input-text required-entry"
+                        aria-required="true"
+                />
+              </div>
+              <div class="control-actions">
+                  <button type="button" class="action primary disabled" id="giftbox-send-code-button" title="<?= $block->escapeHtml(__("發送驗證碼"))?>">
+                    <span class="send-confirm"><?= $block->escapeHtml(__("發送驗證碼"))?></span>
+                    <span class="confirming"><span id="confirming-countdown-time-btn"></span><?= $block->escapeHtml(__("秒後可重新發送"))?></span>
+                  </button>
+              </div>
+            </div>
+        </div>
+        <div class="field field-code required">
+            <div class="giftbox-confirm-countdown">
+              <div class="giftbox-confirm-coundown-info">
+                <span><?= $block->escapeHtml(__("驗證碼有效時間"))?></span> <span id="giftbox-countdown-time"></span>
+              </div>
+              <div class="giftbox-confirm-coundown-expired">
+                <?= $block->escapeHtml(__("驗證碼已過期請重新發送"))?>
+              </div>
+            </div>
+            <label class="label" for="sms_code">
+                <span><?= $block->escapeHtml(__("驗證碼"))?></span>
+            </label>
+            <div class="control">
+                <input type="text" 
+                      name="sms_code" 
+                      value="" 
+                      title="<?= $block->escapeHtml(__("驗證碼"))?>" 
+                      data-validate="{required:true, 'validate-fullwidth-special': true}" 
+                      class="input-text required-entry" 
+                      placeholder="<?= $block->escapeHtml(__("請輸入驗證碼"))?>" 
+                      id="sms_code" 
+                      disabled="disabled"
+                      aria-required="true"/>
+            </div>
+        </div>  
+      </fieldset>
+      <div class="giftbox-confirm-search-form-note" id="giftbox-confirm-search-form-note">
+        <p><?= $block->escapeHtml(__("若未收到驗證碼請"))?><a href="<?= $customerServiceUrl; ?>" title="<?= $block->escapeHtml(__("聯絡客服"))?>"><?= $block->escapeHtml(__("聯絡客服"))?></a><?= $block->escapeHtml(__("協助處理")) ?>
+      </div>
+    </div>
+  </div>
+  <div class="actions-toolbar giftbox-confirm-actions">
+    <div class="primary">
+        <button type="submit" class="action primary disabled" id="giftbox-submit-button" title="<?= $block->escapeHtml(__("確認送出"))?>">
+            <span><?= $block->escapeHtml(__("確認送出"))?></span>
+        </button>
+    </div>
+  </div>
+</form>
+<div id="modal-gift-sending-code-limitation" class="modal-hide">
+  <div class="modal-custom-content">
+    <div id="giftSendingCodeMsg" class="error-content"><?= $block->escapeHtml(__("驗證碼發送次數已達%1次，請稍等%2時後再試，如需協助請", $block->getMaxSmsRequests(), $block->getLimitationTimePeriod()))?><a href="<?= $customerServiceUrl; ?>" title="<?= $block->escapeHtml(__("聯絡客服"))?>"><?= $block->escapeHtml(__("聯絡客服"))?></a><?= $block->escapeHtml(__("協助處理")) ?></div>
+  </div>
+</div>
+<div id="modal-gift-failed-confirmation" class="modal-hide">
+  <div class="modal-custom-content">
+    <div id="giftConfirmingFailMsg" class="error-content"><?= $block->escapeHtml(__("您輸入的驗證碼有誤或是已過期，請重新輸入有效的驗證碼，如需協助請"))?><a href="<?= $customerServiceUrl; ?>" title="<?= $block->escapeHtml(__("聯絡客服"))?>"><?= $block->escapeHtml(__("聯絡客服"))?></a><?= $block->escapeHtml(__("協助處理")) ?></div>
+  </div>
+</div>
+<script type="text/x-magento-init">
+    {
+      "#address-form": {
+          "addressValidation": {
+          }
+      },
+      "*": {
+        "giftForm": {
+          "formActionUrl": "<?= $block->getConfirmActionUrl() ?>",
+          "giftBoxListingUrl": "<?= $block->getGiftBoxListingUrl() ?>",
+          "sendSMSActionUrl": "<?= $block->getSendSMSActionUrl() ?>",
+          "smsLeftTime": "<?= $block->getSmsLifetime() ?>"
+        }
+      }
+    }
+</script>
+<?= $block->getChildHtml(); ?>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="wishlist">
+            <group id="price_change_alert" translate="label" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Price Change Alert</label>
+                <field id="send_mail_product_price_change" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Send Mail Price Change</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sender_email_identity" sortOrder="4" translate="label" type="select" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="email_template" sortOrder="6" translate="label comment" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+                <field id="cron_config" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Cron Config</label>
+                    <backend_model>Branch8\Wishlist\Model\Config\Backend\Cron</backend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

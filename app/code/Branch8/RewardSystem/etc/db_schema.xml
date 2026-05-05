@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_rewardsystem_event">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="varchar" name="title" nullable="false" />
+        <column xsi:type="int" name="status" nullable="true" />
+        <column xsi:type="text" name="description" nullable="true" />
+        <column xsi:type="text" name="trigger_condition" nullable="false" />
+        <column xsi:type="int" name="reward_type" nullable="false" />
+        <column xsi:type="int" name="reward_rule_id" nullable="true" />
+        <column xsi:type="int" name="reward_pool_id" nullable="true" />
+        <column xsi:type="varchar" name="reward_pool_batch_code" nullable="true" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" on_update="false" />
+        <column xsi:type="timestamp" name="start_date" nullable="true" on_update="false" />
+        <column xsi:type="timestamp" name="end_date" nullable="true" on_update="false" />
+        <column xsi:type="timestamp" name="updated_at" nullable="true" on_update="false" />
+        <column xsi:type="varchar" name="user_limit_daily" nullable="false" default=''/>
+        <column xsi:type="varchar" name="user_limit_total" nullable="false" default='' />
+        <column xsi:type="varchar" name="event_limit_daily" nullable="false" default='' />
+        <column xsi:type="varchar" name="event_limit_total" nullable="false" default='' />
+        <column xsi:type="int" name="reward_cnt" nullable="true" default="0" />
+        <column xsi:type="varchar" name="notification_title" nullable="false" />
+        <column xsi:type="text" name="notification_content" nullable="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <index referenceId="REWARD_SYS_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="REWARD_SYS_TYPE" indexType="btree">
+            <column name="reward_type"/>
+        </index>
+        <index referenceId="REWARD_SYS_START_DATE" indexType="btree">
+            <column name="start_date"/>
+        </index>
+        <index referenceId="REWARD_SYS_END_DATE" indexType="btree">
+            <column name="end_date"/>
+        </index>
+        <!-- <index referenceId="REWARD_SYS_FULLTEXT_SEARCH" indexType="fulltext">
+            <column name="title"/>
+            <column name="description"/>
+            <column name="notification_title"/>
+            <column name="notification_content"/>
+        </index> -->
+    </table>
+    
+    <table name="branch8_rewardsystem_api_call">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="event_id" nullable="false" />
+        <column xsi:type="varchar" name="customer_identify" nullable="false" />
+        <column xsi:type="varchar" name="api_key" nullable="false" />
+        <column xsi:type="varchar" name="partner_identify" nullable="false" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" on_update="false" />
+        <column xsi:type="int" name="report_id" nullable="false" default="0" comment="Win record ID"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+
+        <index referenceId="REWARD_SYS_API_EVENT_ID" indexType="btree">
+            <column name="event_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_API_CUSTOMER_ID" indexType="btree">
+            <column name="customer_identify"/>
+        </index>
+        <index referenceId="REWARD_SYS_API_REPORT_ID" indexType="btree">
+            <column name="report_id"/>
+        </index>
+
+        <constraint xsi:type="unique" referenceId="REWARD_SYS_API_EVENT_CUSTOMER_APIKEY_PARTNER_REPORT" disabled="true">
+            <column name="event_id"/>
+            <column name="customer_identify"/>
+            <column name="api_key"/>
+            <column name="partner_identify"/>
+            <column name="report_id"/>
+        </constraint>
+    </table>
+    <table name="branch8_rewardsystem_visit_url">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="event_id" nullable="false" />
+        <column xsi:type="varchar" name="url" nullable="false" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="int" name="report_id" nullable="false" default="0" comment="Win record ID"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" on_update="false" />
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+
+        <index referenceId="REWARD_SYS_URL_EVENT_ID" indexType="btree">
+            <column name="event_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_API_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_API_REPORT_ID" indexType="btree">
+            <column name="report_id"/>
+        </index>
+
+        <constraint xsi:type="unique" referenceId="REWARD_SYS_API_EVENT_CUSTOMER_URL_REPORT" disabled="true" >
+            <column name="event_id"/>
+            <column name="customer_id"/>
+            <column name="url"/>
+            <column name="report_id"/>
+        </constraint>
+    </table>
+
+    <table name="branch8_rewardsystem_first_purchase">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="event_id" nullable="false" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="varchar" name="parent_order_id" nullable="false" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" on_update="false" />
+        <column xsi:type="int" name="report_id" nullable="false" default="0" comment="Win record ID"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+
+        <index referenceId="REWARD_SYS_FIRST_PURCHASE_EVENT_ID" indexType="btree">
+            <column name="event_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_FIRST_PURCHASE_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_FIRST_PURCHASE_REPORT_ID" indexType="btree">
+            <column name="report_id"/>
+        </index>
+
+        <constraint xsi:type="unique" referenceId="REWARD_SYS_FIRST_PURCHASE_EVENT_CUSTOMER" disabled="true">
+            <column name="event_id"/>
+            <column name="customer_id"/>
+        </constraint>
+    </table>
+
+    <table name="branch8_rewardsystem_level_change">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="event_id" nullable="false" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="int" name="from_level" nullable="true" />
+        <column xsi:type="int" name="to_level" nullable="false" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" on_update="false" />
+        <column xsi:type="int" name="report_id" nullable="false" default="0" comment="Win record ID"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+
+        <index referenceId="REWARD_SYS_LEVEL_CHANGE_EVENT_ID" indexType="btree">
+            <column name="event_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_LEVEL_CHANGE_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_LEVEL_CHANGE_REPORT_ID" indexType="btree">
+            <column name="report_id"/>
+        </index>
+        <constraint xsi:type="unique" referenceId="REWARD_SYS_LEVEL_CHANGE_EVENT_CUSTOMER_TO_LEVEL" disabled="true">
+            <column name="event_id"/>
+            <column name="customer_id"/>
+            <column name="to_level"/>
+            <column name="report_id"/>
+        </constraint>
+    </table>
+
+    <table name="branch8_rewardsystem_report">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="int" name="event_id" nullable="false" />
+        <column xsi:type="int" name="reward_type" nullable="false" />
+        <column xsi:type="int" name="reward_rule_id" nullable="true" />
+        <column xsi:type="int" name="reward_pool_id" nullable="true" />
+        <column xsi:type="varchar" name="reward_pool_batch_code" nullable="true" />
+        <column xsi:type="varchar" name="reward_pool_serial" nullable="true" />
+        <column xsi:type="varchar" name="reward_coupon" nullable="true" />
+        <column xsi:type="text" name="trigger_condition" nullable="false" />
+        <column xsi:type="int" name="status" nullable="false" />
+        <column xsi:type="text" name="fail_reason" nullable="true" />
+        <column xsi:type="datetime" name="created_at" nullable="false" on_update="false" />
+
+        <index referenceId="REWARD_SYS_REPORT_EVENT_ID" indexType="btree">
+            <column name="event_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_REPORT_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="REWARD_SYS_REPORT_REWARD_COUPON" indexType="btree">
+            <column name="reward_coupon"/>
+        </index>
+        <index referenceId="REWARD_SYS_REPORT_POOL_SERIAL" indexType="btree">
+            <column name="reward_pool_serial"/>
+        </index>
+
+        <index referenceId="REWARD_SYS_REPORT_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+    </table>
+    <table name="magenest_customer_notification">
+        <column xsi:type="int" name="ars_report_id" nullable="true" comment="Automated reward system ID" />
+        <column xsi:type="text" name="detail_description" nullable="true" comment="Automated reward system Content" />
+
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_ARS_REPORT_ID" indexType="btree">
+            <column name="ars_report_id"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,311 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="branch8_debug" translate="label" sortOrder="130" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Debug Log</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HotaiCore::debug_log</resource>
+            <group id="branch8_marketplace" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Marketplace</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\Marketplace\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+        <section id="marketplace" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="email" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Marketplace Transactional Emails</label>
+
+                <!-- Seller Approved Template -->
+                <field id="enable_seller_approve_template" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Approved Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="seller_approve_notification_template" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Approved Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_seller_approve_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Request Template -->
+                <field id="enable_becomeseller_request_template" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Request Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="becomeseller_request_notification_template" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Request Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_becomeseller_request_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- email for pending seller register(wait for approval) -->
+                <field id="enable_becomeseller_request_auto_approve_template" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Request Auto Approval Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="becomeseller_request_auto_approve_notification_template" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Request Auto Approval Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_becomeseller_request_auto_approve_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Unsubscribe Template -->
+                <field id="enable_seller_disapprove_template" translate="label" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Unsubscribe Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="seller_disapprove_notification_template" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Unsubscribe Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_seller_disapprove_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller State Processing Template -->
+                <field id="enable_seller_process_template" translate="label" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller State Processing Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="seller_process_notification_template" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller State Processing Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_seller_process_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Deny by Admin Template -->
+                <field id="enable_seller_deny_template" translate="label" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Deny by Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="seller_deny_notification_template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Deny by Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_seller_deny_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Product Deny by Admin Template -->
+                <field id="enable_product_deny_template" translate="label" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Product Deny by Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_deny_notification_template" translate="label comment" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Deny by Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_product_deny_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Product Approval Request to Admin Template -->
+                <field id="enable_new_product_template" translate="label" type="select" sortOrder="13" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Product Approval Request to Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="new_product_notification_template" translate="label comment" type="select" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Approval Request to Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_new_product_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Product Edit Approval Request to Admin Template -->
+                <field id="enable_edit_product_template" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Product Edit Approval Request to Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="edit_product_notification_template" translate="label comment" type="select" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Edit Approval Request to Admin Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_edit_product_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Ask Product Query to Seller Template -->
+                <field id="enable_ask_productquery_seller_template" translate="label" type="select" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Ask Product Query to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="askproductquery_seller_template" translate="label comment" type="select" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ask Product Query to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_ask_productquery_seller_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Ask Query to Seller Template -->
+                <field id="enable_askquery_seller_template" translate="label" type="select" sortOrder="19" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Ask Query to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="askquery_seller_template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ask Query to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_askquery_seller_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Ask Query to Admin by Seller Template -->
+                <field id="enable_askquery_admin_template" translate="label" type="select" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Ask Query to Admin by Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="askquery_admin_template" translate="label comment" type="select" sortOrder="22" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Ask Query to Admin by Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_askquery_admin_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Product Approval Mail to Seller Template -->
+                <field id="enable_product_approve_template" translate="label" type="select" sortOrder="23" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Product Approval Mail to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_approve_notification_template" translate="label comment" type="select" sortOrder="24" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Approval Mail to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_product_approve_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Product Disapproval Mail to Seller Template -->
+                <field id="enable_product_disapprove_template" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Product Disapproval Mail to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_disapprove_notification_template" translate="label comment" type="select" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Disapproval Mail to Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_product_disapprove_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Order Placed Notification Mail Template -->
+                <field id="enable_order_placed_template" translate="label" type="select" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Order Placed Notification Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_placed_notification_template" translate="label comment" type="select" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Order Placed Notification Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_order_placed_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Order Invoiced Notification Mail Template -->
+                <field id="enable_order_invoiced_template" translate="label" type="select" sortOrder="29" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Order Invoiced Notification Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order_invoiced_notification_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Order Invoiced Notification Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_order_invoiced_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Transaction Mail Template -->
+                <field id="enable_seller_transaction_template" translate="label" type="select" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Transaction Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="seller_transaction_notification_template" translate="label comment" type="select" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Transaction Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_seller_transaction_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Low Stock Notification Mail Template -->
+                <field id="enable_low_stock_template" translate="label" type="select" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Seller Low Stock Notification Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="low_stock_template" translate="label comment" type="select" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Seller Low Stock Notification Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_low_stock_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Seller Withdrawal Request Mail Template -->
+                <field id="enable_withdrawal_request_template" translate="label" type="select" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Withdrawal Request Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="withdrawal_request_template" translate="label comment" type="select" sortOrder="36" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Withdrawal Request Mail Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_withdrawal_request_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Reported Flag Against Product Template -->
+                <field id="enable_product_flag_template" translate="label" type="select" sortOrder="37" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Reported Flag Against Product Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="product_flag_template" translate="label comment" type="select" sortOrder="38" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reported Flag Against Product Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_product_flag_template">1</field>
+                    </depends>
+                </field>
+
+                <!-- Reported Flag Against Seller Template -->
+                <field id="enable_seller_flag_template" translate="label" type="select" sortOrder="39" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Reported Flag Against Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="seller_flag_template" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Reported Flag Against Seller Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="enable_seller_flag_template">1</field>
+                    </depends>
+                </field>
+
+                <field id="seller_forgot_password_template" translate="label comment" type="select" sortOrder="46" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Forgot password Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+        <section id="mprmasystem" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="settings">
+                <field id="seller_can_create_rma" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Seller Can Create Rma</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

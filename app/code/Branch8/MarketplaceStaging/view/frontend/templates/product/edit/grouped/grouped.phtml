@@ -1,0 +1,50 @@
+<?php
+/**
+ * Webkul Software
+ *
+ * @category    Webkul
+ * @package     Webkul_MpGroupedProduct
+ * @author      Webkul
+ * @copyright   Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license     https://store.webkul.com/license.html
+ */
+?>
+
+<?php
+$productIds = $block->getAssociatedProducts();
+$productType = $block->getProductType();
+?>
+<?php if ($productType == 'grouped'): ?>
+<div id ="staging_wk_mpgrouped_products">
+    <h3 id ="wk_heading_mpgrouped_products"><?=/* @noEscape */__('Grouped Products');?></h3>
+    <div id="grouped-product-container"
+    data-mage-init='{"stageGroupedProduct":{"gridPopup":"grouped_grid_popup"}}'>
+        <div class="no-products-message">
+            <?= /* @noEscape */__('There are no grouped products.')?>
+        </div>
+        <?= /* @noEscape */ $block->getChildHtml('list'); ?>
+        <div data-role="staging-add-product-dialog" class="no-display grouped-product-grid">
+            <?= /* @noEscape */ $block->getChildHtml();?>
+        </div>
+        <button class="wk-add-grouped-button" type="button"
+        data-role="staging-add-product"><?= /* @noEscape */ __('Add Products to Group') ?>
+        </button>
+    </div>
+</div>
+    <?php
+    $optionElements = [
+    'stockId'    => '#stage-wk-bodymain #qty',
+    'buttonId' => '#stage-wk-bodymain #save-btn',
+    'productIds' => $productIds,
+    'productType' => $productType
+    ];
+    $serializedData = \Laminas\Json\Json::encode($optionElements);
+    ?>
+<script type="text/x-magento-init">
+{
+"*":{
+        "stageGroupedProductAdd":<?= /* @noEscape */ $serializedData; ?>
+    }
+}
+</script>
+<?php endif;?>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="email_notification">
+        <job name="branch8_email_notification" instance="Branch8\EmailNotification\Cron\OrderNotificationCronJob" method="execute">
+            <schedule>0 7 * * *</schedule>
+        </job>
+
+        <job name="branch8_seller_notification" instance="Branch8\EmailNotification\Cron\SellerNotificationCronJob" method="execute">
+            <schedule>0 7 * * *</schedule>
+        </job>
+    </group>
+</config>

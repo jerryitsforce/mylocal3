@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Branch8_CatalogCustom">
+        <sequence>
+            <module name="Tigren_SplitCart"/>
+            <module name="Magento_Catalog"/>
+            <module name="Webkul_MpGroupedProduct"/>
+        </sequence>
+    </module>
+</config>

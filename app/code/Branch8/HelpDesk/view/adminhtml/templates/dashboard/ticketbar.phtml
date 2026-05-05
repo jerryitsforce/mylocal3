@@ -1,0 +1,23 @@
+<?php
+/**
+ * @var $block \Branch8\HelpDesk\Adminhtml\Block\Dashboard\LastSupportTickets
+ */
+$total = $block->getTotal();
+$period = $block->getPeriod();
+
+?>
+
+<div class="dashboard-item dashboard-item-primary">
+    <div class="dashboard-item-title">
+        <?= $block->escapeHtml(
+            __('Unprocessed Tickets'))
+        ?>
+
+    </div>
+    <div class="dashboard-item-content">
+        <strong class="dashboard-sales-value">
+            <?= __('Last %1 days', $period) ?>
+            : <?= ($total['value']) > 1 ? __('%1 tickets', $total['value']) : __('%1 ticket', $total['value']) ?>
+        </strong>
+    </div>
+</div>

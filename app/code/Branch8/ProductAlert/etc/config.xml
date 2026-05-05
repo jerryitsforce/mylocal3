@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <product_alert>
+            <general_settings>
+                <show_vip_filter>1</show_vip_filter>
+            </general_settings>
+        </product_alert>
+    </default>
+</config>

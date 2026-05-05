@@ -1,0 +1,20 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Helper\Data;
+use Magento\Framework\Escaper;
+
+/** @var Escaper $escaper */
+$helper = $this->helper(Data::class);
+
+if ($helper->isEnabled() && $helper->getBlogConfig('display/toplinks')) : ?>
+    <li class="ui-menu-item level0 fullwidth">
+        <a href="<?= $escaper->escapeUrl($helper->getBlogUrl('')) ?>" class="level-top">
+            <span><?= $helper->getBlogConfig('display/name') ?: $escaper->escapeHtml(__('Blog')) ?></span>
+        </a>
+    </li>
+<?php endif; ?>

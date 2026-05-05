@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <parent_order>
+            <parent_order_configuration>
+                <allow_reorder_product_oos>1</allow_reorder_product_oos>
+                <show_status_frontend>1</show_status_frontend>
+            </parent_order_configuration>
+            <sub_order_configuration>
+                <access>0</access>
+            </sub_order_configuration>
+        </parent_order>
+        <sales>
+            <orders>
+                <delete_pending_cron>0 * * * *</delete_pending_cron>
+            </orders>
+        </sales>
+        <branch8_debug>
+            <branch8_marketplaceparentorderfrontendui>
+                <log_file>exceptionlog</log_file>
+            </branch8_marketplaceparentorderfrontendui>
+        </branch8_debug>
+    </default>
+</config>

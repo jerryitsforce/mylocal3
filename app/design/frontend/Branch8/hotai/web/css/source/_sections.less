@@ -1,0 +1,108 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .product.data.items {
+        .lib-data-accordion();
+        margin-bottom: @indent__base;
+
+        .item.title {
+            a {
+                position: relative;
+                .lib-icon-font(
+                    @_icon-font-content: @icon-down,
+                    @_icon-font-size: @font-size__base,
+                    @_icon-font-line-height: @icon-font__line-height,
+                    @_icon-font-color: @icon-font__color,
+                    @_icon-font-color-hover: @icon-font__color-hover,
+                    @_icon-font-color-active: @icon-font__color-active,
+                    @_icon-font-margin: @icon-font__margin,
+                    @_icon-font-vertical-align: @icon-font__vertical-align,
+                    @_icon-font-position: after,
+                    @_icon-font-display: false
+                );
+
+                &:after {
+                    position: absolute;
+                    right: @accordion-control__padding-right;
+                    top: @accordion-control__padding-top;
+                }
+            }
+
+            &.active a {
+                &:after {
+                    content: @icon-up;
+                }
+            }
+        }
+
+        .ticket-content & .item.title a:after {
+            display: none;
+        }
+
+        .value p {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .table-wrapper {
+            margin: 0;
+        }
+
+        #reviews,
+        #tab-label-reviews{
+            &.data.item{
+                &:extend(.abs-visually-hidden all);
+            }
+        }
+
+        
+
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .product.data.items {
+        .lib-data-tabs();
+        border-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+
+        .item.title a {
+            &:after {
+                display: none;
+            }
+        }
+
+        > .item.content{
+            padding: 0;
+            border: none;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .product.data.items {
+        margin-bottom: 0;
+        .item.title {
+            > .switch {
+                padding: 1px 15px 1px;
+            }
+        }
+
+        > .item.content {
+            padding: 10px var(--layout-indent__width) 12px;
+        }
+    }
+}

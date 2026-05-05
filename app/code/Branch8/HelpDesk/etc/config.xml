@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <helpdesk>
+            <email_settings>
+                <disable_attachments>1</disable_attachments>
+                <admin_setting>
+                    <user_ticket_assigned_template>helpdesk_email_settings_admin_setting_user_ticket_assigned_template</user_ticket_assigned_template>
+                </admin_setting>
+            </email_settings>
+            <general_settings>
+                <enable_admin_chat_conversation>1</enable_admin_chat_conversation>
+                <enable_customer_chat_conversation>1</enable_customer_chat_conversation>
+                <max_images_upload_allow>5</max_images_upload_allow>
+                <maxFileSize>5</maxFileSize>
+                <dashboard_unprocessed_ticket_days>3</dashboard_unprocessed_ticket_days>
+                <status_dashboards>5,4,1</status_dashboards>
+                <upload_allow_extensions>jpg,png,jpeg,gif,mp4,docx</upload_allow_extensions>
+            </general_settings>
+        </helpdesk>
+    </default>
+</config>

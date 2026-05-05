@@ -1,0 +1,42 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiPay\Block\Payment\Fail
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+$errMsg = $block->getCheckoutErrorMsg();
+$isQuickCheckout = $block->isQuickCheckout();
+$jsonPaymentFailure = $this->getViewFileUrl('images/animation-payment-failure.json');
+?>
+<div class="checkout-order-confirmation">
+    <div class="failure-messages order-confirmation-messages">
+        <div class="order-confirmation-icon">
+            <dotlottie-player class="player" src="<?= $jsonPaymentFailure ?>" background="transparent" speed="1" direction="1"
+            playMode="normal" loop autoplay></dotlottie-player>
+        </div>
+        <?php if($block->getParentOrder()): ?>
+            <h2 class="page-title"><?= $block->escapeHtml(__('Payment failed')); ?></h2>
+            <div class="note"><?= $escaper->escapeHtml(
+                    __(
+                        '%1 or if there is an issue with the payment method you have selected.',
+                        $block->escapeHtml(__($errMsg['error']))
+                    )
+                ) ?></div>
+            <p><?= $escaper->escapeHtml(__('If the problem is not due to the above reasons, please click the button below to try again or call customer service, and we will assist you with the issue.')) ?></p>
+            <div class="actions-toolbar">
+                <a class="action primary btn-icon-right btn-icon-arrow-right" href="<?= $block->getOrderDetailUrl() ?>">
+                        <span><?= $escaper->escapeHtml(__('Check pending payment order')) ?></span>
+                    </a>
+            </div>
+            <?php elseif($isQuickCheckout): ?>
+                <h2 class="page-title"><?= $block->escapeHtml(__('Payment failed')); ?></h2>
+                <div class="note"><?= $escaper->escapeHtml(
+                        __('Please check if your network connection is stable or if there is an issue with the payment method you have selected.')
+                    ) ?></div>
+            <?php else: ?>
+                <h2 class="page-title"><?= $block->escapeHtml(__('The order was not successful!')); ?></h2>
+                <p class="error-message"><?= $block->escapeHtml(__($errMsg['error'])) ?></p>
+            <?php endif; ?>
+    </div>
+</div>

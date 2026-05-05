@@ -1,0 +1,794 @@
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+ .hotaipay-creditcard-listaction {
+  .page-title-wrapper {
+    margin-left: calc(~"-1* var(--layout-indent__width)");
+    margin-right: calc(~"-1* var(--layout-indent__width)");
+  }
+
+  .account& {
+    .column.main .page-title-wrapper {
+      .page-title {
+        padding: 0 var(--layout-indent__width) ;
+        margin-bottom: 0;
+
+        &::before {
+          width: 33px;
+          font-size: 24px;
+        }
+      }
+    }
+
+    .column.main {
+      margin: 0;
+    }
+  }
+
+  main.page-main {
+    padding-bottom: 0;
+  }
+
+  .creditcard-member-wrapper {
+    margin-left: calc(~"-1* var(--layout-indent__width)");
+    margin-right: calc(~"-1* var(--layout-indent__width)");
+    background: var(--color-gray-light1);
+    padding: 35px 24px 48px;
+  }
+
+  .creditcard-member-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px 0;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 24px;
+  }
+
+  .creditcard-member-cards {
+    margin-bottom: 56px;
+  }
+
+  .creditcard-member-card-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    line-height: 0;
+    background: var(--color-white);
+  }
+
+  .creditcard-member-card-title {
+    &:extend(.abs-h6-bold all);
+    margin: 0;
+    padding: 0;
+  }
+
+  .creditcard-member-binding-actions {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px 0;
+  }
+
+  .creditcard-member-binding-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 14px;
+    padding: 15px;
+    border-radius: var(--CardS);
+    border: 1px solid var(--color-gray-light4);
+    margin: 0;
+    background: var(--color-white);
+
+    .action-text {
+      &:extend(.abs-body-text-medium all);
+    }
+
+    .action.action-link {
+      padding: 4px 16px 4px 12px;
+      &:extend(.abs-caption1-medium all);
+      display: inline-flex;
+      align-items: center;
+
+      &::before {
+        &:extend(.abs-hotai-icon all);
+        content: var(--icon-plus);
+        font-size: 20px;
+        margin-right: 2px;
+      }
+    }
+  }
+
+  .member-hotaipay-bottom {
+    border: 1px solid var(--color-gray-light4);
+    background: var(--color-white)!important;
+    margin: 0;
+    padding: 20px 120px 20px 16px;
+    color: var(--color-gray-light2);
+    border-radius: var(--CardM);
+    gap: 4px 0;
+    position: relative;
+    min-height: 114px;
+
+    [data-content-type="heading"],
+    .member-hotaipay-bottom-title {
+      &:extend(.abs-h6-bold all);
+      color: var(--color-black-solid1);
+      margin: 0;
+    }
+
+    div[data-content-type='text'],
+    .member-hotaipay-bottom-text {
+      font-size: 10px;
+      line-height: 15px;
+      letter-spacing: 1px;
+      margin: 0;
+
+      p {
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    figure[data-content-type='image'],
+    .member-hotaipay-bottom-img {
+      position: absolute;
+      width: 100px;
+      right: 12px;
+      top: 6px;
+    }
+  }
+
+  .creditcard-member-wrapper {
+    &.show-listing {
+      background: none;
+      padding: 16px 0 0;
+      margin: 0;
+
+      .creditcard-member-sub-title {
+        &:extend(.abs-h6-bold all);
+        display: flex;
+        align-items: center;
+        gap: 0 3px;
+        background: var(--color-white);
+        position: relative;
+        z-index: 1;
+        margin: 0 calc(~"-1* var(--layout-indent__width)");
+        padding: 0 24px;
+
+        &::before {
+          content: '';
+          width: 4px;
+          height: 14px;
+          border-radius: 100px;
+          background: var(--color-gray-light3);
+          margin: 1px 0 0;
+        }
+      }
+
+      .creditcard-member-cards {
+        margin: 0 calc(~"-1* var(--layout-indent__width)");
+        padding: 9px 24px 36px;
+        box-shadow: var(--box-shadow);
+      }
+
+      .creditcard-member-binding-actions {
+        margin: 0 0 16px;
+      }
+
+      .creditcard-member-binding-action {
+        border: 0;
+        padding: 0;
+        justify-content: center;
+
+        .action-text {
+          display: none;
+        }
+
+        .action.action-link {
+          align-items: center;
+          min-height: 44px;
+          min-width: 192px;
+          justify-content: center;
+
+          &::before {
+            font-size: 23px;
+            margin-right: 2px;
+            font-weight: 400;
+          }
+        }
+      }
+
+      [data-content-type='row'][data-appearance='contained'] {
+        margin: 0 calc(~"-1* var(--layout-indent__width)") !important;
+        padding: 20px 24px 48px;
+        background: var(--color-gray-light1);
+        position: relative;
+        z-index: -1;
+      }
+    }
+
+    .creditcard-member-card-list {
+      margin: 0 0 8px;
+    }
+
+    .creditcard-member-table {
+      display: flex;
+      flex-direction: column;
+
+      .col-action {
+        .action {
+          background: none;
+          padding: 0;
+          margin: 0;
+          border: 0;
+          box-shadow: none;
+          line-height: 1;
+          font-size: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--color-black-solid1);
+          text-decoration: none;
+
+          &::before {
+            &:extend(.abs-hotai-icon all);
+            content: var(--icon-edit);
+          }
+          span {
+            display: none;
+          }
+
+          &.action-edit {
+            &::before {
+              content: var(--icon-edit);
+            }
+          }
+
+          &.action-delete {
+            &::before {
+              content: var(--icon-remove);
+            }
+          }
+        }
+      }
+
+      .card-default {
+        &:extend(.abs-caption2 all);
+        background: var(--color-red-base);
+        color: var(--color-white);
+        padding: 0 2px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        height: 18px;
+        min-width: 37px;
+        box-sizing: border-box;
+        justify-content: center;
+  
+        &:not(.default) {
+          text-indent: -9999rem;
+          background: none;
+        }
+      }
+
+      .card-type {
+        width: 30px;
+        height: 20px;
+        display: inline-flex;
+        background: url(../images/mastercard.png) 0 0 no-repeat;
+        background-size: contain;
+        margin: 0 12px 0 0;
+        min-width: 30px;
+  
+        &.visa {
+          background: url(../images/visa.png) 0 0 no-repeat;
+          background-size: contain;
+        }
+  
+        &.jcb {
+          background: url(../images/jcb.png) 0 0 no-repeat;
+          background-size: contain;
+        }
+  
+        > span {
+          display: none;
+        }
+      }
+
+      .card-nomask {
+        
+      }
+
+      .card-info {
+        display: inline-flex;
+        align-items: center
+      }
+
+      .card-warning {
+        &:extend(.abs-caption2 all);
+        color: var(--color-gray-solid1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        max-width: 250px;
+
+        .warning {
+          display: inline-flex;
+          background: var(--color-gray-light5);
+          min-width: 50px;
+          min-height: 24px;
+          border-radius: var(--TagS);
+          padding: 3px 6px;
+          box-sizing: border-box;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+
+    .creditcard-member-card-list-title {
+      display: none;   
+      flex-direction: column;
+
+      .col {
+        &:extend(.abs-caption2 all);
+        padding: 0;
+        display: none;   
+        display: inline-flex;
+        align-items: center;
+        color: var(--color-gray-light2);
+      }
+    }
+
+    .creditcard-member-card-list-items {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .creditcard-member-card-list-item {
+      display: flex;
+      flex-direction: row;
+      gap: 0 8px;
+      border-top: var(--border-common);
+      padding: 15px 0 24px;
+
+      &:first-child {
+        border-top: 0;
+      }
+
+      .col {
+        &:extend(.abs-caption2 all);
+        padding: 0;
+        color: var(--color-black-solid1);
+        display: inline-flex;
+        align-items: center;
+
+        &.col-card-info {
+          padding: 0 0 0 4px;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          gap: 0 4px;
+        }
+      }
+
+      &.invalid {
+        .col {
+          &.col-action-edit,
+          &.col-card-info {
+            cursor: default;
+            pointer-events: none;
+          }
+
+          &.col-action-edit {
+            opacity: 0.2;
+          }
+
+          &.col-card-info {
+            position: relative;
+          }
+
+          .card-extra,
+          .card-info {
+            opacity: 0.2;
+          }
+
+          
+        }
+      }
+    }
+  }
+ }
+ 
+  .creditcard-member-card-note {
+    &:extend(.abs-caption2 all);
+    color: var(--color-gray-solid1);
+    margin: 0;
+    border-radius: var(--TagL);
+    background: var(--color-gray-light5);
+    padding: 8px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0 7px;
+
+    &::before {
+      &:extend(.abs-hotai-icon all);
+      content: var(--icon-warning);
+      font-size: 14px;
+      margin-top: 2px;
+    }
+  }
+
+  .creditcard-member-card-warning {
+    margin-top: 12px;
+
+    .quick-card-popup & {
+      margin-top: -45px;
+      margin-bottom: 24px;
+    }
+
+    .member-hotaipay-wrapper & {
+      margin-bottom: 16px;
+    }
+  }
+
+  .creditcard-member-card-note-text {
+    margin: 0;
+  }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+ 
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__s) {
+  .hotaipay-creditcard-listaction {
+    .creditcard-member-wrapper {
+      padding: 35px var(--layout-indent__width) 48px;
+    }
+
+    .creditcard-member-wrapper {
+      &.show-listing {
+        .creditcard-member-sub-title {
+          padding: 0 var(--layout-indent__width);
+        }
+  
+        .creditcard-member-cards {
+          padding: 9px var(--layout-indent__width) 36px;
+        }
+  
+        [data-content-type='row'][data-appearance='contained'] {
+          padding: 20px var(--layout-indent__width) 48px;
+        }
+      }
+    }
+  }
+        
+  .creditcard-member-card-note {
+    justify-content: center;
+  }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+  .hotaipay-creditcard-listaction {
+    .creditcard-member-card-title {
+      &:extend(.abs-h6-bold all);
+    }
+
+    .page-layout-2columns-left& {
+      .sidebar-main {
+        display: none;
+      }
+    }
+
+    .creditcard-member-card-wrapper {
+      gap: 17px 0;
+      padding: 0 0 39px;
+    }
+
+    .creditcard-member-binding-actions {
+      flex-direction: row;
+      gap: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .creditcard-member-binding-action {
+      width: 50%;
+      box-sizing: border-box;
+
+      .action-text {
+        &:extend(.abs-body-text-medium all);
+      }
+
+      .action.action-link {
+        &:extend(.abs-caption1-medium all);
+      }
+    }
+
+    .member-hotaipay-bottom {
+      padding: 46px 280px 46px 39px;
+
+      [data-content-type="heading"],
+      .member-hotaipay-bottom-title {
+        &:extend(.abs-tb-h4 all);
+        margin: 0 0 8px;
+      }
+  
+      div[data-content-type='text'],
+      .member-hotaipay-bottom-text {
+        &:extend(.abs-tb-body-text-medium all);
+      }
+  
+      figure[data-content-type='image'],
+      .member-hotaipay-bottom-img {
+        width: 160px;
+        right: 38px;
+        top: 12px;
+      }
+    }
+
+    .creditcard-member-wrapper {
+      &.show-listing {
+        .creditcard-member-sub-title {
+          &:extend(.abs-h6-bold all);
+          &:before {
+            height: 16px;
+          }
+        }
+
+        .creditcard-member-binding-actions {
+          align-items: center;
+          width: 100%;
+          justify-content: center;
+        }
+
+        .creditcard-member-binding-action {
+          width: auto;
+        }
+      }
+
+      .creditcard-member-card-list-title {
+        .col {
+          &:extend(.abs-tb-body-text all);
+        }
+      }
+
+      .creditcard-member-card-list-item {
+        .col {
+          &:extend(.abs-tb-body-text all);
+        }
+      }
+
+      .creditcard-member-table {
+        .col-action {
+          .action {
+            font-size: 26px;
+          }
+        }
+      }
+    }
+  }
+
+  .creditcard-member-card-note {
+    padding: 12px 16px;
+  }
+  
+  .creditcard-member-card-warning {
+    margin-top: 16px;
+
+    .quick-card-popup & {
+      margin-top: 16px;
+      margin-bottom: 0;
+    }
+  }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__l) {
+  .hotaipay-creditcard-listaction {
+    .creditcard-member-wrapper {
+      padding: 0;
+      margin: 0;
+      background: none;
+    }
+
+    .creditcard-member-cards {
+      background: var(--color-gray-light1);
+      padding: 60px 40px;
+      border-radius: var(--CardL);
+      margin: 36px 0 32px;
+    }
+
+    .creditcard-member-wrapper {
+      &.show-listing {
+        .creditcard-member-sub-title {
+          padding: 0;
+          margin: 21px 0;
+          gap: 0 10px;
+        }
+
+        .creditcard-member-cards {
+          padding: 39px 40px 60px;
+          margin: 0 0 32px;
+          box-shadow: none;
+        }
+
+        [data-content-type='row'][data-appearance='contained'] {
+          padding: 0;
+          background: none;
+          margin: 0 0 40px!important;
+        }
+
+        .creditcard-member-binding-actions {
+          margin: 0 0 24px;
+        }
+
+        .creditcard-member-binding-action {
+          background: none;
+
+          .action {
+            background: var(--color-white);
+
+            &:hover{
+              // background: var(--color-gray-light1);
+            }
+          }
+        }
+      }
+
+      .creditcard-member-card-list {
+        margin: 0 0 32px;
+      }
+
+      .creditcard-member-card-list-title {
+        display: flex;
+      }
+
+      .creditcard-member-card-list-title-item {
+        display: flex;
+        flex-direction: row;
+        padding: 0 16px 8px;
+        gap: 0 12px;
+        
+        .card-info {
+
+        }
+
+        .card-alias {
+
+        }
+      }
+
+      .creditcard-member-card-list-item {
+        padding: 12px 16px 12px;
+        background: var(--color-white);
+        margin: 0 0 8px;
+        border: revert-layer;
+        border-radius: 12px;
+        min-height: 32px;
+        gap: 0 12px;
+      }
+
+      .creditcard-member-table {
+        .card-info {
+          flex: 1;
+        }
+
+        .card-extra {
+          width: 41%;
+        }
+
+        .card-type {
+          width: 38px;
+          height: 24px;
+          margin: 0 8px 0 0;
+          min-width: 38px;
+        }
+
+        .col-default {
+          width: 38px;
+          box-sizing: border-box;
+        }
+
+        .col-card-info {
+          flex: 1;
+          display: flex;
+          flex-direction: row;
+        }
+
+        .col-action {
+          padding: 0;
+          justify-content: center;
+          width: 57px;
+          box-sizing: border-box;
+
+          &.col-action-remove,
+          &.col-action-delete {
+            padding-right: 0;
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+  .hotaipay-creditcard-listaction {
+    .creditcard-member-card-title {
+      &:extend(.abs-h6-bold all);
+    }
+
+    .creditcard-member-binding-action {
+      .action-text {
+        &:extend(.abs-body-text-medium all);
+      }
+
+      .action.action-link {
+        &:extend(.abs-caption1-medium all);
+      }
+    }
+
+    .member-hotaipay-bottom {
+      [data-content-type="heading"],
+      .member-hotaipay-bottom-title {
+        &:extend(.abs-dk-h4 all);
+      }
+  
+      div[data-content-type='text'],
+      .member-hotaipay-bottom-text {
+        &:extend(.abs-dk-body-text-medium all);
+      }
+    }
+
+    .creditcard-member-wrapper {
+      &.show-listing {
+        .creditcard-member-sub-title {
+          &:extend(.abs-h6-bold all);
+          &::before {
+            height: 18px;
+            margin: 0;
+          }
+        }
+      }
+  
+      .creditcard-member-card-list-title {
+        .col {
+          &:extend(.abs-dk-body-text all);
+        }
+      }
+      
+      .creditcard-member-card-list-item {
+        .col {
+          &:extend(.abs-dk-body-text all);
+        }
+      }
+    }
+  }
+}

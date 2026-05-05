@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="seller-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="marketplace_dashboard_latest_orders" template="Branch8_SellerPermission::layout2/account/dashboard/latest_orders.phtml">
+        </referenceBlock>
+        <referenceBlock name="marketplace_dashboard_totals" template="Branch8_SellerPermission::layout2/account/dashboard/totals.phtml">
+        </referenceBlock>
+    </body>
+</page>

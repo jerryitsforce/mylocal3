@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @var $block \Magento\Backend\Block\Template
+ */;
+
+?>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Additional Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item-title">
+            <span class="title"><?= $block->escapeHtml('Information') ?></span>
+        </div>
+        <div class="admin__page-section-item-content">
+            <div id="referrer_code">
+                <label><?= $block->escapeHtml('Referrer Code :') ?></label>
+                <span>
+                   <?= $block->escapeHtml($block->getDetail()->getData('referrer_code')) ?>
+                </span>
+            </div>
+            <div id="order_note">
+                <label><?= $block->escapeHtml('Order Note : ') ?></label>
+                <span><?= $block->escapeHtml($block->getDetail()->getData('order_note')) ?></span>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters" component="Branch8_SalesOrderGrid/js/grid/filters/filters">
+            <filterSelect
+                name="store_id"
+                sortOrder="1">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                    </item>
+                </argument>
+            </filterSelect>
+            <filterSelect
+                name="seller_id"
+                provider="${ $.parentName }"
+                sortOrder="20"
+                component="Branch8_SalesOrderGrid/js/form/element/ui-select"
+                template="ui/grid/filters/elements/ui-select"
+                >
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="showPath" xsi:type="boolean">false</item>
+                        <item name="identityColumn" xsi:type="string">entity_id</item>
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="searchOptions" xsi:type="boolean">true</item>
+                        <item name="selectedPlaceholders" xsi:type="array">
+                            <item name="defaultPlaceholder" xsi:type="string" translate="true">Please enter Seller Name</item>
+                        </item>
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Please enter Seller Name</item>
+                        <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Seller</item>
+                        <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                        <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                        <item name="searchUrl" xsi:type="url" path="sales/order/SearchSellerOptions" />
+                        <item name="validationUrl" xsi:type="url" path="sales/order/GetSellerSelected"/>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Seller\Options"/>
+                    <caption translate="true">Please enter Seller Name</caption>
+                    <label translate="true">[GRID]Seller Name</label>
+                    <dataScope>seller_id</dataScope>
+                </settings>
+            </filterSelect>
+            <filterSelect
+                    name="sale_person_id"
+                    provider="${ $.parentName }"
+                    sortOrder="30"
+                    component="Branch8_SalesOrderGrid/js/form/element/ui-select"
+                    template="ui/grid/filters/elements/ui-select"
+            >
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="showPath" xsi:type="boolean">false</item>
+                        <item name="identityColumn" xsi:type="string">entity_id</item>
+                        <item name="filterOptions" xsi:type="boolean">true</item>
+                        <item name="searchOptions" xsi:type="boolean">true</item>
+                        <item name="filterPlaceholder" xsi:type="string"  translate="true">Please enter Sale Person</item>
+                        <item name="selectedPlaceholders" xsi:type="array">
+                            <item name="defaultPlaceholder" xsi:type="string" translate="true">Please enter Sale Person</item>
+                        </item>
+                        <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Saleperson</item>
+                        <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                        <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                        <item name="searchUrl" xsi:type="url" path="sales/order/SearchSalePersonOptions" />
+                        <item name="validationUrl" xsi:type="url" path="sales/order/GetSalePersonsSelected"/>
+                        <item name="levelsVisibility" xsi:type="number">1</item>
+                    </item>
+                </argument>
+                <settings>
+                    <options class="Branch8\AdvancedPermissions\Model\Options\Salesperson"/>
+                    <caption translate="true">– Please Select Salesperson –</caption>
+                    <label translate="true">[GRID]Salesperson</label>
+                    <dataScope>sale_person_id</dataScope>
+                </settings>
+            </filterSelect>
+            <filterSelect name="product_type" provider="${ $.parentName }"
+                          sortOrder="40"
+                          component="Branch8_SalesOrderGrid/js/form/element/ui-select"
+                          template="ui/grid/filters/elements/ui-select">
+                <settings>
+                    <options class="Magento\Catalog\Model\Product\Type"/>
+                    <caption translate="true">Please select Product Type</caption>
+                    <label translate="true">[GRID]Product Type</label>
+                    <dataScope>product_type</dataScope>
+                    <imports>
+                        <link name="visible">componentType = column, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+            <!-- 手開發票號碼篩選器 -->
+            <filterInput name="manual_invoice_number" provider="${ $.parentName }" sortOrder="50">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Manual Invoice Number</item>
+                    </item>
+                </argument>
+                <settings>
+                    <dataScope>manual_invoice_number</dataScope>
+                    <label translate="true">[GRID]Manual Invoice Number</label>
+                </settings>
+            </filterInput>
+            <!-- 是否手開發票篩選器 -->
+            <filterSelect name="is_manual_invoice" provider="${ $.parentName }" sortOrder="60">
+                <settings>
+                    <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                    <caption translate="true">Please Select</caption>
+                    <label translate="true">[GRID]Has Manual Invoice</label>
+                    <dataScope>is_manual_invoice</dataScope>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction" class="Branch8\MarketPlaceOrderExportAdminUi\Ui\Component\Sales\Order\MassAction">
+            <action name="resync_grid">
+                <settings>
+                    <url path="sales/order/MassResynchronizeGrid"/>
+                    <type>resync_grid</type>
+                    <label translate="true">Resync Order Data To Grid</label>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+
+    <columns name="sales_order_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">disabled</item>
+                    <item name="target" xsi:type="string">disabled</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">disabled</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <!-- Disable Column-->
+        <column name="transaction_source">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="dispute_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="invoice_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="quote_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="allocated_sources">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="pickup_location_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="total_refunded" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="store_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <!-- Disable Column-->
+
+        <!-- Modifying Display Columns-->
+        <column name="base_grand_total">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the total amount of the order</item>
+                </item>
+            </argument>
+        </column>
+        <column name="increment_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please input Order Id</item>
+                </item>
+            </argument>
+        </column>
+        <column name="grand_total">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the total amount of the order (purchase currency)</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="subtotal" class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Subtotal">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter sub total</item>
+                </item>
+            </argument>
+        </column>
+        <column name="subtotal_incl_tax" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">[GRID]Subtotal</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order subtotal amount</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+            </settings>
+        </column>
+        <column name="shipping_and_handling" class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\ShippingAndHandling">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order shipping amount</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipping_incl_tax" class="Magento\Sales\Ui\Component\Listing\Column\Price">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order shipping amount</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Shipping and Handling</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="created_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the order purchase date</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="invoice_modification_date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the invoice modification date</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="billing_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Billing Name</item>
+                </item>
+            </argument>
+        </column>
+        <column name="billing_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Billing Address</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipping_information">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Shipping Information</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="shipping_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Shipping Name</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Select...</item>
+                    <item name="filterSelectType" xsi:type="string">multiselect</item>
+                </item>
+            </argument>
+            <settings>
+                <options class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Status\Options"/>
+            </settings>
+        </column>
+
+        <column name="shipping_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter the Shipping Address</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="customer_group" component="Magento_Ui/js/grid/columns/select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please choose Customer Group</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Customer Group</label>
+            </settings>
+        </column>
+        <column name="customer_email">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter customer email</item>
+                </item>
+            </argument>
+        </column>
+        <column name="customer_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Customer Name</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Customer Name</label>
+            </settings>
+        </column>
+        <column name="rma_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please choose RMA status</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="payment_method">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please choose Payment Method</item>
+                </item>
+            </argument>
+            <settings>
+                <options class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\Method\PaymentMethodOptions"/>
+            </settings>
+        </column>
+        <column name="product_name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Product Name</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Product Name</label>
+            </settings>
+        </column>
+        <column name="product_sku" class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\ProductSku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter SKU</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]SKU</label>
+                <filter>text</filter>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="seller">
+            <settings>
+                <filter/>
+            </settings>
+        </column>
+        <column name="nickname">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Nick Name</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Nick Name</label>
+            </settings>
+        </column>
+        <column name="product_type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select Product Type</item>
+                </item>
+            </argument>
+            <settings>
+                <filter/>
+                <dataType>select</dataType>
+                <label translate="true">[GRID]Product Type</label>
+            </settings>
+        </column>
+        <column name="total_invoiced">
+            <settings>
+                <filter/>
+                <dataType>text</dataType>
+                <label translate="true">Invoice Amount</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="point_used_total">
+            <settings>
+                <filter/>
+                <dataType>text</dataType>
+                <label translate="true">Using Point</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="base_cost" component="Branch8_SalesOrderGrid/js/grid/columns/baseCost">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please input cost</item>
+                    <item name="bodyTmpl" xsi:type="string">Branch8_SalesOrderGrid/grid/cells/baseCost</item>
+                    <item name="resizeEnabled" xsi:type="boolean">true</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">200</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>false</filter>
+                <sortable>false</sortable>
+                <label translate="true">Cost</label>
+            </settings>
+        </column>
+        <column name="commission_percent" component="Branch8_SalesOrderGrid/js/grid/columns/commisionPercent">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please input commision percent</item>
+                    <item name="bodyTmpl" xsi:type="string">Branch8_SalesOrderGrid/grid/cells/comissionPercent</item>
+                    <item name="resizeEnabled" xsi:type="boolean">true</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">200</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>false</filter>
+                <sortable>false</sortable>
+                <label translate="true">Commission Percent</label>
+            </settings>
+        </column>
+        <column name="customer_phone_number">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter Phone Number</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">[GRID]Phone Number</label>
+            </settings>
+        </column>
+        <column name="salesperson">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select Sale Person</item>
+                </item>
+            </argument>
+            <settings>
+                <filter/>
+                <dataType>text</dataType>
+                <label translate="true">Salesperson</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="shipping_method">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please select Logistics method</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Shipping Method (Grid)</label>
+            </settings>
+        </column>
+        <column name="rmaids"  class="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\RmaIds">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter RMAID</item>
+                </item>
+            </argument>
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter/>
+                <sortable>false</sortable>
+                <dataType>text</dataType>
+                <label translate="true">RMAID</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="supplier_sku">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter supplier sku</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <dataType>text</dataType>
+                <label translate="true">Supplier SKU</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="item_trans_sn">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Please enter TransSN</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">TransSN</label>
+            </settings>
+        </column>
+        <column name="order_approval_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Select...</item>
+                </item>
+            </argument>
+        </column>
+        <column name="order_approval_status">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">Select...</item>
+                </item>
+            </argument>
+        </column>
+        <!-- 手開發票號碼欄位 -->
+        <column name="manual_invoice_number" class="Branch8\SalesOrderGrid\Ui\Component\Listing\Column\ManualInvoiceNumber">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterPlaceholder" xsi:type="string" translate="true">請輸入手開發票號碼</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">[GRID]Manual Invoice Number</label>
+                <sortable>false</sortable>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <!-- Modifying Display Columns-->
+
+    </columns>
+</listing>

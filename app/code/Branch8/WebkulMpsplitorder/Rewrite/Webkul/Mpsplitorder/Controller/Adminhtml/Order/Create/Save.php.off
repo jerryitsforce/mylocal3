@@ -1,0 +1,77 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\Sales\Rewrite\Webkul\Mpsplitorder\Controller\Adminhtml\Order\Create;
+
+use Magento\Framework\App\Action\HttpPostActionInterface as HttpPostActionInterface;
+use Magento\Framework\Exception\PaymentException;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\SalesRule\Model\Coupon;
+use Magento\SalesRule\Model\ResourceModel\Coupon\Usage;
+use Magento\Backend\App\Action;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\Model\View\Result\ForwardFactory;
+
+class Save extends \Magento\Sales\Controller\Adminhtml\Order\Create implements HttpPostActionInterface
+{
+    /**
+     * Saving quote and create order
+     *
+     * @return \Magento\Framework\Controller\ResultInterface
+     */
+    public function execute()
+    {
+        $path = 'sales/*/';
+        $pathParam = [];
+
+        try {
+            // check if the creation of a new customer is allowed
+            if (!$this->_authorization->isAllowed('Magento_Customer::manage')
+                && !$this->_getSession()->getCustomerId()
+                && !$this->_getSession()->getQuote()->getCustomerIsGuest()
+            ) {
+                return $this->resultForwardFactory->create()->forward('denied');
+            }
+            $this->_getOrderCreateModel()->getQuote()->setCustomerId($this->_getSession()->getCustomerId());
+            $this->_processActionData('save');
+            $paymentData1 = $this->getRequest()->getPost('payment');
+            if ($paymentData1) {
+                $paymentData1['checks'] = [
+                    \Magento\Payment\Model\Method\AbstractMethod::CHECK_USE_INTERNAL,
+                    \Magento\Payment\Model\Method\AbstractMethod::CHECK_USE_FOR_COUNTRY,
+                    \Magento\Payment\Model\Method\AbstractMethod::CHECK_USE_FOR_CURRENCY,
+                    \Magento\Payment\Model\Method\AbstractMethod::CHECK_ORDER_TOTAL_MIN_MAX,
+                    \Magento\Payment\Model\Method\AbstractMethod::CHECK_ZERO_TOTAL,
+                ];
+                $this->_getOrderCreateModel()->setPaymentData($paymentData1);
+                $this->_getOrderCreateModel()->getQuote()->getPayment()->addData($paymentData1);
+            }
+
+            $order = $this->_getOrderCreateModel()
+                ->setIsValidate(true)
+                ->importPostData($this->getRequest()->getPost('order'))
+                ->createOrder();
+
+            $this->_getSession()->clearStorage();
+            $this->messageManager->addSuccessMessage(__('You created the order.'));
+            $path = 'sales/order/index';
+        } catch (PaymentException $error) {
+            $this->_getOrderCreateModel()->saveQuote();
+            $message = $error->getMessage();
+            if (!empty($message)) {
+                $this->messageManager->addErrorMessage($message);
+            }
+        } catch (\Magento\Framework\Exception\LocalizedException $error) {
+            // customer can be created before place order flow is completed and should be stored in current session
+            $this->_getSession()->setCustomerId((int)$this->_getSession()->getQuote()->getCustomerId());
+            $message = $error->getMessage();
+            if (!empty($message)) {
+                $this->messageManager->addErrorMessage($message);
+            }
+        } catch (\Exception $error) {
+            $this->messageManager->addExceptionMessage($error, __('Order saving error: %1', $error->getMessage()));
+        }
+
+        return $this->resultRedirectFactory->create()->setPath($path, $pathParam);
+    }
+}

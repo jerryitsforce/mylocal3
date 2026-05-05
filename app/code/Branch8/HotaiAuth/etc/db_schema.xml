@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order">
+        <column xsi:type="int" name="custom_login_log_id" nullable="true" comment="Customer Login Log ID"/>
+    </table>
+    <table name="customer_entity">
+        <column xsi:type="varchar" name="phone_number"  length="20" comment="Hotai Phone Number"/>
+        <column xsi:type="varchar" name="member_seq"  length="255" comment="Hotai Member Seq"/>
+        <column xsi:type="varchar" name="one_id"  length="255" comment="Hotai One Id"/>
+        <column name="platform" nullable="true" xsi:type="varchar" comment="platform" length="50"/>
+        <index referenceId="CUSTOMER_ENTITY_PHONE_NUMBER" indexType="btree">
+            <column name="phone_number"/>
+        </index>
+
+        <index referenceId="CUSTOMER_ENTITY_ONE_ID" indexType="btree">
+            <column name="one_id"/>
+        </index>
+    </table>
+    <table name="branch_custom_customer_log" resource="default" engine="innodb" comment="Customer Log Table">
+        <column xsi:type="int" name="log_id" unsigned="false" nullable="false" identity="true"
+                comment="Log ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="false" nullable="false" identity="false"
+                comment="Customer ID"/>
+        <column xsi:type="timestamp" name="last_login_at" on_update="false" nullable="true" comment="Last Login Time"/>
+        <column xsi:type="timestamp" name="last_logout_at" on_update="false" nullable="true"
+                comment="Last Logout Time"/>
+        <column xsi:type="text" name="utm" nullable="true" comment="UTM Parameter"/>
+        <column xsi:type="varchar" name="device" length="255" nullable="true" comment="Device"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+    </table>
+</schema>

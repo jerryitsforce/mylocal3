@@ -1,0 +1,178 @@
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .opc-section{
+    &.ecpay-invoice {
+      .step-content {
+        padding: 0 0 8px;
+      }
+    }
+
+    .form-ecpay-invoice {
+      &:extend(.abs-form-checkout all);
+
+      .field-hidden {
+        display: none;
+      }
+
+      .fieldset {
+        margin: 0;
+        letter-spacing: 1px;
+        gap: 16px 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .fieldset-choices {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 32px 16px;
+        border-bottom: var(--border-common);
+        padding: 0 0 16px;
+        margin: 0 0 16px;
+
+        .field.choice {
+          margin: 0;
+          display: flex;
+          flex-direction: row;
+          width: calc(~"50% - 8px");
+          gap: 0 3px;
+        }
+
+      }
+      .fieldset {
+        > .field {
+          .label {
+            margin-bottom: 0;
+
+            &::after {
+              margin-left: 0;
+            }
+          }
+        }
+      }
+      .fieldset-inputs {
+
+      }
+
+      .field-carrier-invoice {
+        // max-width: 343px;
+
+        .label {
+          display: none;
+        }
+      }
+
+      .fieldset > .field-customer-identity,
+      .fieldset > .field-customer-company {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0 16px;
+
+        .label {
+          width: 100px;
+          padding-top: 9px;
+          white-space: nowrap;
+        }
+
+        .control {
+          width: calc(~"100% - 116px");
+        }
+
+        div.mage-error {
+          width: 100%;
+          padding: 0 0 0 116px;
+        }
+      }
+
+      .fieldset > .field-customer-company {
+        margin-bottom: 16px;
+      }
+
+    }
+
+    .ecpay-invoice-message {
+      &:extend(.abs-caption2 all);
+      color: var(--color-gray-solid1);
+    }
+  }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__s) {
+  .opc-section {
+    .form-ecpay-invoice {
+      .field-carrier-invoice {
+        max-width: 343px;
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+   .opc-section {
+    &.ecpay-invoice {
+      .step-content {
+        padding: 0 0 4px;
+      }
+    }
+    
+    .form-ecpay-invoice {
+      &:extend(.abs-form-checkout all);
+
+      .fieldset-choices {
+        padding: 0 0 14px;
+      }
+
+      .field-carrier-invoice {
+        max-width: 343px;
+      }
+
+      .fieldset > .field-customer-identity,
+      .fieldset > .field-customer-company {
+        .label {
+          width: 112px;
+        }
+
+        .control {
+          width: calc(~"100% - 128px");
+        }
+
+        div.mage-error {
+          padding: 0 0 0 126px;
+        }
+      }
+    }
+
+    .ecpay-invoice-message {
+      &:extend(.abs-tb-caption1 all);
+    }
+   }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+  .opc-section {
+    .ecpay-invoice-message {
+      &:extend(.abs-dk-caption1 all);
+    }
+    .form-ecpay-invoice {
+      &:extend(.abs-form-checkout all);
+    }
+   }
+}

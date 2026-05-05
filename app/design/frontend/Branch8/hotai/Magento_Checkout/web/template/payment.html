@@ -1,0 +1,61 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div id="payment" role="presentation" class="opc-section checkout-payment-method" data-bind="fadeVisible: isVisible">
+    <h3 class="step-title amcheckout-title"
+           data-amcheckout-js="step-title"
+           data-role="title">
+        <span data-bind="i18n: 'Payment Information'"></span>
+        <div class="title-tooltip">
+            <i class="tooltip-toggle"></i>
+            <span class="tooltip-content">
+                <span class="tooltip-text" data-bind="i18n: 'Using 3D verification for payment can reduce fraud disputes and increase your payment security.'"></span>
+            </span>
+        </div>
+    </h3>
+    <div id="checkout-step-payment"
+         class="step-content"
+         data-role="content"
+         role="tabpanel"
+         aria-hidden="false">
+        <!-- ko if: (quoteIsVirtual) -->
+            <!-- ko foreach: getRegion('customer-email') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        <!--/ko-->
+        <form id="co-payment-form" class="form payments" novalidate="novalidate">
+            <input data-bind='attr: {value: getFormKey()}' type="hidden" name="form_key">
+            <fieldset class="fieldset">
+                <legend class="legend">
+                    <span data-bind="i18n: 'Payment Information'"></span>
+                </legend>
+                <!-- ko foreach: getRegion('place-order-captcha') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+                <!-- ko foreach: getRegion('beforeMethods') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+                <div id="checkout-payment-method-load" class="opc-payment" data-bind="visible: isPaymentMethodsAvailable">
+                    <!-- ko foreach: getRegion('payment-methods-list') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <div class="no-quotes-block" data-bind="visible: isPaymentMethodsAvailable() == false">
+                    <!-- ko i18n: 'No Payment method available.'--><!-- /ko -->
+                </div>
+                <!-- ko foreach: getRegion('afterMethods') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </fieldset>
+        </form>
+        <div class="card-message">
+            <span data-bind="i18n: 'Use Hetai co-branded card to enjoy'"></span>
+            <span class="hightlight" data-bind="i18n: '10%'"></span>
+            <span data-bind="i18n: 'rebate'"></span>
+            <small class="note" data-bind="i18n: 'Bonus rewards: Max 800 points per card/month.'"></small>
+        </div>
+    </div>
+</div>

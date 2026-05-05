@@ -1,0 +1,17 @@
+{
+    "name": "branch8/ticketorderstatuschangeobserver",
+    "description": "",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+      "MIT"
+    ],
+    "autoload": {
+      "psr-4": {
+        "Branch8\\TicketOrderStatusChangeObserver\\": ""
+      },
+      "files": [
+        "registration.php"
+      ]
+    }
+  }

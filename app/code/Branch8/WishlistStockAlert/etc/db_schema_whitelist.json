@@ -1,0 +1,55 @@
+{
+    "branch8_wishlist_stock_alert": {
+        "column": {
+            "alert_id": true,
+            "wishlist_item_id": true,
+            "customer_id": true,
+            "product_id": true,
+            "product_name": true,
+            "combo": true,
+            "was_out_of_stock_when_added": true,
+            "notification_sent": true,
+            "saleable_qty_when_added": true,
+            "created_at": true,
+            "updated_at": true,
+            "notified_at": true
+        },
+        "index": {
+            "BRANCH8_WISHLIST_STOCK_ALERT_WISHLIST_ITEM_ID": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_CUSTOMER_ID_PRODUCT_ID": true,
+            "IDX_AADFCB7D0B2098BFA689A081A9379EA2": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_409905045B3F09364CBF2BD9B404CC34": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_CSTR_ID_CSTR_ENTT_ENTT_ID": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_CUSTOMER_ID_PRODUCT_ID_COMBO": true
+        }
+    },
+    "branch8_wishlist_stock_alert_email_queue": {
+        "column": {
+            "queue_id": true,
+            "customer_id": true,
+            "customer_email": true,
+            "store_id": true,
+            "data": true,
+            "queue_type": true,
+            "queue_code": true,
+            "message": true,
+            "trace": true,
+            "status": true,
+            "created_at": true,
+            "sent_at": true
+        },
+        "index": {
+            "BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_CUSTOMER_EMAIL": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_QUEUE_TYPE": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_QUEUE_CODE": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_WISHLIST_STOCK_ALERT_EMAIL_QUEUE_CUSTOMER_ID_STORE_ID": true
+        }
+    }
+}

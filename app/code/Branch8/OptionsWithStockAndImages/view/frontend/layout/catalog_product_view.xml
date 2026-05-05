@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!-- /**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_OptionsWithStockAndImages
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */  -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="product.info.options.wrapper">
+            <referenceBlock name="wkosivariation" remove="true"/>
+            <block class="Branch8\OptionsWithStockAndImages\Block\Variation" name="b8wkosivariation">
+                <arguments>
+                    <argument name="configurable_view_model"
+                              xsi:type="object">Magento\Swatches\ViewModel\Product\Renderer\Configurable</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="b8wkosivariation">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_OptionsWithStockAndImages::variation.phtml</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

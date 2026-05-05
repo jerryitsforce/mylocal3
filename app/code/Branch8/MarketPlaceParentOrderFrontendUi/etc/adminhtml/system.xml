@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="marketplace" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1">
+            <group id="mpsplitorder" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1">
+                <group id="sub_order_configuration" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sub Order Configuration</label>
+                    <field id="access" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Access UI</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>parent_order/sub_order_configuration/access</config_path>
+                    </field>
+                </group>
+                <group id="parent_order_configuration" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Parent Order Configuration</label>
+                    <group id="reorder" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Re-Order</label>
+                        <field id="allow_reorder_product_oos" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Allow Reorder OOS product</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <config_path>parent_order/parent_order_configuration/allow_reorder_product_oos</config_path>
+                        </field>
+                    </group>
+                    <field id="show_status_frontend" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Show Status on frontend</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <config_path>parent_order/parent_order_configuration/show_status_frontend</config_path>
+                    </field>
+                </group>
+            </group>
+        </section>
+        <section id="sales" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="orders" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1">
+                <label>Orders Cron Settings</label>
+                <field id="delete_pending_cron" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Cron Schedule</label>
+                    <comment>Set the cron schedule for deleting pending orders</comment>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_marketplaceparentorderfrontendui" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_MarketPlaceParentOrderFrontendUi</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\MarketPlaceParentOrderFrontendUi\Model\Config\Source\LogOption</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

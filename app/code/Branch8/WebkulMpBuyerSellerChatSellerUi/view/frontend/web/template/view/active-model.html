@@ -1,0 +1,99 @@
+<div class="chat__menu" data-bind="css : window.dashboard,
+afterRender: checkScaleOut">
+    <div class="chat-model">
+        <div class="chat-loading-mask" data-role="chat-loader"
+             data-bind="visible: showSellerLoader">
+            <div class="chat-loader">
+                <img alt="Loading..." data-bind="attr: {'src': window.chatboxCoreConfig.loaderImage}">
+            </div>
+        </div>
+        <div id="chat-data">
+            <!--ko if: chatEnabled() === false -->
+            <div class="enable-chat">
+                <button class="button enable_chat" data-bind="i18n: 'Enable Chat', click: enableSellerChat"></button>
+            </div>
+            <!-- /ko -->
+            <render args="headerTemplate"></render>
+            <render args="profileBoxTemplate"></render>
+            <render args="chatConversationsTemplate"></render>
+        </div>
+    </div>
+</div>
+<!-- ko if: getRegion('customerChatScreen')().length > 0 -->
+<div id="chat_window_container" class="chat_window_container"
+     data-bind="afterRender:chatFrameContainerRenderAfter">
+    <!-- ko foreach: { data: getRegion('customerChatScreen'), as: 'element' } -->
+    <!-- ko template: element.getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+</div>
+<!--/ko-->
+<!-- ko if: minizedItems().length > 0 -->
+<div id="minimized_bar" class="minimized-bar">
+    <div class="contact-list">
+        <!-- ko foreach: { data: minizedItemsRenderer, as: 'element' } -->
+        <div class="contact-item"
+             data-bind="click:$parents[0].showChatWindow.bind($parents[1],element.conversationData())">
+            <div class="avatar-wrapper">
+                <img data-bind="attr: {src: element.conversationData().customerImage, id:'icon-profile-'+element.conversationData().conversationUniqueId}"
+                    alt="Avatar">
+                <span
+                      data-bind="attr : {id:'icon-status-'+element.conversationData().conversationUniqueId, class:'status '+$parents[0].STATUS.getChatStatusLabel(element.conversationData().customerChatStatus)}">
+
+
+                </span>
+            </div>
+            <div class="hover-info">
+                <div class="name" data-bind="text:element.conversationData().customerNickName"></div>
+                <div class="email" data-bind="text:element.conversationData().customerEmail"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: minizedItemsRemainRender().length > 0 -->
+        <div class="contact-item">
+            <div class="avatar-wrapper">
+                <img  alt="Avatar"
+                     src="https://hotai.local/static/frontend/Branch8/hotai/en_US/Webkul_MpBuyerSellerChat/images/sellerimage.png">
+                <span class="count" data-bind="text:'+'+minizedItemsRemainRender().length"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>
+<!--/ko-->
+<div id="minimized_bar_extra" class="minimized-bar">
+    <div class="contact-list">
+        <!-- ko foreach: { data: minizedItemsRenderer, as: 'element' } -->
+        <div class="contact-item"
+             data-bind="click:$parents[0].showChatWindow.bind($parents[1],element.conversationData())">
+            <div class="avatar-wrapper">
+                <img data-bind="attr: {src: element.conversationData().customerImage, id:'icon-profile-'+element.conversationData().conversationUniqueId}"
+                     alt="Avatar">
+                <span
+                    data-bind="attr : {id:'icon-status-'+element.conversationData().conversationUniqueId, class:'status '+$parents[0].STATUS.getChatStatusLabel(element.conversationData().customerChatStatus)}">
+                </span>
+            </div>
+            <div class="hover-info">
+                <div class="name" data-bind="text:element.conversationData().customerNickName"></div>
+                <div class="email" data-bind="text:element.conversationData().customerEmail"></div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko if: minizedItemsRemainRender().length > 0 -->
+        <div class="contact-item popover__wrapper" data-bind="click:showHidePopover">
+            <div class="avatar-wrapper popover__title">
+                <img  alt="Avatar"
+                      data-bind="attr: {src: window.chatboxCoreConfig.sellerImage}"/>
+                <span class="count" data-bind="text:'+'+minizedItemsRemainRender().length"></span>
+            </div>
+            <div class="hover-info popover__content">
+                <div class="flex-container" data-bind="foreach:{ data: minizedItemsRemainRender(), as: 'element' }">
+                    <div class="item" data-bind="click:$parents[0].showChatWindow.bind($parents[1],element.conversationData())">
+                        <div class="name" data-bind="text:element.conversationData().customerNickName"></div>
+                        <div class="email" data-bind="text:element.conversationData().customerEmail"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</div>

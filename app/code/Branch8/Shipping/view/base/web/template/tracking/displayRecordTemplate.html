@@ -1,0 +1,11 @@
+<td><%- data.carrier %></td>
+<td class="logistics-provider-name-col" style="display:none;"></td>
+<td><%- data.tracking_number %></td>
+<td><button data-role="click-edit-tracking" class="edit-tracking action-secondary"
+            data-id="<%- data.id %>"
+            data-carrier="<%- data.carrier %>"
+            data-tracking-number="<%- data.tracking_number %>"
+            data-shipment-id="<%- data.shipment_id %>"
+    ><%= _.i18n('Click To Edit') %></button>
+</td>
+

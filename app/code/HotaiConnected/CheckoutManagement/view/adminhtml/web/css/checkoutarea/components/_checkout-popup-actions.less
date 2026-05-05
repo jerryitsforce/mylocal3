@@ -1,0 +1,87 @@
+// =============================================
+//  Checkout Popup Actions - Specific Styles
+// =============================================
+//  各 action 功能的特定樣式擴展
+//  
+//  對應功能模組：
+//  - download-monthly-summary  (JS: 291行, HTML: 46行)
+//  - exception-authorization   (JS: 242行, HTML: 76行)
+//  - unlock-checkout           (JS: 364行, HTML: 66行)
+//  - download-vendor-statement (JS: 待確認)
+//  
+//  這些功能的 CSS 樣式較少，統一在此管理
+//  基礎彈窗樣式：components/_ui-modal-form.less (UiShared)
+//
+//  @updated 2025-10-28 - 重構：合併所有 actions 特定樣式，避免過度拆分
+// =============================================
+
+// Download Monthly Summary（popup：日期區間 + 下載按鈕）
+.download-monthly-summary {
+    .modal-footer {
+        text-align: left;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding-top: 0;
+    }
+
+    &-popup {
+        &__download {
+            & > div:nth-child(1){
+                display: flex;
+                align-items: center;
+                gap: 15px;
+
+                & .ui-modal-form__content {
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}
+
+// Exception Authorization
+// 例外授權視窗的特定樣式
+.exception-authorization {
+    .download-template {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #eb5202;
+        border-color: #eb5202;
+        color: #fff;
+        text-shadow: 1px 1px 0 rgba(0, 0, 0, .25);
+        padding: 6px 14px;
+    }
+}
+
+// Unlock Checkout
+// 解鎖結帳視窗（目前無特定樣式，僅使用基礎彈窗樣式）
+.unlock-checkout {
+    // 目前無特定樣式
+    // 如未來需要特定樣式，可在此添加
+    .authorized-dealer-names-display {
+        & .selected-items-display__container {
+            display: flex;
+            flex-wrap: wrap;
+            max-height: 180px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+    }
+
+    .unlock-checkout-data {
+        padding: 0.6rem;
+        line-height: 1.5;
+        border: 1px solid #adadad;
+    }
+}
+
+// Download Vendor Statement
+// 下載廠商對帳單的特定樣式
+.download-vendor-statement {
+    ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+}

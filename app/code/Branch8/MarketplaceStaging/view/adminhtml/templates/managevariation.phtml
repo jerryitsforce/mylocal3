@@ -1,0 +1,59 @@
+<!-- /**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_OptionsWithStockAndImages
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */ -->
+<?php
+// rename managevariation.bk.phtml to revert
+/**
+ * @var $block \Branch8\OptionsWithStockAndImages\Block\Adminhtml\Variation
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$useManageVariant2 = $block->getViewModel()->useManageVariant2();
+$customOptionUrl = $block->getUrl('marketplacestaging/variation/getcustomoption');
+$savedData = $block->getSavedData();
+$variantConfig = [
+    'linkurl' => $escaper->escapeUrl($block->getImageUrl()),
+    'saved' => $savedData,
+    'swatch' => $block->getSwatchData(false),
+    'syncurl' => $escaper->escapeUrl($block->getSyncUrl()),
+    'customoptioncurl' => $block->getUrl('marketplacestaging/variation/getcustomoption'),
+    'wkVariantionTrigger' => '[data-index=wkvariations]',
+    'formDataProviderConfig' => [
+        'type' => 'uiComponent',
+        'componentId' => 'product_form.product_form_data_source'
+    ]
+]
+    ?>
+<script type="text/javascript">
+    window.useManageVariant2 = <?= $useManageVariant2 ? 'true' : 'false' ?>;
+    window.variantionConfig = <?= json_encode($variantConfig); ?>;
+    var tempMediaUrl = '<?= $escaper->escapeUrl($block->getTmpMediaUrl()) ?>';
+    var mediaUrl = '<?= /* @noEscape */ $escaper->escapeUrl($block->getMediaUrl()) ?>';
+</script>
+<?php if ($block->isModuleEnable()): ?>
+
+    <?php if ($useManageVariant2): ?>
+        <?= $block->fetchView($block->getTemplateFile('Branch8_MarketplaceStaging::catalog/product/edit/managevariation/swatchtemplate.phtml')); ?>
+        <?= $block->fetchView($block->getTemplateFile('Branch8_MarketplaceStaging::catalog/product/edit/managevariation/varianttemplate.phtml')); ?>
+        <?= $block->fetchView($block->getTemplateFile('Branch8_MarketplaceStaging::catalog/product/edit/managevariation/upload.phtml')); ?>
+        <script type="text/x-magento-init">
+                {
+                    "*": {
+                        "Branch8_MarketplaceStaging/js/optionswithstockandimages/managevariation2": {}
+                }
+              }
+
+            </script>
+        <script type="text/javascript">
+            var variationSavedData = <?= /* @noEscape */ $savedData ?>;
+        </script>
+    <?php else: ?>
+        <?= $block->fetchView($block->getTemplateFile('Branch8_MarketplaceStaging::catalog/product/edit/managevariation.old.phtml')); ?>
+    <?php endif ?>
+<?php endif; ?>

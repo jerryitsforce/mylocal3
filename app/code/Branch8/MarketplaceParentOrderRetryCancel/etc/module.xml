@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Branch8_MarketplaceParentOrderRetryCancel">
+        <sequence>
+            <module name="Webkul_Mpsplitorder"/>
+            <module name="Webkul_Marketplace"/>
+            <module name="Branch8_MaskInformation"/>
+            <module name="Ecpay_General"/>
+        </sequence>
+    </module>
+</config>

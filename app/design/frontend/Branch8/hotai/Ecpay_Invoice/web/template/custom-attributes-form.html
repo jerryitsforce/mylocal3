@@ -1,0 +1,118 @@
+<div class="opc-section ecpay-invoice">
+    <h3 class="step-title" data-role="title" data-bind="i18n: 'Ecpay Invoice Infomation'"></h3>
+    <div class="step-content">
+        <form id="ecpay-invoice-form" class="form form-ecpay-invoice" data-bind="mageInit: {'validation': {}}">
+            <div class="fieldset fieldset-choices">
+                <!-- ko foreach: getRegion('custom-checkout-form-fields') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!--/ko-->
+                <div class="field field-hidden _required" data-bind="value: currentInvoiceType">
+                    <label class="label">
+                        <span data-bind="i18n: 'Invoice Type'">Invoice Type</span>
+                    </label>
+                    <select class="control" name="ecpay_invoice_type" id="ecpay_invoice_type" data-bind="value: currentInvoiceType, event:{ change: selectInvoiceType }">
+                        <!-- ko i18n: 'Individual' --><!-- /ko -->
+                        <!-- ko i18n: 'Donation' --><!-- /ko -->
+                        <!-- ko i18n: 'Company' --><!-- /ko -->
+                        <!-- ko foreach: invoiceTypes -->
+                        <option data-bind="visible: active, text: $t(name), value: value"></option>
+                        <!-- /ko -->
+                    </select>
+                </div>
+    
+                <div class="field field-hidden _required" data-bind="visible: showCarruerType">
+                    <label class="label">
+                        <span data-bind="i18n: 'Carrier Type'">Carrier Type</span>
+                    </label>
+                    <select class="control" name="ecpay_invoice_carruer_type" id="ecpay_invoice_carruer_type" data-bind="value: currentCarruerType, event:{ change: selectCarruerType }">
+                        <!-- ko i18n: 'Paper Invoice' --><!-- /ko -->
+                        <!-- ko i18n: 'Cloud Invoice' --><!-- /ko -->
+                        <!-- ko i18n: 'Natural Person Certificate' --><!-- /ko -->
+                        <!-- ko i18n: 'Mobile Barcode' --><!-- /ko -->
+                        <!-- ko foreach: carruerTypes -->
+                        <option data-bind="visible: active, text: $t(name), value: value"></option>
+                        <!-- /ko -->
+                    </select>
+                </div>
+
+                <!-- <div class="field choice">
+                    <input type="radio" name="ecpay_invoice_choice" class="radio" data-bind="event: { change: selectInvoice}" checked value="member_carrier" id="member_carrier">
+                    <label for="member_carrier" class="label"><span data-bind="i18n: 'HOTAI購會員載具'"></span></label>
+                </div> -->
+                <div class="field choice">
+                    <input type="radio" name="ecpay_invoice_choice" class="radio" data-bind="event: { change: selectInvoice}" checked value="two_part_invoice" id="two_part_invoice">
+                    <label for="two_part_invoice" class="label"><span data-bind="i18n: '二聯式發票(個人)'"></span></label>
+                </div>
+                <div class="field choice">
+                    <input type="radio" name="ecpay_invoice_choice" class="radio" data-bind="event: { change: selectInvoice}" value="barcode_carrier" id="barcode_carrier">
+                    <label for="barcode_carrier" class="label"><span data-bind="i18n: '手機條碼載具'"></span></label>
+                </div>
+                <div class="field choice">
+                    <input type="radio" name="ecpay_invoice_choice" class="radio" data-bind="event: { change: selectInvoice}" value="three_part_invoice" id="three_part_invoice">
+                    <label for="three_part_invoice" class="label"><span data-bind="i18n: '三聯式發票(公司)'"></span></label>
+                </div>
+            </div>
+            <div class="fieldset fieldset-inputs">
+                <div class="field field-customer-identity _required" data-bind="visible: showCustomerIdentifier">
+                    <label class="label">
+                        <span data-bind="i18n: '統一編號'"></span>
+                    </label>
+                    <input data-validate="{required:true, 'required-number': true, 'validate-number': true, minlength: 8, maxlength: 8}" type="number" class="control" name="ecpay_invoice_customer_identifier" id="ecpay_invoice_customer_identifier" data-bind="attr: { placeholder: $t('請輸入8碼統一編號'), 'data-msg-validate-number': $t('輸入的統一編號錯誤，請確認後重新輸入'), 'data-msg-required-number': $t('輸入的統一編號錯誤，請確認後重新輸入'), 'data-msg-minlength': $t('輸入的統一編號錯誤，請確認後重新輸入'), 'data-msg-maxlength': $t('輸入的統一編號錯誤，請確認後重新輸入'), minlength: 8, maxlength: 8 }, value: customer_identifier, valueUpdate: 'afterkeydown'">
+                </div>
+                <div class="field field-customer-company _required" data-bind="visible: showCustomerCompany" id="ecpay_invoice_customer_company_div">
+                    <label class="label">
+                        <span data-bind="i18n: '公司行號抬頭'"></span>
+                    </label>
+                    <input data-validate="{required:true}" type="text" class="control" name="ecpay_invoice_customer_company" id="ecpay_invoice_customer_company" data-bind="attr: { placeholder: $t('請輸入公司行號抬頭') }, value: customer_company, valueUpdate: 'afterkeydown'">
+                </div>
+    
+                <div class="field _required" data-bind="visible: showLoveCode">
+                    <label class="label">
+                        <span data-bind="i18n: 'Donation Code'">Donation Code</span>
+                    </label>
+                    <input data-validate="{required:true}"  type="text" class="control" name="ecpay_invoice_love_code" id="ecpay_invoice_love_code" data-bind="value: love_code, valueUpdate: 'afterkeydown'">
+                    <div class="field-error" id="love_code_error"></div>
+                </div>
+                <div class="field field-carrier-invoice _required" data-bind="visible: showCarruerNum">
+                    <label class="label">
+                        <span data-bind="i18n: 'Carrier Code'">Carrier Code</span>
+                    </label>
+                    <input data-validate="{required:true, 'validate-tw-barcode':true}" type="text" class="control" name="ecpay_invoice_carruer_num" id="ecpay_invoice_carruer_num" data-bind="attr: { placeholder: $t('請輸入手機條碼載具') }, value: carruer_num, valueUpdate: 'afterkeydown'">
+                </div>
+            </div>
+            <div class="ecpay-invoice-message">
+                <div class="invoice-message" data-bind="text: invoiceMessage()"></div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- <div class="field _required" data-bind="visible: showCustomerIdentifier">
+    <label class="label">
+        <span data-bind="i18n: 'Uniform Numbers'">Uniform Numbers</span>
+    </label>
+    <input maxlength="8" type="text" class="control" name="ecpay_invoice_customer_identifier" id="ecpay_invoice_customer_identifier" data-bind="value: customer_identifier, valueUpdate: 'afterkeydown'">
+    <div class="field-error" id="customer_identifier_error"></div>
+</div>
+
+<div class="field _required" data-bind="visible: showLoveCode">
+    <label class="label">
+        <span data-bind="i18n: 'Donation Code'">Donation Code</span>
+    </label>
+
+    <input type="text" class="control" name="ecpay_invoice_love_code" id="ecpay_invoice_love_code" data-bind="value: love_code, valueUpdate: 'afterkeydown'">
+    <div class="field-error" id="love_code_error"></div>
+</div>
+
+<div class="field _required" data-bind="visible: showCarruerNum">
+    <label class="label">
+        <span data-bind="i18n: 'Carrier Code'">Carrier Code</span>
+    </label>
+    <input type="text" class="control" name="ecpay_invoice_carruer_num" id="ecpay_invoice_carruer_num" data-bind="value: carruer_num, valueUpdate: 'afterkeydown'">
+    <div class="field-error" id="carruer_num_error"></div>
+</div>
+<div class="field _required">
+    <label class="label">
+        <span data-bind="i18n: 'Mobile Barcode'">Mobile Barcode</span>
+    </label>
+    <input data-validate="{required:true, 'validate-tw-barcode':true}" type="text" class="control" name="ecpay_invoice_carrier" id="ecpay_invoice_carrier" data-bind="value: invoice_carrier, valueUpdate: 'afterkeydown'">
+</div> -->

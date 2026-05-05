@@ -1,0 +1,20 @@
+<?php
+/** @var \Branch8\MarketplaceProduct\Block\Template $block */
+?>
+<form class="form" action="<?= $block->getUrl('marketplacectrl/inventoryimport/upload') ?>" method="post" enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <div class="field required">
+            <label class="label" for="import_file"><?= __('Select File to Import') ?></label>
+            <div class="control">
+                <input type="file" name="import_file" id="import_file" class="required-entry" accept=".csv,.xls,.xlsx"/>
+            </div>
+        </div>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <button type="submit" class="action submit primary" title="<?= __('Upload') ?>">
+                <span><?= __('Upload') ?></span>
+            </button>
+        </div>
+    </div>
+</form>

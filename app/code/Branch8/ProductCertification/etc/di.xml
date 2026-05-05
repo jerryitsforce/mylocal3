@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Grid collection + preferences (from Phase 1) -->
+    <preference for="Branch8\ProductCertification\Api\CertificationTypeRepositoryInterface"
+                type="Branch8\ProductCertification\Model\CertificationTypeRepository"/>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="branch8_certification_type_listing_data_source" xsi:type="string">
+                    Branch8\ProductCertification\Model\ResourceModel\CertificationType\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Branch8\ProductCertification\Model\ResourceModel\CertificationType\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_certification_type</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Branch8\ProductCertification\Model\ResourceModel\CertificationType
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Registration of Custom DataProvider as a Virtual Type -->
+    <virtualType name="Branch8CertificationTypeFormDataProvider"
+                 type="Branch8\ProductCertification\Ui\DataProvider\CertificationTypeDataProvider"/>
+
+</config>

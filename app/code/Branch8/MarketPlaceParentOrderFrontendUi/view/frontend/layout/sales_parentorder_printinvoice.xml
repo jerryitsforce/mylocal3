@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="sales_order_print_invoice_renderers"/>
+    <update handle="sales_order_item_price"/>
+    <update handle="print"/>
+    <body>
+        <attribute name="class" value="account"/>
+        <referenceContainer name="header-wrapper">
+            <referenceBlock name="logo">
+                <arguments>
+                    <argument name="logo_src" xsi:type="helper"
+                              helper="Magento\Sales\Model\Order\Invoice\GetLogoFile::execute"/>
+                </arguments>
+            </referenceBlock>
+        </referenceContainer>
+        <referenceContainer name="page.main.title">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\PrintOrder\Invoice"
+                   name="order.status"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/order_status.phtml"/>
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\PrintOrder\Invoice" name="order.date"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/order_date.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\PrintOrder\Invoice"
+                   name="sales.parentorder.print.invoice"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/print/invoice.phtml">
+                <block class="Magento\Framework\View\Element\RendererList"
+                       name="sales.order.print.invoice.renderers"
+                       as="renderer.list"/>
+            </block>
+
+        </referenceContainer>
+
+        <referenceBlock name="additional.product.info">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="marketplace_seller_sales_item"/>
+        </referenceBlock>
+        <referenceBlock name="marketplace_seller_sales_item">
+            <action method="setTemplate" ifconfig="marketplace/profile_settings/seller_profile_display">
+                <argument name="template" xsi:type="string">Webkul_Marketplace::sales/item/default.phtml</argument>
+            </action>
+            <arguments>
+                <argument name="profile_helper" xsi:type="object">Webkul\Marketplace\ViewModel\Profile</argument>
+            </arguments>
+        </referenceBlock>
+        <block class="Magento\Framework\View\Element\Template" name="additional.product.info"
+               template="Magento_Theme::template.phtml"/>
+    </body>
+</page>

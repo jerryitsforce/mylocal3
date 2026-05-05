@@ -1,0 +1,48 @@
+<?php
+/** @var \Branch8\PointMoneyCollect\Block\Cart\Point $block */
+$cartPointLimits = $block->getCartPointLimits();
+?>
+
+<div class="point-money-collect">
+<!--    新增現有total點數區塊-->
+
+
+    <div class="point-total">
+        <span class="label"><?= __('Total Points') ?></span>
+        <span class="value"><?= $block->escapeHtml($block->getCustomerPoints()) ?></span>
+    </div>
+
+    <div class="point-input">
+        <label for="point-money-collect-input"><?= __('Use Points') ?></label>
+        <input type="number" id="point-money-collect-input" name="point_money_collect" value="<?= $block->escapeHtmlAttr($block->getAppliedPoints()) ?>" min="0" max="<?= $block->escapeHtmlAttr($block->getCustomerPoints()) ?>"/>
+        <button type="button" id="point-money-collect-button" data-role="point-money-collect-button"><?= __('Apply Points') ?></button>
+    </div>
+
+    <div class="point-discount">
+        <span class="label"><?= __('Point Upper limit') ?></span>
+        <span class="value"><?= $block->escapeHtml($cartPointLimits['ItemsUpperPointLimit']) ?></span>
+    </div>
+
+    <div class="point-discount">
+        <span class="label"><?= __('Point Lower limit') ?></span>
+        <span class="value"><?= $block->escapeHtml($cartPointLimits['ItemsLowerPointLimit']) ?></span>
+    </div>
+
+    <div class="point-discount">
+        <span class="label"><?= __('Point Discount') ?></span>
+        <span class="value">-<?= $block->escapeHtml($block->getPointDiscount()) ?></span>
+    </div>
+    <div class="point-rate">
+        <span class="label"><?= __('Point Rate') ?></span>
+        <span class="value"><?= $block->escapeHtml($block->getPointRate()) ?></span>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "#point-money-collect-button": {
+                "Branch8_PointMoneyCollect/js/point": {
+                    "url": "<?= $block->escapeJs($block->getUrl('pointmoneycollect/cart/apply')) ?>"
+                }
+            }
+        }
+    </script>
+</div>

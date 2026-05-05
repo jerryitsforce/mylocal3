@@ -1,0 +1,144 @@
+<?php
+
+/**
+ * @var \Branch8\Repayment\Block\Checkout\Processor $block
+ */
+?>
+<?php
+$orders = $block->getOrders();
+$paymentMethodList = $block->getAvailableRepaymentMethod();
+?>
+
+<div class="repayment-section">
+    <h2 class="repayment-section-title">
+        <span><?= $block->escapeHtml(__('付款資訊')) ?></span>
+    </h2>
+    <div class="repayment-section-content">
+        <?php if ($orders && count($orders)) : ?>
+            <?php foreach ($orders as $order) : ?>
+                <div class="order-info">
+                    <div class="order-info-label">
+                        <?= $block->escapeHtml(__('待付金額')) ?>
+                    </div>
+                    <div class="order-info-value">
+                        <span class="price"><?= $order->formatPrice($block->getGrandTotal($order)) ?></span>
+                        <?php $pointUsed =  $block->getPointTotal($order); ?>
+                        <?php if ($pointUsed > 0) : ?>
+                         + <span class="reward-point"><?= $pointUsed ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="order-message">
+                    <div class="message warning">
+                        <?= $block->getRepaymentMessage($order) ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif ?>
+    </div>
+</div>
+<div class="repayment-section">
+    <h2 class="repayment-section-title section-title-tootip">
+        <span><?= $block->escapeHtml(__('支付方式')) ?></span>
+        <div class="title-tooltip">
+            <i class="tooltip-toggle"></i>
+            <span class="tooltip-content">
+                <span class="tooltip-text"><?= $block->escapeHtml(__('使用3D驗證進行付款可減少盜刷爭議，增加您的支付安全。')) ?></span>
+            </span>
+        </div>
+    </h2>
+    <div class="repayment-section-content">
+        <div class="payment-method-list">
+            <?php if ($paymentMethodList && count($paymentMethodList)) : ?>
+                <?php foreach ($paymentMethodList as $paymentMethod) : ?>
+                    <div class="payment-method payment-method-item-title _active <?= $block->escapeHtml($paymentMethod['value']) ?>">
+                        <div class="payment-method-title field choice">
+                            <label class="radio-label">
+                                <input type="radio" name="payment[method]" class="radio" id="payment_method_<?= $block->escapeHtml($paymentMethod['value']) ?>" value="<?= $block->escapeHtml($paymentMethod['value']) ?>" checked="true">
+                                <span class="radio-mark"></span>
+                                <span><?= $block->escapeHtml(($paymentMethod['label'] === 'hotaipay'? __('和泰Pay') : $paymentMethod['label'])) ?></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="payment-method payment-method-item-content _active <?= $block->escapeHtml($paymentMethod['value']) ?>">
+                        <div class="payment-method-content">
+                            <?php if ($paymentMethod['data'] && count($paymentMethod['data'])) : ?>
+                            <div class="card-list">
+                                <?php foreach ($paymentMethod['data']['creditCardDetailData']  as $key => $creditCard) : ?>
+                                    <?php $isValid = $creditCard['IsAvailable'] && !$creditCard['IsOverwrite']; ?>
+                                    <div class="card-item <?= !$isValid ? 'invalid' : ''?>">
+                                        <input type="radio" name="payment[creditcard_list]" class="radio" value="<?= $block->escapeHtml($key) ?>" <?= $creditCard['DefaultCard']? "checked" : ""?>>
+                                        <div class="card-item-info <?= !$isValid ? 'invalid' : ''?>">
+                                            <span class="card-default <?= $block->escapeHtml($creditCard['DefaultCard']? 'default' : '')?>"></span>
+                                            <span class="card-type <?= $block->escapeHtml(strtolower($creditCard['CardType'])) ?>"><span><?= $block->escapeHtml($creditCard['CardType']) ?></span></span> 
+                                            <span class="card-no"><?= $block->escapeHtml($creditCard['CardNoMask']) ?></span> 
+                                            <span class="card-bank-desc"><?= $block->escapeHtml($creditCard['BankDesc']) ?></span>
+                                        </div>
+                                        <?php if(!$isValid): ?>
+                                            <div class="card-warning">
+                                                <span class="warning"><?= $block->escapeHtml(__('Card expired, please contact your card issuer.')) ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="form-card-wrapper">
+                                <form action="<?= $block->escapeHtml($block->getUrl('hotaipay/creditcard/add')) ?>" name="setup_creditcard" id="setup_creditcard" class="form-card" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="redirectUrl" value="<?= $block->escapeHtml($block->getRedirectUrl())?>">
+                                    <button type="submit" class="action btn-submit"><span><?= $block->escapeHtml(__('新增信用卡'))?></span></button>
+                                </form>
+                            </div>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif ?>
+        </div>
+    </div>
+</div>
+
+<div class="repayment-submit">
+    <form id="repayment" action="<?= $block->escapeUrl($block->getRepayUrl()) ?>" method="post" class="form-repayment">
+        <input type="hidden" name="parentOrderId" value="<?= $block->getParentOrderId() ?>"/>
+        <input type="hidden" name="paymentMethod" id="repayment_paymentMethod" value=""/>
+        <input type="hidden" name="creditCardId" id="repayment_creditCardId" value=""/>
+        <div class="actions-toolbar">
+            <div class="secondary">
+                <button type="button" class="action secondary" class="return-btn" id="returnBtn" title="<?= $block->escapeHtml($block->getOrderHistoryUrl())?>" data-redirect="<?= $block->escapeHtml($block->getOrderHistoryUrl())?>"><?= $block->escapeHtml(__('返回'))?></button>
+            </div>
+            <div class="primary">
+                <button type="submit" class="action primary" class="process-btn" id="processBtn" data-role="proceed-to-repay"><?= $block->escapeHtml(__('確認付款'))?></button>
+            </div>
+        </div> 
+    </form>
+</div>
+<?php
+$params = $block->getOriginalParams();
+$response = $block->getErrorResponse();
+?>
+<?php if(isset($params['StatusDesc'])): ?>
+<?php if(strtoupper($params['StatusDesc']) == 'SUCCESS'): ?>
+<?= $block->getChildHtml('repayment.popup.card.binding.complete') ?>
+<?php else: ?>
+<?= $block->getChildHtml('repayment.popup.card.binding.fail') ?>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php if(isset($response['StatusDesc'])): ?>
+<?php if(strtoupper($response['StatusDesc']) == 'SUCCESS'): ?>
+<?= $block->getChildHtml('repayment.popup.card.binding.complete') ?>
+<?php else: ?>
+<?= $block->getChildHtml('repayment.popup.card.binding.fail') ?>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php $block->unsetResponse(); ?>
+
+<script type="text/x-magento-init">
+  {
+        "*": {
+            "b8Repayment": {}
+        }
+    }
+</script>

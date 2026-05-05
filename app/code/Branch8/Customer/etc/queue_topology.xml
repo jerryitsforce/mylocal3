@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="db">
+        <binding id="LoginUpdateGiftTicket" topic="buyer.login.update.gift.ticket"
+                 destinationType="queue"    destination="buyer.login.update.gift.ticket"/>
+    </exchange>
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="customerVisitorTrack" topic="visitor.track"
+                 destinationType="queue"
+                 destination="visitor.track"/>
+    </exchange>
+</config>

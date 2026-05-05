@@ -1,0 +1,109 @@
+<?php
+/**
+ * @var $block Webkul\MpRmaSystem\Block\Customer\Rma
+ * @var $escaper Magento\Framework\Escaper
+ * @var $rmaModel Branch8\Rma\ViewModel\Rma
+ */
+$cityHelper = $this->helper(\Branch8\CityDirectory\Helper\CitiesJsonRomCity::class);
+$directoryHelper = $this->helper(\Magento\Directory\Helper\Data::class);
+?>
+<?php
+$rmaModel = $block->getRmaModel();
+$helper = $block->helper();
+$reasons = $rmaModel->getAllBuyerReasons();
+$orderUrl = $block->getUrl('reqrma/order/items');
+$checkUrl = $block->getUrl('mprmasystem/order/check');
+$totalOrderQtyUrl = $block->getUrl('mprmasystem/order/totalorderquantity');
+$symbol = $helper->getCurrencySymbol();
+$allReasons = [];
+$reasonData = [];
+foreach ($reasons as $reasonId => $reason) {
+    $allReasons[$reasonId] = $reason;
+    $reasonData[] = [
+        "value" => $reasonId,
+        "label" => $reason
+    ];
+}
+$blockHtml = '<div class="wk-showcase-block">';
+$blockHtml .= '<div title= "Delete Showcase" class="wk-delete-item">x</div>';
+$blockHtml .= '<div class="wk-default-block">Add Image</div>';
+$blockHtml .= '<input type="file" name="showcase[]" accept="image/*" class="wk-showcase-img wk-no-display">';
+$blockHtml .= '</div>';
+$imgErrorMsg = __("Invalid Image Format. jpeg, jpg, gif, png are accepted");
+$sellerLabel = __("Seller");
+$consignmentLabel = __("Enter Consignment Number");
+$selectItemLabel = __("Please select item");
+$imgSelectLabel = __("Image(s) are not selected");
+$orderSelectLabel = __("No Order Selected");
+$sellerSelectLabel = __("No Seller Selected");
+$resolutionSelectLabel = __("No Resolution Selected");
+$itemsErrorLabel = __("Items not available for RMA");
+$refundLabel = __("Refund");
+$replaceLabel = __("Replace");
+$cancelLabel = __("Cancel Items");
+$notDeliveredLabel = __("Not Delivered");
+$deliveredLabel = __("Delivered");
+$selectQtyLabel = __("Select Quantity");
+$selectSellerLabel = __("Select Seller");
+$warningLabel = __("Warning");
+$qtyMsg = __("Quantity not available");
+$orderStatusLabel = __("Order's Status");
+$data = $helper->jsonEncodeData([
+    "checkRmaPointUrl" => $block->getUrl('reqrma/order/checkPoints'),
+    "rmaUrl" => $block->getUrl('reqrma/customer/create'),
+    "orderUrl" => $orderUrl,
+    "checkUrl" => $checkUrl,
+    "reasons" => $allReasons,
+    "isGuest" => 0,
+    "blockHtml" => $blockHtml,
+    "imgErrorMsg" => $imgErrorMsg,
+    "consignmentLabel" => $consignmentLabel,
+    "sellerLabel" => $sellerLabel,
+    "selectItemLabel" => $selectItemLabel,
+    "imgSelectLabel" => $imgSelectLabel,
+    "orderSelectLabel" => $orderSelectLabel,
+    "sellerSelectLabel" => $sellerSelectLabel,
+    "resolutionSelectLabel" => $resolutionSelectLabel,
+    "itemsErrorLabel" => $itemsErrorLabel,
+    "refundLabel" => $refundLabel,
+    "replaceLabel" => $replaceLabel,
+    "cancelLabel" => $cancelLabel,
+    "deliveredLabel" => $deliveredLabel,
+    "notDeliveredLabel" => $notDeliveredLabel,
+    "selectQtyLabel" => $selectQtyLabel,
+    "selectSellerLabel" => $selectSellerLabel,
+    "warningLabel" => $warningLabel,
+    "qtyMsg" => $qtyMsg,
+    "orderStatusLabel" => $orderStatusLabel,
+    "totalOrderQtyUrl" => $totalOrderQtyUrl,
+    "reasonData" => $reasonData,
+    "cities" => $cityHelper->getAllCitiesForRMA(),
+    "countryData" => $directoryHelper->getRegionData()
+]);
+?>
+<div id="modal-apply-rma-order" class="modal-hide">
+    <div class="modal-custom-content" id="rma_modal_content" data-role="rma-form"  data-bind="scope: 'rmaForm'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
+        <script type="text/x-magento-init">
+            {
+                    "[data-role='rma-form']": {
+                        "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+                }
+            }
+        </script>
+    </div>
+</div>
+<script type="text/javascript" class="script-reinit">
+    window.reasons = <?= json_encode($reasonData) ?>;
+    window.cities = <?= json_encode($cityHelper->getAllCitiesForRMA()) ?>;
+    window.countryData = <?= json_encode($directoryHelper->getRegionData()) ?>;
+    window.rmaData = <?= $data ?>;
+</script>
+<script type="text/x-magento-init">
+    {
+        "*" : {
+            "returnParentOrderModal": {}
+        }
+    }
+</script>

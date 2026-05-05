@@ -1,0 +1,128 @@
+<?php
+/**
+ * Template for rendering freeproduct gift quote items. They are same as default except for:
+ * - QTY field is disabled
+ * - No actions are rendered
+ *
+ * @category   C4B
+ * @package    C4B_FreeProduct
+ * @author     Dominik Meglič <meglic@code4business.de>
+ * @copyright  code4business Software GmbH
+ * @license    http://opensource.org/licenses/osl-3.0.php
+ */
+/**
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var $block \Magento\Checkout\Block\Cart\Item\Renderer */
+
+$_item = $block->getItem();
+$product = $_item->getProduct();
+$isVisibleProduct = $product->isVisibleInSiteVisibility();
+/** @var \Magento\Msrp\Helper\Data $helper */
+$helper = $this->helper('Magento\Msrp\Helper\Data');
+$canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+?>
+<tbody class="cart item">
+    <tr class="item-info">
+        <td data-th="<?php echo $block->escapeHtml(__('Item')); ?>" class="col item">
+            <?php if ($block->hasProductUrl()):?>
+                <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"
+                   title="<?php echo $block->escapeHtml($block->getProductName()) ?>"
+                   tabindex="-1"
+                   class="product-item-photo">
+            <?php else:?>
+                <span class="product-item-photo">
+            <?php endif;?>
+            <?php echo $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml(); ?>
+            <?php if ($block->hasProductUrl()):?>
+                </a>
+            <?php else: ?>
+                </span>
+            <?php endif; ?>
+        </td>
+        <td>
+            <div class="product-item-details">
+                <strong class="product-item-name">
+                    <?php if ($block->hasProductUrl()):?>
+                        <a href="<?php /* @escapeNotVerified */ echo $block->getProductUrl() ?>"><?php echo $block->escapeHtml($block->getProductName()) ?></a>
+                    <?php else: ?>
+                        <?php echo $block->escapeHtml($block->getProductName()) ?>
+                    <?php endif; ?>
+                </strong>
+                <?php if ($_options = $block->getOptionList()):?>
+                    <dl class="item-options">
+                        <?php foreach ($_options as $_option) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <dt><?php echo $block->escapeHtml($_option['label']) ?></dt>
+                            <dd>
+                                <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['full_view'] ?>
+                                <?php else: ?>
+                                    <?php /* @escapeNotVerified */ echo $_formatedOptionValue['value'] ?>
+                                <?php endif; ?>
+                            </dd>
+                        <?php endforeach; ?>
+                    </dl>
+                <?php endif;?>
+                <?php if ($messages = $block->getMessages()): ?>
+                    <?php foreach ($messages as $message): ?>
+                        <div class="cart item message <?php /* @escapeNotVerified */ echo $message['type'] ?>"><div><?php echo $block->escapeHtml($message['text']) ?></div></div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+                <?php if ($addInfoBlock): ?>
+                    <?php echo $addInfoBlock->setItem($_item)->toHtml() ?>
+                <?php endif;?>
+
+                <div class="info-price">
+                    <?php if ($canApplyMsrp): ?>
+                        <span class="pricing msrp">
+                            <span class="msrp notice"><?php /* @escapeNotVerified */ echo __('See price before order confirmation.'); ?></span>
+                            <?php $helpLinkId = 'cart-msrp-help-' . $_item->getId(); ?>
+                            <a href="#" class="action help map" id="<?php /* @escapeNotVerified */ echo($helpLinkId); ?>" data-mage-init='{"addToCart":{"helpLinkId": "#<?php /* @escapeNotVerified */ echo $helpLinkId;?>","productName": "<?php /* @escapeNotVerified */ echo $product->getName(); ?>","showAddToCart": false}}'>
+                                <span><?php /* @escapeNotVerified */ echo __("What's this?"); ?></span>
+                            </a>
+                        </span>
+                    <?php else: ?>
+                        <?php echo $block->getUnitPriceHtml($_item); ?>
+                    <?php endif; ?>
+                </div>
+                <div class="d-flex">
+                    <?php if ($_options = $block->getOptionList()):?>
+                        <?php foreach ($_options as $_option) : ?>
+                            <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                            <?php $option = strtolower($_option['label']); ?>
+                            <?php if (substr_count($option,'size') > 0):?>
+                                <dl class="item-options">
+                                    <dd>
+                                        <span><?= $block->escapeHtml($_option['label']) ?>:&nbsp;</span>
+                                        <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                            <?= /* @escapeNotVerified */ $_formatedOptionValue['full_view'] ?>
+                                        <?php else: ?>
+                                            <?= $block->escapeHtml($_formatedOptionValue['value'], ['span']) ?>
+                                        <?php endif; ?>
+                                    </dd>
+                                </dl>
+                                <?php break; endif;?>
+                        <?php endforeach; ?>
+
+                    <?php endif;?>
+                    <div class="qty-box">
+                        <div class="field qty">
+                            <label class="label" for="cart-<?php /* @escapeNotVerified */ echo $_item->getId() ?>-qty">
+                                <span><?php /* @escapeNotVerified */ echo __('Qty') ?></span>
+                            </label>
+                            <div class="control qty">
+                                <span> : <?php /* @escapeNotVerified */ echo $block->getQty() ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</tbody>

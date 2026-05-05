@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Quote\Model\QuoteAddressValidator">
+        <plugin name="disableguestcheck" type="Branch8\Quote\Plugin\Model\QuoteAddressValidator"/>
+    </type>
+    <!-- For FE, keep disable product in cart -->
+    <preference for="Magento\Quote\Model\Quote\Address\Total\Subtotal" type="Branch8\Quote\Override\Model\Quote\Address\Total\Subtotal" />
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="branch8_validate_quote_within_all_disable_product"
+                type="Branch8\Quote\Plugin\Model\Quote" sortOrder="99999" />
+    </type>
+    <type name="Magento\SalesRule\Model\RulesApplier">
+        <plugin name="Branch8_Quote::set_applied_rule_names"
+                type="Branch8\Quote\Plugin\RulesApplier\SetAppliedRuleNames"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="Branch8_Quote::convert_quote_item_to_order_item"
+                type="Branch8\Quote\Plugin\ConvertQuoteItemToOrderItem"/>
+    </type>
+    <type name="Magento\Quote\Model\Cart\CartTotalRepository">
+        <plugin name="Branch8_Quote::re_collect_total"
+                type="Branch8\Quote\Plugin\RecollecTotal"/>
+    </type>
+</config>

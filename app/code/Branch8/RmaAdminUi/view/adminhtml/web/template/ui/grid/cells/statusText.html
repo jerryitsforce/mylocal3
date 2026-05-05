@@ -1,0 +1,25 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="data-grid-cell-content">
+    <span text="$col.getLabel($row())"></span>
+    <button if=" $row().showApproveFinanceButton===true"
+          attr="'data-post': getDataPost($row(),'approveFinance')"
+          class="action approve-finance"
+          data-action="approve-finnance">
+        <span translate="'Approve Finance'"></span>
+        </button>
+
+    <button if=" $row().showApproveFinanceButton===true"
+            attr="'data-post': getDataPost($row(),'rejectFinance')"
+            class="action approve-finance"
+            data-action="reject-finnance">
+        <span translate="'Reject Finance'"></span>
+    </button>
+</div>
+
+
+

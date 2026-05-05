@@ -1,0 +1,78 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+use Branch8\Blog\Block\Post\RelatedPost;
+use Branch8\Blog\Model\ResourceModel\Post\Collection;
+use Magento\Framework\Escaper;
+
+/** @var Collection $posts */
+/** @var RelatedPost $block */
+/** @var Escaper $escaper */
+$posts = $block->getRelatedPostList();
+if ($posts && $block->isEnabledBlog()) : ?>
+    <h2><?= $posts->getSize() ? $escaper->escapeHtml(__('Related Posts')) : $escaper->escapeHtml(__('No Related Posts')) ?></h2>
+    <?php if ($block->getRelatedMode()) : ?>
+        <div class="blog-owl-carousel owl-carousel owl-theme">
+            <?php foreach ($posts as $post) : ?>
+                <div class="item post-list-item col-mp post-item-list mp-4">
+                    <div class="post-item-wraper">
+                        <div class="post-info-wraper">
+                            <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                <img class="img-responsive"
+                                     src="<?= $escaper->escapeUrl($block->resizeImage($post->getImage(), '400x')) ?>"
+                                     alt="<?= $escaper->escapeHtml($post->getName()); ?>"/>
+                                <?php if ($post->getImageTwo()) : ?>
+                                    <img class="img-responsive"
+                                         src="<?= $escaper->escapeUrl($block->resizeImage($post->getImageTwo(), '400x')) ?>"
+                                         alt="<?= $escaper->escapeHtml($post->getName()); ?>"/>
+                                <?php endif; ?>
+                                <?php if ($post->getImageThree()) : ?>
+                                    <img class="img-responsive"
+                                         src="<?= $escaper->escapeUrl($block->resizeImage($post->getImageThree(), '400x')) ?>"
+                                         alt="<?= $escaper->escapeHtml($post->getName()); ?>"/>
+                                <?php endif; ?>
+                            </a>
+                            <h2 class="mp-post-title" style="margin: 20px 0;">
+                                <a class="post-link-title" title="<?= $escaper->escapeHtml($post->getName()); ?>"
+                                   href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                    <?= $escaper->escapeHtml($post->getName()) ?>
+                                </a>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <script>
+            require([
+                'jquery',
+                'mageplaza/core/owl.carousel'
+            ], function ($) {
+                'use strict';
+                $(document).ready(function () {
+                    $('.blog-owl-carousel.owl-carousel').owlCarousel({
+                        items: 2,
+                        loop: false,
+                        margin: 10,
+                        responsive: {
+                            600: {
+                                items: 4
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    <?php else : ?>
+        <ul>
+            <?php foreach ($posts as $post) : ?>
+                <li>
+                    <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>"><?= $escaper->escapeHtml($post->getName()) ?></a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+<?php endif; ?>

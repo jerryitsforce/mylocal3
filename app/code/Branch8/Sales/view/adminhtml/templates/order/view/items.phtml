@@ -1,0 +1,64 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Order\View\Items $block
+ */
+$_order = $block->getOrder();
+
+$orderSaleType = [
+    'canceled(已取消)',
+    'processing(訂單成立)',
+    'pending_payment(待付款)',
+    'tallying(理貨中)',
+    'shipping(已配送)',
+    'arrived(已送達)',
+    'Invoiced(開立發票)'
+];
+
+?>
+<div class="admin__table-wrapper">
+    <table class="data-table admin__table-primary edit-order-table">
+        <thead>
+        <tr class="headings">
+            <?php $i = 0;
+            $columns = $block->getColumns();
+            $lastItemNumber = count($columns) ?>
+            <?php foreach ($columns as $columnName => $columnTitle) : ?>
+                <?php $i++; ?>
+                <?php if ($columnName === 'tax-percent') : ?>
+                    <th class="col-<?= $block->escapeHtmlAttr($columnName) . ($i === $lastItemNumber ? ' last' : '') ?>">
+                        <span><?= $block->escapeHtml($columnTitle) ?></span>
+                    </th>
+                <?php else : ?>
+                    <!-- Default TD for other columns -->
+                    <th class="col-<?= $block->escapeHtmlAttr($columnName) . ($i === $lastItemNumber ? ' last' : '') ?>">
+                        <span><?= $block->escapeHtml($columnTitle) ?></span>
+                    </th>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </tr>
+        </thead>
+        <?php $_items = $block->getItemsCollection();?>
+        <?php $i = 0; foreach ($_items as $_item) : ?>
+            <?php if ($_item->getParentItem()) :
+                continue;
+            else :
+                $i++;
+            endif; ?>
+            <tbody class="<?= /* @noEscape */ $i%2 ? 'even' : 'odd' ?>">
+            <?= $block->getItemHtml($_item) ?>
+            <?= $block->getItemExtraInfoHtml($_item) ?>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+</div>
+<div class="admin__remark">
+    <div class="admin__remark-content">
+        <div><?= $block->escapeHtml(__('項目狀態為原生系統訂單流程，流程包括')) ?></div>
+        <div><?= $block->escapeHtml(join(' / ', $orderSaleType)) ?></div>
+    </div>
+</div>

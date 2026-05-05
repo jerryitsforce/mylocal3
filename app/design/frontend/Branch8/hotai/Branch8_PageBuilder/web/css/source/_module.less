@@ -1,0 +1,192 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+@import 'content-type/_import.less';
+@import 'homepage/_manufacturer-exclusive-section.less';
+@import 'homepage/_recommended-section.less';
+@import 'homepage/_theme-activity-product.less';
+@import 'homepage/_featured-vouchers.less';
+@import 'homepage/_great-value-product.less';
+@import 'homepage/_point-price-section.less';
+@import 'homepage/_banner-slider-section.less';
+@import 'homepage/_member-bar.less';
+@import 'homepage/_vip-member.less';
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .cms-index-index{
+        .page-wrapper > .block-banners{
+            margin-bottom: 0;
+        }
+
+        .block-banners .banner-item-content{
+            margin-bottom: 0;
+        }
+    }
+
+    .home-block-title {
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        padding: 0 38px;
+        &:extend(.abs-h3 all);
+
+        &:before,
+        &:after {
+            font-family: @icons__font-name;
+            font-size: 30px;
+            line-height: 30px;
+            color: #C5171E;
+            display: inline-block;
+            padding: 0;
+            position: absolute;
+            font-weight: normal;
+            top: 50%;
+            margin-top: -15px;
+        }
+
+        &:before {
+            left: 0;
+        }
+
+        &:after {
+            right: 0;
+        }
+    }
+    
+    .first-purcharse-offer-section{
+        margin-bottom: 34px;
+    }
+
+    .recommended-section,
+    .great-value-product-section,
+    [class^='theme-activity-product-cols-']:last-child,
+    .featured-vouchers-section,
+    .point-banner-section,
+    .keyword-search-section{
+        margin: 0 0 72px;
+    }
+}
+
+//
+//  Mobile (style-m.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .home-block-title {
+        margin: 0 auto 24px;
+    }
+
+    .first-purcharse-offer-section{
+        .heading{
+            margin-bottom: 0 !important;
+        }
+    }
+
+    #html-body{
+        .first-purcharse-offer-section{
+            .heading{
+                margin-bottom: 0 !important;
+            }
+    
+            .banner-image{
+                img{
+                    max-width: 500px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+// [640 - 768 ]
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__s) and (@break-max = @screen__m) {
+    .first-purcharse-offer-section{
+        margin-bottom: 58px;
+    }
+}
+
+// >= 640px
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = (@screen__s)) {
+    .recommended-section,
+    .great-value-product-section,
+    [class^='theme-activity-product-cols-']:last-child,
+    .featured-vouchers-section,
+    .point-banner-section,
+    .keyword-search-section{
+        margin: 0 0 96px;
+    }
+}
+
+//
+//  Desktop (style-l.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = (@screen__m)) {
+    .home-block-title {
+        margin: 0 auto 36px;
+        &:extend(.abs-h3 all);
+    }
+        
+    .recommended-section,
+    .featured-vouchers-section{
+        [data-appearance="rounded-corner"]{
+            .pagebuilder-banner-content{
+              h5{
+                &:extend(.abs-tb-h4 all);
+              }
+            }
+          }
+    }
+}
+
+// [769 - 1280 ]
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__l) and (@break-max = @screen__sl) {
+    .first-purcharse-offer-section{
+        margin-bottom: 55px;
+        .heading{
+            margin-bottom: 28px;
+        }
+
+        .pagebuilder-column:not(:only-child){
+            [data-appearance*='carousel'] {
+                margin-left: 46px;
+                margin-right: 34px;
+            }
+        }
+    }
+}
+
+// > 1280
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = (@screen__sl)) {
+    .home-block-title {
+        &:extend(.abs-h3 all);
+    }
+    .first-purcharse-offer-section{
+        margin-bottom: 111px;
+        .heading{
+            margin-bottom: 36px;
+        }
+
+        .pagebuilder-column:not(:only-child){
+            [data-appearance*='carousel'] {
+                margin-left: 48px;
+                margin-right: 38px;
+            }
+        }
+    }
+
+    .recommended-section,
+    .great-value-product-section,
+    [class^='theme-activity-product-cols-']:last-child,
+    .featured-vouchers-section,
+    .point-banner-section,
+    .keyword-search-section{
+        margin: 0 0 150px;
+    }
+}

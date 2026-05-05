@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">discussions_form.discussions_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">false</item>
+    </argument>
+    <settings>
+        <layout>
+            <navContainerName>left</navContainerName>
+            <type>tabs</type>
+        </layout>
+       <buttons>
+           <button name="save" class="Branch8\MarketPlaceProductDiscussion\Block\Adminhtml\Edit\Buttons\Save"/>
+           <button name="save_and_continue"
+                   class="Branch8\MarketPlaceProductDiscussion\Block\Adminhtml\Edit\Buttons\SaveAndContinue"/>
+           <button name="delete" class="Branch8\MarketPlaceProductDiscussion\Block\Adminhtml\Edit\Buttons\Delete"/>
+           <button name="back" class="Branch8\MarketPlaceProductDiscussion\Block\Adminhtml\Edit\Buttons\Back"/>
+        </buttons>
+        <namespace>discussions_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>discussions_form.discussions_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="discussions_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="catalog/product_discussions/save"/>
+        </settings>
+        <dataProvider class="Branch8\MarketPlaceProductDiscussion\Model\Thread\DataProvider"
+                      name="discussions_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>thread_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Information</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="discussions-form-information">true</class>
+            </additionalClasses>
+        </settings>
+
+        <field name="content" sortOrder="50" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="cols" xsi:type="string">5</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Content</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="max_text_length" xsi:type="number">200</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="author_id" formElement="select" sortOrder="30"
+               component="Branch8_MarketPlaceProductDiscussion/js/form/ui-selected">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="searchOptions" xsi:type="boolean">true</item>
+                    <item name="showPath" xsi:type="boolean">false</item>
+                    <item name="isRemoveSelectedIcon" xsi:type="boolean">false</item>
+                    <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Customer</item>
+                    <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                    <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                    <item name="searchUrl" xsi:type="url" path="catalog/product_discussions/searchCustomerOptions"/>
+                    <item name="validationUrl" xsi:type="url" path="catalog/product_discussions/getCustomerselected"/>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <label translate="true">Customer</label>
+                <componentType>field</componentType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                 <select>
+                     <settings>
+                         <options class="Branch8\MarketPlaceProductDiscussion\Model\Config\Source\CustomerOptions"/>
+                     </settings>
+                 </select>
+            </formElements>
+        </field>
+        <field name="product_id" formElement="select" sortOrder="70"
+               component="Branch8_MarketPlaceProductDiscussion/js/form/ui-selected">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="searchOptions" xsi:type="boolean">true</item>
+                    <item name="showPath" xsi:type="boolean">false</item>
+                    <item name="isProductComponent" xsi:type="boolean">true</item>
+                    <item name="isRemoveSelectedIcon" xsi:type="boolean">false</item>
+                    <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find product (Name Or Sku)</item>
+                    <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                    <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                    <item name="searchUrl" xsi:type="url" path="catalog/product_discussions/SearchProductOptions"/>
+                    <item name="validationUrl" xsi:type="url" path="catalog/product_discussions/getproductselected"/>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <label translate="true">Product</label>
+                <componentType>field</componentType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\MarketPlaceProductDiscussion\Model\Config\Source\ProductOptions"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="seller_id" formElement="select" sortOrder="80"
+               component="Branch8_MarketPlaceProductDiscussion/js/form/ui-selected">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="searchOptions" xsi:type="boolean">true</item>
+                    <item name="showPath" xsi:type="boolean">false</item>
+                    <item name="isRemoveSelectedIcon" xsi:type="boolean">false</item>
+                    <item name="emptyOptionsHtml" xsi:type="string" translate="true">Start typing to find Seller</item>
+                    <item name="filterRateLimit" xsi:type="string" translate="true">1000</item>
+                    <item name="filterRateLimitMethod" xsi:type="string" translate="true">notifyWhenChangesStop</item>
+                    <item name="searchUrl" xsi:type="url" path="catalog/product_discussions/searchselleroptions"/>
+                    <item name="validationUrl" xsi:type="url" path="catalog/product_discussions/getsellerselected"/>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <label translate="true">Seller</label>
+                <componentType>field</componentType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\MarketPlaceProductDiscussion\Model\Config\Source\SellerOptions"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="status" formElement="select" sortOrder="40">
+                <settings>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <dataType>text</dataType>
+                    <label translate="true">Status</label>
+                </settings>
+                <formElements>
+                    <select>
+                        <settings>
+                            <options class="Branch8\MarketPlaceProductDiscussion\Model\Config\Source\Status"/>
+                        </settings>
+                    </select>
+                </formElements>
+        </field>
+    </fieldset>
+    <fieldset name="comments">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">Comments</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="discussion-comment-form">true</class>
+            </additionalClasses>
+        </settings>
+        <insertListing name="discussion_message_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>discussion_message_grid.discussion_message_grid_data_source</externalProvider>
+                <selectionsProvider>discussion_message_grid.discussion_message_grid_data_source.columns.ids</selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>discussion_message_grid</dataScope>
+                <ns>discussion_message_grid</ns>
+                <exports>
+                    <link name="thread_id">${ $.externalProvider }:params.thread_id</link>
+                </exports>
+                <imports>
+                    <link name="thread_id">discussions_form.discussions_form_data_source:data.general.thread_id</link>
+                    <link name="onAction">ns = ${ $.ns }, index = actions:action</link>
+                    <link name="onMassAction">ns = ${ $.ns }, index = listing_massaction:massaction</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+</form>

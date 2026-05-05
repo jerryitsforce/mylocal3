@@ -1,0 +1,22 @@
+<?php
+// @codingStandardsIgnoreFile
+?>
+<?php
+/** @var \Branch8\GA4\Block\Core $block  */
+/** @var \Magento\Framework\Escaper $escaper */
+
+/** @var \Branch8\GA4\ViewModel\Ga4ViewModel $viewModel */
+$viewModel = $block->getData('view_model');
+
+?>
+<?php if ($viewModel->isEnabled() && $block->isAllowedPage() && $viewModel->getGtmContainerId()) : ?>
+    <script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_GA4/js/google-tag-manager": {
+                "gtmContainerId": "<?= /* @noEscape */ $viewModel->getGtmContainerId() ?>"
+            }
+        }
+    }
+    </script>
+<?php endif; ?>

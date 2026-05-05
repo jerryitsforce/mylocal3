@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    
+    <!-- OpenHub Ticket Records Table -->
+    <table name="openhub_ticket_record" resource="default" engine="innodb" comment="OpenHub Ticket Records">
+        <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="Record ID"/>
+        <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="false" comment="Sales Order Item ID"/>
+        <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="false" comment="Belong To Product ID"/>
+        <column xsi:type="varchar" name="serial_number" length="255" nullable="false" comment="Ticket Serial Number"/>
+        <column xsi:type="varchar" name="openhub_order_no" length="255" nullable="true" comment="OpenHub Order Number"/>
+        <column xsi:type="varchar" name="transaction_no" length="255" nullable="true" comment="Transaction Number"/>
+        <column xsi:type="varchar" name="app_id" length="100" nullable="true" comment="App ID"/>
+        <column xsi:type="decimal" name="amount" scale="4" precision="12" nullable="true" comment="Amount"/>
+        <column xsi:type="datetime" name="openhub_created_at" nullable="true" comment="OpenHub Created Time"/>
+        <column xsi:type="text" name="remark" nullable="true" comment="Remark"/>
+        <column xsi:type="int" name="status" nullable="false" default="0" comment="當前流程狀態(-1: 已退貨, 0: 初始API匯入, 1: 已使用, 2: 已取消)"/>
+        <column xsi:type="text" name="memo" nullable="true" comment="備註"/>
+        <column xsi:type="datetime" name="used_date" on_update="false" nullable="true" comment="主動通知串接的TradeTime"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="record_id"/>
+        </constraint>
+        
+        <constraint xsi:type="unique" referenceId="OPENHUB_TICKET_RECORDS_SERIAL_NUMBER">
+            <column name="serial_number"/>
+        </constraint>
+        
+        <constraint xsi:type="foreign" referenceId="OPENHUB_TICKET_RECORDS_SALES_ORDER_ITEM_ID" 
+                    table="openhub_ticket_record" column="sales_order_item_id" 
+                    referenceTable="sales_order_item" referenceColumn="item_id" onDelete="CASCADE"/>
+        
+        <constraint xsi:type="foreign" referenceId="OPENHUB_TICKET_RECORDS_BELONG_TO_PRODUCT_ID" 
+                    table="openhub_ticket_record" column="belong_to_product_id" 
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        
+        <index referenceId="OPENHUB_TICKET_RECORDS_SALES_ORDER_ITEM_ID" indexType="btree">
+            <column name="sales_order_item_id"/>
+        </index>
+        
+        <index referenceId="OPENHUB_TICKET_RECORDS_BELONG_TO_PRODUCT_ID" indexType="btree">
+            <column name="belong_to_product_id"/>
+        </index>
+        
+        <index referenceId="OPENHUB_TICKET_RECORDS_OPENHUB_ORDER_NO" indexType="btree">
+            <column name="openhub_order_no"/>
+        </index>
+        
+        <index referenceId="OPENHUB_TICKET_RECORDS_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+</schema>

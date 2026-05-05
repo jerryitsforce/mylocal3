@@ -1,0 +1,40 @@
+// =============================================
+//  Vendor Invoice Cell Component (BEM)
+// =============================================
+//  用於：Tabulator cell [tabulator-field="invoice_numbers"]
+//  模板：template/checkoutarea/table/vendor-invoice-group.html
+//  邏輯：js/checkoutarea/components/table/vendor-invoice-actions.js
+//
+//  BEM 結構：
+//  Block: .vendor-invoice
+//  Elements: __group, __row, __field, __input, __btn
+//  Modifiers: --confirm, --plus, --minus
+//
+//  HTML 結構：
+//  <div class="vendor-invoice">
+//    <div class="vendor-invoice__group" data-state="editable|readonly">
+//      <div class="vendor-invoice__row">
+//        <div class="vendor-invoice__field">
+//          <input class="vendor-invoice__input">
+//          <button class="vendor-invoice__btn vendor-invoice__btn--confirm">
+//        </div>
+//        <button class="vendor-invoice__btn vendor-invoice__btn--plus">
+//        <button class="vendor-invoice__btn vendor-invoice__btn--minus">
+//      </div>
+//    </div>
+//  </div>
+//
+//  @updated 2025-10-28 - 重構：移動至 table/cells/ 以與整體架構對稱
+//  @updated 2025-10-28 - 重構：修正 BEM 架構，移除 __container，Block 直接對應 HTML
+//  @updated 2025-10-27 - 重構：採用 BEM 架構重構 vendor-invoice 元件
+// =============================================
+
+// 限制在 Tabulator cell 範圍內（避免全域污染）
+.tabulator-cell {
+
+    .approval-actions {
+        display: flex;
+        gap: 8px;
+    }
+
+} // .tabulator-cell

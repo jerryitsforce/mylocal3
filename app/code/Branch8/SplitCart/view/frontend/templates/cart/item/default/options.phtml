@@ -1,0 +1,38 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $optionsList array
+ * @var $quickCartItemViewModel \Branch8\QuickEditCartItem\ViewModel\Cart
+ * @var $item \Magento\Quote\Model\Quote\Item\AbstractItem
+ * @var $helper \Magento\Catalog\Helper\Product\Configuration
+ */
+$quickCartItemViewModel = $block->getData('quick_cart_item_view_model');
+$item = $block->getItem();
+$shouldShowEditLink = $quickCartItemViewModel->shouldShowEditLink($item);
+$helper = $this->helper(\Magento\Catalog\Helper\Product\Configuration::class);
+$params = [
+    'max_length' => 55,
+    'cut_replacer' => ' <a href="#" class="dots tooltip toggle" onclick="return false">...</a>'
+];
+?>
+
+<?php if ($_options = $block->getOptionList()) : ?>
+    <?php foreach ($_options as $_option) : ?>
+        <dl class="item-options"
+            <?php if ($shouldShowEditLink): ?>
+                data-edit-url="<?= $block->escapeUrl($quickCartItemViewModel->getConfigureUrl($item)) ?>"
+            <?php endif ?>
+        >
+            <?php $_formatedOptionValue = $helper->getFormattedOptionValue($_option) ?>
+            <dt><?= $block->escapeHtml($_option['label']) ?></dt>
+            <dd>
+                <?php if (isset($_formatedOptionValue['full_view'])) : ?>
+                    <?= $block->escapeHtml($_formatedOptionValue['full_view']) ?>
+                <?php else : ?>
+                    <?= $block->escapeHtml($_formatedOptionValue['value'], ['span', 'a']) ?>
+                <?php endif; ?>
+            </dd>
+        </dl>
+    <?php endforeach; ?>
+<?php endif; ?>
+

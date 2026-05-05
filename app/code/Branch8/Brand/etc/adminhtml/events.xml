@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="amshopby_option_form_featured_fieldset">
+        <observer name="Branch8_Brand::AddNewFields"
+                  instance="Branch8\Brand\Observer\Admin\OptionFormFeatured"/>
+    </event>
+</config>

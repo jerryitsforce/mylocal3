@@ -1,0 +1,20 @@
+{
+    "quote_item": {
+        "column": {
+            "seller_id": true,
+            "seller_code": true,
+            "seller_company_name": true,
+            "origin_cost": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "seller_id": true,
+            "seller_code": true,
+            "seller_company_name": true,
+            "origin_sku": true,
+            "origin_cost": true,
+            "variation_price": true
+        }
+    }
+}

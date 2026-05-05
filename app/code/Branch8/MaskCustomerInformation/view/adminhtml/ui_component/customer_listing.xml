@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="customer_columns"
+             class="Branch8\MaskCustomerInformation\Override\Magento\Customer\Ui\Component\Listing\Columns">
+        <column name="dob" class="Branch8\MaskCustomerInformation\Ui\Listing\Columns\Date">
+        </column>
+    </columns>
+</listing>

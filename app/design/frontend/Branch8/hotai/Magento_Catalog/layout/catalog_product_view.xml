@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+            <!-- <script src="Branch8_Quickview::js/swatch.js"/> -->
+    </head>
+    <body>
+         <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="pdp.script" template="Magento_Catalog::product/view/script.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="product.info.description">
+            <arguments>
+                <argument name="show_more" xsi:type="string">true</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="product.info.details">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.specification" as="specification" template="Magento_Catalog::product/view/attribute.phtml" group="detailed_info">
+                <arguments>
+                    <argument name="at_call" xsi:type="string">getSpecification</argument>
+                    <argument name="at_code" xsi:type="string">specification</argument>
+                    <argument name="css_class" xsi:type="string">specification</argument>
+                    <argument name="at_label" xsi:type="string">none</argument>
+                    <argument name="title" translate="true" xsi:type="string">Specification</argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <container name="product.main.wrapper" htmlTag="div" htmlClass="product-main-wrapper" before="-">
+                <container name="product.info.main.wrapper" htmlTag="div" htmlClass="product-info-main-wrapper" before="-">
+                    <container name="product.merchandise.discription" htmlTag="div" htmlClass="product-merchandise-desciption" after="-">
+                        <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.promotion" template="Magento_Catalog::product/view/additionaldata/promotions.phtml" >
+                        </block>
+                        <block class="Magento\Framework\View\Element\Template" name="product.info.seller" template="Magento_Catalog::product/view/additionaldata/seller.phtml" >
+                        </block>
+                        <block class="Magento\Catalog\Block\Product\View\Description" name="product.info.brand" template="Magento_Catalog::product/view/brand.phtml" >
+                            <arguments>
+                                <argument name="at_call" xsi:type="string">getBrand</argument>
+                                <argument name="at_code" xsi:type="string">brand</argument>
+                                <argument name="css_class" xsi:type="string">brand</argument>
+                                <argument name="at_label" xsi:type="string">none</argument>
+                                <argument name="title" translate="true" xsi:type="string">品牌名稱</argument>
+                                <argument name="sort_order" xsi:type="string">10</argument>
+                            </arguments>
+                        </block>
+                        <block class="Branch8\Quickview\Block\Product\View\ShippingMethod" name="view.shipping.method.simple" template="Branch8_Quickview::product/view/shipping_method.phtml" />
+                        <block class="Magento\Catalog\Block\Product\View\Description" name="product.merchandise.share.socials" template="Magento_Catalog::product/view/share_socials.phtml" after="-" />
+                    </container>
+                </container>
+            </container>
+            <container name="product.additional.attributes" htmlTag="div" htmlClass="product-additional-attributes" after="product.info.details">
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.attribute.recommendation" as="recommendation" template="Magento_Catalog::product/view/attributes/recommendation.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getRecommendation</argument>
+                        <argument name="at_code" xsi:type="string">recommendation</argument>
+                        <argument name="css_class" xsi:type="string">recommendation</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">Recommendation</argument>
+                        <argument name="sort_order" xsi:type="string">10</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.attribute.searchtag" as="search_tag" template="Magento_Catalog::product/view/attributes/search_tag.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getSearchTag</argument>
+                        <argument name="at_code" xsi:type="string">search_tag</argument>
+                        <argument name="css_class" xsi:type="string">search-tags</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">Related tags</argument>
+                        <argument name="sort_order" xsi:type="string">20</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.attribute.note" as="note" template="Magento_Catalog::product/view/attributes/note.phtml">
+                    <arguments>
+                        <argument name="at_call" xsi:type="string">getNote</argument>
+                        <argument name="at_code" xsi:type="string">note</argument>
+                        <argument name="css_class" xsi:type="string">note</argument>
+                        <argument name="at_label" xsi:type="string">none</argument>
+                        <argument name="title" translate="true" xsi:type="string">Things to note</argument>
+                        <argument name="sort_order" xsi:type="string">40</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="product.info.main">
+            <container name="product.info.title" htmlTag="div" htmlClass="product-info-title" before="-">
+                <block class="Magento\Catalog\Block\Product\View\Description" name="product.badges" before="-" template="Magento_Catalog::product/view/additionaldata/product_badges.phtml" />
+            </container>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.sold.qty" after="product.info.title" template="Magento_Catalog::product/view/additionaldata/sold_qty.phtml" >
+                </block>
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.alert.low.qty"  before="product.points.discount" template="Magento_Catalog::product/view/additionaldata/alert_low_qty.phtml" />
+            <block class="Branch8\Quickview\Block\Product\View\LongTimeShip" name="view.long.time.ship" after="product.price.tier"
+                   template="Branch8_Quickview::product/view/long_time_ship.phtml" />
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.points.discount"  after="view.long.time.ship" template="Magento_Catalog::product/view/additionaldata/points_discount.phtml" >
+                </block>
+        </referenceContainer>
+        <referenceBlock name="product.info.sku">
+            <arguments>
+                <argument name="at_label" xsi:type="string">none</argument>
+                <argument name="title" translate="true" xsi:type="string">Product Sku</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="product.info.overview">
+            <arguments>
+                <argument name="title" translate="true" xsi:type="string">Introduction</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="product.info.media">
+            <block class="Magento\Catalog\Block\Product\View\Description" name="product.share.socials" template="Magento_Catalog::product/view/share_socials.phtml" after="-" />
+        </referenceContainer>
+        <referenceBlock name="header-right">
+            <block class="Magento\Catalog\Block\Product\View" name="product.bottom.bar" template="Magento_Catalog::product/view/bottom_bar.phtml" after="minicart"/>
+        </referenceBlock>
+
+        <!-- Start- Add Shipping/Payment Method to product-add-form for mobile -->
+        <!-- For product has options -->
+        <referenceBlock name="product.info.options.wrapper">
+            <container name="product.options.checkout.method" htmlTag="div" htmlClass="product-checkout-method" after="-">
+                <block class="Branch8\Quickview\Block\Product\View\PaymentMethod" name="product.options.payment.method.simple" template="Branch8_Quickview::product/view/payment_method.phtml" />
+                <block class="Branch8\Quickview\Block\Product\View\ShippingMethod" name="product.options.shipping.method.simple" template="Branch8_Quickview::product/view/shipping_method.phtml" />
+            </container>
+        </referenceBlock>
+        <!-- For product no options -->
+        <referenceContainer name="product.info.form.content">
+            <container name="product.info.checkout.method" htmlTag="div" htmlClass="product-checkout-method" before="product.info.addtocart">
+                <block class="Branch8\Quickview\Block\Product\View\PaymentMethod" name="product.info.payment.method.simple"  template="Branch8_Quickview::product/view/payment_method.phtml" />
+                <block class="Branch8\Quickview\Block\Product\View\ShippingMethod" name="product.info.shipping.method.simple" template="Branch8_Quickview::product/view/shipping_method.phtml" />
+            </container>
+        </referenceContainer>
+        <!-- End- Add Shipping/Payment Method to product-add-form for mobile -->
+
+        <move element="product.info.overview" destination="product.merchandise.discription" after="product.info.seller"/>
+        <move element="product.info.sku" destination="product.merchandise.discription" after="product.info.overview"/>
+        <move element="product.certification" destination="product.merchandise.discription" after="product.info.sku" />
+        <move element="product.merchandise.share.socials" destination="product.merchandise.discription" after="product.certification" />
+        <move element="page.main.title" destination="product.info.title" />
+        <move element="product.info.media" destination="product.main.wrapper" before="-" />
+        <move element="product.info.main" destination="product.info.main.wrapper" before="-"/>
+        <referenceBlock name="product.attributes" remove="true" />
+        <referenceBlock name="view.addto.wishlist" remove="true" />
+    </body>
+</page>

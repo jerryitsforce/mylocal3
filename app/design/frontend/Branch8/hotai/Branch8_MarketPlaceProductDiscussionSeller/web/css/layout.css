@@ -1,0 +1,495 @@
+.marketplace-product-discussions .wk-mp-page-main {
+  background: #f2f2f2;
+  margin-top: -5px;
+  padding: 24px;
+}
+
+.seller-thread-wrapper {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.seller-thread-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 0 24px;
+}
+
+.seller-thread-selection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.seller-thread-selection h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.seller-thread-toolbar-options {
+    background-image: url(../images/select-bg-gray.svg);
+    background-color: #f3f3f5;
+    border-color: #f3f3f5;
+    font-size: 14px;
+    padding: 6px 14px;
+    height: 36px;
+    min-width: 180px;
+}
+
+.seller-thread-toolbar-options:not([disabled]):focus {
+    box-shadow: none;
+}
+
+.seller-thread-toolbar-options:focus {
+    box-shadow: none;
+    border-color: #f3f3f5;
+}
+
+.seller-thread-filter-btn {
+    color: #231815;
+    border-radius: 8px;
+    padding: 4px 10px;
+    border-color: #e5e5e5;
+    display: flex;
+    gap: 10px;
+}
+
+.seller-thread-filter-btn:not(.primary):active,
+.seller-thread-filter-btn:hover {
+  color: #231815;
+  border-color: #e5e5e5;
+  box-shadow: none;
+}
+
+.seller-thread-filter-btn:before {
+    font-family: 'MUI-Icons';
+    content: "\e058";
+    font-size: 16px;
+}
+
+
+.seller-thread-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 0 24px;
+}
+
+.seller-thread-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+}
+
+.seller-thread-detail {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.seller-thread-product-img {
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    font-size: 0;
+    line-height: 0;
+    width: 78px;
+    height: 78px;
+}
+
+.seller-thread-product-img {
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    font-size: 0;
+    line-height: 0;
+    width: 78px;
+    height: 78px;
+}
+
+.seller-thread-info-wrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.seller-thread-cus-name {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.seller-thread-date {
+    font-size: 14px;
+    color: #6a7282;
+    margin: 0 0 4px;
+}
+
+.seller-thread-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.seller-thread-product-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 3px 6px;
+    margin: 0 0 4px;
+}
+
+.seller-thread-product-name {
+    font-size: 14px;
+    color: #155dfc;
+}
+
+.seller-thread-product-name:visited {
+    color: #155dfc;
+}
+
+.seller-thread-product-sku {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    font-size: 14px;
+    color: #99a1af;
+}
+
+.seller-thread-action {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+}
+
+.seller-thread-action-show {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+}
+
+.seller-thread-action-label {
+    font-size: 14px;
+    color: #4a5565;
+}
+
+.seller-thread-action-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #666;
+}
+
+.seller-thread-action-input {
+    display: none;
+}
+
+.seller-thread-action-slider {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    background-color: #cbced4;
+    border-radius: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.seller-thread-action-slider:before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 21px;
+    top: 1px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transform: translateX(-20px);
+}
+
+.seller-thread-action-input:checked + .seller-thread-action-slider {
+    background-color: #030213;
+}
+
+.seller-thread-action-input:checked + .seller-thread-action-slider:before {
+    transform: translateX(-4px);
+}
+
+.seller-thread-action-input[type=checkbox]:checked {
+    display: none;
+}
+
+.seller-thread-action-view:before {
+    content: '';
+    font-family: "font-awesome";
+    color: #cbced4;
+    font-size: 16px;
+    content: '\f070';
+}
+
+.seller-thread-action-input[type=checkbox]:checked ~ .seller-thread-action-view:before {
+    color: #00a63e;
+    content: "\f06e";
+}
+
+.seller-thread-action-view {
+    display: flex;
+    align-items: center;
+}
+
+.seller-thread-pager {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 0 0 24px;
+}
+
+.seller-thread-pager a {
+    cursor: pointer;
+}
+.seller-thread-message {
+    background: #f5f6f8;
+    border-left: 4px solid #ff8904;
+    border-radius: 8px;
+    padding: 12px 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
+
+.seller-thread-message-date {
+    font-size: 12px;
+    color: #888;
+    position: absolute;
+    right: 12px;
+    top: 14px;
+}
+
+.seller-thread-message-content {
+    font-size: 14px;
+    color: #333;
+}
+
+.seller-thread-message-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #ff6a00;
+    display: inline-flex;
+    gap: 4px;
+}
+
+.seller-thread-message-content {}
+
+.seller-thread-message-label:before {
+    content: '\e065';
+    font-family: 'MUI-Icons';
+    font-size: 15px;
+}
+
+.seller-thread-message-btn {
+    color: #231815;
+    border-radius: 8px;
+    padding: 5px 10px;
+    border-color: #e5e5e5;
+    display: flex;
+    gap: 10px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.seller-thread-message-btn:not(.primary):active,
+.seller-thread-message-btn:hover {
+    color: #231815;
+    border-color: #e5e5e5;
+    box-shadow: none;
+}
+
+.seller-thread-message-action .action {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.seller-thread-message-btn.send-reply {
+    background-color: #030213;
+    color: #fff;
+}
+
+.seller-thread-message-text {
+    border-color: #f3f3f5;
+    background-color: #f3f3f5;
+    min-height: 80px;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+.message-success.success {
+    background-color: #00a63e;
+    color: #fff;
+    max-width: 100%!important;
+}
+
+.message-success.success:before {
+    display: none;
+}
+
+.message.success > *:first-child:before {
+    color: #fff!important;
+}
+
+.seller-thread-filter-modal.modal-popup .modal-inner-wrap {
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.seller-thread-filter-modal.modal-popup .modal-header {
+    padding: 0;
+}
+
+.seller-thread-filter-modal.modal-popup .action-close {
+    margin: 8px;
+    padding: 10px;
+}
+
+.seller-thread-filter-modal.modal-popup .action-close:before {
+    font-size: 11px;
+}
+
+.seller-thread-filter-modal.modal-popup .modal-content {
+    padding: 20px 24px 24px 24px;
+    text-align: left;
+}
+
+.seller-thread-filter-modal.modal-popup  .modal-footer {
+    padding: 0 24px 24px;
+    text-align: right;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.seller-thread-filter-modal.modal-popup .modal-footer:before {
+    display: none;
+}
+
+.seller-thread-filter-modal.modal-popup .modal-footer:after {
+    display: none;
+}
+
+.seller-thread-filter-modal .modal-footer .action {
+    color: #231815;
+    border-radius: 8px;
+    padding: 6px 14px;
+    border-color: #e5e5e5;
+    display: flex;
+    gap: 10px;
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.seller-thread-filter-modal .modal-footer .action:not(.primary):active,
+.seller-thread-filter-modal .modal-footer .action:hover {
+    color: #231815;
+    border-color: #e5e5e5;
+    box-shadow: none;
+}
+
+.seller-thread-filter-modal .modal-footer .action.action-accept {
+    border-color: #030213;
+    background: #030213;
+    color: #fff;
+}
+
+.seller-thread-filter-form .fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.seller-thread-filter-form legend {
+    padding: 0;
+    display: flex;
+    font-size: 18px;
+    font-weight: 600;
+    color: #0a0a0a;
+    margin: 0 0 2px;
+}
+
+.seller-thread-filter-form  .fieldset > p {
+    margin: 0;
+    font-size: 14px;
+    color: #717182;
+    margin: 0 0 16px;
+}
+
+.seller-thread-filter-form .fieldset > .field {
+    margin: 0;
+}
+
+.seller-thread-filter-form .fieldset .field > .label {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0 0 5px;
+}
+
+.seller-thread-filter-form input {
+    border: 0;
+    background: #f3f3f5;
+    font-size: 14px;
+    font-weight: 400;
+    height: 36px;
+}
+
+.seller-thread-filter-form h4 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 14px;
+    width: 100%;
+}
+
+.seller-thread-filter-form .fields {
+    padding: 4px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.seller-thread-filter-form .fieldset > .fields > .field {
+    margin: 0;
+    flex: calc(50% - 5px);
+}
+
+.seller-thread-filter-form .fieldset > .fields > .field .control {
+    position: relative;
+}
+
+.seller-thread-filter-form ._has-datepicker+.ui-datepicker-trigger {
+    right: 0;
+    color: red;
+}
+
+.seller-thread-filter-form ._has-datepicker ~ .ui-datepicker-trigger:before {
+    color: #0a0a0a;
+}

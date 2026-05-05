@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Branch8_Sales::css/progress.css" />
+    </head>
+    <body>
+        <referenceBlock name="order_items">
+            <block class="Branch8\Sales\Block\ParentOrder\Items"
+                    name="order_progress"
+                    template="Branch8_Sales::parent_order/order_progress.phtml"
+                    cacheable="false">
+            </block>
+        </referenceBlock>
+    </body>
+</page>

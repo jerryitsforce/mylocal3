@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <b8_brandmanagement>
+                <log_type>0</log_type>
+                <log_targets></log_targets>
+            </b8_brandmanagement>
+        </branch8_debug>
+    </default>
+</config>
+

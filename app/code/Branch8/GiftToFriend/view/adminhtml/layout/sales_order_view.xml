@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+         <referenceBlock name="order_tab_info">
+            <referenceBlock name="order_additional_info">
+                <block class="Branch8\GiftToFriend\Block\Adminhtml\Order\GiftInfor" name="gift.child.information" template="Branch8_GiftToFriend::child_order/tab/view/information/gift_information.phtml"/>
+            </referenceBlock>
+        </referenceBlock>
+    </body>
+</page>

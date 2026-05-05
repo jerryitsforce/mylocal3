@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="submitFeedDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/submitFeed.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="submitFeedDebugLogger" type="Magento\SaaSCommon\Model\Logging\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">submitFeedDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\SaaSCommon\Model\Http\Command\SubmitFeed">
+		<arguments>
+            <argument name="logger" xsi:type="object">submitFeedDebugLogger</argument>
+            <!-- HTGO2-2619 try to disable log when reindex -->
+            <argument name="extendedLog" xsi:type="boolean">false</argument>
+		</arguments>
+	</type>
+<!--
+    Sync Seller Id to Index Seller ID Attribute
+-->
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="sync:sellerId:indexSellerId" xsi:type="object">Branch8\SellerInformationProductDataExport\Console\Command\SyncSellerIdToIndexSellerId</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="live_search" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\SellerInformationProductDataExport\Ui\DataProvider\Product\Modifier\Attributes</item>
+                    <item name="sortOrder" xsi:type="number">99</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="live_search" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\SellerInformationProductDataExport\Ui\DataProvider\Product\Modifier\Attributes</item>
+                    <item name="sortOrder" xsi:type="number">99</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+</config>

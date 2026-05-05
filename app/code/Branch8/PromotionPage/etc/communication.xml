@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="branch8.catalog.rule.product.assign" is_synchronous="false" request="string" />
+    <topic name="branch8.vip.product.assign" is_synchronous="false" request="string" />
+</config>

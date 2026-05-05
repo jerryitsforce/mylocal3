@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Customer\Block\BrowsingHistory\Index"
+                   template="Branch8_Customer::browsing_history/grid.phtml" after="-" cacheable="false">
+                <action method="setPageSize">
+                    <argument name="page_size" xsi:type="number">12</argument>
+                </action>
+                <action method="setShowPerPage">
+                    <argument name="show_pager" xsi:type="boolean">true</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,89 @@
+{
+    "sales_order": {
+        "column": {
+            "parent_id": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "rma_status": true,
+            "rma_options": true,
+            "before_rma_flow_status": true
+        }
+    },
+    "marketplace_rma_details": {
+        "column": {
+            "rma_receiver": true,
+            "rma_address": true,
+            "rma_phone": true,
+            "rma_delivery_time": true,
+            "updated_at": true,
+            "rma_application_details": true,
+            "customer_tax_id_number": true,
+            "convenience_store_refund_code": true,
+            "is_system_refund": true,
+            "hopes_return_note": true,
+            "decline_reason_id": true,
+            "decline_reason_detail": true,
+            "is_replace_again": true,
+            "rma_reason": true,
+            "refunded_point": true,
+            "return_to_stock": true,
+            "rma_reason_id": true,
+            "rma_reason_additional_info": true
+        }
+    },
+    "marketplace_rma_status_history": {
+        "column": {
+            "entity_id": true,
+            "parent_id": true,
+            "is_customer_notified": true,
+            "is_visible_on_front": true,
+            "comment": true,
+            "status": true,
+            "created_at": true
+        },
+        "index": {
+            "MARKETPLACE_RMA_STATUS_HISTORY_PARENT_ID": true,
+            "MARKETPLACE_RMA_STATUS_HISTORY_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MARKETPLACE_RMA_STS_HISTORY_PARENT_ID_MARKETPLACE_RMA_DETAILS_ID": true
+        }
+    },
+    "marketplace_rma_reasons": {
+        "column": {
+            "tags": true,
+            "note": true
+        }
+    },
+    "marketplace_rma_shipping": {
+        "column": {
+            "entity_id": true,
+            "parent_id": true,
+            "shipping_number": true,
+            "status": true,
+            "created_at": true,
+            "shipping_carrier": true
+        },
+        "index": {
+            "MARKETPLACE_RMA_SHIPPING_PARENT_ID": true,
+            "MARKETPLACE_RMA_SHIPPING_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MARKETPLACE_RMA_SHIPPING_PARENT_ID_MARKETPLACE_RMA_DETAILS_ID": true
+        }
+    },
+    "marketplace_rma_items": {
+        "column": {
+            "point": true
+        }
+    },
+    "sales_creditmemo": {
+        "column": {
+            "finanical_approve_at": true
+        }
+    }
+}

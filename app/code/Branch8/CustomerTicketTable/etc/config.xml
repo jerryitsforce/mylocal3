@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_customertickettable>
+                <log_type>0</log_type>
+                <log_file></log_file>
+            </branch8_customertickettable>
+        </branch8_debug>
+    </default>
+</config>

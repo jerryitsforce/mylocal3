@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Branch8\Report\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8_report.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8ReportLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Branch8\Report\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Inventory\Model\SourceItem\Command\DecrementSourceItemQty">
+        <plugin name="Branch8_Report::log_stock_status" type="Branch8\Report\Plugin\LogStockStatusChange"/>
+    </type>
+    <type name="Magento\Catalog\Model\Product\Action">
+        <plugin name="Branch8_Report::log_product_attribute_update_after" type="Branch8\Report\Plugin\LogProductAttributeUpdateAfter" sortOrder="999"/>
+    </type>
+    <type name="Magento\InventoryCatalog\Model\UpdateInventory">
+        <plugin name="Branch8_Report::log_inventory_mass_update" type="Branch8\Report\Plugin\LogStockStatusOnMassUpdate"/>
+    </type>
+    <type name="Magento\InventoryCatalog\Model\ResourceModel\UpdateLegacyStockItems">
+        <plugin name="Branch8_Report::sanitize_inventory_data" type="Branch8\Report\Plugin\UpdateLegacyStockItems\SanitizeInventoryData"/>
+    </type>
+    <type name="Magento\Reports\Model\Product\Index\AbstractIndex">
+        <plugin name="Branch8_Report::ignoreApplyProductRetricts"
+                type="Branch8\Report\Plugin\Magento\Reports\Model\Product\Index\AbstractIndexPlugin"/>
+    </type>
+    <preference for="Branch8\Report\Api\Data\ProductChangeLogInterface"
+                type="\Branch8\Report\Model\ProductChangeLog"/>
+    <preference for="Branch8\Report\Api\ProductChangeLogRepositoryInterface"
+                type="Branch8\Report\Model\ProductChangeLogRepository"/>
+    <type name="Branch8\Report\Model\ResourceModel\Product\Logging\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_product_change_log</argument>
+            <argument name="eventPrefix" xsi:type="string">b8product_change_log</argument>
+            <argument name="eventObject" xsi:type="string">b8product_change_log_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\Report\Model\ResourceModel\ProductChangeLog</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="product_change_log_listing_data_source" xsi:type="string">Branch8\Report\Model\ResourceModel\Product\Logging\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Report\Observer\ProductChangeLogAfterObserver">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8ReportLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Report\Cron\CleanProductChangeLog">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8ReportLogger</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Reports\Observer\EventSaver">
+        <plugin name="Branch8_Report::trackingByQueue"
+                type="Branch8\Report\Plugin\Magento\Reports\Observer\EventSaverPlugin"/>
+    </type>
+</config>

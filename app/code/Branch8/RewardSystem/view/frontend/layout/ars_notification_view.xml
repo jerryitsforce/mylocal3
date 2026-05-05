@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\RewardSystem\Block\Notification" name="Branch8_RewardSystem_Notification" template="Branch8_RewardSystem::notification.phtml" />
+        </referenceContainer>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">回到通知主頁</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">回到通知主頁</item>
+                    <item name="title" xsi:type="string" translate="true">回到通知主頁</item>
+                    <item name="link" xsi:type="string">/notification/customer/notification</item>
+                </argument>
+            </action>
+        </referenceBlock>
+
+        <move element="breadcrumbs" destination="page.top" after="-"/>
+    </body>
+</page>

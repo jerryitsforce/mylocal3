@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var \Branch8\WebkulMpBuyerSellerChatCustomerUi\Block\Customer\AbstractChatBlock\FullScreenChat $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+
+?>
+
+<div data-role="customer-fullscreen-wrapper" data-bind="scope:'fullScreenChat'">
+<!-- ko template: getTemplate() --><!-- /ko -->
+    <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
+    <script type="text/x-magento-init">
+        {
+            "[data-role='customer-fullscreen-wrapper']": {
+                "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+        }
+    }
+    </script>
+</div>

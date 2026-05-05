@@ -1,0 +1,65 @@
+<header class="top-bar seller-side"
+        data-bind="click: showHideSellerChatWindow,
+                     outerClick: closeDropDowns">
+    <div class="left">
+        <div class="black-arrow">
+            <img alt="back" data-bind="
+                    attr: {'src': window.chatboxCoreConfig.backArrow},
+                    click: closeSellerChatWindow, clickBubble: false"
+            />
+        </div>
+        <div class="profile-controls">
+            <span class="profile-image">
+                <img alt="customer_image"
+                     width="20px" height="20px"
+                     data-bind="attr:{'src':conversationData().customerImage},
+                             click: showCustomerOptionsHandle,
+                             clickBubble:false"
+                />
+            </span>
+            <h1 class="seller-side" data-bind="text:conversationData().customerNickName?conversationData().customerNickName:conversationData().customerName"></h1>
+            <div class="wk_chat_customer_options" data-role="wk-chat-customer-options">
+                <div class="customer_options view_profile">
+                    <span class="view_profile"
+                          data-bind="click: visitProfile, clickBubble:false">
+                        <span data-bind="i18n:'Visit Profile'"></span>
+                    </span>
+                </div>
+                <div class="customer_options block_customer_option">
+                    <span class="block_customer"
+                          data-bind="click: blockCustomer, clickBubble:false,i18n:'Block Customer'">
+                    </span>
+                    <i class="fa fa-ban block" aria-hidden="true"></i>
+                </div>
+                <div class="customer_options unblock_customer_option">
+                            <span class="unblock_customer"
+                                  data-bind="click: unblockCustomer,
+                                   clickBubble:false,i18n:'Unblock Customer'">
+                            </span>
+                    <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <span class="chat_status online" data-bind="attr :{class:'chat_status '+STATUS.getChatStatusClasses(conversationData().customerChatStatus)}"></span>
+    </div>
+    <div class="right">
+        <div class="window-minimize" data-bind="
+                visible:minimized()===false,
+                click:minimizeChatWindow"
+        >
+            <img class="window-minimize-img" alt="minimize"
+                 data-bind="attr: {'src': window.chatboxCoreConfig.minimize}"
+            />
+        </div>
+        <div class="window-maximize" data-bind="visible:minimized()===true,
+        click:maxmizeChatWindow">
+            <img class="window-maximize-img" alt="maximize"
+                 data-bind="attr: {'src': window.chatboxCoreConfig.maximize}">
+        </div>
+        <div class="close" data-bind="click: closeSellerChatWindow.bind($data),
+                             clickBubble: false">
+            <img alt="close" data-bind="attr: {'src': window.chatboxCoreConfig.close}"/>
+        </div>
+        <i class="fa fa-clock-o load_history" data-bind="visible:false"></i>
+    </div>
+</header>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <edenred>
+            <api>
+                <general>
+                    <client_order_number_prefix>ED_</client_order_number_prefix>
+                </general>
+            </api>
+            <others>
+                <qty_validator_when_checkout_enable>1</qty_validator_when_checkout_enable>
+            </others>
+        </edenred>
+    </default>
+</config>

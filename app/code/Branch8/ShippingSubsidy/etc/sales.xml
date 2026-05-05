@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2025 Branch8. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
+    <section name="quote">
+        <group name="totals">
+            <item name="shipping_subsidy" instance="Branch8\ShippingSubsidy\Model\Quote\Address\Total\ShippingSubsidy" sort_order="5000"/>
+        </group>
+    </section>
+</config>

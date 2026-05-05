@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="layout_load_before">
+        <observer name="custom_class_for_operation_role" instance="Branch8\CatalogCustom\Observer\CustomClass" />
+    </event>
+    <event name="catalog_product_gallery_prepare_layout">
+        <observer name="Branch8_CatalogCustom::setTemplateUploader" instance="Branch8\CatalogCustom\Observer\SetUploaderTemplateObserver" />
+    </event>
+</config>

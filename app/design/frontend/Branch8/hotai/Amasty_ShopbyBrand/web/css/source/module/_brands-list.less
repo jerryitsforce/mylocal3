@@ -1,0 +1,337 @@
+//
+//  Shop by Brand Search
+//  ______________________________________________
+
+//
+//  Imports
+//  ----------------------------------------------
+
+
+.ambrands-word-break {
+    & {
+        word-wrap: break-word;
+        word-break: break-word;
+    }
+
+    .ie11 & {
+        word-break: break-all;
+    }
+}
+
+//
+//  Variables
+//  ----------------------------------------------
+
+@ambrands-item__hover__color: #006bb4;
+@ambrands-item__active__color: rgba(65, 173, 255, .19);
+@ambrands-item__color: #333;
+@ambrands-item__offset__m: 8px;
+@ambrands-item__offset__l: 10px;
+
+@brand-box: {
+    transition: all 0.3s;
+    text-decoration: none;
+    border: 1px solid @menu-brand__border-color;
+    background: @menu-brand__bkg-color;
+    color: @menu-brand__color;
+
+    &:hover {
+        border-color: @menu-brand-hover__border-color;
+        background: @menu-brand-hover__bkg-color;
+        color: @menu-brand-hover__color;
+    }
+};
+
+//
+//  Common
+//  ----------------------------------------------
+
+& when (@media-common = true) {
+    .ambrands-letters-list {
+        display: flex;
+        flex-direction: column;
+        gap: 24px 0;
+        
+        &:has(.ambrands-letter-en) {
+            .show-cn & {
+                margin-top: -24px;
+            }
+        }
+    }
+    .nav-main .ambrands-brandlist-widget .content .ambrands-title {
+        min-height: 0;
+        margin: 0 0 12px;
+        border-radius: 0;
+        padding: 0;
+        width: 100%;
+        background: none !important;
+        color: #231815!important;
+        &:extend(.abs-caption2 all);
+        justify-content: flex-start;
+    }
+    .ambrands-letters-list {
+        .ambrands-letter {
+            & {
+                box-sizing: border-box;
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 12px 0;
+            }
+
+            .ambrands-content {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 12px 20px;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+
+            }
+
+            .ambrands-title {
+                .txt-en {
+                    display: block;
+                    .show-cn & {
+                        display: none;
+                    }
+                }
+
+                .txt-cn {
+                    display: none;
+                    .show-cn & {
+                        display: block;
+                    }
+                }
+            }
+
+            &.ambrands-letter-en {
+                display: block;
+                .show-cn & {
+                    display: none;
+                }
+            }
+
+            &.ambrands-letter-ch {
+                display: none;
+                .show-cn & {
+                    display: block;
+                }
+            }
+        }
+
+
+        .ambrands-brand-item  {
+            margin: 0;
+
+            .ambrands-image-block {
+                display: flex;
+                width: 100%;
+                overflow: hidden;
+                border-radius: 12px;
+                padding: 0;
+                box-sizing: border-box;
+                justify-content: center;
+                align-items: center;
+                width: 66px;
+                height: 66px;
+                @brand-box();
+
+                &:hover {
+                    background: @menu-brand__bkg-color;
+                }
+
+                .ambrands-empty {
+                    padding: 7px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    word-break: break-word;
+                    text-align: center;
+                }
+            }
+
+            .ambrands-label {
+                display: none;
+            }
+        }
+    }
+
+    // .ambrands-letter .ambrands-brand-item {
+    //     // & {
+    //     //     position: relative;
+    //     //     margin: 0 @ambrands-item__offset__m (@ambrands-item__offset__m * 2);
+    //     //     min-width: 100px;
+    //     // }
+
+    //     // &.-no-logo {
+    //     //     max-width: ~'calc(50% - (@{ambrands-item__offset__m} * 2))';
+    //     //     width: 100%;
+    //     // }
+
+    //     // &.-no-logo .ambrands-label {
+    //     //     padding-top: 10px;
+    //     // }
+
+    //     // .ambrands-inner {
+    //     //     display: flex;
+    //     //     align-items: center;
+    //     //     flex-direction: column;
+    //     //     justify-content: flex-start;
+    //     //     overflow: hidden;
+    //     //     height: 100%;
+    //     //     border: 1px solid transparent;
+    //     //     border-radius: 6px;
+    //     //     background: #fff;
+    //     //     box-shadow: 0 2px 5px rgba(74, 83, 94, .03), 0 4px 10px rgba(104, 118, 139, .13);
+    //     //     color: @ambrands-item__color;
+    //     // }
+
+    //     // .ambrands-inner:hover,
+    //     // .ambrands-inner:focus {
+    //     //     border-color: @ambrands-item__hover__color;
+    //     //     text-decoration: none;
+    //     // }
+
+    //     // .ambrands-inner:active {
+    //     //     border-color: @ambrands-item__hover__color;
+    //     //     background: @ambrands-item__active__color;
+    //     // }
+
+    //     // .ambrands-empty {
+    //     //     color: #e2e2e2;
+    //     // }
+
+    //     // .ambrands-count {
+    //     //     & {
+    //     //         color: #c7c7c7;
+    //     //     }
+
+    //     //     &:before {
+    //     //         content: '(';
+    //     //     }
+
+    //     //     &:after {
+    //     //         content: ')';
+    //     //     }
+    //     // }
+
+    //     // .ambrands-label {
+    //     //     .ambrands-word-break;
+
+    //     //     box-sizing: border-box;
+    //     //     margin: auto;
+    //     //     padding: 0 10px 10px;
+    //     //     width: 100%;
+    //     //     font-weight: 600;
+    //     //     font-style: normal;
+    //     //     font-size: 14px;
+    //     //     line-height: 19px;
+    //     // }
+    // }
+
+    // .ambrands-brand-item .ambrands-image-block {
+    //     // & {
+    //     //     display: flex;
+    //     //     align-items: center;
+    //     //     box-sizing: border-box;
+    //     //     padding: 10px;
+    //     // }
+
+    //     // > .ambrands-image {
+    //     //     max-width: 100%;
+    //     //     max-height: 100%;
+    //     // }
+    // }
+
+    // .ambrands-letter .ambrands-image {
+    //     // display: block;
+    //     // margin: 0 auto;
+    //     // pointer-events: none;
+    // }
+
+}
+
+//
+//  Tablet
+//  --------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    // .ambrands-letters-list {
+    //     & {
+    //         display: flex;
+    //     }
+
+    //     .ambrands-letter .ambrands-content {
+    //         margin: 0 -@ambrands-item__offset__l;
+    //     }
+
+    //     .ambrands-brand-item {
+    //         margin: 0 @ambrands-item__offset__l (@ambrands-item__offset__l * 2);
+    //     }
+
+    //     .ambrands-brand-item.-no-logo {
+    //         max-width: 156px;
+    //     }
+
+    //     .ambrands-letter {
+    //         padding-right: 10px;
+    //         width: inherit;
+    //     }
+    // }
+    .nav-main .ambrands-brandlist-widget .content .ambrands-title {
+        width: auto;
+        &:extend(.abs-tb-body-text-medium all);
+        color: #231815;
+        position: relative;
+        margin: 0 0 16px;
+        padding-bottom: 5px;
+
+        &::after {
+            content: '';
+            width: 20px;
+            height: 3px;
+            background: #C5171E;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 1px;
+            border-bottom-right-radius: 6px;
+            border-bottom-left-radius: 1px;
+        }
+    }
+
+    .ambrands-letters-list .ambrands-letter {
+        gap: 14px 0;
+    }
+
+    .ambrands-letters-list {
+        gap: 22px 0;
+    }
+
+    .ambrands-letters-list .ambrands-brand-item .ambrands-image-block {
+        width: 84px;
+        height: 84px;
+    }
+}
+
+//
+//  Desktop
+//  ----------------------------------------------
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    // .ambrands-letters-list .ambrands-letter {
+    //     padding-right: 30px;
+    //     width: inherit;
+    // }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+    // .ambrands-letters-list .ambrands-letter {
+    //     padding-right: 30px;
+    //     width: inherit;
+    // }
+}

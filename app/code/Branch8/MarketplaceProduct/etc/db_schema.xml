@@ -1,0 +1,127 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="marketplace_product_version" resource="default" engine="innodb"
+           comment="Marketplace Product Version Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Status"/>
+        <column xsi:type="decimal" name="cost" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Cost"/>
+        <column xsi:type="decimal" name="price" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Price"/>
+        <column xsi:type="decimal" name="special_price" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Special Price"/>
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" identity="false"
+                comment="Product Entity ID"/>
+        <column xsi:type="varchar" name="product_name" length="255" nullable="false"
+                comment="Product Name"/>
+        <column xsi:type="varchar" name="product_sku" length="255" nullable="false"
+                comment="Product SKU"/>
+        <column xsi:type="mediumtext" name="additional_information" nullable="true"
+                comment="Other additional information which not mandatory field when modifying product by seller"/>
+        <column xsi:type="int" name="reviewer_id" padding="10" unsigned="true" nullable="true"
+                comment="Reviewer ID"/>
+        <column xsi:type="varchar" name="reviewer_email" length="255" nullable="true"
+                comment="Reviewer Email"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true"
+                comment="Updated At"/>
+        <column xsi:type="decimal" name="commission_percent" nullable="true" scale="4" precision="12"
+                comment="Commission percent"/>
+        <column xsi:type="smallint" name="is_cost_changed" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Is cost changed"/>
+        <column xsi:type="smallint" name="is_special_price_changed" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Is cost changed"/>
+        <column xsi:type="smallint" name="is_price_cost_changed" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Is price cost changed"/>
+        <column xsi:type="smallint" name="is_new_product" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Is new product"/>
+        <column xsi:type="smallint" name="dealer_processed" unsigned="true" nullable="false" default="0" identity="false" comment="Dealer Processed"/>
+        <column xsi:type="varchar" name="user_updated" nullable="true" length="255" comment="User Updated"/>
+        <column xsi:type="text" name="approve_error_message" nullable="true" comment="Approve Error Message"/>
+        <column xsi:type="smallint" name="approval_flow_status" unsigned="true" nullable="false" default="0" identity="false" comment=""/>
+        <column xsi:type="text" name="approval_log" nullable="true" comment="Log approval user - result - time"/>
+        <column xsi:type="smallint" name="is_variation_commission_rate_negative" unsigned="true" nullable="false" default="0" identity="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="MARKETPLACE_PRODUCT_VERSION_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+        <index referenceId="MARKETPLACE_PRODUCT_VERSION_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="MARKETPLACE_PRODUCT_VERSION_APPROVAL_FLOW_STATUS" indexType="btree">
+            <column name="approval_flow_status"/>
+        </index>
+        <index referenceId="MARKETPLACE_PRODUCT_VARIANTION_COMMISSION_RATE_NEGATIVE" indexType="btree">
+            <column name="is_variation_commission_rate_negative"/>
+        </index>
+    </table>
+    <table name="product_initial_info" resource="default" engine="innodb" comment="Product Initial Information Table">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="decimal" name="price" scale="6" precision="20" unsigned="false" nullable="true"
+                comment="Initial Price"/>
+        <column xsi:type="decimal" name="special_price" scale="6" precision="20" unsigned="false" nullable="true"
+                comment="Initial Special Price"/>
+        <column xsi:type="decimal" name="cost" scale="6" precision="20" unsigned="false" nullable="true"
+                comment="Initial Cost"/>
+        <column xsi:type="decimal" name="init_gross_profit" scale="6" precision="20" unsigned="false" nullable="true"
+                comment="Initial Gross Profit"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+    </table>
+    <table name="quote">
+        <column xsi:type="smallint" name="is_price_changed" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Is Price Changed"/>
+    </table>
+    <table name="marketplace_product" resource="default" engine="innodb" comment="Marketplace Product Table">
+        <column xsi:type="varchar" name="attribute_selected" nullable="false" length="255" comment="Attributes Selected"/>
+        <column xsi:type="smallint" name="dealer_approve_status" unsigned="true" nullable="false" default="0" identity="false" comment="Dealer Approve Status (Pending/Approved/Denied)"/>
+        <column xsi:type="smallint" name="new_need_approve" unsigned="true" nullable="false" default="0" identity="false" comment="New Product Need Approve"/>
+    </table>
+    <table name="marketplace_userdata" resource="default" engine="innodb" comment="Marketplace Product Table">
+        <column xsi:type="smallint" name="flag_cpapi" unsigned="true" padding="5" nullable="false" default="0" comment="Allowed create product API"/>
+    </table>
+    <table name="marketplace_product_temp" resource="default" engine="innodb"
+           comment="Marketplace Product Temp">
+        <column xsi:type="int" name="temp_id" nullable="false" unsigned="true" identity="true"
+                comment="Temp ID"/>
+        <column xsi:type="int" name="product_id" nullable="false" unsigned="true" identity="false"
+                comment="Product ID"/>
+        <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" identity="false" padding="10" default="0"
+                comment="Seller Id"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Product Status"/>
+        <column xsi:type="varchar" name="thumbnail" length="255" nullable="false"
+                comment="Product Thumbnail"/>
+        <column xsi:type="varchar" name="name" length="255" nullable="false"
+                comment="Product Name"/>
+        <column xsi:type="varchar" name="type" length="255" nullable="false"
+                comment="Product Type"/>
+        <column xsi:type="varchar" name="sku" length="255" nullable="false"
+                comment="Product SKU"/>
+        <column xsi:type="decimal" name="quantity" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Quantity"/>
+        <column xsi:type="decimal" name="cost" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Cost"/>
+        <column xsi:type="decimal" name="price" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Price"/>
+        <column xsi:type="decimal" name="special_price" nullable="true" unsigned="true" scale="4" precision="12"
+                comment="Special Price"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="mediumtext" name="information" nullable="true"
+                comment="Information"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="temp_id"/>
+        </constraint>
+    </table>
+    <table name="catalog_product_entity">
+        <column xsi:type="varchar" name="admin_user_updated" nullable="true" length="255" comment="Admin User Updated"/>
+    </table>
+</schema>

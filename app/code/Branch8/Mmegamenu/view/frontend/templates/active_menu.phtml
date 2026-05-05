@@ -1,0 +1,19 @@
+<?php
+/** @var \Magento\Framework\Escaper $escaper */
+
+$helperMegamenu = $this->helper('Branch8\Mmegamenu\Helper\Data');
+$currentCate = $helperMegamenu->getCurentCateId();
+$currentCateId = $currentCate->getId();
+$currentCateClass = 'mmegamenu-' . $currentCateId;
+?>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($){
+        $(document).ready(function(){
+            $("#mainMenu .<?= $escaper->escapeJs($currentCateClass) ?>").addClass('active');
+            $("#mainMenu li.level0").has('.<?= $escaper->escapeJs($currentCateClass) ?>').addClass('active');
+        });
+    });
+</script>

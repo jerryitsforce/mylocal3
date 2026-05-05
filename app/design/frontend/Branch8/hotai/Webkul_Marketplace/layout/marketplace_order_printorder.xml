@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="megamenu" remove="true"/>
+        <referenceBlock name="customer.account.header" remove="true"/>
+        <referenceBlock  name="marketplace_order_items">
+            <arguments>
+                <argument name="price_render_model" xsi:type="object">Branch8\Marketplace\ViewModel\PriceRender</argument>
+            </arguments>
+            <block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers" as="renderer.list">
+                <block class="Magento\Framework\View\Element\Template" name="category.product.type.details.renderers.default" as="default"/>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

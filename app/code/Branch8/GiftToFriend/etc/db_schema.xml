@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_parent_order_detail">
+        <column xsi:type="int" name="is_gift_order" unsigned="false" nullable="false" default="0" />
+        <column xsi:type="varchar" name="gift_code" nullable="true" default="" />
+        <column xsi:type="int" name="is_gift_confirmed" nullable="true" default="0"/>
+        <column xsi:type="int" name="gift_address_type" nullable="true" />
+        <column xsi:type="varchar" name="gift_address_fields_filled" nullable="true" />
+        <column xsi:type="timestamp" name="gift_confirmed_at" nullable="true" comment="Gift Confirmed At"/>
+        <column xsi:type="int" name="is_removed_gift_box" nullable="true" default="0" />
+        <column xsi:type="timestamp" name="gift_last_access_time" nullable="true" comment="Gift Last Access Time"/>
+        <column xsi:type="varchar" name="recipient_name" nullable="true" default="" />
+        <column xsi:type="varchar" name="recipient_telephone" nullable="true" default="" />
+        <column xsi:type="timestamp" name="gift_expired_at" nullable="true" comment="Gift expire time"/>
+        <column xsi:type="text" name="sales_presentative_infor" nullable="true" />
+        <column xsi:type="varchar" name="recipient_member_seq" nullable="true" />
+
+        <index referenceId="PARENT_ORDER_IS_GIFT_ORDER" indexType="btree">
+            <column name="is_gift_order"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_CODE" indexType="btree">
+            <column name="gift_code"/>
+        </index>
+        <index referenceId="PARENT_ORDER_IS_GIFT_CONFIRMED" indexType="btree">
+            <column name="is_gift_confirmed"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_ADDR_TYPE" indexType="btree">
+            <column name="gift_address_type"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_IS_REMOVE_GIFT_BOX" indexType="btree">
+            <column name="is_removed_gift_box"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_RECIPIENT_NAME" indexType="btree">
+            <column name="recipient_name"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_RECIPIENT_PHONE" indexType="btree">
+            <column name="recipient_telephone"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_CONFIRMED_AT" indexType="btree">
+            <column name="gift_confirmed_at"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_EXPIRED_AT" indexType="btree">
+            <column name="gift_expired_at"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GIFT_MEMBER_SEQ" indexType="btree">
+            <column name="recipient_member_seq"/>
+        </index>
+    </table>
+    <table name="sales_parent_order_grid">
+        <column xsi:type="int" name="is_gift_order" unsigned="false" nullable="false" default="0" />
+        <column xsi:type="varchar" name="gift_code" nullable="true" default="" />
+        <column xsi:type="int" name="gift_address_type" nullable="true" />
+        <column xsi:type="int" name="is_gift_confirmed" nullable="true" default="0"/>
+        <column xsi:type="varchar" name="recipient_name" nullable="true" default="" />
+        <column xsi:type="varchar" name="recipient_telephone" nullable="true" default="" />
+        <column xsi:type="timestamp" name="gift_confirmed_at" nullable="true" comment="Gift Confirmed At"/>
+        <column xsi:type="timestamp" name="gift_last_access_time" nullable="true" comment="Gift Last Access Time"/>
+        <column xsi:type="int" name="is_removed_gift_box" nullable="true" default="0" />
+        <column xsi:type="varchar" name="recipient_member_seq" nullable="true" />
+
+        <index referenceId="PARENT_ORDER_GRID_IS_GIFT_ORDER" indexType="btree">
+            <column name="is_gift_order"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_GIFT_CODE" indexType="btree">
+            <column name="gift_code"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_GIFT_ADDR_TYPE" indexType="btree">
+            <column name="gift_address_type"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_IS_GIFT_CONFIRMED" indexType="btree">
+            <column name="is_gift_confirmed"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_GIFT_RECIPIENT_NAME" indexType="btree">
+            <column name="recipient_name"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_RECIPIENT_PHONE" indexType="btree">
+            <column name="recipient_telephone"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_LAST_ACCESS_TIME" indexType="btree">
+            <column name="gift_last_access_time"/>
+        </index>
+        <index referenceId="PARENT_ORDER__GRID_GIFT_CONFIRMED_AT" indexType="btree">
+            <column name="gift_confirmed_at"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_GIFT_IS_REMOVE_GIFT_BOX" indexType="btree">
+            <column name="is_removed_gift_box"/>
+        </index>
+        <index referenceId="FTI_65B9E9925EC58F0C7C2E2F6379C233E8" indexType="fulltext">
+            <column name="recipient_name"/>
+            <column name="recipient_telephone"/>
+        </index>
+        <index referenceId="PARENT_ORDER_GRID_GIFT_MEMBER_SEQ" indexType="btree">
+            <column name="recipient_member_seq"/>
+        </index>
+    </table>
+    <table name="quote">
+        <column xsi:type="int" name="is_gift_order" unsigned="false" nullable="false" default="0" />
+        <column xsi:type="int" name="gift_address_type" nullable="true" />
+        <column xsi:type="varchar" name="gift_address_fields_filled" nullable="true" />
+    </table>
+    <table name="sales_order">
+        <column xsi:type="int" name="is_gift_order" unsigned="false" nullable="false" default="0" />
+        <column xsi:type="int" name="is_gift_confirmed" nullable="true" default="0"/>
+        <column xsi:type="int" name="gift_address_type" nullable="true" />
+        <column xsi:type="timestamp" name="gift_confirmed_at" nullable="true" comment="Gift Confirmed At"/>
+        <column xsi:type="varchar" name="recipient_name" nullable="true" default="" />
+        <column xsi:type="varchar" name="recipient_telephone" nullable="true" default="" />
+        <column xsi:type="timestamp" name="gift_expired_at" nullable="true" comment="Gift expire time"/>
+        <column xsi:type="varchar" name="recipient_member_seq" nullable="true" />
+        
+        <index referenceId="SALES_ORDER_IS_GIFT_ORDER" indexType="btree">
+            <column name="is_gift_order"/>
+        </index>
+        <index referenceId="SALES_ORDER_GIFT_RECIPIENT_NAME" indexType="btree">
+            <column name="recipient_name"/>
+        </index>
+        <index referenceId="SALES_ORDER_RECIPIENT_PHONE" indexType="btree">
+            <column name="recipient_telephone"/>
+        </index>
+        <index referenceId="SALES_ORDER_GIFT_CONFIRMED_AT" indexType="btree">
+            <column name="gift_confirmed_at"/>
+        </index>
+        <index referenceId="SALES_ORDER_GIFT_EXPIRED_AT" indexType="btree">
+            <column name="gift_expired_at"/>
+        </index>
+        <index referenceId="SALES_ORDER_GIFT_MEMBER_SEQ" indexType="btree">
+            <column name="recipient_member_seq"/>
+        </index>
+    </table>
+    <table name="sales_order_grid">
+        <column xsi:type="int" name="is_gift_order" unsigned="false" nullable="false" default="0" />
+        <column xsi:type="int" name="gift_address_type" nullable="true" />
+        <column xsi:type="varchar" name="recipient_name" nullable="true" default="" />
+        <column xsi:type="varchar" name="recipient_telephone" nullable="true" default="" />
+        <column xsi:type="timestamp" name="gift_confirmed_at" nullable="true" comment="Gift Confirmed At"/>
+        <column xsi:type="int" name="is_gift_confirmed" nullable="true" default="0"/>
+        <column xsi:type="varchar" name="recipient_member_seq" nullable="true" />
+
+        <index referenceId="ORDER_GRID_IS_GIFT_ORDER" indexType="btree">
+            <column name="is_gift_order"/>
+        </index>
+        <index referenceId="ORDER_GRID_GIFT_ADDRESS_TYPE" indexType="btree">
+            <column name="gift_address_type"/>
+        </index>
+        <index referenceId="SALE_ORDER_GRID_GIFT_RECIPIENT_NAME" indexType="btree">
+            <column name="recipient_name"/>
+        </index>
+        <index referenceId="SALE_ORDER_GRID_RECIPIENT_PHONE" indexType="btree">
+            <column name="recipient_telephone"/>
+        </index>
+        <index referenceId="SALES_ORDER_GRID_GIFT_CONFIRMED_AT" indexType="btree">
+            <column name="gift_confirmed_at"/>
+        </index>
+        <index referenceId="SALES_ORDER_GRID_GIFT_IS_CONFIRMED" indexType="btree">
+            <column name="is_gift_confirmed"/>
+        </index>
+        <index referenceId="SALES_ORDER_GRID_GIFT_MEMBER_SEQ" indexType="btree">
+            <column name="is_gift_confirmed"/>
+        </index>
+    </table>
+    <table name="sales_parent_order_address">
+        <index referenceId="PARENT_ORDER_TELEPHONE" indexType="btree">
+            <column name="telephone"/>
+        </index>
+    </table>
+     <table name="customer_ticket">
+        <column xsi:type="varchar" name="telephone" nullable="true" />
+        <index referenceId="CUSTOMER_TICKET_TELEPHONE" indexType="btree">
+            <column name="telephone"/>
+        </index>
+    </table>
+</schema>

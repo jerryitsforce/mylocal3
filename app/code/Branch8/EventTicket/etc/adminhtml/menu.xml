@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_EventTicket::event_ticket" title="Pool Tickets" module="Branch8_EventTicket" parent="Magento_Backend::marketing" sortOrder="100" resource="Branch8_EventTicket::event_ticket"/>
+        <add id="Branch8_EventTicket::event_ticket_list" title="Manage Pools" sortOrder="10" module="Branch8_EventTicket"
+             parent="Branch8_EventTicket::event_ticket" action="eventticket/event/listEvent" resource="Branch8_EventTicket::event_ticket"/>
+        </menu>
+</config>

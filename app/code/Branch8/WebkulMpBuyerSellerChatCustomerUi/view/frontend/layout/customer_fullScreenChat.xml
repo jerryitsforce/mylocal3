@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="root">
+            <block class="Branch8\WebkulMpBuyerSellerChat\Block\CoreConfigModel"
+                   ifconfig="buyer_seller_chat/general_settings/enable"
+                   name="customer_core_config_model"
+                   template="Branch8_WebkulMpBuyerSellerChatCustomerUi::core_model.phtml" />
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Branch8\WebkulMpBuyerSellerChatCustomerUi\Block\Customer\AbstractChatBlock\FullScreenChat"
+                   name="customer_fullchat"
+                   ifconfig="buyer_seller_chat/general_settings/enable"
+                   template="Branch8_WebkulMpBuyerSellerChatCustomerUi::fullScreenChat.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="fullScreenChat" xsi:type="array">
+                                <item name="component" xsi:type="string">Branch8_WebkulMpBuyerSellerChatCustomerUi/js/view/fullScreenChat</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="defaultConversationList" xsi:type="helper" helper="Branch8\WebkulMpBuyerSellerChatCustomerUi\ViewModel\Config::getCustomerSellerChatData"/>
+                                    <item name="customerChatProfile" xsi:type="helper" helper="Branch8\WebkulMpBuyerSellerChatCustomerUi\ViewModel\Config::getCustomerChatProfile"/>
+                                </item>
+                                <item name="children" xsi:type="array">
+                                    <item name="chat-history" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_WebkulMpBuyerSellerChatCustomerUi/js/view/fullScreenChat/chatApp</item>
+                                        <item name="displayArea" xsi:type="string">chat-history</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="generalConfig" xsi:type="helper" helper="Branch8\WebkulMpBuyerSellerChatCustomerUi\ViewModel\Config::getGeneralConfig"/>
+                                        </item>
+                                        <item name="children" xsi:type="array">
+                                            <item name="change-profile-image" xsi:type="array">
+                                                <item name="component" xsi:type="string">Branch8_WebkulMpBuyerSellerChat/js/view/changProfileImage</item>
+                                                <item name="config" xsi:type="array">
+                                                    <item name="isMultipleFiles" xsi:type="boolean">false</item>
+                                                    <item name="maxFileSize" xsi:type="string">2097152</item>
+                                                    <item name="allowedExtensions" xsi:type="string">jpg jpeg gif png</item>
+                                                    <item name="template" xsi:type="string">Branch8_WebkulMpBuyerSellerChat/view/changProfileImage/form/element/image</item>
+                                                    <item name="previewTmpl" xsi:type="string">Branch8_WebkulMpBuyerSellerChat/view/changProfileImage/form/element/attachment-preview</item>
+                                                    <item name="elementTmpl" xsi:type="string">Branch8_WebkulMpBuyerSellerChat/view/changProfileImage/form/element/image</item>
+                                                    <item name="uploaderConfig" xsi:type="helper" helper="Branch8\WebkulMpBuyerSellerChatCustomerUi\ViewModel\Config::getChangeProfileUploadConfig"/>
+                                                </item>
+                                                <item name="dataScope" xsi:type="string">changeProfileImage</item>
+                                                <item name="displayArea" xsi:type="string">changeProfileImage</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+
+            <!-- End chatLink Js-->
+        </referenceContainer>
+    </body>
+</page>

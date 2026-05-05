@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="after.body.start">
+            <block name="show_badge_for_reviews" class="Magento\Framework\View\Element\Template"
+                   template="Branch8_RmaAdminUi::show_badge.phtml">
+                <arguments>
+                    <argument name="rma_model" xsi:type="object">Branch8\RmaAdminUi\ViewModel\RmaModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

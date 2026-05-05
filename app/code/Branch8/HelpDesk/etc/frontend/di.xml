@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\HelpDesk\Controller\Plugin\HelpDesk">
+        <arguments>
+            <argument name="allowedActions" xsi:type="array">
+                <item name="viewTicket" xsi:type="string">helpdesk_view_index</item>
+                <item name="indexTicket" xsi:type="string">helpdesk_ticket_index</item>
+                <item name="saveTicket" xsi:type="string">helpdesk_ticket_save</item>
+                <item name="postMessage" xsi:type="string">helpdesk_ticket_postMessage</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\Controller\HelpDeskControllerInterface">
+        <plugin name="check_authenticated" type="Branch8\HelpDesk\Controller\Plugin\HelpDesk" />
+    </type>
+    <type name="Branch8\HelpDesk\Model\Attachment\CreateFromPost">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">messageAttachmentUploader</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\Controller\Message\PostAttachment">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">messageAttachmentUploader</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\Controller\Message\PostAttachmentGuest">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">messageAttachmentUploader</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\ViewModel\TicketFormConfig">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\Controller\Ticket\Save">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+</config>

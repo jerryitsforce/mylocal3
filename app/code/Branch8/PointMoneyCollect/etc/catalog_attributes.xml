@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/catalog_attributes.xsd">
+    <group name="quote_item">
+        <attribute name="point_money_config_type"/>
+        <attribute name="point_money_config_product_point"/>
+        <attribute name="point_money_config_free_ratio_upper_redeem_limit_type"/>
+        <attribute name="point_money_config_free_ratio_upper_redeem_limit_value"/>
+        <attribute name="point_money_config_free_ratio_lower_redeem_limit_type"/>
+        <attribute name="point_money_config_free_ratio_lower_redeem_limit_value"/>
+    </group>
+</config>

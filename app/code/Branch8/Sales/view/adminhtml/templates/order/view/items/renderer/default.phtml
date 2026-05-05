@@ -1,0 +1,109 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var \Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer $block */ ?>
+<?php $_item = $block->getItem() ?>
+<?php $block->setPriceDataObject($_item) ?>
+<?php $order = $_item->getOrder();?>
+<tr>
+    <?php $i = 0;
+    $columns = $block->getColumns();
+    $lastItemNumber = count($columns) ?>
+    <?php foreach ($columns as $columnName => $columnClass) :?>
+        <?php $i++; ?>
+        <?php $originalPrice = $_item->getData('base_original_price'); ?>
+        <?php $specialPrice = $_item->getData('special_price'); ?>
+        <?php $priceInclTax = $_item->getData('price_incl_tax'); ?>
+        <?php $qtyOrdered = $_item->getData('qty_ordered'); ?>
+        <?php $priceLog = $_item->getData('price_log'); ?>
+        <?php if ($columnName === 'price') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $order->formatPrice($originalPrice) ?>
+            </td>
+        <?php elseif ($columnName === 'tax-percent') : ?>
+            <!-- Keep existing content for 'tax-percent' -->
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->getColumnHtml($_item, $columnName) ?>
+            </td>
+        <?php elseif ($columnName === 'check-yoxi-status') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php
+                    $isYoxiProduct = false;
+                    $virtualProductType = $_item->getProduct()?->getCustomAttribute(\Branch8\HotaiCore\Model\Product\VirtualProductType::ATTRIBUTE_CODE);
+                    if ($virtualProductType) {
+                        $isYoxiProduct = $virtualProductType->getValue() == \Branch8\HotaiCore\Model\Product\VirtualProductType::TYPE_YOXI_TICKET;
+                    }
+                ?>
+                <?php if ($isYoxiProduct) : ?>
+                    <form id="check-yoxi-status-form-<?=$_item->getId()?>" target="_blank" action="<?=$this->getUrl('yoxi/RequestYoxiApi/CheckTicketStatus')?>">
+                    <input name="order_item_id" type="hidden" value="<?=$_item->getId()?>" />
+                    <input name="order_id" type="hidden" value="<?=$_item->getOrderId()?>" />
+                    <input name="form_key" type="hidden" value="<?=$this->getFormKey()?>" />
+                    <button type="submit">Check</button>
+                </form>
+                <?php endif; ?>
+            </td>
+        <?php elseif ($columnName === 'catalog-discount') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php $catalogDiscount = (($specialPrice ?? $originalPrice) - $priceInclTax) * $qtyOrdered; ?>
+                <?= $order->formatPrice($catalogDiscount); ?>
+            </td>
+        <?php elseif ($columnName === 'catalog-price') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php $basePriceIncTax = ($priceLog && $priceLog !== '[]') ? $_item->getData('base_price_incl_tax') : 0; ?>
+                <?= $order->formatPrice($basePriceIncTax) ?>
+            </td>
+        <?php elseif ($columnName === 'cart-discount') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php $baseDiscountAmount = $_item->getData('base_discount_amount'); ?>
+                <?= $order->formatPrice($baseDiscountAmount) ?>
+            </td>
+        <?php elseif ($columnName === 'catalogrule-name') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->getCatalogRuleNames($_item); ?>
+            </td>
+        <?php elseif ($columnName === 'salesrule-name') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $_item->getData('applied_rule_ids') ? $_item->getData('applied_rule_names') : ''; ?>
+            </td>
+        <?php elseif ($columnName === 'hotai-child-order-item-number') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $_item->getData('hotai_child_order_item_number') ?>
+            </td>
+            <!-- Add additional content for 'rule-id' -->
+        <?php elseif ($columnName === 'base_cost') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->displayPriceAttribute('base_cost'); ?>
+            </td>
+        <?php elseif ($columnName === 'row_total_point_used') :?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php $rowPointUsed = (int)($_item->getData('row_total_point_used') ?? 0); ?>
+                <?= /* @noEscape */ number_format($rowPointUsed) ?>
+            </td>
+        <?php elseif ($columnName === 'flow-status') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $_item->getData('flow_status') ?>
+            </td>
+        <?php elseif ($columnName === 'special_price') :?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $order->formatPrice($specialPrice) ?>
+            </td>
+        <?php elseif ($columnName === 'tran-ssn') :?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->escapeHtml($_item->getData('hotai_point_deduction_point_trans_s_n')) ?>
+            </td>
+        <?php elseif ($columnName === 'edenred-client-order-number') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= ($block->isEdenredTicket($_item)) ? $block->getEdenredClientOrderNumber($_item) : "" ?>
+            </td>
+        <?php else : ?>
+            <!-- Default rendering for other columns -->
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->getColumnHtml($_item, $columnName) ?>
+            </td>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</tr>

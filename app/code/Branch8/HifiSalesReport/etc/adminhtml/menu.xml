@@ -1,0 +1,12 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_HifiSalesReport::menu" sortOrder="10" title="HiFi Sales Report" module="Branch8_HifiSalesReport"
+             resource="Branch8_HifiSalesReport::menu"/>
+        <add id="Branch8_HifiSalesReport::main_record" title="Main Records" module="Branch8_HifiSalesReport" sortOrder="20"
+             parent="Branch8_HifiSalesReport::menu" action="hifi_sales_report/display/records"
+             resource="Branch8_HifiSalesReport::display_main_records"/>
+        <add id="Branch8_HifiSalesReport::sub_record" title="Sub Records" module="Branch8_HifiSalesReport" sortOrder="30"
+             parent="Branch8_HifiSalesReport::menu" action="hifi_sales_report/display/subRecords"
+             resource="Branch8_HifiSalesReport::display_sub_records"/>
+    </menu>
+</config>

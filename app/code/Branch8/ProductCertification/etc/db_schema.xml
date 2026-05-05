@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <!-- Certification Type master table -->
+    <table name="branch8_certification_type" resource="default" engine="innodb"
+           comment="Branch8 Product Certification Types">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="certification_name" nullable="false" length="255" comment="Certification Name"/>
+        <column xsi:type="smallint" name="status" unsigned="true" nullable="false" default="1" comment="Status (1=Active, 0=Inactive)"/>
+        <column xsi:type="varchar" name="icon" nullable="true" length="255" comment="Icon File Path"/>
+        <column xsi:type="text" name="category_ids" nullable="true" comment="Applicable Category IDs (JSON)"/>
+        <column xsi:type="int" name="sort_order" unsigned="true" nullable="true" default="0" comment="Sort Order"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="BRANCH8_CERTIFICATION_TYPE_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+
+    <!-- Product certification data table (per product) -->
+    <table name="branch8_product_certification" resource="default" engine="innodb"
+           comment="Branch8 Product Certification Data">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" comment="Catalog Product Entity ID"/>
+        <column xsi:type="int" name="certification_type_id" unsigned="true" nullable="false" comment="Certification Type ID"/>
+        <column xsi:type="varchar" name="certification_value" nullable="true" length="512" comment="Certification Number / Description"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="BRANCH8_PRODUCT_CERTIFICATION_PRODUCT_TYPE">
+            <column name="product_id"/>
+            <column name="certification_type_id"/>
+        </constraint>
+        <!-- 
+            Removed strictly scoped foreign key for product_id to gracefully support 
+            Magento Commerce Staging feature (where product_id actually maps to row_id). 
+        -->
+        <constraint xsi:type="foreign" referenceId="BRANCH8_PRODUCT_CERT_CERT_TYPE_ID_CERT_TYPE_ENTITY_ID"
+                    table="branch8_product_certification" column="certification_type_id"
+                    referenceTable="branch8_certification_type" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <index referenceId="BRANCH8_PRODUCT_CERTIFICATION_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+    </table>
+
+</schema>

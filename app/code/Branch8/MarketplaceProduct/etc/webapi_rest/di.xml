@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- plugin for Customer Id -->
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="marketplace-abstractaction-customerid-plugin-new" type="Webkul\Marketplace\Plugin\App\Action\Context" sortOrder="15"/>
+    </type>
+    <!-- plugin end -->
+</config>

@@ -1,0 +1,87 @@
+{
+    "sales_order": {
+        "column": {
+            "applied_rule_names": true,
+            "rma_status": true,
+            "distribution_thermosphere": true,
+            "site_free_shipping_threshold": true,
+            "site_shipping_fee": true,
+            "order_free_shipping_threshold": true,
+            "order_type": true,
+            "forced_can_creditmemo": true,
+            "is_paid": true,
+            "all_items_cost": true,
+            "all_items_commission_percent": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "flow_status": true,
+            "special_price": true,
+            "price_log": true
+        }
+    },
+    "sales_order_status_history": {
+        "column": {
+            "item_id": true,
+            "item_status": true,
+            "resource_owner": true
+        },
+        "index": {
+            "SALES_ORDER_STATUS_HISTORY_COMMENT": true
+        }
+    },
+    "sales_shipment_track": {
+        "column": {
+            "logistics_company_url": true
+        }
+    },
+    "sales_creditmemo": {
+        "column": {
+            "financial_review_status": true,
+            "void_invoice_type": true,
+            "is_reissued_invoiced": true,
+            "is_voided_invoice": true,
+            "is_issued_offinvoice": true,
+            "reissue_invoice_retry_count": true,
+            "void_invoice_retry_count": true,
+            "issue_offinvoice_retry_count": true,
+            "is_reissued_invoice": true,
+            "issue_type": true,
+            "is_invoice_success": true,
+            "invoice_success_at": true,
+            "refunded_amount": true
+        }
+    },
+    "sales_creditmemo_item": {
+        "column": {
+            "refund_point": true,
+            "refunded_amount": true,
+            "refunded_point": true,
+            "is_ready_to_refund_point": true,
+            "refund_point_status": true,
+            "refund_point_retry_count": true
+        }
+    },
+    "sales_parent_order_detail": {
+        "column": {
+            "rma_status": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "quote_id": true,
+            "all_items_cost": true,
+            "all_items_commission_percent": true,
+            "is_virtual": true
+        },
+        "index": {
+            "SALES_ORDER_GRID_IS_VIRTUAL": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "special_price": true
+        }
+    }
+}

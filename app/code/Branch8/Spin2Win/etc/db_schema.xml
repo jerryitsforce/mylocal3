@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="spintowin_reports">
+        <column xsi:type="int" name="segment_type" nullable="true"  />
+        <column xsi:type="int" name="reward_point" nullable="true"  />
+        <column xsi:type="varchar" name="point_expire_date" nullable="true"  />
+        <column xsi:type="varchar" name="reward_serial_number" nullable="true"  />
+        <column xsi:type="int" name="serial_number_id" nullable="true" />
+        <column xsi:type="varchar" name="reward_sku" nullable="true" />
+        <column xsi:type="text" name="log" nullable="true" />
+        <column xsi:type="int" name="is_send_mail" nullable="true" />
+        <column xsi:type="int" name="rule_id" nullable="true" />
+        <column xsi:type="varchar" name="rule_name" nullable="true" />
+        <column xsi:type="int" name="pool_id" nullable="true" />
+        <column xsi:type="varchar" name="pool_name" nullable="true" />
+        <column xsi:type="int" name="customer_id" nullable="true" />
+        <column xsi:type="int" name="is_apply_consolation" nullable="false" default="0" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" />
+        <column xsi:type="varchar" name="coupon_expired_date" nullable="true" />
+        <column xsi:type="text" name="segment_heading" nullable="true"  />
+        <column xsi:type="varchar" name="physical_image" nullable="true"  />
+        <column xsi:type="varchar" name="coupon_image" nullable="true"  />
+        <column xsi:type="timestamp" name="physical_expire_date" nullable="true"  />
+        <column xsi:type="int" name="reward_point_account" nullable="true" default="0" />
+        <column xsi:type="varchar" name="point_bu_no" nullable="true" />
+        <column xsi:type="varchar" name="point_rs_no" nullable="true" />
+        <column xsi:type="varchar" name="redeem_trace_no" nullable="true" />
+        <column xsi:type="varchar" name="prize_trace_no" nullable="true" />
+        <index referenceId="SPINTOWIN_REPORT_IS_SEND_MAIL" indexType="btree">
+            <column name="is_send_mail"/>
+        </index>
+        <index referenceId="SPINTOWIN_REPORT_SPIN_ID" indexType="btree">
+            <column name="spin_id"/>
+        </index>
+        <index referenceId="SPINTOWIN_REPORT_RULE_ID" indexType="btree">
+            <column name="rule_id"/>
+        </index>
+        <index referenceId="SPINTOWIN_REPORT_POOL_ID" indexType="btree">
+            <column name="pool_id"/>
+        </index>
+        <index referenceId="SPINTOWIN_REPORT_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="SPINTOWIN_REPORT_IS APPLY_CONSOLATION" indexType="btree">
+            <column name="is_apply_consolation"/>
+        </index>
+    </table>
+    <table name="spintowin_info">
+        <column xsi:type="int" name="spin_type" nullable="false" />
+        <column xsi:type="int" name="x_times" nullable="false" />
+        <column xsi:type="int" name="allow_redeem_point" nullable="false" />
+        <column xsi:type="int" name="point_to_drawn" nullable="true" />
+        <column xsi:type="int" name="redeem_point_to_drawn_limit_per_day" nullable="true" />
+        <!-- <column xsi:type="int" name="float_button" nullable="false" /> -->
+        <column xsi:type="text" name="spin_description" nullable="true"   />
+        <!-- <column xsi:type="varchar" name="name2" nullable="false" /> -->
+        <column xsi:type="text" name="slow_stock_alert_email" nullable="true" />
+        <column xsi:type="varchar" name="title" nullable="false" disabled="true" />
+        <column xsi:type="varchar" name="title2" nullable="false" disabled="true" />
+
+        <column xsi:type="int" name="total_draws" nullable="true" />
+        <column xsi:type="int" name="num_of_participiants" nullable="true" />
+        <column xsi:type="int" name="points_redeemed" nullable="true" />
+    </table>
+    <table name="spintowin_segments">
+        <column xsi:type="int" name="rule_id" nullable="true"  />
+        <column xsi:type="int" name="pool_id" nullable="true"  />
+        <column xsi:type="varchar" name="sku" nullable="true"  />
+        <column xsi:type="int" name="reward_point" nullable="true"  />
+        <column xsi:type="varchar" name="point_expire_date" nullable="true"  />
+        <column xsi:type="int" name="stock_reminder" nullable="false"  />
+        <column xsi:type="int" name="threshold" nullable="true"  />
+        <column xsi:type="varchar" name="product_name" nullable="true"  />
+        <column xsi:type="varchar" name="product_url" nullable="true"  />
+        <column xsi:type="timestamp" name="physical_expire_date" nullable="true"  />
+        <column xsi:type="varchar" name="physical_image" nullable="true"  />
+        <column xsi:type="varchar" name="coupon_image" nullable="true"  />
+        <column xsi:type="varchar" name="coupon_expired_date" nullable="true" />
+        <column xsi:type="int" name="is_publish" nullable="false" default="0" />
+        <column xsi:type="int" name="reward_point_account" nullable="true" default="0" />
+        <column xsi:type="varchar" name="point_bu_no" nullable="true" />
+        <column xsi:type="varchar" name="point_rs_no" nullable="true" />
+    </table>
+    <table name="spintowin_consolation">
+        <column xsi:type="int" name="consolation_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="spin_id" nullable="false" default="0" />
+        <column xsi:type="int" name="is_active" nullable="false" default="0" />
+        <column xsi:type="int" name="consolation_fail_times" nullable="false" />
+        <column xsi:type="int" name="consolation_type" nullable="false" />
+        <column xsi:type="int" name="rule_id" nullable="true"  />
+        <column xsi:type="int" name="pool_id" nullable="true"  />
+        <column xsi:type="varchar" name="sku" nullable="true"  />
+        <column xsi:type="int" name="reward_point" nullable="true"  />
+        <column xsi:type="varchar" name="point_expire_date" nullable="true"  />
+        <column xsi:type="varchar" name="consolation_title" nullable="true"  />
+        <column xsi:type="text" name="consolation_description" nullable="false"  />
+        <column xsi:type="varchar" name="product_name" nullable="true"  />
+        <column xsi:type="varchar" name="product_url" nullable="true"  />
+        <column xsi:type="timestamp" name="physical_expire_date" nullable="true"  />
+        <column xsi:type="varchar" name="consolation_physical_image" nullable="true"  />
+        <column xsi:type="varchar" name="consolation_coupon_image" nullable="true"  />
+        <column xsi:type="varchar" name="coupon_expired_date" nullable="true" />
+        <column xsi:type="int" name="reward_point_account" nullable="true" default="0" />
+        <column xsi:type="varchar" name="point_bu_no" nullable="true" />
+        <column xsi:type="varchar" name="point_rs_no" nullable="true" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="consolation_id" />
+        </constraint>
+        <index referenceId="SPIN2WIN_CONSOLATION_SPIN_ID" indexType="btree">
+            <column name="spin_id"/>
+        </index>
+    </table>
+    <table name="spintowin_redemption">
+        <column xsi:type="int" name="redemption_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="spin_id" nullable="false" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" />
+        <column xsi:type="int" name="point" nullable="false" />
+        <column xsi:type="int" name="chance_qty" nullable="false" />
+        <column xsi:type="int" name="is_used" nullable="false" default="0" />
+        <column xsi:type="varchar" name="ip" nullable="true"  />
+        <column xsi:type="varchar" name="trace_no" nullable="false"  />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="redemption_id" />
+        </constraint>
+        <index referenceId="SPIN2WIN_REDEMPTION_SPIN_ID" indexType="btree">
+            <column name="spin_id"/>
+        </index>
+        <index referenceId="SPIN2WIN_REDEMPTION_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+    </table>
+    <table name="customer_ticket">
+        <constraint xsi:type="unique" referenceId="TICKET_EVENT_TICKET_MEMBER_SEQ_SERIAL_UNIQUE">
+            <column name="ticket_table_name"/>
+            <column name="ticket_table_record_id"/>
+            <column name="batch_code"/>
+            <column name="ticket_unique_content"/>
+            <column name="member_seq"/>
+        </constraint>
+    </table>
+    <table name="spintowin_consolation_reports">
+        <column xsi:type="int" name="consolation_report_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="spin_id" nullable="false" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="int" name="rule_id" nullable="true" />
+        <column xsi:type="int" name="pool_id" nullable="true" />
+        <column xsi:type="int" name="consolation_type" nullable="false" />
+        <column xsi:type="varchar" name="coupon" nullable="true" />
+        <column xsi:type="varchar" name="serial_number" nullable="true" />
+        <column xsi:type="varchar" name="consolation_pool_name" nullable="true" />
+        <column xsi:type="varchar" name="consolation_rule_name" nullable="true" />
+        <column xsi:type="int" name="serial_number_id" nullable="true" />
+        <column xsi:type="varchar" name="sku" nullable="true" />
+        <column xsi:type="int" name="reward_point" nullable="true" />
+        <column xsi:type="varchar" name="point_expire_date" nullable="true"  />
+        <column xsi:type="timestamp" name="created_at" nullable="false" />
+        <column xsi:type="int" name="prize_report_id" nullable="true" />
+        <column xsi:type="varchar" name="consolation_title" nullable="true"  />
+        <column xsi:type="text" name="consolation_description" nullable="false"  />
+        <column xsi:type="int" name="consolation_id" nullable="false" />
+        <column xsi:type="varchar" name="coupon_expired_date" nullable="true" />
+        <column xsi:type="timestamp" name="physical_expire_date" nullable="true"  />
+        <column xsi:type="varchar" name="physical_image" nullable="true"  />
+        <column xsi:type="varchar" name="coupon_image" nullable="true"  />
+        <column xsi:type="int" name="reward_point_account" nullable="true" default="0" />
+        <column xsi:type="varchar" name="point_bu_no" nullable="true" />
+        <column xsi:type="varchar" name="point_rs_no" nullable="true" />
+        <column xsi:type="varchar" name="prize_trace_no" nullable="true" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="consolation_report_id" />
+        </constraint>
+        <index referenceId="SPIN2WIN_CONSOLATION_REPORT_CONSOLATION_ID" indexType="btree">
+            <column name="consolation_id"/>
+        </index>
+        <index referenceId="SPIN2WIN_CONSOLATION_REPORT_SPIN_ID" indexType="btree">
+            <column name="spin_id"/>
+        </index>
+         <index referenceId="SPIN2WIN_CONSOLATION_REPORT_RULE_ID" indexType="btree">
+            <column name="rule_id"/>
+        </index>
+         <index referenceId="SPIN2WIN_CONSOLATION_REPORT_POOL_ID" indexType="btree">
+            <column name="pool_id"/>
+        </index>
+        <index referenceId="SPIN2WIN_CONSOLATION_REPORT_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="SPIN2WIN_CONSOLATION_SEGMENT_ID" indexType="btree">
+            <column name="prize_report_id"/>
+        </index>
+    </table>
+    <table name="spintowin_layout">
+        <column xsi:type="varchar" name="page_url" nullable="true"  />
+        <column xsi:type="varchar" name="desktop_background_image" nullable="true"  />
+        <column xsi:type="varchar" name="mobile_background_image" nullable="true"  />
+        <column xsi:type="varchar" name="base_frame_color1" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="base_frame_color2" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="base_frame_color3" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="main_color_of_the_roulette" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="main_text_color_of_the_roulette" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="secondary_color_of_the_roulette" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="secondary_text_color_of_the_roulette" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="main_color_win_record" nullable="false" default="#FFFFFF" />
+        <column xsi:type="varchar" name="page_title" nullable="true" />
+        <column xsi:type="varchar" name="page_title2" nullable="true" />
+        <column xsi:type="varchar" name="hint_title" nullable="true" />
+        <column xsi:type="text" name="hint_text" nullable="false" />
+    </table>
+    <table name="spintowin_award_address">
+        <column xsi:type="int" name="address_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="spin_id" nullable="false" />
+        <column xsi:type="int" name="segment_report_id" nullable="false" />
+        <column xsi:type="int" name="customer_id" nullable="false" />
+        <column xsi:type="varchar" name="name" nullable="false" />
+        <column xsi:type="varchar" name="phone_number" nullable="false" />
+        <column xsi:type="varchar" name="street" nullable="false" />
+        <column xsi:type="varchar" name="region" nullable="false" />
+        <column xsi:type="int" name="region_id" nullable="false" />
+        <column xsi:type="varchar" name="city" nullable="false" />
+        <column xsi:type="int" name="city_id" nullable="false" />
+        <column xsi:type="varchar" name="country" nullable="false" />
+        <column xsi:type="timestamp" name="updated_at" nullable="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="address_id" />
+        </constraint>
+        <index referenceId="SPIN2WIN_AWARD_ADDRESS_SPIN_ID" indexType="btree">
+            <column name="spin_id"/>
+        </index>
+        <index referenceId="SPIN2WIN_AWARD_ADDRESS_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <constraint xsi:type="unique" referenceId="SPIN_AWARD_ADDRESS_SPIN_ID_CUSTOMER_ID_SEGMENT_REPORT_ID">
+            <column name="spin_id"/>
+            <column name="customer_id"/>
+            <column name="segment_report_id"/>
+        </constraint>
+        <index referenceId="SPIN2WIN_AWARD_ADDRESS_SEGMENT_REPORT_ID" indexType="btree">
+            <column name="segment_report_id"/>
+        </index>
+    </table>
+    <table name="magenest_customer_notification">
+        <column xsi:type="int" name="segment_report_id" nullable="true" />
+        <index referenceId="MAGENEST_CUSTOMER_NOTIFICATION_SEGMENT_REPORT_ID" indexType="btree">
+            <column name="segment_report_id"/>
+        </index>
+    </table>
+    <table name="magenest_notification_queue">
+        <column xsi:type="int" name="segment_report_id" nullable="true" />
+        <index referenceId="MAGENEST__NOTIFICATION_QUEUE_SEGMENT_REPORT_ID" indexType="btree">
+            <column name="segment_report_id"/>
+        </index>
+    </table>
+
+    <table name="spintowin_draft">
+        <column xsi:type="int" name="draft_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="spin_id" nullable="false" />
+        <column xsi:type="text" name="data" nullable="true" />
+        <column xsi:type="varchar" name="segment_deleted" nullable="true" />
+        <column xsi:type="timestamp" name="updated_at" nullable="false" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="draft_id" />
+        </constraint>
+        <constraint xsi:type="unique" referenceId="SPIN_DRAFT_UNIQUER_SPIN_ID">
+            <column name="spin_id"/>
+        </constraint>
+    </table>
+    <table name="spintowin_button">
+        <column xsi:type="int" name="display_scope" nullable="true" default="0"/>
+        <column xsi:type="varchar" name="specify_page" nullable="true" />
+        <column xsi:type="varchar" name="button_size" nullable="true" />
+    </table>
+</schema>

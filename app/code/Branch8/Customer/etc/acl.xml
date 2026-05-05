@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Customer::customer">
+                    <resource id="Branch8_Customer::organization" title="Customer Organization" translate="title" sortOrder="40" />
+<!--                    <resource id="Branch8_Customer::organization_rest" title="Rest API Update Customer Organization" translate="title" sortOrder="41" />-->
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="family_bonus_pin" translate="label" sortOrder="500">
+            <label>Family Bonus PIN</label>
+        </tab>
+        <section id="family_bonus_pin" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <tab>family_bonus_pin</tab>
+            <resource>Branch8_FamilyBonusPin::config</resource>
+            <group id="email" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>Email Settings</label>
+                <field id="notification_receiver_addresses" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Family Bonus PIN Safety Quantity Notification Email Receiver Addresses</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>You can fill in multiple email addresses and separate them by commas, and you can fill in blank space for better reading purpose. Example: JohnDoe@gmail.com, JaneDoe@gmail.com</comment>
+                </field>
+            </group>
+            <group id="ftp" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>FTP Settings</label>
+                <field id="store_no" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store No</label>
+                </field>
+                <field id="connection_path" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Connection Path</label>
+                </field>
+                <field id="connection_port" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Connection Port</label>
+                </field>
+                <field id="connection_account" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Connection Account</label>
+                </field>
+                <field id="connection_password" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Connection Password</label>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_familybonuspin" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_FamilyBonusPin</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\FamilyBonusPin\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

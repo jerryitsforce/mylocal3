@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="carriers" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="hotai_711" sortOrder="10" showInWebsite="10" showInStore="1" showInDefault="1" translate="label">
+                <label>Hotai 711</label>
+                <field id="active" type="select" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="name" type="text" sortOrder="30" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Method Name</label>
+                </field>
+                <field id="price" type="text" sortOrder="32" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Normal Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="price_threshold" translate="label" type="text" sortOrder="34" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Free Shipping Threshold Normal</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="price_special_enable" translate="label" sortOrder="36" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Special Shipping Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="price_special_start_date" translate="label" sortOrder="38" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping Start Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="price_special_end_date" translate="label" sortOrder="40" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping End Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="special_price" translate="label" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Special Price For Normal</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="special_price_threshold" translate="label" type="text" sortOrder="44" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Special Free Shipping Threshold</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="refrigerated_price" type="text" sortOrder="46" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Refrigerated Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="refrigerated_price_threshold" translate="label" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Free Shipping Threshold Refrigerated</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="refrigerated_price_special_enable" translate="label" sortOrder="50" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Special Refrigerated Shipping Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="refrigerated_price_special_start_date" translate="label" sortOrder="52" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping Start Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="refrigerated_price_special_end_date" translate="label" sortOrder="54" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping End Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="special_refrigerated_price" translate="label" sortOrder="56" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Special Refrigerated Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="special_refrigerated_price_threshold" translate="label" type="text" sortOrder="58" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Special Refrigerated Free Shipping Threshold</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="frozen_price" type="text" sortOrder="60" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Frozen Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="frozen_price_threshold" translate="label" type="text" sortOrder="62" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Free Shipping Threshold Frozen</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="frozen_price_special_enable" translate="label" sortOrder="64" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Special Frozen Shipping Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="frozen_price_special_start_date" translate="label" sortOrder="66" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Frozen Shipping Start Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="frozen_price_special_end_date" translate="label" sortOrder="68" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Frozen Shipping End Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="special_frozen_price" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Special Frozen Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="special_frozen_price_threshold" translate="label" type="text" sortOrder="72" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Special Frozen Free Shipping Threshold</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="email_get_product" translate="label comment" type="select" sortOrder="73" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Pick up Product From Store</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+
+                <field id="sort_order" type="text" sortOrder="74" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Sort Order</label>
+                </field>
+                <field id="title" type="text" sortOrder="76" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Title</label>
+                </field>
+                <field id="sallowspecific" type="select" sortOrder="78" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Ship to Applicable Countries</label>
+                    <frontend_class>shipping-applicable-country</frontend_class>
+                    <source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" type="multiselect" sortOrder="80" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Ship to Specific Countries</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+                <field id="specificerrmsg" type="textarea" sortOrder="90" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Displayed Error Message</label>
+                </field>
+            </group>
+            <group id="hotai_delivery" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                <label>Hotai Delivery</label>
+                <field id="active" type="select" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="name" type="text" sortOrder="30" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Method Name</label>
+                </field>
+                <field id="price" type="text" sortOrder="32" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Normal Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="price_threshold" translate="label" type="text" sortOrder="34" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Free Shipping Threshold Normal</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="price_special_enable" translate="label" sortOrder="36" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Special Shipping Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="price_special_start_date" translate="label" sortOrder="38" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping Start Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="price_special_end_date" translate="label" sortOrder="40" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping End Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="special_price" translate="label" sortOrder="42" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Special Price For Normal</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="special_price_threshold" translate="label" type="text" sortOrder="44" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Special Free Shipping Threshold</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="price_special_enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="refrigerated_price" type="text" sortOrder="46" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Refrigerated Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="refrigerated_price_threshold" translate="label" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Free Shipping Threshold Refrigerated</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="refrigerated_price_special_enable" translate="label" sortOrder="50" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Special Refrigerated Shipping Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="refrigerated_price_special_start_date" translate="label" sortOrder="52" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping Start Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="refrigerated_price_special_end_date" translate="label" sortOrder="54" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Shipping End Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="special_refrigerated_price" translate="label" sortOrder="56" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Special Refrigerated Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="special_refrigerated_price_threshold" translate="label" type="text" sortOrder="58" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Special Refrigerated Free Shipping Threshold</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="refrigerated_price_special_enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="frozen_price" type="text" sortOrder="60" showInWebsite="1" showInStore="1" showInDefault="1" translate="label" canRestore="1">
+                    <label>Frozen Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="frozen_price_threshold" translate="label" type="text" sortOrder="62" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Free Shipping Threshold Frozen</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                </field>
+                <field id="frozen_price_special_enable" translate="label" sortOrder="64" type="select" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Special Frozen Shipping Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="frozen_price_special_start_date" translate="label" sortOrder="66" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Frozen Shipping Start Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="frozen_price_special_end_date" translate="label" sortOrder="68" type="date" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Special Frozen Shipping End Date</label>
+                    <frontend_model>Branch8\HotaiShipping\Block\Adminhtml\System\Config\DateTime</frontend_model>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                    <validate>required-entry</validate>
+                    <comment>Please click Calendar icon</comment>
+                </field>
+                <field id="special_frozen_price" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Special Frozen Price</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="special_frozen_price_threshold" translate="label" type="text" sortOrder="72" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Special Frozen Free Shipping Threshold</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="frozen_price_special_enable">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" type="text" sortOrder="74" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Sort Order</label>
+                </field>
+                <field id="title" type="text" sortOrder="76" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Title</label>
+                </field>
+                <field id="sallowspecific" type="select" sortOrder="78" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Ship to Applicable Countries</label>
+                    <frontend_class>shipping-applicable-country</frontend_class>
+                    <source_model>Magento\Shipping\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+                <field id="specificcountry" type="multiselect" sortOrder="80" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Ship to Specific Countries</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+                <field id="specificerrmsg" type="textarea" sortOrder="90" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+                    <label>Displayed Error Message</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

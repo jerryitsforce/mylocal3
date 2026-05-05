@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">客服表單</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="breadcrumbs">
+          <action method="addCrumb">
+              <argument name="crumbName" xsi:type="string" translate="true">檢視送禮進度</argument>
+              <argument name="crumbInfo" xsi:type="array">
+                  <item name="label" xsi:type="string" translate="true">檢視送禮進度</item>
+                  <item name="title" xsi:type="string" translate="true">檢視送禮進度</item>
+                  <item name="link" xsi:type="string">/gift-order/giftbox/listing</item>
+              </argument>
+          </action>
+          <action method="addCrumb">
+              <argument name="crumbName" xsi:type="string" translate="true">客服表單</argument>
+              <argument name="crumbInfo" xsi:type="array">
+                  <item name="label" xsi:type="string" translate="true">客服表單</item>
+                  <item name="title" xsi:type="string" translate="true">客服表單</item>
+              </argument>
+          </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Branch8\GiftToFriend\Block\GiftBox\Service" cacheable="false"
+            name="giftbox.service" template="Branch8_GiftToFriend::giftbox/service.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="ticketCreateForm" xsi:type="array">
+                                <item name="component" xsi:type="string">Branch8_GiftToFriend/js/service/new-ticket-form</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="configurations" xsi:type="helper" helper="Branch8\GiftToFriend\ViewModel\ServiceFormConfig::getConfigurations"/>
+                                </item>
+                                <item name="children" xsi:type="array">
+                                    <item name="messages" xsi:type="array">
+                                        <item name="component" xsi:type="string">Magento_Ui/js/view/messages</item>
+                                        <item name="displayArea" xsi:type="string">messages</item>
+                                    </item>
+                                    <item name="findYourOrder" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/find-your-order</item>
+                                        <item name="displayArea" xsi:type="string">findYourOrder</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="configuration" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketFormConfig::getFindYourOrderConfig"/>
+                                        </item>
+                                    </item>
+                                    <item name="attachment" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/file-uploader</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="isMultipleFiles" xsi:type="boolean">true</item>
+                                            <item name="template" xsi:type="string">ui/form/element/uploader/uploader</item>
+                                            <item name="previewTmpl" xsi:type="string">Branch8_HelpDesk/form/element/attachment-preview</item>
+                                            <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/image</item>
+                                            <item name="maxImageUploadCount" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getMaxImageUploadCount"/>
+                                            <item name="maxFileSizeInMb" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getMaxFileSize"/>
+                                            <item name="uploaderConfig" xsi:type="helper" helper="Branch8\GiftToFriend\ViewModel\ServiceFormConfig::getUploaderConfig"/>
+                                        </item>
+                                        <item name="dataScope" xsi:type="string">attachment</item>
+                                        <item name="displayArea" xsi:type="string">attachment</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

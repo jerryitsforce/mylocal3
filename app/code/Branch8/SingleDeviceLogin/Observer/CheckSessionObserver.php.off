@@ -1,0 +1,133 @@
+<?php
+namespace Branch8\SingleDeviceLogin\Observer;
+
+use Branch8\HotaiCore\Model\Detection\MobileDetect;
+use Branch8\SingleDeviceLogin\Helper\Data;
+use Branch8\SingleDeviceLogin\Model\DeviceManager;
+use Magento\Framework\App\ActionFlag;
+use Magento\Framework\App\ActionInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\App\CacheInterface;
+use Magento\Framework\Session\SessionManager;
+use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Framework\UrlInterface;
+
+/**
+ * Observer used to enforce single-device login on every frontend request.
+ *
+ * This observer runs on the controller_action_predispatch event.  When
+ * single-device login is enabled and a customer is logged in it compares
+ * the device identifier stored in the SDL cookie against the active device
+ * identifier recorded for the customer in the database.  When they do not
+ * match (or the cookie is missing) the customer is immediately logged out
+ * and redirected to the logout page.
+ */
+class CheckSessionObserver implements ObserverInterface
+{
+    public function __construct(
+        protected CustomerSession $customerSession,
+        protected CookieManagerInterface $cookieManager,
+        protected DeviceManager $deviceManager,
+        protected CacheInterface $cache,
+        protected Data $helper,
+        protected ActionFlag $actionFlag,
+        protected UrlInterface $urlBuilder,
+        protected MobileDetect $mobileDetect,
+        protected SessionManager $sessionManager,
+    ) {
+    }
+
+    /**
+     * Execute observer
+     *
+     * @param Observer $observer
+     * @return $this
+     */
+    public function execute(Observer $observer)
+    {
+        // Only enforce for logged in customers when the feature is enabled
+        if (!$this->helper->isSingleDeviceLoginEnabled()
+            || !$this->customerSession->isLoggedIn()
+            || !$this->mobileDetect->isHotaiApp()) {
+            return $this;
+        }
+
+        // Obtain the unique device identifier from the cookie
+        $deviceId = $this->cookieManager->getCookie(Data::DEVICE_ID_COOKIE_NAME);
+
+        if (!$deviceId) {
+            $deviceId = $this->sessionManager->getActiveDeviceId();
+        }
+
+        $customerId = $this->customerSession->getCustomerId();
+
+        // Log debug information for troubleshooting
+        $this->helper->logDebug([
+            'event'        => 'check_session_observer',
+            'customer_id'  => $customerId,
+            'cookie_value' => $deviceId,
+        ]);
+
+        // If there is no device ID present we must log the user out immediately.
+        if (!$deviceId) {
+            $this->helper->logDebug([
+                'message'     => 'Device ID cookie missing',
+                'customer_id' => $customerId,
+            ]);
+            return $this->forceLogout($observer);
+        }
+
+        // Retrieve the currently active device ID for the customer.  To avoid
+        // unnecessary database queries this value is cached for a short time.
+        $cacheKey = 'sdl_active_device_' . $customerId;
+        $activeDeviceId = $this->cache->load($cacheKey);
+        if ($activeDeviceId === false) {
+            // Not cached; load from database
+            $activeDeviceId = $this->deviceManager->getActiveDeviceId((int)$customerId);
+
+            if ($activeDeviceId !== null) {
+                // Cache for two minutes
+                $this->cache->save($activeDeviceId, $cacheKey, [], 60*60);
+            }
+        }
+
+        // If there is no stored device ID or the values do not match, force
+        // logout.  The absence of an active device ID typically means the
+        // customer has never logged in since module installation or the
+        // record has been manually removed.
+        if (!$activeDeviceId || $activeDeviceId !== $deviceId) {
+            $this->helper->logDebug([
+                'message'          => 'Device ID mismatch or no active record',
+                'customer_id'      => $customerId,
+                'active_device_id' => $activeDeviceId,
+                'cookie_device_id' => $deviceId,
+            ]);
+            return $this->forceLogout($observer);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Helper to perform the logout and redirect logic.  Extracted into its
+     * own method to improve readability.
+     *
+     * @param Observer $observer
+     * @return $this
+     */
+    protected function forceLogout(Observer $observer)
+    {
+        $this->actionFlag->set('', ActionInterface::FLAG_NO_DISPATCH, true);
+        $this->customerSession->logout();
+        // Redirect to the Magento logout URL; this clears additional session
+        // values and completes the logout process.
+        $url = $this->urlBuilder->getUrl('customer/account/logout');
+        $observer->getControllerAction()
+            ->getResponse()
+            ->setRedirect($url)
+            ->sendResponse();
+        return $this;
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "financial_reconciliation": {
+        "column": {
+            "id": true,
+            "from": true,
+            "to": true,
+            "seller_code": true,
+            "batch_num": true,
+            "exclude_settled_orders": true,
+            "shipping_status": true,
+            "invoice_status": true,
+            "ticket_status": true,
+            "settlement_status": true,
+            "created_at": true,
+            "updated_at": true,
+            "changed_by_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "financial_reconciliation_invoice": {
+        "column": {
+            "id": true,
+            "fr_id": true,
+            "invoice_number": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_379BC479095848473F1142317C871C17": true
+        }
+    },
+    "financial_reconciliation_exception": {
+        "column": {
+            "id": true,
+            "fr_id": true,
+            "order_id": true,
+            "item_id": true,
+            "commission_rate": true,
+            "agreed_service_fee": true,
+            "net_sales": true,
+            "purchase_cost": true,
+            "marketing_fee": true,
+            "logistic_support_fee": true,
+            "exception_status": true,
+            "reason": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY_FINANCIAL_RECONCILIATION_EXCEPTION": true,
+            "FR_EXCEPTION_TO_SALES_ORDER": true,
+            "FR_EXCEPTION_TO_ORDER_ITEM": true,
+            "FR_EXCEPTION_TO_FINANCIAL_RECONCILIATION": true
+        }
+    }
+}

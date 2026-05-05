@@ -1,0 +1,54 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiPay\Block\CreditCard\ListAction
+ */
+?>
+
+<?php
+$params = $block->getParams();
+$response = $block->getErrorResponse();
+?>
+
+<?php if(isset($params['StatusDesc'])):?>
+  <? $params['StatusDesc'] = 'CREDITCARD_'.$params['StatusDesc'];?>
+
+  <div id="popup" style="display: none;">
+      <h2><?= $block->escapeHtml(__($params['StatusDesc'])) ?></h2>
+  </div>
+<?php endif;?>
+
+<?php if(isset($response['StatusDesc'])):?>
+  <? $response['StatusDesc'] = 'CREDITCARD_'.$response['StatusDesc'];?>
+
+  <div id="popup" style="display: none;">
+      <h2><?= $block->escapeHtml(__($response['StatusDesc'])) ?></h2>
+  </div>
+<?php endif;?>
+
+
+<?php
+$block->unsetResponse();
+?>
+
+<script>
+require(
+  [
+    'jquery',
+    'Magento_Ui/js/modal/modal',
+    'mage/translate'
+],
+function (
+    $,
+    modal
+) {
+    var modaloption = {
+        type: 'popup',
+        modalClass: 'popup-message',
+        responsive: true,
+        innerScroll: true,
+        buttons: []
+    };
+    var callforoption = modal(modaloption, $('#popup'));
+    $('#popup').modal('openModal');
+} );
+</script>

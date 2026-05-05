@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+	<event name="adminhtml_customer_prepare_save">
+		<observer name="Branch8_Customer::validate_customer_data_before_save"
+                  instance="Branch8\Customer\Observer\ValidateCustomerDataBeforeSave"/>
+	</event>
+</config>

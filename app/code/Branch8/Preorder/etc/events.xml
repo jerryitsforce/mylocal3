@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_save_before">
+        <observer name="branch8_preorder_before_save_product" instance="Branch8\Preorder\Observer\BeforeSaveProduct"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="preorder_afterplaceorder" disabled="true" />
+    </event>
+    <event name="branch8_split_order_item_success">
+        <observer name="preorder_after_placeorder" instance="Webkul\MarketplacePreorder\Observer\AfterPlaceOrder" />
+        <observer name="preorder_after_placeorder_deduct_qty" instance="Branch8\Preorder\Observer\DeductQty" />
+    </event>
+    <event name="mp_product_save_before">
+        <observer name="preorder_before_save_product_no_approval_required" instance="Webkul\MarketplacePreorder\Observer\BeforeSaveProduct"/>
+        <observer name="branch8_preorder_before_save_product_no_approval_required" instance="Branch8\Preorder\Observer\BeforeSaveProduct"/>
+    </event>
+    <event name="mp_product_save_after">
+        <observer name="branch8_preorder_after_save_product" instance="Branch8\Preorder\Observer\AfterSaveProduct"/>
+    </event>
+</config>

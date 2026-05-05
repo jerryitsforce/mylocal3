@@ -1,0 +1,11 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="Branch8\Customer\Block\AutoLogout\IdleTimeChecker" template="Branch8_Customer::autologout/idle-time-checker.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="before.body.end">
+            <block class="Branch8\Customer\Block\AutoLogout\SessionRefresher" template="Branch8_Customer::autologout/session-refresher.phtml" />
+        </referenceContainer>
+    </body>
+</page>

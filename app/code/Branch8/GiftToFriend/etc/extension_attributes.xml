@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Checkout\Api\Data\ShippingInformationInterface">
+        <attribute code="is_gift_order" type="string"/>
+        <attribute code="gift_address_type" type="string"/>
+        <attribute code="gift_address_fields_filled" type="string"/>
+    </extension_attributes>
+    <extension_attributes for="Magento\Quote\Api\Data\AddressInterface">
+        <attribute code="is_gift_order" type="string"/>
+        <attribute code="gift_address_type" type="string"/>
+        <attribute code="gift_address_fields_filled" type="string"/>
+    </extension_attributes>
+</config>

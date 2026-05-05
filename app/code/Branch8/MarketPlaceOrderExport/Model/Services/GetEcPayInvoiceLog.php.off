@@ -1,0 +1,115 @@
+<?php
+
+namespace Branch8\MarketPlaceOrderExport\Model\Services;
+
+use Magento\Framework\App\ResourceConnection;
+use Magento\Store\Model\StoreManager;
+use  Branch8\HifiSalesReport\Helper\Common as CommonHelper;
+
+class GetEcPayInvoiceLog
+{
+    private $cached = [];
+    private ResourceConnection $resourceConnection;
+    private StoreManager $storeManager;
+    private GetTZOffsetTransitions $getTZOffsetTransitions;
+    private \Magento\Framework\Stdlib\DateTime\Timezone $timezone;
+
+    /**
+     * @param ResourceConnection $resourceConnection
+     * @param StoreManager $storeManager
+     * @param GetTZOffsetTransitions $getTZOffsetTransitions
+     * @param \Magento\Framework\Stdlib\DateTime\Timezone $timezone
+     */
+    public function __construct(
+        ResourceConnection                          $resourceConnection,
+        StoreManager                                $storeManager,
+        GetTZOffsetTransitions                      $getTZOffsetTransitions,
+        \Magento\Framework\Stdlib\DateTime\Timezone $timezone
+    )
+    {
+        $this->storeManager = $storeManager;
+        $this->resourceConnection = $resourceConnection;
+        $this->getTZOffsetTransitions = $getTZOffsetTransitions;
+        $this->timezone = $timezone;
+    }
+
+    /**
+     * @param $orderId
+     * @return array|mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function get($orderId, $itemid)
+    {
+        $key = $orderId . '-' . $itemid;
+        if (isset($this->cached[$orderId])) {
+            return $this->cached[$key];
+        }
+        $connection = $this->resourceConnection->getConnection();
+        $select = $connection->select()->from(
+            'ecpay_invoice_hotai_order_invoice_logs',
+            [
+                'item_invoice' => new \Zend_Db_Expr("CONCAT(order_item_id,'-',invoice_number)"),
+                'hotai_order_invoice_logs_id' => 'hotai_order_invoice_logs_id',
+                'checkout_serial_modify_date' => 'ecpay_invoice_hotai_order_invoice_logs.created_at',
+                'status' => 'status',
+                'invoice_number' => 'invoice_number'
+            ]
+        )->join('ecpay_invoice_hotai_order_item_invoice_logs',
+            'ecpay_invoice_hotai_order_invoice_logs.hotai_order_invoice_logs_id = ecpay_invoice_hotai_order_item_invoice_logs.hotai_order_invoice_log_id',
+            ['order_item_id' => 'order_item_id']
+        )->where('ecpay_invoice_hotai_order_invoice_logs.order_id = ?', $orderId)
+            ->where('ecpay_invoice_hotai_order_item_invoice_logs.order_item_id = ?', $itemid)
+            ->where('ecpay_invoice_hotai_order_item_invoice_logs.type = ?', 'item')
+            ->order('ecpay_invoice_hotai_order_invoice_logs.created_at');
+           /// ->group('item_invoice');
+        $rows = $connection->fetchAll($select);
+        if ($rows) {
+            foreach ($rows as &$row) {
+                $row['checkout_serial_modify_date'] = $this->getChangeDayTitle($row['checkout_serial_modify_date']);
+                $row['invoice_status'] = $this->getStatus($row['status']);
+            }
+            $this->cached[$key] = $rows;
+        } else {
+            $this->cached[$key] = [];
+        }
+        return $this->cached[$key];
+    }
+
+    /**
+     * @param string $ecpayInvoiceUpdatedAt
+     * @return string
+     */
+    private function getChangeDayTitle(string $ecpayInvoiceUpdatedAt): string
+    {
+        return DateFormat::getChangeDayTitle($ecpayInvoiceUpdatedAt);
+    }
+
+    private function getStatus($value)
+    {
+        //0 未開發票, 1 發票開立, 2 發票作廢, 3 發票折讓, 4 不開發票, -1 開立失敗
+        switch ($value) {
+            case 0:
+                $status = __('未開發票');
+                break;
+            case 1:
+                $status = __('發票開立');
+                break;
+            case 2:
+                $status = __('發票作廢');
+                break;
+            case 3:
+                $status = __('發票折讓');
+                break;
+            case 4:
+                $status = __('不開發票');
+                break;
+            case -1:
+                $status = __('Failed To Issue');
+                break;
+            default:
+                $status = '';
+                break;
+        }
+        return $status;
+    }
+}

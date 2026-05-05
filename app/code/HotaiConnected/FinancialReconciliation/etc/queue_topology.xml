@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:MessageQueue/etc/queue_topology.xml">
+    <!-- 定義 RabbitMQ 中的 Exchange 與 Queue 的綁定關係 -->
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="EcpayRevenueExportBinding" 
+                 topic="hotaiconnected.reconciliation.revenue.export"
+                 destinationType="queue"
+                 destination="hotaiconnected_reconciliation_revenue_export"/>
+        <binding id="EcpayOrderExportBinding" 
+                 topic="hotaiconnected.reconciliation.order.export"
+                 destinationType="queue"
+                 destination="hotaiconnected_reconciliation_order_export"/>
+        <binding id="EcpayTicketExportBinding" 
+                 topic="hotaiconnected.reconciliation.ticket.export"
+                 destinationType="queue"
+                 destination="hotaiconnected_reconciliation_ticket_export"/>
+     </exchange>
+</config>

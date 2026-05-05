@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\Rma\Api\Data\MarketplaceRmaStatusHistorySearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<preference for="Webkul\MpRmaSystem\Model\Rma\Source\RmaStatus" type="Branch8\Rma\Model\Rma\Source\RmaStatus"/>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="rma_order_choose_grid_data_source" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="shipping_phone" xsi:type="object">ShippingPhoneSubSelect</item>
+                <item name="shipping_zipcode" xsi:type="object">ShippingZipCodeSubSelect</item>
+                <item name="shipping_city" xsi:type="object">ShippingCitySubSelect</item>
+                <item name="shipping_region" xsi:type="object">ShippingRegionSubSelect</item>
+                <item name="billing_phone" xsi:type="object">BillingPhoneSubSelect</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingPhoneSubSelect" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="shipping_phone" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">telephone</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingZipCodeSubSelect" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="shipping_zipcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingCitySubSelect" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="shipping_city" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">city</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ShippingRegionSubSelect" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="shipping_region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_shipping_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="BillingPhoneSubSelect" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="billing_phone" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_billing_address</item>
+                    <item name="columnName" xsi:type="string">telephone</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mprmasystem_finance_review_list_data_source" xsi:type="string">Branch8\RmaAdminUi\Model\ResourceModel\Details\Grid\FinanceReviewCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RmaAdminUi\Model\ResourceModel\Details\Grid\FinanceReviewCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_rma_details</argument>
+            <argument name="eventPrefix" xsi:type="string">mprmasystem_items_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">items_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Webkul\MpRmaSystem\Model\ResourceModel\Details</argument>
+        </arguments>
+    </type>
+    <preference for="Webkul\MpRmaSystem\Model\Pdf" type="Branch8\RmaAdminUi\Override\Webkul\MpRmaSystem\Model\Pdf"/>
+    <preference for="Webkul\MpRmaSystem\Controller\Adminhtml\Rma\Printpdf" type="Branch8\RmaAdminUi\Override\Webkul\MpRmaSystem\Controller\Addminhtml\Rma\Printpdf"/>
+    <preference for="Webkul\MpRmaSystem\Controller\Customer\Printpdf" type="Branch8\RmaAdminUi\Override\Webkul\MpRmaSystem\Controller\Customer\Printpdf" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mprmasystem_details_list_data_source" xsi:type="string">Branch8\RmaAdminUi\Model\ResourceModel\Details\Grid\Collection</item>
+            </argument>
+
+        </arguments>
+    </type>
+    <type name="Branch8\RmaAdminUi\Model\ResourceModel\Details\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">marketplace_rma_grid</argument>
+            <argument name="eventPrefix" xsi:type="string">mprmasystem_items_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">items_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Webkul\MpRmaSystem\Model\ResourceModel\Details</argument>
+        </arguments>
+    </type>
+</config>

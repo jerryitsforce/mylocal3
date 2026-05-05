@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="hotaiconnected_report_daily" instance="HotaiConnected\Report\Cron\SendDailyReport" method="execute">
+            <!-- 每天早上 9:00 執行 -->
+            <schedule>0 9 * * *</schedule>
+        </job>
+    </group>
+</config>

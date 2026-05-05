@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var $block \Branch8\MarketPlaceProductDiscussionCustomer\Block\Product\Discussion
+ * @var $thread \Branch8\MarketPlaceProductDiscussion\Model\Thread
+ * @var $escaper \Magento\Framework\Escaper
+ */
+
+?>
+<div class="prd-discussion-list-wrapper" data-bind="scope:'threadsComponent'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<div class="prd-ask-question-wrapper" data-bind="scope:'askQuestionComponent'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+        }
+    }
+</script>

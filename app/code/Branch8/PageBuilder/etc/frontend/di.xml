@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Branch8.
+ *
+ * @category  Branch8
+ * @package   Branch8_PageBuilder
+ * @author    Branch8: Dev Team
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\PageBuilder\Model\Filter\Template">
+        <plugin name="branch8_pagebuilder_background_images" type="Branch8\PageBuilder\Plugin\TemplateFilterImage" sortOrder="10"/>
+    </type>
+</config>

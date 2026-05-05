@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="b8_update_export_orderprofile_done" instance="Branch8\MarketPlaceOrderExportRabbitMQ\Cron\SetProfileIsDone" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="b8_notify_user_when_export_order_complete" instance="Branch8\MarketPlaceOrderExportRabbitMQ\Cron\NotifyUserWhenExportComplete" method="execute">
+            <schedule>* * * * *</schedule>
+        </job>
+    </group>
+</config>

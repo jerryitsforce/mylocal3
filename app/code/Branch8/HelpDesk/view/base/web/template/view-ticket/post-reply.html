@@ -1,0 +1,52 @@
+<div class="block lrw-block lrw-account-summary-listing">
+    <div class="block-title">
+        <strong>
+            <text args="'Post Reply'"></text>
+        </strong>
+    </div>
+    <div class="block-content" data-bind="blockLoader: isLoading">
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <form id="message-form" class="form helpdesk-form"
+              data-bind="event: {submit: postMessage },afterRender:afterRender"
+              enctype="multipart/form-data">
+            <fieldset class="fieldset">
+
+                <div class="field message required">
+                    <label class="label" for="message">
+                        <span data-bind="i18n: 'Message'"></span>
+                    </label>
+                    <div class="control">
+                         <textarea name="content" id="message"
+                                   class="input-text"
+                                   rows="5"
+                                   data-validate="{'required':true}"
+                                   aria-required="true"></textarea>
+                    </div>
+                </div>
+                <div class="field attachment">
+                    <div class="control">
+                        <!-- ko foreach: getRegion('attachment') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <!-- /ko -->
+                    </div>
+                </div>
+
+            </fieldset>
+            <!-- ko foreach: getRegion('before') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" title="Submit"
+                            class="button action primary"
+                            data-bind="enable:canPost"
+                    >
+                        <span translate="'Post Reply'"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

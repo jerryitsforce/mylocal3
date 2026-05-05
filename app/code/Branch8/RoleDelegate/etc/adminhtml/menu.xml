@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_RoleDelegate::manage" title="Role Delegation" module="Branch8_RoleDelegate" sortOrder="40" parent="Magento_User::system_acl" action="roledelegate/manage/index" resource="Branch8_RoleDelegate::manage"/>
+    </menu>
+</config>

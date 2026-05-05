@@ -1,0 +1,52 @@
+<style>
+    .hotai_auth-loginwithtoken-index {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        height: 100vh;
+    }
+
+    .hotai_auth-loginwithtoken-index:before {
+        margin: auto;
+        width: 32px;
+        aspect-ratio: 2;
+        --_g: no-repeat radial-gradient(circle closest-side, var(--color-red-base) 90%, transparent);
+        background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
+        background-size: 20% 50%;
+        animation: l3 1s infinite linear;
+        height: auto;
+        position: static;
+        content: "";
+        display: inline-flex;
+    }
+</style>
+<script>
+    const queryString = window.location.search;
+
+    fetch(`/rest/V1/hotai_auth/loginWithToken${queryString}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(response => {
+        // console.log('Login successful:', {response});
+        if(response?.redirect_url) {
+            window.location.href = response.redirect_url;
+        } else if (document.referrer) {
+            window.location.href = document.referrer;
+        } else {
+            window.location.href = '/';
+        }
+    })
+    .catch(error => {
+        console.error('Login failed:', {error});
+        if (document.referrer) {
+            window.location.href = document.referrer;
+        } else {
+            window.location.href = '/';
+        }
+    });
+</script>

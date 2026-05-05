@@ -1,0 +1,121 @@
+<?php
+/** @var \Branch8\Customer\Block\Account\Header $block */
+$headerInfo = $block->getAccountHeader();
+$b8CustomerHelper = $this->helper(\Branch8\Customer\Helper\Data::class);
+$giftHelper = $this->helper(\Branch8\GiftToFriend\Helper\Data::class);
+$giftEnabled = $giftHelper->isFeatureEnable();
+$productQuestionEnabled = (bool)$block->getConfigValue('product_discussion/general/enabled')
+?>
+<div class="customer-header">
+    <div class="customer-header-top">
+        <div class="customer-header-info">
+            <?php $customerInfo = $headerInfo['account'];?>
+            <div class="customer-header-info-icon">
+                <img src="<?= $customerInfo['groupIcon'];?>" />
+            </div>
+            <h3 class="customer-header-info-name"><?= $customerInfo['fullname'];?></h3>
+            <p class="customer-header-info-level"><?= $customerInfo['groupLabel'];?></p>
+        </div>
+        <div class="customer-header-point">
+            <h3 class="customer-header-point-title"><?= $block->escapeHtml(__("目前擁有")); ?></h3>
+            <div class="customer-header-point-info">
+                <a class="customer-header-point-item points"
+                   href="/hotai_point/detail/">
+                    <h4 class="customer-header-point-subtitle"><?= $block->escapeHtml(__("和泰Points")); ?></h4>
+                    <div class="customer-header-point-value customer-header-point-user-value">
+                    </div>
+                </a>
+                <a class="customer-header-point-item tickets"
+                    href="/member/ticket/index/">
+                    <h4 class="customer-header-point-subtitle"><?= $block->escapeHtml(__("票券")); ?></h4>
+                    <h5 class="customer-header-point-value"><?php echo $b8CustomerHelper->getCustomerTicketInProfileHeader();?></h5>
+                </a>
+            </div>
+            <p class="customer-header-point-note" data-src="<?= $block->getUrl('member/ajax/expirePoint') ?>"></p>
+        </div>
+    </div>
+    <div class="customer-header-bottom">
+        <div class="customer-nav block-account-nav">
+            <ul class="nav items">
+                <li class="nav item link order"><a href="<?= $block->getOrderLink() ?>"><?= $block->escapeHtml(__("訂單管理")); ?></a></li>
+                <li class="nav item link wishlist"><a href="<?= $block->getWishlistLink() ?>"><?= $block->escapeHtml(__("追蹤清單")); ?></a></li>
+                <li class="nav item link notification"><a href="<?= $block->getNotificationLink() ?>"><?= $block->escapeHtml(__("通知")); ?></a></li>
+                <li class="nav item link user"><a href="<?= $block->getCustomerLink() ?>"><?= $block->escapeHtml(__("會員資料")); ?></a></li>
+                <li class="nav item link address"><a href="<?= $block->getAddressBookLink() ?>"><?= $block->escapeHtml(__("地址管理")); ?></a></li>
+                <li class="nav item link hotai-pay"><a href="<?= $block->getHotaiPaymentLink() ?>"><?= $block->escapeHtml(__("支付管理")); ?></a></li>
+                <li class="nav item link recently-viewed"><a href="<?= $block->getMemberBrowsingHistoryLink() ?>"><?= $block->escapeHtml(__("Browsing History")); ?></a></li>
+                <?php if ($giftEnabled): ?>
+                <li class="nav item link giftbox"><a href="<?= $block->getGiftBoxLink() ?>"><?= $block->escapeHtml(__("禮物盒")); ?></a></li>
+                <?php endif; ?>
+                <li class="nav item link member"><a href="<?= $block->getMemberLevelLink() ?>"><?= $block->escapeHtml(__("會員制度")); ?></a></li>
+                <?php if($productQuestionEnabled): ?>
+                    <li class="nav item link product-question"><a href="<?= $block->getUrl('product_discussion/member/listing') ?>"><?= $block->escapeHtml(__("商品問答")); ?></a></li>
+                <?php endif?>
+            </ul>
+        </div>
+        <?php
+            $nextLevel = $headerInfo['nextLevel'];
+        ?>
+
+        <?php if(empty($nextLevel)) : ?>
+            <div class="customer-header-upgrade empty">
+            </div>
+        <?php else: ?>
+            <div class="customer-header-upgrade empty">
+            </div>
+            <!-- <div class="customer-header-upgrade have-data">
+                <h3 class="customer-header-upgrade-title">
+                    <?= $block->escapeHtml(__("升級任務，成為")); ?>
+                    <a href="/member/level/index" class="action action-primary action-upgrade"><span><?= $nextLevel['name'];?></span></a>
+                </h3>
+                <div class="customer-header-upgrade-info">
+                    <?php if(isset($nextLevel['condition']['condition_num_orders'])):?>
+                    <div class="customer-header-upgrade-item customer-header-upgrade-order">
+                        <h4 class="customer-header-upgrade-subtitle"><?= $block->escapeHtml(__("訂單")); ?></h4>
+                        <div class="customer-header-upgrade-value order-number">
+                            <span class="value"><?= $nextLevel['currentData']['numOfOrder'];?></span>
+                            <span class="divider">/</span>
+                            <span class="condition"><?= $nextLevel['condition']['condition_num_orders'];?></span>
+                        </div>
+                        <div class="customer-header-upgrade-progress order-number">
+                            <span class="customer-header-upgrade-progress-value"
+                                  style="width:<?= $nextLevel['currentData']['numOfOrderPercent'];?>%" ></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <?php if(isset($nextLevel['condition']['condition_total_value'])):?>
+                    <div class="customer-header-upgrade-item customer-header-upgrade-total">
+                        <h4 class="customer-header-upgrade-subtitle"><?= $block->escapeHtml(__("消費")); ?></h4>
+                        <div class="customer-header-upgrade-value order-total">
+                            <span class="value"><?= $nextLevel['currentData']['totalValue'];?></span>
+                            <span class="divider">/</span>
+                            <span class="condition"><?= $nextLevel['condition']['condition_total_value'];?></span>
+                        </div>
+                        <div class="customer-header-upgrade-progress order-total">
+                            <span class="customer-header-upgrade-progress-value"
+                                  style="width:<?= $nextLevel['currentData']['totalValuePercent'];?>%" ></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div> -->
+        <?php endif; ?>
+
+
+        <div class="mobile-content block-recently-viewed">
+            <?= $b8CustomerHelper->getCustomerPageCustomBlock(); ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8CustomerAccount": {},
+            "Branch8_Customer/js/closetExpiringPoint": {
+                "pointSelector": ".customer-header-point-user-value",
+                "expireSelector": ".customer-header-point-note"
+            }
+        }
+    }
+</script>

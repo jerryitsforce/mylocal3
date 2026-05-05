@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiPay\Block\Api\AddCard
+ */
+?>
+<div class="co-loader">
+    <!-- <span class="loader-text"><?= __('開始我的旅程') ?></span> -->
+</div>
+<?php
+$reqjsonpwd = $block->getData('reqjsonpwd');
+$endpoint = $block->getCreditCardManualUrl();
+?>
+<div class="field-hidden">
+    <form name="setup_creditcard" id="setup_creditcard" method="post" enctype="multipart/form-data" action="<?=$block->escapeUrl($block->getCreditCardManualUrl())?>">
+        <input type="hidden" id="setup_creditcard_data" name="reqjsonpwd" value='<?=$block->getData('reqjsonpwd')?>' />
+    </form>
+</div>
+
+<script>
+    var form = document.getElementById("setup_creditcard");
+    form.submit();
+</script>

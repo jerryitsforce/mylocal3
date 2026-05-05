@@ -1,0 +1,124 @@
+<?php
+/**
+ * @var $block Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Branch8\Catalog\Helper\Data::class);
+$_product = $block->getProduct();
+
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+/**
+ * @var $_helper \Branch8\Catalog\Helper\Data
+ */
+$promotions = $_helper->getAllPromotionByProduct($_product);
+?>
+<?php if (count($promotions) > 0) :?>
+<div class="promotion-events">
+    <div class="label"><?= $block->escapeHtml(__("Promotions")); ?></div>
+    <div class="value">
+        <?php /** @var $promotion Magento\SalesRule\Model\Rule */ ?>
+        <?php foreach ($promotions as $promotion): ?>
+        <?php if ($promotion->getSimpleAction() == 'add_gift' || $promotion->getSimpleAction() == 'add_gift_foreach'): ?>
+            <?php /** @var $productGift Magento\Catalog\Model\Product */ ?>
+            <?php $productGift = $_helper->getProductBySku($promotion->getGiftSku()); ?>
+            <div class="promotion-event">
+                <div class="product-tag"><?= $block->escapeHtml(__("Giveaway")); ?></div>
+                <?php if(!$productGift): ?>
+                    <div class="promotion-event-name"><?= $block->escapeHtml($promotion->getStoreLabel()) ?></div>
+                <?php else: ?>
+                    <div class="promotion-event-name action" data-trigger="promotion-<?= $block->escapeHtml($promotion->getRuleId()) ?>" >
+                        <?= $block->escapeHtml($promotion->getStoreLabel()) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php if ($productGift): ?>
+                <div class="popup-free-gift" id="promotion-<?= $block->escapeHtml($promotion->getRuleId()) ?>" style="display: none;"
+                    data-bind="mageInit: {
+                        'Magento_Ui/js/modal/modal': {
+                            type: 'popup',
+                            buttons: [],
+                            'trigger': '<?= "[data-trigger=promotion-".$block->escapeHtml($promotion->getRuleId())."]" ?>',
+                            modalClass: 'description-modal no-footer',
+                            title: '<?= $block->escapeHtml($promotion->getStoreLabel()) ?>'
+                        }
+                    }">
+                    <div class="gift-content">
+                        <div class="gift-product">
+                            <div class="gift-image">
+                                <img src="<?= $this->getViewFileUrl('images/gift.svg') ?>" alt="<?= $block->escapeHtml(__("Giveaway")); ?>"/>
+                            </div>
+                            <div class="gift-product-info">
+                                <div class="gift-name"><?= $block->escapeHtml($productGift->getName()) ?></div>
+                                <?php $attributes = $promotion->getExtensionAttributes() ?: []; ?>
+                                <?php if ($productGift->getExtensionAttributes()->getStockItem()): ?>
+                                <div class="gift-qty"><?= $productGift->getExtensionAttributes()->getStockItem()->getQty() ?></div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="gift-description">
+                            <?php $lines = explode("\n", $promotion->getDescription());
+                                    $html = "<ul>";
+                                    foreach ($lines as $line) {
+                                        $trimmedLine = trim($line);
+                                        if (!empty($trimmedLine)) {
+                                            $html .= "<li>" . htmlspecialchars($trimmedLine) . "</li>";
+                                        }
+                                    }
+                                    $html .= "</ul>";
+                            ?>
+                            <?= $html; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php else:
+            $promotionDescription = $promotion->getDescription();
+        ?>
+            <div class="promotion-event">
+                <div class="product-tag"><?= $block->escapeHtml(__("Event")); ?></div>
+                <?php if(!$promotionDescription): ?>
+                    <div class="promotion-event-name"><?= $block->escapeHtml($promotion->getStoreLabel()) ?></div>
+                <?php else: ?>
+                    <div class="promotion-event-name action" data-trigger="promotion-<?= $block->escapeHtml($promotion->getRuleId()) ?>" >
+                        <?= $block->escapeHtml($promotion->getStoreLabel()) ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+                <?php if ($promotionDescription):
+                    ?>
+                    <div class="popup-free-gift" id="promotion-<?= $block->escapeHtml($promotion->getRuleId()) ?>" style="display: none;"
+                        data-bind="mageInit: {
+                            'Magento_Ui/js/modal/modal': {
+                                type: 'popup',
+                                buttons: [],
+                                'trigger': '<?= "[data-trigger=promotion-".$block->escapeHtml($promotion->getRuleId())."]" ?>',
+                                modalClass: 'description-modal no-footer',
+                                title: '<?= $block->escapeHtml($promotion->getStoreLabel()) ?>'
+                            }
+                        }">
+                        <div class="gift-content">
+                            <div class="gift-description">
+                                <?php $lines = explode("\n", $promotion->getDescription());
+                                        $html = "<ul>";
+                                        foreach ($lines as $line) {
+                                            $trimmedLine = trim($line);
+                                            if (!empty($trimmedLine)) {
+                                                $html .= "<li>" . htmlspecialchars($trimmedLine) . "</li>";
+                                            }
+                                        }
+                                        $html .= "</ul>";
+                                ?>
+                                <?= $html; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+        <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
+

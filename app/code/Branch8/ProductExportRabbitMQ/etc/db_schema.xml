@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_product_export_profile" resource="default" engine="innodb"
+           comment="Branch8 Product Export Profile">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="profile_type" nullable="false" length="32" comment="ADMIN|SELLER"/>
+        <column xsi:type="varchar" name="receiver_email" nullable="false" length="32" comment="Receiver Email"/>
+        <column xsi:type="varchar" name="receiver_name" nullable="false" length="1024" comment="Receiver Name"/>
+        <column xsi:type="int" name="user_id" unsigned="true" nullable="false" identity="false" default="0" comment="User ID"/>
+        <column xsi:type="smallint" name="store_id" unsigned="true" nullable="false" identity="false" default="0" comment="Store ID"/>
+        <column xsi:type="longblob" name="product_ids" nullable="false" comment="Order Ids"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"/>
+        <column xsi:type="datetime" name="publish_at" on_update="false" nullable="false" default="0"/>
+        <column xsi:type="datetime" name="executed_at" on_update="false" nullable="false" default="0"/>
+        <column xsi:type="varchar" name="file_path" nullable="false" length="1024" comment="file path"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

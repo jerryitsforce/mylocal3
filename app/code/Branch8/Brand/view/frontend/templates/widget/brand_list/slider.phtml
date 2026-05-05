@@ -1,0 +1,60 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Shop by Brand for Magento 2
+ */
+/** @var \Branch8\Brand\Block\Widget\BrandList $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$items = $block->getIndex();
+$isShowLogos = $block->isShowBrandLogo();
+$brandListClass = 'ambrands-widget-' . random_int(1, 1000);
+$title = $block->getTitle();
+?>
+<?php if ($items): ?>
+<div class="brandlist-slider-widget <?= /* @noEscape */ $brandListClass ?>">
+    <?php if ($title) : ?>
+    <div class="brandlist-slider-title">
+        <span><?= $title ?></span>
+    </div>
+    <?php endif; ?>
+    <div class="brandlist-slider-content">
+        <ul class="ambrands-slider-list">
+        <?php foreach ($items as $item): ?>
+            <li class="ambrands-slider-item <?= /* @noEscape */ !$isShowLogos ? '-no-logo' : '' ?>"
+                <?= /** @noEscape */ $block->getTooltipAttribute($item) ?>>
+                <a href="<?= $escaper->escapeUrl($item['url']) ?>"
+                    class="ambrands-inner"
+                    title="<?= $escaper->escapeHtmlAttr($item['label']) ?>">
+                    <?php if ($isShowLogos): ?>
+                        <?php if ($item['img']): ?>
+                            <span class="ambrands-image-block">
+                                <img class="ambrands-image"
+                                        src="<?= $escaper->escapeUrl($item['img']) ?>"
+                                        title="<?= $escaper->escapeHtmlAttr($item['alt']) ?>"
+                                        alt="<?= $escaper->escapeHtmlAttr($item['alt']) ?>" />
+                            </span>
+                        <?php else: ?>
+                            <span class="ambrands-image-block">
+                                <span class="ambrands-empty"><?= $escaper->escapeHtml($item['label']) ?></span>
+                            </span>
+                        <?php endif ?>
+                    <?php endif ?>
+                    <span class="ambrands-label">
+                        <?= $escaper->escapeHtml($item['label']) ?>
+                    </span>
+                </a>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8_brandSlider": {}
+        }
+    }
+</script>
+<?php endif; ?>

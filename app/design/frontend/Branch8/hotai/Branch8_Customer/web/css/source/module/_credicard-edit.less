@@ -1,0 +1,313 @@
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+  .customer-custom-breadcrumb {
+    position: relative;
+
+    .account .page-wrapper & .breadcrumbs {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      transform: rotate(-180deg);
+      z-index: 1;
+      left: 20px;
+      top: 1px;
+    }
+
+    .breadcrumbs {
+      .item {
+        display: inline-flex;
+      }
+
+      a { 
+        display: inline-flex;
+        text-decoration: none;
+
+        &::before {
+          &:extend(.abs-hotai-icon all);
+          content: var(--icon-arrow);
+          font-size: 26px;
+          line-height: 48px;
+          color: var(--color-black-solid1);
+        }
+
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .hotaipay-creditcard-edit {
+    .page-title-wrapper {
+      margin-left: calc(~"-1* var(--layout-indent__width)");
+      margin-right: calc(~"-1* var(--layout-indent__width)");
+
+      .account& .page-title {
+        padding: 0 var(--layout-indent__width);
+        align-items: center;
+        justify-content: center;
+
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+    }
+
+    main.page-main {
+      padding-bottom: 37px;
+    }
+  }
+
+  .creditcard-edit-wrapper {
+    padding: 0 8px;
+  }
+
+ .creditcard-edit-form-wrapper {
+  margin: -5px 0 0;
+  
+  .form-alias-edit {
+    .fieldset {
+      margin: 0 0 13px;
+    }
+
+    .actions-toolbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+      .primary {
+        display: flex;
+        flex-direction: column;
+        gap: 12px 0;
+      }
+
+      .action {
+        min-width: 138px;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 10px 30px;
+      }
+
+      .action-back {
+        order: 1;
+      }
+    }
+
+    .card-nomask {
+      color: var(--color-gray-solid3);
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: 1px;
+      display: flex;
+      padding: 7px 0 6px;
+    }
+
+    .fieldset {
+      > .field {
+        margin: 0 0 17px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px 0;
+
+        > .label {
+          &:extend(.abs-label all);
+          &:extend(.abs-body-text-bold all);
+
+          &::after {
+            color: var(--color-red-base);
+            margin-left: -4px;
+            font-size: 14px;
+          }
+        }
+
+        &:extend(.abs-input all);
+
+        input[type="number"],
+        input[type="text"] {
+          &:extend(.abs-body-text all);
+        }
+
+        > .control {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0 10px;
+
+          &.switch-option {
+            gap: 0;
+          }
+        }
+      }
+    }
+  }
+ }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__xs) {}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__s) {
+  .account .page-wrapper .customer-custom-breadcrumb .breadcrumbs {
+    left: 52px;
+  }
+  .creditcard-edit-wrapper {
+    padding: 0;
+  }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+  .customer-custom-breadcrumb {
+    .breadcrumbs {
+      a {
+        &:extend(.abs-tb-caption1-medium all);
+      }
+    }
+  }
+
+  .creditcard-edit-form-wrapper {
+    .form-alias-edit{
+      .fieldset {
+        > .field {
+          gap: 12px 0;
+          margin: 0 0 27px;
+          > .label {
+            &:extend(.abs-label all);
+            &:extend(.abs-body-text-bold all);
+          }
+
+          &:extend(.abs-input all);
+
+          input[type="number"],
+          input[type="text"] {
+            &:extend(.abs-body-text all);
+          }
+        }
+      }
+
+      .actions-toolbar .primary {
+        flex-direction: row;
+        gap: 0 12px;
+
+        .action-back {
+          order: 0;
+        }
+      }
+    }
+  }
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__l) {
+  .customer-custom-breadcrumb {
+    padding: 24px 0;
+    margin: 0 0 11px;
+
+    .account .page-wrapper  & {
+      .breadcrumbs {
+        position: static;
+        transform: none;
+        margin: 0 auto;
+        max-width: 780px;
+      }
+    }
+
+    .breadcrumbs {
+      a  {
+        align-items: center;
+        display: inline-flex;
+        gap: 0 3px;
+        color: var(--color-gray-light2);
+        &::before {
+          content: var(--icon-prev1);
+          line-height: 1;
+          font-size: 12px;
+          color: var(--color-gray-light2);
+        }
+        span {
+          display: inline-block;
+        }
+      }
+    }
+  }
+ 
+  .hotaipay-creditcard-edit {
+    .account& {
+      main.page-main {
+        padding-top: 0;
+      }
+      
+      .column.main {
+        margin-bottom: 42px;
+      }
+    }
+
+    .columns {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .page-title-wrapper {
+      .page-title {
+        margin: 0 0 41px;
+      }
+    }
+  }
+
+  .creditcard-edit-form-wrapper {
+    .form-alias-edit  {
+      .fieldset {
+        background: var(--color-gray-light1);
+        border-radius: var(--CardL);
+        padding: 42px 40px 30px;
+        margin: 0 0 40px;
+      }
+    }
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+  .customer-custom-breadcrumb {
+    .breadcrumbs {
+      a {
+        &:extend(.abs-tb-caption1-medium all);
+      }
+    }
+  }
+
+  .creditcard-edit-form-wrapper {
+    .form-alias-edit{
+      .fieldset {
+        > .field {
+          > .label {
+            &:extend(.abs-label all);
+            &:extend(.abs-body-text-bold all);
+          }
+
+          &:extend(.abs-input all);
+
+          input[type="number"],
+          input[type="text"] {
+            &:extend(.abs-body-text all);
+          }
+        }
+      }
+    }
+  }
+}

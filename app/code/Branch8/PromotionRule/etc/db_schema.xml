@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalogrule">
+        <column xsi:type="boolean" name="seller_borne_discount" nullable="true" default="false" comment="Seller-borne Discount"/>
+        <column xsi:type="varchar" name="seller_ids" nullable="true" length="255" comment="Seller IDs"/>
+        <column xsi:type="smallint" name="borne_discount_percentage" unsigned="false" nullable="false" identity="false" default="0" comment="Borne Discount Percentage"/>
+    </table>
+    <table name="salesrule">
+        <column xsi:type="boolean" name="seller_borne_discount" nullable="true" default="false" comment="Seller-borne Discount"/>
+        <column xsi:type="varchar" name="seller_ids" nullable="true" length="255" comment="Seller IDs"/>
+        <column xsi:type="smallint" name="borne_discount_percentage" unsigned="false" nullable="false" identity="false" default="0" comment="Borne Discount Percentage"/>
+    </table>
+    <table name="sales_order">
+        <column xsi:type="decimal" name="seller_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Total Amount"/>
+        <column xsi:type="decimal" name="platform_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Total Amount"/>
+        <column xsi:type="varchar" name="applied_catalog_rule_ids" nullable="true" length="128" comment="AppliedT Catalog Rule Ids"/>
+        <column xsi:type="longtext" name="catalog_rules_borne_info" nullable="true"
+                comment="Contain information about catalog rule born(eg:percent,status)"/>
+        <column xsi:type="longtext" name="cart_rules_borne_info" nullable="true"
+                comment="Contain information about cart rule born(eg:percent,status)"/>
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="decimal" name="seller_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Total Amount"/>
+        <column xsi:type="decimal" name="platform_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Total Amount"/>
+        <column xsi:type="varchar" name="applied_catalog_rule_ids" nullable="true" length="128" comment="Applied Catalog Rule Ids"/>
+        <column xsi:type="text" name="sale_rule_discount_breakdown" nullable="false"
+                comment="Sale Rule Discount BreakDown (eg ruleA:xx,ruleb:yyy)"/>
+        <column xsi:type="longtext" name="catalog_rules_borne_info" nullable="true"
+                comment="Contain information about catalog rule born(eg:percent,status)"/>
+        <column xsi:type="longtext" name="cart_rules_borne_info" nullable="true"
+                comment="Contain information about cart rule born(eg:percent,status)"/>
+
+    </table>
+    <table name="quote_item">
+        <column xsi:type="varchar" name="applied_catalog_rule_ids" nullable="true" length="128" comment="Applied Catalog Rule Ids"/>
+        <column xsi:type="decimal" name="seller_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Total Amount"/>
+        <column xsi:type="decimal" name="platform_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Total Amount"/>
+        <column xsi:type="text" name="sale_rule_discount_breakdown" nullable="false"
+                comment="Sale Rule Discount BreakDown (eg ruleA:xx,ruleb:yyy)"/>
+        <column xsi:type="longtext" name="catalog_rules_borne_info" nullable="true"
+                comment="Contain information about catalog rule born(eg:percent,status)"/>
+        <column xsi:type="longtext" name="cart_rules_borne_info" nullable="true"
+                comment="Contain information about cart rule born(eg:percent,status)"/>
+    </table>
+    <table name="quote">
+        <column xsi:type="decimal" name="seller_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="seller_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Seller-borne Total Amount"/>
+        <column xsi:type="decimal" name="platform_borne_catalogrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Catalog Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_salesrule_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Sales Rule Amount"/>
+        <column xsi:type="decimal" name="platform_borne_total_amount" scale="4" precision="20" unsigned="false" nullable="true" comment="Platform-borne Total Amount"/>
+        <column xsi:type="varchar" name="applied_catalog_rule_ids" nullable="true" length="128" comment="Applied Catalog Rule Ids"/>
+        <column xsi:type="longtext" name="catalog_rules_borne_info" nullable="true"
+                comment="Contain information about catalog rule born(eg:percent,status)"/>
+        <column xsi:type="longtext" name="cart_rules_borne_info" nullable="true"
+                comment="Contain information about cart rule born(eg:percent,status)"/>
+    </table>
+</schema>

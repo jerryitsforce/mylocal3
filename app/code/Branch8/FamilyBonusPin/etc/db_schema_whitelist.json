@@ -1,0 +1,58 @@
+{
+    "family_bonus_pin_batch_setting": [],
+    "family_bonus_pin_ticket_record": [],
+    "family_bonus_pin_batch_setting_v2": {
+        "column": {
+            "setting_id": true,
+            "seller_id": true,
+            "belong_to_product_id": true,
+            "batch_code": true,
+            "safety_stock": true,
+            "sale_start_time": true,
+            "sale_end_time": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "due_days": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FAMILY_BONUS_PIN_BATCH_SETTING_V2_BATCH_CODE": true,
+            "FK_1D65431BB7690F9884063BEC5243A202": true
+        }
+    },
+    "family_bonus_pin_ticket_record_v2": {
+        "column": {
+            "record_id": true,
+            "batch_setting_id": true,
+            "pin_code": true,
+            "seller_id": true,
+            "belong_to_product_id": true,
+            "quote_item_id": true,
+            "sales_order_item_id": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "due_days": true,
+            "used_date": true,
+            "used_transaction_no": true,
+            "used_count": true,
+            "returned_date": true,
+            "status": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "FAMILY_BONUS_PIN_TICKET_RECORD_V2_BELONG_TO_PRODUCT_ID": true,
+            "FAMILY_BONUS_PIN_TICKET_RECORD_V2_BATCH_SETTING_ID_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FAMILY_BONUS_PIN_TICKET_RECORD_V2_PIN_CODE": true,
+            "FK_3813A57C8383E96F3399A7780ED4BA05": true,
+            "FK_65944C4D544DD97DC5D263F5659A2FC1": true,
+            "FK_CEA4FE75DDFE9C2D68C252F30A6DEE81": true
+        }
+    }
+}

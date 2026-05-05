@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <sellersubaccount>
+            <general_settings>
+                <sub_account_group>23</sub_account_group>
+            </general_settings>
+            <email_setting>
+                <new_sub_email_without_password>sellersubaccount_email_setting_new_sub_email_without_password</new_sub_email_without_password>
+            </email_setting>
+        </sellersubaccount>
+    </default>
+</config>

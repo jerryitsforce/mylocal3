@@ -1,0 +1,46 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Seller replied to your question"}} @-->
+<!--@vars {
+"var customer_first_name":"Customer First Name",
+"var customer_last_name":"Customer Last Name",
+"var name":"Customer Name",
+"var product_name":"Product Name",
+"var product_url":"Product Url",
+"var question":"question"
+"var reply|escape|nl2br":"Message",
+} @-->
+{{template config_path="design/email/header_template"}}
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Dear %name," name=$name}}</p>
+            <p>
+                {{trans "The seller has replied to your question." |raw}}
+            </p>
+            <p><strong>{{trans "Product"|raw}}:</strong> {{var product_name}}</p>
+            <p><strong>{{trans "Your Question"|raw}}:</strong></p>
+            <p style="padding:10px;background:#f5f5f5;">
+                {{var question}}
+            </p>
+            <p><strong>{{trans "Seller Reply"|raw}}:</strong></p>
+            <p style="padding:10px;background:#f0f8ff;">
+                {{var reply}}
+            </p>
+            <p>
+                {{trans "You can view the full discussion by clicking the link below:"|raw}}
+            </p>
+            <p>
+                <a href="{{var product_url}}" style="color:#1a73e8;">
+                    {{trans "View Discussion"|raw}}
+                </a>
+            </p>
+        </td>
+    </tr>
+</table>
+{{template config_path="design/email/footer_template"}}
+

@@ -1,0 +1,59 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+use Magento\Framework\App\Action\Action;
+/** @var \Magento\Wishlist\Block\Customer\Wishlist\Item\Column\Cart $block */
+/** @var \Magento\Framework\Escaper $escaper */
+/** @var \Magento\Wishlist\Model\Item $item */
+$item = $block->getItem();
+$product = $item->getProduct();
+/** @var \Magento\Wishlist\ViewModel\AllowedQuantity $viewModel */
+$viewModel = $block->getData('allowedQuantityViewModel');
+$allowedQty = $viewModel->setItem($item)->getMinMaxQty();
+?>
+<div class="product-item-inner<?php if (!$product->getIsSalable()) { echo ' stock-unavailable'; } ?>">
+    <div class="product-item-actions">
+        <div class="actions-primary">
+            <?php if ($product->isSaleable()): ?>
+                <?php $postParams = $block->getAddToCartPostParams($product); ?>
+                <form data-role="tocart-form" data-product-sku="<?= $block->escapeHtml($product->getSku()) ?>" action="<?= $block->escapeUrl($postParams['action']) ?>" method="post">
+                    <input type="hidden" name="product" value="<?= $block->escapeHtmlAttr($postParams['data']['product']) ?>">
+                    <input type="hidden" name="<?= /* @noEscape */ Action::PARAM_NAME_URL_ENCODED ?>" value="<?= /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED] ?>">
+                    <?= $block->getBlockHtml('formkey') ?>
+                    <button type="submit"
+                            title="<?= $block->escapeHtml(__('Sure')) ?>"
+                            class="action tocart primary">
+                        <span><?= $block->escapeHtml(__('Sure')) ?></span>
+                    </button>
+                </form>
+                <script type="text/x-magento-init">
+                    {
+                        "[data-role=tocart-form], .form.map.checkout": {
+                            "catalogAddToCart": {
+                                "product_sku": "<?= $escaper->escapeJs($product->getSku()); ?>"
+                            }
+                        }
+                    }
+                </script>
+            <?php else: ?>
+                <?php if ($product->getIsSalable()): ?>
+                    <div class="stock available"><span><?= $block->escapeHtml(__('In stock')) ?></span></div>
+                <?php else: ?>
+                    <div class="stock unavailable"><span><?= $block->escapeHtml(__('Out of stock')) ?></span></div>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+        <div class="actions-secondary" data-role="add-to-links">
+            <?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow()): ?>
+                <a href="#"
+                   data-role="remove"
+                   data-post-remove='<?= /* @noEscape */ $block->getItemRemoveParams($block->getItem()) ?>'
+                   class="action towishlist" data-action="remove-to-wishlist">
+                    <span><?= $block->escapeHtml(__('Remove to Wish List')) ?></span>
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

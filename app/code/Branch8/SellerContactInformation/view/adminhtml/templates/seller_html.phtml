@@ -1,0 +1,29 @@
+<?php
+$seller = $block->getSeller();
+?>
+<div class="admin__fieldset">
+    <div class="admin__field">
+        <div class="admin__field-label">
+            <label>
+                <span>Seller</span>
+            </label>
+        </div>
+        <div class="admin__field-control">
+            <a href="<?php echo $this->getUrl('customer/index/edit', ['id' => $seller['entity_id'], 'seller_panel' => 1]);?>"><?php echo $seller['name'];?></a>
+        </div>
+    </div>
+</div>
+<style>
+    input[name="information[contracts_from]"],input[name="information[contracts_to]"]{
+        pointer-events: none;
+        width: 20rem !important
+    }
+</style>
+<?php 
+if($this->isContractActive((int)$this->getRequest()->getParam('cid'))){?>
+<style>
+    [data-index="contracts_from"] .ui-datepicker-trigger{
+        display:none;
+    }
+</style>
+<?php }?>s

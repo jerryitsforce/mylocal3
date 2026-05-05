@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var \Branch8\Customer\Block\Info\Detail $block
+ */
+$invoiceCarrier = $block->getCustomer()?->getCustomAttribute('invoice_carrier')?->getValue() ?? '';
+?>
+
+<div class="member-info invoice-form-wrapper">
+    <form class="member-form nickname-form"  data-mage-init='{"validation":{}}' action="<?= $block->escapeHtml($block->getUrl('member/info/detail_save')); ?>" id="invoice-info" name="member-info" method="post" enctype="multipart/form-data" >
+        <?= $block->getBlockHtml('formkey') ?>
+        <fieldset class="fieldset">
+            <div class="field required">
+                <label for="invoice_carrier" class="label">
+                    <span><?= $block->escapeHtml(__('Barcode')); ?></span>
+                </label>
+                <div class="control">
+                    <input type="text"
+                           data-validate="{required:true, 'validate-tw-barcode':true}"
+                           class="input-text required-entry"
+                           title="<?= $block->escapeHtml(__('Please enter the invoice carrier')); ?>"
+                           name="invoice_carrier"
+                           id="invoice-carrier"
+                           value="<?= $invoiceCarrier ?>"
+                           placeholder="<?= $block->escapeHtml(__('Please enter the invoice carrier')); ?>"
+                           aria-required="true">
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" title="<?= /* @escapeNotVerified */ __('Submit') ?>" class="action primary action-submit" <?= empty($invoiceCarrier) ? 'disabled' : ''?>>
+                    <span><?= /* @escapeNotVerified */ __('Submit') ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#invoice-info": {
+            "b8MemberInfo": {}
+        }
+    }
+</script>

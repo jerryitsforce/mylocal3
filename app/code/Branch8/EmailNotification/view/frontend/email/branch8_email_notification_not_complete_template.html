@@ -1,0 +1,71 @@
+<!--@subject {{trans "HOTAI 購商城異常訂單提醒"}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<style>
+    .container-flex {
+        display: flex;
+        width: 100%;
+        /* height: 300px; */
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    .left-flex,
+    .right-flex {
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+</style>
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">您好，目前以下的訂單有異常，請協助人工處理，謝謝。</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+        </td>
+    </tr>
+    <tr class="email-information">
+    </tr>
+</table>
+
+<div class="container-flex">
+    <div class="left-flex">
+        <table class="query-details">
+            <tr>
+                <td>
+                    發票開立異常：
+                </td>
+            </tr>
+            {{for ecpay_order in ecpay_orders}}
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;">{{var ecpay_order.increment_id}}</td>
+            </tr>
+            {{/for}}
+        </table>
+    </div>
+    <div class="right-flex">
+        <table class="query-details">
+            <tr>
+                <td>
+                    扣點失敗：
+                </td>
+            </tr>
+            {{for point_order in point_orders}}
+            <tr>
+                <td style="padding: 8px; border: 1px solid #ddd;">{{var point_order.increment_id}}</td>
+            </tr>
+            {{/for}}
+        </table>
+    </div>
+</div>
+
+<div>
+    <p>HOTAI購商城自動信件，請勿直接回覆此信</p>
+</div>
+
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var \Branch8\GiftToFriend\Block\GiftBox\Service $block
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+?>
+<div class="giftorder-service" data-role="new-ticket-form" data-bind="scope:'ticketCreateForm'">
+  <div class="giftorder-loading" data-bind="visible: !isLoaded()">
+    <span class="giftorder-loader"></span>
+  </div>
+  <!-- ko template: getTemplate() --><!-- /ko -->
+  <?php // phpcs:ignore Magento2.Legacy.PhtmlTemplate ?>
+  <script type="text/x-magento-init">
+    {
+      "[data-role='new-ticket-form']": {
+        "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+      }
+    }
+  </script>
+</div>

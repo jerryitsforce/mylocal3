@@ -1,0 +1,98 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+    .modal-popup.delete-address-modal {
+        min-height: 236px;
+
+        .modal-inner-wrap {
+            box-shadow: 0 0 10px 2px #2318150A;
+            background-color: @color-white !important;
+        }
+
+        .modal-content {
+            overflow: unset;
+        }
+
+        .modal-body {
+            padding: 0;
+            width: 100%;
+        }
+
+        .modal-footer {
+            display: flex;
+            border: none !important;
+            gap: 16px;
+
+            &::before,
+            &::after {
+                display: none;
+            }
+
+            .action {
+                @abs-body-text-medium();
+                flex-grow: 1;
+                padding: 10px 32px;
+                min-width: unset;
+            }
+        }
+        .action-close {
+            margin: 20px;
+        }
+    }
+
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    .modal-popup.delete-address-modal {
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    .modal-popup.delete-address-modal {
+        bottom: unset;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        width: calc(~"100% - 64px") !important;
+
+        .modal-inner-wrap {
+            max-width: unset;
+        }
+    }
+}
+
+// Tiny
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__xs) {
+    .modal-popup.delete-address-modal {
+        width: calc(~"100% - 64px") !important;
+
+        .modal-footer {
+            flex-direction: column-reverse;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .action {
+            @abs-body-text-medium();
+        }
+    }
+}

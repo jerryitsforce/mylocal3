@@ -1,0 +1,20 @@
+<?php /** @var  $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\View */ ?>
+
+<?php $_history = $block->getOrder()->getVisibleStatusHistory() ?>
+<?php if (!empty($_history)) : ?>
+    <div class="block block-order-details-comments">
+        <div class="block-title"><strong>
+                <?= $block->escapeHtml(__('About Your Order')) ?></strong>
+        </div>
+        <div class="block-content">
+            <dl class="order-comments">
+                <?php foreach ($_history as $_historyItem) : ?>
+                    <dt class="comment-date">
+                        <?= $block->formatDate($_historyItem->getCreatedAt(), \IntlDateFormatter::MEDIUM, true) ?>
+                    </dt>
+                    <dd class="comment-content"><?= $block->escapeHtml($_historyItem->getComment(), ['b', 'br', 'strong', 'i', 'u', 'a']) ?></dd>
+                <?php endforeach; ?>
+            </dl>
+        </div>
+    </div>
+<?php endif; ?>

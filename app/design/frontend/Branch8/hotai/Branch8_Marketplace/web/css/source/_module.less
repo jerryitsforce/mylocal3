@@ -1,0 +1,31 @@
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .wk-mp-page-header{
+    position: relative;
+    z-index: 101;
+  }
+
+  .marketplace-order-history .modal-popup .modal-inner-wrap{
+    max-width: 98%;
+  }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break = @screen__sl) {
+
+}

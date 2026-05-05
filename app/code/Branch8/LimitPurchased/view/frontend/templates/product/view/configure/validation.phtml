@@ -1,0 +1,177 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $viewModel \Branch8\LimitPurchased\ViewModel\Product\LimitPurchased
+ */
+$viewModel = $block->getData('view_model');
+$product = $block->getProduct();
+
+if ($product) {
+    $maxQty = $viewModel->getMaxAllowedQty($product);
+    $productId = $product->getId();
+} else {
+    $maxQty = null;
+    $productId = null;
+}
+?>
+<?php if ($maxQty !== null && $maxQty >= 0): ?>
+    <script>
+        require(['jquery', 'mage/translate', 'mage/validation', 'Magento_Customer/js/customer-data'], function ($, $t, validation, customerData) {
+            $(document).ready(function () {
+                var originalMaxQty = <?= (int)$maxQty ?>;
+                var productId = <?= (int)$productId ?>;
+                var qtyInput = $('#qty');
+                var adjustedMaxQty = originalMaxQty;
+                
+                // Use Magento's built-in cart section (already loaded, instant access)
+                var cartSection = customerData.get('cart');
+                
+                function updateMaxQty() {
+                    var cartData = cartSection();
+                    
+                    if (!cartData || !cartData.items) {
+                        // Force reload cart section
+                        customerData.reload(['cart'], false);
+                        
+                        // Wait for reload and try again
+                        setTimeout(function() {
+                            var reloadedCartData = cartSection();
+                            
+                            if (reloadedCartData && reloadedCartData.items) {
+                                calculateAndApplyMaxQty(reloadedCartData);
+                            } else {
+                                adjustedMaxQty = originalMaxQty;
+                            }
+                        }, 500);
+                        return;
+                    }
+                    
+                    calculateAndApplyMaxQty(cartData);
+                }
+                
+                function calculateAndApplyMaxQty(cartData) {
+                    // Try to get current item ID from form action to exclude it
+                    var currentItemId = null;
+                    if (qtyInput.length) {
+                        var form = qtyInput.closest('form');
+                        var action = form.attr('action');
+                        if (action) {
+                            var match = action.match(/\/id\/(\d+)/);
+                            if (match && match[1]) {
+                                currentItemId = match[1];
+                            }
+                        }
+                    }
+
+                    // Calculate cart qty from cart items
+                    var cartQty = 0;
+                    $.each(cartData.items, function(index, item) {
+                        if (item.product_id == productId) {
+                            // Skip if this is the item being edited
+                            if (currentItemId && item.item_id == currentItemId) {
+                                return;
+                            }
+                            cartQty += parseFloat(item.qty) || 0;
+                        }
+                    });
+                    
+                    // Adjust max qty by subtracting cart qty
+                    adjustedMaxQty = Math.max(0, originalMaxQty - cartQty);
+
+                    // Update the limit message text with adjusted qty
+                    var qtyMessage = $('.limit-qty-text-popup');
+                    if (qtyMessage.length > 0 && originalMaxQty >= 0) {
+                        var messageText = '<?= $block->escapeJs(__('A single order for this product (including all its variations) is limited to %1 pieces.', '__MAX_QTY__')) ?>';
+                        messageText = messageText.replace('__MAX_QTY__', originalMaxQty);
+                        qtyMessage.text(messageText).show();
+                    }
+                    
+                    // Update the input max attribute
+                    if (qtyInput.length) {
+                        qtyInput.attr('max', adjustedMaxQty);
+                    }
+                    
+                    // Re-validate if there's already a value
+                    if (qtyInput.length && qtyInput.val()) {
+                        $('[id*="qty-error"]').remove();
+                        validateQty();
+                    }
+                }
+                
+                // Initial update
+                updateMaxQty();
+                
+                // Hide mage-error message elements below qty input
+                if (qtyInput.length) {
+                    // Hide any mage-error elements that are siblings or related to qty input
+                    setInterval(function() {
+                        $('#qty-error.mage-error').hide();
+                        
+                        // Force max attribute to stay at adjustedMaxQty
+                        var currentMax = qtyInput.attr('max');
+                        if (currentMax != adjustedMaxQty) {
+                            qtyInput.attr('max', adjustedMaxQty);
+                        }
+                        
+                        // Force remove error class if qty is valid
+                        var currentQty = parseFloat(qtyInput.val()) || 0;
+                        var qtyContainer = qtyInput.closest('.control');
+                        if (currentQty <= adjustedMaxQty) {
+                            $('.limit-qty-text-popup').removeClass('error');
+                            qtyContainer.removeClass('error');
+                            $(".fullpoint-pdp-box-tocart .control").removeClass('error');
+                        }
+                    }, 100);
+                }
+                
+                // Subscribe to cart changes (auto-update when cart changes)
+                cartSection.subscribe(function() {
+                    updateMaxQty();
+                });
+                
+                // Instead of using Magento validator, directly manipulate the .limit-qty-text-popup element
+                function validateQty() {
+                    var currentQty = parseFloat(qtyInput.val()) || 0;
+                    var qtyMessage = $('.limit-qty-text-popup');
+                    var qtyContainer = qtyInput.closest('.control');
+                    
+                    if (qtyMessage.length > 0) {
+                        if (currentQty > adjustedMaxQty) {
+                            $('.limit-qty-text-popup').addClass('error');
+                            qtyContainer.addClass('error');
+                            $(".fullpoint-pdp-box-tocart .control").addClass('error');
+                            return false;
+                        } else {
+                            $('.limit-qty-text-popup').removeClass('error');
+                            qtyContainer.removeClass('error');
+                            $(".fullpoint-pdp-box-tocart .control").removeClass('error');
+                            return true;
+                        }
+                    }
+                    return true;
+                }
+                
+                // Bind validation to input events
+                if (qtyInput.length) {
+                    qtyInput.on('blur change keyup', function() {
+                        validateQty();
+                    });
+                    
+                    // Also validate on form submit
+                    var form = qtyInput.closest('form');
+                    if (form.length) {
+                        form.on('submit', function(e) {
+                            if (!validateQty()) {
+                                e.preventDefault();
+                                return false;
+                            }
+                        });
+                    }
+                    
+                    // Initial validation
+                    validateQty();
+                }
+            });
+        });
+    </script>
+<?php endif; ?>

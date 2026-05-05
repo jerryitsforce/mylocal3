@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Branch8. All rights reserved.
+ */
+-->
+<page_layouts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/PageLayout/etc/layouts.xsd">
+    <layout id="category-regular-landing-page">
+        <label translate="true">Category Regular Landing Page</label>
+    </layout>
+    <layout id="category-flagship-page">
+        <label translate="true">Category FlagShip Page</label>
+    </layout>
+    <layout id="category-official-page">
+        <label translate="true">Catetory Official Page</label>
+    </layout>
+    <layout id="category-promotion-page">
+        <label translate="true">Catetory Promotion Page</label>
+    </layout>
+    <layout id="category-promotion-listing-page">
+        <label translate="true">Catetory Promotion Listing Page</label>
+    </layout>
+    <layout id="category-promotion-with-banner-listing-page">
+        <label translate="true">Catetory Promotion Listing Page (Supported  Banner Slider)</label>
+    </layout>
+</page_layouts>

@@ -1,0 +1,19 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+?>
+<div id="modal-cart-delete" class="modal-hide">
+  <div class="modal-custom-content">
+    <p><?= $block->escapeHtml(__('確認是否將此商品刪除？')) ?></p>
+  </div>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "cartDeletePopup": {
+          "modalId": "modal-cart-delete"
+        }
+    }
+}
+</script>

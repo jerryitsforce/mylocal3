@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+
+        <add id="Branch8_MarketPlaceParentOrderAdminUi::parent_orders_general"
+             title="Parent Orders"
+             translate="title"
+             module="Branch8_MarketPlaceParentOrderAdminUi"
+             sortOrder="5"
+             dependsOnModule="Branch8_MarketPlaceParentOrderAdminUi"
+             parent="Magento_Sales::sales"
+             resource="Branch8_MarketPlaceParentOrderAdminUi::parent_orders"
+        />
+        <add id="Branch8_MarketPlaceParentOrderAdminUi::parent_orders"
+             title="Parent Order"
+             translate="title"
+             module="Branch8_MarketPlaceParentOrderAdminUi" sortOrder="5"
+             parent="Branch8_MarketPlaceParentOrderAdminUi::parent_orders_general"
+             action="sales/parent_order"
+             resource="Branch8_MarketPlaceParentOrderAdminUi::parent_orders"
+        />
+       <!-- <add id="Branch8_MarketPlaceParentOrderAdminUi::parent_orders_status"
+             title="Status Priority"
+             translate="title"
+             module="Branch8_MarketPlaceParentOrderAdminUi" sortOrder="5"
+             parent="Branch8_MarketPlaceParentOrderAdminUi::parent_orders_general"
+             action="sales/parent_order/status"
+             resource="Branch8_MarketPlaceParentOrderAdminUi::parent_orders"
+        />-->
+    </menu>
+</config>

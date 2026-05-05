@@ -1,0 +1,125 @@
+<?php
+
+/** @var \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation $block */
+
+$parentOrder = $block->getParentOrder();
+$detail = $parentOrder->getDetail();
+$orderAdminDate = $block->formatDate(
+    $block->getOrderAdminDate($detail->getCreatedAt()),
+    \IntlDateFormatter::MEDIUM,
+    true
+);
+$customerUrl = $block->getCustomerViewUrl();
+/**
+ * @var \Branch8\MaskCustomerInformation\ViewModel\MaskPersonal
+ */
+$maskedModel = $block->getData('mask_view_model');
+$detail = $parentOrder->getDetail();
+$detail->setData(
+    $maskedModel->mask('parent_order', $detail->getData())
+);
+$shippingAddress = $parentOrder->getShippingAddress();
+$billingAddress = $parentOrder->getBillingAddress();
+if ($shippingAddress) {
+    $shippingAddress->setData(
+        $maskedModel->mask('parent_order', $shippingAddress->getData())
+    );
+}
+if ($billingAddress) {
+    $billingAddress->setData(
+        $maskedModel->mask('parent_order', $billingAddress->getData())
+    );
+}
+$permission = \Magento\Framework\App\ObjectManager::getInstance()->get(\Branch8\MaskCustomerInformation\Model\AdminPermission::class);
+$canView = $permission->canView();
+?>
+<div class="fieldset-wrapper  entry-edit order-view">
+    <section class="admin__page-section order-view-account-information">
+        <div class="admin__page-section-title">
+        <span class="title">
+            <?= $block->escapeHtml(__('Order & Account Information')) ?>
+        </span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item order-information">
+                <div class="admin__page-section-item-title">
+                <span class="title">
+                    <?= __('Order #%1', $block->escapeHtml($detail->getIncrementId())) ?>
+                    <?php if ($detail->getSendMail()): ?>
+                        (<span><?= __('The order confirmation email was sent') ?></span>)
+                    <?php endif ?>
+                </span>
+                </div>
+                <div class="admin__page-section-item-content">
+                    <table class="admin__table-secondary order-information-table">
+                        <tbody>
+                        <tr>
+                            <th><?= __('Order Date') ?></th>
+                            <td><?= $block->escapeHtml($orderAdminDate) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Order Status') ?></th>
+                            <td><span id="order_status"><?= $block->getStatuslabel($detail->getStatus()) ?></span></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Purchased From'); ?></th>
+                            <td><?= nl2br($block->escapeHtml($detail->getStoreName())) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Placed from IP') ?></th>
+                            <td><?= $block->escapeHtml($detail->getRemoteIp()) ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="admin__page-section-item order-account-information">
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?= __('Account Information') ?></span>
+                    <div class="actions">
+                        <?php if ($customerUrl): ?>
+                        <a href=""
+                           target="_blank">
+                            <?php endif ?>
+                            <?= __('Edit Customer') ?>
+                            <?php if ($customerUrl): ?>
+                        </a>
+                    <?php endif ?>
+                    </div>
+                </div>
+                <div class="admin__page-section-item-content">
+                    <table class="admin__table-secondary order-account-information-table">
+                        <tbody>
+                        <tr>
+                            <th><?= __('Customer Name') ?></th>
+                            <td>
+                                <?php if ($customerUrl): ?>
+                                <a href="<?= $block->escapeUrl($customerUrl) ?>"
+                                   target="_blank">
+                                    <?php endif ?>
+                                    <span><?= $block->escapeHtml($detail->getCustomerName()) ?></span>
+                                    <?php if ($customerUrl): ?>
+                                </a>
+                            <?php endif; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Email') ?></th>
+                            <td>
+                                <a href="mailto:<?= $block->escapeHtml($detail->getCustomerEmail()) ?>">
+                                    <?= $block->escapeHtml($detail->getCustomerEmail()) ?>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?= __('Customer Group') ?></th>
+                            <td><?= $block->escapeHtml($canView?$block->getCustomerGroupName():$maskedModel->maskByCode('customer_group',$block->getCustomerGroupName())) ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?= $block->getChildHtml() ?>
+</div>

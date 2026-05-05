@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="customer_grid" view_id="customer_dummy" class="Magento\Framework\Indexer\Action\Entity" primary="customer">
+        <fieldset name="customer">
+            <field name="phone_number" xsi:type="filterable" dataType="varchar"/>
+        </fieldset>
+    </indexer>
+</config>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <virtualType name="Branch8\Bookmark\Api\Data\SellerBookmarkInterfaceFactory" type="Magento\Ui\Api\Data\BookmarkInterfaceFactory">
+        <arguments>
+            <argument name="instanceName" xsi:type="string">Branch8\Bookmark\Api\Data\SellerBookmarkInterface</argument>
+        </arguments>
+    </virtualType>
+    <preference for="Branch8\Bookmark\Api\Data\SellerBookmarkInterface" type="Branch8\Bookmark\Model\SellerBookmark"/>
+
+    <virtualType name="SellerBookmarkRepository" type="Magento\Ui\Model\ResourceModel\BookmarkRepository">
+        <arguments>
+            <argument name="bookmarkFactory" xsi:type="object">Branch8\Bookmark\Api\Data\SellerBookmarkInterfaceFactory</argument>
+            <argument name="bookmarkResourceModel" xsi:type="object">Branch8\Bookmark\Model\ResourceModel\SellerBookmark</argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Branch8\Bookmark\Api\SellerBookmarkRepositoryInterface" type="SellerBookmarkRepository"/>
+
+
+    <virtualType name="SellerBookmarkManagement" type="Magento\Ui\Model\BookmarkManagement">
+        <arguments>
+            <argument name="bookmarkRepository" xsi:type="object">Branch8\Bookmark\Api\SellerBookmarkRepositoryInterface</argument>
+        </arguments>
+    </virtualType>
+
+    <preference for="Branch8\Bookmark\Api\SellerBookmarkManagementInterface" type="SellerBookmarkManagement"/>
+    <type name="Webkul\Marketplace\Controller\Mui\Bookmark\Save">
+        <arguments>
+            <argument name="uiBookmarkRepository" xsi:type="object">Branch8\Bookmark\Api\SellerBookmarkRepositoryInterface</argument>
+            <argument name="uiBookmarkManagement" xsi:type="object">Branch8\Bookmark\Api\SellerBookmarkManagementInterface</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Branch8\Bookmark\Component\Bookmark" type="Magento\Ui\Component\Bookmark">
+        <arguments>
+            <argument name="bookmarkRepository" xsi:type="object">Branch8\Bookmark\Api\SellerBookmarkRepositoryInterface</argument>
+            <argument name="bookmarkManagement" xsi:type="object">Branch8\Bookmark\Api\SellerBookmarkManagementInterface</argument>
+        </arguments>
+    </virtualType>
+</config>

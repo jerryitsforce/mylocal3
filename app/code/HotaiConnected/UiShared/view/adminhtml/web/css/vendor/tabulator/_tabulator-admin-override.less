@@ -1,0 +1,161 @@
+/**
+ * Tabulator Admin Override Styles
+ * 
+ * 此檔案為 Tabulator 表格庫的 Magento Admin 基礎樣式層，
+ * 提供統一的視覺規範，可被多個模組和頁面重用。
+ * 
+ * 定位：第一階段基礎設定
+ * - 此檔案定義通用的 Tabulator 樣式覆寫
+ * - 適用於所有使用 #tabulator-grid 容器的 Tabulator 表格實例
+ * - 其他業務層樣式檔案（如 _checkout-area.less）會在此基礎上進行擴展
+ * 
+ * 主要調整項目：
+ * - 表頭樣式：統一使用 Magento admin 黑色主題 (#000 背景，白色文字)
+ * - 表格邊框：使用 Magento 標準邊框顏色 (#d6d6d6 實線/虛線)
+ * - 儲存格間距：調整 padding 符合 Magento 標準 (1rem)
+ * - 儲存格分隔線：使用虛線邊框區隔欄位
+ * - Hover 效果：使用 Magento 淡藍色高亮 (#eaf6fb)
+ * - Checkbox 欄位：固定寬度與樣式 (42-43px，勾選時藍色背景 #007bdb + 白色勾勾)
+ * - 固定列樣式：調整 frozen-left 邊框寬度
+ * - 元素清理：隱藏不必要的 span 元素
+ * 
+ * 相關檔案：
+ * @see tabulator.min.css - 被覆寫的 Tabulator 原始樣式檔案
+ * @see _utilities.less - 提供 .fade-up-initial 工具類別用於延遲顯示效果
+ */
+
+// Tabulator Checkbox 顏色變數（與全站統一）
+@tabulator-checkbox-checked-bg: #007bdb;      // 勾選時的藍色背景
+@tabulator-checkbox-checked-color: #ffffff;   // 勾選時的白色勾勾
+@tabulator-header-background-color: #222;
+
+// Tabulator table
+#tabulator-grid {
+    background-color: transparent;
+    border: none;
+    font-size: 1.3rem;
+
+    & .tabulator {
+        &-headers {
+            & > div {
+                background-color: @tabulator-header-background-color;
+                color: #fff;
+                // checkbox
+                &:first-of-type {
+                    border-left: 1px solid @tabulator-header-background-color;
+                    // width: 43px !important;
+                }
+    
+                &:last-of-type {
+                    border-right: 1px solid @tabulator-header-background-color;
+                }
+            }
+        }
+    
+        &-tableholder {
+            border: 0.1rem solid #d6d6d6;
+        }
+    
+        &-col {
+            &-title {
+                white-space: nowrap;
+                text-align: center;
+            }
+    
+            &-content {
+                padding: 1rem 1rem;
+            }
+        }
+    
+        &-row {
+            display: flex;
+            &:hover {
+                background-color: #eaf6fb;
+            }
+            
+            & > span {
+               display: none;
+            }
+    
+            & > div {
+                // checkbox
+                &:first-child {
+                    // width: 42px !important;
+                }
+                &[role="gridcell"]:not(:last-of-type) {
+                    border-right: 0.1rem dashed #d6d6d6;
+                }
+            }
+        }
+    
+        &-cell {
+            border: none;
+            padding: 1rem 1rem;
+        }
+    
+        &-footer {
+            background-color: transparent;
+            border: none;
+        }
+    
+        // 固定欄位樣式
+        &-frozen-left {
+            border-right-width: 1px;
+        }
+    }
+}
+
+// Tabulator Paginator
+.tabulator {
+
+    // 無資料時的提示文字
+    &-placeholder-contents {
+        font-size: 14px !important;
+        color: #222 !important;
+        font-weight: normal !important;
+        padding: 20px !important;
+    }
+
+    // 分頁器
+    &-paginator {
+        color: #555;
+        flex: 1;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        text-align: right;
+
+        & button.tabulator-page {
+            background: transparent;
+            border: 1px solid #aaa;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 0 2px;
+            padding: 2px 5px;
+            transition: border-color 0.1s linear, color 0.1s linear; 
+
+            &:disabled {
+                opacity: .5;
+            }
+
+            &:hover, &:not(disabled):hover {
+                background-color: transparent !important;
+                border-color: #007bdb !important;
+                color: #007bdb !important;
+            }
+    
+            &.active {
+                color: #d00;
+            }
+        }
+    }
+
+    // 分頁選擇器
+    &-page-size {
+        border: 1px solid #aaa;
+        border-radius: 3px;
+        display: inline-block;
+        margin: 0 5px;
+        padding: 2px 5px;
+    }
+}

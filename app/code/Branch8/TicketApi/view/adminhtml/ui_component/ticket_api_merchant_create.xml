@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">ticket_api_merchant_create.ticket_api_merchant_create_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">New Merchant</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/listing</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" >
+                <class>save primary</class>
+                <label translate="true">Save</label>
+            </button>
+        </buttons>
+        <namespace>ticket_api_merchant_create</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>ticket_api_merchant_create.ticket_api_merchant_create_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ticket_api_merchant_create_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="ticket_api/merchant/createSubmit"/>
+        </settings>
+        <dataProvider class="Branch8\TicketApi\Model\TicketApiMerchant\DataProvider" name="ticket_api_merchant_create_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">General</label>
+        </settings>
+        <field name="merchant_name" sortOrder="10" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket_api_merchant</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Merchant Name</label>
+                <dataScope>merchant_name</dataScope>
+            </settings>
+        </field>
+        <field name="whitelist" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket_api_merchant</item>
+                </item>
+            </argument>
+            <settings>
+                <tooltip>
+                    <description>example: 127.0.0.1,127.0.0.2,127.0.0.3</description>
+                </tooltip>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Whitelist</label>
+                <dataScope>whitelist</dataScope>
+            </settings>
+        </field>
+        <field name="brand_permission" sortOrder="30" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket_api_merchant</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>int</dataType>
+                <label translate="true">Brand Permission</label>
+                <dataScope>brand_permission</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Branch8\TicketApi\Model\TicketApiBrand\MultiSelectOptions"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <!-- <field name="allow_all_seller" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket_api_merchant</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Allow All Seller</label>
+                <dataScope>allow_all_seller</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\TicketApi\Model\TicketApiMerchant\AllowAllSeller"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field> -->
+        <!-- <field name="seller_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket_api_merchant</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Seller</label>
+                <dataScope>seller_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\TicketApi\Model\TicketApiMerchant\SellerOptions"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field> -->
+        <field name="seller_ids" formElement="multiselect">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket_api_merchant</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Seller</label>
+                <dataScope>seller_ids</dataScope>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Branch8\TicketApi\Model\TicketApiMerchant\SellerOptions"/>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

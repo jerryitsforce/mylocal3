@@ -1,0 +1,441 @@
+<?php
+/*
+ * @author    Tigren Solutions <info@tigren.com>
+ * @copyright Copyright (c) 2023 Tigren Solutions <https://www.tigren.com>. All rights reserved.
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Magento2.Files.LineLength.MaxExceeded
+
+/**
+ * @var $block Renderer
+ * @var $quickCartItemViewModel \Branch8\QuickEditCartItem\ViewModel\Cart
+ * */
+
+use Magento\Checkout\Block\Cart\Item\Renderer;
+use Magento\Msrp\Helper\Data;
+
+$_item = $block->getItem();
+$product = $_item->getProduct();
+$isVisibleProduct = $product->isVisibleInSiteVisibility();
+/** @var Data $helper */
+$helper = $this->helper(Magento\Msrp\Helper\Data::class);
+$stockHelper = $this->helper(Branch8\SplitCart\Helper\StockHelper::class);
+$hotaiShippingHelper = $this->helper(\Branch8\HotaiShipping\Helper\Data::class);
+$allShipingMethods = $hotaiShippingHelper->mappingMethod();
+$canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+$shippingMethod = $product->getData('shipping_method');
+$shippingMethod = $shippingMethod === 'electronic' ? '' : $shippingMethod;
+$shippingMethods = $shippingMethod? explode(',',$product->getData('shipping_method')) : [];
+
+unset($shippingMethods['electronic']);
+
+$shippingSize = sizeof($shippingMethods);
+
+// $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+// $stockRegistry = $objectManager->get('\Magento\CatalogInventory\Model\StockRegistry');
+$productId = $_item->getProduct()->getId(); // YOUR PRODUCT ID
+// $productStock = $stockRegistry->getStockItem($productId);
+// $isInStock = $productStock->getIsInStock();
+// $isAvailable = $product->isSaleable() && $stockHelper->isItemProducInStock($_item);
+// var_dump($isInStock, $product->isSaleable(), $stockHelper->isItemProducInStock($_item));
+// $isOOS = !$isInStock || !$product->isSaleable() || !$stockHelper->isItemProducInStock($_item);
+// $itemHasError = ($block->getItem()->getHasError() === true);
+$availableToCheckout = (bool)$_item->getAvailableToCheckout();
+$availableToCheckoutHtml = $_item->getAvailableToCheckout() ? "checked='checked'" : '';
+$helperLabel = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+$pointMoneyCollectHelper = $this->helper(\Branch8\PointMoneyCollect\Helper\Data::class);
+$itemLimitPoint = $pointMoneyCollectHelper->getLimitByQuoteItem($_item);
+$splitCartHelperData = $this->helper(Branch8\SplitCart\Helper\Data::class);
+$quickCartItemViewModel = $block->getQuickCartItemViewModel() ? $block->getQuickCartViewModel() : Magento\Framework\App\ObjectManager::getInstance()->get(
+    \Branch8\QuickEditCartItem\ViewModel\Cart::class
+);
+$shouldShowEditLink = $quickCartItemViewModel->shouldShowEditLink($_item);
+$giftType = $_item->getProductType();
+$isGift = $giftType === 'freeproduct_gift';
+$giftClass = $isGift? 'gift' : '';
+// $isDisabled = $itemHasError && !$isAvailable;
+$productStatus = $product->getStatus();
+
+$preorderHelper = $this->helper(\Webkul\MarketplacePreorder\Helper\Data::class);
+
+$itemHasError = ($block->getItem()->getHasError() === true) && !$preorderHelper->isPreorder($productId);
+$isLimitPurchasedError = false;
+$maxAllowedQty = null;
+$_messages = $block->getMessages();
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$scopeConfig = $objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+$isLimitPurchasedEnabled = $scopeConfig->isSetFlag('limit_purchased/general/enabled', \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+
+if ($isLimitPurchasedEnabled) {
+    // 1. Check Error Code (most robust)
+    $errorInfos = $_item->getErrorInfos();
+    foreach ($errorInfos as $error) {
+        if (isset($error['code']) && in_array($error['code'], ['limit-purchased', 'is_correct_qty-limit_purchased'])) {
+            $isLimitPurchasedError = true;
+            break;
+        }
+    }
+
+    // 2. Check persistent flag from DB
+    $ad = (string)$_item->getAdditionalData();
+    if (strpos($ad, 'limit_error') !== false) {
+        $isLimitPurchasedError = true;
+        if (!$maxAllowedQty && preg_match('/limit_error\|qty:(\d+)/', $ad, $matches)) {
+            $maxAllowedQty = (int)$matches[1];
+        }
+    }
+
+    // 3. Parse messages for textual matches and extract max qty
+    if (is_array($_messages)) {
+        foreach ($_messages as $_msg) {
+            $text = $_msg['text'];
+            $isMatch = strpos($text, 'LIMIT_PURCHASE_ERROR|') !== false
+                || strpos($text, "\xE2\x80\x8B\xE2\x80\x8B\xE2\x80\x8B") !== false
+                || strpos($text, '最多只能購買') !== false
+                || strpos($text, 'purchase up to') !== false
+                || strpos($text, '商品數量超出') !== false
+                || strpos($text, '商品超過購買數量') !== false;
+
+            if ($isMatch) {
+                $isLimitPurchasedError = true;
+                if (!$maxAllowedQty && preg_match('/(\d+)/', $text, $matches)) {
+                    $maxAllowedQty = (int)$matches[1];
+                }
+                if ($maxAllowedQty) break; 
+            }
+        }
+    }
+
+    // 4. Fallback: if we have the error but message was wiped by collectTotals, re-inject it
+    if ($isLimitPurchasedError) {
+        $itemHasError = true;
+
+        // Try to fetch limit from ViewModel (Bulk query cached)
+        if (!$maxAllowedQty) {
+            $limitPurchasedViewModel = $objectManager->get(\Branch8\LimitPurchased\ViewModel\Cart\LimitPurchased::class);
+            $limitData = $limitPurchasedViewModel->getItemLimits();
+            $maxAllowedQty = $limitData['limits'][$_item->getId()] ?? null;
+        }
+
+        $hasTextMsg = false;
+        foreach ($_messages as $m) {
+            if (strpos($m['text'], '最多只能購買') !== false || strpos($m['text'], '商品數量超出') !== false || strpos($m['text'], '商品超過購買數量') !== false) {
+                $hasTextMsg = true;
+                break;
+            }
+        }
+        if (!$hasTextMsg) {
+            $fallbackMsg = ($maxAllowedQty) ? __("此商品最多只能購買%1個", $maxAllowedQty) : __("商品超過購買數量限制");
+            $_messages[] = ['text' => $fallbackMsg, 'type' => 'error'];
+        }
+    }
+}
+
+// $itemHasError = $isOOS && !$preorderHelper->isPreorder($productId);
+$isDisabled = $productStatus == \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_DISABLED;
+
+$checkIsTicketProduct = $this->helper(\Branch8\Checkout\Helper\Data::class);
+$isTicketBatch = false;
+$_options = $block->getOptionList();
+$ticketOptionValue = '';
+$requestQty = $block->getQty();
+$checkOOSBatch = false;
+$checkTicketAvailable = null;
+$hasAvailableIssueWithTicketBatch = false;
+$hasQtyIssueWithTicketBatch = false;
+foreach($_options as $option){
+  if($option['label'] === \Branch8\HotaiCore\Helper\VirtualProduct::TICKET_BATCH_SETTING_OPTION_TITLE){
+    $isTicketBatch = true;
+    $ticketOptionValue = html_entity_decode($option['value']);
+    break;
+  }
+}
+if($isTicketBatch) {
+  $availableToBatchData = $checkIsTicketProduct->getTicketAvailableBatchData($productId);
+  $checkTicketAvailable = $checkIsTicketProduct->checkIfQuantityEnoughByCustomOptionAndRequestQuantity($productId, $ticketOptionValue, $requestQty);
+  if ($availableToBatchData === []) {
+    $checkOOSBatch = true;
+    $itemHasError = true;
+  } else if (is_array($checkTicketAvailable) && isset($checkTicketAvailable['result']) && $checkTicketAvailable['result'] === false) {
+    if($checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_PRODUCT_NOT_A_BATCH_IMPORT_TICKET ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_BATCH_SETTING_NOT_FOUND ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_OUT_OF_SALE_TIME_WINDOW ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_QUANTITY_VIRTUAL_PRODUCT_TYPE_NOT_SUPPORTED ||
+       $checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_BATCH_SETTING_EXIST_BUT_ZERO_QUANTITY_LEFT){
+      $hasAvailableIssueWithTicketBatch = true;
+    } elseif($checkTicketAvailable['reason'] === \Branch8\HotaiCore\Model\Ticket\Reason::REASON_FOR_OOS_CHECK_QUANTITY_NOT_ENOUGH){
+      $hasQtyIssueWithTicketBatch = true;
+    }
+  }
+}
+?>
+<tbody
+  class="cart item <?= $giftClass ?> <?= ($itemHasError && !$isLimitPurchasedError) ? 'has-error' : '' ?> <?= $isLimitPurchasedError ? 'has-limit-error' : '' ?> <?= $isDisabled? 'has-error error-disabled' : '' ?> <?= ($isTicketBatch && ($hasQtyIssueWithTicketBatch || $hasAvailableIssueWithTicketBatch))? 'has-batch-error' : '' ?>"
+  data-shipping-method="<?= $shippingSize === 1? $block->escapeHtml($shippingMethod) : '' ?>"
+  data-point-lower_limit="<?= $itemLimitPoint['lower_limit'] ?>">
+  <tr class="item-info">
+    <td class="col" data-th="<?= $block->escapeHtml(__('Checkbox')) ?>">
+      <?php if ($itemHasError === false && $isDisabled === false && $isGift === false && $hasAvailableIssueWithTicketBatch === false && $hasQtyIssueWithTicketBatch === false) : ?>
+      <input type="checkbox" class="checkbox split-cart-item-checkbox"
+        id="split-cart-item-checkbox-<?= $block->escapeHtmlAttr($_item->getId()) ?>"
+        data-item-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>" name="checked_items[]"
+        value="<?= $block->escapeHtmlAttr($_item->getId()) ?>"
+        data-shipping-method="<?= $shippingSize === 1? $block->escapeHtml($shippingMethod) : '' ?>"
+        <?= $_item->getAvailableToCheckout() ? "checked" : '' ?> />
+      <?php else: ?>
+      <input type="checkbox" class="checkbox split-cart-item-checkbox-disabled"
+        id="split-cart-item-checkbox-<?= $block->escapeHtmlAttr($_item->getId()) ?>"
+        data-item-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>" name="checked_items[]"
+        value="<?= $block->escapeHtmlAttr($_item->getId()) ?>"
+        data-shipping-method="<?= $shippingSize === 1? $block->escapeHtml($shippingMethod) : '' ?>"
+        disabled="disabled" />
+      <?php endif; ?>
+      <?php if($shippingSize === 1): ?>
+      <div class="shipping-warning-wrapper">
+        <div class="shipping-warning">
+          <div class="shipping-warning-info">
+            <?php if($shippingMethod === 'hotai_delivery_hotai_delivery'): ?>
+            <?= __("已選擇超商取貨商品，該商品無法選取。")?>
+            <?php endif; ?>
+            <?php if($shippingMethod === 'hotai_711_hotai_711'): ?>
+            <?= __("已選擇宅配商品，該商品無法選取。")?>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+      <?php endif; ?>
+    </td>
+
+    <td data-th="<?= $block->escapeHtml(__('Item')) ?>" class="col item" data-is-ticket-batch="<?= $isTicketBatch ? '1' : '0' ?>" data-check-oos-batch="<?= $checkOOSBatch ? '1' : '0' ?>" data-batch-available="<?= $hasAvailableIssueWithTicketBatch ? '1' : '0' ?>" data-batch-qty-issue ="<?= $hasQtyIssueWithTicketBatch ? '1' : '0' ?>">
+      <?php if ($isGift) : ?>
+      <div class="product-gift-label"><?= __("贈品") ?></div>
+      <?php endif; ?>
+      <div class="product-image-container">
+        <?php if ($block->hasProductUrl()) : ?>
+        <a href="<?= $block->escapeUrl($block->getProductUrl()) ?>"
+          title="<?= $block->escapeHtml($block->getProductName()) ?>" tabindex="-1" class="product-item-photo">
+          <?php else : ?>
+          <span class="product-item-photo">
+            <?php endif; ?>
+            <?= $block->getImage($block->getProductForThumbnail(), 'cart_page_product_thumbnail')->toHtml() ?>
+            <?php if ($block->hasProductUrl()) : ?>
+        </a>
+        <?php else : ?>
+        </span>
+        <?php endif; ?>
+        <?php if($shippingSize === 1): ?>
+        <ul class="cart-shipping-methods">
+          <li class="cart-shipping-method">
+            <span><?= $splitCartHelperData->getOptionLabelByValue($shippingMethods[0]) ?></span></li>
+        </ul>
+        <?php endif; ?>
+      </div>
+      <div class="product-item-details">
+        <div style="display:none;">
+          <?= $isTicketBatch? 'ticket': 'normal'; ?>
+          <?php
+
+          ?>
+        </div>
+        <div style="display:none;">
+          <?php
+
+          ?>
+        </div>
+        <?php if($isDisabled): ?>
+        <div class="product-item-name product-message">
+          <span><?= __("該商品已下架") ?></span>
+        </div>
+        <?php elseif ($itemHasError): ?>
+            <?php if ($isLimitPurchasedError): ?>
+                <strong class="product-item-name">
+                    <?php if ($block->hasProductUrl()) : ?>
+                        <?php
+                        $productUrl = $block->getProductUrl();
+                        $separator = (@strpos($productUrl, '?') !== false) ? '&' : '?';
+                        $finalUrl = $productUrl . $separator . 'from_cart=1';
+                        ?>
+                        <a href="<?= $block->escapeUrl($finalUrl) ?>">
+                            <?= $block->escapeHtml($block->getProductName()) ?>
+                        </a>
+                    <?php else : ?>
+                        <?= $block->escapeHtml($block->getProductName()) ?>
+                    <?php endif; ?>
+                </strong>
+            <?php endif; ?>
+        <div class="product-item-name product-message">
+          <?php $messages = $_messages; ?>
+          <?php if((is_array($messages) && count($messages) > 0)): ?>
+            <span class="product-message-items" data-error-msg-count="<?= count($messages) ?>">
+              <?php foreach ($messages as $message) : ?>
+                <?php
+                $messageText = str_replace(["\xE2\x80\x8B\xE2\x80\x8B\xE2\x80\x8B", 'LIMIT_PURCHASE_ERROR|'], '', $message['text']);
+                // Detect Limit Error robustly via additional_data marker or legacy prefixes
+                $ad = $_item->getAdditionalData();
+                $isLimitErr = strpos((string)$ad, 'limit_error') !== false || strpos($message['text'], 'LIMIT_PURCHASE_ERROR|') !== false || strpos($message['text'], "\xE2\x80\x8B\xE2\x80\x8B\xE2\x80\x8B") !== false;
+                $isOOSError = str_contains($messageText, '該商品缺貨中') !== false || str_contains($messageText, '沒有庫存狀態的來源商品') !== false;
+                ?>
+              <span class="product-message-item message-<?= $block->escapeHtmlAttr($message['type']) ?> <?= $isOOSError? 'error-oos' : 'product-cart-item-error'?> <?= $isLimitErr ? 'error-limit' : '' ?>">
+                <?php if($isLimitErr): ?>
+                 <span class="real-msg"><?= $block->escapeHtml($messageText) ?></span>
+                <?php elseif($isOOSError):?>
+                <span><?= __("該商品缺貨中") ?></span>
+                <?php else: ?>
+                <span><?= __("該商品狀態異常暫時無法進行結帳") ?></span>
+                <span class="real-msg"><?= $block->escapeHtml($messageText) ?></span>
+                <?php endif; ?>
+              </span>
+              <?php endforeach; ?>
+            </span>
+          <?php else: ?>
+            <?php if($isTicketBatch && $checkOOSBatch):?>
+              <span><?= __("該商品狀態異常暫時無法進行結帳") ?></span>
+            <?php endif; ?>
+          <?php endif; ?>
+        </div>
+        <?php else: ?>
+            <strong class="product-item-name">
+                <?php if ($block->hasProductUrl()) : ?>
+                    <?php
+                    $productUrl = $block->getProductUrl();
+                    $separator = (@strpos($productUrl, '?') !== false) ? '&' : '?';
+                    $finalUrl = $productUrl . $separator . 'from_cart=1';
+                    ?>
+                    <a href="<?= $block->escapeUrl($finalUrl) ?>">
+                        <?= $block->escapeHtml($block->getProductName()) ?>
+                    </a>
+                <?php else : ?>
+                    <?= $block->escapeHtml($block->getProductName()) ?>
+                <?php endif; ?>
+            </strong>
+        <?php endif; ?>
+        <?php
+        // $_options = $block->getOptionList();
+        ?>
+        <div class="product-options <?= $_options? '' : 'no-options'?> <?= $isTicketBatch && $hasAvailableIssueWithTicketBatch? 'has-batch-error' : ''?>">
+          <?php if ($_options) : ?>
+            <div data-role="item-options-<?= $_item->getId() ?>">
+                <?= $block->getLayout()->createBlock(
+                    \Magento\Framework\View\Element\Template::class,
+                    'item_option_' . $_item->getId(),
+                    [
+                        'data' => [
+                            'option_list' => $block->getOptionList(),
+                            'quick_cart_item_view_model' => $quickCartItemViewModel,
+                            'item' => $_item
+                        ]
+                    ]
+                )->setItem($_item)->setTemplate('Branch8_SplitCart::cart/item/default/options.phtml')->toHtml() ?>
+            </div>
+            <?php if($isTicketBatch && $hasAvailableIssueWithTicketBatch) : ?>
+              <span class="batch-error-msg"><?= __("此規格目前無法選擇，請選擇其他規格") ?></span>
+            <?php endif; ?>
+          <?php endif; ?>
+        </div>
+        <?php if ($isGift) : ?>
+            <div class="product-gift-qty"><?= __("X%1", $block->escapeHtmlAttr($block->getQty())) ?></div>
+        <?php endif; ?>
+
+        <div class="field qty <?= ($isTicketBatch && $hasQtyIssueWithTicketBatch)? 'has-batch-error' : '' ?>">
+          <div class="control qty">
+            <label for="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty">
+              <span class="label"><?= $block->escapeHtml(__('Qty')) ?></span>
+              <div class="cart-qty-actions" data-mage-init='{"cartQty":{}}'>
+                <?php if($isTicketBatch && $hasAvailableIssueWithTicketBatch):?>
+                  <button type="button" class="cart-qty-action action-minus" <?= ($block->getQty() > 1) ? 'disabled' : '' ?>>
+                    <span class="icon minus">-</span>
+                  </button>
+                  <input id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
+                    name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
+                    data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>"
+                    value="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
+                    data-item-qty="<?= $block->escapeHtmlAttr($block->getQty()) ?>" type="number" size="4" step="any"
+                    title="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="input-text qty"
+                    data-validate="{required:true,'validate-greater-than-zero':true}" data-role="cart-item-qty" disabled/>
+                  <button type="button" class="cart-qty-action action-plus" disabled>
+                    <span class="icon plus">+</span>
+                  </button>
+                <?php else: ?>
+                  <button type="button" class="cart-qty-action action-minus">
+                    <span class="icon minus">-</span>
+                  </button>
+                  <input id="cart-<?= $block->escapeHtmlAttr($_item->getId()) ?>-qty"
+                    name="cart[<?= $block->escapeHtmlAttr($_item->getId()) ?>][qty]"
+                    data-cart-item-id="<?= $block->escapeHtmlAttr($_item->getId()) ?>"
+                    value="<?= $block->escapeHtmlAttr($block->getQty()) ?>"
+                    data-item-qty="<?= $block->escapeHtmlAttr($block->getQty()) ?>" type="number" size="4" step="any"
+                    title="<?= $block->escapeHtmlAttr(__('Qty')) ?>" class="input-text qty"
+                    data-limit-qty="<?= $maxAllowedQty ?>"
+                    data-validate="{required:true,'validate-greater-than-zero':true}" data-role="cart-item-qty" />
+                  <button type="button" class="cart-qty-action action-plus">
+                    <span class="icon plus">+</span>
+                  </button>
+                <?php endif; ?>
+              </div>
+            </label>
+          </div>
+          <?php if($isTicketBatch && $hasQtyIssueWithTicketBatch) : ?>
+            <?php if($hasQtyIssueWithTicketBatch): ?>
+              <span class="batch-error-msg"><?= __("您要求的數量不足，請修改購買數量") ?></span>
+            <?php endif; ?>
+          <?php endif; ?>
+        </div>
+
+
+        <div class="cart-item-subtotal" data-role="item-subtotal-<?=$_item->getId()?>">
+          <?php if ($canApplyMsrp) : ?>
+          <span class="cart msrp subtotal">--</span>
+          <?php else : ?>
+          <?= $block->getRowTotalHtml($_item) ?>
+          <?php endif; ?>
+        </div>
+
+        <div class="cart-actions-wrapper">
+          <div class="actions-toolbar">
+            <?= /* @noEscape */ $block->getActions($_item) ?>
+            <a href="javascript:void(0);" title="<?= __("刪除")?>" class="action action-custom-delete">
+              <span><?= __("刪除")?></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <?php 
+      $filteredMessages = [];
+      if (is_array($_messages)) {
+          foreach ($_messages as $m) {
+              $isLimitMsg = strpos((string)$m['text'], 'LIMIT_PURCHASE_ERROR|') !== false 
+                         || strpos((string)$m['text'], "\xE2\x80\x8B\xE2\x80\x8B\xE2\x80\x8B") !== false
+                         || strpos((string)$m['text'], '最多只能購買') !== false
+                         || strpos((string)$m['text'], 'purchase up to') !== false
+                         || strpos((string)$m['text'], '商品數量超出') !== false
+                         || strpos((string)$m['text'], '商品超過購買數量') !== false;
+              if (!$isLimitMsg) {
+                  $filteredMessages[] = $m;
+              }
+          }
+      }
+      ?>
+      <?php if((count($filteredMessages) > 0 || $isLimitPurchasedError) && $isDisabled === false && ($itemHasError === false || $isLimitPurchasedError)): ?>
+        <div class="product-messages">
+          <?php if ($isLimitPurchasedError): ?>
+            <div class="cart item message error">
+              <div><?= __("部分商品超過限購數量，調整數量後將更新購物車") ?></div>
+            </div>
+          <?php endif; ?>
+          <?php foreach ($filteredMessages as $message) : ?>
+          <div class="cart item message <?= $block->escapeHtmlAttr($message['type']) ?>">
+            <div><?= $block->escapeHtml(str_replace(["\xE2\x80\x8B\xE2\x80\x8B\xE2\x80\x8B", 'LIMIT_PURCHASE_ERROR|'], '', $message['text'])) ?></div>
+          </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+      <?php $addInfoBlock = $block->getProductAdditionalInformationBlock(); ?>
+      <?php if ($addInfoBlock) : ?>
+          <?= $addInfoBlock->setItem($_item)->toHtml() ?>
+      <?php endif; ?>
+    </td>
+  </tr>
+</tbody>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<grid xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Hyva_Admin:etc/hyva-grid.xsd">
+    <source>
+        <collection>\Elgentos\InventoryLog\Model\ResourceModel\Movement\Collection</collection>
+        <processors>
+            <processor class="\Elgentos\InventoryLog\HyvaGridProcessor\MovementCollectionProcessor"/>
+        </processors>
+    </source>
+    <actions idColumn="product_id">
+        <action id="graph" label="Graph" url="inventorylog/product/graph"/>
+    </actions>
+    <columns>
+        <exclude>
+            <column name="entity_id" />
+        </exclude>
+        <include>
+            <column name="ip" initiallyHidden="true" />
+            <column name="ukey" initiallyHidden="true" />
+            <column name="movement_id" initiallyHidden="true" />
+            <column name="stock_item_id" initiallyHidden="true" />
+            <column name="created_at" template="Branch8_InventoryLog::grid/column/createdat.phtml" />
+            <column name="product_id" initiallyHidden="true" template="Elgentos_InventoryLog::productId.phtml" />
+            <column name="sku" type="string" template="Elgentos_InventoryLog::sku.phtml" />
+            <column name="user_id" template="Elgentos_InventoryLog::userId.phtml"/>
+            <column name="username" template="Elgentos_InventoryLog::username.phtml"/>
+            <column name="is_admin" />
+            <column name="current_qty" />
+            <column name="qty_movement" />
+            <column name="old_qty" />
+            <column name="is_in_stock" />
+            <column name="message" template="Elgentos_InventoryLog::message.phtml"/>
+        </include>
+    </columns>
+    <navigation>
+        <filters>
+            <filter column="ip"  />
+            <filter column="ukey"  />
+            <filter column="movement_id" />
+            <filter column="stock_item_id" />
+            <filter column="created_at" />
+            <filter column="sku" />
+            <filter column="product_id" />
+            <filter column="user_id" />
+            <filter column="username" />
+            <filter column="is_admin" />
+            <filter column="current_qty" />
+            <filter column="qty_movement" />
+            <filter column="old_qty" />
+            <filter column="is_in_stock" />
+            <filter column="message" />
+        </filters>
+        <pager>
+            <defaultPageSize>100</defaultPageSize>
+            <pageSizes>50,100,250,500</pageSizes>
+        </pager>
+        <sorting>
+            <defaultSortByColumn>movement_id</defaultSortByColumn>
+            <defaultSortDirection>desc</defaultSortDirection>
+        </sorting>
+        <exports>
+            <export type="csv" label="Export as CSV"/>
+            <export type="xml" label="Export as XML"/>
+            <export type="xlsx" label="Export as XLSX"/>
+        </exports>
+    </navigation>
+</grid>

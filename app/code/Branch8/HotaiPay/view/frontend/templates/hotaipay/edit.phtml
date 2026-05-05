@@ -1,0 +1,81 @@
+<?php
+/**
+ * @var Branch8\HotaiPay\Block\CreditCard\Edit $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$credit_card = $block->getCreditcardDetail();
+// $test = '{"code":200,"success":true,"error":null,"count":2,"data":[{"Id":3743, "tokenId": 3743 ,"MemberHashID":4609, "DefaultCard": true,"AliasName":"eeee","CardType":"Jcb","BankDesc":"中信JCB晶緻卡","CardNoMask":"****-****-****-3185","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8712","VipNo":"","CardArt":"870871250","IsAvailable":true,"IsOverwrite":true,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-13T11:04:24.810Z","updatedAt":"2024-03-06T09:54:12.106Z","deletedAt":"2024-02-29T04:24:14.893Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"JCB","BIN":"356651","IsDebit":"","TokenFlag":"","OnlineDate":"07/19/2013"}},{"Id":3749, "tokenId": 3749 , "DefaultCard": false,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":false,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}},{"Id":3749, "tokenId": 3749 , "DefaultCard": false,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":false,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}},{"Id":3749, "tokenId": 3749 , "DefaultCard": false,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":false,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}}]}';
+// $cards = json_decode($test, true);
+// $credit_card = $cards['data'][0];
+$memberLogo = $this->getViewFileUrl('images/member-hotai-pay.svg');
+?>
+<div class="creditcard-edit-wrapper">
+  <div class="creditcard-edit-form-wrapper">
+    <form class="form form-alias-edit" data-mage-init='{"validation":{}}' id="edit_alias_form"
+      data-id="<?= $credit_card['tokenId'] ?>">
+      <?= $block->getBlockHtml('formkey') ?>
+      <fieldset class="fieldset">
+        <div class="field">
+          <label for="cardnomask" class="label">
+            <span><?= $block->escapeHtml(__("信用卡號碼")); ?></span>
+          </label>
+          <div class="control">
+            <span class="card-nomask"><?= str_replace('-',' ',$credit_card['CardNoMask']) ?></span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="card_alias" class="label">
+            <span><?= $block->escapeHtml(__("信用卡暱稱")); ?></span>
+          </label>
+          <div class="control">
+            <input type="text" data-validate="{'validate-fullwidth-special': true}" class="input-text"
+              title="<?= $block->escapeHtml(__("請輸入信用卡暱稱")); ?>" name="card_alias" id="card_alias"
+              value="<?= $block->escapeHtml($credit_card['AliasName']) ?>"
+              placeholder="<?= $block->escapeHtml(__("請輸入信用卡暱稱")); ?>">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">
+            <span><?= $block->escapeHtml(__("設為預設信用卡")); ?></span>
+          </label>
+          <div class="control switch-option">
+            <?php if ($credit_card['DefaultCard'] === true) : ?>
+            <input class="switch" type="checkbox" id="is_default_card" name="is_default_card" value="true" checked>
+            <?php else : ?>
+            <input class="switch" type="checkbox" id="is_default_card" name="is_default_card" value="true">
+            <?php endif; ?>
+            <label for="is_default_card" class="switch-label">
+              <span><?= $block->escapeHtml(__("設為預設信用卡")); ?></span>
+            </label>
+          </div>
+        </div>
+      </fieldset>
+      <div class="actions-toolbar">
+        <div class="primary">
+          <button type="button" title="<?php /* @escapeNotVerified */ echo __('刪除信用卡') ?>" id="alias_delete_btn"
+            class="action secondary action-back" data-id="<?= $block->escapeHtml($credit_card['tokenId']) ?>">
+            <span><?php /* @escapeNotVerified */ echo __('刪除信用卡') ?></span>
+          </button>
+          <button type="button" title="<?php /* @escapeNotVerified */ echo __('儲存') ?>" id="alias_edit_btn"
+            class="action primary action-submit">
+            <span><?php /* @escapeNotVerified */ echo __('儲存') ?></span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<?= $block->getChildHtml('hotaipay.popup.delete.card') ?>
+
+<?php $block->unsetResponse(); ?>
+
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8HotaiPayEdit": {
+          "redirectUrl": "<?= $block->getBack() ?>"
+        }
+    }
+  }
+</script>

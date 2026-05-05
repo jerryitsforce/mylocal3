@@ -1,0 +1,23 @@
+<!--@subject {{trans "聊聊未讀通知"}} @-->
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-information">
+        <td>
+            <table class="query-details">
+                <tr>
+                    <td class="product-details">
+                        <p>{seller name}<p>您好，<br>
+                        您在HOTAI購有1封未讀聊天訊息，請盡快回覆買家<br>
+                        {HOTAI Seller Chat Link}<br>
+                        {Embedded Buyer Unread Message Content}<br>
+                        HOTAI購商城自動信件，請勿直接回覆此信
+                    </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

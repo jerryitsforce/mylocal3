@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="magenest_notification_columns">
+        <column name="customer_group">
+            <argument name="data" xsi:type="array">
+                <item name="disabled" xsi:type="boolean">true</item>
+            </argument>
+        </column>
+        <actionsColumn name="history" class="Branch8\CustomNotification\Ui\Component\Listing\Columns\History">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">History</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                    <item name="sortOrder" xsi:type="number">499</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

@@ -1,0 +1,71 @@
+<!--
+/**
+ * Ball Pit Ticket Verification Details Popup Content for Magento_Ui/js/modal/confirm
+ */
+-->
+<!-- <div class="ui-modal-form__remark">
+    <%- $t("Please note: You must complete the checkout process before downloading the current month's summary statement.") %>
+</div> -->
+<form id="ticket-verification-details-form" class="ui-modal-form__body ticket-verification-details__form">
+
+    <!-- 日期區間 -->
+    <div class="ui-modal-form__item ticket-verification-details__date-range">
+        <label class="ui-modal-form__label required">
+            <span><%- label %></span>
+        </label>
+        <div class="ui-modal-form__content" data-type="date-range">
+            <div class="date-input-group">
+                <label for="ball_pit_date_from" class="date-label">
+                    <span><%- $t('From:') %></span>
+                </label>
+                <div>
+                    <input type="text" 
+                       id="ticket_date_from" 
+                       name="ticket_date_from" 
+                       class="form-control date-input" 
+                       readonly
+                       required
+                       data-validate="{required: true}"
+                       data-msg-required="<%- $t('This is a required field.') %>">
+                </div>
+            </div>
+            <div class="date-input-group">
+                <label for="ball_pit_date_to" class="date-label">
+                    <span><%- $t('To:') %></span>
+                </label>
+                <div>
+                    <input type="text" 
+                       id="ticket_date_to" 
+                       name="ticket_date_to" 
+                       class="form-control date-input" 
+                       readonly
+                       required
+                       data-validate="{required: true}"
+                       data-msg-required="<%- $t('This is a required field.') %>">
+                </div>
+            </div>
+            <!-- <button id="search-button" class="action-secondary" type="button">
+                <i class="icon icon-search"></i>
+                <span><%- $t('Search') %></span>
+            </button> -->
+        </div>
+    </div>
+    
+    <!-- 下載按鈕 -->
+    <div class="ui-modal-form__item ticket-verification-details__download">
+        <label class="ui-modal-form__label">
+            <span><%- $t('Download') %></span>:
+        </label>
+        <div class="ui-modal-form__content">
+            <button id="download-button" class="action-secondary" type="button">
+                <i class="icon icon-download"></i>
+                <span><%- $t('Download') %></span>
+            </button>
+        </div>
+        <div></div>
+        <small class="error-msg">
+            <span></span>
+        </small>
+    </div>
+  
+</form>

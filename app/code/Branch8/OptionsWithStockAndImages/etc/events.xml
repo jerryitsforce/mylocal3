@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="wk_osi_variations_save_before">
+        <observer name="Branch8_OptionsWithStockAndImages::wk_osi_variations_save_before" instance="Branch8\OptionsWithStockAndImages\Observer\VariationSaveBefore" />
+    </event>
+    <event name="controller_action_postdispatch_checkout_index_index">
+		<observer name="branch8_optionswithstockandimages_observer_controller_actionpostdispatchcheckoutindexindex_controller_action_postdispatch_checkout_index_index" instance="Branch8\OptionsWithStockAndImages\Observer\Controller\ActionPostdispatchCheckoutIndexIndex"/>
+	</event>
+    <event name="core_abstract_save_before">
+        <observer name="branch8_optionswithstockandimages_observer_catalog_product_options_save_before_catalog_product_option_save_before" instance="Branch8\OptionsWithStockAndImages\Observer\OptionSaveBefore"/>
+    </event>
+    <event name="catalog_product_save_commit_after">
+        <observer name="branch8_optionsWithStockAndImages_catalog_product_save_commit_after_observer"
+                  instance="Branch8\OptionsWithStockAndImages\Observer\CatalogProductSaveCommitAfterObserver"/>
+    </event>
+    <event name="checkout_cart_product_add_after">
+        <observer name="branch8_optionsWithStockAndImages_checkout_cart_product_add_after_observer"
+                  instance="Branch8\OptionsWithStockAndImages\Observer\SetComboForCartQuoteObserver"/>
+    </event>
+
+    <event name="sales_quote_item_collection_products_after_load">
+        <observer name="add_variants" instance="Magento\CatalogInventory\Observer\AddStockItemsObserver"/>
+        <observer name="branch8_add_variants"
+                  instance="Branch8\OptionsWithStockAndImages\Observer\AddProductVariantsObserver"/>
+    </event>
+</config>

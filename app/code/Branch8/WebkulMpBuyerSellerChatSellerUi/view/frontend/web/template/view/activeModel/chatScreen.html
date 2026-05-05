@@ -1,0 +1,36 @@
+<div class="separate"
+     data-bind="attr:{
+     'id':'chat-window-'+conversationData().conversationUniqueId,
+     'class':'chat-frame-window-'+conversationData().conversationUniqueId,
+     'data-role':'chat-screen'+conversationData().conversationUniqueId
+     },afterRender:afterRender">
+    <section class="chat-module seller-side" style="height: auto;">
+        <div class="chat-loading-mask"
+             data-role="chat-loader"
+             data-bind="visible: showLoader">
+            <div class="chat-loader">
+                <img alt="Loading..."
+                     data-bind="attr: {'src': window.chatboxCoreConfig.loaderImage}"/>
+            </div>
+        </div>
+        <render args="headerTemplate"></render>
+        <render args="customerProfileTemplate"></render>
+        <render args="messageListTemplate"></render>
+        <div id="bottom-controls" data-bind="visible:minimized()===false,
+                attr:{'id':'write-form-'+conversationData().conversationUniqueId}"
+             class="write-form-wrapper">
+            <form method="post" data-bind="submit: sendCustomerMessage">
+                <render args="typingMessageTemplate"></render>
+                <div class="left message-box">
+                    <textarea name="message" rows="1"
+                              data-bind="event:{keypress: replyByEnter,keyup:debounceHandleTypingMessage}"
+                              placeholder="Type your message here"
+                              data-emojiable="true"></textarea>
+                </div>
+                <div class="dropup">
+                    <render args="mediaTemplate"></render>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>

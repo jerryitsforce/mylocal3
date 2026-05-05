@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="wishlist_stock_alert_general_email_template"
+              label="Branch8 Wishlist Stock Alert"
+              file="stock_alert.html"
+              type="html"
+              module="Branch8_WishlistStockAlert"
+              area="frontend"/>
+</config>

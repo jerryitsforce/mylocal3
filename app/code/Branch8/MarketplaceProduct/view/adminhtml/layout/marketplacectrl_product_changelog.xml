@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+    <referenceContainer name="content">
+        <block class="Branch8\MarketplaceProduct\Block\Adminhtml\Product\ChangeLog" name="branch8_marketplace.product.changelog" template="Branch8_MarketplaceProduct::product/changelog.phtml">
+            <arguments>
+                <argument name="back_route_path" xsi:type="string">marketplacectrl/product/</argument>
+            </arguments>
+            <block class="Branch8\MarketplaceProduct\Block\Adminhtml\Product\ChangeLog\Grid" name="branch8_marketplace.product.changelog.grid" as="changelog_grid"/>
+        </block>
+    </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch_customer_account_forgotpassword">
+        <observer name="b8_prevent_visit_default_forgotpasswordpost" instance="Branch8\MarketPlaceSeller\Observer\Controller\SellerPreventThisAction"/>
+    </event>
+    <event name="controller_action_predispatch_customer_account_forgotpasswordpost">
+        <observer name="b8_prevent_visit_default_forgotpasswordpost" instance="Branch8\MarketPlaceSeller\Observer\Controller\SellerPreventThisAction"/>
+    </event>
+    <event name="controller_action_predispatch_customer_account_createpassword">
+        <observer name="b8_prevent_visit_default_forgotpasswordpost" instance="Branch8\MarketPlaceSeller\Observer\Controller\SellerPreventThisAction"/>
+    </event>
+    <event name="controller_action_predispatch_customer_account_resetpasswordpost">
+        <observer name="b8_prevent_visit_default_forgotpasswordpost" instance="Branch8\MarketPlaceSeller\Observer\Controller\SellerPreventThisAction"/>
+    </event>
+    <event name="controller_action_predispatch_marketplace_account_forgotpasswordpost">
+        <observer name="captcha" instance="Magento\Captcha\Observer\CheckForgotpasswordObserver"/>
+    </event>
+
+</config>

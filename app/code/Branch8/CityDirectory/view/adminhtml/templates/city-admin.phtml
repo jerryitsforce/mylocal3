@@ -1,0 +1,28 @@
+<?php
+/** @var \Branch8\CityDirectory\Block\Adminhtml\Cities $block */
+?>
+
+<div class="pp-buttons-container">
+    <?php
+    $cities = $block->citiesJson();
+
+    ?>
+</div>
+<script>
+    require(
+        [
+            'jquery'
+        ],
+        function($) {
+            $eaCitiesJson = <?php echo $cities?>;
+        });
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_CityDirectory/js/city-admin": {}
+        }
+    }
+</script>
+
+

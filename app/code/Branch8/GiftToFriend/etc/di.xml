@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="gift-to-friend-gift-order-shipping-information" type="Branch8\GiftToFriend\Plugin\Checkout\ShippingInformationManagement" sortOrder="10"/>
+    </type>
+    <type name="Magento\Quote\Model\BillingAddressManagement">
+        <plugin name="gift-to-friend-gift-order-billing-address" type="Branch8\GiftToFriend\Plugin\Checkout\BillingAddressManagement" sortOrder="10"/>
+    </type>
+    <type name="Branch8\GiftToFriend\Model\SmsSecurityManager">
+        <arguments>
+            <argument name="smsSecurityCheckers" xsi:type="array">
+                <!-- <item name="frequency" xsi:type="object">Branch8\GiftToFriend\Model\SecurityChecker\Frequency</item> -->
+                <item name="quantity" xsi:type="object">Branch8\GiftToFriend\Model\SecurityChecker\Quantity</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_parent_gift_order_grid_data_source" xsi:type="string">Branch8\GiftToFriend\Model\ResourceModel\GiftOrder\ParentOrder\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="is_gift_order" xsi:type="string">sales_order.is_gift_order</item>
+                <item name="gift_address_type" xsi:type="string">sales_order.gift_address_type</item>
+                <item name="recipient_name" xsi:type="string">sales_order.recipient_name</item>
+                <item name="recipient_telephone" xsi:type="string">sales_order.recipient_telephone</item>
+                <item name="is_gift_confirmed" xsi:type="string">sales_order.is_gift_confirmed</item>
+                <item name="gift_confirmed_at" xsi:type="string">sales_order.gift_confirmed_at</item>
+                <item name="recipient_name" xsi:type="string">sales_order.recipient_name</item>
+                <item name="recipient_telephone" xsi:type="string">sales_order.recipient_telephone</item>
+                <item name="recipient_member_seq" xsi:type="string">sales_order.recipient_member_seq</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentOrderGridAggregator">
+        <arguments>
+            <argument name="columns">
+                <item name="is_gift_order" xsi:type="string">sales_parent_order_detail.is_gift_order</item>
+                <item name="gift_code" xsi:type="string">sales_parent_order_detail.gift_code</item>
+                <item name="gift_address_type" xsi:type="string">sales_parent_order_detail.gift_address_type</item>
+                <item name="is_removed_gift_box" xsi:type="string">sales_parent_order_detail.is_removed_gift_box</item>
+                <item name="is_gift_confirmed" xsi:type="string">sales_parent_order_detail.is_gift_confirmed</item>
+                <item name="gift_confirmed_at" xsi:type="string">sales_parent_order_detail.gift_confirmed_at</item>
+                <item name="gift_last_access_time" xsi:type="string">sales_parent_order_detail.gift_last_access_time</item>
+                <item name="recipient_name" xsi:type="string">sales_parent_order_detail.recipient_name</item>
+                <item name="recipient_telephone" xsi:type="string">sales_parent_order_detail.recipient_telephone</item>
+                <item name="recipient_member_seq" xsi:type="string">sales_parent_order_detail.recipient_member_seq</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Branch8\HotaiAuth\Service\HotaiAuthLoginService">
+        <plugin name="gift-to-friend-recipient-info" type="Branch8\GiftToFriend\Plugin\Checkout\RecipientInfoAuto" sortOrder="10"/>
+    </type>
+    <type name="Webkul\SellerSubAccount\Helper\Data">
+        <plugin name="branch8_add_seller_permission" type="Branch8\GiftToFriend\Plugin\AddSellerPermission"/>
+    </type>
+
+    <virtualType name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="branch8_gift_order_cancel_by_order_ids" xsi:type="object">Branch8\GiftToFriend\Console\Command\GiftOrderCancelByOrderIds</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Customer\Model\Session">
+        <plugin name="gift_order_logout_unset_guest_session" type="Branch8\GiftToFriend\Plugin\LoginLogoutClearGiftBoxSession" sortOrder="10"/>
+    </type>
+
+    <type name="Branch8\GiftToFriend\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">salesPresentativeApiLogHandler</argument>
+            <argument name="handlers"  xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\GiftToFriend\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

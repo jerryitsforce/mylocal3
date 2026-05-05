@@ -1,0 +1,214 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+    .block-blog-related{
+        display: none;
+        margin-top: 46px;
+
+        &.products-same-post{
+            display: block;
+            padding-bottom: 20px;
+        }
+
+        > h2{
+            &:extend(.abs-h6 all);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0 5px;
+            margin: 0 0 20px;
+
+            &::before,
+            &::after {
+                &:extend(.abs-hotai-icon all);
+                color: var(--color-red-base);
+            }
+
+            &:before{
+                content: '\e950';
+                font-size: 8px;
+                line-height: 8px;
+            }
+        }
+    }
+
+    .blog-post-view {
+        .page-title {
+            &:extend(.abs-h6-bold);
+            margin-bottom: 16px;
+        }
+    }
+
+    .post-view{
+        .blog-post-info{
+            display: none;
+        }
+
+        .post-view-image{
+            height: auto;
+        }
+    }
+
+    .post-post_content{
+        &:extend(.abs-body-text all);
+        color: var(--color-text-secondary);
+        margin-top: 24px;
+        h2, h3, h4, h5, h6{
+            margin-top: 0;
+        }
+
+        h6{
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        ol{
+            margin-bottom: 10px;
+            > li{
+                margin-bottom: 0;
+            }
+        }
+
+        table{
+            th, td{
+                border: var(--border-common);
+
+            }
+
+            thead{
+                th, td{
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                    color: var(--color-text-base);
+                    background-color: var(--color-gray-light5);
+                    font-weight: 500;
+                }
+            }
+
+            tbody{
+                th, td{
+                    padding-top: 6px;
+                    padding-bottom: 6px;
+                }
+            }
+        }
+
+    }
+
+    
+}
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    .products-same-post{
+        .products.wrapper{
+            margin-right: ~'calc(-1 * var(--layout-indent__width))';
+        }
+    }
+
+    .post-post_content{
+        h6{
+            &:extend(.abs-mb-body-text all);
+        }
+    }
+
+    .post-view{
+        .post-view-image{
+            .post-image{
+                img{
+                    visibility: hidden;
+                    opacity: 0;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__s) {
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    .blog-post-view {
+        .page-title {
+            &:extend(.abs-tb-h2 );
+            margin-bottom: 36px;
+        }
+    }
+
+    .post-view{
+        .post-view-image{
+            gap: 20px;
+
+            .post-image{
+                background:none !important;
+            }
+        }
+
+        .post-view-image.layout-grid-3{
+            display: flex;
+
+            .post-image{
+                flex: 1;
+            }
+        }
+
+        .post-list-content{
+            background-color: var(--color-gray-light-bg);
+            padding: 30px;
+            border-radius: 32px;
+        }
+    }
+
+    .post-post_content{
+        margin-top: 36px;
+    }
+
+    .block-blog-related{
+        > h2{
+            &:extend(.abs-h3 all);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0 5px;
+            margin: 0 0 36px;
+
+            &::before,
+            &::after {
+                &:extend(.abs-hotai-icon all);
+                content: var(--icon-circle-star);
+                font-size: 30px;
+                line-height: 30px;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+    .post-view{
+        .post-list-content{
+            padding: 56px 60px 60px;
+        }
+    }
+
+    .blog-post-view {
+        .page-title {
+            &:extend(.abs-h2);
+        }
+    }
+
+    .block-blog-related{
+        margin-top: 100px;
+        > h2{
+            &:extend(.abs-h3 all);
+        }
+    }
+}
+
+

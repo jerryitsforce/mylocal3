@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\OfflineShipping\Model\Carrier\Flatrate">
+        <plugin name="Branch8_HotaiShipping_Plugin_Magento_OfflineShipping_Model_Carrier" type="Branch8\HotaiShipping\Plugin\Magento\OfflineShipping\Model\Carrier" sortOrder="10" disabled="false"/>
+    </type>
+    <type name="Magento\Quote\Model\Cart\CartTotalRepository">
+        <plugin name="detail_shipping_fee_plugin" type="Branch8\HotaiShipping\Plugin\CartTotalRepository" />
+    </type>
+</config>

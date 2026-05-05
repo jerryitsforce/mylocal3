@@ -1,0 +1,43 @@
+<div class="entry-edit form-inline">
+    <fieldset class="fieldset admin__fieldset fieldset-wide" id="chat_base_fieldset">
+        <legend class="admin__legend legend">
+            <span translate="'Message History'"></span>
+        </legend>
+        <br>
+        <ul class="note-list" data-bind="foreach:messages">
+            <li class="note-list-item">
+        <span class="note-list-author">
+            <strong data-bind="text:$parent.getCommenter($data)"></strong>
+                    <span class="minor"> <span data-bind="i18n: 'commented '"></span>
+                        <span data-bind="text:$parent.timeAgo($data)"></span>
+                    </span>
+        </span>
+                <div class="note-list-comment" data-bind="html:$data.content"></div>
+                <div class="message-attachments">
+                    <!-- ko foreach: { data: $data.extension_attributes.attachments, as: 'attachment' } -->
+                    <div class="helpdesk-file-uploader-preview">
+                        <a class="preview-link preview-image" target="_blank"
+                           data-bind="attr:{href:$parents[1].getAttachmentLink(attachment),title:attachment.name},
+                                class:'preview-link preview-'+attachment.type">
+                            <!-- ko if: $data.type=='image' -->
+                            <img data-bind="attr:{alt:attachment.name,src:$parents[1].getAttachmentLink(attachment)}"/>
+                            <!-- /ko -->
+                            <!-- ko if: $data.type=='zip' -->
+                            <div class="zip-icon">
+                                <div class="zip-label" data-bind="i18n: 'ZIP'"></div>
+                            </div>
+                            <!-- /ko -->
+                        </a>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </li>
+        </ul>
+        <div class="ticket-history-paging">
+            <!-- ko foreach: getRegion('paging') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+
+    </fieldset>
+</div>

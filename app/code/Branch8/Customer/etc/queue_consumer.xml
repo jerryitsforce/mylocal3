@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <consumer name="buyer.login.update.gift.ticket"
+                queue="buyer.login.update.gift.ticket"
+                connection="db"
+                maxMessages="1000"
+                consumerInstance="Magento\Framework\MessageQueue\Consumer"
+                handler="Branch8\Customer\Model\LoginUpdateGiftTicketConsumer::process"/>
+    <consumer name="visitor.track" queue="visitor.track"
+              connection="amqp"
+              maxMessages="1000"
+              consumerInstance="Magento\Framework\MessageQueue\Consumer"
+              handler="Branch8\Customer\Model\Queue\Visitor\Queue\Consumers::execute"/>
+</config>

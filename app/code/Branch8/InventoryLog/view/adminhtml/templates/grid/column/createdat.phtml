@@ -1,0 +1,6 @@
+<?php
+$createdAt = $cell->getRawValue();
+$helper = $this->helper(\Branch8\InventoryLog\Helper\Data::class);
+$createdAtFormatted = $helper->getFormattedDate($createdAt);
+echo $createdAtFormatted;
+?>

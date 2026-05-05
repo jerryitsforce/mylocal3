@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+    /**
+     * CustomerTicketTable Grid DI
+     *
+     * @category    Branch8
+     * @package     Branch8_CustomerTicketTable
+     *
+     */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Define the Filter Pool -->
+    <virtualType name="CustomerTicketGridFilterPool" type="Magento\Framework\View\Element\UiComponent\DataProvider\FilterPool">
+        <arguments>
+            <argument name="appliers" xsi:type="array">
+                <item name="regular" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\RegularFilter</item>
+                <item name="fulltext" xsi:type="object">Magento\Framework\View\Element\UiComponent\DataProvider\FulltextFilter</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Define the Data Provider for the Grid -->
+    <virtualType name="CustomerTicketGridDataProvider" type="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <arguments>
+            <argument name="collection" xsi:type="object" shared="false">Branch8\CustomerTicketTable\Model\ResourceModel\CustomerTicket\Grid\Collection</argument>
+            <argument name="filterPool" xsi:type="object" shared="false">CustomerTicketGridFilterPool</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Define the CustomerTicket Grid Collection -->
+    <type name="Branch8\CustomerTicketTable\Model\ResourceModel\CustomerTicket\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">customer_ticket</argument>
+            <argument name="eventPrefix" xsi:type="string">customerticket_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">customerticket_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\CustomerTicketTable\Model\ResourceModel\CustomerTicket</argument>
+        </arguments>
+    </type>
+
+    <!-- Define the CollectionFactory for Grid -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="customerticket_listing_data_source" xsi:type="string">Branch8\CustomerTicketTable\Model\ResourceModel\CustomerTicket\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

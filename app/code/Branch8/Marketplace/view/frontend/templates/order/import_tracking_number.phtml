@@ -1,0 +1,48 @@
+<?php
+/** @var \Magento\Framework\View\Element\Template $block */
+?>
+<div class="import_tracking_wrap">
+    <button class="button import-tracking-number" title="Update Tracking number" type="button" id="import-tracking-number">
+        <span><span><?= $block->escapeHtml(__('Import Tracking Number')) ?></span></span>
+    </button>
+    <button class="button download-order-notification" title="Download Order Notification" type="button" id="download_order_notification">
+        <span><span><?= $block->escapeHtml(__('Download Order Notification')) ?></span></span>
+    </button>
+</div>
+<div id="import_tracking_modal" class="hidden">
+    <div class="template-import-shipment txt-left">
+        <a href="<?php echo $this->getUrl('b8marketplace/import/importTrackingTemplate');?>" target="_blank">下載範例文件</a>
+        <br />
+        <span><?php echo __('Please save the file in UTF-8 encoding format.');?></span><br />
+        <span><?php echo __('Thank you.');?></span>
+    </div>
+    <form id="form_import">
+        <div class="admin__fieldset">
+            <div class="admin__field">
+                <div class="admin__field-label">
+                    <label for="import_tracking_file">
+                        <span><?= $block->escapeHtml(__('Import File')) ?></span>
+                    </label>
+                </div>
+                <div class="admin__field-control">
+                    <input type="file" name="import_tracking_file" id="import_tracking_file" />
+                </div>
+            </div>
+            <div class="admin__field">
+                <div class="admin__field-label">&nbsp;</div>
+
+                <div class="admin__field-control">
+                    <button class="button validate-tracking-number" title="Validate Import file" type="button" id="validate-tracking-number">
+                        <span><span><?= $block->escapeHtml(__('Validate')) ?></span></span>
+                    </button>
+                    <button class="button do-tracking-number hidden" title="Validate Import file" type="button" id="do-tracking-number">
+                        <span><span><?= $block->escapeHtml(__('Import')) ?></span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="importFormKey" name="form_key" value="">
+    </form>
+    <div id="validate_import_tracking"></div>
+</div>
+

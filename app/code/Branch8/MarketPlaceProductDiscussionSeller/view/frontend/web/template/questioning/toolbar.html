@@ -1,0 +1,21 @@
+<div class="seller-thread-toolbar">
+    <div class="seller-thread-selection">
+        <h2 data-bind="text:selectTabLabel"></h2>
+        <div class="control">
+            <select class="seller-thread-toolbar-options" id="switcher-tab" data-bind="
+            options: dropDownOptions,
+            optionsText: 'label',
+            optionsValue: 'value',
+            value: currentActiveTab
+        "></select>
+        </div>
+    </div>
+    <div class="seller-thread-filter">
+        <button class="seller-thread-filter-btn" id="more-filter-dropdown-button" data-bind="click:openMoreFilter">
+            <span><span data-bind="i18n: 'More filters'"></span></span>
+        </button>
+        <div class="seller-thread-filter-content" id="more-filter-wrapper" data-bind="afterRender:renderMoreFilter">
+            <!-- ko template: 'Branch8_MarketPlaceProductDiscussionSeller/questioning/filter' --><!-- /ko -->
+        </div>
+    </div>
+</div>

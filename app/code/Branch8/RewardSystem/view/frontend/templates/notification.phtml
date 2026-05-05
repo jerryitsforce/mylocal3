@@ -1,0 +1,17 @@
+<?php
+$notiData = $this->getData('notiData');
+$reportData = $this->getData('reportData');
+
+$notiTitle = $notiData['description'];
+$notiContent = str_replace("\n", '<br />', $notiData['detail_description']);
+
+$rewardCode = '';
+if($reportData['reward_type'] == \Branch8\RewardSystem\Model\Config\Source\RewardType::TYPE_POOL){
+    $rewardCode = $reportData['reward_pool_serial'];
+}
+if($reportData['reward_type'] == \Branch8\RewardSystem\Model\Config\Source\RewardType::TYPE_COUPON){
+    $rewardCode = $reportData['reward_coupon'];
+}
+?>
+<div class="ars-notification-detail"><?php echo $notiContent;?></div>
+<!-- <div>Reward code(coupon or pool ticket): <?php echo $rewardCode;?></div> -->

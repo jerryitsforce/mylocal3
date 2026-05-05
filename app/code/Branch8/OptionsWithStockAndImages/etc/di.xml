@@ -1,0 +1,139 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Branch8\OptionsWithStockAndImages\Api\Data\B8VariationsInterface" type="Branch8\OptionsWithStockAndImages\Model\B8Variations"/>
+	<preference for="Branch8\OptionsWithStockAndImages\Api\Data\B8SwatchInterface" type="Branch8\OptionsWithStockAndImages\Model\B8Swatch"/>
+	<preference for="Branch8\OptionsWithStockAndImages\Api\Data\B8VisibleInterface" type="Branch8\OptionsWithStockAndImages\Model\B8Visible"/>
+	<preference for="Webkul\OptionsWithStockAndImages\Logger\Logger" type="Branch8\OptionsWithStockAndImages\Logger\Logger"/>
+	<type name="Webkul\OptionsWithStockAndImages\Helper\Data">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Helper_Data" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Helper\Data" sortOrder="10" disabled="false"/>
+	</type>
+    <type name="Webkul\OptionsWithStockAndImages\Model\ResourceModel\Variations\Collection">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Model_ResourceModel_Variations_Collection" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Model\ResourceModel\Variations\Collection" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Controller\Product\Quantity">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Controller_Product_Quantity" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Controller\Product\Quantity" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Observer\CheckoutSubmitBeforeObserver">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Observer_CheckoutSubmitBeforeObserver" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer\CheckoutSubmitBeforeObserver" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Observer\CustomWeight">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Observer_CustomWeight" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer\CustomWeight" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Plugin\ReorderPlugin">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Plugin_ReorderPlugin" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Plugin\ReorderPlugin" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Observer\CatalogProductSaveAfter">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Observer_CatalogProductSaveAfter" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer\CatalogProductSaveAfter" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Observer\OrderCancel">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Observer_OrderCancel" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer\OrderCancel" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Webkul\OptionsWithStockAndImages\Observer\CheckoutSubmitAllAfter">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Webkul_OptionsWithStockAndImages_Observer_CheckoutSubmitAllAfter" type="Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer\CheckoutSubmitAllAfter" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Catalog\Model\Product\Type\Price">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Magento_Catalog_Model_Product_Type_Price" type="Branch8\OptionsWithStockAndImages\Plugin\Magento\Catalog\Model\Product\Type\Price" sortOrder="10" disabled="false"/>
+	</type>
+	<preference for="Webkul\OptionsWithStockAndImages\Plugin\BeforeUpdateItems" type="Branch8\OptionsWithStockAndImages\Rewrite\Webkul\OptionsWithStockAndImages\Plugin\BeforeUpdateItems"/>
+	<type name="Magento\CatalogInventory\Observer\SaveInventoryDataObserver">
+        <arguments>
+            <argument name="parentItemProcessorPool" xsi:type="array">
+                <item name="osi_variations" xsi:type="object">Branch8\OptionsWithStockAndImages\Model\Inventory\VariationsItemProcessor</item>
+            </argument>
+        </arguments>
+    </type>
+	<type name="Magento\Catalog\Api\ProductRepositoryInterface">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Magento_Catalog_Api_ProductRepositoryInterface" type="Branch8\OptionsWithStockAndImages\Plugin\Magento\Catalog\Api\ProductRepositoryInterface" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Catalog\Api\ProductCustomOptionRepositoryInterface">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Magento_Catalog_Api_ProductCustomOptionRepositoryInterface" type="Branch8\OptionsWithStockAndImages\Plugin\Magento\Catalog\Api\ProductCustomOptionRepositoryInterface" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\CatalogInventory\Model\Quote\Item\QuantityValidator">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Magento_CatalogInventory_Model_Quote_Item_QuantityValidator" type="Branch8\OptionsWithStockAndImages\Plugin\Magento\CatalogInventory\Model\Quote\Item\QuantityValidator" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Catalog\Block\Product\View\Options">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Magento_Catalog_Block_Product_View_Options" type="Branch8\OptionsWithStockAndImages\Plugin\Magento\Catalog\Block\Product\View\Options" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Catalog\Model\ProductOptions\Config">
+		<plugin name="Branch8_OptionsWithStockAndImages_Plugin_Magento_Catalog_Model_ProductOptions_Config" type="Branch8\OptionsWithStockAndImages\Plugin\Magento\Catalog\Model\ProductOptions\Config" sortOrder="10" disabled="false"/>
+	</type>
+	<type name="Magento\Staging\Model\StagingApplier">
+        <arguments>
+            <argument name="postProcessors" xsi:type="array">
+                <item name="Branch8\OptionsWithStockAndImages\Model\UpdateStagingVariations" xsi:type="object">Branch8\OptionsWithStockAndImages\Model\UpdateStagingVariations</item>
+            </argument>
+        </arguments>
+    </type>
+	<type name="Magento\Framework\Console\CommandListInterface">
+		<arguments>
+			<argument name="commands" xsi:type="array">
+				<item name="updateVariationSku" xsi:type="object">Branch8\OptionsWithStockAndImages\Console\Command\UpdateVariationSku</item>
+				<item name="updateVariationPrice" xsi:type="object">Branch8\OptionsWithStockAndImages\Console\Command\UpdateVariationPrice</item>
+				<item name="fixReadyToShipQty" xsi:type="object">Branch8\OptionsWithStockAndImages\Console\Command\FixReadyToShipQty</item>
+			</argument>
+		</arguments>
+	</type>
+	<preference for="Webkul\OptionsWithStockAndImages\Observer\RefundOrderInventoryObserver" type="Branch8\OptionsWithStockAndImages\Rewrite\Webkul\OptionsWithStockAndImages\Observer\RefundOrderInventoryObserver"/>
+	<preference for="Branch8\OptionsWithStockAndImages\Api\PriceManagementInterface" type="Branch8\OptionsWithStockAndImages\Model\PriceManagement"/>
+    <type name="Magento\Indexer\Model\Indexer">
+        <plugin name="Branch8_OptionsWithStockAndImages_Plugin_Indexer_TriggerVariationIndexer" type="Branch8\OptionsWithStockAndImages\Plugin\Indexer\TriggerVariationIndexerPlugin" sortOrder="20" disabled="false"/>
+    </type>
+    <type name="Magento\ProductPriceDataExporter\Model\Provider\ProductPrice">
+        <plugin name="Branch8_OptionsWithStockAndImages_Plugin_SaaS_PriceProvider" type="Branch8\OptionsWithStockAndImages\Plugin\SaaS\PriceProviderPlugin" sortOrder="20" disabled="false"/>
+    </type>
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Magento\Catalog\Api\Data\ProductInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="variants" xsi:type="string">Branch8\OptionsWithStockAndImages\Model\Variations\ReadHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="OptionsWithStockAndImages::convert_quote_item_to_order_item"
+                type="Branch8\OptionsWithStockAndImages\Plugin\Magento\Quote\Model\Quote\Item\ToOrderItemPlugin"/>
+    </type>
+	
+	<virtualType name="Branch8\OptionsWithStockAndImages\Logger\SaaS\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/debug_saas_price_provider_error.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\OptionsWithStockAndImages\Logger\SaaS\Logger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">saasPriceProviderError</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\OptionsWithStockAndImages\Logger\SaaS\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Branch8\OptionsWithStockAndImages\Plugin\SaaS\PriceProviderPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\OptionsWithStockAndImages\Logger\SaaS\Logger</argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Branch8\OptionsWithStockAndImages\Logger\FixReadyToShipQty\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/variations-fix-ready-to-ship-qty.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\OptionsWithStockAndImages\Logger\FixReadyToShipQty\Logger" type="Branch8\OptionsWithStockAndImages\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">fixReadyToShipQty</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">Branch8\OptionsWithStockAndImages\Logger\FixReadyToShipQty\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Branch8\OptionsWithStockAndImages\Console\Command\FixReadyToShipQty">
+        <arguments>
+            <argument name="customLogger" xsi:type="object">Branch8\OptionsWithStockAndImages\Logger\FixReadyToShipQty\Logger</argument>
+        </arguments>
+    </type>
+</config>

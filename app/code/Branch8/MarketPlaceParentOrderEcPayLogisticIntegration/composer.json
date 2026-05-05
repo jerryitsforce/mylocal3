@@ -1,0 +1,22 @@
+{
+    "name": "branch8/module-marketplaceparentorderecpaylogisticintegration",
+    "version": "1.0.0",
+    "description": "This module take responsibility for processing redirect to ECPay Logistic if We used parent order information checkout",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": "*",
+        "magento/module-sales": "103.0.*",
+        "webkul/marketplace-split-order": "4.0.3"
+    },
+    "license": [
+        ""
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Branch8\\Sales\\": ""
+        }
+    }
+}

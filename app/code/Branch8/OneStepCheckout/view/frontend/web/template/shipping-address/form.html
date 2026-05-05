@@ -1,0 +1,69 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form class="form form-shipping-address" style="display:none" id="co-shipping-form-inline" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+    <!-- ko foreach: getRegion('before-fields') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    <div class="shipping-checkbox">
+        <!-- ko if: clickedAddNewAddress() -->
+        <input type="radio" name="select_edit_shipping_address" id="editable-shipping-address" checked="checked">
+        <!--/ko-->
+        <!-- ko ifnot: clickedAddNewAddress() -->
+        <input type="radio" name="select_edit_shipping_address" id="editable-shipping-address" data-bind="event: {'click': function() { refreshFormToAddNewAddress() }}"/>
+        <!--/ko-->
+    </div>
+    <div id="shipping-new-address-form" class="fieldset address">
+        <!-- ko foreach: getRegion('additional-fieldsets') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <!-- ko if: (isCustomerLoggedIn()) -->
+            <!-- ko if: isSelectStoreVisible() -->
+                <div class="field pickup-field-wrapper">
+                    <div class="pickup-store-field">
+                        <label class="label"><span data-bind="i18n: 'Store Name'"></span></label>
+                        <div class="content">
+                            <span data-bind="visible: isStoreSelectedOnFrequentlyAddress, text: storeNameOnFrequentlyAddress"></span>
+                            <button type="button" class="action action-show-select-store"
+                                    id="select-store-button"
+                                    data-bind="click: function() { selectStore(true); }">
+                                <span></span>
+                                <!-- Change button text based on store selection state -->
+                                <strong data-bind="i18n: '重新選擇', visible: isStoreSelectedOnFrequentlyAddress"></strong>
+                                <strong data-bind="i18n: '選擇超商門市', visible: !isStoreSelectedOnFrequentlyAddress()"></strong>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pickup-store-field" data-bind="visible: isStoreSelectedOnFrequentlyAddress">
+                        <label class="label"><strong data-bind="i18n: 'Store Address'"></strong></label>
+                        <div class="content">
+                            <span data-bind="text: storeAddressOnFrequentlyAddress"></span>
+                        </div>
+                    </div>
+                </div>
+            <!-- /ko -->
+            <div class="field choice" data-bind="visible: !isFormInline">
+                <input type="hidden" name="index_id" />
+                <input type="hidden" name="address_id" />
+                <input type="checkbox" class="save-address-checkbox" id="shipping-save-in-address-book" name="shipping_save_in_address_book" data-bind="checked: saveInAddressBook" />
+                <label class="label" for="shipping-save-in-address-book">
+                    <span data-bind="i18n: 'Save in address book'"></span>
+                </label>
+            </div>
+            <div class="form-action">
+                <button class="action secondary action-hide-popup" type="button" data-role="action" click="cancelUpdateAddress">
+                    <span translate="'Cancel'"></span>
+                </button>
+                <button id="ajax-update-address" class="action primary action-save-address" type="button" data-role="action" click="ajaxUpdateAddressInAddressBook">
+                    <span translate="'Update'"></span>
+                </button>
+                <button id="ajax-add-address" class="action primary action-save-address" type="button" data-role="action" click="ajaxAddAddressInAddressBook">
+                    <span translate="'Add'"></span>
+                </button>
+            </div>
+        <!-- /ko -->
+    </div>
+</form>

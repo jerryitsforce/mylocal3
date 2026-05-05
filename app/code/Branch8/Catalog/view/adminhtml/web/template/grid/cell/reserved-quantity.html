@@ -1,0 +1,21 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="data-grid-cell-content">
+    <ul data-bind="foreach: { data: $col.getReservedQuantityData($row()), as: '$reservedQuantityData' }">
+        <li>
+            <!-- ko if: $reservedQuantityData.is_variation_stock -->
+                <!-- ko foreach: { data: $reservedQuantityData.variation_reserved, as: 'item' } -->
+                    <p><strong data-bind="text: item.comb"></strong> : <span data-bind="text: item.reserved_stock"></span></p>
+                <!-- /ko -->
+            <!-- /ko -->
+           
+            <!-- ko if: !$reservedQuantityData.is_variation_stock -->
+            <span data-bind="text: $reservedQuantityData.reserved_stock"></span>
+            <!-- /ko -->
+        </li>
+    </ul>
+</div>

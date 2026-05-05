@@ -1,0 +1,56 @@
+// =============================================
+//  Checkout Popup Actions - Specific Styles
+// =============================================
+//  各 action 功能的特定樣式擴展
+//  
+//  對應功能模組：
+//  - download-monthly-summary  (JS: 291行, HTML: 46行)
+//  - exception-authorization   (JS: 242行, HTML: 76行)
+//  - unlock-checkout           (JS: 364行, HTML: 66行)
+//  - download-vendor-statement (JS: 待確認)
+//  
+//  這些功能的 CSS 樣式較少，統一在此管理
+//  基礎彈窗樣式：components/_ui-modal-form.less (UiShared)
+//
+//  @updated 2025-10-28 - 重構：合併所有 actions 特定樣式，避免過度拆分
+// =============================================
+
+// Download Monthly Summary
+// 下載月結報表視窗的特定樣式
+.download-monthly-summary {
+    .modal-footer {
+        text-align: left;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding-top: 0;
+    }
+}
+
+// Exception Authorization
+// 例外授權視窗的特定樣式
+.exception-authorization {
+    .download-template {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+}
+
+// Unlock Checkout
+// 解鎖結帳視窗（目前無特定樣式，僅使用基礎彈窗樣式）
+.unlock-checkout {
+    // 目前無特定樣式
+    // 如未來需要特定樣式，可在此添加
+}
+
+// Download Vendor Statement
+// 下載廠商對帳單的特定樣式
+// 注意：保留原始 snake_case 命名以維持向後兼容
+.download_vendor_statement {
+    ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+    }
+}
+

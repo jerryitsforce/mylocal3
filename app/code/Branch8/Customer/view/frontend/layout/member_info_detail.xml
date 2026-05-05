@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Customer\Block\Info\Detail"
+                   name="branch8_customer_account_member_info_detail"
+                   template="Branch8_Customer::info/detail.phtml"
+                   output="1">
+                <block name="branch8_customer_account_nickname"
+                       class="Branch8\Customer\Block\Info\Index"
+                       template="Branch8_Customer::account/dashboard/nickname.phtml"/>
+                <block name="branch8_customer_account_invoice_carrier"
+                       class="Branch8\Customer\Block\Info\Detail"
+                       template="Branch8_Customer::info/detail/invoice-carrier.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

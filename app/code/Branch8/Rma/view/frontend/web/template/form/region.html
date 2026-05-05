@@ -1,0 +1,8 @@
+<!-- ko if: isShow -->
+<select id="return_or_exchange_order_address_region" name="rma_address[]" data-bind="{ event: {change: updateValue} }" data-validate="{'required':true}">
+    <option value="" data-bind="i18n: '請選擇縣市'"></option>
+    <!-- ko foreach: { data: regions, as: 'region' } -->
+        <option data-bind="attr:{ value: region.label, 'data-id': region.id }, i18n: region.label"></option>
+    <!-- /ko -->
+</select>
+<!-- /ko -->

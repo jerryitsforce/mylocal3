@@ -1,0 +1,12 @@
+{
+    "sales_shipment_track": {
+        "column": {
+            "arrival_date": true
+        }
+    },
+    "marketplace_rma_details": {
+        "column": {
+            "is_sent_to_hopes": true
+        }
+    }
+}

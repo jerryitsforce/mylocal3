@@ -1,0 +1,6 @@
+"Order Export Profiles","訂單報表匯出"
+"System -> Data Transfer -> Export","系統 -> 資料傳輸 ->訂單報表匯出"
+"Order Export","訂單匯出"
+"Your profile id [%1] ,your export will be emailed to: [%2],you can also check status process at System -> Order Export Profiles","您的訂單匯出檔 ID 為「#%1」，匯出結果將會寄送至：「%2」，您也可以前往 系統 -> 資料傳輸 ->訂單報表匯出 查看處理狀態。"
+"Your profile id [%1],your export will be emailed to: [%2],you can also check status process at Orders -> Download Order Files","您的訂單匯出檔 ID 為「#%1」，匯出結果將會寄送至：「%2」，您也可以前往 訂單 > 訂單報表匯出 查看處理狀態。"
+"Download Order Files","下載訂單"

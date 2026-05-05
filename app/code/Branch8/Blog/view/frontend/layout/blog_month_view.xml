@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="blog_design"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Blog\Block\MonthlyArchive\Listpost" name="mp.blog.monthly.post.list" template="Branch8_Blog::post/list.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

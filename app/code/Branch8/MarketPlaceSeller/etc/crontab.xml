@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="b8_email_notification">
+        <job name="order_daily_notification_to_seller" instance="Branch8\MarketPlaceSeller\Cron\OrderDailyNotification" method="execute">
+            <config_path>email_notification/order_daily_notification_to_seller/scheduler</config_path>
+        </job>
+        <job name="return_daily_notification_to_seller" instance="Branch8\MarketPlaceSeller\Cron\ReturnDailyNotification" method="execute">
+            <config_path>email_notification/return_report_settings/scheduler</config_path>
+        </job>
+    </group>
+</config>

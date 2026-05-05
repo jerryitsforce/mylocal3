@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <!-- <fieldset name="rule_information" sortOrder="10">
+        <field name="organization" formElement="select" sortOrder="5">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">catalog_rule</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>number</dataType>
+                <label translate="true">Organization</label>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\Customer\Model\Config\Source\Organization"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+
+        <container name="custom_organization_group_process" sortOrder="8">
+            <htmlContent name="html_content">
+                <block name="process_group" class="Branch8\Customer\Block\Adminhtml\Catalogrule\ProcessGroup" />
+            </htmlContent>
+        </container>
+
+    </fieldset> -->
+</form>

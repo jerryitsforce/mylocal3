@@ -1,0 +1,89 @@
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpRmaSystem
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<!--@subject {{var rma_subject}} @-->
+<!--@vars {
+"var name":"Name",
+"var msg":"Mgs",
+"var rma_id":"Rma id",
+"var order_id":"order id",
+"var order_status":"Order Status",
+"var additional_info":"additional_info",
+"var resolution_type":"resolution_type"
+} @-->
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+{{template config_path="design/email/header_template"}}
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>{{var rma_subject}}</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {{trans "親愛的%customer_name您好，<br/>謝謝您對%store_name的支持，%rma_message" customer_name=$order_data.customer_name store_name=$order_data.store.frontend_name rma_message=$rma_message |raw}}
+<p>
+
+<table cellpadding="0" cellspacing="0" class="order-info new-rma m-bottom__m">
+    <thead>
+    <tr>
+        <th>{{trans "訂單明細"}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <table class="order-main-info">
+                <tr class="order_number">
+                    <td class="label">{{trans "訂單編號"}}</td>
+                    <td class="value">
+                        <a target="_blank" href="{{var order_data.url_history}}">{{var order_data.increment_id}}</a>
+                    </td>
+                </tr>
+                <tr class="order_date">
+                    <td class="label">{{trans "訂單日期"}}</td>
+                    <td class="value">{{var order_data.created_at}}</td>
+                </tr>
+                <tr class="order_total">
+                    <td class="label">{{trans "商品總額"}}</td>
+                    <td class="value">{{var order_data.subtotal_incl_tax|raw}}</td>
+                </tr>
+
+                {{depend order_data.shipping_description}}
+                <tr class="order_shipping-method">
+                    <td class="label">{{trans "換貨物流方式"}}</td>
+                    <td class="value">{{var order_data.shipping_description}}</td>
+                </tr>
+                {{/depend}}
+                <tr class="order_items">
+                    <td class="label">{{trans "訂購商品"}}</td>
+                    <td class="value">
+                        {{var rma_items_html |raw}}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p> {{trans "我們將聯繫物流至您收件地點收取換貨商品，請留意近期手機訊息與換貨狀態。"}}</p>
+<p>
+    {{trans '請至 帳號管理 > <a class="link-primary" href="%order_history_url">訂單查詢</a> 瀏覽完整訂單內容。' order_history_url=$order_data.url_history |raw}}
+</p>
+<p>{{trans "如您還有購買其他商品需求"}}，</p>
+<p>{{trans "請至%store_name再次訂購，謝謝您的支持。" store_name=$order_data.store.frontend_name |raw}}</p>
+{{template config_path="design/email/footer_template"}}

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <link src="Branch8_RewardSystem::js/edit_reward.js"/>
+    </head>
+    <body>
+        <referenceContainer name="left">
+            <block class="Branch8\RewardSystem\Block\Adminhtml\Event\Edit\Tabs" name="event_tab"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Branch8\RewardSystem\Block\Adminhtml\Event\Edit" name="event_edit"/>
+        </referenceContainer>
+    </body>
+</page>

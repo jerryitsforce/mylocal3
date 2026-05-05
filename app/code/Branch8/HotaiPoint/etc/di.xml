@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\HotaiPoint\Api\HotaiPointApiRecordRepositoryInterface" type="Branch8\HotaiPoint\Model\HotaiPointApiRecordRepository"/>
+    <preference for="Branch8\HotaiPoint\Api\Data\HotaiPointApiRecordInterface" type="Branch8\HotaiPoint\Model\HotaiPointApiRecord"/>
+    <preference for="Branch8\HotaiPoint\Api\Data\HotaiPointApiRecordSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Branch8\HotaiPoint\Api\AjaxInterface" type="Branch8\HotaiPoint\Model\Ajax"/>
+    <!-- Redirect to customer login page if not login. -->
+    <type name="Branch8\HotaiPoint\Controller\Detail\Index">
+        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+    </type>
+    <virtualType name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="branch8_hotai_point_get_trans_info" xsi:type="object">Branch8\HotaiPoint\Console\Command\RequestApi\GetTransInfo</item>
+                <item name="branch8_hotai_point_get_return_failure_point" xsi:type="object">Branch8\HotaiPoint\Console\Command\RequestApi\GetReturnFailurePoint</item>
+                <item name="branch8_hotai_point_get_point_by_oneid" xsi:type="object">Branch8\HotaiPoint\Console\Command\RequestApi\GetPointByOneid</item>
+                <item name="branch8_hotai_point_return_point_by_order_item" xsi:type="object">Branch8\HotaiPoint\Console\Command\Flow\ReturnPointByOrderItem</item>
+                <item name="branch8_hotai_point_return_point_by_quote_item" xsi:type="object">Branch8\HotaiPoint\Console\Command\Flow\ReturnPointByQuoteItem</item>
+                <item name="branch8_hotai_point_unlock_oneid" xsi:type="object">Branch8\HotaiPoint\Console\Command\RequestApi\UnlockOneId</item>
+                <item name="branch8_hotai_point_add_point_non" xsi:type="object">Branch8\HotaiPoint\Console\Command\RequestApi\AddPointNon</item>
+                <item name="branch8_hotai_point_cancel_deduction_by_quote_item" xsi:type="object">Branch8\HotaiPoint\Console\Command\Flow\CancelDeductionByQuoteItem</item>
+                <item name="branch8_hotai_point_cancel_deduction_by_order_item" xsi:type="object">Branch8\HotaiPoint\Console\Command\Flow\CancelDeductionByOrderItem</item>
+                <item name="branch8_hotai_point_sync_api_record" xsi:type="object">Branch8\HotaiPoint\Console\Command\Flow\SyncApiRecord</item>
+                <item name="branch8_hotai_point_add_deduction_point_memo" xsi:type="object">Branch8\HotaiPoint\Console\Command\addDeductionPointMemo</item>
+                <item name="branch8_hotai_point_test_htgotwo3364" xsi:type="object">Branch8\HotaiPoint\Console\Command\Test\HTGOTWO3364</item>
+                <item name="branch8_hotai_point_htgotwo3335" xsi:type="object">Branch8\HotaiPoint\Console\Command\Test\HTGOTWO3335</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Sales\Api\OrderItemRepositoryInterface">
+        <plugin name="branch8_hotai_point_order_item_repository_save_plugin"
+                type="Branch8\HotaiPoint\Plugin\Magento\Sales\Api\OrderItemRepositorySavePlugin"
+                sortOrder="10"/>
+    </type>
+</config>

@@ -1,0 +1,112 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\Sales\Model;
+
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
+use Psr\Log\LoggerInterface;
+
+class AutoResolveStatus
+{
+    const XML_PATH_STATUS_AUTO_RESOLVE = 'b8sales/payment_settings/auto_resolve_status';
+    private ScopeConfigInterface $scopeConfig;
+    private $paymentConfig;
+
+    private ResourceConnection $resourceConnection;
+
+    private $state = [];
+
+    private \Magento\Sales\Model\ResourceModel\Order $resource;
+    private LoggerInterface $logger;
+
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     * @param ResourceConnection $resourceConnection
+     * @param \Magento\Sales\Model\ResourceModel\Order $resource
+     * @param LoggerInterface $logger
+     * @param array $paymentConfig
+     */
+    public function __construct(
+        ScopeConfigInterface                     $scopeConfig,
+        ResourceConnection                       $resourceConnection,
+        \Magento\Sales\Model\ResourceModel\Order $resource,
+        LoggerInterface                          $logger,
+        array                                    $paymentConfig = []
+    )
+    {
+        $this->logger = $logger;
+        $this->resourceConnection = $resourceConnection;
+        $this->resource = $resource;
+        $this->scopeConfig = $scopeConfig;
+        $this->paymentConfig = $paymentConfig;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isAutoResolved()
+    {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_STATUS_AUTO_RESOLVE);
+    }
+
+    /**
+     * @param \Magento\Sales\Model\Order $order
+     * @return void
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     */
+    public function autoStatusForOrder(
+        \Magento\Sales\Model\Order $order
+    )
+    {
+        $paymentMethods = $this->paymentConfig;
+        $allMethods = array_keys($this->paymentConfig);
+        $hasPaymentMethod = $order->getPayment() !== null;
+        try {
+            if ($this->isAutoResolved()
+                && $order->getState() === 'new'
+                && $order->getId()
+                && ($hasPaymentMethod === false || (in_array($order->getPayment()->getMethod(), $allMethods)))// no payment method or has
+                && $state = $paymentMethods[$order->getPayment()->getMethod()]
+            ) {
+                if ($order->getPayment()) {
+                    $method = $order->getPayment()->getMethod();
+                } else {
+                    $method = '';
+                }
+                $status = $paymentMethods[$method];
+                $order->setState($state);
+                $order->setStatus($status);
+                $order->addCommentToStatusHistory(
+                    $method ? __('Order auto change to "%1" by setting from payment "%2"', $status, $method) :
+                        __('Order auto change to "%1" by setting from payment', $status, $method)
+                    ,
+                    $status, false
+                );
+                $this->resource->save($order);
+            }
+        } catch (\Exception $e) {
+            $this->logger->critical($e->getMessage());
+        }
+
+    }
+
+    /**
+     * @param $status
+     * @return mixed|string
+     */
+    private function getStateByStatus($status)
+    {
+        /**
+         *
+         */
+        if (isset($this->state[$status])) {
+            return $this->state[$status];
+        }
+        $select = $this->resourceConnection->getConnection()->select();
+        $select->from('sales_order_status', 'state')->where('status = ? ', $status);
+        $row = $this->resourceConnection->getConnection()->fetchRow($select);
+        $this->state[$status] = $row ? $row['state'] : '';
+        return $this->state[$status];
+    }
+}

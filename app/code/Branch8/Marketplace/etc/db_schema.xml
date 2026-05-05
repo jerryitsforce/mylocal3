@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="marketplace_saleslist" resource="default" engine="innodb" comment="Marketplace Saleslist Table">
+        <column xsi:type="varchar" name="magepro_sku" length="255" comment="Product Sku"/>
+        <column xsi:type="decimal" name="base_cost" scale="4" precision="12" unsigned="false" nullable="true"
+                default="0" comment="Base Cost"/>
+        <column xsi:type="decimal" name="commission_percent" nullable="true" scale="4" precision="12"
+                comment="Commission percent"/>
+        <constraint xsi:type="unique" referenceId="marketplace_saleslist_order_id_order_item_id">
+            <column name="order_id"/>
+            <column name="order_item_id"/>
+        </constraint>
+        <index referenceId="MARKETPLACE_SALESLIST_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+        <index referenceId="MARKETPLACE_SALESLIST_MAGEPRO_SKU" indexType="btree">
+            <column name="magepro_sku"/>
+        </index>
+        <index referenceId="MARKETPLACE_SALESLIST_MAGEPRODUCT_ID" indexType="btree">
+            <column name="mageproduct_id"/>
+        </index>
+    </table>
+    <table name="marketplace_orders" resource="default" engine="innodb" comment="Marketplace Orders Table">
+        <index referenceId="MARKETPLACE_ORDERS_SELLER_ID" indexType="btree">
+            <column name="seller_id"/>
+        </index>
+    </table>
+</schema>

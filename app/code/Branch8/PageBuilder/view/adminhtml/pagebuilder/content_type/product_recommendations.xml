@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_PageBuilder:etc/content_type.xsd">
+    <type name="product_recommendations">
+        <appearances>
+            <appearance name="default">
+                <elements>
+                    <element name="main">
+                        <attribute name="item_list_id" source="data-item-list-id"/>
+                        <attribute name="item_list_name" source="data-item-list-name"/>
+                        <attribute name="promotion_id" source="data-promotion-id"/>
+                        <attribute name="promotion_name" source="data-promotion-name"/>
+                    </element>
+                </elements>
+            </appearance>
+            <appearance name="carousel"
+                        default="true"
+                        preview_template="Magento_PageBuilderProductRecommendations/content-type/product-recommendations/default/preview"
+                        master_template="Magento_PageBuilderProductRecommendations/content-type/product-recommendations/default/master"
+                        reader="Magento_PageBuilder/js/master-format/read/configurable">
+                <form>pagebuilder_product_recommendations_carousel_form</form>
+                <elements>
+                    <element name="main">
+                        <style name="text_align" source="text_align"/>
+                        <style name="border" source="border_style" converter="Magento_PageBuilder/js/converter/style/border-style"/>
+                        <style name="border_color" source="border_color"/>
+                        <style name="background_color" source="background_color"/>
+                        <style name="background_image" source="background_image" converter="Magento_PageBuilder/js/converter/style/background-image" preview_converter="Magento_PageBuilder/js/converter/style/preview/background-image" persistence_mode="write"/>
+                        <style name="border_width" source="border_width" converter="Magento_PageBuilder/js/converter/style/border-width"/>
+                        <style name="border_radius" source="border_radius" converter="Magento_PageBuilder/js/converter/style/remove-px"/>
+                        <style name="margins" storage_key="margins_and_padding" reader="Magento_PageBuilder/js/property/margins" converter="Magento_PageBuilder/js/converter/style/margins"/>
+                        <style name="padding" storage_key="margins_and_padding" reader="Magento_PageBuilder/js/property/paddings" converter="Magento_PageBuilder/js/converter/style/paddings"/>
+                        <style name="display" source="display" converter="Magento_PageBuilder/js/converter/style/display" preview_converter="Magento_PageBuilder/js/converter/style/preview/display"/>
+                        <attribute name="name" source="data-content-type"/>
+                        <attribute name="appearance" source="data-appearance"/>
+                        <attribute name="autoplay" source="data-autoplay"/>
+                        <attribute name="autoplay_speed" source="data-autoplay-speed"/>
+                        <attribute name="is_infinite" source="data-infinite-loop"/>
+                        <attribute name="show_arrows" source="data-show-arrows"/>
+                        <attribute name="show_dots" source="data-show-dots"/>
+                        <attribute name="carousel_mode" source="data-carousel-mode"/>
+                        <attribute name="slidetoshow_desktop" source="data-slidetoshow-desktop"/>
+                        <attribute name="slidetoshow_tablet" source="data-slidetoshow-tablet"/>
+                        <attribute name="slidetoshow_mobile" source="data-slidetoshow-mobile"/>
+                        <attribute name="background_images" source="data-background-images"/>
+                        <attribute name="item_list_id" source="data-item-list-id"/>
+                        <attribute name="item_list_name" source="data-item-list-name"/>
+                        <attribute name="promotion_id" source="data-promotion-id"/>
+                        <attribute name="promotion_name" source="data-promotion-name"/>
+                        <static_attribute source="data-center-padding" value="95px"/>
+                        <attribute name="unit_id" source="data-recommendation-id"/>
+                        <css name="css_classes"/>
+                        <html name="html"/>
+                    </element>
+                </elements>
+                <converters>
+                    <converter name="unitId" component="Magento_PageBuilderProductRecommendations/js/unitId">
+                        <config>
+                            <item name="html_variable" value="html"/>
+                        </config>
+                    </converter>
+                </converters>
+            </appearance>
+        </appearances>
+    </type>
+</config>

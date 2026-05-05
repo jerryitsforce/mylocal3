@@ -1,0 +1,50 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Cron;
+
+use Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Api\ChatNotificationServiceInterface;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Cron to clean up old processed chat notifications.
+ */
+class CleanupQueue
+{
+    /**
+     * @var ChatNotificationServiceInterface
+     */
+    private ChatNotificationServiceInterface $notificationService;
+
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
+     * @param ChatNotificationServiceInterface $notificationService
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        ChatNotificationServiceInterface $notificationService,
+        LoggerInterface $logger
+    ) {
+        $this->notificationService = $notificationService;
+        $this->logger = $logger;
+    }
+
+    /**
+     * @return void
+     */
+    public function execute(): void
+    {
+        try {
+            $deletedCount = $this->notificationService->cleanUp();
+            if ($deletedCount > 0) {
+                $this->logger->info(sprintf('Cleaned up %d old chat notification queue entries.', $deletedCount));
+            }
+        } catch (\Exception $e) {
+            $this->logger->error('Error in chat notification cleanup cron: ' . $e->getMessage());
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="branch8_debug" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>Branch8_HotaiCore::debug_log</resource>
+            <group id="livesearch_resync" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Branch8_LiveSearchResync</label>
+                <field id="log_types" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\LiveSearchResync\Model\Config\Source\LogType</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

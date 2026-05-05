@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="order_cancel_after">
+        <observer name="Branch8_CancelOrderInspectRefundStatus" instance="Branch8\Refund\Observer\CancelObserver"/>
+    </event>
+    <event name="sales_order_creditmemo_refund">
+        <observer name="webkul_rma_refund_by_admin_observer" disabled="true"/>
+        <observer name="Branch8_Creditmemo_Add_Refund_Data" instance="Branch8\Refund\Observer\SetCreditmemoRefundData"/>
+    </event>
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="webkul_marketplace_sales_order_creditmemo_save_after_observer" disabled="true"/>
+    </event>
+    <event name="sales_order_creditmemo_save_commit_after">
+        <observer name="Branch8_Refund_LogCreditmemoCreatorAfterCommit"
+                  instance="Branch8\Refund\Observer\LogCreditmemoCreatorAfterCommit"/>
+    </event>
+    <event name="sales_order_cancel_paied_order">
+        <observer name="cancel_paied_order" instance="Branch8\Refund\Observer\CancelPaidOrderObserver" />
+    </event>
+     <event name="sales_order_cancel_issue_creditmemo">
+        <observer name="cancel_creditmemo_after_financial_review" instance="Branch8\Refund\Observer\CancellationCreditMemo" />
+    </event>
+</config>

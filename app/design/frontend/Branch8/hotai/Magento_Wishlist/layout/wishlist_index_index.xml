@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock name="customer.wishlist">
+                <referenceBlock name="items">
+                    <referenceBlock name="customer.wishlist.item.comment" remove="true" />
+                    <referenceBlock name="customer.wishlist.item.cart">
+                        <action method="setTemplate">
+                            <argument name="template" xsi:type="string">Magento_Wishlist::item/column/cart.phtml</argument>
+                        </action>
+                    </referenceBlock>
+                    <referenceBlock name="customer.wishlist.item.actions">
+                        <referenceBlock name="customer.wishlist.item.edit" remove="true" />
+                        <referenceBlock name="customer.wishlist.item.remove">
+                            <action method="setTemplate">
+                                <argument name="template" xsi:type="string">Magento_Wishlist::item/column/remove.phtml</argument>
+                            </action>
+                        </referenceBlock>
+                    </referenceBlock>
+                </referenceBlock>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

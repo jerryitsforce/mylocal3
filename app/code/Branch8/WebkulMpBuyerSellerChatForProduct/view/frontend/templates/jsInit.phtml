@@ -1,0 +1,16 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var $viewModel \Branch8\WebkulMpBuyerSellerChatForProduct\ViewModel\ChatConfig
+ */
+$viewModel = $block->getViewModel();
+?>
+
+<script type="text/x-magento-init">
+    {
+        "[data-role=chat-with-seller]": {
+            "Branch8_WebkulMpBuyerSellerChatForProduct/js/customerSellerChatLink": <?= $viewModel->getChatLinkWidgetConfig() ?>
+    }
+}
+</script>

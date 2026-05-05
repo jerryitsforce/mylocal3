@@ -1,0 +1,33 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<!--@subject {{trans "Hotai Points Product | Customer Service Form Notification"}} @-->
+{{var preheader_text | raw}}
+
+{{template config_path="design/email/header_template"}}
+
+{{var hidden_separator|raw}}
+<p>
+    <strong> 單號: </strong>{{var ticket.code}}<br>
+    <strong> 標題: </strong>{{var ticket.title}}<br>
+    <strong> 顧客姓名: </strong>{{var ticket.customer_name}}<br>
+    <strong> 顧客信箱:</strong> {{var ticket.customer_email}}<br>
+    <strong> 顧客電話:</strong> {{var ticket.phone}}<br>
+    <strong> 服務團隊: </strong>{{var ticket.team}}<br>
+    <strong> Staff (Owner): </strong>{{var ticket.staff}}<br>
+    <strong> 處理狀態: </strong>{{var ticket.status}}<br>
+    <strong> 優先度: </strong>{{var ticket.priority}}<br>
+    <strong> 反應時間:</strong> {{var ticket.createdAt}}<br>
+
+</p>
+{{depend ticket.content}}
+<strong> 問題內容 :</strong><br>
+″{{var ticket.content|raw}}″
+<br>
+{{/depend}}
+{{layout handle="helpdesk_email_attachments" attachment_ids=$attachment_ids area="frontend"}}
+

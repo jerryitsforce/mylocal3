@@ -1,0 +1,16 @@
+{
+    "sales_parent_order_detail": {
+        "column": {
+            "ecpay_payment_merchant_trade_no": true,
+            "ecpay_logistic_cvs_store_id": true,
+            "ecpay_logistic_cvs_store_name": true,
+            "ecpay_logistic_cvs_store_address": true,
+            "ecpay_logistic_cvs_store_telephone": true,
+            "ecpay_invoice_carruer_type": true,
+            "ecpay_invoice_customer_identifier": true,
+            "ecpay_invoice_customer_company": true,
+            "ecpay_invoice_love_code": true,
+            "ecpay_invoice_carruer_num": true
+        }
+    }
+}

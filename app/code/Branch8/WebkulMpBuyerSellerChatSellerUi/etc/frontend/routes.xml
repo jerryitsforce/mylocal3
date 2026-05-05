@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="mpchatsystem" frontName="mpchatsystem">
+            <module name="Branch8_WebkulMpBuyerSellerChatSellerUi" before="Branch8_WebkulMpBuyerSellerChat" />
+        </route>
+    </router>
+</config>

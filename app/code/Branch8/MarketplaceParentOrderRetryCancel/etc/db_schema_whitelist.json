@@ -1,0 +1,16 @@
+{
+    "sales_parent_order_failed_record": {
+        "column": {
+            "entity_id": true,
+            "status": true,
+            "old_parent_order_id": true,
+            "sub_order_ids": true,
+            "created_at": true,
+            "master_quote_id": true,
+            "new_parent_order_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

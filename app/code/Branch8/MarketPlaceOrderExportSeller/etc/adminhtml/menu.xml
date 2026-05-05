@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_MarketPlaceOrderExportSeller::report_seller" title="Seller" translate="title"
+             module="Branch8_MarketPlaceOrderExportSeller"
+             sortOrder="10" parent="Magento_Reports::report"
+             resource="Branch8_MarketPlaceOrderExportSeller::report_seller"
+             dependsOnConfig="marketplace/reports/show_seller_report_menus"
+        />
+
+        <add id="Branch8_MarketPlaceOrderExportSeller::seller_detail_report" title="Detail Sales"
+             translate="title" module="Branch8_MarketPlaceOrderExportSeller"
+             sortOrder="40" parent="Branch8_MarketPlaceOrderExportSeller::report_seller"
+             action="reports/report_detail/sold"
+             resource="Branch8_MarketPlaceOrderExportSeller::seller_detail_report"
+             dependsOnConfig="marketplace/reports/show_seller_report_menus"
+
+        />
+
+        <add id="Branch8_MarketPlaceOrderExportSeller::seller_summarize_report" title="Summarize Sales"
+             translate="title" module="Branch8_MarketPlaceOrderExportSeller"
+             sortOrder="40" parent="Branch8_MarketPlaceOrderExportSeller::report_seller"
+             action="reports/report_summarize/sold"
+             resource="Branch8_MarketPlaceOrderExportSeller::seller_summarize_report"
+             dependsOnConfig="marketplace/reports/show_seller_report_menus"
+
+        />
+
+    </menu>
+</config>

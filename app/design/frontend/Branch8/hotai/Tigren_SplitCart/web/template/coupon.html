@@ -1,0 +1,47 @@
+<div class="block discount active">
+    <h3 class="block-title" data-bind="i18n: 'Apply Discount Code'"></h3>
+    <div class="fieldset coupon">
+        <form id="coupon-form" class="form" data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+            <fieldset class="fieldset">
+                <legend data-bind="i18n: 'Apply Discount Code'"></legend>
+            </fieldset>
+            <div class="field">
+                <div class="control">
+                    <input class="input-text"
+                        type="text"
+                        name="coupon"
+                        data-validate="{required:true}"
+                        data-bind='attr: { disabled: hasCouponCode, placeholder: $t("Enter discount code"), "data-placeholder": $t("Enter discount code") }, value: couponCode'
+                        id="coupon" />
+                    <span class="action clear"></span>
+                    <span class="no-focus"></span>
+                    <div class="mage-error"></div>
+                    <div class="coupon-message" data-bind="visible: hasCouponCode">
+                        <span class="coupon-message-info" data-bind="i18n: '已成功使用折扣碼'"></span>
+                        <span class="coupon-amount" data-bind="text: discountAmount()"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-toolbar">
+                <div class="primary" data-bind="visible: !hasCouponCode() && !hasCouponCodeandError()">
+                    <button id="applyBtn" type="button" data-bind="click: applyCouponCode" class="action apply primary">
+                        <span data-bind="i18n: 'Apply Discount'"></span>
+                    </button>
+                </div>
+                <div class="primary" data-bind="visible: !!hasCouponCodeandError()">
+                    <button id="removeBtn" type="button" data-bind="click: removeCouponCode" class="action remove primary">
+                        <span data-bind="i18n: 'Remove Discount'"></span>
+                    </button>
+                </div>
+                <div class="primary" data-bind="visible: !!hasCouponCode() && !hasCouponCodeandError()">
+                    <button id="cancelBtn" type="button" data-bind="click: cancelCouponCode"
+                            class="action cancel primary">
+                        <span data-bind="i18n: 'Cancel Coupon'"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

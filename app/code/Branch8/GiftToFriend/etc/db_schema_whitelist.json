@@ -1,0 +1,120 @@
+{
+    "sales_parent_order_detail": {
+        "column": {
+            "is_gift_order": true,
+            "gift_code": true,
+            "is_gift_confirmed": true,
+            "gift_address_type": true,
+            "gift_confirmed_at": true,
+            "is_removed_gift_box": true,
+            "gift_last_access_time": true,
+            "recipient_name": true,
+            "recipient_telephone": true,
+            "gift_expired_at": true,
+            "gift_address_fields_filled": true,
+            "sales_presentative_infor": true,
+            "recipient_member_seq": true
+        },
+        "index": {
+            "SALES_PARENT_ORDER_DETAIL_IS_GIFT_ORDER": true,
+            "SALES_PARENT_ORDER_DETAIL_GIFT_CODE": true,
+            "SALES_PARENT_ORDER_DETAIL_IS_GIFT_CONFIRMED": true,
+            "SALES_PARENT_ORDER_DETAIL_GIFT_ADDRESS_TYPE": true,
+            "SALES_PARENT_ORDER_DETAIL_IS_REMOVED_GIFT_BOX": true,
+            "SALES_PARENT_ORDER_DETAIL_RECIPIENT_NAME": true,
+            "SALES_PARENT_ORDER_DETAIL_RECIPIENT_TELEPHONE": true,
+            "SALES_PARENT_ORDER_DETAIL_GIFT_CONFIRMED_AT": true,
+            "SALES_PARENT_ORDER_DETAIL_GIFT_EXPIRED_AT": true,
+            "SALES_PARENT_ORDER_DETAIL_RECIPIENT_MEMBER_SEQ": true
+        }
+    },
+    "sales_parent_order_grid": {
+        "column": {
+            "is_gift_order": true,
+            "gift_code": true,
+            "gift_address_type": true,
+            "is_gift_confirmed": true,
+            "recipient_name": true,
+            "recipient_telephone": true,
+            "gift_confirmed_at": true,
+            "gift_last_access_time": true,
+            "is_removed_gift_box": true,
+            "recipient_member_seq": true
+        },
+        "index": {
+            "SALES_PARENT_ORDER_GRID_IS_GIFT_ORDER": true,
+            "SALES_PARENT_ORDER_GRID_GIFT_CODE": true,
+            "SALES_PARENT_ORDER_GRID_GIFT_ADDRESS_TYPE": true,
+            "SALES_PARENT_ORDER_GRID_IS_GIFT_CONFIRMED": true,
+            "SALES_PARENT_ORDER_GRID_RECIPIENT_NAME": true,
+            "SALES_PARENT_ORDER_GRID_RECIPIENT_TELEPHONE": true,
+            "SALES_PARENT_ORDER_GRID_GIFT_LAST_ACCESS_TIME": true,
+            "SALES_PARENT_ORDER_GRID_GIFT_CONFIRMED_AT": true,
+            "SALES_PARENT_ORDER_GRID_IS_REMOVED_GIFT_BOX": true,
+            "SALES_PARENT_ORDER_GRID_RECIPIENT_NAME_RECIPIENT_TELEPHONE": true,
+            "SALES_PARENT_ORDER_GRID_RECIPIENT_MEMBER_SEQ": true
+        }
+    },
+    "quote": {
+        "column": {
+            "is_gift_order": true,
+            "gift_address_type": true,
+            "gift_address_fields_filled": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "is_gift_order": true,
+            "is_gift_confirmed": true,
+            "gift_address_type": true,
+            "gift_confirmed_at": true,
+            "recipient_name": true,
+            "recipient_telephone": true,
+            "gift_expired_at": true,
+            "sales_presentative_infor": true,
+            "recipient_member_seq": true
+        },
+        "index": {
+            "SALES_ORDER_IS_GIFT_ORDER": true,
+            "SALES_ORDER_RECIPIENT_NAME": true,
+            "SALES_ORDER_RECIPIENT_TELEPHONE": true,
+            "SALES_ORDER_GIFT_CONFIRMED_AT": true,
+            "SALES_ORDER_GIFT_EXPIRED_AT": true,
+            "SALES_ORDER_RECIPIENT_MEMBER_SEQ": true
+        }
+    },
+    "sales_order_grid": {
+        "column": {
+            "is_gift_order": true,
+            "gift_code": true,
+            "gift_address_type": true,
+            "recipient_name": true,
+            "recipient_telephone": true,
+            "gift_confirmed_at": true,
+            "is_gift_confirmed": true,
+            "recipient_member_seq": true
+        },
+        "index": {
+            "SALES_ORDER_GRID_IS_GIFT_ORDER": true,
+            "SALES_ORDER_GRID_GIFT_CODE": true,
+            "SALES_ORDER_GRID_GIFT_ADDRESS_TYPE": true,
+            "SALES_ORDER_GRID_RECIPIENT_NAME": true,
+            "SALES_ORDER_GRID_RECIPIENT_TELEPHONE": true,
+            "SALES_ORDER_GRID_GIFT_CONFIRMED_AT": true,
+            "SALES_ORDER_GRID_IS_GIFT_CONFIRMED": true
+        }
+    },
+    "sales_parent_order_address": {
+        "index": {
+            "SALES_PARENT_ORDER_ADDRESS_TELEPHONE": true
+        }
+    },
+    "customer_ticket": {
+        "column": {
+            "telephone": true
+        },
+        "index": {
+            "CUSTOMER_TICKET_TELEPHONE": true
+        }
+    }
+}

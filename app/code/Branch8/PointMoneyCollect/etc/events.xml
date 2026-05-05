@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_after">
+        <observer name="point_money_collect_sales_order_place_after" instance="Branch8\PointMoneyCollect\Observer\SalesOrderPlaceAfterObserver"/>
+    </event>
+    <event name="sales_model_service_quote_submit_before">
+        <observer name="branch8_pointmoneycollect_sales_model_service_quote_submit_before" instance="Branch8\PointMoneyCollect\Observer\QuoteOrderFieldObserver" />
+    </event>
+    <event name="before_submit_master_quote">
+        <observer name="branch8_pointmoneycollect_validate_point_is_apply" instance="Branch8\PointMoneyCollect\Observer\IsCompleteApplyPoint" />
+    </event>
+</config>

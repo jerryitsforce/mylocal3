@@ -1,0 +1,112 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getHelper();
+    $_product = $block->getSellerProduct()?>
+<?php $block->getFileUploaderJsonData() ?>
+<?php
+//$store_id = $_product->getStoreId();
+$store_id = 0;
+?>
+<fieldset class="fieldset downloadable-form" data-ui-id="downloadable-links">
+    <legend class="legend"><span><?= $escaper->escapeHtml(__('Links'))?></span></legend><br>
+    <p class="note"><?= $escaper->escapeHtml(__('Add links to your product files here.'))?></p>
+    <div class="field" <?= /* @noEscape */ !$helper->getSingleStoreModeStatus() ?
+     ' data-config-scope="' . __('[STORE VIEW]') . '"' : ''; ?>>
+        <label class="field-label" for="downloadable_links_title">
+            <span><?= $escaper->escapeHtml(__('Title'))?></span></label>
+        <div class="field-control">
+            <input type="text" class="control-text" id="downloadable_links_title"
+            name="product[links_title]" value="<?= /* @noEscape */ $_product->getLinksTitle() ?>">
+        </div>
+    </div>
+
+    <div class="field" <?= /* @noEscape */ !$helper->getSingleStoreModeStatus() ?
+     ' data-config-scope="' . __('[GLOBAL]') . '"' : ''; ?>>
+        <label class="field-label" for="downloadable_staging_link_purchase_type"><span>
+            <?= $escaper->escapeHtml(__('Links can be purchased separately'))?></span></label>
+        <div class="field-control">
+            <div class="actions-switch" data-role="switcher">
+                <input type="checkbox" id="staging-link-switcher" class="actions-switch-checkbox" name="product[links_purchased_separately]" value="1" 
+                    <?php if ($_product->getData('links_purchased_separately')): ?>
+                        checked="checked"
+                    <?php endif; ?>
+                >
+                <label class="actions-switch-label" for="staging-link-switcher">
+                    <span class="actions-switch-inner">
+                        <span class="actions-switch-indicator"></span>
+                        <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="field field-wide">
+        <div class="field-control">
+            <div class="control-table-wrapper">
+                <table class="control-table">
+                    <thead>
+                        <tr>
+                            <th class="col-sort"><span><?= $escaper->escapeHtml(__('Sort Order')) ?></span></th>
+                            <th class="col-title _required"><span><?= $escaper->escapeHtml(__('Title')) ?></span></th>
+                            <th class="col-price"><span><?= $escaper->escapeHtml(__('Price')) ?></span></th>
+                            <th class="col-file"><span>
+                                <?= $escaper->escapeHtml(__('Attach File or Enter Link')) ?></span></th>
+                            <th class="col-sample"><span><?= $escaper->escapeHtml(__('Sample')) ?></span></th>
+                            <th class="col-share"><span><?= $escaper->escapeHtml(__('Shareable')) ?></span></th>
+                            <th class="col-limit"><span><?= $escaper->escapeHtml(__('Max. Downloads')) ?></span></th>
+                            <th class="col-actions">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td class="col-actions-add" colspan="8">
+                                <button data-ui-id="widget-button-7" data-action="add-link"
+                                class="action-default scalable action-add" type="button"
+                                title="Add New Link" id="add_link_staging_item">
+                                    <span><?= $escaper->escapeHtml(__('Add New Link')) ?></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                    <tbody id="link_staging_items_body">
+                    </tbody>
+                </table>
+            </div>
+            <div class="field-note">
+                <span><?= $escaper->escapeHtml(__('Alphanumeric, dash and underscore characters are
+                 recommended for filenames. Improper characters are replaced with \'_\'.'))?></span>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<?php
+$formData = [
+    'uploadUrl' => $escaper->escapeUrl($block->getUrl('marketplace/product_downloadable_file/upload', ['type' => 'links', '_secure' =>$block->getRequest()->isSecure()])),
+    'uploadSampleUrl' => $escaper->escapeUrl($block->getUrl('marketplace/product_downloadable_file/upload', ['type' => 'link_samples', '_secure' =>$block->getRequest()->isSecure()])),
+    'uploadJsonData' => $block->getFileUploaderJsonData(),
+    'uploadJsonSampleData' => $block->getFileUploaderJsonData('link_samples'),
+    'downloadableLinkInfo' => $block->getDownloadableLinkInfo(),
+    'maxDownloads' => $helper->getMaxDownloads(),
+    'currencySymbol' => $helper->getCurrencySymbol()
+];
+$serializedFormData = $viewModel->getJsonHelper()->jsonEncode($formData);
+?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Branch8_MarketplaceStaging/js/downloadable/links": <?= /* @noEscape */ $serializedFormData; ?>
+        }
+    }
+</script>

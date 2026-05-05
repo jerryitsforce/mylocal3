@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <title>個人通知</title>
+    </head>
+    <body>
+        <attribute name="class" value="account"/>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">回到通知主頁</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">回到通知主頁</item>
+                    <item name="title" xsi:type="string" translate="true">回到通知主頁</item>
+                    <item name="link" xsi:type="string">/notification/customer/notification</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="page.top">
+            <container name="customer.page.top" htmlTag="div" htmlClass="customer-header-wrapper">
+                <block class="Branch8\Customer\Block\Account\Header" name="customer.account.header" template="account/header.phtml" before="-"/>
+            </container>
+        </referenceContainer>
+        
+        <move element="breadcrumbs" destination="page.top" after="-"/>
+
+        <referenceContainer name="content">
+            <block name='prize.notification' class="Branch8\Spin2Win\Block\Notification\Detail" template="Branch8_Spin2Win::notification/detail.phtml" cacheable="false">
+                <arguments>
+                    <argument name="region_provider" xsi:type="object">Magento\Customer\ViewModel\Address\RegionProvider</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\CityDirectory\Block\Checkout\Cities" name="city-updater" template="Branch8_CityDirectory::customer_address_form/city-updater.phtml">
+            </block>
+        </referenceContainer>
+    </body>
+</page>

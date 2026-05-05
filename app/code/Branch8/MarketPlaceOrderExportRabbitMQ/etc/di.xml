@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="B8ExportOrderLog" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8.order.export.synchronization.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="B8ExportOrderLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">B8ExportOrderLog</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Consumer">
+        <arguments>
+            <argument name="logger" xsi:type="object">B8ExportOrderLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_order_exportprofile_grid_data_source" xsi:type="string">Branch8\MarketPlaceOrderExportRabbitMQ\Model\ResourceModel\Grid\Collection</item>
+                <item name="marketplace_orders_orderfiles_listing_data_source" xsi:type="string">Branch8\MarketPlaceOrderExportRabbitMQ\Model\ResourceModel\Grid\SellerCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="B8NotificationOrderLog" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8.order.notification.synchronization.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="B8NotificationOrderLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">B8NotificationOrderLog</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\MarketPlaceOrderExportRabbitMQ\Model\Queue\Notification\Consumer">
+        <arguments>
+            <argument name="logger" xsi:type="object">B8NotificationOrderLogger</argument>
+        </arguments>
+    </type>
+</config>

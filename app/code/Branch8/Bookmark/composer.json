@@ -1,0 +1,20 @@
+{
+  "name": "branch8/module-bookmark",
+  "version": "1.0.0",
+  "description": "Bookmark",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "license": [
+    "Proprietary"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\Bookmark\\": ""
+    }
+  }
+}

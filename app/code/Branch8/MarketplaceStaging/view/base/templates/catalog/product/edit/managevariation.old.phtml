@@ -1,0 +1,456 @@
+<!-- /**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_OptionsWithStockAndImages
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */ -->
+ <?php if ($block->isModuleEnable()): ?>
+<script id="wk-swatch-form-template" type="text/x-magento-template">
+    <form class="wk-swatch-form" id="wk-swatch-form">
+        <div class="data-grid-search-control-wrap">
+            <input id="swatch-search" class="admin__control-text data-grid-search-control"
+             type="text" placeholder="<?= $escaper->escapeHtml(__('Search by keyword')) ?>" >
+        </div>
+        <div id="pagination">
+            <div class="admin__control-table-pagination">
+                <div class="form-group"><select class="form-control pageNum-select maxRows">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="5000"><?= $escaper->escapeHtml('Show ALL Rows') ?></option>
+                    </select>
+                    <label class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('per page')) ?>
+                    </label>
+                    <div class="admin__data-grid-pager">
+                        <button class="action-previous pre-pag-btn" type="button"
+                         title="Previous Page" disabled=""></button>
+                        <input class="admin__control-text currenpage" type="number">
+                        <label class="admin__control-support-text pagenumlabel">of 1</label>
+                        <button class="action-next nxt-pag-btn" type="button" title="Next Page" disabled=""></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="data-grid wk-swatch-table" id="swatch-tbl">
+            <thead>
+                <tr>
+                    <th class="data-grid-th">
+                        <input class="admin__control-checkbox mass-selection" type="checkbox" id="check">
+                    </th>
+                    <th class="data-grid-th w-95"><?= $escaper->escapeHtml(__('Option Label')); ?></th>
+                </tr>
+            </thead>
+            <% var rowClass = "_even-row"; %>
+            <% _.each(data.swatchs, function(swatchData, index) { %>
+                <% if (index%2!=0) { %>
+                    <% rowClass = "_odd-row"; %>
+                <% } %>
+                <%
+                var originalString = swatchData.title;
+                var value = originalString.replace(/(<([^>]+)>)/gi, "");
+                %>
+                <% if (swatchData.type=="radio" || swatchData.type=="drop-down" || swatchData.type=="drop_down") { %>
+                <tr class="data-row <%- rowClass %>">
+                    <td>
+                        <label class="data-grid-checkbox-cell-inner">
+                            <% if (data.formattedSwatch[value]==1) { %>
+                                <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                                 name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>" checked>
+                            <% } else { %>
+                                <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                                 name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>">
+                            <% } %>
+                            <label for="is-swatch-<%- index %>"></label>
+                       </label>
+                    </td>
+                    <td>
+                        <input class="admin__control-text wk-swatch-id" type="hidden"
+                         value="<%- swatchData.option_id %>" name="wkswatch[<%- index %>][option_id]">
+                        <input class="admin__control-text wkswatch-title" type="hidden"
+                         value="<%- value %>" name="wkswatch[<%- index %>][title]"> <%- value %>
+                    </td>
+                </tr>
+                <% } else { %>
+                    <tr class="data-row <%- rowClass %>" style="display:none;">
+                        <td>
+                            <label class="data-grid-checkbox-cell-inner">
+                                <% if (data.formattedSwatch[value]==1) { %>
+                                    <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                                        name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>" checked>
+                                <% } else { %>
+                                    <input class="admin__control-checkbox wkswatch-isswatch" type="checkbox"
+                                        name="wkswatch[<%- index %>][is_swatch]" id="is-swatch-<%- index %>">
+                                <% } %>
+                                <label for="is-swatch-<%- index %>"></label>
+                            </label>
+                        </td>
+                        <td>
+                            <input class="admin__control-text wk-swatch-id" type="hidden"
+                             value="<%- swatchData.option_id %>"
+                                name="wkswatch[<%- index %>][option_id]">
+                            <input class="admin__control-text wkswatch-title" type="hidden" value="<%- value %>"
+                                name="wkswatch[<%- index %>][title]">
+                            <%- value %>
+                        </td>
+                    </tr>
+                <% } %>
+            <% }); %>
+        </table>
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination"></ul>
+            </nav>
+        </div>
+        <div class="rows_count">Showing 10 to 20 of 91 entries</div>
+    </form>
+</script>
+
+<script id="wk-variation-form-template" type="text/x-magento-template">
+    <form class="wk-variation-form" id="wk-variation-form">
+        <div class="data-grid-search-control-wrap">
+            <input id="variation-search" class="admin__control-text data-grid-search-control" type="text"
+                placeholder="<?= $escaper->escapeHtml(__('Search by keyword')) ?>">
+        </div>
+        <div id="pagination">
+            <div class="admin__control-table-pagination">
+                <div class="form-group"><select style="float: left; margin-left: 15px; margin-top: 5px;" class="form-control pageNum-select maxRows admin__control-select">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                        <option value="5000"><?= $escaper->escapeHtml('Show ALL Rows') ?></option>
+                    </select>
+                    <label style="display: inline-block;line-height: 33px;" class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('per page')) ?>
+                    </label>
+                    <input style="width: 18px; height: 18px; margin: 15px 0px 0 30px; vertical-align: middle;" class="admin__control-support-text" type="checkbox" id="follow_simple_sku_cost_setting">
+                    <label style="display: inline-block; line-height: 33px;" for="follow_simple_sku_cost_setting" class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('Follow Simple SKU Cost Setting')) ?>
+                    </label>
+                    <input style="width: 18px; height: 18px; margin: 15px 0px 0 30px; vertical-align: middle;" class="admin__control-support-text" type="checkbox" id="follow_simple_sku_price_setting">
+                    <label style="display: inline-block; line-height: 33px;" for="follow_simple_sku_price_setting" class="admin__control-support-text">
+                        <?= $escaper->escapeHtml(__('Follow Simple SKU Price Setting')) ?>
+                    </label>
+                    <div class="admin__data-grid-pager" style="float: right;">
+                        <button class="action-previous pre-pag-btn" type="button"
+                         title="Previous Page" disabled=""></button>
+                        <input class="admin__control-text currenpage" type="number">
+                        <label class="admin__control-support-text pagenumlabel">of 1</label>
+                        <button class="action-next nxt-pag-btn" type="button" title="Next Page" disabled=""></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table id="variation-tbl" class="data-grid wk-variation-table">
+            <thead>
+                <tr>
+                    <th class="data-grid-th"><%- data.title %></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Image')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Salable Qty')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Ready to ship Qty')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Cost setting')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Commission Rate')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Cost')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Price')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Sku')) ?></th>
+                    <th class="data-grid-th"><?= $escaper->escapeHtml(__('Is Sync Status')) ?></th>
+                </tr>
+            </thead>
+            <% var rowClass = "_even-row";
+            var comb = data.combination;
+            var sku = data.sku;
+            %>
+            <% _.each(data.combination, function(variationData, index) { %>
+                <%
+                    if (index%2!=0) {
+                        rowClass = "_odd-row";
+                    }
+                    var combLabel = variationData.substr(0, variationData.length-1);
+                    var oldCombLabel = data.oldComb[index].substr(0, data.oldComb[index].length-1);
+                %>
+                <% if(data.savedData[index] && (combLabel==data.savedData[index].comb || oldCombLabel==data.savedData[index].comb)){
+                    var prevData = data.savedData[index];
+                }
+                if (typeof prevData != "undefined") {
+                    var row_sku = sku[combLabel];
+                    if (prevData.weight==null || isNaN(prevData.weight)) {
+                        prevData.weight = '';
+                    }
+                    if (prevData.is_sync==null || isNaN(prevData.is_sync)) {
+                        prevData.is_sync = 0;
+                    }
+                    if (prevData.is_lock_sku==null || isNaN(prevData.is_lock_sku)) {
+                        prevData.is_lock_sku = 0;
+                    }
+                    if (prevData.sku!=null || !isNaN(prevData.sku)) {
+                        row_sku = prevData.sku;
+                    }
+                %>
+                <tr class="data-row <%- rowClass %>">
+                    <td>
+                        <input class="admin__control-text wkv-comb" type="hidden" value="<%- combLabel %>"
+                            name="wkvariation[<%- index %>][comb]">
+                        <%- combLabel %>
+                    </td>
+                    <td>
+                        <div class="data-grid-file-uploader">
+                        <% var imageCount = 0; %>
+                        <% _.each(prevData.image, function(imageValue, imageIndex) {  %>
+                            <% if (imageValue) {
+                            imageCount++;  %>
+                            <div class="wk-img-box data-grid-file-uploader-inner">
+                                <span class="wkosi-image-delete"></span>
+                                <input class="wkv-file" type="hidden"
+                                 name="wkvariation[<%- index %>][file][<%- imageIndex %>]"
+                                    value="<%- imageValue %>">
+                                <img class="file-uploader-image"
+                                 src="<?= $escaper->escapeUrl($block->getMediaUrl()) ?><%- imageValue %>">
+                            </div>
+                            <% } else { %>
+                            <input class="wkv-file" type="hidden" name="wkvariation[<%- index %>][file][]">
+                            <% }
+                            }); %>
+                            <div class="data-grid-file-uploader-inner file-uploader-area">
+                                <input class="file-uploader-input wkv-image" data-id="<%- index %>"
+                                    data-image-count="<%- imageCount %>" type="file"
+                                     id="wk-variation-row-<%- index %>image"
+                                     name="wkvariation[<%- index %>][image]" multiple="multiple">
+                                <label class="file-uploader-button" for="wk-variation-row-<%- index %>image">
+                                    <span>Upload Image</span>
+                                </label>
+                                <span class="file-uploader-spinner"></span>
+                            </div>
+                        </div>
+                        </div>
+                    </td>
+                    <td>
+                        <% if (data.weightDisabled) { %>
+                        <input class="admin__control-text wkv-weight wkosi-disabled" readonly type="hidden"
+                            name="wkvariation[<%- index %>][weight]" value="0">
+                        <% } else { %>
+                            <input id="wkv-weight-<%- index %>" class="admin__control-text wkv-weight" type="hidden"
+                            name="wkvariation[<%- index %>][weight]"
+                                value="<%- prevData.weight %>">
+                        <%  } %>
+                        <input id="wkv-follow_simple_sku_cost_setting-<%- index %>" class="admin__control-text wkv-follow_simple_sku_cost_setting" type="hidden"
+                            name="wkvariation[<%- index %>][follow_simple_sku_cost_setting]"
+                                value="<%- prevData.follow_simple_sku_cost_setting %>">
+                        <input id="wkv-follow_simple_sku_price_setting-<%- index %>" class="admin__control-text wkv-follow_simple_sku_price_setting" type="hidden"
+                            name="wkvariation[<%- index %>][follow_simple_sku_price_setting]"
+                                value="<%- prevData.follow_simple_sku_price_setting %>">
+                        <input id="wkv-stock-<%- index %>"
+                            <% if (prevData.is_sync == 1) { %>
+                                disabled
+                            <%  } %>
+                            class="admin__control-text wkv-stock"
+                            type="text"
+                            name="wkvariation[<%- index %>][stock]"
+                            value="<%- prevData.stock %>">
+                    </td>
+                    <td>
+                        <input id="wkv-ready_to_ship_qty-<%- index %>"
+                            readonly
+                            class="admin__control-text wkv-ready_to_ship_qty"
+                            type="text"
+                            name="wkvariation[<%- index %>][ready_to_ship_qty]"
+                            value="<%- prevData.ready_to_ship_qty %>">
+                    </td>
+                    <td>
+                        <select id="wkv-cost_setting-<%- index %>" data-id="<%- index %>" class="admin__control-select wkv-cost_setting">
+                            <option value="1" <% if (prevData.cost_setting == 1) { %>selected="selected"<% } %>><?= $escaper->escapeHtml(__('Fixed commission')) ?></option>
+                            <option value="0" <% if (prevData.cost_setting == 0) { %>selected="selected"<% } %>><?= $escaper->escapeHtml(__('Manually input')) ?></option>
+                        </select>
+                        <input id="wkv-cost_setting-input-<%- index %>" class="admin__control-text wkv-cost_setting-input" type="hidden"
+                            name="wkvariation[<%- index %>][cost_setting]" value="<%- prevData.cost_setting %>">
+                    </td>
+                    <td>
+                        <input data-id="<%- index %>" id="wkv-commission_percent-<%- index %>"
+                            class="admin__control-text wkv-commission_percent"
+                            type="text"
+                            name="wkvariation[<%- index %>][commission_percent]"
+                            value="<%- prevData.commission_percent %>">
+                            <p data-id="<%- index %>" id="wkv-commission_source-<%- index %>"></p>
+                    </td>
+                    <td>
+                        <input id="wkv-cost-<%- index %>"
+                            data-id="<%- index %>"
+                            class="admin__control-text wkv-cost"
+                            type="text"
+                            name="wkvariation[<%- index %>][cost]"
+                            value="<%- prevData.cost %>">
+                    </td>
+                    <td>
+                        <input id="wkv-price-<%- index %>"
+                            data-id="<%- index %>"
+                            class="admin__control-text wkv-price"
+                            type="text"
+                            name="wkvariation[<%- index %>][price]"
+                            value="<%- prevData.price %>">
+                    </td>
+                    <td>
+                        <input id="wkv-sku-<%- index %>"
+                            <% if (prevData.is_sync == 1 || prevData.is_lock_sku == 1) { %>
+                                disabled
+                            <%  } %>
+                            class="admin__control-text wkv-sku"
+                            type="text"
+                            name="wkvariation[<%- index %>][sku]"
+                            value="<%- row_sku %>">
+                        <input id="wkv-is_lock_sku-<%- index %>"
+                            class="admin__control-text wkv-is_lock_sku"
+                            type="hidden"
+                            name="wkvariation[<%- index %>][is_lock_sku]"
+                            value="<%- prevData.is_lock_sku %>">
+                    </td>
+                    <td>
+                        <div class="admin__actions-switch">
+                            <input id="wkv-is-sync-<%- index %>"
+                                <% if (prevData.is_sync == 1) { %>
+                                    checked="checked"
+                                <%  } %>
+                                data-id="<%- index %>"
+                                data-sku="<%- row_sku %>"
+                                name="wkvariation[<%- index %>][is_sync]"
+                                value="1"
+                                class="admin__actions-switch-checkbox switch-is-sync"
+                                type="checkbox" />
+                            <label class="admin__actions-switch-label"
+                                for="wkv-is-sync-<%- index %>">
+                                <span data-text-on="Yes"
+                                    data-text-off="No"
+                                    class="admin__actions-switch-text"></span>
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <% } else { %>
+                    <tr class="data-row <%- rowClass %>">
+                        <td>
+                            <input class="admin__control-text wkv-comb" type="hidden" value="<%- combLabel %>"
+                                name="wkvariation[<%- index %>][comb]">
+                                <%- combLabel %>
+                        </td>
+                        <td>
+                            <div class="data-grid-file-uploader">
+                                <div class="data-grid-file-uploader-inner file-uploader-area">
+                                    <input class="file-uploader-input wkv-image"
+                                     data-id="<%- index %>" type="file" id="wk-variation-row-<%- index %>image"
+                                        name="wkvariation[<%- index %>][image]" multiple="multiple">
+                                    <label class="file-uploader-button" for="wk-variation-row-<%- index %>image">
+                                        <span>Upload Image</span>
+                                    </label>
+                                    <span class="file-uploader-spinner"></span>
+                                </div>
+                            </div>
+                            </div>
+                        </td>
+                        <td>
+                            <% if (data.weightDisabled) { %>
+                                <input class="admin__control-text wkv-weight wkosi-disabled" readonly
+                                 type="hidden" name="wkvariation[<%- index %>][weight]" value="0">
+                            <% } else { %>
+                                <input id="wkv-weight-<%- index %>" class="admin__control-text wkv-weight" type="hidden"
+                                 name="wkvariation[<%- index %>][weight]">
+                            <% } %>
+                            <input id="wkv-follow_simple_sku_cost_setting-<%- index %>" class="admin__control-text wkv-follow_simple_sku_cost_setting" type="hidden"
+                            name="wkvariation[<%- index %>][follow_simple_sku_cost_setting]">
+                            <input id="wkv-follow_simple_sku_price_setting-<%- index %>" class="admin__control-text wkv-follow_simple_sku_price_setting" type="hidden"
+                            name="wkvariation[<%- index %>][follow_simple_sku_price_setting]">
+                            <input id="wkv-stock-<%- index %>" class="admin__control-text wkv-stock" type="text"
+                             name="wkvariation[<%- index %>][stock]">
+                        </td>
+                        <td>
+                            <input id="wkv-ready_to_ship_qty-<%- index %>" class="admin__control-text wkv-ready_to_ship_qty" type="text"
+                            readonly
+                            name="wkvariation[<%- index %>][ready_to_ship_qty]">
+                        </td>
+                        <td>
+                            <select id="wkv-cost_setting-<%- index %>" data-id="<%- index %>" class="admin__control-select wkv-cost_setting">
+                                <option value="1"><?= $escaper->escapeHtml(__('Fixed commission')) ?></option>
+                                <option value="0"><?= $escaper->escapeHtml(__('Manually input')) ?></option>
+                            </select>
+                            <input id="wkv-cost_setting-input-<%- index %>" class="admin__control-text wkv-cost_setting-input" type="hidden"
+                            name="wkvariation[<%- index %>][cost_setting]">
+                        </td>
+                        <td>
+                            <input data-id="<%- index %>" id="wkv-commission_percent-<%- index %>" class="admin__control-text wkv-commission_percent" type="text"
+                            name="wkvariation[<%- index %>][commission_percent]">
+                            <p data-id="<%- index %>" id="wkv-commission_source-<%- index %>"></p>
+                        </td>
+                        <td>
+                            <input id="wkv-cost-<%- index %>" data-id="<%- index %>" class="admin__control-text wkv-cost" type="text"
+                            name="wkvariation[<%- index %>][cost]">
+                        </td>
+                        <td>
+                            <input id="wkv-price-<%- index %>" data-id="<%- index %>" class="admin__control-text wkv-price" type="text"
+                            name="wkvariation[<%- index %>][price]">
+                        </td>
+                        <td>
+                            <input id="wkv-sku-<%- index %>" class="admin__control-text wkv-sku" type="text"
+                             name="wkvariation[<%- index %>][sku]" value="<%- sku[combLabel] %>">
+                            <input id="wkv-is_lock_sku-<%- index %>" class="admin__control-text wkv-is_lock_sku" type="hidden"
+                             name="wkvariation[<%- index %>][is_lock_sku]" value="0">
+                        </td>
+                        <td>
+                            <div class="admin__actions-switch">
+                                <input id="wkv-is-sync-<%- index %>"
+                                    data-id="<%- index %>"
+                                    data-sku="<%- row_sku %>"
+                                    name="wkvariation[<%- index %>][is_sync]"
+                                    value="1"
+                                    class="admin__actions-switch-checkbox switch-is-sync"
+                                    type="checkbox" />
+                                <label class="admin__actions-switch-label"
+                                    for="wkv-is-sync-<%- index %>">
+                                    <span data-text-on="Yes"
+                                        data-text-off="No"
+                                        class="admin__actions-switch-text"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                <% }  %>
+            <% }); %>
+        </table>
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination"></ul>
+            </nav>
+        </div>
+        <div class="rows_count">Showing 0 to 5 of 0 entries</div>
+    </form>
+</script>
+<script id="new-uploaded-image-template" type="text/x-magento-template">
+    <div class="wk-img-box data-grid-file-uploader-inner">
+        <span class="wkosi-image-delete"></span>
+        <input class="wkv-file" type="hidden" name="wkvariation[<%- data.id %>][file][<%- data.imageIndex %>]"
+            value="<%- data.response.file %>">
+        <img class="file-uploader-image" src="<%- data.response.url %>" alt="<%- data.response.name %>">
+    </div>
+</script>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "managevariation": {"linkurl":"<?= $escaper->escapeUrl($block->getImageUrl()) ?>",
+            "saved":<?= /* @noEscape */ $block->getSavedData() ?>,
+            "swatch":<?= /* @noEscape */ $block->getSwatchData() ?>,
+            "syncurl":"<?= $escaper->escapeUrl($block->getSyncUrl()) ?>",
+            "customoptioncurl":"<?= $escaper->escapeUrl($block->getCustomOptionUrl()) ?>"
+            }
+        }
+    }
+</script>
+<script type="text/javascript">
+    var variationSavedData = <?= /* @noEscape */ $block->getSavedData() ?>;
+</script>
+<?php endif; ?>

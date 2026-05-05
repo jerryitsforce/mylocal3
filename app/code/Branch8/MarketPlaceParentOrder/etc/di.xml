@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\MarketPlaceParentOrder\Api\Data\ParentOrderInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParentOrder"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Api\Data\ParentOrderDetailInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParentOrderDetail"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Api\ParentOrderRepositoryInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParentOrderRepository"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Api\Data\ParentOrderHistoryInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\History"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Api\ParentOrderStatusResolverInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\Services\ParentOrderStatusResolver"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderCancel\NotifierInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderCancel\Notifier"/>
+
+    <preference for="Branch8\MarketPlaceParentOrder\Api\ParentOrderManagementInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParenOrderManagement"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderComment\NotifierInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderComment\Notifier"/>
+    <preference for="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderConfirmation\NotifierInterface"
+                type="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderConfirmation\Notifier"/>
+
+    <type name="Magento\SalesSequence\Model\EntityPool">
+        <arguments>
+            <argument name="entities" xsi:type="array">
+                <item name="parent_order" xsi:type="string">parent_order</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrder\Model\Services\CalculateTotalParentOrder">
+        <arguments>
+            <argument name="totalHandlers" xsi:type="array">
+                <item name="subtotal" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Subtotal</item>
+                <item name="subtotal_include_tax" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\SubtotalIncludeTax</item>
+                <item name="discount" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Discount</item>
+
+                <item name="shipping" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Shipping</item>
+                <item name="shipping_include_tax" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\ShippingIncludeTax</item>
+                <item name="tax" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Tax</item>
+<!--
+                <item name="custom_discount" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\CustomDiscount</item>
+-->
+                <item name="point_discount" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\PointDiscount</item>
+                <item name="point_used_total" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\PointUsedTotal</item>
+
+                <item name="grand_total" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\GrandTotal</item>
+
+                <item name="paid" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Paid</item>
+                <item name="refunded" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Refunded</item>
+                <item name="canceled" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\TotalHandler\Canceled</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderCancel\Notifier">
+        <arguments>
+            <argument name="senders" xsi:type="array">
+                <item name="sender" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderCancel\Sender</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderCancel\Sender">
+        <arguments>
+            <argument name="identityContainer" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderCancel\Identity</argument>
+        </arguments>
+    </type>
+   <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderComment\Notifier">
+        <arguments>
+            <argument name="senders" xsi:type="array">
+                <item name="sender" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderComment\Sender</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderConfirmation\Notifier">
+        <arguments>
+            <argument name="senders" xsi:type="array">
+                <item name="sender" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderConfirmation\Sender</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderComment\Sender">
+        <arguments>
+            <argument name="identityContainer" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderComment\Identity</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderConfirmation\Sender">
+        <arguments>
+            <argument name="identityContainer" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Email\ParentOrderConfirmation\Identity</argument>
+        </arguments>
+    </type>
+    <virtualType name="SalesParentOrderIndexGridAsyncInsertCron" type="Magento\Sales\Cron\GridAsyncInsert">
+        <arguments>
+            <argument name="asyncInsert" xsi:type="object">SalesParentOrderIndexGridAsyncInsert</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesParentOrderIndexGridAsyncInsert"
+                 type="Magento\Sales\Model\GridAsyncInsert">
+        <arguments>
+            <argument name="entityGrid" xsi:type="object">ParentOrderGridAggregator</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="SalesParentOrderIndexGridSyncInsertObserver"
+                 type="Branch8\MarketPlaceParentOrder\Observer\ParentOrderGridSyncObserver">
+        <arguments>
+            <argument name="entityGrid" xsi:type="object">ParentOrderGridAggregator</argument>
+            <argument name="key" xsi:type="string">parent_id</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="customParenOrderGridNotSyncDataProvider" type="Magento\Sales\Model\ResourceModel\Provider\NotSyncedDataProvider">
+        <arguments>
+            <argument name="providers" xsi:type="array">
+                <item name="default" xsi:type="string">Branch8\MarketPlaceParentOrder\Model\ResourceModel\UpdatedIdListProvider</item>
+                <item name="updated_at" xsi:type="string">Branch8\MarketPlaceParentOrder\Model\ResourceModel\UpdatedAtListProvider</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentOrderGridAggregator" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="mainTableName" xsi:type="string">sales_parent_order_detail</argument>
+            <argument name="gridTableName" xsi:type="string">sales_parent_order_grid</argument>
+            <argument name="orderIdField" xsi:type="string">sales_parent_order_detail.parent_id</argument>
+            <argument name="joins" xsi:type="array">
+                <item name="sales_parent_shipping_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_parent_order_address</item>
+                    <item name="origin_column" xsi:type="string">shipping_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+                <item name="sales_parent_billing_address" xsi:type="array">
+                    <item name="table" xsi:type="string">sales_parent_order_address</item>
+                    <item name="origin_column" xsi:type="string">billing_address_id</item>
+                    <item name="target_column" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+            <argument name="columns" xsi:type="array">
+                <item name="entity_id" xsi:type="string">sales_parent_order_detail.parent_id</item>
+                <item name="status" xsi:type="string">sales_parent_order_detail.status</item>
+                <item name="increment_id" xsi:type="string">sales_parent_order_detail.increment_id</item>
+                <item name="customer_email" xsi:type="string">sales_parent_order_detail.customer_email</item>
+                <item name="customer_id" xsi:type="string">sales_parent_order_detail.customer_id</item>
+                <item name="customer_name" xsi:type="string">sales_parent_order_detail.customer_name</item>
+                <item name="store_id" xsi:type="string">sales_parent_order_detail.store_id</item>
+                <item name="created_at" xsi:type="string">sales_parent_order_detail.created_at</item>
+                <item name="billing_address" xsi:type="object">ParentBillingAddressAggregator</item>
+                <item name="shipping_address" xsi:type="object">ParentShippingAddressAggregator</item>
+                <item name="billing_name" xsi:type="object">ParentBillingNameAggregator</item>
+                <item name="shipping_name" xsi:type="object">ParentShippingNameAggregator</item>
+                <item name="customer_group_id" xsi:type="string">sales_parent_order_detail.customer_group_id</item>
+                <item name="payment_method" xsi:type="string">sales_parent_order_detail.payment_method</item>
+                <item name="shipping_information" xsi:type="string">sales_parent_order_detail.shipping_description</item>
+                <item name="updated_at" xsi:type="string">sales_parent_order_detail.updated_at</item>
+                <item name="rma_status" xsi:type="string">sales_parent_order_detail.rma_status</item>
+            </argument>
+            <argument name="notSyncedDataProvider" xsi:type="object">customParenOrderGridNotSyncDataProvider</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentShippingNameAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="firstname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">firstname</item>
+                </item>
+                <item name="lastname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">lastname</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentBillingNameAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="firstname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">firstname</item>
+                </item>
+                <item name="lastname" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">lastname</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentShippingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="company" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">company</item>
+                </item>
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+                <item name="city" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">city</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_shipping_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="ParentBillingAddressAggregator" type="Magento\Framework\DB\Sql\ConcatExpression">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="company" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">company</item>
+                </item>
+                <item name="street" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">street</item>
+                </item>
+                <item name="city" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">city</item>
+                </item>
+                <item name="region" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">region</item>
+                </item>
+                <item name="postcode" xsi:type="array">
+                    <item name="tableAlias" xsi:type="string">sales_parent_billing_address</item>
+                    <item name="columnName" xsi:type="string">postcode</item>
+                </item>
+            </argument>
+            <argument name="separator" xsi:type="string">, </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="regenerateParentOrderInformation" xsi:type="object">Branch8\MarketPlaceParentOrder\Console\Command\RegenerateParentOrderData</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\MarketPlaceParentOrder\Model\ParentOrder\Pdf\SubsetFontGenerator">
+        <arguments>
+            <argument name="extractors" xsi:type="array">
+                <item name="ParentOrderDetail" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Pdf\SubsetFont\ParentOrderDetail</item>
+                <item name="SubOrdersDetail" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Pdf\SubsetFont\SubOrdersDetail</item>
+                <item name="SummarizeBlock" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Pdf\SubsetFont\SummarizeBlock</item>
+                <item name="OrderNote" xsi:type="object">Branch8\MarketPlaceParentOrder\Model\ParentOrder\Pdf\SubsetFont\OrderNote</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

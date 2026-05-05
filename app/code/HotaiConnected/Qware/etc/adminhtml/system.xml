@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="qware" translate="label" sortOrder="500">
+            <label>Qware</label>
+        </tab>
+        <section id="qware" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <tab>qware</tab>
+            <resource>HotaiConnected_Qware::config</resource>
+            <group id="api" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>API</label>
+                <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                    <label>General</label>
+                    <field id="api_mode" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="0" translate="label" type="select">
+                        <label>API Mode</label>
+                        <comment></comment>
+                        <source_model>HotaiConnected\Qware\Model\Config\Source\ApiMode</source_model>
+                    </field>
+                </group>
+                <group id="dev" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                    <label>Dev Setting</label>
+                    <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Domain</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="app_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>App Id</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="app_key" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>App Key</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="security_code" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Security Code</label>
+                        <comment>安全代碼，用於驗證主動通知的 X-CHECKSUM</comment>
+                    </field>
+                    <field id="notification_allowed_ips" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Notification Allowed IPs</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                You can fill in multiple IPs and separate them by commas,
+                                <br>
+                                and you can fill in blank space for better reading purpose.
+                                <br>
+                                Example: 60.251.133.138, 60.248.156.173, 60.248.156.174
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="api_error_recipients" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Error Recipients</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                API 錯誤通知收件人電子郵件地址，可輸入多個，以逗號分隔
+                                <br>
+                                範例: tech@hotaigo.com.tw, operation@hotaigo.com.tw
+                            ]]>
+                        </comment>
+                    </field>
+                </group>
+                <group id="production" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Production Setting</label>
+                    <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Domain</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="app_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>App Id</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="app_key" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>App Key</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="consumer_code" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Consumer Code</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="security_code" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Security Code</label>
+                        <comment>安全代碼，用於驗證主動通知的 X-CHECKSUM</comment>
+                    </field>
+                    <field id="notification_allowed_ips" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Notification Allowed IPs</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                You can fill in multiple IPs and separate them by commas,
+                                <br>
+                                and you can fill in blank space for better reading purpose.
+                                <br>
+                                Example: 60.251.133.138, 60.248.156.173, 60.248.156.174
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="api_error_recipients" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Error Recipients</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                API 錯誤通知收件人電子郵件地址，可輸入多個，以逗號分隔
+                                <br>
+                                範例: tech@hotaigo.com.tw, operation@hotaigo.com.tw
+                            ]]>
+                        </comment>
+                    </field>
+                </group>
+            </group>
+        </section>
+    </system>
+</config>

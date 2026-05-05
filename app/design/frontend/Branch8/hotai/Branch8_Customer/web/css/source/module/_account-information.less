@@ -1,0 +1,188 @@
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+  .account {
+    .groupapps-description {
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 24px;
+      letter-spacing: 1px;
+    }
+
+    .groupapp-container {
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      justify-content: space-between;
+      row-gap: 64px;
+      padding: 40px 100px;
+      max-width: 680px;
+      margin-top: 36px;
+      background-color: var(--color-gray-light1);
+      border-radius: 32px;
+    }
+
+    .groupapp-item {
+      background-color: var(--color-white);
+      border-radius: 16px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 184px;
+      height: 192px;
+      padding: 16px 32px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+      }
+
+      .groupapp-item-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+      }
+
+      .groupapp-item-link {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        text-decoration: none;
+      }
+
+
+      .groupapp-item-name {
+        margin-bottom: 0;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        color: var(--color-black-solid1);
+        margin-left: -24px;
+        margin-right: -24px;
+      }
+    }
+  }
+}
+
+//
+//  Desktop (1280px and down)
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__sl) {
+  .account {
+    .groupapp-container {
+      padding-left: 50px;
+      padding-right: 50px;
+    }
+  }
+}
+
+//
+//  Desktop (1024px and down)
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__l) {
+  .account {
+    .groupapp-container {
+      max-width: unset;
+    }
+  }
+
+  body.hotai_auth-account-groupapps {
+    .customer-header-wrapper {
+      display: none;
+    }
+
+    &.account {
+      &.page-layout-2columns-left {
+        .columns .column.main {
+          padding-left: 0;
+        }
+        
+        .sidebar-main {
+          display: none;
+        }
+      }
+  
+      .page-title-wrapper {
+        .page-title {
+          padding: 14px 0;
+          margin-bottom: 24px;
+          border-bottom: none;
+          display: block !important;
+
+          span {
+            margin-left: -20px;  
+          }
+
+          &::before {
+            @abs-hotai-icon();
+            font-weight: inherit;
+            line-height: inherit;
+            content: var(--icon-arrow);
+            transform: rotate(180deg);
+            float: left;
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            margin-left: -100px;
+            width: 1024px;
+            background-color: var(--color-gray-light5);
+          }
+        }
+      }
+    }
+  }
+}
+
+//
+//  Mobile + Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+  .account {
+    .groupapps-description {
+      font-size: 14px;
+      line-height: 22px;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    .groupapp-container {
+      margin-top: 24px;
+      padding: 0;
+      gap: 0;
+      row-gap: 32px;
+      background-color: transparent;
+    }
+
+    .groupapp-item {
+      width: unset;
+      height: 90px;
+      padding: 0 24px;
+      gap: 8px;
+      background-color: transparent;
+      border-radius: 0;
+      box-shadow: none;
+
+      .groupapp-item-image {
+        width: 60px;
+        height: 60px;
+      }
+
+      .groupapp-item-name {
+        font-size: 14px;
+        line-height: 22px;
+      }
+    }
+  }
+}

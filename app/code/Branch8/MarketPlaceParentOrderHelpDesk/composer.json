@@ -1,0 +1,29 @@
+{
+    "name": "branch8/module-helpdeskmarketplaceparentorder",
+    "description": "this module help to change input field when native order frontend has been disabled",
+    "require": {
+
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "keywords": [],
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Andy",
+            "email": "cuongho803@gmail.com",
+            "role": "Magento 2 Role HelpDesk"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Branch8\\HelpDeskMarketPlaceParentOrder\\": ""
+        }
+    }
+}

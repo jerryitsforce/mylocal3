@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="400">
+            <label>Branch8</label>
+        </tab>
+        <section id="helpdesk" translate="label" type="text" sortOrder="120" showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="1">
+            <label>Help Desk Configuration</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HelpDesk::config</resource>
+            <group id="general_settings" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>General Settings</label>
+                <field id="enable" translate="label comment" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_admin_chat_conversation" translate="label comment" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled Admin Chat Conversation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_customer_chat_conversation" translate="label comment" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enabled Customer Chat Conversation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="head_csr_team" translate="label comment" type="select" sortOrder="20" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Head CSR Team</label>
+                    <source_model>Branch8\HelpDesk\Model\Ticket\Source\Team</source_model>
+                    <comment>NOTE: this team will take care all new email ticket.</comment>
+                    <validate>required-entry no-whitespace</validate>
+                </field>
+                <field id="max_images_upload_allow" translate="label comment"
+                       type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Max Image Upload Allows</label>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="maxFileSize" translate="label comment"
+                       type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Max File Size</label>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="upload_allow_extensions" translate="label comment"
+                       type="multiselect" sortOrder="30" showInDefault="1"
+                       showInWebsite="0" showInStore="0">
+                    <source_model>Branch8\HelpDesk\Model\Ticket\UploadAllowExtensions</source_model>
+                    <label>Uploading Allow Extension</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="dashboard_unprocessed_ticket_days" translate="label comment"
+                       type="text" sortOrder="30" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Dashboard Unprocessed Ticket Days</label>
+                    <validate>validate-number validate-greater-than-zero</validate>
+                </field>
+                <field id="status_dashboards" translate="label comment"
+                       type="multiselect" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <source_model>Branch8\HelpDesk\Model\Ticket\Status</source_model>
+                    <label>Status Dashboard</label>
+                    <validate>required-entry</validate>
+                </field>
+            </group>
+            <include path="Branch8_HelpDesk::system/group_email_settings.xml"/>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_helpdesk" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Help Desk</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\HelpDesk\Model\Config\Source\LogTypes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

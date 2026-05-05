@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\HelpDesk\Block\Adminhtml\Ticket\Edit\Tab\General">
+        <plugin name="Branch8_MarketPlaceParentOrderHelpDesk::changeComponent"
+                type="Branch8\MarketPlaceParentOrderHelpDesk\Plugin\Branch8\HelpDesk\Block\Adminhtml\Ticket\Edit\Tab\GeneralPlugin"
+                sortOrder="1" />
+    </type>
+    <type name="Branch8\HelpDesk\Controller\Adminhtml\Ticket\LoadRecentOrders">
+        <arguments>
+            <argument name="action" xsi:type="object">Branch8\MarketPlaceParentOrderHelpDesk\Model\FindYourParentOrderAction</argument>
+        </arguments>
+    </type>
+</config>

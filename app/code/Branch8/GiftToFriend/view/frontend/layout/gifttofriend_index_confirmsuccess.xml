@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\GiftToFriend\Block\Confirmation\ConfirmSuccess" cacheable="false"
+            name="gift.recipient.confirmation.success" template="Branch8_GiftToFriend::confirmation/success.phtml">
+                <block class="Magento\Framework\View\Element\Template" name="gift.recipient.confirmation.success.note" template="Branch8_GiftToFriend::note.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,32 @@
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+.blog-icon:before {
+    background-repeat: no-repeat;
+    color: #999999;
+    content: '';
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    opacity: 50%;
+    position: relative;
+    top: 2px;
+}
+.blog-calendar-times:before {
+    background-image: url("../media/images/calendar-times.svg");
+}
+.blog-user:before {
+    background-image: url("../media/images/user.svg");
+}
+.blog-comments:before {
+    background-image: url("../media/images/comments.svg");
+}
+.blog-traffic:before {
+    background-image: url("../media/images/eye.svg");
+}
+.blog-thumbs-up:before {
+    background-image: url("../media/images/thumbs-up.svg");
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="email_notification">
+        <job name="branch8_wishlist_price_change_notification" instance="Branch8\Wishlist\Cron\WishlistPriceChange" method="execute">
+            <config_path>wishlist/price_change_alert/cron_config</config_path>
+        </job>
+    </group>
+</config>

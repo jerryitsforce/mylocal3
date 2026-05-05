@@ -1,0 +1,38 @@
+<div class="opc-section referrer_code">
+    <h3 class="step-title amcheckout-title"
+       data-amcheckout-js="step-title"
+       data-bind="i18n: 'Referrer Code'"
+       data-role="title"></h3>
+    <div id="checkout-step-referrer-code"
+         class="step-content amcheckout-content"
+         data-amcheckout-js="step-content"
+         data-role="content"
+         data-bind="mageInit: {'checkoutCollapsibleSteps': {}}">
+        <div class="amcheckout-wrapper">
+            <form  id="referrer-code-form" class="form form-referrer-code" data-bind="mageInit: {'validation': {}}">
+                <div class="fieldset">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input-text" 
+                            type="text" 
+                            data-validate="{'validate-fullwidth-special': true}"
+                            data-bind="
+                        value: value,
+                        valueUpdate: valueUpdate,
+                        hasFocus: focused,
+                        attr: {
+                            name: inputName,
+                            cols: cols,
+                            rows: rows,
+                            'aria-describedby': noticeId,
+                            placeholder: $t('Enter referrer code'),
+                            id: uid,
+                            disabled: disabled
+                        }"></input>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php /** @var \Magento\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRenderer $block */ ?>
+<?php $_item = $block->getItem() ?>
+<?php $block->setPriceDataObject($_item) ?>
+<?php $order = $_item->getOrder();?>
+<tr>
+    <?php $i = 0;
+    $columns = $block->getColumns();
+    $lastItemNumber = count($columns) ?>
+    <?php foreach ($columns as $columnName => $columnClass) : ?>
+        <?php $i++; ?>
+        <?php if ($columnName === 'base_cost') : ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->displayPriceAttribute('base_cost'); ?>
+            </td>
+        <?php elseif ($columnName === 'point') :?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php
+                $rowPointUsed = ($_item->getData('row_total_point_used') == null) ? (int)$_item->getData('row_total_point_used') : $_item->getData('row_total_point_used');
+                ?>
+                <?= number_format($rowPointUsed, 2, '.', ',') ?>
+            </td>
+        <?php elseif($columnName == 'special_price'): ?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?php
+                $specialPrice = $_item->getData('special_price');
+                ?>
+                <?= $order->formatPrice($specialPrice); ?>
+            </td>
+            <?php else:?>
+            <td class="<?= /* @noEscape */ $columnClass ?><?= /* @noEscape */ ($i === $lastItemNumber ? ' last' : '') ?>">
+                <?= $block->getColumnHtml($_item, $columnName) ?>
+            </td>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</tr>

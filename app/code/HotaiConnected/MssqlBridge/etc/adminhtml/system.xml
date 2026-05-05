@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="hotaiconnected_mssql" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>MS SQL Bridge</label>
+            <tab>hotaiconnected</tab>
+            <resource>Magento_Config::config</resource>
+
+            <!-- HotaiShop Server: hopes_hifi + hotaishop databases -->
+            <group id="hotaishop_server" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>HotaiShop Server</label>
+                <field id="host" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Host</label>
+                    <comment>MS SQL Server host address</comment>
+                </field>
+                <field id="port" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Port</label>
+                    <comment>Default: 1433</comment>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Username</label>
+                </field>
+                <field id="password" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="hopes_hifi_database" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>HOPES HiFi Database</label>
+                    <comment>Database name for HOPES HiFi</comment>
+                </field>
+                <field id="hotaishop_database" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>HotaiShop Database</label>
+                    <comment>Database name for HotaiShop</comment>
+                </field>
+            </group>
+
+            <!-- Hotaigo Server -->
+            <group id="hotaigo_server" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Hotaigo Server</label>
+                <field id="host" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Host</label>
+                    <comment>MS SQL Server host address</comment>
+                </field>
+                <field id="port" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Port</label>
+                    <comment>Default: 1433</comment>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Username</label>
+                </field>
+                <field id="password" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="database" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Database</label>
+                    <comment>Database name</comment>
+                </field>
+            </group>
+
+            <!-- Yoxi Server -->
+            <group id="yoxi_server" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Yoxi Server</label>
+                <field id="host" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Host</label>
+                    <comment>MS SQL Server host address</comment>
+                </field>
+                <field id="port" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Port</label>
+                    <comment>Default: 1433</comment>
+                </field>
+                <field id="username" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Username</label>
+                </field>
+                <field id="password" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Password</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="database" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Database</label>
+                    <comment>Database name</comment>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

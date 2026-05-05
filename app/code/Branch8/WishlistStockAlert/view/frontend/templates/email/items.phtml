@@ -1,0 +1,68 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var \Branch8\WishlistStockAlert\Block\Wishlist\Email\Items $block */
+
+use Magento\Catalog\Pricing\Price\FinalPrice;
+
+?>
+<?php
+$l = $block->getWishlistItemsCount();
+if (!$l) {
+    return;
+}
+?>
+
+<div>
+    <table>
+        <tr>
+            <?php $i = 0;
+            foreach ($block->getWishlistItems() as $item) : ?>
+            <?php
+            $i++;
+            /* @var \Magento\Catalog\Model\Product $_product */
+            /* @var \Magento\Wishlist\Model\Item $item */
+            $_product = $item->getProduct();
+            $productUrl = $_product->getProductUrl();
+            ?>
+            <td class="col product">
+                <p>
+                    <a href="<?= $block->escapeUrl($productUrl) ?>">
+                        <?php $productThumbnail = $block->getProductForThumbnail($item) ?>
+                        <?= /* @noEscape */ $block->getImage($productThumbnail, 'product_small_image')->toHtml() ?>
+                    </a>
+                </p>
+                <p>
+                    <a href="<?= $block->escapeUrl($productUrl) ?>">
+                        <strong><?= $block->escapeHtml(
+                                $item->getCombo() && $item->getCombo() !== 'NONE' ?
+                                    sprintf('%s-%s', $_product->getName(), $item->getCombo()) : $_product->getName()
+                            )
+                            ?>
+                        </strong>
+                    </a>
+                    <?= $block->getProductPriceHtml($_product,FinalPrice::PRICE_CODE) ?>
+                </p>
+                <p>
+                    <a href="<?= $block->escapeUrl($productUrl) ?>">
+                        <?= $block->escapeHtml(__('View Product')) ?>
+                    </a>
+                </p>
+            </td>
+            <?php if ($i % 3 != 0): ?>
+                <td></td>
+            <?php else: ?>
+        </tr>
+        <tr>
+            <td colspan="5">&nbsp;</td>
+        </tr>
+        <?php if ($i < $l): ?>
+        <tr>
+            <?php endif ?>
+            <?php endif ?>
+            <?php endforeach ?>
+    </table>
+</div>

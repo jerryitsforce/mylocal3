@@ -1,0 +1,80 @@
+<div id="rule_new_version">
+    <div>
+        <h2>Version Information</h2>
+    </div>
+    <?= $block->getChildHtml('catalog_rule_form_compare2'); ?>
+</div>
+<script>
+    <?php
+    $logRecord = $this->getData('history_record');
+    $approvedData = $logRecord['approved_data'];
+    $approvedDataArr = json_decode($approvedData, true);
+    
+    if(isset($approvedDataArr['related_banners'])){
+        $newBannerData = $approvedDataArr['related_banners'];
+    }else{
+        $newBannerData = [];
+    }
+    foreach($newBannerData as &$nBanner){
+        $nBanner = (int)$nBanner;
+    }
+    if(!isset($approvedDataArr['seller_ids'])){
+        $logSellerIds = [];
+    }else{
+        if(!is_array($approvedDataArr['seller_ids'])){
+            if($approvedDataArr['seller_ids'] === null){
+                $logSellerIds = [];
+            }else{
+                $logSellerIds = explode(',', $approvedDataArr['seller_ids']);
+            }
+        }else{
+            $logSellerIds = $approvedDataArr['seller_ids'];
+        }
+    }
+    sort($logSellerIds);
+
+    $prevData = $logRecord['old_data'];
+    $prevDataArr = json_decode($prevData, true);
+    if(!isset($prevDataArr['related_banners'])){
+        $ruleBannerData = [];
+    }else{
+        $ruleBannerData = $prevDataArr['related_banners'];
+        foreach($ruleBannerData as &$rBanner){
+            $rBanner = (int)$rBanner;
+        }
+    }
+    if(!isset($prevDataArr['seller_ids'])){
+        $prevSellerIds = [];
+    }else{
+        if(!is_array($prevDataArr['seller_ids'])){
+            if($prevDataArr['seller_ids'] === null){
+                $prevSellerIds = [];
+            }else{
+                $prevSellerIds = explode(',', $prevDataArr['seller_ids']);
+            }
+
+        }else{
+            $prevSellerIds = $prevDataArr['seller_ids'];
+        }
+        
+    }
+    sort($prevSellerIds);
+
+    if(isset($prevDataArr['actions_serialized'])){
+        $actionsSerialized = $prevDataArr['actions_serialized'];
+    }else{
+        $actionsSerialized = [];
+    }
+    if(isset($prevDataArr['conditions_serialized'])){
+        $conditionsSerialized = $prevDataArr['conditions_serialized'];
+    }else{
+        $conditionsSerialized = [];
+    }
+    ?>
+    var ruleBanners = <?php echo json_encode($ruleBannerData);?>;
+    var newBanners = <?php echo json_encode($newBannerData);?>;
+    var ruleConditions = <?php echo json_encode($actionsSerialized);?>;
+    var newConditions = <?php echo json_encode($conditionsSerialized);?>;
+    var ruleSellerIds = '<?php echo json_encode($prevSellerIds);?>';
+    var newSellerIds = '<?php echo json_encode($logSellerIds);?>';
+</script>

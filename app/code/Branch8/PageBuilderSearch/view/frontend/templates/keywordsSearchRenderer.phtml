@@ -1,0 +1,39 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php
+$limit = $block->escapeJs($block->getData('limit'));
+$url_search = $block->getUrl('catalogsearch/result');
+$url_ajax = $block->getUrl('loadkeywords');
+$blockObj= $block->getLayout()->createBlock('Branch8\PageBuilderSearch\Block\KeywordsSearch');
+$total = round((int)$blockObj->getTotal() / $limit);
+?>
+
+
+<div class="test co-loading-ajax" id="keywords_search_<?= $limit ?>" data-bind="scope:'keywords_search_<?= $limit ?>'">
+    <!-- ko template: getTemplate() -->
+    <!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+   {
+       "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "keywords_search_<?= $limit ?>": {
+                        "component": "Branch8_PageBuilderSearch/js/keywordsSearchRenderer",
+                        "limit": "<?=$limit?>",
+                        "page": "1",
+                        "url_search": "<?=$url_search?>",
+                        "url_ajax": "<?=$url_ajax?>",
+                        "total": "<?=$total?>",
+                        "id": "keywords_search_<?= $limit ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

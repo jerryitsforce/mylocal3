@@ -1,0 +1,95 @@
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .modal-full-popup {
+        .modal-content {
+            text-align: left;
+        }
+    }
+}
+
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    .modal-full-popup {
+        .modal-inner-wrap {
+            max-width: 100%;
+            -webkit-transform: translateY(200%);
+            transform: translateY(200%);
+            max-height: 100%;
+        }
+
+        &._show {
+            .modal-inner-wrap {
+                transform: translateY(0);
+                bottom: 0;
+                top: 0;
+                width: 100%;
+                border-radius: 20px 20px 0 0;
+            }
+        }
+
+        .modal-content {
+            padding: 0 16px 24px;
+        }
+        
+        .modal-footer {
+            flex-direction: row;
+            gap: 0 12px;
+            box-shadow: 0 0 10px 1px rgba(35, 24,21, 0.1);
+            border-radius: 20px 20px 0 0;
+            padding: 12px 16px;
+            justify-content: center;
+
+            &::before,
+            &::after {
+                display: none;
+            }
+
+            .action {
+                width: calc(~"50% - 10px");
+                &.secondary {
+                    order: 0;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Tablet + Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .modal-full-popup {
+        .modal-inner-wrap {
+            max-width: 576px; 
+        }
+
+        .modal-footer {
+            flex-direction: row;
+            gap: 0 16px;
+            justify-content: center;
+
+            .action {
+                min-width: 180px;
+                width: auto;
+                margin: 0;
+            }
+        }
+    }
+
+    .apply-rma-order-popup {
+        .modal-footer {
+            flex-direction: row;
+            gap: 0 16px;
+            box-shadow: 0 0 10px 1px rgba(35, 24, 21, 0.1);
+            padding: 20px 16px;
+            justify-content: center;
+        }
+    }
+}

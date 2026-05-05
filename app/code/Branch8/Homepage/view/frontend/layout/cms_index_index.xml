@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+
+        <!-- 避免未必要的載入，以下移除首頁未用到的檔案 -->
+        <!-- 在首頁移除 calendar.css -->
+        <remove src="mage/calendar.css"/>
+
+        <!-- 在首頁移除 jquery.fancybox.css -->
+        <remove src="Amasty_Groupcat::js/fancybox/jquery.fancybox.css"/>
+    
+        <!-- 在首頁移除 swiper.min.css -->
+        <remove src="Amasty_LibSwiperJs/vendor/swiper/swiper.min.css"/>
+
+        <!-- 在首頁移除 wk_block.css -->
+        <remove src="Webkul_Marketplace::css/wk_block.css"/>
+    
+    </head>
+    <body>
+        <referenceBlock name="head.additional">
+            <block class="Branch8\Homepage\Block\Head\Meta" name="homepage.head.meta" template="Branch8_Homepage::head/meta.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

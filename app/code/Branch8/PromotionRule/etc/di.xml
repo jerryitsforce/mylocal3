@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\CatalogRule\Model\Rule">
+        <plugin name="Branch8_PromotionRule::catalog_rule" type="Branch8\PromotionRule\Plugin\RuleProcessor"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Rule">
+        <plugin name="Branch8_PromotionRule::sales_rule" type="Branch8\PromotionRule\Plugin\RuleProcessor"/>
+    </type>
+    <type name="Magento\CatalogRule\Model\Rule\DataProvider">
+        <plugin name="Branch8_PromotionRule::convert_data_provider" type="Branch8\PromotionRule\Plugin\RuleDataProvider"/>
+    </type>
+    <type name="Magento\SalesRule\Model\Rule\DataProvider">
+        <plugin name="Branch8_PromotionRule::convert_data_provider" type="Branch8\PromotionRule\Plugin\RuleDataProvider"/>
+    </type>
+
+    <type name="Magento\SalesRule\Model\RulesApplier">
+        <plugin name="Branch8_PromotionRule::cache_discount_breakdown"
+                type="Branch8\PromotionRule\Plugin\Magento\SalesRule\Model\RulesApplierPlugin" sortOrder="100"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="Branch8_PromotionRule::convert_quote_item_to_order_item"
+                type="Branch8\PromotionRule\Plugin\ConvertQuoteItemToOrderItem"/>
+    </type>
+
+  <!--  <type name="Magento\SalesRule\Model\Validator">
+        <plugin name="Branch8_PromotionRule::validateSellerBorneItem"
+                type="Branch8\PromotionRule\Plugin\Magento\SalesRule\Model\ValidatorPlugin"/>
+    </type>-->
+    <type name="Magento\Quote\Model\Quote\Item">
+        <plugin name="Branch8_PromotionRule::reset_applied_rule_names"
+                type="Branch8\PromotionRule\Plugin\Magento\Quote\Model\Quote\Item\ItemPlugin"/>
+    </type>
+</config>

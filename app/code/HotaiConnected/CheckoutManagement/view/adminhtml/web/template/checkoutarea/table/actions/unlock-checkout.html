@@ -1,0 +1,54 @@
+<!--
+/**
+ * Unlock Checkout Popup Content for Magento_Ui/js/modal/confirm
+ */
+-->
+<form class="ui-modal-form__body" id="unlock-checkout-form">
+
+    <!-- 結帳日期 -->
+    <div class="ui-modal-form__item">
+        <label class="ui-modal-form__label">
+            <span><%- $t('Order Checkout Number Modification Date (From-To)') %></span>
+        </label>
+        <div class="ui-modal-form__content" data-type="date-range">
+            <div class="date-input-group">
+                <label for="checkout_date_from" class="date-label">
+                    <span><%- $t('From:') %></span>
+                </label>
+                <div>
+                    <input type="text" 
+                       id="checkout_date_from" 
+                       name="checkout_date_from" 
+                       class="form-control date-input"
+                       disabled
+                    />
+                </div>
+            </div>
+            <div class="date-input-group">
+                <label for="checkout_date_to" class="date-label">
+                    <span><%- $t('To:') %></span>
+                </label>
+                <div class="checkout_date_to">
+                    <input type="text" 
+                       id="checkout_date_to" 
+                       name="checkout_date_to" 
+                       class="form-control date-input" 
+                       disabled
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 特約商名稱 -->
+    <div class="ui-modal-form__item authorized-dealer-names-display"></div>
+
+    <!-- 結帳批次 -->
+    <div class="ui-modal-form__item">
+        <label class="ui-modal-form__label">
+            <span><%- $t('Checkout Batch') %></span>
+        </label>
+        <div class="ui-modal-form__content unlock-checkout-data"></div>
+    </div>
+</form>
+

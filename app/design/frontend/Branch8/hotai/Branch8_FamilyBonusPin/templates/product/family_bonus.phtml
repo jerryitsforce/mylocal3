@@ -1,0 +1,37 @@
+<?php
+
+/** @var $block \Webkul\Marketplace\Block\Product\Create */
+
+$viewModel = $block->getViewModel();
+?>
+<div id="family-bonus-block">
+    <h3 class="title">
+        <?= /* @noEscape */ $escaper->escapeHtml(__('Family Bonus PIN ticket record overview')); ?>
+    </h3>
+    <div id="family-bonus-block-loader" class="admin__data-grid-outer-wrap" style="display:block;">
+        <div class="admin__data-grid-loading-mask">
+            <div class="spinner">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+    <div id="family-bonus-block-wrapper" style="display:none;">
+        <?= $block->getChildHtml(); ?>
+    </div>
+</div>
+<?php
+$formData = [
+    'familyBonus' => $viewModel->getJsonHelper()->jsonEncode([])
+];
+$serializedFormData = $viewModel->getJsonHelper()->jsonEncode($formData);
+?>
+
+<script type="text/x-magento-init">
+    {
+        "#family-bonus-block": {
+            "familyBonus": <?= /* @noEscape */ $serializedFormData; ?>
+    }
+}
+</script>
+
+

@@ -1,0 +1,144 @@
+//
+//  Tri-State Group Multiselect Component Styles
+//  _____________________________________________
+//
+//  用途說明：
+//  這是一個支援三態顯示的 checkbox 群組多選元件
+//  - 三態：全選 (checked) / 部分選取 (indeterminate) / 未選 (unchecked)
+//  - 適用於需要多選功能的表單欄位
+//  - 包含智能全選 checkbox 控制
+//
+
+// 顏色變數
+@checkbox-group-label-color: #333;
+@checkbox-group-label-hover-color: #000;
+
+// 尺寸變數
+@checkbox-group-gap: 8px;
+@checkbox-group-checkbox-margin: 8px;
+@checkbox-group-label-font-size: 14px;
+
+// 動畫變數
+@checkbox-group-transition: all 0.2s ease-in-out;
+
+// Checkbox 勾選顏色變數
+@checkbox-checked-bg: #007bdb;      // 勾選背景色（藍色）
+@checkbox-checked-color: #ffffff;   // 勾選符號顏色（白色）
+
+// =============================================
+// Tri-State Group Multiselect 樣式
+// =============================================
+
+// 三態群組多選基礎樣式
+.tri-state-group-multiselect {
+
+    // 預設 checkbox 樣式
+    input[type="checkbox"] {
+        
+        & + label {
+            text-align: left;
+            font-size: 13px;
+            line-height: 1.4;
+            &::before {
+                margin-top: 2px;
+            }
+        }
+        // 勾選狀態
+        &:checked {
+            // 針對使用 label::before 作為顯示的情況（Magento 部分舊版實作）
+            & + label::before {
+                background-color: @checkbox-checked-bg;
+                border-color: @checkbox-checked-bg;
+                color: @checkbox-checked-color;
+            }
+        }
+    }
+
+    // 頭部區塊
+    &__header {
+        margin-bottom: 12px;
+    }
+    
+    // 主要內容區塊
+    &__main {
+        padding-bottom: 15px;
+        border: 0.1rem solid #c2c2c2;
+        
+
+        &._error {
+            border-color: #e22626;
+        }
+
+        // 全選動作區塊
+        &__action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 10px 20px;
+            border-bottom: 0.1rem solid #c2c2c2;
+            background-color: #f8f9fa;
+        }
+        
+        // 選項容器
+        &__options {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            padding: 0 20px;
+            gap: 8px;
+
+            &.grid {
+                &-2 {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+                &-3 {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+                &-4 {
+                    grid-template-columns: repeat(4, 1fr);
+                }
+                &-5 {
+                    grid-template-columns: repeat(5, 1fr);
+                }
+                &-6 {
+                    grid-template-columns: repeat(6, 1fr);
+                }
+            }
+        }
+    }
+    
+    // 尾部區塊
+    &__footer {
+        margin-top: 12px;
+    }
+    
+    // 全選 checkbox 專屬樣式（三態顯示）
+    &__select-all {
+        //  indeterminate 狀態（部分選取，顯示 -）
+        &:indeterminate + label::before {
+            background-color: @checkbox-checked-bg;
+            border-color: @checkbox-checked-bg;
+            // 使用 - 符號表示部分選取
+            content: '\2212' !important; // Unicode minus sign
+            color: @checkbox-checked-color !important;
+            text-align: center;
+            line-height: 1;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        // 勾選狀態（全選，顯示 ✓）
+        &:checked + label::before {
+            background-color: @checkbox-checked-bg;
+            border-color: @checkbox-checked-bg;
+            color: @checkbox-checked-color;
+        }
+
+        & + label {
+            cursor: pointer;
+            margin: 0;
+            font-weight: 600;
+        }
+    }
+}
+

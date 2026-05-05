@@ -1,0 +1,27 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+?>
+<div data-bind="scope: 'spin2win_view_desc'" class="spin-view-desc__wrapper">
+  <!-- ko if: isReady() -->
+  <div class="spin-view-desc__section" data-bind="visible: isReady">
+    <div class="spin-view-desc__info-wrapper">
+        <div class="spin-view-desc__info" data-bind="html: winningDescription"></div>
+      </div>
+  </div>
+  <!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "spin2win_view_desc": {
+                    "component": "Branch8_Spin2Win/js/viewDesc"
+                }
+            }
+        }
+    }
+}
+</script>

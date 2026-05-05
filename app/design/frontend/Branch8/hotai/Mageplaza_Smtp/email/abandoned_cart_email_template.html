@@ -1,0 +1,27 @@
+<!--@subject {{trans "Don't abandon your cart just yet! It's waiting for you"}} @-->
+{{template config_path="design/email/header_template"}}
+
+<table class="main-title">
+    <tr>
+        <td class="title-mark">
+            <div> </div>
+        </td>
+        <td>
+            <h1>{{trans "購物車未結帳通知"}}</h1>
+        </td>
+    </tr>
+</table>
+
+<p>
+    {{trans "親愛的%customer_name您好，<br/>我們注意到您最近在我們的網站上選擇了一些心儀的商品，但還未完成結帳。我們特地為您保留了這些商品，方便您隨時回來完成購買。" customer_name=$customer_name |raw}}
+<p>
+{{var template|raw}}
+<p>
+    {{trans "這些商品依然在等著您！"}} <br />
+    {{trans "只需點擊下方返回購物車，即可返回並完成購買："}}
+</p>
+<p class="a-center">
+    <a href="{{var this.getUrl($store,'checkout/cart',[],_nosid:1])}}" target="_blank" class="link-as-button abandoned-cart-action">{{trans "返回購物車"}}</a>
+</p>
+
+{{template config_path="design/email/footer_template"}}

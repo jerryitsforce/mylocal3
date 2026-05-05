@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+      ifconfig="magetop_quickview/general/enable_product_listing">
+    <head>
+<!--        <script src="Branch8_Quickview::js/swatch.js"/>-->
+    </head>
+    <body>
+        <referenceBlock name="view.shipping.method.simple" remove="true" />
+        <!-- move to catalog_product_view to synchronize popup and page -->
+        <referenceBlock name="product.info.sku" remove="true" />
+        <referenceBlock name="product.info.stock.sku" remove="true" />
+        <referenceBlock name="goto.product" remove="true" />
+        <referenceContainer name="product.info.main.wrapper" remove="true" />
+        <referenceBlock name="product.share.socials" remove="true" />
+        <referenceContainer name="product.additional.attributes" remove="true" />
+        <referenceBlock name="product.info.details" remove="true" />
+        <referenceContainer name="content.aside" remove="true" />
+<!--    <referenceContainer name="product.info.main"> -->
+<!--            <block class="Branch8\Quickview\Block\Product\View\LongTimeShip" name="view.long.time.ship" after="product.price.tier"-->
+<!--                   template="Branch8_Quickview::product/view/long_time_ship.phtml" />-->
+<!--        </referenceContainer>-->
+<!--        <referenceContainer name="product.info.form.content">-->
+<!--            -->
+<!--        </referenceContainer>-->
+<!--        <referenceContainer name="content">-->
+<!--            <container name="product.checkout.method" htmlTag="div" htmlClass="product-checkout-method" after="product.info.options.wrapper">-->
+<!--                <block class="Branch8\Quickview\Block\Product\View\PaymentMethod" name="view.payment.method.simple" before="view.shipping.method"-->
+<!--                    template="Branch8_Quickview::product/view/payment_method.phtml" />-->
+<!--                <block class="Branch8\Quickview\Block\Product\View\ShippingMethod" name="view.shipping.method.simple" before="product.info.addtocart"-->
+<!--                    template="Branch8_Quickview::product/view/shipping_method.phtml" />-->
+<!--            </container>-->
+<!--        </referenceContainer>-->
+       <move element="product.info" destination="content" before="product.info.details"/>
+       <move element="product.info.main" destination="product.main.wrapper" after="product.info.media" />
+    </body>
+</page>

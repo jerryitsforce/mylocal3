@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="customer_orders_latest_index" class="Branch8\Customer\Model\Indexer\CustomerLatestOrder" group="indexer">
+        <subscriptions>
+            <table name="sales_order" entity_column="customer_id" />
+        </subscriptions>
+    </view>
+    <view id="customer_orders_index" class="Branch8\Customer\Model\Indexer\CustomerOrders" group="indexer">
+        <subscriptions>
+            <table name="sales_order" entity_column="customer_id" />
+        </subscriptions>
+    </view>
+</config>

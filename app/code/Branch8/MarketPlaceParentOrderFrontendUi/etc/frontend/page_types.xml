@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page_types xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_types.xsd">
+    <type id="sales_parentorder_history" label="Sales Customer My Account Order History"/>
+    <type id="sales_parentorder_view" label="Sales Customer My Account Order View"/>
+    <type id="sales_parentorder_printshipment" label="Sales Parent Order Shipment Print All View"/>
+    <type id="sales_parentorder_printinvoice" label="Sales Parent Order Invoice Print All View"/>
+    <type id="sales_parentorder_printpdf" label="Sales Parent Order Print Pdf"/>
+    <type id="sales_parentorder_print" label="Sales Order Print All View"/>
+</page_types>

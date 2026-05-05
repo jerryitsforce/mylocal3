@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\HifiSalesReport\Block\Adminhtml\Display\QuickViewBackButton" name="Branch8_HifiSalesReport.display.quickview.backbutton"/>
+            <block class="Branch8\HifiSalesReport\Block\Adminhtml\Display\QuickView" name="Branch8_HifiSalesReport.display.quickview" template="Branch8_HifiSalesReport::display/quickview.phtml" />
+        </referenceContainer>
+    </body>
+</page>

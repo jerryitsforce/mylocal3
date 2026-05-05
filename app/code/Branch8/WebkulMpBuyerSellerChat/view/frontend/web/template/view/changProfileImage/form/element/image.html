@@ -1,0 +1,52 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="admin__field" visible="visible" css="$data.additionalClasses">
+    <button class="file-uploader-button action-default">
+        <i class="fa fa-close fa-2x" data-bind="click:closePanel">
+        </i>
+    </button>
+    <label class="admin__field-label" if="$data.label" attr="for: uid" visible="$data.labelVisible">
+        <span translate="label" attr="'data-config-scope': $data.scopeLabel"></span>
+    </label>
+    <div class="admin__field-control" css="'_with-tooltip': $data.tooltip">
+        <div class="file-uploader" data-role="drop-zone" css="_loading: isLoading">
+
+            <render args="tooltipTpl" if="$data.tooltip"></render>
+
+            <div class="admin__field-note" if="$data.notice" attr="id: noticeId">
+                <!-- ko with: {noticeUnsanitizedHtml: notice} -->
+                <span html="noticeUnsanitizedHtml"></span>
+                <!-- /ko -->
+            </div>
+
+            <label class="admin__field-error" if="error" attr="for: uid" text="error"></label>
+
+            <each args="data: value, as: '$file'" render="$parent.getPreviewTmpl($file)"></each>
+            <div class="file-uploader-area">
+                <input type="file" afterRender="onElementRender"
+                       attr="id: uid, name: inputName, multiple: isMultipleFiles" disable="disabled"/>
+                <label data-bind="visible:value().length==0" attr="for: uid"
+                       class="file-uploader-button action-default file-uploader-placeholder"
+                       css="'placeholder-' + placeholderType">
+                    <span class="file-uploader-placeholder-text"
+                          translate="'Click here to add files.'">
+                    </span>
+                </label>
+
+                <button class="file-uploader-button action-default"
+                        data-bind="click:useThisImage,visible:value().length > 0">
+                        <span translate="'Use this image'">
+                        </span>
+                </button>
+                <span class="file-uploader-spinner"></span>
+                <render args="fallbackResetTpl" if="$data.showFallbackReset && $data.isDifferedFromDefault"></render>
+            </div>
+
+        </div>
+    </div>
+</div>

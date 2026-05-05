@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/db_schema.xsd">
+    <table name="branch8_limit_purchased_index" resource="default" engine="innodb" comment="Branch8 Limit Purchased Index">
+        <column xsi:type="int" name="product_id" padding="10" unsigned="true" nullable="false" identity="false" comment="Product ID"/>
+        <column xsi:type="boolean" name="is_enabled" nullable="false" default="0" comment="Is Enabled"/>
+        <column xsi:type="timestamp" name="start_time" nullable="true" comment="Start Time"/>
+        <column xsi:type="timestamp" name="end_time" nullable="true" comment="End Time"/>
+        <column xsi:type="text" name="customer_group_ids" nullable="true" comment="Customer Group IDs"/>
+        <column xsi:type="decimal" name="limit_qty" scale="4" precision="12" unsigned="true" nullable="true" comment="Limit Qty"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+        </constraint>
+    </table>
+</schema>

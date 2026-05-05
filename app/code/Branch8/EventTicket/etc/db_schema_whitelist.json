@@ -1,0 +1,130 @@
+{
+    "ticket_event": {
+        "column": {
+            "entity_id": true,
+            "is_enable": true,
+            "name": true,
+            "image_url": true,
+            "seller_id": true,
+            "display_type": true,
+            "ticket_type": true,
+            "amount": true,
+            "description": true,
+            "start_date": true,
+            "end_date": true,
+            "created_at": true,
+            "updated_at": true,
+            "barcode_type": true,
+            "is_offline_operation": true,
+            "exchange_url": true,
+            "display_serial_number": true,
+            "exchange_hint": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "TICKET_EVENT_SELLER_ID": true,
+            "TICKET_EVENT_TICKET_TYPE": true
+        }
+    },
+    "ticket_event_ticket": {
+        "column": {
+            "entity_id": true,
+            "event_id": true,
+            "batch_code": true,
+            "serial_number": true,
+            "redeemed_at": true,
+            "status": true,
+            "used_transaction_no": true,
+            "used_store_no": true,
+            "start_date": true,
+            "end_date": true
+        },
+        "index": {
+            "TICKET_EVENT_TICKET_SERIAL_NUMBER": true,
+            "TICKET_EVENT_TICKET_BATCH_CODE": true,
+            "TICKET_EVENT_TICKET_EVENT_ID": true,
+            "TICKET_EVENT_TICKET_STATUS": true,
+            "TICKET_EVENT_TICKET_START_DATE": true,
+            "TICKET_EVENT_TICKET_END_DATE": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "TICKET_EVENT_TICKET_EVENT_ID_TICKET_EVENT_ENTITY_ID": true
+        }
+    },
+    "ticket_event_ticket_customer": {
+        "column": {
+            "id": true,
+            "one_id": true,
+            "ticket_id": true,
+            "created_at": true
+        },
+        "index": {
+            "TICKET_EVENT_TICKET_CUSTOMER_ONE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "TICKET_EVENT_TICKET_CSTR_TICKET_ID_TICKET_EVENT_TICKET_ENTT_ID": true,
+            "TICKET_EVENT_TICKET_CUSTOMER_ONE_ID_TICKET_ID": true
+        }
+    },
+    "ticket_event_ticket_log": {
+        "column": {
+            "log_id": true,
+            "serial_number_id": true,
+            "serial_number": true,
+            "ticket_type": true,
+            "action_type": true,
+            "details": true,
+            "ip": true,
+            "created_at": true,
+            "updated_at": true,
+            "response": true
+        },
+        "index": {
+            "TICKET_EVENT_TICKET_LOG_SERIAL_NUMBER": true,
+            "TICKET_EVENT_TICKET_LOG_SERIAL_NUMBER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "customer_ticket": {
+        "column": {
+            "member_seq": true,
+            "redeemed_at": true
+        },
+        "index": {
+            "CUSTOMER_TICKET_MEMBER_SEQ": true
+        }
+    },
+    "ticket_import_mapping_queue": {
+        "column": {
+            "entity_id": true,
+            "queue_id": true,
+            "member_seq": true,
+            "serial_number": true,
+            "record_id": true,
+            "created_at": true,
+            "pool_id": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ticket_import_mapping_log": {
+        "column": {
+            "entity_id": true,
+            "pool_id": true,
+            "content": true
+        },
+        "index": {
+            "TICKET_IMPORT_MAPPING_LOG_POOL_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

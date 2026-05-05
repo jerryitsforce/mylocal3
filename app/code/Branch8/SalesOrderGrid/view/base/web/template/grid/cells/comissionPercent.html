@@ -1,0 +1,17 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="data-grid-cell-content">
+    <ul style="display: grid; row-gap: 8px;"
+         data-bind="foreach: getCostLineItem($row())">
+        <li>
+            <b data-bind="html:sku"></b> : <span data-bind="html:percent"></span>
+        </li>
+    </ul>
+</div>
+
+
+

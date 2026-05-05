@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\Marketplace\Controller\Account\Dashboard\Tunnel"
+                type="Branch8\Marketplace\Override\Controller\Account\Dashboard\Tunnel" />
+    <preference for="Webkul\Marketplace\Controller\Order\Shipment\Tracking\Add"
+                type="Branch8\Marketplace\Override\Controller\Order\Shipment\Tracking\Add"/>
+<!--    <preference for="Webkul\Marketplace\Ui\DataProvider\OrdersHistoryDataProvider" type="Branch8\Marketplace\Ui\DataProvider\OrdersHistoryDataProvider" />-->
+
+    <preference for="Webkul\Marketplace\Block\Order\Totals"
+                type="Branch8\Marketplace\Override\Webkul\Marketplace\Block\Order\Totals" />
+
+    <preference for="Webkul\Marketplace\Block\Order\Invoice\Totals"
+                type="Branch8\Marketplace\Override\Webkul\Marketplace\Block\Order\Invoice\Totals" />
+
+    <type name="Webkul\Marketplace\Controller\Seller\Profile">
+        <plugin name="branch8_set_404_if_store_note_available"
+                type="Branch8\Marketplace\Plugin\Webkul\Marketplace\Controller\Profile" sortOrder="1"/>
+    </type>
+    <preference for="Webkul\Marketplace\Controller\Index\Index"
+                type="Branch8\Marketplace\Override\Controller\Index\Index" />
+    <type name="Webkul\Marketplace\Block\Account\Dashboard">
+        <plugin name="branch8_webkul_marketplace_dashboard_optimize"
+                type="Branch8\Marketplace\Plugin\Webkul\Marketplace\Block\Account\Dashboard" sortOrder="1"/>
+    </type>
+    <preference for="Webkul\MpGroupedProduct\Helper\Data" type="Branch8\Marketplace\Override\Webkul\Marketplace\Helper\Data"/>
+</config>

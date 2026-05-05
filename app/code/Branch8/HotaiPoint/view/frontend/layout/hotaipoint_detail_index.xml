@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <head>
+        <css src="Branch8_HotaiPoint::css/hotai-point-detail.css"/>
+    </head>
+    <body>
+        <referenceBlock name="page.main.title">
+            <block class="Branch8\HotaiPoint\Block\Detail\Actions" name="branch8_hotai_point_detail_index_actions" template="Branch8_HotaiPoint::detail/actions.phtml" after="-" cacheable="false" />
+
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Branch8\HotaiPoint\Block\Detail\Index" name="branch8_hotai_point_detail_index" template="Branch8_HotaiPoint::detail/index.phtml" cacheable="false" />
+        </referenceContainer>
+    </body>
+</page>

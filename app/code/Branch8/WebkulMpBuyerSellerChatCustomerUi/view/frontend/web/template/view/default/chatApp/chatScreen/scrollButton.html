@@ -1,0 +1,6 @@
+<div class="container scroller"
+     data-bind="visible:conversationData().customerTotalUnreadMessages > 0"
+>
+    <div class="badge" data-bind="text:conversationData().customerTotalUnreadMessages"></div>
+    <button class="scrollButton" data-bind="click:scrollerClick">⬇️</button>
+</div>

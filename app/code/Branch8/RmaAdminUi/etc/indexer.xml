@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="marketplace_rma_grid" view_id="marketplace_rma_grid"
+             class="Branch8\RmaAdminUi\Model\Indexer\RmaFlatData">
+        <title translate="true">MarketPlace Rma Grid</title>
+        <description translate="true">Index Rma Data</description>
+        <saveHandler class="Branch8\RmaAdminUi\Model\Indexer\IndexerHandler"/>
+    </indexer>
+</config>

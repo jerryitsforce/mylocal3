@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Branch8\LiveSearchResync\Model\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/livesearch_resync.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8\LiveSearchResync\Model\Logger\Logger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="main" xsi:type="object">Branch8\LiveSearchResync\Model\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\LiveSearchResync\Cron\FullResync">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\LiveSearchResync\Model\Logger\Logger</argument>
+        </arguments>
+    </type>
+</config>

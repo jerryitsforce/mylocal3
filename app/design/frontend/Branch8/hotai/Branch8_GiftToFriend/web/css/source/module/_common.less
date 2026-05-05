@@ -1,0 +1,70 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .block-account-nav .nav.items .link {
+    &.giftbox {
+      a {
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          background: url('../images/gift-menu-icon.svg') no-repeat center center;
+          margin-right: 0;
+        }
+        
+        &:hover {
+          &::before {
+            background: var(--color-red-base) url(../images/gift-menu-icon-white.svg) no-repeat center center;
+            border-color: var(--color-red-base);
+          }
+        }
+      }
+    }
+  }
+
+  .modal-giftbox {
+    .modal-custom-content {
+      text-align: left;
+
+      #giftConfirmingReloadMsg {
+        text-align: center;
+      }
+    }
+
+    .modal-footer {
+      padding: 26px 24px 16px;
+    }
+  }
+
+  .gifttofriend-index-index,
+  .gifttofriend-index-confirmsuccess,
+  .gifttofriend-giftbox-giftform {
+    .page-title-wrapper {
+      display: none;
+    }
+  }
+}
+
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+  
+}

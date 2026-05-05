@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\Edenred\Api\EdenredTicketRecordRepositoryInterface" type="Branch8\Edenred\Model\EdenredTicketRecordRepository"/>
+    <preference for="Branch8\Edenred\Api\Data\EdenredTicketRecordInterface" type="Branch8\Edenred\Model\EdenredTicketRecord"/>
+    <preference for="Branch8\Edenred\Api\Data\EdenredTicketRecordSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+    <preference for="Branch8\Edenred\Api\ReceiveNotificationInterface" type="Branch8\Edenred\Model\Api\ReceiveNotification"/>
+    <preference for="Branch8\Edenred\Api\Data\ReceiveNotificationApiResponseInterface" type="Branch8\Edenred\Model\Api\Data\ReceiveNotificationApiResponse"/>
+
+    <!-- <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="edenred_request_voucher_flow_via_command" xsi:type="object">Branch8\Edenred\Console\RequestVoucher</item>
+                <item name="edenred_cancel_voucher_flow_via_command" xsi:type="object">Branch8\Edenred\Console\CancelVoucher</item>
+            </argument>
+        </arguments>
+    </type> -->
+    <virtualType name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="edenred_request_voucher_flow_via_command" xsi:type="object">Branch8\Edenred\Console\RequestVoucher</item>
+                <item name="edenred_cancel_voucher_flow_via_command" xsi:type="object">Branch8\Edenred\Console\CancelVoucher</item>
+                <item name="edenred:generate-encrypted-voucher-no" xsi:type="object">Branch8\Edenred\Console\Command\GenerateEncryptedVoucherNo</item>
+                <item name="edenred:generate-encrypted-consumer-code" xsi:type="object">Branch8\Edenred\Console\Command\GenerateEncryptedConsumerCode</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

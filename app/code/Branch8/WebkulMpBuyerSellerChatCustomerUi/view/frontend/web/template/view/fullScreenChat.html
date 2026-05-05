@@ -1,0 +1,29 @@
+<!-- ko if: window.chatboxCoreConfig.serverRunning -->
+<div class="chat-loading-mask" data-role="chat-loader"
+     data-bind="visible: showLoader"
+>
+    <div class="chat-loader">
+        <img alt="Loading..." data-bind="attr: {'src': window.chatboxCoreConfig.loaderImage}">
+    </div>
+</div>
+<div  class="chat-module-wrapper" data-role="chat-module">
+    <div class="chat-icon-trigger" data-role="chat-trigger"
+         data-bind="visible: chatBoxVisible()==false,click:showChatBox"
+    >
+        <div class="wrapper">
+            <i class="icon24">
+                <img data-bind="attr: {'src': miniChatConfig.chatIcon}" alt="Chat Icon"/>
+            </i>
+            <i class="icon24">
+                <img data-bind="attr: {'src': miniChatConfig.chatText}" alt="Chat Text"/>
+            </i>
+        </div>
+    </div>
+    <div id="frame" class="ui-chat chat-panel"
+         data-role="chatPanel" data-bind="visible:chatBoxVisible(),afterRender:afterRender, event: { touchmove: onTouchMove }">
+        <!-- ko foreach: getRegion('chat-history') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </div>
+</div>
+<!--/ko-->

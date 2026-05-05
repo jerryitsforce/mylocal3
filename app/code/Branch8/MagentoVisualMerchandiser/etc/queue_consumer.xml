@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="vm.find.rules.by.product.update" queue="vm.find.rules.by.product.update"
+              handler="Branch8\MagentoVisualMerchandiser\Model\Queue\CalculateMatchRulesProductConsumer::execute"/>
+    <consumer name="vm.reindex.rules.by.id" queue="vm.reindex.rules.by.id"
+              handler="Branch8\MagentoVisualMerchandiser\Model\Queue\ReindexRuleConsummer::execute"/>
+</config>

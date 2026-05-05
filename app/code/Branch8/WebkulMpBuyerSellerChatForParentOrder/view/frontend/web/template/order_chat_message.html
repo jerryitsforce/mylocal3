@@ -1,0 +1,11 @@
+<div class="product-info">
+    <div class="title"><%= data.item.name %></div>
+    <div class="image">
+        <img src="<%= data.item.imageUrl %>"/>
+    </div>
+</div>
+<div class="order-info">
+    <div class="id"><span><%= _.i18n('Order Id :') %></span><%= data.order.id %></div>
+    <div class="status"><span><%= _.i18n('Status :') %></span><%= data.order.status %></div>
+    <div class="total"><span><%= _.i18n('Total : ') %></span><%= data.order.total %></div>
+</div>

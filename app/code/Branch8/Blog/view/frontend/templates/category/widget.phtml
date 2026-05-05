@@ -1,0 +1,29 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Category\Widget;
+use Magento\Framework\Escaper;
+
+/** @var Widget $block */
+/** @var Escaper $escaper */
+$tree = $block->getTree();
+if ($tree) : ?>
+    <div class="mp-sidebar mpcss">
+        <div class="row">
+            <div class="block-title col-xs-12 sidebar-categories">
+                <p class="block-mp-sidebar-heading" role="heading" aria-label="2"><?= $escaper->escapeHtml(__('Categories')) ?></p>
+            </div>
+            <div class="col-xs-12">
+                <?= $block->getCategoryTreeHtml($tree) ?>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        require(['Branch8_Blog/js/categorytree'], function () {
+        });
+    </script>
+<?php endif; ?>

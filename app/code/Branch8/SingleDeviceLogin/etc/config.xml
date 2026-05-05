@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <single_device_login>
+            <general>
+                <enabled>1</enabled>
+                <enable_and_use_socket>1</enable_and_use_socket>
+                <show_timer_on_mobile>1</show_timer_on_mobile>
+                <ws_force_logout_url>https://hotaigo-wss.yoxi.io/foreLogout</ws_force_logout_url>
+                <popup_inteval>10</popup_inteval>
+                <debug_frontend>0</debug_frontend>
+            </general>
+        </single_device_login>
+        <branch8_debug>
+            <branch8_singledevicelogin>
+                <log_file>system,exception</log_file>
+            </branch8_singledevicelogin>
+        </branch8_debug>
+    </default>
+</config>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <consumer name="branch8.chat.customer.notification.send"
+              queue="branch8.chat.customer.notification.send"
+              connection="amqp"
+              maxMessages="5000"
+              consumerInstance="Magento\Framework\MessageQueue\Consumer"
+              handler="Branch8\WebkulMpBuyerSellerChatUnreadMessageReminder\Model\Queue\Consumer::send"/>
+</config>

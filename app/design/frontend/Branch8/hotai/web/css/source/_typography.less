@@ -1,0 +1,356 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    // .lib-font-face(
+    //     @family-name: 'Noto Sans CJK TC',
+    //     @font-path: '@{baseDir}fonts/NotoSansCJKtc/regular/NotoSansCJKtc-Regular',
+    //     @font-weight: 400,
+    //     @font-style: normal,
+    //     @font-display: swap
+    // );
+
+
+    // .lib-font-face(
+    //     @family-name: 'Noto Sans CJK TC',
+    //     @font-path: '@{baseDir}fonts/NotoSansCJKtc/medium/NotoSansCJKtc-Medium',
+    //     @font-weight: 500,
+    //     @font-style: normal,
+    //     @font-display: swap
+    // );
+
+    // .lib-font-face(
+    //     @family-name: 'Noto Sans CJK TC',
+    //     @font-path: '@{baseDir}fonts/NotoSansCJKtc/bold/NotoSansCJKtc-Bold',
+    //     @font-weight: 700,
+    //     @font-style: normal,
+    //     @font-display: swap
+    // );
+
+    // .lib-font-face(
+    //     @family-name: 'Noto Sans CJK TC',
+    //     @font-path: '@{baseDir}fonts/NotoSansCJKtc/bold/NotoSansCJKtc-Black',
+    //     @font-weight: 900,
+    //     @font-style: normal,
+    //     @font-display: swap
+    // );
+
+    // .lib-font-face(
+    //     @family-name: 'NotoSansCJKtc-Black',
+    //     @font-path: '@{baseDir}fonts/NotoSansCJKtc/black/NotoSansCJKtc-Black',
+    //     // @font-weight: 900,
+    //     // @font-style: normal,
+    //     @font-display: swap
+    // );
+
+    // .lib-font-face(
+    //     @family-name: 'Noto Sans TC',
+    //     @font-path: '@{baseDir}fonts/NotoSanstc/black/NotoSanstc-Black',
+    //     @font-weight: 900,
+    //     @font-style: normal,
+    //     @font-display: swap
+    // );
+    // "Noto Sans TC", sans-serif;
+
+    :root {
+        --font-family-base: 'Noto Sans TC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        --font-family-black: 'Noto Sans TC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        --font-family-second: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        --font-family-noto-sans: 'Noto Sans TC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        --font-hotai-icons: 'hotai-icons';
+        --color-black-solid: #231815;
+        --color-black-solid1: #231815;
+        --color-gray-light1: #fafafa;
+        --color-gray-light2: #999999;
+        --color-gray-light3: #CCCCCC;
+        --color-gray-light4: #E6E6E6;
+        --color-gray-light5: #f2f2f2;
+        --color-gray-light6: #fafafa;
+        --color-gray-solid1: #66666A;
+        --color-gray-solid2: #595959;
+        --color-gray-solid3: #8D8D8D;
+        --color-text-base: var(--color-black-solid1);
+        --color-text-secondary: var(--color-gray-solid1);
+        --color-red: #FF383C;
+        --color-red-base: #c5171e;
+        --color-red-light1: #d00b16;
+        --color-red-light2: #de271f;
+        --color-red-light3: #F24119;
+        --color-red-black1: #910A11;
+        --color-red-black2: #A60811;
+        --color-yellow: #FECA11;
+        --color-yellow-light1: #f3c110;
+        --color-orange: #FFA653;
+        --color-white: #fff;
+        --color-page-bg: #fff;
+        --color-black: #000;
+        --color-gray-light-bg: var(--color-gray-light1);
+        --color-green: rgba(0, 178, 89, 1);
+        --color-green-01: rgba(0, 178, 89, 0.1);
+        --color-green-solid: #00B259;
+        --error-containerbg: rgba(242, 65, 25, 0.03);
+        --color-yellow-light: rgba(254, 202, 17, 0.05);
+
+        --icon-warning: '\e929';
+        --icon-success1: '\e92a';
+        --icon-checkbox-selected: '\e94a';
+        --icon-point: '\e90a';
+        --icon-plus: '\e928';
+        --icon-minus: '\e927';
+        --icon-up: '\e923';
+        --icon-down: '\e924';
+        --icon-up1: '\e946';
+        --icon-down1: '\e947';
+        --icon-success: '\e92f';
+        --icon-error: '\e92c';
+        --icon-notice: '\e92b';
+        --icon-next: '\e925';
+        --icon-prev: '\e91d';
+        --icon-next1: '\e91a';
+        --icon-prev1: '\e91d';
+        --icon-hotitem: '\e907';
+        --icon-circle-star: '\e951';
+        --icon-arrow: '\e903';
+        --icon-remove: '\e912';
+        --icon-remove1: '\e911';
+        --icon-back: '\e904';
+        --icon-cart: '\e901';
+        --icon-cart-fill: '\e90f';
+        --icon-cart-fill1: '\e95d';
+        --icon-msg-success: '\e959';
+        --icon-msg-error: '\e95a';
+        --icon-edit: '\e939';
+        --icon-point-1: '\e909';
+        --icon-copy: '\e93c';
+        
+
+        --error-border: rgba(242, 65, 25, 0.3);
+        --error-box-shadow: 0 0 0 2px rgba(242, 65, 25, 0.08);
+
+        --radius-circle: 100px;
+        --radius-popover: 20px;
+        --radius-l: 36px;
+        --radius-m: 24px;
+        --radius-card_m: 16px;
+        --radius-card_s: 12px;
+        --radius-btn: 8px;
+        --radius-tag_l: 8px;
+        --radius-tag_s: 4px;
+        --box-shadow: 0 0 10px 2px rgba(35, 24, 21,0.04);
+        --box-shadow-light: 0 0 10px 1px rgba(35, 24, 21, 0.04);
+        --box-shadow1-light: 0 0 10px 1px rgba(35, 24, 21, 0.1);
+        --box-shadow2-light: 0 0 15px 3px rgba(35, 24, 21, 0.1);
+        --toast-shadow: 0 0 10px 1px rgba(35, 24, 21, 0.5);
+
+        --border-common: 1px solid var(--color-gray-light4);
+        --border-color: var(--color-gray-light4);
+        --border-light: 1px solid var(--color-gray-light5);
+        --border-dark: 1px solid var(--color-gray-light3);
+        --bg-overlay: rgba(35, 24, 21, 0.4);
+
+        --CardL: 24px;
+        --CardM: 16px;
+        --CardS: 12px;
+        --TagL: 8px;
+        --TagS: 4px;
+
+        --layout-indent__width: 16px;
+        --layout__max-width: 1200px;
+        --layout__max-width_xl: 1260px;
+    }
+
+    h1, h2{
+        letter-spacing: 3px
+    }
+
+    h3, h4, h5{
+        letter-spacing: 2px;
+    }
+    h6{
+        letter-spacing: 1px;
+    }
+
+    a, .alink{
+        text-underline-offset: 3px;
+    }
+
+    hr{
+        vertical-align: middle;
+    }
+    .txt-left {
+        text-align: left;
+    }
+}
+
+//[640 - 768]
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__s) and (@break-max = @screen__m) {
+    :root {
+        --layout-indent__width: 48px;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    :root {
+        --layout-indent__width: 40px;
+    }
+}
+
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__m) and (@break-max = @screen__sl) {
+    h1 {
+        .lib-css(font-size, 40px);
+        .lib-css(line-height, 1.4);
+    }
+
+    h2{
+        .lib-css(font-size, 28px);
+        .lib-css(line-height, 1.42857);
+    }
+
+    h3{
+        .lib-css(font-size, 24px);
+        .lib-css(line-height, 1.41666666667);
+        letter-spacing: 3px;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+    h1 {
+        .lib-css(font-size, @h1__font-size-desktop);
+        .lib-css(margin-bottom, @h1__margin-bottom__desktop);
+        .lib-css(line-height, 1.41666666666667);
+    }
+
+    h2{
+        .lib-css(font-size, @h2__font-size-desktop);
+        .lib-css(line-height, 1.5);
+    }
+
+    h3{
+        .lib-css(font-size, @h3__font-size-desktop);
+        .lib-css(line-height, 1.42857);
+        letter-spacing: 3px;
+    }
+
+    h4{
+        .lib-css(font-size, @h4__font-size-desktop);
+        .lib-css(line-height, 1.4545454545);
+    }
+
+    h5{
+        .lib-css(font-size, @h5__font-size-desktop);
+        .lib-css(line-height, 1.5);
+    }
+
+    h6{
+        .lib-css(font-size, @h6__font-size-desktop);
+        .lib-css(line-height, 1.55555555555556);
+        letter-spacing: 2px;
+    }
+
+    body{
+        font-size: 1.6rem;
+        line-height: 1.5;
+    }
+}
+
+//[1281]
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+    :root {
+        --layout__max-width: var(--layout__max-width_xl);
+    }
+}
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    body{
+        letter-spacing: 1px;
+    }
+    .items {
+        .lib-list-reset-styles();
+    }
+
+    p{
+        margin-bottom: 12px;
+    }
+
+    ul > li, ol > li{
+        margin-bottom: 12px;
+    }
+    
+    .word-break {
+        word-break: break-word;
+    }
+}
+
+
+//
+//  Main Dropdown
+//  ---------------------------------------------
+
+& when (@media-common = true) {
+    .dropdown {
+        .lib-dropdown(
+        @_toggle-selector: ~'.action.switch',
+        @_options-selector: ~'.dropdown-list',
+        @_dropdown-actions-padding: 0,
+        @_dropdown-list-item-padding: 0,
+        @_dropdown-toggle-icon-content: @icon-down,
+        @_dropdown-toggle-active-icon-content: @icon-up,
+        @_icon-font-text-hide: true,
+        @_icon-font-size: 24px,
+        @_icon-font-line-height: 22px,
+        @_dropdown-list-pointer-position: center,
+        @_dropdown-list-z-index: @dropdown-list__z-index + 1,
+        @_dropdown-list-min-width: 320px
+        );
+
+        .action.switch {
+            .lib-button-reset();
+            .lib-css(color, @color-white);
+        }
+
+        .dropdown-list {
+            display: none;
+        }
+
+        .dropdown-toggle{
+            cursor: pointer;
+        }
+
+        &.active {
+            .action.switch {
+                .lib-icon-font-symbol(
+                @_icon-font-content: @icon-up,
+                @_icon-font-position: after
+                );
+            }
+
+            .dropdown-list {
+                display: block;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .dropdown{
+        .dropdown-list.dropdown-center {
+            right: 50%;
+            .lib-css(transform, translate3d(50%, 0, 0), 1);
+            padding:25px 20px 20px;
+        }
+    }
+}

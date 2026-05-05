@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order">
+        <column name="hotai_order_invoice_log_id" nullable="true" xsi:type="int" comment="hotai_order_invoice_log_id" identity="false" unsigned="true"/>
+        <index referenceId="ECPAY_INVOICE_HOTAI_ORDER_ITEM_INVOICE_LOGS_HOTAI_ORDER_INVOICE_LOG_ID" indexType="btree">
+            <column name="hotai_order_invoice_log_id"/>
+        </index>
+    </table>
+	<table name="ecpay_invoice_hotai_order_invoice_logs" resource="default" engine="innodb" comment="ecpay_invoice_hotai_order_invoice_logs Table">
+		<column xsi:type="int" name="hotai_order_invoice_logs_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="hotai_order_invoice_logs_id"/>
+		</constraint>
+		<column name="order_id" nullable="false" xsi:type="int" comment="order_id" identity="false"/>
+		<index referenceId="ECPAY_INVOICE_HOTAI_ORDER_INVOICE_LOGS_ORDER_ID" indexType="btree">
+			<column name="order_id"/>
+		</index>
+		<column name="invoice_number" nullable="false" xsi:type="varchar" comment="invoice_number" length="255"/>
+        <column name="hotai_checkout_number" nullable="true" xsi:type="varchar" comment="和泰訂單結帳序號" length="255"/>
+        <index referenceId="INDEX_HOTAI_CHECKOUT_NUMBER" indexType="btree">
+            <column name="hotai_checkout_number"/>
+        </index>
+		<column name="status" nullable="false" xsi:type="int" comment="status" default="0" identity="false" unsigned="true"/>
+		<column name="invoice_count" nullable="false" xsi:type="int" comment="invoice_count" default="1" identity="false" unsigned="true"/>
+		<column name="is_reverse" nullable="false" xsi:type="int" comment="status" default="0" identity="false" unsigned="true"/>
+		<column name="is_cross_month" nullable="false" xsi:type="int" comment="status" default="0" identity="false" unsigned="true"/>
+		<column name="created_at" nullable="true" xsi:type="datetime" comment="created_at"/>
+		<column name="updated_at" nullable="true" xsi:type="datetime" comment="updated_at"/>
+		<column name="point_used" nullable="true" xsi:type="int" comment="point_used" default="0"/>
+		<column name="include_tax" nullable="false" xsi:type="decimal" comment="include_tax" scale="7" precision="17" />
+		<column name="exclude_tax" nullable="true" xsi:type="decimal" comment="exclude_tax" scale="7" precision="17" />
+		<column name="tax" nullable="false" xsi:type="decimal" comment="tax" scale="7" precision="17" />
+	</table>
+	<table name="ecpay_invoice_hotai_order_item_invoice_logs" resource="default" engine="innodb" comment="ecpay_invoice_hotai_order_item_invoice_logs Table">
+		<column xsi:type="int" name="hotai_order_item_invoice_logs_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="hotai_order_item_invoice_logs_id"/>
+		</constraint>
+		<column name="hotai_order_invoice_log_id" nullable="false" xsi:type="int" comment="hotai_order_invoice_log_id" identity="false" unsigned="true"/>
+		<index referenceId="ECPAY_INVOICE_HOTAI_ORDER_ITEM_INVOICE_LOGS_HOTAI_ORDER_INVOICE_LOG_ID" indexType="btree">
+			<column name="hotai_order_invoice_log_id"/>
+		</index>
+		<column name="order_item_id" nullable="true" xsi:type="int" comment="order_item_id" identity="false"/>
+		<index referenceId="ECPAY_INVOICE_HOTAI_ORDER_ITEM_INVOICE_LOGS_ORDER_ITEM_ID" indexType="btree">
+			<column name="order_item_id"/>
+		</index>
+		<column name="order_item_name" nullable="false" xsi:type="varchar" comment="order_item_name" length="255"/>
+		<column name="created_at" nullable="true" xsi:type="datetime" comment="created_at"/>
+		<column name="updated_at" nullable="true" xsi:type="datetime" comment="updated_at"/>
+		<column name="qty" nullable="false" xsi:type="int" comment="include_tax" identity="false"/>
+		<column name="include_tax" nullable="false" xsi:type="decimal" comment="include_tax" scale="7" precision="17" />
+		<column name="exclude_tax" nullable="false" xsi:type="decimal" comment="exclude_tax" scale="7" precision="17" />
+		<column name="tax" nullable="false" xsi:type="decimal" comment="tax" scale="7" precision="17" />
+        <column name="discount_amount_include_tax" nullable="true" xsi:type="int" comment="discount_amount_include_tax" identity="false"/>
+        <column name="discount_amount_exclude_tax" nullable="true" xsi:type="int" comment="discount_amount_exclude_tax" identity="false"/>
+        <column name="discount_amount_tax" nullable="true" xsi:type="int" comment="discount_amount_tax" identity="false"/>
+		<column name="type" nullable="false" xsi:type="varchar" comment="type" default="item" length="255"/>
+        <column name="export_report" nullable="false" xsi:type="int" comment="tax" identity="false" default="1"/>
+    </table>
+</schema>

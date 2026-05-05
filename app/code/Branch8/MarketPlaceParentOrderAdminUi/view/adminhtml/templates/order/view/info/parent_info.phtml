@@ -1,0 +1,36 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Sales\Block\Adminhtml\Order\View\Info $block
+ * @var $viewModel \Branch8\MarketPlaceParentOrderAdminUi\ViewModel\ParentOrder
+ */
+$viewModel = $block->getData('view_model');
+$collection = $viewModel->find($block->getOrder());
+
+?>
+<?php if ($collection->getSize()): ?>
+    <section class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?= __('Parent Order') ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item order-additional-info">
+                <?php foreach ($collection as $item): ?>
+                    <div class="admin__page-section-item-title">
+                        <a href="<?= $block->getUrl(
+                            'sales/parent_order/view', ['id' => $item->getId()]) ?>"
+                           target="_blank">
+                        <span class="title">
+                            <?= sprintf("#%s", $item->getDetail()->getIncrementId()) ?>
+                        </span>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>

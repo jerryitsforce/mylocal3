@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\MarketPlaceOrderExportSeller\Controller\Order\Ui\DownloadOrderFile">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceOrderExportSeller\Controller\Order\Ui\DownloadOrderFile">
+        <plugin name="Branch8_MarketPlaceOrderExportRabbitMQ::downloadOrderFile"
+                type="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\MarketPlaceOrderExportSeller\Controller\Order\Ui\DownLoadOrderFilePlugin"
+                sortOrder="1" disabled="false" />
+    </type>
+    <type
+        name="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\MarketPlaceOrderExportSeller\Controller\Order\Ui\DownLoadOrderFilePlugin">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceOrderExportRabbitMQ\Controller\Order\DownloadOrderFile">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Marketplace\Controller\Order\DownloadOrderNotification">
+        <plugin name="Branch8_MarketPlaceOrderExportRabbitMQ::downloadOrderNotification"
+                type="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\Marketplace\Controller\Order\DownloadOrderNotification"
+                sortOrder="1" disabled="false" />
+    </type>
+    <type
+        name="Branch8\MarketPlaceOrderExportRabbitMQ\Plugin\Branch8\Marketplace\Controller\Order\DownloadOrderNotification">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceOrderExportRabbitMQ\Controller\Order\DownloadOrderNotification">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+</config>

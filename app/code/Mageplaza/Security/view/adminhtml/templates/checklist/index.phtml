@@ -1,0 +1,151 @@
+<?php
+/**
+ * Mageplaza
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_Security
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
+ */
+
+$unSecureNames = $block->checkAdminUserName();
+?>
+<div class="box box-<?= empty($unSecureNames) ? 'green' : 'red'; ?>">
+    <div class="box-header with-border">
+        <strong><?= $block->escapeHtml(__("Check admin's username:")) ?></strong>
+    </div>
+    <div class="username-notice">
+        <p><?= $block->escapeHtml(__('The following usernames are not secured: %1.', 'admin, root, test, magento')) ?></p>
+        <p><?= $block->escapeHtml(__('Hackers can guest username easily. Click on an user to change username.')) ?></p>
+    </div>
+    <div class="err-nof">
+        <?php if (!empty($unSecureNames)) : ?>
+            <?php foreach ($unSecureNames as $unSecureName) : ?>
+                <div class="err-nof-line">
+                    <i class="fa fa-remove"></i>
+                    <span><?= $block->escapeHtml(__('Username: "%1" is not secure.', $unSecureName['username'])) ?></span>
+                    <a href="<?= $block->escapeUrl($block->getUserNameFixitUrl($unSecureName)) ?>" target="_blank"
+                       class="fix-it"><?= $block->escapeHtml(__('Fix it')) ?></a>
+                </div>
+            <?php endforeach; ?>
+        <?php else : ?>
+            <i class="fa fa-check"></i>
+            <span><?= $block->escapeHtml(__('All users are adequate for security purposes')) ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="box box-<?= (!$block->checkFrontendCaptcha() && !$block->checkBackendCaptcha()) ? 'red' : 'green' ?>">
+    <div class="box-header with-border">
+        <strong><?= $block->escapeHtml(__('Check captcha:')) ?></strong>
+    </div>
+    <div class="err-nof">
+        <p>
+            <?php if (!$block->checkFrontendCaptcha()) : ?>
+                <i class="fa fa-remove"></i>
+                <span><?= $block->escapeHtml(__("Frontend captcha is not enabled. Hackers may carry out brute-force attacks on your customers' accounts")) ?></span>
+                <a href="<?= $block->escapeUrl($block->getFrontendCaptchaFixitUrl()) ?>"
+                   class="fix-it"><?= $block->escapeHtml(__('Fix it')) ?></a>
+            <?php else : ?>
+                <i class="fa fa-check"></i>
+                <span><?= $block->escapeHtml(__('Frontend captcha is enabled.')) ?></span>
+            <?php endif; ?>
+        </p>
+        <?php if (!$block->checkBackendCaptcha()) : ?>
+            <div class="err-nof-line">
+                <p>
+                    <i class="fa fa-remove"></i>
+                    <span><?= $block->escapeHtml(__('Backend captcha is not enabled. To protect your backend from brute-force attacks, you should enable it.')) ?></span>
+                    <a href="<?= $block->escapeUrl($block->getBackendCaptchaFixitUrl()) ?>"
+                       class="fix-it"><?= $block->escapeHtml(__('Fix it')) ?></a>
+                </p>
+            </div>
+        <?php else : ?>
+            <p>
+                <i class="fa fa-check"></i>
+                <span><?= $block->escapeHtml(__('Backend captcha is enabled.')) ?></span>
+            </p>
+        <?php endif; ?>
+    </div>
+</div>
+<?php
+$version = $block->checkLatestVersion();
+$isLatest = $version['latestVer'] == $version['currentVersion'];
+?>
+<div class="box box-<?= $isLatest ? 'green' : 'red' ?>">
+    <div class="box-header with-border">
+        <strong><?= $block->escapeHtml(__('Check Magento Version:')) ?></strong>
+    </div>
+    <div class="err-nof">
+        <?php if (!$isLatest) : ?>
+            <div class="err-nof-line">
+                <i class="fa fa-remove"></i>
+                <span>
+                    <?= $block->escapeHtml(__('Your Magento version is: %1, the latest version is: %2', $version['currentVersion'], $version['latestVer'])) ?>
+                    <a href="<?= $block->escapeUrl($block->getVersionFixitUrl()) ?>" target="_blank"
+                       class="fix-it"><?= $block->escapeHtml(__('Upgrade')) ?></a>
+                </span>
+            </div>
+        <?php else : ?>
+            <i class="fa fa-check"></i>
+            <span><?= $block->escapeHtml(__('Your store is running on the latest version.')) ?></span>
+        <?php endif; ?>
+    </div>
+</div>
+<?php $dbPrefix = $block->getDatabasePrefix() ?>
+<div class="box box-<?= $dbPrefix ? 'green' : 'red' ?>">
+    <div class="box-header with-border">
+        <strong><?= $block->escapeHtml(__('Check database prefix:')) ?></strong>
+    </div>
+    <div class="err-nof">
+        <?php if ($dbPrefix) : ?>
+            <i class="fa fa-check"></i>
+            <span><?= $block->escapeHtml(__("Your store's database is good.")) ?></span>
+        <?php else : ?>
+            <div class="err-nof-line">
+                <i class="fa fa-remove"></i>
+                <span>
+                    <?= $block->escapeHtml(__('Your store’s database hasn’t got table prefixes.')) ?>
+                    <a id="db-prefix" class="fix-it"><?= $block->escapeHtml(__('Fix it')) ?></a>
+                    <?= $block->escapeHtml($block->getDbFixitAdditionData()) ?>
+                </span>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+<script>
+    <?php if (!$block->hasProPackage()) : ?>
+    require([
+        'jquery'
+    ], function ($) {
+        var notice = "<?= /** noEscape */ __('Please update to %1 edition to have these issues solved automatically.', '<a href=\'http://www.mageplaza.com/magento-2-security/\' target=\'_blank\'>SecurityPro</a>'); ?>";
+
+        $('.fix-it').each(function () {
+            $(this).click(function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+
+                if (!$(this).parent().find('.checklist-notification').length) {
+                    $(this).parent().append('<div class="checklist-notification">' + notice + '</div>');
+                    $('body').click(function (e) {
+                        if (!$(e.target).closest('.checklist-notification').length && !$(e.target).closest('.fix-it').length) {
+                            $('.checklist-notification').remove();
+                        }
+                    });
+                }
+            });
+        });
+    });
+    <?php endif; ?>
+    <?= /** noEscape */ $block->getAdditionalJavascript() ?>
+</script>

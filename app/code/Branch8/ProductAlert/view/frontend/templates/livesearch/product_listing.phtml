@@ -1,0 +1,472 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\LiveSearchProductListing\Block\Frontend\SaaSContext $block */
+/** @var \Magento\Search\Helper\Data $helper */
+/** @var \Branch8\ProductAlert\Helper\Data $dataHelper */
+//phpcs:ignore
+$helper = $this->helper(\Magento\Search\Helper\Data::class);
+$dataHelper = $this->helper(\Branch8\ProductAlert\Helper\Data::class);
+$dataLabel = $this->helper(Branch8\PromotionPage\Helper\Data::class);
+$quickViewHelper = $this->helper(Magetop\Quickview\Helper\Data::class);
+$imageAlert = $dataHelper->getProductAlertImage();
+$productSkus = [];
+$shippingAllMethods = $dataHelper->getShippingAllMethodsOptions();
+$catFilterInvisible = $dataHelper->getCategoriesInvisible();
+$alertSkuString = implode(', ', $productSkus);
+$productIdsLabel = @implode(',', $dataLabel->getProductIdMatchVipLabel());
+$viplabelSettings=json_encode($dataLabel->getProductVipLabelSettings());
+$productIdsPreOrder = @implode(',', $dataLabel->checkIsPreorder());
+$promotion_name = '';
+$q = $block->getRequest()->getParam('q');
+if(!empty($q)){
+    $q = $block->escapeHtmlAttr($q);
+    $promotion_name = $q . ' ' . __('的熱搜結果') ;
+}
+?>
+
+<div id="livesearch_root"
+     data-currency-symbol="<?= $block->escapeHtmlAttr($block->getCurrencySymbol()); ?>"
+     data-magento-edition="<?= $block->escapeHtmlAttr($block->getMagentoEdition()); ?>"
+     data-magento-version="<?= $block->escapeHtmlAttr($block->getMagentoVersion()); ?>"
+     data-module-version="<?= $block->escapeHtmlAttr($block->getModuleVersion()); ?>"
+     data-category-invisble="<?= $block->escapeJs($catFilterInvisible); ?>"
+     data-image-src="<?= $imageAlert ?>"
+     data-alert-sku="<?= htmlspecialchars($alertSkuString); ?>"
+></div>
+<style>
+    .column.main {
+        min-height: 0px;
+    }
+</style>
+
+<script>
+    require([
+            'jquery',
+            'Branch8_GA4/js/actions/ga4push',
+            'magentoStorefrontEvents',
+            "Branch8_ProductAlert/js/search",
+            'Magetop_Quickview/js/jquery.magnific-popup.min'
+        ],
+        function ($, ga4push, magentoStorefrontEvents, customerData) {
+            var shippingMethod = <?= $shippingAllMethods; ?>;
+            const root = document.getElementById("livesearch_root");
+            var cacheStorage = JSON.parse(window.localStorage.getItem('mage-cache-storage'));
+
+            function saveNumResults(total_count){
+                const url = BASE_URL + "eighteen/searchterm/savenumresults";
+                const query_text = "<?= $q ?>";
+                var formData = new FormData();
+                formData.append('num_results', total_count);
+                formData.append('query_text', query_text);
+                $.ajax({
+                    url: url,
+                    data: formData,
+                    type: 'post',
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    /** @inheritdoc */
+                    success: function (res) {}
+                });
+            }
+
+            function GAViewList(items){
+                if (!items) {
+                    return;
+                }
+                const promotion_name = "<?= $promotion_name ?>";
+                var itemsData = [];
+                for (const [key, value] of items.entries()) {
+                    var product = value.product;
+                    var productView = value.productView;
+                    var price = product.price_range.maximum_price;
+                    var final_price = price.final_price.value;
+                    var regular_price = price.regular_price.value;
+                    var currency = price.final_price.currency;
+                    var discount = 0;
+                    if(price.discount){
+                        discount = price.discount;
+                    } else {
+                        if(regular_price != final_price){
+                            discount = regular_price - final_price;
+                        }
+                    }
+                    var brand = '';
+                    var shop_name = '';
+                    var category = '';
+                    var category2 = '';
+                    var category3 = '';
+                    var category4 = '';
+                    if(productView && productView.attributes){
+                        for (const [key, value] of productView.attributes.entries()) {
+                            if(value.name == 'brand'){
+                                brand = value.value;
+                            }
+                            if(value.name == 'seller_shop_name'){
+                                shop_name = value.value;
+                            }
+                            if(value.name == 'livesearch_categories'){
+                                livesearch_categories = Array.isArray(value.value)?value.value : [value.value];
+                                livesearch_categories = livesearch_categories.filter(function(v) { return v !== 'Default Category' });
+                                category = livesearch_categories[0]?livesearch_categories[0]:'not_available';
+                                category2 = livesearch_categories[1]?livesearch_categories[1]:'not_available';
+                                category3 = livesearch_categories[2]?livesearch_categories[2]:'not_available';
+                                category4 = livesearch_categories[3]?livesearch_categories[3]:'not_available';
+                            }
+                        }
+                    }
+                    itemsData.push({
+                        item_id: parseInt(product.id),
+                        item_name: product.name,
+                        discount: discount,
+                        currency: currency,
+                        index: key,
+                        item_brand: brand,
+                        item_category: category,
+                        item_category2: category2,
+                        item_category3: category3,
+                        item_category4: category4,
+                        affiliation: shop_name,
+                        price: final_price,
+                        quantity: 1
+                    });
+                }
+                const ecommerce = {
+                    promotion_id: "breadcrumb",
+                    promotion_name: promotion_name,
+                    item_list_id: "search_result",
+                    item_list_name: "搜尋頁_搜尋結果",
+                    items: itemsData
+                }
+                ga4push( [{ event: 'view_item_list', ecommerce }] );
+            }
+
+            function GAClickItem(item, isQuickView = false){
+                const promotion_name = "<?= $promotion_name ?>";
+                var product = item.product;
+                var productView = item.productView;
+                var price = product.price_range.maximum_price;
+                var final_price = price.final_price.value;
+                var regular_price = price.regular_price.value;
+                var currency = price.final_price.currency;
+                var discount = 0;
+                if(price.discount){
+                    discount = price.discount;
+                } else {
+                    if(regular_price != final_price){
+                        discount = regular_price - final_price;
+                    }
+                }
+                var brand = '';
+                var shop_name = '';
+                var category = '';
+                var category2 = '';
+                var category3 = '';
+                var category4 = '';
+                if(productView && productView.attributes){
+                    for (const [key, value] of productView.attributes.entries()) {
+                        if(value.name == 'brand'){
+                            brand = value.value;
+                        }
+                        if(value.name == 'seller_shop_name'){
+                            shop_name = value.value;
+                        }
+                        if(value.name == 'livesearch_categories'){
+                            livesearch_categories = Array.isArray(value.value)?value.value : [value.value];
+                            livesearch_categories = livesearch_categories.filter(function(v) { return v !== 'Default Category' });
+                            category = livesearch_categories[0]?livesearch_categories[0]:'not_available';
+                            category2 = livesearch_categories[1]?livesearch_categories[1]:'not_available';
+                            category3 = livesearch_categories[2]?livesearch_categories[2]:'not_available';
+                            category4 = livesearch_categories[3]?livesearch_categories[3]:'not_available';
+                        }
+                    }
+                }
+                const ecommerce = {
+                    item_list_id: "search_result",
+                    item_list_name: "搜尋頁_搜尋結果",
+                    items: [
+                        {
+                            item_id: parseInt(product.id),
+                            index: parseInt(productView.index || 0),
+                            item_name: product.name,
+                            discount: discount,
+                            currency: currency,
+                            price: final_price,
+                            item_brand: brand,
+                            item_category: category,
+                            item_category2: category2,
+                            item_category3: category3,
+                            item_category4: category4,
+                            affiliation: shop_name,
+                            promotion_id: "breadcrumb",
+                            promotion_name: promotion_name,
+                            item_list_id: "search_result",
+                            item_list_name: "搜尋頁_搜尋結果",
+                            quantity: 1
+                        }
+                    ]
+                }
+
+                const eventName = isQuickView ? 'select_item_cart' : 'select_item';
+                const eventType = isQuickView ? "商品卡" : "商品卡_購物車_icon";
+                ga4push( [{ event: eventName, type: eventType, ecommerce }] );
+            }
+
+            function appendGA4QueryParams(url, index) {
+                const promotion_name = "<?= $promotion_name ?>";
+
+                try {
+                    var _url = new URL(url);
+                    //add query params to _url
+                    _url.searchParams.append('item_list_id', 'search_result');
+                    _url.searchParams.append('item_list_name', '搜尋頁_搜尋結果');
+                    _url.searchParams.append('promotion_id', 'breadcrumb');
+                    _url.searchParams.append('promotion_name', promotion_name);
+                    _url.searchParams.append('position', index);
+                    return _url.toString();
+                } catch (_) {
+                    const queryParamsString = 'item_list_id=search_result&item_list_name=搜尋頁_搜尋結果&promotion_id=breadcrumb&promotion_name=' + promotion_name + '&position=' + index;
+                    url += (url.includes('?') ? '&' : '?') +  queryParamsString;
+                    return url;
+                }
+            }
+
+            function addToCart (item){
+                const productId = item.product.id;
+                const sku = item.productView.sku;
+                const ga4Index = item.productView.index;
+
+                const form_key = window.FORM_KEY;
+                const url = createAddToCartUrl(productId);
+                const postUenc = encodeUenc(url);
+                var formData = new FormData();
+                formData.append('product', productId);
+                formData.append('uenc', postUenc);
+                formData.append('form_key', form_key);
+                formData.append('skipMessage', 1);
+                formData.append('position', ga4Index);
+                $('#livesearch_root .product-item-actions-' + productId).find('.ds-sdk-add-to-cart-button > button').addClass('loading');
+                $.ajax({
+                    url: url,
+                    data: formData,
+                    type: 'post',
+                    dataType: 'json',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+
+                    /** @inheritdoc */
+                    beforeSend: function () {
+                        $('.mfp-preloader').css('display', 'block');
+                    },
+
+                    /** @inheritdoc */
+                    success: function (res) {
+                        var eventData, parameters;
+                        $(document).trigger('ajax:addToCart', {
+                            'sku': sku,
+                            'productIds': productId,
+                            'response': res
+                        });
+                        $('.mfp-preloader').css('display', 'none');
+
+                        if (res.backUrl) {
+                            let parser = document.createElement('a');
+                            parser.href = res.backUrl;
+                            if (parser.hostname === window.location.hostname) {
+                                if (parser.pathname.includes('/checkout/')) {
+                                    redirect(res.backUrl);
+                                    return;
+                                }
+                            } else {
+                                redirect(res.backUrl);
+                                return;
+                            }
+                            openPopup(item);
+                            return;
+                        }
+
+                        if (res.minicart) {
+                            $('[data-block="minicart"]').replaceWith(res.minicart);
+                            $('[data-block="minicart"]').trigger('contentUpdated');
+                        }
+                        $('#livesearch_root .product-item-actions-' + productId).find('.ds-sdk-add-to-cart-button > button').removeClass('loading');
+                    },
+
+                    /** @inheritdoc */
+                    error: function (res) {
+
+                        $(document).trigger('ajax:addToCart:error', {
+                            'sku': sku,
+                            'productIds': productId,
+                            'response': res
+                        });
+                        $('[data-block="minicart"]').trigger('contentUpdated');
+                        openPopup(item);
+                    },
+
+                    /** @inheritdoc */
+                    complete: function (res) {
+                        $('#livesearch_root .product-item-actions-' + productId).find('.ds-sdk-add-to-cart-button > button').removeClass('loading');
+                        if (res.state() === 'rejected') {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+
+            function createAddToCartUrl(productId) {
+                const currentLocationUENC = encodeURIComponent(
+                    encodeUenc(BASE_URL),
+                )
+                const postUrl =
+                    BASE_URL +
+                    "checkout/cart/add/uenc/" +
+                    currentLocationUENC +
+                    "/product/" +
+                    productId
+                return postUrl
+            }
+
+            function encodeUenc (value) {
+                const regex = /=/gi
+                return btoa(value).replace(regex, ",")
+            }
+
+            function redirect(url) {
+                var urlParts, locationParts, forceReload;
+
+                urlParts = url.split('#');
+                locationParts = window.top.location.href.split('#');
+                forceReload = urlParts[0] === locationParts[0];
+
+                window.top.location.assign(url);
+
+                if (forceReload) {
+                    window.top.location.reload();
+                }
+            }
+
+            function openPopup (item) {
+                const productId = item.product.id;
+                const ga4Index = item.productView.index;
+                const promotion_name = "<?= $promotion_name ?>";
+
+                GAClickItem(item, true)
+                var productUrl = "<?= $quickViewHelper->getUrl(); ?>" + "id/" + productId + "?quickview=true&position=" + ga4Index;
+                productUrl = appendGA4QueryParams(productUrl, ga4Index);
+
+                var url = "<?= $block->getUrl('magetop_quickview/index/updatecart'); ?>";
+                if (!productId) {
+                    return false;
+                }
+
+                $.magnificPopup.open(
+                    {
+                        items: {
+                            src: productUrl
+                        },
+                        type: 'iframe',
+                        closeOnBgClick: false,
+                        scrolling: false,
+                        preloader: true,
+                        tLoading: '',
+                        fixedContentPos: true,
+                        mainClass: 'mfp-quickview',
+                        callbacks: {
+                            open: function () {
+                                $('.mfp-preloader').css('display', 'block');
+                                $("iframe.mfp-iframe").contents().find("html").addClass("magetop_loader");
+                                $("iframe.mfp-iframe").on('load', function() {
+                                    $("iframe.mfp-iframe").contents().find("form").append('<input type="hidden" name="from_popup" value="1">');
+                                    $("iframe.mfp-iframe").contents().find("form").append(`<input type="hidden" name="position" value="${ga4Index}">`);
+                                });
+                                console.log('open', ga4Index);
+                            },
+                            beforeClose: function () {
+                                $.ajax(
+                                    {
+                                        url: url,
+                                        method: "POST"
+                                    }
+                                );
+                            },
+                            close: function () {
+                                $('.mfp-preloader').css('display', 'none');
+                                console.log('close');
+                            },
+                            ajaxContentAdded: function(){
+                                console.log('ajaxContentAdded');
+                            }
+                        }
+                    }
+                );
+                $('iframe.mfp-iframe')[0].addEventListener('load', () => {
+                    $('.mfp-iframe-scaler .mfp-close').show()
+                });
+            }
+
+            window.LiveSearchPLP({storeDetails: {
+                    environmentId: "<?= $block->escapeJs($block->getEnvironmentId()); ?>",
+                    environmentType: "<?= $block->escapeHtmlAttr($block->getEnvironmentType()); ?>",
+                    apiKey: "<?= $block->escapeHtmlAttr($block->getApiKey()); ?>",
+                    websiteCode: "<?= $block->escapeJs($block->getWebsiteCode()); ?>",
+                    storeCode: "<?= $block->escapeJs($block->getStoreCode()); ?>",
+                    storeViewCode: "<?= $block->escapeJs($block->getStoreViewCode()); ?>",
+                    config: {
+                        pageSize: "<?= $block->escapeJs($block->getAutocompleteLimit()); ?>",
+                        perPageConfig: {
+                            pageSizeOptions: "<?= $block->escapeJs($block->getResultsPerPageOptions()); ?>",
+                            defaultPageSizeOption: "<?= $block->escapeJs($block->getResultsPerPageDefault()); ?>"
+                        },
+                        minQueryLength: "<?= $block->escapeJs($helper->getMinQueryLength()); ?>",
+                        currencySymbol: "<?= $block->escapeJs($block->getCurrencySymbol()); ?>",
+                        currencyRate: "<?= $block->escapeJs($block->getCurrencyRate()); ?>",
+                        displayOutOfStock: "<?= $block->escapeJs($block->isDisplayOutOfStock()); ?>",
+                        allowAllProducts: "<?= $block->escapeJs($block->isAllowAllProducts()); ?>",
+                        locale: "<?= $block->escapeJs($block->getLanguageCode()); ?>",
+                        eighteenProducts: {
+                            overlayImageSrc: "<?= $imageAlert ?>",
+                            productsSku: "<?= htmlspecialchars($alertSkuString); ?>"
+                        },
+                        productIdsVipLabel: <?=$viplabelSettings?>,
+                        productIdsPreOrder: {
+                            productsIds: "<?= htmlspecialchars($productIdsPreOrder); ?>"
+                        },
+                        customerPoint: (cacheStorage && cacheStorage['ds-customer']?.totalpoints) ? cacheStorage['ds-customer']?.totalpoints : null,
+                        formatShippingLabel: Object.values(shippingMethod),
+                        categoryFilterInvisble: "<?= $block->escapeJs($catFilterInvisible); ?>",
+                        addToCart: (item, options, quantity) => {
+                            addToCart(item);
+                        },
+                        GAViewList: (items) => {
+                            GAViewList(items);
+                        },
+                        GAClickItem: (item) => {
+                            GAClickItem(item);
+                        },
+                        appendGA4QueryParams: (url, index) => {
+                            return appendGA4QueryParams(url, index)
+                        },
+                        saveNumResults: (total_count) => {
+                            saveNumResults(total_count);
+                        }
+                    },
+                    context: {
+                        customerGroup: "<?= $block->escapeJs($block->getCustomerGroupCode()); ?>"
+                    }
+                }, root});
+        });
+
+    require(['magentoStorefrontEvents'], function (magentoStorefrontEvents) {
+        magentoStorefrontEvents.context.setSearchExtension({
+            version: "<?= $block->escapeHtmlAttr($block->getModuleVersion()); ?>"
+        });
+    });
+</script>

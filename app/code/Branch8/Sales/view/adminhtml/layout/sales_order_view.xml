@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Branch8_Sales::css/module.css"/>
+    </head>
+    <body>
+        <referenceContainer name="left">
+            <referenceBlock name="order_tab_info">
+                <block class="Magento\Sales\Block\Adminhtml\Order\View\Items" name="order_items" template="Branch8_Sales::order/view/items.phtml">
+                    <arguments>
+                        <argument name="columns" xsi:type="array">
+                            <item name="product" xsi:type="string" translate="true">Product</item>
+                            <item name="flow-status" xsi:type="string" translate="true">Flow Status</item>
+                            <item name="price" xsi:type="string" translate="true">Price</item>
+                            <item name="special_price" xsi:type="string" translate="true">Special Price</item>
+                            <item name="base_cost" xsi:type="string" translate="true">Cost</item>
+                            <item name="row_total_point_used" xsi:type="string" translate="true">Point</item>
+                            <item name="ordered-qty" xsi:type="string" translate="true">Qty</item>
+                            <item name="tax-percent" xsi:type="string" translate="true">Tax Percent</item>
+                            <item name="catalog-discount" xsi:type="string" translate="true">Catalog Price Discount</item>
+                            <item name="catalog-price" xsi:type="string" translate="true">Catalog Price</item>
+                            <item name="cart-discount" xsi:type="string" translate="true">Cart Price Discount</item>
+                            <item name="catalogrule-name" xsi:type="string" translate="true">Catalog Price Rule Name</item>
+                            <item name="salesrule-name" xsi:type="string" translate="true">Cart Price Rule Name</item>
+                            <item name="total" xsi:type="string" translate="true">Hotai Row Total</item>
+                            <item name="hotai-child-order-item-number" xsi:type="string" translate="true">Hotai Child Order Item Number</item>
+                            <item name="check-yoxi-status" xsi:type="string" translate="true">Check YOXI Status</item>
+                            <item name="tran-ssn" xsi:type="string" translate="true">TransSN</item>
+                            <item name="edenred-client-order-number" xsi:type="string" translate="true">Edenred Client Order Number</item>
+                        </argument>
+                    </arguments>
+                    <block class="Branch8\Sales\Block\Adminhtml\Order\View\Items\Renderer\DefaultRendererCustom" as="default" name="default_order_items_renderer" template="Branch8_Sales::order/view/items/renderer/default.phtml">
+                        <arguments>
+                            <argument name="columns" xsi:type="array">
+                                <item name="product" xsi:type="string" translate="false">col-product</item>
+                                <item name="flow-status" xsi:type="string" translate="true">col-flow-status</item>
+                                <item name="price" xsi:type="string" translate="false">col-price</item>
+                                <item name="special_price" xsi:type="string" translate="false">col-special-price</item>
+                                <item name="base_cost" xsi:type="string" translate="true">col-cost</item>
+                                <item name="row_total_point_used" xsi:type="string" translate="true">col-point</item>
+                                <item name="qty" xsi:type="string" translate="false">col-ordered-qty</item>
+                                <item name="tax-percent" xsi:type="string" translate="false">col-tax-percent</item>
+                                <item name="catalog-discount" xsi:type="string" translate="false">col-catalog-discount</item>
+                                <item name="catalog-price" xsi:type="string" translate="false">col-catalog-price</item>
+                                <item name="cart-discount" xsi:type="string" translate="false">col-cart-discount</item>
+                                <item name="catalogrule-name" xsi:type="string" translate="false">col-catalogrule-name</item>
+                                <item name="salesrule-name" xsi:type="string" translate="false">col-salesrule-name</item>
+                                <item name="total" xsi:type="string" translate="false">col-total</item>
+                                <item name="hotai-child-order-item-number" xsi:type="string" translate="true">col-hotai-child-order-item-number</item>
+                                <item name="check-yoxi-status" xsi:type="string" translate="false">col-check-yoxi-status</item>
+                                <item name="tran-ssn" xsi:type="string" translate="true">col-tran-ssn</item>
+                                <item name="edenred-client-order-number" xsi:type="string" translate="true">col-edenred-client-order-number</item>
+                            </argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Sales\Block\Adminhtml\Items\Column\Qty" name="column_qty" template="Branch8_Sales::items/column/qty.phtml" group="column"/>
+                    <block class="Magento\Sales\Block\Adminhtml\Items\Column\Name" name="column_name" template="Magento_Sales::items/column/name.phtml" group="column"/>
+                    <block class="Magento\Framework\View\Element\Text\ListText" name="order_item_extra_info"/>
+                </block>
+            </referenceBlock>
+            <referenceBlock name="sales_order_tabs">
+                <action method="removeTab">
+                    <argument name="name" xsi:type="string">order_history</argument>
+                   <!-- <argument name="block" xsi:type="string">Magento\Sales\Block\Adminhtml\Order\View\Tab\History</argument>-->
+                </action>
+                <block class="Branch8\Sales\Block\Adminhtml\Order\View\Tab\HistoryGrid" name="sales_order_history.grid.container"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">order_history_grid</argument>
+                    <argument name="block" xsi:type="string">sales_order_history.grid.container</argument>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <referenceBlock class="Branch8\Sales\Rewrite\Magento\Sales\Block\Adminhtml\Order\View" name="sales_order_edit"/>
+            <block class="Magento\Backend\Block\Template"
+                   name="cancel_form_template"
+                   template="Branch8_Sales::order/view/actions/cancel_form.phtml">
+                <arguments>
+                    <argument name="cancel_model" xsi:type="object">Branch8\Sales\ViewModel\CancelModel</argument>
+                </arguments>
+            </block>
+            <referenceBlock name="order_history" template="Branch8_Sales::order/view/history.phtml">
+                <arguments>
+                    <argument name="status_resolver_model" xsi:type="object">Branch8\Sales\ViewModel\StatusResolver</argument>
+                </arguments>
+                <block class="Branch8\Sales\Block\Adminhtml\Order\View\History\CommentList"
+                   name="order.comments.list"
+                   template="Branch8_Sales::order/history/comment_list.phtml">
+                <arguments>
+                    <argument name="cancel_model" xsi:type="object">Branch8\Sales\ViewModel\CancelModel</argument>
+                </arguments>
+            </block>
+            </referenceBlock>
+            <referenceBlock name="order_info" template="Branch8_Sales::order/view/info.phtml" />
+            <block class="Magento\Sales\Block\Adminhtml\Order\View"
+                   name="extra_script"
+                   template="Branch8_Sales::order/view/extra_script.phtml">
+            </block>
+        </referenceContainer>
+        <referenceBlock name="tax" template="Branch8_Sales::order/totals/tax.phtml"/>
+        <referenceBlock name="order_tab_info">
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_Sales::order/view/tab/info.phtml</argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="order_tab_info">
+            <block class="Magento\Sales\Block\Adminhtml\Order\AbstractOrder"
+                   name="order_cancellation_reasons"
+                   template="Branch8_Sales::order/view/cancel_reason.phtml">
+                <arguments>
+                    <argument name="cancel_model"
+                              xsi:type="object">Branch8\Sales\ViewModel\CancelModel</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="sales_order_history.grid.container">
+            <uiComponent name="sales_order_history_grid"/>
+        </referenceBlock>
+    </body>
+</page>

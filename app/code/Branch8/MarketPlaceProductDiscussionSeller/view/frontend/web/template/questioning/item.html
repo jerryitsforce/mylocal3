@@ -1,0 +1,77 @@
+<div class="seller-thread-item">
+    <div class="seller-thread-action">
+        <div class="seller-thread-action-show">
+            <div class="seller-thread-action-label" data-bind="i18n: 'Show On Frontend' "></div>
+            <label class="seller-thread-action-switch">
+                <input type="checkbox" class="seller-thread-action-input" data-bind="checked: status==='approved',
+                click: $parents[1].toggleStatus.bind($parents[1])"/>
+                <span class="seller-thread-action-slider"></span>
+                <span class="seller-thread-action-view"></span>
+            </label>
+        </div>
+    </div>
+    <div class="seller-thread-detail">
+        <!-- ko if:($data.product) -->
+        <a class="seller-thread-product-img" data-bind="attr:{href:$data.product.url}">
+            <img
+                width="135"
+                height="135"
+                data-bind="attr: { src: $data.product.imageUrl }"
+            />
+        </a>
+        <!-- /ko -->
+        <div class="seller-thread-info-wrapper">
+            <div class="seller-thread-info">
+                <h3 class="seller-thread-cus-name" data-bind="text:$data.customer"></h3>
+                <div class="seller-thread-date">
+                    <span data-bind="text:$data.created_at"></span>
+                </div>
+                <!-- ko if:($data.product) -->
+                <div class="seller-thread-product-info">
+                    <a class="seller-thread-product-name" data-bind="attr:{href:$data.product.url}">
+                        <span data-bind="text:$data.product.name"></span>
+                    </a>
+                    <div class="seller-thread-product-sku">
+                        <span data-bind="i18n: 'SKU:'"></span>
+                        <span data-bind="text:$data.product.sku"></span>
+                    </div>
+                </div>
+                <!-- /ko -->
+                <div class="seller-thread-content" data-bind="text:$data.content"></div>
+            </div>
+            <!-- ko if: $data.has_messages -->
+            <div class="seller-thread-messages" data-bind="foreach: $data.messages">
+                <div class="seller-thread-message">
+                    <div class="seller-thread-message-date" data-bind="text:created_at"></div>
+                    <div class="seller-thread-message-label" data-bind="i18n: '賣家回覆' "></div>
+                    <div class="seller-thread-message-content" data-bind="text:message"></div>
+                </div>
+                <div class="seller-thread-message-action action-group" data-bind="attr:{'data-thread-id':$parent.id,'data-message-id':id}">
+                    <div class="action group1" style="display: none">
+                        <textarea name="seller-thread-message-text" class="seller-thread-message-text" data-bind="text:message, attr:{'placeholder': $t('輸入回覆內容...')}"></textarea>
+                        <button class="seller-thread-message-btn send-reply"  data-bind=" click: $parents[2].updateReply.bind($parents[2])"><span data-bind="i18n:'Send Reply'"></span></button>
+                        <button class="seller-thread-message-btn cancel"  data-bind=" click: $parents[2].cancelReply"><span data-bind="i18n:'Cancel'"></span></button>
+                    </div>
+                    <div class="action group2">
+                        <button class="seller-thread-message-btn edit-reply"  data-bind=" click: $parents[2].editReply"><span data-bind="i18n:'Edit Reply'"></span></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+            <!-- ko ifnot: $data.has_messages  -->
+            <div class="seller-thread-messages no-message">
+                <div class="seller-thread-message-action action-group">
+                    <div class="action send group1" style="display: none">
+                        <textarea name="seller-thread-message-text" class="seller-thread-message-text" data-bind="attr:{'placeholder': $t('輸入回覆內容...')}"></textarea>
+                        <button class="seller-thread-message-btn send-reply"  data-bind=" click: $parents[1].addReply.bind($parents[1])"><span data-bind="i18n:'Send Reply'"></span></button>
+                        <button class="seller-thread-message-btn cancel"  data-bind=" click: $parents[1].cancelReply.bind($parents[1])"><span data-bind="i18n:'Cancel'"></span></button>
+                    </div>
+                    <div class="action edit group2">
+                        <button class="seller-thread-message-btn edit-reply" data-bind=" click: $parents[1].editReply.bind($parents[1])"><span data-bind="i18n:'Edit Reply'"></span></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

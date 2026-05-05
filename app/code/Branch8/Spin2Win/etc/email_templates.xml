@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="spin_to_win_general_send_prize_to_customer" label="Send prize to customer" file="prize_email.html" type="html" module="Branch8_Spin2Win" area="frontend"/>
+    <template id="spin_to_win_general_send_consolation_to_customer" label="Send consolation to customer" file="consolation_email.html" type="html" module="Branch8_Spin2Win" area="frontend"/>
+    <template id="spin_to_win_general_send_low_stock" label="Send Event Low Stock" file="low_stock.html" type="html" module="Branch8_Spin2Win" area="frontend"/>
+</config>

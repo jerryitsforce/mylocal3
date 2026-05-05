@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Update Ticket Pool</title>
+        <link src="Branch8_EventTicket::js/eventticket-mixin.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="edit_ticket_event_form"/>
+            <block name="edit.pool.append" class="Branch8\EventTicket\Block\Adminhtml\Event\Edit\Append" template="Branch8_EventTicket::edit/append.phtml" />
+        </referenceContainer>
+    </body>
+</page>

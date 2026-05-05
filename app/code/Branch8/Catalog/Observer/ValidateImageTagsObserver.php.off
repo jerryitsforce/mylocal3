@@ -1,0 +1,58 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\Catalog\Observer;
+
+use Branch8\Catalog\Model\ConfigData;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+
+/**
+ * Dispatcher for the `ValidateImageTags` event.
+ */
+class ValidateImageTagsObserver implements ObserverInterface
+{
+    private ConfigData $configData;
+
+    /**
+     * @param ConfigData $configData
+     */
+    public function __construct(
+        ConfigData $configData,
+    )
+    {
+        $this->configData = $configData;
+    }
+
+    /**
+     * @param Observer $observer
+     * @return void
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function execute(Observer $observer): void
+    {
+        if (!$this->configData->enableValidateImageTags()) {
+            return;
+        }
+        $transport = $observer->getData('transport');
+        $errors = $transport->getData('errors');
+        $productData = $transport->getData('productData');
+        $tagsNeedValidate = $this->configData->getImageTagsNeedToValidate();
+        if (empty($productData)) {
+            return;
+        }
+        if (!$errors) {
+            $errors = [];
+        }
+        $tagErros = [];
+        foreach ($tagsNeedValidate as $code => $tag) {
+            if (isset($productData[$code]) &&  ($productData[$code]=='' || $productData[$code] === 'no_selection')) {
+                $tagErros[$code] = $tag;
+            }
+        }
+        if($tagErros){
+            $errors[] =   __('Please select all required image tags');
+        }
+        $transport->setData('errors', $errors);
+    }
+}

@@ -1,0 +1,98 @@
+.chat-module .write-form-wrapper.open-emoji .dropdown-menu {
+    display: block;
+}
+
+.unread.badge {
+    top: 5px;
+    right: 5px;
+}
+.typing-message {
+    bottom: -10px;
+    clear: both;
+    position: absolute;
+    font-style: italic;
+    color: #0066cc;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.badge {
+    position: absolute;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}
+/* Base styles for the button */
+.trigger-load-chat {
+    position: relative; /* Ensure the loader is positioned relative to the button */
+    display: inline-flex !important; /* Use flexbox for easy centering */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    padding: 10px 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    overflow: hidden; /* Hide overflow of loader if it gets out of bounds */
+    transition: background-color 0.3s, opacity 0.3s;
+
+    .loader {
+        position: absolute; /* Absolute positioning relative to the button */
+        width: 20px; /* Set width */
+        height: 20px; /* Set height */
+        border: 3px solid rgba(255, 255, 255, 0.3); /* Light border */
+        border-radius: 50%; /* Make it round */
+        border-top: 3px solid #fff; /* Top border color */
+        animation: spin 1s linear infinite; /* Spinning animation */
+        visibility: hidden; /* Hide by default */
+    }
+}
+
+/* Button processing state */
+.trigger-load-chat.processing {
+    background-color: #6c757d; /* Grey out the button */
+    cursor: not-allowed;
+    pointer-events: none; /* Disable pointer events */
+    opacity: 0.7; /* Optional: make button slightly transparent */
+
+    .button-text {
+        visibility: hidden;
+    }
+
+    .loader {
+        visibility: visible; /* Show when processing */
+    }
+}
+/* Loader styles */
+.trigger-load-chat .loader {
+    position: absolute; /* Absolute positioning relative to the button */
+    width: 20px; /* Set width */
+    height: 20px; /* Set height */
+    border: 3px solid rgba(255, 255, 255, 0.3); /* Light border */
+    border-radius: 50%; /* Make it round */
+    border-top: 3px solid #fff; /* Top border color */
+    animation: spin 1s linear infinite; /* Spinning animation */
+    visibility: hidden; /* Hide by default */
+}
+/* Keyframes for spinning loader */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.messages {
+    .product-info {
+        .image {
+            width: auto!important;
+            height: auto !important;
+        }
+    }
+}

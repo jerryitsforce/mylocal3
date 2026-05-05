@@ -1,0 +1,20 @@
+<?php
+/** @var $block \Magento\Sales\Block\Order\Email\Items */
+$count = 0;
+?>
+<?php $_order = $block->getOrder() ?>
+
+<?php if ($_order) : ?>
+    <?php $_items = $_order->getAllItems(); ?>
+<ul>
+        <?php foreach ($_items as $_item) : ?>
+            <?php if (!$_item->getParentItem()) : ?>
+            <?php $count++ ?>
+            <li>
+                <?= $count ?>.
+                <?= $block->escapeHtml($_item->getName()) ?> X <?= (int)$_item->getQtyOrdered() ?>
+            </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+</ul>
+<?php endif; ?>

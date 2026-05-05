@@ -1,0 +1,136 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\Index $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$credit_cards = $block->getCreditcardList();
+// $test = '{"code":200,"success":true,"error":null,"count":2,"data":[{"Id":3743, "tokenId": 3743 ,"MemberHashID":4609, "DefaultCard": true,"AliasName":"eeee","CardType":"Jcb","BankDesc":"中信JCB晶緻卡","CardNoMask":"****-****-****-3185","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8712","VipNo":"","CardArt":"870871250","IsAvailable":true,"IsOverwrite":true,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-13T11:04:24.810Z","updatedAt":"2024-03-06T09:54:12.106Z","deletedAt":"2024-02-29T04:24:14.893Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"JCB","BIN":"356651","IsDebit":"","TokenFlag":"","OnlineDate":"07/19/2013"}},{"Id":3749, "tokenId": 3749 , "DefaultCard": false,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":false,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}},{"Id":3749, "tokenId": 3749 , "DefaultCard": false,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":false,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}},{"Id":3749, "tokenId": 3749 , "DefaultCard": false,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":false,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}}]}';
+// $cards = json_decode($test, true);
+// $credit_cards = $cards['data'];
+$memberLogo = $this->getViewFileUrl('images/member-hotai-pay.svg');
+$count = count($credit_cards);
+?>
+<div class="creditcard-member-wrapper <?= $count ? 'show-listing' : ''?>">
+  <?php if($count): ?>
+    <h3 class="creditcard-member-sub-title"><?= $block->escapeHtml(__('已綁定信用卡')) ?></h3>
+  <?php endif; ?>
+  <div class="creditcard-member-cards">
+    <?php if(!$count || $count < 1): ?>
+      <div class="creditcard-member-card-wrapper">
+        <div class="creditcard-member-card-logo">
+          <img class="creditcard-member-card-img" src="<?= $memberLogo ?>" title="<?= $block->escapeHtml(__('和泰Pay')) ?>" alt="<?= $block->escapeHtml(__('和泰Pay')) ?>">
+        </div>
+        <h3 class="creditcard-member-card-title"><?= $block->escapeHtml(__('開始綁定第一張信用卡吧！')) ?></h3>
+      </div>
+    <?php endif;  ?>
+    <?php if($count): ?>
+    <div class="creditcard-member-card-list">
+      <table class="creditcard-member-table">
+        <thead class="creditcard-member-card-list-title">
+          <tr class="creditcard-member-card-list-title-item">
+            <td class="col col-default"><?= $block->escapeHtml(__('')) ?></td>
+            <td class="col col-card-info">
+              <span class="card-info"><?= $block->escapeHtml(__('信用卡號碼')) ?></span>
+              <span class="card-extra"><?= $block->escapeHtml(__('信用卡暱稱')) ?></span>
+            </td>
+            <td class="col col-action col-action-edit"><?= $block->escapeHtml(__('編輯')) ?></td>
+            <td class="col col-action col-action-remove"><?= $block->escapeHtml(__('移除')) ?></td>
+          </tr>
+        </thead>
+        <tbody class="creditcard-member-card-list-items">
+          <?php $index = 0; foreach($credit_cards as $credit_card): ?>
+          <?php
+            $default = $credit_card['DefaultCard'];
+            $index++;
+            $isValid = $credit_card['IsAvailable'] && !$credit_card['IsOverwrite'];
+          ?>
+          <tr class="creditcard-member-card-list-item <?= !$isValid? 'invalid':''?>">
+            <td class="col col-default">
+              <span class="card-default <?= $default? 'default':'' ?>"><?= $block->escapeHtml(__('預設'))?></span>
+            </td>
+            <td class="col col-card-info">
+              <div class="card-info">
+                <span class="card-type <?= strtolower($credit_card['CardType']) ?>"><span><?= $credit_card['CardType'] ?></span></span>
+                <span class="card-nomask"><?= str_replace('-',' ',$credit_card['CardNoMask']) ?></span>
+              </div>
+              <div class="card-extra">
+                <span class="col-alias"><?= $credit_card['AliasName'] ?></span>
+              </div>
+              <?php if(!$isValid):?>
+              <div class="card-warning">
+                <span class="warning"><?= $block->escapeHtml(__('Card expired, please contact your card issuer.')) ?></span>
+              </div>
+              <?php endif; ?>
+            </td>
+            <td class="col col-action col-action-edit">
+              <a href="<?= $block->getEditUrl($credit_card['tokenId']) ?>" class="action action-edit" data-id="<?= $block->escapeHtml($credit_card['tokenId']) ?>"><span><?= $block->escapeHtml(__('編輯')) ?></span></a>
+            </td>
+            <td class="col col-action col-action-delete">
+              <button  class="action action-delete" data-id="<?= $block->escapeHtml($credit_card['tokenId']) ?>">
+                <span><?= $block->escapeHtml(__('移除')) ?></span>
+              </button>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    </div>
+    <?php endif; ?>
+    <ul class="creditcard-member-binding-actions">
+      <li class="creditcard-member-binding-action">
+        <div class="action-text"><?= $block->escapeHtml(__('中信信用卡')) ?></div>
+        <button class="action action-link" id="binding_creditcard_fast_btn"><?= $block->escapeHtml(__('中信卡快速綁定')) ?></button>
+      </li>
+      <li class="creditcard-member-binding-action">
+        <div class="action-text"><?= $block->escapeHtml(__('其他信用卡')) ?></div>
+        <button class="action action-link" id="binding_creditcard_btn"><?= $block->escapeHtml(__('一般信用卡綁定')) ?></button>
+      </li>
+    </ul>
+    <div class="creditcard-member-card-note">
+      <p class="creditcard-member-card-note-text"><?= $block->escapeHtml(__('同一張信用卡只限綁定於一個會員帳號，請勿重複綁卡')) ?></p>
+    </div>
+    <?php
+      $warning = $block->getManuallyAddCardWarning();
+    ?>
+    <?php if($warning): ?>
+      <div class="creditcard-member-card-note creditcard-member-card-warning">
+        <p class="creditcard-member-card-note-text"><?= $warning ?></p>
+      </div>
+    <?php endif; ?>
+  </div>
+  <?= $block->getHotaiPayCustomerBottom() ?>
+</div>
+
+<?= $block->getChildHtml('hotaipay.popup.quick.card') ?>
+<?= $block->getChildHtml('hotaipay.popup.reminder.guide') ?>
+<?= $block->getChildHtml('hotaipay.popup.delete.card') ?>
+
+<?php
+$params = $block->getOriginalParams();
+$response = $block->getErrorResponse();
+?>
+<?php if(isset($params['StatusDesc'])): ?>
+<?php if(strtoupper($params['StatusDesc']) == 'SUCCESS'): ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.complete') ?>
+<?php else: ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.fail') ?>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php if(isset($response['StatusDesc'])): ?>
+<?php if(strtoupper($response['StatusDesc']) == 'SUCCESS'): ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.complete') ?>
+<?php else: ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.fail') ?>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php $block->unsetResponse(); ?>
+
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8HotaiPayMember": {}
+    }
+  }
+</script>

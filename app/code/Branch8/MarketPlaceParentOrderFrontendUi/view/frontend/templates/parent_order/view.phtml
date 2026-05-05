@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+?>
+<?php /** @var  $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\View */?>
+<div class="order-details-items ordered">
+    <?php $_order = $block->getOrder() ?>
+    <div class="order-title">
+        <strong><?= $block->escapeHtml(__('Items Ordered')) ?></strong>
+        <?php if (!empty($_order->getTracksCollection())) : ?>
+            <?= $block->getChildHtml('tracking-info-link') ?>
+        <?php endif; ?>
+    </div>
+    <?= $block->getChildHtml('order_items') ?>
+    <div class="actions-toolbar">
+        <div class="secondary">
+            <a class="action back" href="<?= $block->escapeUrl($block->getBackUrl()) ?>">
+                <span><?= $block->escapeHtml($block->getBackTitle()) ?></span>
+            </a>
+        </div>
+    </div>
+</div>

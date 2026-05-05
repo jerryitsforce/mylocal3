@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+        <table name="ticket_api_brand" resource="default" engine="innodb" comment="Branch8票券API品牌設定">
+                <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="int" name="brand_id" unsigned="true" nullable="false" comment="品牌ID(和\Branch8\HotaiCore\Model\Product\VirtualProductType對應)" />
+                <column xsi:type="varchar" name="brand_name" nullable="false" comment="品牌名稱" />
+                <column xsi:type="varchar" name="brand_code" nullable="false" comment="品牌代號" />
+                <column xsi:type="int" name="is_active" nullable="false" default="1" comment="啟用狀態(0: 未啟用, 1: 已啟用)" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="entity_id" />
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_BRAND_ID">
+                        <column name="brand_id"/>
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_BRAND_NAME">
+                        <column name="brand_name"/>
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_BRAND_CODE">
+                        <column name="brand_code"/>
+                </constraint>
+        </table>
+        <table name="ticket_api_merchant" resource="default" engine="innodb" comment="Branch8票券API商戶設定">
+                <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="varchar" name="merchant_name" nullable="false" comment="商戶名稱(供前台辨識用)" />
+                <column xsi:type="varchar" name="merchant_id" nullable="false" comment="商戶ID" />
+                <column xsi:type="int" name="allow_all_seller" nullable="true" comment="是否允許傳入各種seller_code, 此設定若為是則綁定的賣家ID就不重要了(0: 否, 1: 是) (預計廢棄)" />
+                <column xsi:type="int" name="seller_id" nullable="true" comment="綁定的賣家ID (預計廢棄)" />
+                <column xsi:type="varchar" name="seller_ids" nullable="true" comment="綁定的賣家IDs" />
+                <column xsi:type="varchar" name="whitelist" length="1024" nullable="false" comment="白名單(逗號分隔IP)" />
+                <column xsi:type="varchar" name="aes_key" nullable="false" comment="AES加密key" />
+                <column xsi:type="varchar" name="aes_iv" nullable="false" comment="AES加密iv" />
+                <column xsi:type="int" name="is_active" nullable="false" default="1" comment="啟用狀態(0: 未啟用, 1: 已啟用)" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="entity_id" />
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_MERCHANT_NAME">
+                        <column name="merchant_name"/>
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_MERCHANT_ID">
+                        <column name="merchant_id"/>
+                </constraint>
+        </table>
+        <table name="ticket_api_permission" resource="default" engine="innodb" comment="Branch8票券API商戶可使用品牌權限關係表">
+                <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="int" name="brand_id" unsigned="true" nullable="false" comment="品牌ID" />
+                <column xsi:type="int" name="merchant_id" unsigned="true" nullable="false" comment="商戶ID" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="entity_id" />
+                </constraint>
+        </table>
+</schema>

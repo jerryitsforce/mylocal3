@@ -1,0 +1,43 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "訂單報表匯出完成"}} @-->
+<!--@vars {
+"var $data.name":"Email Name",
+"var $data.file_display_name":"File Name"
+"var $data.export_admin_url":"Export Admin Url"
+} @-->
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">
+                {{trans "Hi, %name" name=$data.name}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <p>{{trans '商品資料匯出已完成，請點擊連結前往下載'}}</p>
+            <p>若無法點擊，請登入管理後台並前往</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <p><b>System -> Data Transfer -> Export</b></p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+            <p><b>{{trans "%file_name" file_name=$data.file_display_name}}</b></p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td><p>謝謝</p></td>
+    </tr>
+</table>
+
+

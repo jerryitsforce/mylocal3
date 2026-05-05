@@ -1,0 +1,91 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var \Magento\Sales\Block\Adminhtml\Order\View\History $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Branch8\Sales\ViewModel\StatusResolver $statusResolverModel */
+?>
+
+<?php $H = '$H';
+$reloadTooLBar = $block->getUrl('sales/order/ReloadToolBar', ['order_id' => $block->getOrder()->getId()])
+?>
+
+<?php $scriptString = <<<script
+        require(['prototype'], function (prototype) {
+            const reloadToolBarUrl='{$reloadTooLBar}';
+            const toolBarWrapper="$('order_history_block').parentNode";
+            window.reloadToolBar=function(area,reloadToolBarUrl)
+            {
+                new Ajax.Request(reloadToolBarUrl, {
+                        loaderArea: area,
+                        onSuccess: function (transport) {
+                            try {
+                                if (transport.responseText.isJSON()) {
+                                    var response = transport.responseText.evalJSON();
+                                    console.log({
+                                        response:response
+                                    })
+                                    if (response.error) {
+                                        alert(response.message);
+                                    }
+
+                                    if (response.ajaxExpired && response.ajaxRedirect) {
+                                        setLocation(response.ajaxRedirect);
+                                    }
+
+                                } else {
+                                    $(area).update(transport.responseText);
+                                    console.log({
+                                    area:area
+                                    })
+                                }
+                            } catch (e) {
+                                $(area).update(transport.responseText);
+                            }
+                        }
+                    });
+            };
+            window.submitCommentAndReloadToolBar = function (area, url) {
+                if ($(area)) {
+                    var fields = $(area).select('input', 'select', 'textarea');
+                    var data = Form.serializeElements(fields, true);
+                    url += url.match(new RegExp('\\\?')) ? '&isAjax=true' : '?isAjax=true';
+                    new Ajax.Request(url, {
+                        parameters: {$H}(data),
+                        loaderArea: area,
+                        onSuccess: function (transport) {
+                            try {
+                                window.location.reload();
+                                return
+                                if (transport.responseText.isJSON()) {
+                                    var response = transport.responseText.evalJSON();
+                                    console.log({
+                                        response:response
+                                    })
+                                    if (response.error) {
+                                        alert(response.message);
+                                    }
+
+                                    if (response.ajaxExpired && response.ajaxRedirect) {
+                                        setLocation(response.ajaxRedirect);
+                                    }
+
+                                } else {
+                                    $(area).update(transport.responseText);
+                                }
+                            } catch (e) {
+                                $(area).update(transport.responseText);
+                            }
+
+                            reloadToolBar(toolBarWrapper,reloadToolBarUrl);
+                        }
+                    });
+                }
+            }
+        });
+   script; ?>
+<?= /* @noEscape */
+$secureRenderer->renderTag('script', [], $scriptString, false) ?>

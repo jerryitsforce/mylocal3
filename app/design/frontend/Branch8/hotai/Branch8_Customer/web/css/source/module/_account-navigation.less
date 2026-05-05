@@ -1,0 +1,311 @@
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .account {
+
+    }
+
+    .block-account-nav {
+        .nav.items {
+            box-sizing: border-box;
+
+            .link {
+                padding: 0 16px;
+                position: relative;
+                margin-bottom: 16px;
+
+                &.active {
+                    margin: 16px 0;
+                    padding: 12px 16px;
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        top: 0px;
+                        bottom: 0px;
+                        border-radius: 32px;
+                        background-color: var(--color-gray-light1);
+                        z-index: 1;
+                    }
+                }
+
+                a {
+                    position: relative;
+                    z-index: 3;
+
+                    .lib-icon-font(
+                        @_icon-font-content: @icon-user,
+                        @_icon-font-size: 26px,
+                        @_icon-font-line-height: 40px,
+                        @_icon-font-position: before,
+                        @_icon-font-display: block,
+                        @_icon-font-color: var(--color-red-base),
+                        @_icon-font-color-hover: white,
+                        @_icon-font-color-active: white
+                    );
+
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    color: var(--color-text-base);
+
+                    &:before {
+                        width: 40px;
+                        height: 40px;
+                        padding-left: 2px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        line-height: 40px;
+                        border-radius: 100%;
+                        box-sizing: border-box;
+                        border: 1px solid var(--border-color);
+                    }
+
+                }
+
+                &.active,
+                &:hover {
+                    a {
+                        color: var(--color-red-base);
+                        &:before {
+                            color: white;
+                            border-color: var(--color-red-base);
+                            background-color: var(--color-red-base);
+                        }
+                    }
+                }
+
+            }
+
+            .link.order a:before {
+                content: @icon-order;
+            }
+
+            .link.point a:before {
+                content: @icon-point;
+            }
+            .link.ticket a:before {
+                content: @icon-ticket;
+            }
+            .link.wishlist a:before {
+                content: @icon-wishlist;
+            }
+            .link.recently-viewed a:before {
+                content: @icon-viewed;
+            }
+            .link.notification  a:before {
+                content: @icon-notify;
+            }
+
+            .link.user a:before {
+                content: @icon-user;
+                padding-left: 2px;
+                font-size: 22px;
+                line-height: 36px;
+            }
+            .link.address a:before {
+                content: @icon-address;
+            }
+            .link.hotai-pay a:before {
+                content: @icon-hotai-pay;
+            }
+            .link.member a:before {
+                content: @icon-member;
+            }
+
+            .link.faq a:before {
+                content: @icon-faq;
+            }
+
+            .link.member-form a:before {
+                content: @icon-customer;
+            }
+
+            .link.services a:before {
+                content: @icon-services;
+            }
+
+            .link.member-ticket a:before {
+                content: @icon-customer;
+                text-indent: 5px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile + Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    .account.page-layout-2columns-left {
+        .columns {
+            .column.main {
+                width: 100%;
+                padding: 0;
+            }
+
+            .sidebar-main,
+            .sidebar-additional {
+                width: 100%;
+                padding: 0;
+            }
+        }
+
+        &.faq-index-index,
+        &.customer-address-index,
+        &.sales-parentorder-history,
+        &.member-level-index {
+            .columns {
+                .column.main {
+                    padding-left: 0;
+                }
+            }
+        }
+
+        .block-account-nav {
+            .title {
+                strong {
+                    font-size: 14px;
+                    line-height: 22px;
+                    font-weight: 700;
+                }
+            }
+
+            .nav.items {
+                .link a {
+                    font-size: 14px;
+                    line-height: 22px;
+                    font-weight: 500;
+                    letter-spacing: 1px;
+                    max-width: 74px;
+                }
+
+                .link.recently-viewed {
+                    display: none;
+                }
+            }
+
+            &.customer-nav-bottom {
+                padding: 16px;
+                margin-left: -16px;
+                margin-right: -16px;
+                margin-bottom: 40px !important;
+                box-shadow: 0 0 10px 2px #2318150A;
+
+                .title {
+                    padding-left: 8px;
+                    position: relative;
+
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        top: 4px;
+                        bottom: 4px;
+                        left: 0;
+                        width: 4px;
+                        border-radius: 8px;
+                        background-color: var(--color-gray-light3);
+                    }
+                }
+            }
+        }
+    }
+    .customer-header {
+        .customer-nav {
+            .nav.items .link{
+                padding: 16px;
+                margin-bottom: 0;
+                display: flex;
+                justify-content: center;
+
+                a {
+                    flex-direction: column;
+                    gap: 4px;
+                    font-weight: 500;
+
+                    &:before {
+                        padding: 0;
+                        display: block;
+                        text-align: center;
+                    }
+
+                    &.notification:after {
+                        padding-left: 1px;
+                    }
+                }
+            }
+        }
+
+        .customer-header-bottom {
+            .customer-nav .nav.items {
+                .link {
+                    &.active {
+                        padding: 16px;
+                        margin: 0;
+
+                        &:before {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+//
+//  Tablet + Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .account.page-layout-2columns-left {
+        .sidebar-main,
+        .sidebar-additional {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+
+        }
+
+        .block-account-nav {
+            .title {
+                position: relative;
+                margin-bottom: 14px;
+
+                strong {
+                    padding: 0 10px 0 16px;
+                    position: relative;
+                    background-color: white;
+                    z-index: 2;
+                }
+                &:after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    width: 80%;
+                    height: 1px;
+                    display: block;
+                    z-index: 1;
+                    background-color: var(--color-gray-light4);
+                }
+            }
+
+        }
+
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+    .account.page-layout-2columns-left {
+        .block-account-nav {
+            .title strong {
+                font-size: 18px;
+                line-height: 28px;
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Post\View;
+use Branch8\Blog\Helper\Image;
+use Branch8\Blog\Model\Config\Source\Comments\Type;
+
+/** @var View $block */
+?>
+<div class="col-xs-12 blog-post-info">
+    <hr/>
+    <div class="mp-post-info">
+        <?= $block->getChildHtml('blog_post_info_date') ?>
+
+        <?= $block->getChildHtml('blog_post_info_traffic') ?>
+
+        <?= $block->getChildHtml('blog_post_info_category') ?>
+
+        <?= $block->getChildHtml('blog_post_info_tag') ?>
+
+        <?= $block->getChildHtml('blog_post_info_author') ?>
+
+    </div>
+    <hr/>
+</div>

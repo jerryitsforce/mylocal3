@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_SpinToWin
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <remove src="Webkul_SpinToWin::js/main.js"/>
+        <remove src="Webkul_SpinToWin::css/main.css"/>
+        <remove src="Webkul_SpinToWin::css/style.css"/>
+    </head>
+</page>

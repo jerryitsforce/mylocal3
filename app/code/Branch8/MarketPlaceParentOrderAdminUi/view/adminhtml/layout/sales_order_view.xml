@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="order_additional_info">
+            <block class="Magento\Sales\Block\Adminhtml\Order\View"
+                   name="sales_parent_order_information"
+                   template="Branch8_MarketPlaceParentOrderAdminUi::order/view/info/parent_info.phtml">
+                <arguments>
+                    <argument  xsi:type="object" name="view_model">Branch8\MarketPlaceParentOrderAdminUi\ViewModel\ParentOrder</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <move element="sales_parent_order_information" destination="order_additional_info"
+              before="-"
+        />
+    </body>
+</page>

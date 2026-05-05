@@ -1,0 +1,6 @@
+<select id="return_or_exchange_reason" name="reason_id" data-validate="{'required':true}">
+    <option value="" data-bind="i18n: '選擇取消原因'"></option>
+    <!-- ko foreach: { data: reasons, as: 'reason' } -->
+        <option data-bind="attr:{ value: reason.value}, i18n: reason.label"></option>
+    <!-- /ko -->
+</select>

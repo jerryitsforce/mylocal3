@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_sellerinformationproductdataexport>
+                <log_types>system.log,exception.log</log_types>
+            </branch8_sellerinformationproductdataexport>
+        </branch8_debug>
+    </default>
+</config>

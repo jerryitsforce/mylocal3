@@ -1,0 +1,57 @@
+{
+    "general_non_notify_ticket_batch_setting": {
+        "column": {
+            "setting_id": true,
+            "seller_id": true,
+            "belong_to_product_id": true,
+            "batch_code": true,
+            "safety_stock": true,
+            "sale_start_time": true,
+            "sale_end_time": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "due_days": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_7050FDDF6124862F2532972B90B3376F": true,
+            "FK_B9B0CB0EA3916070AC3D031AF077C179": true
+        }
+    },
+    "general_non_notify_ticket_record": {
+        "column": {
+            "record_id": true,
+            "batch_setting_id": true,
+            "serial_number": true,
+            "seller_id": true,
+            "belong_to_product_id": true,
+            "quote_item_id": true,
+            "sales_order_item_id": true,
+            "use_start_time": true,
+            "use_end_time": true,
+            "due_days": true,
+            "used_date": true,
+            "used_transaction_no": true,
+            "used_count": true,
+            "returned_date": true,
+            "status": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "GENERAL_NON_NOTIFY_TICKET_RECORD_BELONG_TO_PRODUCT_ID": true,
+            "GENERAL_NON_NOTIFY_TICKET_RECORD_BATCH_SETTING_ID_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "GENERAL_NON_NOTIFY_TICKET_RECORD_BELONG_TO_PRD_ID_SERIAL_NUMBER": true,
+            "FK_F9F0D87A7EC68B39D9FC681E1FAF39C6": true,
+            "FK_81FD67ED7D260DFA127C064400D77250": true,
+            "FK_1E2D75D4106ED3D3359F1CE415FBF3DF": true,
+            "GENERAL_NON_NOTIFY_TICKET_RECORD_SELLER_ID_SERIAL_NUMBER": true
+        }
+    }
+}

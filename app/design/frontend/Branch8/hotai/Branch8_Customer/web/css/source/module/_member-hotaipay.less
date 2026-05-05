@@ -1,0 +1,1099 @@
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+  .member-hotaipay-index {
+    &:extend(.abs-loader-custom all);
+
+    .page-title-wrapper {
+      display: none;
+    }
+
+    main.page-main {
+      padding-top: 0;
+      padding-bottom: 42px;
+    }
+
+    .columns .column.main {
+      margin-top: 0;
+      padding-bottom: 0;
+    }
+
+    .page-bottom {
+      margin-bottom: 0;
+      margin-top: 18px;
+      background: var(--color-gray-light1);
+    }
+  }
+
+  .member-hotaipay-wrapper {
+    [data-content-type='row'][data-appearance='contained'] {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .breadcrumbs {
+      display: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    &.member-hotai-guest {
+      .breadcrumbs {
+        display: block;
+      }
+    }
+  }
+
+  .member-hotaipay-header {
+    border-radius: 0 0 32px 0;
+    background: var(--color-red-base);
+    margin: 0 -16px;
+    padding: 0 var(--layout-indent__width) 50px;
+    box-sizing: border-box;
+    width: calc(~'100% + 32px');
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+
+    &::after {
+      content: '';
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, rgba(240, 240, 240, 1) 0%, rgba(235, 232, 232, 0) 150%);
+      opacity: 0.1;
+      border-radius: 100%;
+      top: 0;
+      position: absolute;
+    }
+
+    .member-hotai-guest & {
+      padding-bottom: 26px;
+    }
+  }
+
+  .member-hotaipay-logo-wrapper {
+    position: relative;
+
+    &::before,
+    &::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      display: flex;
+      top: 0;
+      position: absolute;
+      background: url('../images/star.svg') no-repeat center;
+    }
+
+    &::after {
+      top: 71px;
+      right: 25px;
+    }
+
+    &::before {
+      top: 142px;
+      left: 26px;
+    }
+  }
+
+  .member-hotaipay-logo {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-white);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    border-radius: 100%;
+    overflow: hidden;
+    margin: 50px;
+
+    .player {
+      max-width: 202px;
+      width: auto;
+      height: auto;
+      margin: 0 -44px;
+    }
+  }
+  .member-hotaipay-title {
+    &:extend(.abs-h2 all);
+    margin: -34px 0 10px;
+    text-align: center;
+    color: var(--color-white);
+  }
+
+  .member-hotaipay-welcome {
+    margin: -52px 0 64px;
+    position: relative;
+    z-index: 1;
+    &:extend(.abs-h6 all);
+    color: var(--color-white);
+
+    .member-hotai-guest & {
+      display: none!important;
+    }
+  }
+
+  .member-hotaipay-point-plus [data-content-type="heading"],
+  .member-hotaipay-point-plus-title {
+    &:extend(.abs-h3 all);
+    position: relative;
+    color: var(--color-black-solid1);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0 4px;
+
+    &::after,
+    &::before {
+      &:extend(.abs-hotai-icon all);
+      content: var(--icon-point);
+      color: var(--color-red-base);
+      font-size: 32px;
+    }
+  }
+
+  .member-hotaipay-point-plus {
+    &:extend(.abs-body-text all);
+    color: var(--color-gray-solid1);
+    margin-bottom: 60px;
+  }
+
+  .member-hotaipay-binding-steps {
+    padding: 10px 0 0;
+
+    .pagebuilder-column-line {
+      display: flex;
+      flex-direction: row;
+      gap: 16px 0;
+    }
+
+    #html-body & .pagebuilder-column {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background: var(--color-gray-light1);
+      padding: 24px 28px;
+      border-radius: 16px;
+      gap: 0 20px;
+      color: var(--color-black-solid1);
+
+      figure {
+        width: 100px;
+        height: 100px;
+        background: var(--color-white);
+        border-radius: 100px;
+        overflow: hidden;
+        padding: 10px;
+        box-sizing: border-box;
+        font-size: 0;
+        line-height: 0;
+      }
+
+      img {
+
+      }
+
+      h2,
+      h3,
+      h4 {
+        &:extend(.abs-price-h6 all);
+        margin: 0 0 4px;
+        color: var(--color-red-base);
+      }
+
+      p {
+        &:extend(.abs-h6 all);
+        &:last-child {
+          margin: 0;
+        }
+      }
+
+      > div[data-content-type="text"] {
+        flex: 1;
+      }
+    }
+  }
+
+  .member-hotaipay-binding-label {
+    background: var(--color-gray-light5);
+    border: 1px solid var(--color-gray-light4);
+    padding: 2px 15px;
+    border-radius: 8px;
+    display: inline-flex;
+    width: auto;
+    margin: 0 auto 12px;
+    box-sizing: border-box;
+    min-height: 44px;
+    align-items: center;
+
+    p {
+      margin: 0;
+      color: var(--color-black-solid1);
+      &:extend(.abs-caption2 all);
+      display: flex;
+      align-items: center;
+      line-height: 30px;
+    }
+
+    strong {
+      color: var(--color-red-base);
+      &:extend(.abs-price-h3 all);
+    }
+
+  }
+
+  .member-hotaipay-binding {
+    margin-bottom: -2px;
+  }
+
+  .member-hotaipay-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0 16px;
+    margin-bottom: 16px;
+  }
+
+  .member-hotaipay-binding-actions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px 0;
+  }
+
+  .member-hotaipay-binding-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 14px;
+    padding: 15px;
+    border-radius: 16px;
+    border: 1px solid var(--color-gray-light4);
+    box-shadow: var(--box-shadow);
+    margin: 0;
+
+    .action-text {
+      &:extend(.abs-h6-bold all);
+    }
+
+    .action.action-link {
+      padding: 4px 16px 4px 12px;
+      &:extend(.abs-caption1-medium all);
+      display: inline-flex;
+      align-items: center;
+
+      &::before {
+        &:extend(.abs-hotai-icon all);
+        content: var(--icon-plus);
+        font-size: 20px;
+        margin-right: 2px;
+      }
+    }
+  }
+
+  .member-hotaipay-give-back {
+    background: var(--color-red-base);
+    border-radius: 16px;
+    padding: 16px;
+    color: var(--color-white);
+    &:extend(.abs-caption2 all);
+    overflow: hidden;
+    position: relative;
+
+    p {
+      font-size: 10px;
+      letter-spacing: 1px;
+      line-height: 1.45;
+      margin: 0 0 15px;
+    }
+
+    h2 {
+      &:extend(.abs-h6-bold all);
+      color: var(--color-white);
+      margin: 24px 0 10px;
+      max-width: calc(~'100% - 120px');
+    }
+    div[data-content-type='text'] {
+      max-width: calc(~'100% - 120px');
+    }
+
+    [data-content-type='buttons'] {
+      display: flex;
+      flex-direction: row;
+      gap: 11px 13px;
+      position: relative;
+      align-items: center;
+      flex-wrap: wrap;
+
+      &:before {
+        content: "";
+        height: 2px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        display: block;
+      }
+
+      [data-content-type='button-item'] {
+        width: calc(~"50% - 7px");
+        text-align: center;
+        position: relative;
+        padding: 0 10px;
+        box-sizing: border-box;
+
+        &::before {
+          content: '';
+          width: 1px;
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 1px;
+          display: block;
+          height: 16px;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: -7px;
+        }
+
+        &:first-child::before {
+          display: none;
+        }
+      }
+
+      .pagebuilder-button-link {
+        &:extend(.abs-caption1-medium all);
+        color: var(--color-white);
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+
+  div.member-hotaipay-give-back-label{
+    background: var(--color-black-solid1);
+    color: var(--color-white);
+    &:extend(.abs-caption2 all);
+    position: absolute;
+    border-radius: 0 0 10px 0;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    left: 0;
+    top: -5px;
+    padding: 8px 8px 2px;
+
+    strong {
+      &:extend(.abs-price-h5 all);
+      // font-family: @font-family__secondary;
+    }
+
+    .member-hotaipay-give-back & p {
+      margin: 0;
+      &:extend(.abs-caption2 all);
+    }
+  }
+
+  .member-hotaipay-give-back-card-img {
+    position: absolute;
+    right: -3px;
+    top: 9px;
+    width: 120px;
+  }
+
+  .member-hotaipay-bottom  {
+    &:extend(.abs-h6 all);
+    color: var(--color-black-solid1);
+    padding: 28px 1px 17px;
+
+    h2 {
+      &:extend(.abs-h3 all);
+      padding: 0;
+      margin: 0 0 8px;
+    }
+
+    div[data-content-type='text'] {
+      margin-bottom: 24px;
+    }
+
+  }
+
+  .quick-card-form {
+    padding: 24px 0;
+
+    .fieldset {
+      > .field {
+        margin: 0 0 17px;
+        display: flex;
+        flex-direction: column;
+        gap: 7px 0;
+
+        > .label {
+          &:extend(.abs-label all);
+          &:extend(.abs-body-text-bold all);
+
+          &::after {
+            color: var(--color-red-base);
+            margin-left: -4px;
+            font-size: 14px;
+          }
+        }
+
+        &:extend(.abs-input all);
+
+        input[type="number"],
+        input[type="text"] {
+          &:extend(.abs-body-text all);
+        }
+
+        > .control {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0 10px;
+
+          .control-field {
+            width: calc(~"33.33% - 7px");
+          }
+        }
+      }
+    }
+  }
+
+  .member-hotaipay-card-list {
+    border: 1px solid var(--color-gray-light4);
+    background: var(--color-white);
+    border-radius: 16px;
+    &:extend(.abs-caption1 all);
+    color: var(--color-black-solid1);
+    margin: 13px 0 16px;
+  }
+
+  .member-hotaipay-card-summary {
+    background: var(--color-gray-light1);
+    padding: 16px 54px 16px 16px;
+    position: relative;
+    border-radius: 16px 16px 0 0;
+
+    &:after {
+      content: '';
+      width: 50px;
+      height: 50px;
+      display: block;
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      background: url(../images/icon-card-check.svg) 0 0 no-repeat;
+    }
+  }
+
+  .member-hotaipay-card-summary-title {
+    &:extend(.abs-h6-bold all);
+    margin: 0 0 4px;
+
+    strong {
+      &:extend(.abs-price-h6 all);
+      color: var(--color-red-base);
+    }
+  }
+
+  .member-hotaipay-card-summary-sub {
+    color: var(--color-gray-solid1);
+    margin: 0 0 2px;
+  }
+
+  .member-hotaipay-card-list-content {
+    position: relative;
+    .member-hotaipay-card-list-header {
+
+    }
+    .member-hotaipay-card-list-items {
+      display: none;
+    }
+    &.show {
+      .member-hotaipay-card-list-header {
+        display: none;
+      }
+      .member-hotaipay-card-list-items {
+        display: flex;
+      }
+      .member-hotaipay-card-close-btn {
+        display: block;
+      }
+    }
+  }
+
+  .member-hotaipay-card-list-header {
+    &:extend(.abs-caption1-medium all);
+    color: var(--color-red-base);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+
+    &::after {
+      &:extend(.abs-hotai-icon all);
+      content: var(--icon-down);
+      font-size: 22px;
+      color: var(--color-red-base);
+    }
+  }
+
+  .member-hotaipay-card-close-btn {
+    background: none;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    position: absolute;
+    right: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+
+    &::after {
+      &:extend(.abs-hotai-icon all);
+      content: var(--icon-up);
+      font-size: 22px;
+      color: var(--color-red-base);
+    }
+
+    &:hover,
+    &:focus {
+      background: none;
+      border: 0;
+      padding: 0;
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .member-hotaipay-card-list-items {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px 0;
+    padding: 16px 44px 16px 16px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .member-hotaipay-card-list-item {
+    display: flex;
+    flex-direction: row;
+    gap: 0 6px;
+    margin: 0;
+    align-items: center;
+
+    .card-default {
+      background: var(--color-red-base);
+      font-size: 10px;
+      color: var(--color-white);
+      font-weight: 500;
+      padding: 0 6px;
+      border-radius: 4px;
+      line-height: 12px;
+      display: inline-flex;
+      align-items: center;
+      height: 19px;
+      margin-right: 6px;
+      min-width: 22px;
+
+      &:not(.default) {
+        text-indent: -9999rem;
+        background: none;
+      }
+    }
+
+    .card-type {
+      width: 38px;
+      height: 24px;
+      display: inline-flex;
+      background: url(../images/mastercard.png) 0 0 no-repeat;
+      background-size: contain;
+      margin: 0 10px 0 0;
+      min-width: 38px;
+
+      &.visa {
+        background: url(../images/visa.png) 0 0 no-repeat;
+        background-size: contain;
+      }
+
+      &.jcb {
+        background: url(../images/jcb.png) 0 0 no-repeat;
+        background-size: contain;
+      }
+
+      > span {
+        display: none;
+      }
+    }
+    
+    .card-nomask {
+
+    }
+
+    .card-alias-name {
+
+    }
+  }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+  .member-hotaipay-card-list-items {
+      padding: 16px 14px 16px 16px;
+  }
+
+  .member-hotaipay-card-list-content {
+      &.show {
+          .member-hotaipay-card-close-btn {
+              display: none;
+          }
+      }
+  }
+
+    .member-hotaipay-welcome {
+        margin-top: 0;
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__s) {
+  .member-hotaipay-header {
+    margin: 0 -48px;
+    width: calc(~"100% + 96px");
+  }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+  .member-hotaipay-index {
+    .page.messages,
+    .column.main {
+      margin-top: 0;
+    }
+
+    .page-bottom {
+      width: 100%;
+      max-width: 100%;
+      margin: 78px 0 0;
+      border-top: 1px solid rgba(230, 230, 230, 0.5);
+      background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+    }
+  }
+  .member-hotaipay-header {
+    max-width: 516px;
+    margin: 0 auto;
+    border-radius: 0 0 80px 80px;
+    padding: 20px 47px 79px;
+
+    &::after {
+     top: 24px;
+    }
+
+    .member-hotai-guest & {
+      padding-bottom: 46px;
+    }
+  }
+
+  .member-hotaipay-title {
+    &:extend(.abs-h2 all);
+  }
+
+  .member-hotaipay-welcome {
+    max-width: 516px;
+    margin: -80px auto 141px;
+
+    &:extend(.abs-h6 all);
+  }
+
+  .member-hotaipay-point-plus {
+    &:extend(.abs-body-text all);
+    margin-bottom: 119px;
+
+    .member-hotai-guest & {
+      padding-top: 44px;
+    }
+  }
+
+  .member-hotaipay-point-plus [data-content-type="heading"],
+  .member-hotaipay-point-plus-title {
+    &:extend(.abs-h3 all);
+    margin-bottom: 31px;
+    &[data-content-type="heading"] {
+      margin-bottom: 31px;
+    }
+  }
+
+  .member-hotaipay-binding-steps {
+    padding: 24px 0 0;
+
+    .pagebuilder-column-line {
+      gap: 0 20px;
+    }
+
+    #html-body & .pagebuilder-column {
+      flex-direction: column;
+      justify-content: center;
+      gap: 21px 0;
+      padding: 32px 28px;
+
+      > div[data-content-type="text"] {
+        text-align: center;
+      }
+
+      h2,
+      h3,
+      h4 {
+        &:extend(.abs-price-h6 all);
+      }
+
+      p {
+        &:extend(.abs-h6 all);
+      }
+    }
+  }
+
+
+  .member-hotaipay-binding-label {
+    margin-bottom: 32px;
+    min-height: 56px;
+
+    p {
+      &:extend(.abs-caption2 all);
+    }
+
+    strong {
+      &:extend(.abs-price-h3 all);
+    }
+
+  }
+
+  .member-hotaipay-binding {
+    margin-bottom: 25px;
+  }
+
+  .member-hotaipay-cards {
+    margin-bottom: 32px;
+  }
+
+  .member-hotaipay-binding-actions {
+    flex-direction: row;
+    gap: 0 32px;
+  }
+
+  .member-hotaipay-binding-action {
+    width: calc(~"50% - 16px");
+    padding: 21px 32px;
+
+    .action-text {
+      &:extend(.abs-h6-bold all);
+    }
+
+    .action.action-link {
+      &:extend(.abs-caption1-medium all);
+    }
+  }
+
+  .member-hotaipay-give-back {
+    &:extend(.abs-caption2 all);
+    padding: 32px 32px 25px;
+
+    p {
+      &:extend(.abs-tb-caption1 all);
+      margin-bottom: 19px;
+    }
+
+    h2 {
+      &:extend(.abs-h6-bold all);
+      margin: 29px 0 3px;
+      width: calc(~"100% - 247px");
+    }
+
+    [data-content-type='buttons'] {
+      width: calc(~"100% - 247px");
+      gap: 22px 16px;
+
+      .pagebuilder-button-link {
+        &:extend(.abs-tb-body-text-medium all);
+      }
+
+      [data-content-type='button-item'] {
+        width: auto;
+        min-width: 146px;
+        padding: 0;
+
+        &:first-child {
+          padding-left: 12px;
+        }
+      }
+    }
+  }
+
+  div.member-hotaipay-give-back-label {
+    padding: 8px 11px 1px 13px;
+
+    strong {
+      &:extend(.abs-tb-price-h3 all);
+      margin-left: 4px;
+    }
+
+    .member-hotaipay-give-back & p {
+      &:extend(.abs-tb-caption1 all);
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+    }
+  }
+  .member-hotaipay-give-back-card-img {
+    right: -2px;
+    top: 1px;
+    width: 234px;
+  }
+
+  .member-hotaipay-bottom {
+    background: url(../images/bkg-hotaipay-welcome.png) 50% 21% no-repeat !important;
+    background-size: contain !important;
+    padding: 82px 1px 82px;
+
+    &:extend(.abs-h6 all);
+
+    h2 {
+      &:extend(.abs-h3 all);
+      margin: 0 0 16px;
+    }
+
+    div[data-content-type='text'] {
+      margin-bottom: 30px;
+    }
+
+    [data-content-type='button-item'] {
+      a {
+        margin: 0;
+        padding: 10px 32px;
+        box-sizing: border-box;
+        height: 44px;
+        min-width: 180px;
+        line-height: 1.5;
+        &:extend(.abs-caption1-medium all);
+      }
+    }
+  }
+
+
+  .quick-card-form {
+    .fieldset {
+      > .field {
+
+        > .label {
+          &:extend(.abs-label all);
+          &:extend(.abs-body-text-bold all);
+        }
+
+        &:extend(.abs-input all);
+
+        input[type="number"],
+        input[type="text"] {
+          &:extend(.abs-body-text all);
+        }
+      }
+    }
+  }
+
+  .member-hotaipay-card-list-header {
+    &:extend(.abs-tb-body-text-medium all);
+  }
+
+  .member-hotaipay-card-list-items {
+    &:extend(.abs-tb-body-text all);
+  }
+
+  .member-hotaipay-card-summary {
+    padding: 32px 94px 32px 32px;
+    &::after {
+      width: 54px;
+      height: 54px;
+      right: 32px;
+      top: 32px;
+      background-size: cover;
+    }
+  }
+
+  .member-hotaipay-card-summary-title {
+    margin: 0 0 2px;
+  }
+
+  .member-hotaipay-card-summary-sub {
+    margin: 0;
+  }
+
+  .member-hotaipay-card-list-header {
+    padding: 24px 32px 32px 32px;
+  }
+
+  .member-hotaipay-card-list {
+    margin: 0 0 24px;
+  }
+
+  .member-hotaipay-card-list-items {
+    padding: 24px 60px 32px 32px;
+  }
+
+  .member-hotaipay-card-close-btn {
+    right: 31px;
+    margin-top: -3px;
+  }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__l) {
+  .member-hotaipay-bottom {
+    background: url(../images/bkg-hotaipay-welcome.png) 50% 21% no-repeat !important;
+    background-size: contain !important;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+  .member-hotaipay-bottom {
+    background-size: 1047px !important;
+  }
+  .member-hotaipay-title {
+    &:extend(.abs-h2 all);
+  }
+
+  .member-hotaipay-welcome {
+    &:extend(.abs-h6 all);
+  }
+
+  .member-hotaipay-point-plus {
+    &:extend(.abs-body-text all);
+  }
+
+  .member-hotaipay-point-plus [data-content-type="heading"],
+  .member-hotaipay-point-plus-title {
+    &:extend(.abs-h3 all);
+  }
+
+  .member-hotaipay-binding-steps {
+    #html-body & .pagebuilder-column {
+      h2,
+      h3,
+      h4 {
+        &:extend(.abs-price-h6 all);
+      }
+
+      p {
+        &:extend(.abs-h6 all);
+      }
+
+    }
+  }
+
+  .member-hotaipay-binding-label {
+    p {
+      &:extend(.abs-caption2 all);
+      letter-spacing: 2px;
+    }
+    strong {
+      &:extend(.abs-price-h3 all);
+    }
+  }
+
+  .member-hotaipay-binding-action {
+    .action-text {
+      &:extend(.abs-h6-bold all);
+    }
+
+    .action.action-link {
+      &:extend(.abs-caption1-medium all);
+    }
+  }
+
+  .member-hotaipay-give-back {
+    &:extend(.abs-caption2 all);
+
+    p {
+      &:extend(.abs-dk-caption1 all);
+    }
+
+    h2 {
+      &:extend(.abs-h6-bold all);
+    }
+
+    [data-content-type='buttons'] {
+      .pagebuilder-button-link {
+        &:extend(.abs-dk-body-text-medium all);
+      }
+    }
+  }
+
+  div.member-hotaipay-give-back-label {
+    strong {
+      &:extend(.abs-dk-price-h3 all);
+    }
+  }
+
+  .member-hotaipay-bottom {
+    &:extend(.abs-h6 all);
+
+    h2 {
+      &:extend(.abs-h3 all);
+    }
+  }
+
+  .quick-card-form {
+    .fieldset {
+      > .field {
+
+        > .label {
+          &:extend(.abs-label all);
+          &:extend(.abs-body-text-bold all);
+        }
+
+        &:extend(.abs-input all);
+
+        input[type="number"],
+        input[type="text"] {
+          &:extend(.abs-body-text all);
+        }
+
+      }
+    }
+  }
+
+  .member-hotaipay-card-summary-title {
+    &:extend(.abs-h6-bold all);
+
+    strong {
+      &:extend(.abs-price-h6 all);
+    }
+  }
+
+  .member-hotaipay-card-list-header {
+    &:extend(.abs-dk-body-text-medium all);
+  }
+
+  .member-hotaipay-card-list-items {
+    &:extend(.abs-dk-body-text all);
+  }
+}

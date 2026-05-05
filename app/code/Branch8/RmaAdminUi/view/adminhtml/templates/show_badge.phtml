@@ -1,0 +1,24 @@
+<?php
+/**
+ * @var $block Magento\Framework\View\Element\Template
+ * @var $rmaModel Branch8\RmaAdminUi\ViewModel\RmaModel
+ */
+$rmaModel = $block->getData('rma_model');
+$total = $rmaModel->totalInReview();
+?>
+<script type="text/javascript">
+    require(['jquery'], function ($) {
+        const element = $('[data-ui-id=menu-webkul-mprmasystem-finance-review] > a');
+        const badge = $('<span>').html('(<?=$block->escapeHtml($total)?>)').addClass('badge');
+        element.append(badge);
+    })
+</script>
+<style>
+    .item-finance-review.level-2 .badge {
+        background-color: #ff0000; /* Red */
+        color: #fff; /* White */
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+</style>

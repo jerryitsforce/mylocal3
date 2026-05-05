@@ -1,0 +1,17 @@
+<div class="payment-methods">
+    <!-- ko if: warn() -->
+    <div data-role="checkout-messages" class="messages">
+        <div role="alert" class="message warning" generated="true">
+            <span data-bind="text: warn"></span>
+        </div>
+    </div>
+    <!-- /ko -->
+    <div class="actions-toolbar">
+        <button class="action primary checkout amasty"
+                type="submit"
+                data-bind="click: placeOrder, attr: {title: label}, css: {disabled: !isPlaceOrderActionAllowed()}"
+                data-role="review-save">
+            <span data-bind="text: label"></span>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">cron_manual_execution_listing.cron_manual_execution_listing_data_source</item>
+		</item>
+	</argument>
+	<settings>
+		<spinner>cron_manual_execution_columns</spinner>
+		<deps>
+			<dep>cron_manual_execution_listing.cron_manual_execution_listing_data_source</dep>
+		</deps>
+	</settings>
+	<dataSource name="cron_manual_execution_listing_data_source" component="Magento_Ui/js/grid/provider">
+		<settings>
+			<storageConfig>
+				<param name="indexField" xsi:type="string">cron_manual_execution_id</param>
+			</storageConfig>
+			<updateUrl path="mui/index/render"/>
+		</settings>
+		<aclResource>Branch8_Cron::cron_manual_execution</aclResource>
+		<dataProvider name="cron_manual_execution_listing_data_source" class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+			<settings>
+				<requestFieldName>id</requestFieldName>
+				<primaryFieldName>cron_manual_execution_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource>
+	<listingToolbar name="listing_top">
+		<settings>
+			<sticky>true</sticky>
+		</settings>
+		<bookmark name="bookmarks"/>
+		<columnsControls name="columns_controls"/>
+		<filters name="listing_filters"/>
+		<paging name="listing_paging"/>
+	</listingToolbar>
+	<columns name="cron_manual_execution_columns">
+		<selectionsColumn name="ids">
+			<settings>
+				<indexField>cron_manual_execution_id</indexField>
+			</settings>
+		</selectionsColumn>
+		<column name="cron_manual_execution_id">
+			<settings>
+				<filter>text</filter>
+				<sorting>asc</sorting>
+				<label translate="true">ID</label>
+			</settings>
+		</column>
+		<column name="executor">
+			<settings>
+				<filter>executor</filter>
+				<label translate="true">executor</label>
+			</settings>
+		</column>
+		<column name="job_code">
+			<settings>
+				<filter>job_code</filter>
+				<label translate="true">job_code</label>
+			</settings>
+		</column>
+		<column name="status">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">status</label>
+			</settings>
+		</column>
+		<column name="executed_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">executed_at</label>
+			</settings>
+		</column>
+		<column name="finished_at">
+			<settings>
+				<filter>text</filter>
+				<label translate="true">finished_at</label>
+			</settings>
+		</column>
+	</columns>
+</listing>

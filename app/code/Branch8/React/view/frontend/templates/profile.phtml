@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Framework\View\Element\Template */
+?>
+<div class="profile-section" id="profile-section"></div>
+<script>
+require([
+    "Branch8_React/js/profile"
+  ],
+  function () {
+    window.CPProfile({ data: {
+      name: "John Doe",
+      age: 30,
+    }, elCls: "profile-section" });
+  });
+</script>

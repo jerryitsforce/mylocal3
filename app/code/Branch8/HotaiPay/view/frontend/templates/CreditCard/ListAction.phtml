@@ -1,0 +1,218 @@
+<?php
+
+/**
+ * @var $block \Branch8\HotaiPay\Block\CreditCard\ListAction
+ */
+?>
+
+<?php
+$creditCardData = $block->getCreditcardList();
+?>
+<div>
+  <h2 style="font-weight: bold;">
+    <span><?= $block->escapeHtml(__('Credit Card List')) ?></span>
+</div>
+<div>
+  <?php if ($creditCardData) : ?>
+    <dl class="item-options">
+      <?php foreach ($creditCardData as $_option) : ?>
+        <dt>
+          <span>
+            <?= $block->escapeHtml($_option['BankDesc']) ?>
+          </span>
+        </dt>
+        <dd>
+          <label for="default_label"><?= ($_option['DefaultCard']) ? $block->escapeHtml('Main Card') : $block->escapeHtml('Sub Card') ?> </label>
+        </dd>
+        <dd>
+          <label for="bank_name_label"><?= $_option['bankName']?> </label>
+        </dd>
+        <dd>
+          <label for="branch_name_label"><?= $_option['branchName']?> </label>
+        </dd>
+        <dd>
+          <label for="card_number_label"><?= $block->escapeHtml(__('Card Number')) ?> </label>
+          <?= $block->escapeHtml($_option['CardNoMask']) ?>
+        </dd>
+        <dd>
+          <label for="alias_name_label"><?= $block->escapeHtml(__('Alias Name: ')) ?> </label>
+          <?= $block->escapeHtml($_option['AliasName']) ?>
+        </dd>
+        <div>
+          <label for="edit_alias_title"><?= $block->escapeHtml(__('Edit Alias Name')) ?></label>
+          <form name="edit_alias" id="edit_alias_form_<?= $block->escapeHtml($_option['tokenId']) ?>">
+            <input type="text" id="edit_alias_data_<?= $block->escapeHtml($_option['tokenId']) ?>" />
+            <?php if ($_option['DefaultCard'] === true) : ?>
+              <input type="checkbox" id="is_default_card" name="is_default_card" value="true" checked>
+            <?php else : ?>
+              <input type="checkbox" id="is_default_card" name="is_default_card" value="true">
+            <?php endif; ?>
+            <label for="is_default_card"><?= $block->escapeHtml(__('Setup Default Credit Card')) ?></label><br>
+          </form>
+          <button type="buttun" id=<?= $block->escapeHtml($_option['tokenId']) ?> onclick="EditAlias(this.id)">
+            <span><?= $block->escapeHtml(__('Confirm Edit Credit Card')) ?></span>
+          </button>
+        </div>
+        <div>
+          <button type="buttun" id=<?= $block->escapeHtml($_option['tokenId']) ?> onclick="Delete(this.id)">
+            <span><?= $block->escapeHtml(__('Delete Credit Card')) ?></span>
+          </button>
+        </div>
+        <br>
+        <br>
+      <?php endforeach; ?>
+    </dl>
+  <?php endif; ?>
+</div>
+<br>
+<br>
+<br>
+<div>
+  <div>
+    <h3 style="font-weight: bold;">
+      <span><?= $block->escapeHtml(__('Setup Credit Card')) ?></span>
+  </div>
+  <form name="setup_creditcard" id="setup_creditcard" method="post" enctype="multipart/form-data">
+    <input type="hidden" id="setup_creditcard_data" />
+  </form>
+  <button type="button" class="setup_creditcard_buttun" id="setup_creditcard_buttun">
+    <span><?= $block->escapeHtml(__('Setup Credit Card')) ?></span>
+  </button>
+</div>
+<br>
+<br>
+<br>
+<div>
+  <div>
+    <span>
+      <h3 style="font-weight: bold;"><?= $block->escapeHtml(__('Setup Credit Card Fast')) ?></h3>
+    </span>
+  </div>
+  <form name="setup_creditcard_fast_list" id="setup_creditcard_fast_list" method="post" enctype="multipart/form-data">
+    <label for="id"><?= $block->escapeHtml(__('ID')) ?>
+      <input type="text" id="setup_creditcard_fast_id" name="idNo">
+    <label for="birthday"><?= $block->escapeHtml(__('BIRTHDAY')) ?></label>
+      <input type="text" id="setup_creditcard_fast_birthday" name="birthday">
+      <input type="hidden" id="setup_creditcard_fast_data_list" />
+  </form>
+  <button type="button" class="setup_creditcard_fast_buttun" id="setup_creditcard_fast_buttun">
+    <span><?= $block->escapeHtml(__('Setup Credit Card Fast')) ?></span>
+  </button>
+</div>
+
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const StatusDesc = urlParams.get('StatusDesc');
+  if (StatusDesc) {
+    window.history.pushState({}, //nextState 
+      "", //nextTitle
+      window.location.origin + window.location.pathname //nextURL
+    );
+  }
+
+  async function Delete(id) {
+    var url = location.origin + "/rest/V1/delete/creditcard";
+    var responseText = {
+      'success': 'Deleted.',
+      'error': 'Error.'
+    };
+
+    AsyncPost(url, {
+      tokenId: id
+    }, responseText);
+  }
+
+  async function EditAlias(id) {
+    var url = location.origin + "/rest/V1/edit/creditcard/aliasname";
+    var responseText = {
+      'success': 'Edited.',
+      'error': 'Error.'
+    };
+    var aliasName = document.getElementById("edit_alias_data_" + id).value;
+    var isDefaultCard = document.getElementById("is_default_card");
+    var isDefaultCardValue = '';
+
+    if (aliasName === '') {
+      var aliasName = '';
+    }
+
+    if (isDefaultCard.checked) {
+      isDefaultCardValue = document.getElementById("is_default_card").value;
+    }
+
+    AsyncPost(url, {
+      tokenId: id,
+      aliasName: aliasName,
+      isDefaultCard: isDefaultCardValue
+    }, responseText);
+  }
+
+  async function AsyncPost(url, data, responseText) {
+    try {
+      const resultCode = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+        .then((response) => response.json())
+        .then((result) => {
+          return JSON.parse(result);
+        });
+
+      if (resultCode['success'] == true) {
+        alert(responseText['success']);
+        location.reload();
+      } else if (resultCode['success'] == false) {
+        alert(resultCode['error']);
+      } else {
+        alert(responseText['error']);
+      }
+    } catch (error) {
+      alert(responseText['error']);
+      console.error(error);
+    }
+  }
+
+  const SetupCreditCard = {
+    form: {
+      formId: "setup_creditcard",
+      formButtun: "setup_creditcard_buttun",
+      formPostData: "setup_creditcard_data"
+    },
+    request: {
+      addCard: "/hotaipay/creditcard/add"
+    }
+  };
+
+  const SetupCreditCardFast = {
+    form: {
+      formId: "setup_creditcard_fast_list",
+      formButtun: "setup_creditcard_fast_buttun",
+      formPostData: "setup_creditcard_fast_data_list"
+    },
+    request: {
+      addCard: "/hotaipay/creditcard/fastadd"
+    }
+  };
+
+  // Setup Credit Card (Manually)
+  document.getElementById(SetupCreditCard.form.formButtun).addEventListener("click", function() {
+    sendForm(SetupCreditCard);
+  });
+  // Setup Credit Card Fast
+  document.getElementById(SetupCreditCardFast.form.formButtun).addEventListener("click", function() {
+    sendForm(SetupCreditCardFast);
+  });
+
+  function sendForm(constKey) {
+    var form = document.getElementById(constKey.form.formId);
+    var formPostData = document.getElementById(constKey.form.formPostData);
+    form.action = constKey.request.addCard;
+    form.method = 'POST';
+    formPostData.setAttribute('name', 'redirectUrl');
+    formPostData.setAttribute('value', window.location.href);
+    form.submit();
+  }
+</script>

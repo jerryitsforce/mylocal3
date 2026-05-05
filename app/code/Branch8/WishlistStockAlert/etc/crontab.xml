@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="branch8_restock_alert_build_queue" instance="Branch8\WishlistStockAlert\Cron\BuildQueue" method="execute">
+            <config_path>wishlist_stock_alert/general/cron_path_generate</config_path>
+        </job>
+        <job name="branch8_restock_alert_process_queue" instance="Branch8\WishlistStockAlert\Cron\ProcessQueue" method="execute">
+            <config_path>wishlist_stock_alert/general/cron_path_process</config_path>
+        </job>
+        <job name="branch8_restock_alert_clean_queue" instance="Branch8\WishlistStockAlert\Cron\CleanQueue" method="execute">
+            <config_path>wishlist_stock_alert/general/cron_path_clean</config_path>
+        </job>
+    </group>
+</config>

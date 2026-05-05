@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="sales_order_status_history" resource="sales" engine="innodb" comment="Sales Flat Order Status History">
+        <column xsi:type="varchar" name="status" nullable="true" length="128" comment="Status"/>
+    </table>
+	<table name="sales_order_status" resource="sales" engine="innodb" comment="Sales Order Status Table">
+        <column xsi:type="varchar" name="status" nullable="false" length="128" comment="Status"/>
+    </table>
+	<table name="sales_order_status_label" resource="sales" engine="innodb" comment="Sales Order Status Label Table">
+        <column xsi:type="varchar" name="status" nullable="false" length="128" comment="Status"/>
+    </table>
+	<table name="sales_order_status_state" resource="sales" engine="innodb" comment="Sales Order Status Table">
+		<column xsi:type="varchar" name="status" nullable="false" length="128" comment="Status"/>
+    </table>
+
+    <table name="sales_order_item">
+            <column xsi:type="int" name="ticket_retry_status" unsigned="false" nullable="false" default="0" comment="票券商品再次請求狀態(定義見app/code/Branch8/HotaiCore/Model/Ticket/TicketRetryStatus.php)" />
+            <column xsi:type="int" name="ticket_retry_count" unsigned="true" nullable="false" default="0" comment="票券商品再次請求次數" />
+    </table>
+</schema>

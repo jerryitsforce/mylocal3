@@ -1,0 +1,85 @@
+<?php
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var $block \Magento\Backend\Block\Template */
+
+// 從 Block 取得 filtersData、batchActions 和 actionsData（由 Controller 設定）
+$filtersData = $block->getData('filters_data') ?: [];
+$batchActions = $block->getData('batch_actions') ?: [];
+$actionsData = $block->getData('actions_data') ?: [];
+// 發票編輯權限：controller 已計算並注入 can_edit_invoice
+$canEditInvoice = (bool)($block->getData('can_edit_invoice') ?? false);
+// 例外授權子選單權限：controller 已計算並注入 can_exception_authorization_subtable
+$canExceptionAuthorizationSubTable = (bool)($block->getData('can_exception_authorization_subtable') ?? false);
+?>
+<div class="checkout-area fade-up-initial">
+    <!-- 空白頁面內容將在此處添加 -->
+
+    <!-- <div class="checkout-area__top-actions page-main-actions">
+        <div class="page-actions">
+            <div class="page-actions-buttons">
+            
+            </div>
+        </div>
+    </div> -->
+
+    <!-- Magento 標準篩選器區塊（共用模板） -->
+    <?php
+    // 將 filtersData 傳遞給子 block
+    $sharedFiltersBlock = $block->getChildBlock('shared.filters');
+    if ($sharedFiltersBlock) {
+        $sharedFiltersBlock->setData('filters_data', $filtersData);
+    }
+    echo $block->getChildHtml('shared.filters');
+    ?>
+    <div class="checkout-area__table"
+        data-invoice-editable="<?=$canEditInvoice ? 'true' : 'false'?>"
+        data-exception-authorization-subtable="<?=$canExceptionAuthorizationSubTable ? 'true' : 'false'?>"
+    >
+        <!-- 批量操作選擇器 -->
+        <div class="checkout-area__table__actions">
+            <?php
+            // 從 Block 取得 batchActions（由 Controller 設定）
+           
+            ?>
+
+            <?php if(is_array($batchActions) && count($batchActions) > 0): ?>
+            <select id="batch-action-select" name="batch_action" class="admin__control-select">
+                <option value=""><?= __('Select Options') ?></option>
+                <?php foreach ($batchActions as $action): ?>
+                    <option value="<?= $block->escapeHtmlAttr($action['value']) ?>">
+                        <?= $block->escapeHtml($action['label']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <?php endif; ?>
+
+            <?php foreach ($actionsData as $action): ?>
+            <button type="button" class="action-secondary" onclick="window.location.href='<?= $block->escapeUrl($action['url']) ?>'">
+                <span><?= $block->escapeHtml($action['label']) ?></span>
+            </button>
+            <?php endforeach; ?>
+        </div>
+        
+        <!-- Tabulator 表格容器（遠端分頁模式）-->
+        <div id="tabulator-grid"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'hotaiLoadingMask',
+        'HotaiConnected_CheckoutManagement/js/checkoutarea/index'
+    ], function ($, loadingMask, checkoutAreaFilters) {
+        // 初始化載入動畫
+        loadingMask.init();
+        
+        // 初始化模組
+        checkoutAreaFilters.initialize();
+    });
+</script>
+

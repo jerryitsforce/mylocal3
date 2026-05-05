@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+use Magento\Framework\App\Action\Action;
+
+/** @var \Branch8\BestSeller\Block\Widget\BestSellerProduct $block */
+/** @var $escaper \Magento\Framework\Escaper */
+// phpcs:disable Generic.Files.LineLength.TooLong
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundHelper
+?>
+<?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->getSize())): ?>
+    <?php
+    $type = 'widget-product-grid';
+
+    $mode = 'grid';
+
+    $image = 'new_products_content_widget_grid';
+    $items = $block->getProductCollection()->getItems();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    $description = false;
+
+    $ga4SettingsObject = $block->getGA4Settings();
+    $urlAdditionalParams = $block->getUrlAdditionalParams();
+    ?>
+    <?php
+    $products = [];
+    $iterator = 1;
+    $preorderHelper = $this->helper(\Webkul\MarketplacePreorder\Helper\Data::class);
+    $vipHelper = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+
+    foreach ($items as $_item) {
+        $index = $iterator - 1;
+        $_item->setData('ga4_settings', $ga4SettingsObject);
+        $isPreorder = $preorderHelper->isPreorder($_item->getId());
+        $isVip = $vipHelper->isProductInVipCategory($_item);
+
+        $postParams = [];
+        if ($_item->isSaleable()) {
+            $postParams = $block->getAddToCartPostParams($_item);
+        }
+
+        $products[] = [
+            'id' => $_item->getId(),
+            'sku' => $_item->getSku(),
+            'name' => $_item->getName(),
+            'url' => htmlspecialchars_decode($block->getProductUrl($_item, $urlAdditionalParams)),
+            'imageUrl' => $block->getImage($_item, $image)->toHtml(),
+            'priceHtml' => $block->getProductPriceHtml($_item, $type),
+            'reviewsSummaryHtml' => $templateType ? $block->getReviewsSummaryHtml($_item, $templateType) : '',
+            'isSaleable' => $_item->isSaleable(),
+            'isAvailable' => $_item->isAvailable() || $_item->getIsSalable(),
+            'isPreorder' => $isPreorder,
+            'isVip' => $isVip,
+            'ga4ItemJson' => $block->getGA4ItemJson($_item, $index),
+            'addToCartParams' => [
+                'action' => $postParams['action'] ?? '',
+                'data' => $postParams['data'] ?? []
+            ],
+            'ga4Data' => [
+                'itemListId' => $ga4SettingsObject->getData('item_list_id'),
+                'itemListName' => $ga4SettingsObject->getData('item_list_name'),
+                'promotionId' => $ga4SettingsObject->getData('promotion_id'),
+                'promotionName' => $ga4SettingsObject->getData('promotion_name'),
+            ],
+            'productDetailsHtml' => $block->getProductDetailsHtml($_item),
+            'addToWishlistParams' => ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) ? $block->getAddToWishlistParams($_item) : '',
+            'addToCompareParams' => ($block->getAddToCompareUrl() && $showCompare) ? $this->helper(\Magento\Catalog\Helper\Product\Compare::class)->getPostDataParams($_item) : '',
+            'labels' => [
+                'addToCart' => __('Add to Cart'),
+                'inStock' => __('In stock'),
+                'outOfStock' => __('缺貨中'),
+                'addToWishlist' => __('Add to Wish List'),
+                'addToCompare' => __('Add to Compare'),
+                'preorder' => __('Preorder'),
+                'vip' => 'VIP'
+            ]
+        ];
+        $iterator++;
+    }
+
+    $widgetData = [
+        'products' => $products,
+        'title' => $block->getTitle(),
+        'mode' => 'grid',
+        'showWishlist' => $showWishlist,
+        'showCompare' => $showCompare,
+        'showCart' => $showCart,
+    ];
+    $uniqueId = uniqid('react-bestseller-grid-');
+    ?>
+
+    <div class="react-product-widget"
+         id="<?= $uniqueId ?>"
+         data-widget='<?= $escaper->escapeHtmlAttr(json_encode($widgetData)) ?>'
+         data-widget-id="<?= $uniqueId ?>">
+    </div>
+    <?= $block->getPagerHtml(); ?>
+    <?php if ($block->getBlockHtml('formkey')): ?>
+        <script type="text/x-magento-init">
+            {
+                ".block.widget [data-role=tocart-form]": {
+                    "Magento_Catalog/js/validate-product": {}
+                }
+            }
+        </script>
+    <?php endif; ?>
+<?php endif; ?>

@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Branch8\Cron\Api\CronManualExecutionRepositoryInterface" type="Branch8\Cron\Model\CronManualExecutionRepository"/>
+	<preference for="Branch8\Cron\Api\Data\CronManualExecutionInterface" type="Branch8\Cron\Model\CronManualExecution"/>
+	<preference for="Branch8\Cron\Api\Data\CronManualExecutionSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Branch8\Cron\Model\ResourceModel\CronManualExecution\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">cron_manual_execution</argument>
+			<argument name="resourceModel" xsi:type="string">Branch8\Cron\Model\ResourceModel\CronManualExecution\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="cron_manual_execution_listing_data_source" xsi:type="string">Branch8\Cron\Model\ResourceModel\CronManualExecution\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

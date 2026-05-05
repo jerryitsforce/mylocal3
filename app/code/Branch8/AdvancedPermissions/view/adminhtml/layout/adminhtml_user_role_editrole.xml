@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="adminhtml.user.editroles">
+            <block class="Magento\Backend\Block\Widget\Tab" name="adminhtml.user.tab.amrolepermissions.blocks">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Advanced: Blocks</argument>
+                    <argument name="class" xsi:type="string">ajax</argument>
+                    <argument name="url" xsi:type="url" path="branch8_advancedpermissions/block/allowed">
+                        <param name="_current">1</param>
+                    </argument>
+                </arguments>
+            </block>
+            <block class="Magento\Backend\Block\Widget\Tab" name="adminhtml.user.tab.amrolepermissions.sellers">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Advanced: Sellers</argument>
+                    <argument name="class" xsi:type="string">ajax</argument>
+                    <argument name="url" xsi:type="url" path="branch8_advancedpermissions/seller/allowed">
+                        <param name="_current">1</param>
+                    </argument>
+                </arguments>
+            </block>
+            <action method="addTabAfter">
+                <argument name="name" xsi:type="string">blocks</argument>
+                <argument name="block" xsi:type="string">adminhtml.user.tab.amrolepermissions.blocks</argument>
+                <argument name="after" xsi:type="string">amrolepermissions.categories.new</argument>
+            </action>
+            <action method="addTabAfter">
+                <argument name="name" xsi:type="string">amsellers</argument>
+                <argument name="block" xsi:type="string">adminhtml.user.tab.amrolepermissions.sellers</argument>
+                <argument name="after" xsi:type="string">amrolepermissions.amroles</argument>
+            </action>
+        </referenceBlock>
+    </body>
+</page>

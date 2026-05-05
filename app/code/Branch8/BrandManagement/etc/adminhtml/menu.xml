@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_BrandManagement::brand_management" 
+             title="Brand Management" 
+             module="Branch8_BrandManagement" 
+             sortOrder="20" 
+             action="brandmanagement/brand/index" 
+             resource="Magento_Backend::admin" 
+             parent="Magento_Catalog::catalog"/>
+    </menu>
+</config>

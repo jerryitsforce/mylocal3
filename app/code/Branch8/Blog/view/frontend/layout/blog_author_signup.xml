@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="blog_signup"/>
+    <body>
+        <referenceBlock name="page.main.title">
+            <action method="setPageTitle">
+                <argument translate="true" name="title" xsi:type="string">Signup Author</argument>
+            </action>
+        </referenceBlock>
+        <referenceContainer name="content">
+            <block class="Branch8\Blog\Block\Author\SignupForm" name="blog_signup_form" template="Branch8_Blog::author/signup.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

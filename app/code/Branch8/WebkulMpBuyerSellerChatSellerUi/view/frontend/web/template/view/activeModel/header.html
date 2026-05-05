@@ -1,0 +1,76 @@
+<!--ko if: chatEnabled() === true -->
+<header class="model-chat-controls">
+    <div class="profile-control">
+        <span data-bind="attr: {class: 'chat_status actual_status '+getSellerChatStatus()}"></span>
+        <span class="profile-image">
+            <img data-bind="attr: {src: profileData().image}" style="height:20px; width:20px;"/>
+        </span>
+        <div class="chat-title">
+            <h2 data-bind="text: profileData().nickName"></h2>
+            <span class="badge new" data-bind="visible: totalUnreadMessages() > 0">New</span>
+        </div>
+        <div class="seller-chat-controls" outerClick="hideSellerControls"
+             data-bind="clickBubble: false">
+            <div class="seller-chat-controls-container">
+                <div class="wk_chat status">
+                    <div class="list-group-item chatStatus" id="1"
+                         data-bind="click: changeSellerStatus, clickBubble:false">
+                        <span class="chat_status_seller_options online" data-bind="i18n: 'Online'"></span>
+                    </div>
+                    <div class="list-group-item chatStatus" id="2"
+                         data-bind="click: changeSellerStatus, clickBubble:false">
+                        <span class="chat_status_seller_options busy" data-bind="i18n: 'Busy'"></span>
+                    </div>
+                    <div class="list-group-item chatStatus" id="0"
+                         data-bind="click: changeSellerStatus, clickBubble:false">
+                        <span class="chat_status_seller_options offline" data-bind="i18n: 'Offline'"></span>
+                    </div>
+                </div>
+              <!--  <hr class="line-after-chat-status">-->
+              <!--  <div class="wk_chat setting">
+                    <div class="list-group-item" id="wk_profile_setting"
+                         data-bind="i18n: 'Account Setting', click: showHideProfileBox">
+
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="controls">
+        <i class="fa fa-volume-up enable wk_chat_sound"
+           data-bind="click: enableDisableSound, afterRender: checkSound">
+            <audio controls="controls" class="wk_sound_play hide" id="myAudio">
+                <source data-bind="attr: {'src': getSoundUrl}" type="audio/ogg"></source>
+            </audio>
+        </i>
+        <!--ko if: maximize() === false -->
+        <img class="seller_retract" alt="retract"
+             data-bind="attr: {'src': sellerRetractUp()}, click: openChatPanel">
+        <!-- /ko -->
+        <!--ko if: maximize() === true -->
+        <div class="seller_controls responsive" data-bind="click: closeChatPanel, clickBubble: false">
+            <img class="seller_controls responsive" alt="minimize"
+                 data-bind="attr: {'src': sellerControlsResponsive()}">
+        </div>
+        <div class="seller_controls" outerClick="hideControlList"
+             data-bind="click: showControlList, clickBubble: false">
+            <img class="seller_controls" alt="dropdown"
+                 data-bind="attr: {'src': sellerControls()}, clickBubble: false">
+            <div class="wk_seller_controls">
+                <div class="control-group-item" id="minimize"
+                     data-bind="i18n: 'Minimize', click: closeChatPanel, clickBubble:false">
+
+                </div>
+             <!--   <div class="control-group-item" id="scale_page_layout"
+                     data-bind="i18n: 'Scale Page Layout', click: scalePageLayout, clickBubble:false">
+                </div>-->
+               <!-- <img class="check-scale-page" alt="check" data-bind="attr: {'src': greenCheckImage()}">
+                <div class="control-group-item weight" id="overlay"
+                     data-bind="i18n: 'Overlay', click: overlayPageLayout, clickBubble:false"></div>
+                <img class="check-overlay checked" alt="check" data-bind="attr: {'src': greenCheckImage()}">-->
+            </div>
+        </div>
+        <!-- /ko -->
+    </div>
+</header>
+<!-- /ko -->

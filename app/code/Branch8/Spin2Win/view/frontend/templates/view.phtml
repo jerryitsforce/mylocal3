@@ -1,0 +1,373 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+
+$placeholderNoItemImgUrl = $block->getViewFileUrl('images/no-item.svg');
+$placeholderCouponImgUrl = $block->getViewFileUrl('images/placeholder-coupon.svg');
+$placeholderTicketImgUrl = $block->getViewFileUrl('images/placeholder-ticket.svg');
+$placeholderDefaultImgUrl = $block->getViewFileUrl('images/placeholder-default.svg');
+$placeholderPointsImgUrl = $block->getViewFileUrl('images/placeholder-points.svg');
+$placeholderCouponPPImgUrl = $block->getViewFileUrl('images/placeholder-coupon-pp.svg');
+$placeholderTicketPPImgUrl = $block->getViewFileUrl('images/placeholder-ticket-pp.svg');
+$placeholderDefaultPPImgUrl = $block->getViewFileUrl('images/placeholder-default-pp.svg');
+$placeholderPointsPPImgUrl = $block->getViewFileUrl('images/placeholder-points-pp.svg');
+
+$jsonMotionStarPopup= $this->getViewFileUrl('images/motion_star_popup.json');
+$jsonMotionStarMainPc = $this->getViewFileUrl('images/motion_star_main_pc.json');
+$jsonMotionStarMainMb = $this->getViewFileUrl('images/motion_star_main_mb.json');
+
+?>
+<div class="spin-view__fixed-bkg-wrapper">
+  <div class="spin-view__fixed-bkg bkg-pc">
+    <dotlottie-player class="player" src="<?= $jsonMotionStarMainPc ?>" background="transparent" speed="1" direction="1" playMode="normal" loop autoplay style="width: 200px; height: auto;"></dotlottie-player>
+  </div>
+  <div class="spin-view__fixed-bkg bkg-mb">
+    <dotlottie-player class="player" src="<?= $jsonMotionStarMainMb ?>" background="transparent" speed="1" direction="1" playMode="normal" loop autoplay style="width: 200px; height: auto;"></dotlottie-player>
+  </div>
+</div>
+<div class="spin-view__title-popup-icon" id="spinTitlePopupIcon">
+  <dotlottie-player class="player" src="<?= $jsonMotionStarPopup ?>" background="transparent" speed="1" direction="1" playMode="normal" loop autoplay style="width: 200px; height: auto;"></dotlottie-player>
+</div>
+
+<div data-bind="scope: 'spin2win_view'" class="spin-view-wrapper">
+  <!-- ko if: isReady() -->
+   <div class="spin-view__section" data-bind="visible: isReady">
+    <div class="spin-view__title-wrapper">
+      <h2 class="spin-view__subtitle"><span class="spin-view__subtitle1" data-bind="text: title1"></span><span class="spin-view__subtitle2" data-bind="text: title1"></span></h2>
+      <h1 class="spin-view__title"><span class="spin-view__title1" data-bind="text: title2"></span><span class="spin-view__title2" data-bind="text: title2"></span></h1>
+    </div>
+    <div class="spin-view__notes" data-bind="visible: isReady">
+      <!-- ko if: showRedeemSection -->
+      <div class="spin-view__note spin-view__note-btn spin-view__note-redemption" data-bind="click: showLuckyDrawDes">
+        <span class="spin-view__note-value" data-bind="text: redeemPoints"></span>
+        <span class="spin-view__note-label" data-bind="i18n: '抽獎1次'"></span>
+        <span class="spin-view__note-icon"></span>
+      </div>
+      <!-- /ko -->
+      <!-- ko if: hasChances -->
+      <div class="spin-view__note spin-view__note-btn spin-view__note-chances" data-bind="click: showLuckyDrawDes">
+        <span class="spin-view__note-label" data-bind="i18n: '抽獎機會：'"></span>
+        <span class="spin-view__note-value" data-bind="text: chances"></span>
+        <span class="spin-view__note-unit" data-bind="i18n: '次'"></span>
+        <span class="spin-view__note-icon"></span>
+      </div>
+      <!-- /ko -->
+      <!-- ko ifnot: hasChances -->
+        <!-- ko ifnot: showRedeemSection -->
+          <div class="spin-view__note spin-view__note-btn spin-view__note-chances" data-bind="click: showLuckyDrawDes">
+            <span class="spin-view__note-label" data-bind="i18n: '抽獎機會：'"></span>
+            <span class="spin-view__note-value" data-bind="text: chances"></span>
+            <span class="spin-view__note-unit" data-bind="i18n: '次'"></span>
+            <span class="spin-view__note-icon"></span>
+          </div>
+          <!-- /ko -->
+      <!-- /ko -->
+      <!-- ko if: hasConsolation -->
+      <div class="spin-view__note">
+        <span class="spin-view__note-label" data-bind="i18n: '保底累計：'"></span>
+        <span class="spin-view__note-value">
+          <span class="spin-view__note-cum-amount" data-bind="text: cumulativeAmount"></span>
+          <span class="spin-view__note-spacing" data-bind="i18n: '/'"></span>
+          <span class="spin-view__note-cum-total" data-bind="text: cumulativeTotalAmount"></span>
+        </span>
+      </div>
+      <!-- /ko -->
+    </div>
+    <div class="spin-view__wheel-wrapper" data-bind="visible: isReady">
+      <div class="spin-view__wheel" id="spinViewWheel">
+        <div class="spin-view__wheel-container">
+          <canvas id="spin-wheel-canvas" class="spin-view__wheel-canvas" data-bind="i18n: 'Canvas not supported, use another browser'"></canvas>
+          <div class="spin-pin-image-wrapper">
+            <img class="spin-pin-image" data-bind="attr: {src: spinWheelImgUrl, alt: ''}"/>
+          </div>
+          <div class="spin-view__actions">
+            <form id="spinWheelForm" data-bind="submit: spin">
+              <input type="hidden" name="spin-wheel-id" data-bind="attr: {value: spinId}"/>
+              <input type="hidden" name="spin-wheel-name" data-bind="attr: {value: spinWheelName}"/>
+              <input type="hidden" name="spin-wheel-email" data-bind="attr: {value: spinWheelEmail}"/>
+              <button class="action spin-view__action-btn" type="submit"><span data-bind="i18n: 'Go'"></span></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spin-view__winning-record-section" data-bind="visible: isReady">
+      <div class="spin-view__winning-record-wrapper">
+        <div class="spin-view__winning-record-border-top"></div>
+        <div class="spin-view__winning-record-info">
+          <div class="spin-view__winning-record-info-inner">
+            <div class="spin-view__winning-record-header">
+              <h3 class="spin-view__winning-record-title" data-bind="i18n: '得獎紀錄'"></h3>
+            </div>
+            <!-- ko ifnot: winningRecordsCount() > 0 -->
+            <div class="spin-view__winning-record-empty" data-bind="visible: winningRecordsCount() == 0">
+              <div class="spin-view__winning-record-empty-img-wrapper"><img  data-bind="attr: { src: placeholderNoItemImgUrl }" class="spin-view__winning-record-empty-img"/></div>
+              <p class="spin-view__winning-record-empty-content" data-bind="i18n: '你還沒抽過獎呢！'"></p>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: winningRecordsCount() > 0 -->
+            <div class="spin-view__winning-record-list" data-bind="visible: winningRecordsCount() > 0">
+              <div class="spin-view__winning-record-items" data-bind="foreach: { data: winningRecords, as: 'record' }">
+                <!-- ko if: $parent.isShowItem($index()) -->
+                <div class="spin-view__winning-record-item">
+                  <div class="spin-view__winning-record-item-img-wrapper">
+                    <!-- ko if: $parent.isLoseType(record.prize_type) -->
+                      <!-- ko if: record.consolation.consolation_detail.image !== '' -->
+                        <!-- ko if: $parent.isVirtualType(record.consolation.consolation_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderTicketImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko ifnot: $parent.isVirtualType(record.consolation.consolation_type) -->
+                        <img data-bind="attr: { src: $parent.mediaUrl() + record.consolation.consolation_detail.image, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                      <!-- /ko -->
+                      <!-- ko ifnot: record.consolation.consolation_detail.image !== '' -->
+                        <!-- ko if: $parent.isCouponType(record.consolation.consolation_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderCouponImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko if: $parent.isVirtualType(record.consolation.consolation_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderTicketImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko if: $parent.isPhysicalType(record.consolation.consolation_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderDefaultImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko if: $parent.isRewardPointType(record.consolation.consolation_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderPointsImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                      <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko ifnot: $parent.isLoseType(record.prize_type) -->
+                      <!-- ko if: record.prize_detail.image !== '' -->
+                        <!-- ko if: $parent.isVirtualType(record.prize_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderTicketImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko ifnot: $parent.isVirtualType(record.prize_type) -->
+                        <img data-bind="attr: { src: $parent.mediaUrl() + record.prize_detail.image, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                      <!-- /ko -->
+                      <!-- ko ifnot: record.prize_detail.image !== '' -->
+                        <!-- ko if: $parent.isCouponType(record.prize_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderCouponImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko if: $parent.isVirtualType(record.prize_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderTicketImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko if: $parent.isPhysicalType(record.prize_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderDefaultImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                        <!-- ko if: $parent.isRewardPointType(record.prize_type) -->
+                        <img data-bind="attr: { src: $parent.placeholderPointsImgUrl, alt: record.prize_name }" class="spin-view__winning-record-item-img" />
+                        <!-- /ko -->
+                      <!-- /ko -->
+                    <!-- /ko -->
+                  </div>
+                  <div class="spin-view__winning-record-item-content">
+                    <!-- ko if: $parent.isLoseType(record.prize_type) -->
+                      <h4 class="spin-view__winning-record-item-name" data-bind="text: record.consolation?.consolation_name || record.consolation.consolation_detail?.heading || ''"></h4>
+                      <!-- ko if: record.consolation.consolation_detail?.expire_date -->
+                      <div class="spin-view__winning-record-item-date">
+                        <span class="spin-view__winning-record-item-date-label" data-bind="i18n: '有效日期: '"></span>
+                        <span class="spin-view__winning-record-item-date-value" data-bind="text: record.consolation.consolation_detail?.expire_date || ''"></span>
+                      </div>
+                      <!-- /ko -->
+                      <!-- ko if: record.consolation.consolation_detail?.coupon -->
+                      <div class="spin-view__winning-record-item-coupon-code-actions">
+                        <button class="action spin-view__winning-record-item-btn-copy" data-bind="click: function(record, event){
+                              $parent.copyCouponCode(record, event);
+                          }">
+                          <span class="spin-view__winning-record-item-coupon-code" data-bind="text: record.consolation.consolation_detail.coupon"></span>
+                          <span class="spin-view__winning-record-item-btn-text" data-bind="i18n: '複製'"></span>
+                        </button>
+                      </div>
+                      <!-- /ko -->
+                      <!-- ko ifnot: record.consolation.consolation_detail?.coupon -->
+                      <div class="spin-view__winning-record-item-actions">
+                        <button class="action spin-view__winning-record-item-btn-view" data-bind="click: function(record, event){
+                              $parent.viewDetail(record, event);
+                          }">
+                          <span class="spin-view__winning-record-item-btn-text" data-bind="i18n: 'View'"></span>
+                        </button>
+                      </div>
+                      <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko ifnot: $parent.isLoseType(record.prize_type) -->
+                      <h4 class="spin-view__winning-record-item-name" data-bind="text: $parent.formatTitle(record.prize_name)"></h4>
+                      <!-- ko if: record.prize_detail?.expire_date -->
+                      <div class="spin-view__winning-record-item-date">
+                        <span class="spin-view__winning-record-item-date-label" data-bind="i18n: '有效日期: '"></span>
+                        <span class="spin-view__winning-record-item-date-value" data-bind="text: record.prize_detail?.expire_date || ''"></span>
+                      </div>
+                      <!-- /ko -->
+
+                      <!-- ko if: record.prize_detail?.coupon -->
+                      <div class="spin-view__winning-record-item-coupon-code-actions">
+                        <button class="action spin-view__winning-record-item-btn-copy" data-bind="click: function(record, event){
+                              $parent.copyCouponCode(record, event);
+                          }">
+                          <span class="spin-view__winning-record-item-coupon-code" data-bind="text: record.prize_detail.coupon"></span>
+                          <span class="spin-view__winning-record-item-btn-text" data-bind="i18n: '複製'"></span>
+                        </button>
+                      </div>
+                      <!-- /ko -->
+                      <!-- ko ifnot: record.prize_detail?.coupon -->
+                      <div class="spin-view__winning-record-item-actions">
+                        <button class="action spin-view__winning-record-item-btn-view" data-bind="click: function(record, event){
+                              $parent.viewDetail(record, event);
+                          }">
+                          <span class="spin-view__winning-record-item-btn-text" data-bind="i18n: 'View'"></span>
+                        </button>
+                      </div>
+                      <!-- /ko -->
+                    <!--/ko -->
+                  </div>
+                </div>
+                <!-- /ko -->
+              </div>
+              <!--ko if: isShowMoreBtn -->
+              <div class="spin-view__winning-record-actions">
+                <button class="action spin-view__winning-record-more-btn" data-bind="click: viewMore">
+                  <span class="spin-view__winning-record-close-text" data-bind="i18n: '顯示更多'"></span>
+                </button>
+              </div>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /ko -->
+  <!-- ko ifnot: isReady() -->
+  <div class="spin-view__loading">
+    <div class="spin-view__loading-spinner"><span data-bind="i18n: 'Loading ....'"></span></div>
+  </div>
+  <!-- /ko -->
+</div>
+
+<div id="modal-lucky-draw-des" class="modal-hide">
+  <div class="modal-custom-content">
+    <div id="luckyDrawDes"><?= $block->escapeHtml(__('立即使用和泰聯名卡消費，可獲得更多和泰Points，兌換抽獎機會!'))?></div>
+  </div>
+</div>
+
+<div id="modal-confirm-draw" class="modal-hide">
+  <div class="modal-custom-content">
+    <div class="confirm-draw-content">
+      <p>
+        <span><?= $block->escapeHtml(__('您將使用'))?></span>
+        <span id="conirmDrawPoint" class="number"></span>
+        <span><?= $block->escapeHtml(__('點進行一次抽獎'))?></span>
+      </p>
+    </div>
+    <div class="modal-custom-btn-wrapper confirm-draw-btn-wrapper">
+      <button class="action secondary confirm-draw-cancel-btn" id="cancelDrawBtn"><?= $block->escapeHtml(__('再考慮一下'))?></button>
+      <button class="action primary confirm-draw-btn" id="confirmDrawBtn"><?= $block->escapeHtml(__('確認兌換'))?></button>
+    </div>
+    <div class="confirm-draw-option">
+      <div class="field">
+        <input type="checkbox" id="luckyConfirmedOption" name="luckyConfirmedOption"/>
+        <label for="luckyConfirmedOption"><?= $block->escapeHtml(__('直接抽獎，不再提示'))?></label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-lottery-failed" class="modal-hide">
+  <div class="modal-custom-content">
+    <div id="lotterySystemError" class="error-content"><?= $block->escapeHtml(__('發生錯誤，請重新嘗試。'))?></div>
+  </div>
+</div>
+
+<div id="modal-lottery-no-win" class="modal-hide">
+  <div class="modal-custom-content">
+    <div id="lotteryNoWinError"  class="error-content"><?= $block->escapeHtml(__('銘謝惠顧，請再接再厲！'))?></div>
+  </div>
+</div>
+
+<div id="modal-insufficient-points" class="modal-hide">
+  <div class="modal-custom-content">
+    <div id="insufficientPointError"><?= $block->escapeHtml(__('您的點數不足，無法兌換抽獎機會，使用和泰聯名卡消費可獲得高額和泰Points回饋，馬上去賺點數吧 !'))?></div>
+  </div>
+</div>
+
+<div id="modal-winning" class="modal-hide">
+  <div class="modal-custom-content">
+    <div class="winning-title-wrapper">
+      <div class="winning-icon">
+      </div>
+      <h3 class="winning-title" id="winningPopupTitle"><?= $block->escapeHtml(__('恭喜中獎！')) ?></h3>
+    </div>
+    <div class="winning-content">
+      <div class="winning-info-wrapper">
+        <div class="winning-info-img-wrapper">
+          <img class="winning-info-img" id="winningImg" src="<?= $placeholderCouponPPImgUrl ?>" alt="<?= $block->escapeHtml(__('商城 50 元 折價券'))?>">
+        </div>
+        <div class="winning-info-text" id="winningTitle"><?= $block->escapeHtml(__('商城 50 元 折價券'))?></div>
+      </div>
+      <p id="winningDesc" class="winning-desc"><?= $block->escapeHtml(__('獲得”商城50元折價券”，請至「優惠券」查詢'))?></p>
+    </div>
+    <div class="modal-custom-btn-wrapper winning-btn-wrapper">
+      <button class="action secondary winning-return-btn" id="winningReturn"><?= $block->escapeHtml(__('繼續抽獎'))?></button>
+      <button class="action primary winning-go-btn" id="winningGo"><?= $block->escapeHtml(__('立即使用'))?></button>
+      <button class="action primary winning-copy-btn hide" id="copyCode"><?= $block->escapeHtml(__('複製折扣碼'))?></button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-no-win" class="modal-hide">
+  <div class="modal-custom-content">
+    <div class="no-win-note">
+      <p><?= $block->escapeHtml(__('銘謝惠顧，請再接再厲！'))?></p>
+    </div>
+    <div class="no-win-info-wrapper">
+      <div class="no-win-info">
+        <span class="no-win-info-label"><?= $block->escapeHtml(__('保底累計'))?></span>
+        <span class="no-win-info-value">
+          <span class="no-win-info-cum-amount" id="noWinCumulativeAmount">4</span>
+          <span class="no-win-info-spacing">/</span>
+          <span class="no-win-info-cum-total" id="noWinCumulativeTotal">10</span>
+        </span>
+      </div>
+      <div class="no-win-process">
+        <div class="no-win-process-bar">
+          <div class="no-win-process-bar-inner" id="cumulativeProcessBar" style="width: 40%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "spin2win_view": {
+                    "component": "Branch8_Spin2Win/js/view",
+                    "placeholderNoItemImgUrl": "<?php echo $placeholderNoItemImgUrl; ?>",
+                    "placeholderCouponImgUrl": "<?php echo $placeholderCouponImgUrl; ?>",
+                    "placeholderTicketImgUrl": "<?php echo $placeholderTicketImgUrl; ?>",
+                    "placeholderDefaultImgUrl": "<?php echo $placeholderDefaultImgUrl; ?>",
+                    "placeholderPointsImgUrl": "<?php echo $placeholderPointsImgUrl; ?>",
+                    "placeholderCouponPPImgUrl": "<?php echo $placeholderCouponPPImgUrl; ?>",
+                    "placeholderTicketPPImgUrl": "<?php echo $placeholderTicketPPImgUrl; ?>",
+                    "placeholderDefaultPPImgUrl": "<?php echo $placeholderDefaultPPImgUrl; ?>",
+                    "placeholderPointsPPImgUrl": "<?php echo $placeholderPointsPPImgUrl; ?>",
+                    "spinId": "<?= $block->escapeHtml($block->getRequest()->getParam('id')) ?>",
+                    "segmentLoseType": "<?= \Branch8\Spin2Win\Model\Config\Source\SegmentType::LOSE_TYPE ?>",
+                    "segmentCouponType": "<?= \Branch8\Spin2Win\Model\Config\Source\SegmentType::COUPON_TYPE ?>",
+                    "segmentVirtualType": "<?= \Branch8\Spin2Win\Model\Config\Source\SegmentType::VIRTUAL_TYPE ?>",
+                    "segmentPhysicalType": "<?= \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE ?>",
+                    "segmentRewardPointType": "<?= \Branch8\Spin2Win\Model\Config\Source\SegmentType::REWARD_POINT_TYPE ?>",
+                    "spinDailyXTimeType": "<?= \Branch8\Spin2Win\Model\Config\Source\SpinType::DAILY_X_TIME ?>",
+                    "spinFixedXTimeType": "<?= \Branch8\Spin2Win\Model\Config\Source\SpinType::FIXED_X_TIME ?>",
+                    "notificationUrl": "<?= $block->getUrl('spintowin/notification/view') ?>",
+                    "pointUrl": "<?= $block->getUrl('hotai_point/detail') ?>?t=tab-history",
+                    "virtualUrl": "<?= $block->getUrl('member/ticket/detail') ?>"
+                }
+            }
+        }
+    }
+}
+</script>

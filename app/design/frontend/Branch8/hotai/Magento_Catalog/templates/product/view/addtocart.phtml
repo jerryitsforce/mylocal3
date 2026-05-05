@@ -1,0 +1,128 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Magento\Catalog\Block\Product\View */
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+?>
+<?php 
+$_product = $block->getProduct();
+$buttonTitle = __('Add to Cart'); 
+
+// 限購功能是否啟用
+// 限購功能 - 使用 ViewModel
+$viewModel = \Magento\Framework\App\ObjectManager::getInstance()->get(\Branch8\LimitPurchased\ViewModel\Product\LimitPurchased::class);
+$limitPurchasedQty = $viewModel->getMaxAllowedQty($_product);
+
+// 決定是否啟用數量限制 (如果 $limitPurchasedQty 不為 null 且 > 0)
+$shouldLimitQty = ($limitPurchasedQty !== null && $limitPurchasedQty >= 0);
+?>
+<?php if ($_product->isSaleable()) :?>
+<div class="box-tocart">
+    <div class="fieldset">
+        <?php if ($block->shouldRenderQuantity()) :?>
+        <div class="field qty">
+            <label class="label" for="qty"><span><?= $block->escapeHtml(__('Qty')) ?></span></label>
+            <div class="control">
+                <span class="increase down"><?php /* @escapeNotVerified */ echo __('Down') ?></span>
+                <input type="hidden" name="template-version" value="3">
+
+                <?php if($shouldLimitQty): ?>
+                    <input type="hidden" name="limit_purchased_id" id="limit_purchased_id" value="<?= $_product->getEntityId() ?>" />
+                    <input type="hidden" name="limit_purchased_enable" id="limit_purchased_enable" value="1" />
+                    <input type="hidden" name="limit_purchased_qty" id="limit_purchased_qty" value="<?= $limitPurchasedQty ?>" />
+                <?php endif; ?>
+
+                <input type="number"
+                    name="qty"
+                    id="qty"
+                    min="0"
+                    value="<?= $block->getProductDefaultQty() * 1 ?>"
+                    title="<?= $block->escapeHtmlAttr(__('Qty')) ?>"
+                    class="input-text qty"
+                    data-validate="<?= $block->escapeHtml(json_encode($block->getQuantityValidators())) ?>"
+                    />
+                <span class="increase up"><?php /* @escapeNotVerified */ echo __('Up') ?></span>
+            </div>
+            <?php if ($shouldLimitQty): ?>
+                <div class="limit-qty-text-popup">
+                    <?php echo __('A single order for this product (including all its variations) is limited to %1 pieces.', $limitPurchasedQty) ?>
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+        <div class="actions">
+            <button type="submit"
+                    title="<?= $block->escapeHtmlAttr($buttonTitle) ?>"
+                    class="action primary tocart"
+                    id="product-addtocart-button" disabled>
+                <span><?= $block->escapeHtml($buttonTitle) ?></span>
+            </button>
+            <?= $block->getChildHtml('', true) ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/x-magento-init">
+    {
+        "#product_addtocart_form": {
+            "Magento_Catalog/js/validate-product": {}
+        }
+    }
+</script>
+<script>
+    require([
+        'jquery',
+        'mage/mage',
+        'Magento_Catalog/product/view/validation',
+        'Magento_Catalog/js/catalog-add-to-cart'
+    ], function ($) {
+        'use strict';
+
+        // Remove standard validation rule to prevent duplicate error
+        $(document).ready(function() {
+             var qtyInput = $('#qty');
+             var validateData = qtyInput.attr('data-validate');
+             if (validateData) {
+                 try {
+                     var validateJson = JSON.parse(validateData);
+                     if (validateJson['validate-limit-purchased']) {
+                         delete validateJson['validate-limit-purchased'];
+                         qtyInput.attr('data-validate', JSON.stringify(validateJson));
+                     }
+                 } catch (e) {}
+             }
+        });
+
+        $('input[name=qty]').on('change', function (e) { 
+            var qtyMessage = $('.limit-qty-text-popup');
+            if(qtyMessage.length > 0) {
+                const qty = $(this).val();
+                if(qty > <?php echo $limitPurchasedQty; ?>) {
+                    qtyMessage.addClass('error');
+                    $(this).addClass('mage-error');
+                } else {
+                    qtyMessage.removeClass('error');
+                    $(this).removeClass('mage-error');
+                }
+            }
+        });
+
+        $('#product-addtocart-button').on('click', function(e) {
+            var qtyInput = $('#qty');
+            var qty = qtyInput.val();
+            var limitQty = <?php echo $limitPurchasedQty ? $limitPurchasedQty : 0; ?>;
+            var shouldLimit = <?php echo $shouldLimitQty ? 'true' : 'false'; ?>;
+            
+            if (shouldLimit && limitQty > 0 && qty > limitQty) {
+                 var qtyMessage = $('.limit-qty-text-popup');
+                 qtyMessage.addClass('error');
+                 qtyInput.addClass('mage-error');
+                 e.preventDefault();
+                 return false;
+            }
+        });
+    });
+</script>

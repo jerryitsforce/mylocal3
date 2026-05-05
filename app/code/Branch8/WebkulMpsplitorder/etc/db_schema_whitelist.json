@@ -1,0 +1,18 @@
+{
+    "quote": {
+        "column": {
+            "parent_id": true
+        }
+    },
+    "marketplace_mpsplitorder": {
+        "column": {
+            "master_quote_id": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "hotai_parent_order_number": true,
+            "reserve_hotai_parent_order_number": true
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="branch8.chat.customer.notification.send"
+                 topic="branch8.chat.customer.notification.send"
+                 destinationType="queue" destination="branch8.chat.customer.notification.send"/>
+    </exchange>
+</config>

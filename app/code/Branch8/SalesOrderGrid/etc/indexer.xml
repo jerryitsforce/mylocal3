@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="sales_order_search_data_index" view_id="sales_order_search_data_index"
+             class="Branch8\SalesOrderGrid\Model\Indexer\SalesOrderSearchData">
+        <title translate="true">Sale Order Search Extra Data</title>
+        <description translate="true">Index search data for sale orders</description>
+        <saveHandler class="Branch8\SalesOrderGrid\Model\Indexer\SalesOrderSearchData\IndexerHandler"/>
+        <structure class="Branch8\SalesOrderGrid\Model\Indexer\SalesOrderSearchData\IndexStructure"/>
+    </indexer>
+</config>

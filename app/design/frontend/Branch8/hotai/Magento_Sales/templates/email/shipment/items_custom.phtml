@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+$count = 0;
+?>
+<?php
+/** @var \Magento\Sales\Api\Data\ShipmentInterface $_shipment */
+$_shipment = $block->getShipment()
+?>
+<?php $_order    = $block->getOrder() ?>
+<?php if ($_shipment && $_order) : ?>
+<ul>
+
+        <?php foreach ($_shipment->getAllItems() as $_item) : ?>
+            <?php if (!$_item->getOrderItem()->getParentItem()) : ?>
+                <?php $count++ ?>
+                <li>
+                    <?= $count ?>.
+                    <?= $block->escapeHtml($_item->getName()) ?> X <?= (int)$_item->getQty() ?>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
+</ul>
+<?php endif; ?>

@@ -1,0 +1,150 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Default appearance styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    div[data-content-type='tabs'] {
+        .tabs-navigation {
+            display: block;
+            font-size: 0;
+            margin: 0 0 20px;
+            margin-bottom: 20px !important;
+            padding: 0;
+
+            li:first-child {
+                margin-left: 0 !important;
+            }
+
+            li:last-child {
+                margin-right: 0 !important;
+            }
+
+            li.tab-header {
+                background: transparent;
+                border: 1px solid transparent;
+                border-radius: 24px;
+                display: inline-block;
+                margin: 0;
+                max-width: 100%;
+                overflow-wrap: break-word;
+                position: relative;
+                word-wrap: break-word;
+                z-index: 1;
+                margin: 0 8px;
+                
+
+                &:not(:first-child) {
+                    margin-left: -1px;
+                }
+
+                a.tab-title {
+                    border-right: 0;
+                    color: #4C4C4C;
+                    cursor: pointer !important;
+                    display: block;
+                    padding: 4px 12px;
+                    position: relative;
+                    transition: all .3s;
+                    vertical-align: middle;
+                    white-space: normal;
+                    text-decoration: none;
+
+                    &:extend(.abs-body-text all);
+
+                    span.tab-title {
+                        display: block;
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+
+                &.ui-state-active {
+                    background: @active__background-color;
+                    z-index: 19;
+
+                    a.tab-title {
+                        position: relative;
+                        transition: all .3s;
+                        color: @color-white;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+
+        .tabs-content {
+            border: 1px solid transparent;
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+            z-index: 9;
+
+            [data-content-type='tab-item'] {
+                box-sizing: border-box;
+                min-height: inherit;
+
+                &:not(:first-child) {
+                    display: none;
+                }
+            }
+        }
+
+        &.tab-align-left {
+            .tabs-content {
+                border-top-left-radius: 0 !important;
+            }
+        }
+        &.tab-align-right {
+            .tabs-content {
+                border-top-right-radius: 0 !important;
+            }
+        }
+    }
+}
+
+//
+//  Mobile (style-m.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    [data-content-type='tab-item'] {
+        background-attachment: scroll !important;
+    }
+
+    div[data-content-type='tabs'] {
+        .tabs-navigation {
+            margin-bottom: 16px !important;
+        }
+    }
+}
+
+//
+//  Desktop (style-l.css)
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    div[data-content-type='tabs'] {
+        .tabs-navigation {
+
+            li.tab-header {
+                margin: 0 20px;
+
+                a.tab-title {
+                    padding: 10px 18px;
+                }
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+    div[data-content-type='tabs'] .tabs-navigation li.tab-header a.tab-title{
+        &:extend(.abs-body-text all);
+    }
+}

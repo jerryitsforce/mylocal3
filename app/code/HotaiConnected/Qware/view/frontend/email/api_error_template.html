@@ -1,0 +1,93 @@
+<!--@subject Qware API 錯誤通知 - {{var api_method}} - 訂單 #{{var order_increment_id}} @-->
+<!--@vars
+{"var api_method":"API Method",
+"var order_item_id":"Order Item ID",
+"var order_increment_id":"Order Increment ID",
+"var customer_email":"Customer Email",
+"var customer_name":"Customer Name",
+"var product_name":"Product Name",
+"var product_sku":"Product SKU",
+"var http_status":"HTTP Status",
+"var api_code":"API Code",
+"var error_message":"Error Message",
+"var failed_time":"Failed Time",
+"var order_total":"Order Total",
+"var order_currency":"Order Currency",
+"var store_name":"Store Name"}
+@-->
+
+{{template config_path="design/email/header_template"}}
+
+<div style="font-family: Arial, sans-serif; line-height: 1.6;">
+    <h2 style="border-bottom: 2px solid; padding-bottom: 10px;">
+        Qware API 錯誤通知
+    </h2>
+
+    <h3 style="border-bottom: 1px solid #e0e0e0; padding-bottom: 5px;">🔌 API 錯誤資訊</h3>
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5; width: 30%;"><strong>API 方法</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var api_method}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>HTTP 狀態碼</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;"><strong>{{var http_status}}</strong></td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>API 回應碼</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;"><strong>{{var api_code}}</strong></td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>錯誤時間</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var failed_time}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>錯誤訊息</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">
+                <code style="background-color: #ffebee; padding: 4px; border-radius: 3px;">{{var error_message}}</code>
+            </td>
+        </tr>
+    </table>
+
+    <h3 style="border-bottom: 1px solid #e0e0e0; padding-bottom: 5px;">📋 訂單資訊</h3>
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5; width: 30%;"><strong>訂單編號</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var order_increment_id}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>訂單項目 order_item_id</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var order_item_id}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>客戶姓名</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var customer_name}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>客戶郵箱</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var customer_email}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>商店</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var store_name}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>訂單金額</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var order_currency}} {{var order_total}}</td>
+        </tr>
+    </table>
+
+    <h3 style="border-bottom: 1px solid #e0e0e0; padding-bottom: 5px;">產品資訊</h3>
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5; width: 30%;"><strong>產品名稱</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var product_name}}</td>
+        </tr>
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;"><strong>產品 SKU</strong></td>
+            <td style="padding: 8px; border: 1px solid #ddd;">{{var product_sku}}</td>
+        </tr>
+    </table>
+</div>
+
+{{template config_path="design/email/footer_template"}}

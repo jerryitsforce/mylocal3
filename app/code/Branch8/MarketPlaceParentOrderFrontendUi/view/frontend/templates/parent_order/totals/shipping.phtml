@@ -1,0 +1,23 @@
+<?php /**
+ * @var $parentBlock \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Totals
+ * @var $block \Magento\Framework\View\Element\Template
+ */
+$parentBlock = $block->getParentBlock();
+$_total = $parentBlock->getTotal('shipping');
+?>
+<tr class="<?= $block->escapeHtmlAttr('shipping') ?>">
+    <th <?= $block->getLabelProperties() ?> scope="row">
+        <?php if ($_total->getStrong()) : ?>
+            <strong><?= $block->escapeHtml($_total->getLabel()) ?></strong>
+        <?php else : ?>
+            <?= $block->escapeHtml($_total->getLabel()) ?>
+        <?php endif ?>
+    </th>
+    <td <?= $parentBlock->getValueProperties() ?> data-th="<?= $block->escapeHtmlAttr($_total->getLabel()) ?>">
+        <?php if ($_total->getStrong()) : ?>
+            <strong><?= $parentBlock->formatValue($_total) ?></strong>
+        <?php else : ?>
+            <?= $parentBlock->formatValue($_total) ?>
+        <?php endif ?>
+    </td>
+</tr>

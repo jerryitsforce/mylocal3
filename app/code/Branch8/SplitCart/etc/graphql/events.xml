@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_model_service_quote_submit_success">
+        <observer name="Tigren\SplitCart\Observer\GraphQl\SalesModelServiceQuoteSubmitSuccess" disabled="true"/>
+    </event>
+    <event name="branch8_split_order_item_success">
+        <observer instance="Branch8\SplitCart\Observer\GraphQl\SalesModelServiceQuoteSubmitSuccess" name="branch8_create_quote_from_remain_items_graphql" />
+    </event>
+</config>

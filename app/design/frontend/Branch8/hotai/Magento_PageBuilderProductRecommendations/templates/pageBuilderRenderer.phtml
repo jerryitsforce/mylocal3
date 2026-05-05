@@ -1,0 +1,74 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php
+$unitId = $block->escapeJs($block->getData('unit_id'));
+/** GA4 data */
+$itemListId = $block->escapeJs($block->getData('item_list_id'));
+$itemListName = $block->escapeJs($block->getData('item_list_name'));
+$promotionId = $block->escapeJs($block->getData('promotion_id'));
+$promotionName = $block->escapeJs($block->getData('promotion_name'));
+
+// Deterministic hash for GA4 component uniqueness (non-security usage)
+$ga4UniqueId = substr(hash('sha256', json_encode([
+        'item_list_id' => $itemListId ?? '',
+        'item_list_name' => $itemListName ?? '',
+        'promotion_id' => $promotionId ?? '',
+        'promotion_name' => $promotionName ?? ''
+])), 0, 16);
+/** End GA4 data */
+
+$blockObj= $block->getLayout()->createBlock('Magento\PageBuilderProductRecommendations\Block\PageBuilderRecommendation');
+$placeholderUrl = $blockObj->getPlaceholderUrl('image');
+$systemLocale = $blockObj->getSystemLocale();
+$currencyConfiguration = $blockObj->getCurrencyConfiguration();
+$defaultStoreViewCode = $blockObj->getDefaultStoreViewCode();
+$alternateEnvironmentId = $blockObj->getAlternateEnvironmentId();
+$priceFormat = $blockObj->getPriceFormat();
+$dataLabel = $this->helper(Branch8\PromotionPage\Helper\Data::class);
+$productIdsPreOrder = @implode(',', $dataLabel->checkIsPreorder());
+$productIdsVip = @implode(',', $dataLabel->getProductIdMatchVipLabel());
+$eventUniqueId = uniqid('product_recommendations_unit_' . substr($block->getData('unit_id'), 0, 36) . '_');
+$imageInfo = $dataLabel->getInfoImage('new_products_content_widget_grid');
+?>
+
+
+<div id="<?= $eventUniqueId ?>" data-bind="scope:'product_recommendations_unit_<?= $unitId ?>_<?=$ga4UniqueId?>'" data-event-unique-id="<?= $eventUniqueId ?>">
+    <!-- ko template: getTemplate() -->
+    <!-- /ko -->
+    <div class="recommendation-loader"></div>
+</div>
+<script type="text/x-magento-init">
+   {
+       "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "product_recommendations_unit_<?= $unitId ?>_<?=$ga4UniqueId?>": {
+                        "component": "Magento_PageBuilderProductRecommendations/js/pageBuilderRenderer",
+                        "unitId": "<?=$unitId?>",
+                        "itemListId": "<?=$itemListId?>",
+                        "itemListName": "<?=$itemListName?>",
+                        "promotionId": "<?=$promotionId?>",
+                        "promotionName": "<?=$promotionName?>",
+                        "placeholderUrl": "<?= /* @noEscape */ $placeholderUrl; ?>",
+                        "systemLocale": "<?= /* @noEscape */ $systemLocale; ?>",
+                        "currencyConfiguration": <?= /* @noEscape */ $currencyConfiguration; ?>,
+                        "defaultStoreViewCode": "<?= /* @noEscape */ $defaultStoreViewCode; ?>",
+                        "alternateEnvironmentId": "<?= /* @noEscape */ $alternateEnvironmentId; ?>",
+                        "priceFormat": <?= /* @noEscape */ $priceFormat; ?>,
+                        "productIdsPreOrder": "<?= htmlspecialchars($productIdsPreOrder); ?>",
+                        "productIdsVip": "<?= htmlspecialchars($productIdsVip); ?>",
+                        "eventUniqueId": "<?= $eventUniqueId ?>",
+                        "id": "<?= $eventUniqueId ?>",
+                        "imageWidth": "<?= $imageInfo['image_width'] ?>",
+                        "imageHeight": "<?= $imageInfo['image_height'] ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

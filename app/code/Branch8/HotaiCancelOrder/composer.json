@@ -1,0 +1,20 @@
+{
+  "name": "branch8/module-hotai-cancel-order",
+  "version": "1.0.0",
+  "description": "Hotai Cancel Order Integration",
+  "type": "magento2-module",
+  "require": {
+    "magento/framework": "*"
+  },
+  "license": [
+    "Branch8"
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Branch8\\HotaiCancelOrder\\": ""
+    }
+  }
+}

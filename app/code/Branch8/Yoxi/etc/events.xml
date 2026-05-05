@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- 和泰點數圈存流程開始執行前(不一定真的用到點數), 先把庫存預分配給用戶 -->
+    <event name="hotai_point_sales_order_place_after_observer_execute_start">
+        <observer name="yoxi_ticket_set_allocation_observer" instance="Branch8\Yoxi\Observer\TicketSetAllocationObserver" />
+    </event>
+
+    <!-- 和泰點數圈存流程執行過程出現例外錯誤, 把庫存預分配的預分配狀態復原成初始未分配狀態 -->
+    <event name="hotai_point_sales_order_place_after_observer_execute_exception">
+        <observer name="yoxi_ticket_reset_imported_observer_sales_order_place_after" instance="Branch8\Yoxi\Observer\TicketResetImportedObserver" />
+    </event>
+
+    <!-- 和泰點數Commit流程執行完成後, 把預分配的狀態推進到已分配(未使用) -->
+    <!-- 同時也應該把對應紀錄寫到共用票券狀態表裡(Branch8_CustomerTicketTable) -->
+    <event name="hotai_point_deduction_commit_flow_end">
+        <observer name="yoxi_ticket_set_sold_observer" instance="Branch8\Yoxi\Observer\TicketSetSoldObserver" />
+    </event>
+
+    <!-- 當訂單被轉為canceled, 把預分配和已售出的狀態改回初始未分配狀態(剛匯入) -->
+    <!-- 如果原本是"已售出"的狀態, 同時也應該把對應紀錄從共用票券狀態表裡(Branch8_CustomerTicketTable)刪除 -->
+    <!-- 改由Branch8\Refund\Observer\CancelObserver和Branch8\HotaiCore\Helper\VirtualProduct::cancelTickets()處理 -->
+    <!-- <event name="sales_order_save_after">
+        <observer name="yoxi_ticket_order_change_to_canceled_observer" instance="Branch8\Yoxi\Observer\OrderChangeToCanceled" />
+    </event> -->
+</config>

@@ -1,0 +1,65 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Info\Index $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$car_owner = [];
+$customer = $block->getCustomer();
+$nickname = '';
+$car_owner = [];
+if($customer){
+    if($customer->getCustomAttribute('nickname')){
+        $nickname = $customer->getCustomAttribute('nickname')->getValue();
+    }
+    if($customer->getCustomAttribute('car_owner')){
+        $car_owner = explode(',',$customer->getCustomAttribute('car_owner')->getValue());
+    }
+}
+$jsonLoader = $this->getViewFileUrl('images/animation-onboard.json');
+?>
+<div class="member-wrapper">
+    <div class="member-header">
+        <div class="member-logo">
+            <dotlottie-player class="player" src="<?= $jsonLoader ?>" background="transparent" speed="1" direction="1" playMode="normal" loop autoplay></dotlottie-player>
+        </div>
+        <h2 class="member-title"><?= $block->escapeHtml(__('歡迎來到HOTAI購!')) ?></h2>
+        <p class="member-note"><span class="member-required">*</span><?= $block->escapeHtml(__('此標示為必填項目')) ?></p>
+    </div>
+    <div class="member-info">
+        <form data-mage-init='{"validation":{}}' action="<?= $block->escapeHtml($block->getUrl('member/info/save')); ?>" id="member-info" name="member-info" method="post" enctype="multipart/form-data" >
+            <?= $block->getBlockHtml('formkey') ?>
+            <fieldset class="fieldset">
+                <div class="field required">
+                    <label for="nickname" class="label">
+                        <span><?= $block->escapeHtml(__("我們要怎麼稱呼你呢？")); ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                        data-validate="{required:true, maxlength: 8, 'validate-fullwidth-special': true}"
+                        class="input-text required-entry"
+                        title="<?= $block->escapeHtml(__("請輸入暱稱 (最多8個字元)")); ?>"
+                        name="nickname"
+                        id="nickname"
+                        value="<?= $nickname ?>"
+                        placeholder="<?= $block->escapeHtml(__("請輸入暱稱 (最多8個字元)")); ?>"
+                        aria-required="true">
+                    </div>
+                </div>
+            </fieldset>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" title="<?php /* @escapeNotVerified */ echo __('提交') ?>" class="action primary action-submit" <?php if(empty($nickname)): ?>disabled<?php endif; ?>>
+                        <span><?php /* @escapeNotVerified */ echo __('提交') ?></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8MemberInfo": {}
+        }
+    }
+</script>

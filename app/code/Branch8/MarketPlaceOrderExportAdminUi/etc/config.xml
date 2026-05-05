@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <order_export>
+            <optimize>
+                <use_writer2>1</use_writer2>
+                <use_stream>1</use_stream>
+                <use_redis_to_cache_excel_cells>1</use_redis_to_cache_excel_cells>
+                <cache_redis_host>localhost</cache_redis_host>
+                <cache_redis_port>6370</cache_redis_port>
+            </optimize>
+        </order_export>
+    </default>
+</config>

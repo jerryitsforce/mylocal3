@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="marketplace_branch8_dealer_approval_template"
+              label="Notification when dealer approves product" file="notification_when_dealer_approve_product.html" type="html" module="Branch8_MarketplaceProduct" area="frontend"/>
+    <template id="marketplace_email_new_product_notification_template"
+              label="Add New Product Notification Mail to Admin" file="new_product.html" type="html" module="Branch8_MarketplaceProduct" area="frontend"/>
+</config>

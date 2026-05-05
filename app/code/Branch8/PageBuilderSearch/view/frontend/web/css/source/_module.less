@@ -1,0 +1,90 @@
+& when (@media-common = true) {
+  .keyword-search-section {
+    .keyword-search{
+      position: relative;
+      width: 100vw;
+      left: ~'calc(50% - 50vw)';
+      overflow: hidden;
+
+      .co-loading-ajax {
+        flex-direction: column;
+      }
+    }
+    .block-keywords-search-list .keyword-list{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      &:before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.7) 125.22%);
+        pointer-events: none;
+      }
+      .keyword{
+        border-radius: 8px;
+        color: #231815;
+        box-shadow: 0px 0px 10px 1px rgba(35, 24, 21, 0.06);
+        font-weight: 500;
+      }
+    }
+    button.refresh-keyword{
+      border-radius: 100px;
+      background: #C5171E;
+      color: #fff;
+    }
+  }
+  .home-block-title.keyword-search-title {
+    &:before {
+        content: "\e90d";
+        transform: scaleX(-1);
+    }
+    &:after {
+        content: "\e90d";
+    }
+  }
+}
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .keyword-search-section {
+    .block-keywords-search-list .keyword-list{
+      gap: 32px;
+      .keyword{
+        padding: 14px 19px 13px 19px;
+        font-size: 16px;
+      }
+    }
+    button.refresh-keyword{
+      margin-top: 48px;
+      padding: 9px 68px;
+    }
+  }
+}
+
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .keyword-search-section {
+    .block-keywords-search-list .keyword-list{
+      gap: 8px;
+      .keyword{
+        padding: 12px 15px 12px 14px;
+        font-size: 14px;
+      }
+    }
+    button.refresh-keyword{
+      margin-top: 32px;
+      padding: 10px 59px 10px 58px;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:MessageQueue/etc/queue_publisher.xsd">
+    <publisher topic="hotaiconnected.reconciliation.revenue.export">
+        <connection name="amqp" exchange="magento" />
+    </publisher>
+    <publisher topic="hotaiconnected.reconciliation.order.export">
+        <connection name="amqp" exchange="magento" />
+    </publisher>
+    <publisher topic="hotaiconnected.reconciliation.ticket.export">
+        <connection name="amqp" exchange="magento" />
+    </publisher>
+</config>

@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <update handle="customer_fullScreenChat"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\History"
+                   name="sales.parent.order.history" cacheable="false">
+                <container name="sales.parent.order.history.info" as="info" label="Order History Info"/>
+                <container name="sales.parent.order.history.extra.column.header" as="extra.column.header" label="Order History Extra Column Header"/>
+                <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                       name="sub_order_items"
+                       template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/suborder-items.phtml">
+                    <arguments>
+                        <argument name="profile_helper" xsi:type="object">Webkul\Marketplace\ViewModel\Profile</argument>
+                    </arguments>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="order_progress"
+                           template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/order_progress.phtml"
+                           cacheable="false">
+                    </block>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="item_notifications"
+                           template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/item_notifications.phtml"/>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="rma_buttons"
+                           template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/rma/rma_buttons.phtml"
+                           cacheable="false">
+                    </block>
+                    <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                           name="marketplace_seller_chat_link" template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/chat_seller.phtml"
+                           ifconfig="buyer_seller_chat/parent_order/enable"
+                    >
+                        <arguments>
+                            <argument name="view_model" xsi:type="object">Branch8\WebkulMpBuyerSellerChatForParentOrder\ViewModel\ChatConfig</argument>
+                        </arguments>
+                    </block>
+
+                </block>
+                <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems"
+                       name="sub_order_items_image"
+                       template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/suborder-items-image.phtml">
+                </block>
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Magento\OrderCancellationUi\ViewModel\Config</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Customer\Block\Account\Dashboard" name="customer.account.link.back" template="Magento_Customer::account/link/back.phtml" cacheable="false"/>
+        </referenceContainer>
+
+        <referenceContainer name="before.body.end">
+            <block class="Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\CancelOrder"
+                   name="cancel_order_popup"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/popup/cancel-order.phtml"/>
+            <block class="Webkul\MpRmaSystem\Block\Customer\Rma"
+                   name="parent.order.return"
+                   template="Branch8_MarketPlaceParentOrderFrontendUi::parent_order/popup/apply-rma-order.phtml"
+                   cacheable="false">
+                   <arguments>
+                       <argument name="rma_model" xsi:type="object">Branch8\Rma\ViewModel\Rma</argument>
+                       <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="rmaForm" xsi:type="array">
+                                <item name="component" xsi:type="string">Branch8_Rma/js/form/rma-form</item>
+                                <item name="children" xsi:type="array">
+                                    <item name="rmaItems" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_Rma/js/rma-items</item>
+                                        <item name="displayArea" xsi:type="string">rmaItems</item>
+                                    </item>
+                                    <item name="reasons" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_Rma/js/form/reason</item>
+                                        <item name="displayArea" xsi:type="string">reasons</item>
+                                    </item>
+                                    <item name="rmaRegion" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_Rma/js/form/region</item>
+                                        <item name="displayArea" xsi:type="string">rmaRegion</item>
+                                    </item>
+                                    <item name="rmaCity" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_Rma/js/form/city</item>
+                                        <item name="displayArea" xsi:type="string">rmaCity</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                   </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Template"
+                   name="cancel.rma.popup"
+                   template="Branch8_Rma::customer/cancel_rma.phtml"
+                   cacheable="false">
+            </block>
+            <!-- Begin chatLink Js-->
+            <block class="Magento\Framework\View\Element\Template"
+                   ifconfig="buyer_seller_chat/parent_order/enable"
+                   name="customer_chat_link_js_init"
+                   template="Branch8_WebkulMpBuyerSellerChatForParentOrder::jsInit.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Branch8\WebkulMpBuyerSellerChatForParentOrder\ViewModel\ChatConfig</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

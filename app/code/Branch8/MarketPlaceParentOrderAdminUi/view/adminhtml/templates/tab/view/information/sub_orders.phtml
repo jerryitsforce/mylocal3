@@ -1,0 +1,32 @@
+<?php
+/**
+ * @var $block \Magento\Backend\Block\Template
+ */
+$subOrders = $block->getParentBlock()->getSubOrders();
+
+$orderSaleType = [
+    'canceled(已取消)',
+    'processing(訂單成立)',
+    'pending_payment(待付款)',
+    'tallying(理貨中)',
+    'shipping(已配送)',
+    'arrived(已送達)',
+    'Invoiced(開立發票)'
+];
+
+?>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Sub Orders Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?= $block->getData('items_html') ?>
+        <div class="admin__remark">
+            <div class="admin__remark-content">
+                <div><?= $block->escapeHtml(__('項目狀態為原生系統訂單流程，流程包括')) ?></div>
+                <div><?= $block->escapeHtml(join(' / ', $orderSaleType)) ?></div>
+            </div>
+        </div>
+    </div>
+</section>

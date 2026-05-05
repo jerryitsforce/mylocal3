@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_CatalogRule::rule_approval" title="Catalog rule approval" module="Branch8_CatalogRule" sortOrder="15" 
+            parent="Branch8_MarketplaceProduct::marketplacectrl" resource="Branch8_CatalogRule::rule_approval_list"/>
+        <add id="Branch8_CatalogRule::rule_approval_list" title="Catalog rule Approval" module="Branch8_CatalogRule" sortOrder="0" 
+            parent="Branch8_CatalogRule::rule_approval" action="promocatalog/approval/index" resource="Branch8_CatalogRule::rule_approval_list"/>
+    </menu>
+</config>

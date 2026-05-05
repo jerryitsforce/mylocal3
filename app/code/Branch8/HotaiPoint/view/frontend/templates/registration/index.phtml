@@ -1,0 +1,582 @@
+<?php
+/** @var \Branch8\HotaiPoint\Block\Transfer\Index $block */
+
+// Get the request object
+$request = $block->getRequest();
+
+// Get the serial parameter from the request
+$serialNumber = $request->getParam('serial') ?? '';
+
+?>
+<div class="hotai-point-form-container  hotai-point-registration-container">
+    <!-- <div class="hotai-point-qrcode">
+        <div class="hotai-point-qrcode-img">
+            <img src="<?= $block->getQRCodeUrl() ?>" alt="<?= __('QR Code') ?>">
+        </div>
+        <div class="hotai-point-qrcode-text">
+            <span><?= $block->escapeHtml(__("請掃描QRcode條碼")); ?></span>
+        </div>
+    </div> -->
+    <div class="hotai-point-scanner-container hotai-point-scanner-fullwidth" style="display: none;">
+        <div class="hotai-point-scanner-wrapper">
+            <!-- 權限狀態提示 -->
+            <div id="camera-permission-status" class="message" style="display: none; margin: 10px; padding: 10px; text-align: center; border-radius: 4px; position: absolute; top: 10px; left: 10px; right: 10px; z-index: 20; background: rgba(0,0,0,0.8); color: #fff;">
+                <span class="message-text"></span>
+            </div>
+
+            <!-- 原生啟動按鈕容器將由 html5-qrcode 庫自動生成 -->
+
+            <div id="qr-reader" style="width: 100%;"></div>
+
+            <div class="hotai-point-scanner-title">
+                <span><?=$block->escapeHtml(__("請掃描QRcode條碼")); ?></span>
+            </div>
+        </div>
+    </div>
+<script>
+    require(['jquery', 'html5QrcodeScanner'], function($, QrcodeWrapper) {
+        'use strict';
+
+        $(document).ready(function() {
+            function isMobileDevice() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+
+            function sanitizeInput(input) {
+                if (typeof input !== 'string') {
+                    input = String(input);
+                }
+                return input.replace(/[^a-zA-Z0-9]/g, '').substring(0, 13);
+            }
+
+            function showStatus(message, type) {
+                var $status = $('#camera-permission-status');
+                var $text = $status.find('.message-text');
+                $text.text(message);
+                $status.show();
+                console.log('[Scanner Status]', message);
+            }
+
+            function hideStatus() {
+                $('#camera-permission-status').hide();
+            }
+
+            function isSecureContext() {
+                return window.isSecureContext ||
+                       window.location.protocol === 'https:' ||
+                       window.location.hostname === 'localhost' ||
+                       window.location.hostname === '127.0.0.1';
+            }
+
+            // 檢查攝影機權限
+            function checkCameraPermission() {
+                return new Promise(function(resolve, reject) {
+                    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                        reject(new Error('此瀏覽器不支援攝影機功能'));
+                        return;
+                    }
+
+                    // 檢查是否為安全環境
+                    if (!isSecureContext()) {
+                        reject(new Error('攝影機功能需要使用 HTTPS 連線'));
+                        return;
+                    }
+                    var constraints = {
+                        video: {
+                            facingMode: 'environment'
+                        },
+                        audio: false
+                    };
+
+                    // 請求攝影機權限
+                    navigator.mediaDevices.getUserMedia(constraints)
+                    .then(function(stream) {
+                        console.dir(stream);
+                        const track = stream.getVideoTracks()[0];
+
+                        // 2. 取得該軌道的設定資訊
+                        const settings = track.getSettings();
+                        const backCameraId = settings.deviceId; // <--- 這就是你要的 ID
+
+                        console.log("抓到後鏡頭 ID:", backCameraId);
+                        var dataToSave = {
+                            hasPermission: true,
+                            lastUsedCameraId: backCameraId // 注意: 這裡回傳的是 id 不是 deviceId
+                        };
+
+                        localStorage.setItem("HTML5_QRCODE_DATA", JSON.stringify(dataToSave));
+                        // 成功取得權限,立即關閉串流
+                        stream.getTracks().forEach(function(track) {
+                            track.stop();
+                        });
+                        resolve(true);
+                    })
+                    .catch(function(error) {
+                        var errorMessage = '無法存取攝影機';
+
+                        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                            errorMessage = '攝影機權限被拒絕，請在瀏覽器設定中允許使用攝影機';
+                        } else if (error.name === 'NotFoundError' || error.name === 'DevicesNotFoundError') {
+                           errorMessage = '找不到攝影機設備';
+                        } else if (error.name === 'NotReadableError' || error.name === 'TrackStartError') {
+                            errorMessage = '攝影機正被其他應用程式使用';
+                        } else if (error.name === 'OverconstrainedError') {
+                            errorMessage = '找不到符合條件的攝影機';
+                        } else if (error.name === 'SecurityError') {
+                            errorMessage = '安全性限制：需要使用 HTTPS';
+                        }
+
+                        reject(new Error(errorMessage));
+                    });
+                });
+            }
+
+            if (!isMobileDevice()) {
+                console.log('[Scanner] Not mobile device, disabled');
+                return;
+            }
+
+            $('.hotai-point-scanner-container').show();
+
+            if (!isSecureContext()) {
+                showStatus('⚠️ 攝影機功能需要使用 HTTPS 連線', 'warning');
+                console.error('[Scanner] Not secure context');
+                return;
+            }
+
+            var currentScanner = null;
+            var isScanning = false;
+            var scannerInitialized = false;
+            var cameraStarted = false; // 新增：追蹤攝影機是否真正啟動
+            var $serialInput = $('#serial-number');
+
+            // 檢查攝影機狀態
+            function checkCameraStatus() {
+                var hasVideo = $('#qr-reader video').length > 0;
+                var hasPermissionButton = $('#html5-qrcode-button-camera-permission').length > 0;
+
+                console.log('[Scanner] === Camera Status Check ===');
+                console.log('[Scanner] Video elements:', hasVideo);
+                console.log('[Scanner] Permission button:', hasPermissionButton);
+
+                if (hasVideo && !hasPermissionButton) {
+                    // 攝影機已啟動
+                    cameraStarted = true;
+                    console.log('[Scanner] ✅ Camera running (permission granted)');
+                    showStatus('✓ 攝影機已啟動，請對準條碼', 'success');
+                    setTimeout(hideStatus, 2000);
+
+                    $('#qr-reader__dashboard').hide();
+                    $('#qr-reader__scan_region').show();
+                    $('#qr-reader video').show();
+
+                    $('#qr-reader__scan_region').css({
+                        'display': 'block',
+                        'visibility': 'visible',
+                        'opacity': '1'
+                    }).show();
+
+                    $('#qr-reader video').css({
+                        'display': 'block',
+                        'visibility': 'visible',
+                        'opacity': '1'
+                    }).show();
+
+                    console.log('[Scanner] Video should be visible now');
+
+                } else if (hasPermissionButton) {
+                    // 需要權限
+                    //console.log('[Scanner] ⚠ Permission required');
+                    showPermissionButton();
+
+                } else {
+                    // 還在初始化，遞迴檢查
+                    // console.log('[Scanner] Still initializing, retrying in 500ms...');
+                    setTimeout(checkCameraStatus, 500);
+                }
+            }
+
+            // 安全地停止掃描器
+            function stopScanner() {
+                if (!currentScanner) {
+                    return Promise.resolve();
+                }
+
+                return new Promise(function(resolve) {
+                    try {
+                        //console.log('[Scanner] Stopping...');
+
+                        if (typeof currentScanner.stop === 'function') {
+                            currentScanner.stop().then(function() {
+                                //console.log('[Scanner] Stop successful');
+                                setTimeout(function() {
+                                    try {
+                                        if (currentScanner && typeof currentScanner.clear === 'function') {
+                                            currentScanner.clear().catch(function(err) {
+                                                console.warn('[Scanner] Clear warning:', err);
+                                            });
+                                        }
+                                    } catch (clearError) {
+                                        console.warn('[Scanner] Clear error:', clearError);
+                                    }
+
+                                    currentScanner = null;
+                                    isScanning = false;
+                                    scannerInitialized = false;
+                                    cameraStarted = false;
+                                    resolve();
+                                }, 200);
+                            }).catch(function(err) {
+                                console.error('[Scanner] Stop error:', err);
+                                currentScanner = null;
+                                isScanning = false;
+                                scannerInitialized = false;
+                                cameraStarted = false;
+                                resolve();
+                            });
+                        } else {
+                            currentScanner = null;
+                            isScanning = false;
+                            scannerInitialized = false;
+                            cameraStarted = false;
+                            resolve();
+                        }
+                    } catch (error) {
+                        console.error('[Scanner] Stop exception:', error);
+                        currentScanner = null;
+                        isScanning = false;
+                        scannerInitialized = false;
+                        cameraStarted = false;
+                        resolve();
+                    }
+                });
+            }
+
+            // ✅ iOS 專用：設定 input 值的函數
+            function setInputValue(value) {
+                console.log('[Scanner] Setting input value:', value);
+
+                try {
+                    var input = $serialInput[0];
+
+                    var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+                        window.HTMLInputElement.prototype,
+                        'value'
+                    ).set;
+                    nativeInputValueSetter.call(input, value);
+
+                    var inputEvent = new Event('input', {
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    input.dispatchEvent(inputEvent);
+
+                    var changeEvent = new Event('change', {
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    input.dispatchEvent(changeEvent);
+
+                    $serialInput.val(value).trigger('input').trigger('change');
+
+                    //console.log('[Scanner] Input value set successfully:', $serialInput.val());
+
+                    setTimeout(function() {
+                        try {
+                            $('#hotai-point-registration-form').validation('isValid');
+                            //console.log('[Scanner] Form validation triggered');
+                        } catch (validationError) {
+                            //console.warn('[Scanner] Validation error:', validationError);
+                        }
+                    }, 100);
+
+                    return true;
+                } catch (error) {
+                    console.error('[Scanner] Error setting input value:', error);
+                    return false;
+                }
+            }
+
+            // 啟動掃描器
+            function startScanner() {
+                if (isScanning || scannerInitialized) {
+                    //console.log('[Scanner] Already running or initialized');
+                    return Promise.resolve();
+                }
+
+                isScanning = true;
+                cameraStarted = false;
+                showStatus('正在啟動攝影機...', 'notice');
+
+                //console.log('[Scanner] ====== Starting Scanner ======');
+                //console.log('[Scanner] Protocol:', window.location.protocol);
+                //console.log('[Scanner] isSecureContext:', window.isSecureContext);
+                checkCameraPermission()
+                    .then(function() {
+                            showStatus('攝影機權限已授予，正在載入掃描器...', 'success');
+                            // 獲取支援的格式
+                            return QrcodeWrapper.getFormats();
+                    })
+                    .then(function(formats) {
+                        var readerWidth = $('#qr-reader').width();
+                        var qrboxSize =  Math.min(250, readerWidth * 0.7);
+
+                        //console.log('[Scanner] Config:');
+                        //console.log('  - Reader width:', readerWidth);
+                        //console.log('  - QR box size:', qrboxSize);
+                        //console.log('  - Formats:', Object.keys(formats));
+
+                        return QrcodeWrapper.init(
+                            'qr-reader',
+                            {
+                                fps: 10 ,
+                                qrbox: qrboxSize,
+                                videoConstraints: {
+                                    facingMode: { ideal: 'environment' },
+                                },
+                                formatsToSupport: [
+                                    formats.QR_CODE,
+                                    formats.EAN_13,
+                                    formats.CDDE_39,
+                                    formats.CODE_128
+                                ],
+                                experimentalFeatures: {
+                                    useBarCodeDetectorIfSupported: true
+                                },
+                                disableFlip: false
+                            },
+                            // 掃描成功回調
+                            function(decodedText, decodedResult) {
+                                //console.log('[Scanner] ✓ Scan success:', decodedText);
+                                //console.log('[Scanner] Result:', decodedResult);
+                            //console.log('[Scanner] ========================================');
+
+                                var cleanText = sanitizeInput(decodedText);
+
+                                    if (cleanText.length > 0) {
+                                        var success = setInputValue(cleanText);
+                                        if (success) {
+                                        //console.log('[Scanner] Value set successfully:', $serialInput.val());
+                                        showStatus('✓ 掃描成功！序號：' + cleanText, 'success');
+
+                                        stopScanner().then(function() {
+                                            setTimeout(hideStatus, 1000);
+
+                                            var $form = $('#hotai-point-registration-form');
+                                            var $submitBtn = $('#registration-submit-btn');
+
+                                            if ($form.validation('isValid')) {
+                                                $submitBtn.prop('disabled', false);
+                                                $submitBtn.trigger('click');
+                                            }
+                                        });
+                                    } else {
+                                        //console.error('[Scanner] Failed to set input value');
+                                        showStatus('❌ 無法填入序號，請手動輸入：' + cleanText, 'error');
+                                    }
+                                }
+                            },
+                            // 掃描錯誤回調
+                            function(errorMessage) {
+                                console.log('[Scanner] Scan error:', errorMessage)
+                                // 這是持續掃描過程，不是真正的錯誤
+                                if (errorMessage &&
+                                    errorMessage.indexOf('NotFoundException') === -1 &&
+                                    errorMessage.indexOf('No MultiFormat Readers') === -1) {
+                                    console.log('[Scanner] Scan error:', errorMessage);
+                                }
+                            },
+                            // 初始化完成回調
+                            function(scanner) {
+                                //console.log('[Scanner] ====== Init Callback Triggered ======');
+
+                                //console.log('[Scanner] Scanner instance:', scanner);
+                                currentScanner = scanner;
+                                scannerInitialized = true;
+                                isScanning = false;
+
+                                // ✅ iOS 需要更長的延遲
+                                var delay = iosDevice ? 1500 : 1000;
+                                setTimeout(function() {
+                                    checkCameraStatus();
+                                    var videoElement = document.querySelector("#qr-reader video");
+                                    if (videoElement) {
+                                        videoElement.setAttribute("playsinline", "true"); // 修正 iOS 全螢幕問題
+                                        videoElement.setAttribute("webkit-playsinline", "true");
+                                    }
+                                }, delay);
+
+                            }
+                        )
+                        .catch(function(initError) {
+                            // 捕獲 init 過程中的錯誤
+                            console.error('[Scanner] ❌ Init error:', initError);
+                            console.error('[Scanner] Error name:', initError.name);
+                            console.error('[Scanner] Error message:', initError.message);
+
+                            var errorMsg = '攝影機啟動失敗';
+
+                            if (initError.name === 'NotAllowedError' || initError.name === 'PermissionDeniedError') {
+                                errorMsg = '攝影機權限被拒絕，請在瀏覽器設定中允許使用攝影機';
+                            } else if (initError.name === 'NotFoundError') {
+                                errorMsg = '找不到攝影機設備';
+                            } else if (initError.name === 'NotReadableError') {
+                                errorMsg = '攝影機正被其他應用程式使用';
+                            } else if (initError.name === 'SecurityError') {
+                                errorMsg = '安全性限制：需要使用 HTTPS';
+                            }
+
+                            showStatus('❌ ' + errorMsg, 'error');
+                            isScanning = false;
+                            scannerInitialized = false;
+
+                            throw initError; // 重新拋出錯誤
+                        });
+                    }).catch(function(error) {
+                        // 捕獲 getFormats 或其他錯誤
+                        console.error('[Scanner] ❌ Fatal error:', error);
+                        showStatus('❌ 掃描器初始化失敗: ' + error.message, 'error');
+                        isScanning = false;
+                        scannerInitialized = false;
+                    });
+                }
+
+            // 顯示並設置權限按鈕
+            function showPermissionButton() {
+                var $dashboard = $('#qr-reader__dashboard');
+                var $dashboardSection = $('#qr-reader__dashboard_section');
+                var $dashboardCsr = $('#qr-reader__dashboard_section_csr');
+                var permissionBtn = document.getElementById('html5-qrcode-button-camera-permission');
+                if (permissionBtn) {
+                    // 先改變按鈕文字為中文
+                    permissionBtn.textContent = '啟動攝影機掃描';
+                    permissionBtn.innerHTML = '啟動攝影機掃描'
+                }
+
+                // 強制顯示容器
+                $dashboard.css({'display': 'block', 'visibility': 'visible'}).show();
+                $dashboardSection.css({'display': 'block', 'visibility': 'visible'}).show();
+                $dashboardCsr.css({'display': 'block', 'visibility': 'visible'}).show();
+                if (permissionBtn) {
+                    // 顯示所有父元素
+                    $(permissionBtn).parents().each(function() {
+                        $(this).css({'display': 'block', 'visibility': 'visible', 'opacity': '1'}).show();
+                    });
+
+                    // 使用原生 addEventListener，capture = true
+                    permissionBtn.addEventListener('click', function() {
+                        //console.log('[Scanner] Permission button clicked (our handler)');
+                        showStatus('正在請求攝影機權限...', 'notice');
+
+                        setTimeout(function() {
+                            //console.log('[Scanner] Checking camera status after permission click...');
+                            checkCameraStatus();
+                        }, 2000);
+                    }, true);
+
+                    //console.log('[Scanner] ✅ Button styled and visible');
+                    showStatus('請點擊下方「啟動攝影機掃描」按鈕', 'notice');
+
+                    // ✅ 驗證按鈕是否真的可見
+                    setTimeout(function() {
+                        var rect = permissionBtn.getBoundingClientRect();
+                        var computedStyle = window.getComputedStyle(permissionBtn);
+
+                        /*console.log('[Scanner] Button final check:', {
+                            text: permissionBtn.textContent,
+                            background: computedStyle.backgroundColor,
+                            color: computedStyle.color,
+                            display: computedStyle.display,
+                            visibility: computedStyle.visibility,
+                            opacity: computedStyle.opacity,
+                            textIndent: computedStyle.textIndent,
+                            width: rect.width,
+                            height: rect.height,
+                            visible: rect.width > 0 && rect.height > 0
+                        });*/
+                    }, 200);
+
+                } else {
+                    console.error('[Scanner] ❌ Permission button not found!');
+                    showStatus('⚠ 找不到啟動按鈕,請重新載入頁面', 'error');
+                }
+            }
+
+            // 頁面載入後啟動
+            $(window).on('load', function() {
+                setTimeout(function() {
+                    var serialValue = $serialInput.val();
+                    //console.log('[Scanner] Page loaded, serial:', serialValue || '(empty)');
+
+                    if (!serialValue || serialValue.trim() === '') {
+                        //console.log('[Scanner] Starting scanner on load');
+                        startScanner();
+                    }
+                }, 500);
+            });
+
+            // 監聽序號欄位變化
+            $serialInput.on('input', function() {
+                var currentValue = $(this).val();
+                //console.log('[Scanner] Input changed:', currentValue);
+
+                if ((!currentValue || currentValue.trim() === '') &&
+                    !isScanning &&
+                    !scannerInitialized) {
+                    //console.log('[Scanner] Serial cleared, restarting');
+                    setTimeout(function() {
+                        startScanner();
+                    }, 300);
+                }
+            });
+
+        });
+    });
+</script>
+    <form class="hotai-point-form" id="hotai-point-registration-form" action="#" data-mage-init='{"validation": {}}'>
+        <?= $block->getBlockHtml('formkey') ?>
+        <fieldset class="fieldset">
+            <div class="field required">
+                <label for="serial-number" class="label">
+                    <span><?= $block->escapeHtml(__("轉入序號 (13碼)")); ?></span>
+                </label>
+                <div class="control">
+                    <input type="text"
+                           maxlength="13"
+                           minlength="13"
+                           data-validate="{required:true, maxlength: 13, minlength: 13, 'validate-fullwidth-special': true}"
+                           class="input-text required-entry"
+                           title="<?= $block->escapeHtml(__("請輸入序號")); ?>"
+                           name="serial-number"
+                           id="serial-number"
+                           value="<?= $block->escapeHtml($serialNumber) ?>"
+                           placeholder="<?= $block->escapeHtml(__("請輸入序號")); ?>"
+                           aria-required="true">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="hotai-point-additional-content">
+            <?= /* @noEscape */ $block->getRegistrationStaticContent()?>
+        </div>
+
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary action-submit" id="registration-submit-btn" disabled>
+                    <span><?php /* @escapeNotVerified */ echo __('確定') ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8HotaiPointRegisterForm": {
+            "serialNumber": "<?= $block->escapeHtml($serialNumber) ?>",
+            "qrType": "<?= $block->escapeHtml($block->getQRCodeType()) ?>",
+            "qrCodeUrl": "<?= $block->escapeHtml($block->getQRCodeUrl()) ?>"
+        }
+    }
+  }
+</script>

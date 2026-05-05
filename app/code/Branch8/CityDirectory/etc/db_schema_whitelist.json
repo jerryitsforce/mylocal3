@@ -1,0 +1,16 @@
+{
+    "hotai_city_directory": {
+        "column": {
+            "entity_id": true,
+            "region_id": true,
+            "city": true,
+            "zipcode": true
+        },
+        "index": {
+            "HOTAI_CITY_DIRECTORY_REGION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="core_collection_abstract_load_after">
+        <observer name="Branch8_MaskCustomerInformation::hideSensitiveInformation"
+                  instance="Branch8\MaskCustomerInformation\Observer\Frontend\HideSensitiveDefaultObserver"/>
+    </event>
+</config>

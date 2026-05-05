@@ -1,0 +1,10 @@
+# dependencies
+.npm
+node_modules
+
+# build
+dist
+public
+
+# misc
+.env

@@ -1,0 +1,59 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+
+<?php
+$firsttext = $block->escapeJs($block->getData('firsttext'));
+$secondtext = $block->escapeJs($block->getData('secondtext'));
+$pointtext = $block->escapeJs($block->getData('pointtext'));
+$tickettext = $block->escapeJs($block->getData('tickettext'));
+$firstbutton = $block->escapeJs($block->getData('firstbutton'));
+$secondbutton = $block->escapeJs($block->getData('secondbutton'));
+$nonlogintext = $block->escapeJs($block->getData('nonlogintext'));
+$nonloginfirstbutton = $block->escapeJs($block->getData('nonloginfirstbutton'));
+$nonloginsecondbutton = $block->escapeJs($block->getData('nonloginsecondbutton'));
+
+$firstbuttonurl = $block->getUrl($block->getData('firstbuttonurl'));
+$secondbuttonurl = $block->getUrl($block->getData('secondbuttonurl'));
+
+$nonloginfirstbuttonurl = $block->getUrl($block->getData('nonloginfirstbuttonurl'));
+$nonloginsecondbuttonurl = $block->getUrl($block->getData('nonloginsecondbuttonurl'));
+?>
+
+
+<div class="member-bar-section main-container" data-bind="scope:'memberbar'">
+    <!-- ko template: getTemplate() -->
+    <!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+   {
+       "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "memberbar": {
+                        "component": "Branch8_PageBuilder/js/memberbarRenderer",
+                        "firsttext": "<?=$firsttext?>",
+                        "secondtext": "<?=$secondtext?>",
+                        "pointtext": "<?=$pointtext?>",
+                        "tickettext": "<?=$tickettext?>",
+                        "firstbutton": "<?=$firstbutton?>",
+                        "secondbutton": "<?=$secondbutton?>",
+                        "firstbuttonurl": "<?=$firstbuttonurl?>",
+                        "secondbuttonurl": "<?=$secondbuttonurl?>",
+                        "nonlogintext": "<?=$nonlogintext?>",
+                        "nonloginfirstbutton": "<?=$nonloginfirstbutton?>",
+                        "nonloginfirstbuttonurl": "<?=$nonloginfirstbuttonurl?>",
+                        "nonloginsecondbutton": "<?=$nonloginsecondbutton?>",
+                        "nonloginsecondbuttonurl": "<?=$nonloginsecondbuttonurl?>",
+                        "pointUrl": "<?= $block->getUrl('hotai_point/detail') ?>",
+                        "ticketUrl": "<?= $block->getUrl('member/ticket/index') ?>"
+                    }
+                }
+            }
+        }
+    }
+</script>

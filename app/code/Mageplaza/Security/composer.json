@@ -1,0 +1,28 @@
+{
+  "name": "mageplaza/module-security",
+  "description": "Mageplaza Security Extension",
+  "require": {
+    "mageplaza/module-core": "^1.5.13",
+    "mageplaza/module-google-recaptcha": "^4.0.3",
+    "mageplaza/module-two-factor-authentication": "^4.0.4"
+  },
+  "type": "magento2-module",
+  "version": "4.0.6",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Mageplaza",
+      "email": "support@mageplaza.com",
+      "homepage": "https://www.mageplaza.com",
+      "role": "Technical Support"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Mageplaza\\Security\\": ""
+    }
+  }
+}

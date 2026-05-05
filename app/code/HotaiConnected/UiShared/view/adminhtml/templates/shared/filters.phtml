@@ -1,0 +1,196 @@
+<?php
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var $block \Magento\Backend\Block\Template */
+
+// 從 block 取得 filtersData，如果沒有則使用空陣列
+$filtersData = $block->getData('filters_data') ?: [];
+
+?>
+<!-- Magento 標準篩選器區塊（根據正確的 HTML 結構） -->
+<div class="admin__data-grid-header">
+    <div class="admin__data-grid-header-row">
+       
+        <!-- ========================================
+             欄位可見性控制 (Magento Standard UI)
+             ======================================== -->
+        <div class="admin__data-grid-actions-wrap" id="filters-visibility">
+            <div class="admin__action-dropdown-wrap admin__data-grid-action-columns" data-role="columns-visibility">
+                <button class="admin__action-dropdown" type="button" id="filters-visibility__toggle">
+                    <span class="admin__action-dropdown-text"><?= __('Columns') ?></span>
+                </button>
+                <div class="admin__action-dropdown-menu admin__data-grid-action-columns-menu _active" id="filters-visibility__menu" style="display: none;">
+                    <div class="admin__action-dropdown-menu-header" id="filters-visibility__stat">
+                        <!-- 統計文字由 JavaScript 動態生成 -->
+                    </div>
+                    <div class="admin__action-dropdown-menu-content" id="filters-visibility__columns-checkboxes">
+                        <!-- checkbox 將由 JavaScript 動態生成 -->
+                        <div class="columns-loading" style="text-align: center; padding: 20px;">
+                            <?= __('Loading columns...') ?>
+                        </div>
+                    </div>
+                    <div class="admin__action-dropdown-menu-footer">
+                        <div class="admin__action-dropdown-footer-secondary-actions">
+                            <button class="action-tertiary" type="button" id="filters-visibility__reset">
+                                <?= __('Reset') ?>
+                            </button>
+                        </div>
+                        <div class="admin__action-dropdown-footer-main-actions">
+                            <button class="action-tertiary" type="button" id="filters-visibility__cancel">
+                                <?= __('Cancel') ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 篩選器按鈕（使用正確的結構） -->
+        <div class="data-grid-filters-actions-wrap" id="filters-wrapper">
+            <div class="data-grid-filters-action-wrap">
+                <button class="action-default" id="filters-toggle" data-action="grid-filter-expand">
+                    <span><?= __('Filters') ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 篩選器內容（使用正確的結構） -->
+    <form class="admin__data-grid-filters-wrap" id="filters-form" data-part="filter-form">
+
+        <fieldset class="admin__fieldset admin__data-grid-filters">
+            <legend class="admin__filters-legend">
+                <span><?= __('Advanced filter') ?></span>
+            </legend>
+
+            <?php foreach ($filtersData as $data) : ?>
+
+                <!-- <?= $data['note'] ?> -->
+                <fieldset class="admin__form-field">
+                    
+                    <div class="admin__form-field-label">
+                        <span><?= __($data['label']) ?></span>
+                    </div>
+                    <div class="admin__form-field-control" data-type="<?= $data['type'] ?>">
+                        
+                        <?php if ($data['type'] === 'text') : ?>
+                            <input 
+                                type="text"
+                                name="<?= $data['name'] ?>"
+                                class="admin__control-text"
+                                placeholder="<?= __($data['placeholder']) ?>" 
+                                <?php if (isset($data['maxlength']) && (int)$data['maxlength'] > 0) : ?>
+                                    maxlength="<?= $data['maxlength'] ?>"
+                                <?php endif; ?>
+                            />
+                        <?php endif; ?>
+
+                        <?php if ($data['type'] === 'date-range') : ?>
+                            <div>
+                                <label for="<?= $data['date_from']['name'] ?>" class="date-label">
+                                    <span><?= __('From:') ?></span>
+                                </label>
+                                <input type="text" 
+                                    id="<?= $data['date_from']['name'] ?>" 
+                                    name="<?= $data['date_from']['name'] ?>" 
+                                    class="admin__control-text" 
+                                    readonly
+                                    <?php if ($data['date_from']['required']) : ?>
+                                        required
+                                    <?php endif; ?>
+                                    <?php if ($data['date_from']['validate']) : ?>
+                                        data-validate="{required: true}"
+
+                                        <?php if ($data['date_from']['msg_required']) : ?>
+                                        data-msg-required="<?= __($data['date_from']['msg_required']) ?>"
+                                        <?php endif; ?>
+
+                                    <?php endif; ?>
+                                >
+                            </div>
+                            <div>
+                                <label for="<?= $data['date_to']['name'] ?>" class="date-label">
+                                    <span><?= __('To:') ?></span>
+                                </label>
+                                <input type="text" 
+                                    id="<?= $data['date_to']['name'] ?>" 
+                                    name="<?= $data['date_to']['name'] ?>" 
+                                    class="admin__control-text" 
+                                    readonly
+                                    <?php if ($data['date_to']['required']) : ?>
+                                        required
+                                    <?php endif; ?>
+                                    <?php if ($data['date_to']['validate']) : ?>
+                                        data-validate="{required: true}"
+
+                                        <?php if ($data['date_to']['msg_required']) : ?>
+                                        data-msg-required="<?= __($data['date_to']['msg_required']) ?>"
+                                        <?php endif; ?>
+
+                                    <?php endif; ?>
+                                >
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($data['type'] === 'multiselect') : ?>
+                            <select id="<?= $data['name'] ?>" 
+                                    name="<?= $data['name'] ?>" 
+                                    multiple 
+                                    class="admin__control-select"
+                                    data-placeholder="<?= $data['placeholder'] ?>"
+                                >
+                                <!-- 選項由 JavaScript 動態建立 -->
+                                
+                                <?php if (!empty($data['options'])) : ?>
+                                    <?php foreach ($data['options'] as $option) : ?>
+                                        <option value="<?= $option['value'] ?>"><?= $option['label'] ?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        <?php endif; ?>
+
+                        <?php if ($data['type'] === 'select') : ?>
+                            <select id="<?= $data['name'] ?>" 
+                                name="<?= $data['name'] ?>" 
+                                class="admin__control-select" 
+                                data-placeholder="<?= $data['placeholder'] ?>"
+                                <?php if (isset($data['required']) && $data['required']) : ?>
+                                    required
+                                <?php endif; ?>
+                                <?php if (isset($data['validate']) && $data['validate']) : ?>
+                                    data-validate="{required: true}"
+                                    <?php if (isset($data['msg_required'])) : ?>
+                                    data-msg-required="<?= __($data['msg_required']) ?>"
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            >
+                                <option value=""><?= __($data['placeholder']) ?></option>
+                                <?php if (!empty($data['options'])) : ?>
+                                    <?php foreach ($data['options'] as $option) : ?>
+                                    <option value="<?= $option['value'] ?>"><?= $option['label'] ?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
+                        <?php endif; ?>
+
+                    </div>
+                </fieldset>
+            <?php endforeach; ?>
+
+        </fieldset>
+
+        <div class="admin__data-grid-filters-footer">
+            <div class="admin__footer-main-actions">
+                <button class="action-tertiary" type="button" data-action="grid-filter-clear" id="clear-filters">
+                    <span><?= __('Clear') ?></span>
+                </button>
+                <button class="action-secondary" type="button" data-action="grid-filter-apply" id="apply-filters">
+                    <span><?= __('Search') ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

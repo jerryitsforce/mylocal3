@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:ObjectManager/etc/config.xsd">
+    <!-- set cart item postition and sort-->
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="branch8_cart_item_position" type="Branch8\CartItemPosition\Plugin\Magento\Quote\Model\Quote\SetCartItemPosition"/>
+    </type>
+</config>

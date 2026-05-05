@@ -1,0 +1,55 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/** @var $block \Branch8\MarketplaceStaging\Block\CustomOption\StagingOptions */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+
+$productType = $block->getRequest()->getParam('type');
+$productId = (int)$block->getRequest()->getParam('id');
+$productTypeEdit = $block->getProductType();
+$marketplaceStagingHelper = $this->helper('Branch8\MarketplaceStaging\Helper\Data');
+$product = $block->getProduct();
+$set = $product?->getAttributeSetId();
+$set = $block->getRequest()->getParam('set') ?? $set;
+$allowedSets = $this->helper(\Webkul\Marketplace\Helper\Data::class)->getAllowedSets();
+?>
+
+<?php if ($productType != 'grouped' && $productTypeEdit != 'grouped'): ?>
+<?php $hint = $marketplaceStagingHelper->getHintHtml('custom_option') ?>
+<div class="fieldset-wrapper" id="staging-product-custom-options-wrapper" data-block="staging-product-custom-options" style="display: none;">
+    <div class="fieldset-wrapper-title<?php if ($hint): ?> _with-tooltip-top<?php endif ?>">
+        <strong class="title">
+            <span><?= $block->escapeHtml(__('Custom Options')) ?></span>
+        </strong>
+        <?= $hint ?>
+    </div>
+    <div class="fieldset-wrapper-content" id="staging-product-custom-options-content"
+         data-role="product-custom-options-content">
+        <fieldset class="fieldset">
+            <div class="messages">
+                <div class="message message-error" id="staging-dynamic-price-warning" style="display: none;">
+                    <div class="message-inner">
+                        <div class="message-content">
+                            <?= $block->escapeHtml(__(
+                                'We can\'t save custom-defined options for bundles with dynamic pricing.'
+                            )) ?></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="staging_product_options_container" class="sortable-wrapper">
+                <div id="staging_product_options_container_top"></div>
+                <?= $block->getOptionsBoxHtml() ?>
+            </div>
+
+            <div class="actions">
+                <?= $block->getChildHtml('import_button') ?>
+                <?= $block->getAddButtonHtml() ?>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<?php endif; ?>

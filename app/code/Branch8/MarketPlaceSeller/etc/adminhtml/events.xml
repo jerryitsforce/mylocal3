@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_customer_save_after">
+        <observer name="webkul_marketplace_adminhtml_customer_save_after_observer_disable_seller"
+                  instance="Branch8\MarketPlaceSeller\Observer\DisableSeller" />
+    </event>
+    <event name="adminhtml_customer_prepare_save">
+        <observer name="webkul_marketplace_adminhtml_customer_save_after_correct_seller_data"
+                  instance="Branch8\MarketPlaceSeller\Observer\CorrectSellerData" />
+    </event>
+</config>

@@ -1,0 +1,228 @@
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+//
+//  Rounded corner appearance styles
+//  _____________________________________________
+
+.pagebuilder-slide[data-appearance='rounded-corner'] {
+    .pagebuilder-overlay {
+        -moz-transition: background-color 500ms ease;
+        -o-transition: background-color 500ms ease;
+        -webkit-transition: background-color 500ms ease;
+        transition: background-color 500ms ease;
+
+        &.wysiwyg-container {
+            .tox-tinymce-inline {
+                left: 29px !important;
+                right: 29px;
+            }
+
+            .pagebuilder-empty-slide {
+                padding: 30px;
+            }
+        }
+    }
+}
+
+.pagebuilder-banner-rounded-corner{
+    display: flex;
+    padding: 0 !important;
+    background: none !important;
+    width: 100%;
+
+    .pagebuilder-banner-content{
+        background-image: none !important;
+        min-height: 0 !important;
+        border: none !important;
+        border: none !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
+    .pagebuilder-banner-wrapper{
+        position: relative;
+        max-width: 65%;
+        padding: 0 !important;
+        border: none !important;
+        background-color: transparent !important;
+        min-height: 0 !important;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+
+        img{
+            display: inline-block;
+            visibility: hidden;
+        }
+    }
+
+    .rounded-corner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        height: 40%;
+
+
+        svg{
+            height: 100%;
+            width: auto;
+        }
+    }
+
+    .pagebuilder-banner-content{
+        flex: 1;
+        display: flex;
+    }
+
+    .pagebuilder-overlay{
+        flex: 1;
+    }
+
+    &.align-center{
+        .pagebuilder-banner-content{
+            justify-content: center;
+        }
+    }
+
+    &.align-right{
+        .pagebuilder-banner-content{
+            justify-content: flex-end;
+        }
+    }
+}
+
+[data-appearance="rounded-corner"]{
+    &.align-middle{
+        .pagebuilder-banner-content{
+            align-items: center;
+        }
+    }
+
+    &.align-bottom{
+        .pagebuilder-banner-content{
+            align-items: flex-end;
+        }
+    }
+}
+
+.vip-member-section{
+    .pagebuilder-banner-content{
+        .pagebuilder-button-link{
+            &:after{
+                content: '\e626';
+                -webkit-font-smoothing: antialiased;
+                font-family: 'Admin Icons';
+                font-size: 16px;
+                speak: none;
+                display: inline-block;
+                transform: rotate(180deg);
+            }
+        }
+    }
+}
+
+#html-body .popular-topic-category-section{
+    .pagebuilder-column-group.invisible,
+    [data-content-type="divider"].invisible{
+        opacity: 0.7;
+    }
+    .view-less-btn,
+    .view-more-btn{
+        [data-element="empty_link"]{
+            cursor: pointer;
+        }
+    }
+}
+
+/* Show toggle button Show / Hide Editor */
+#togglepagebuilder_banner_form_message,
+#togglepagebuilder_slide_form_content{
+    display: block !important;
+}
+
+// Recommendations Table List
+.spectrum--lightest .spectrum-Table-headCell,
+.spectrum--lightest .spectrum-Table-cell{
+    &:first-child{
+        min-width: 160px;
+    }
+    
+}
+
+// Recommendations Top Bar
+.product_recommendations-index-index .top-bar{
+    clear:both;
+    margin-top: 0 !important;
+}
+
+
+@media screen and (min-width: 1024px) {
+    [data-appearance="rounded-corner"]{
+        &.pagebuilder-desktop-normal-appearance{
+            position: relative;
+            .pagebuilder-banner-rounded-corner{
+                .rounded-corner{
+                display: none;
+                }
+                .pagebuilder-banner-wrapper{
+                max-width: 100%;
+                width: 100%;
+                border-top-left-radius: inherit !important;
+                border-bottom-left-radius: inherit !important;
+                }
+        
+                .pagebuilder-banner-content{
+                position: absolute;
+                z-index: 1;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                top: 0;
+                background: linear-gradient(180deg, rgba(242, 242, 242, 0) 47.65%, rgba(242, 242, 242, 0.71) 67.81%, #F2F2F2 100%) !important;
+                border-radius: inherit !important
+                }
+            }
+        }
+    }
+
+    #html-body .pagebuilder-column-group.dark-theme-mobile{
+        .content-type-container{
+            background-color: transparent;
+        }
+    }
+
+    .vip-member-section{
+        .pagebuilder-column{
+            [data-content-type="banner"]{
+                display: flex;
+                height: 100%;
+
+                > a,
+                > div{
+                    display: flex;
+                    width: 100%;
+                }
+            }
+
+            .pagebuilder-content-type-wrapper{
+                height: 100%;
+            }
+        }
+
+        .pagebuilder-column-group.dark-theme-mobile{
+            background-color: transparent;
+        }
+    }
+
+
+}
+
+// .adminhtml-cms_page-edit,
+// .cms-block-edit {
+//     .page-content .message.warning {
+//         display: none!important;
+//     }
+// }

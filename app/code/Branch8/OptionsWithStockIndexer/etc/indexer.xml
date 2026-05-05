@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="branch8_options_stock_index" view_id="branch8_options_stock_index"
+             class="Branch8\OptionsWithStockIndexer\Model\Indexer\Stock">
+        <title translate="true">Branch8 Variation Stock Index</title>
+        <description translate="true"><![CDATA[Index all product quantity and it's combo]]></description>
+        <saveHandler class="Branch8\OptionsWithStockIndexer\Model\Indexer\Stock\IndexerHandler"/>
+        <structure class="Branch8\OptionsWithStockIndexer\Model\Indexer\Stock\IndexStructure"/>
+        <dependencies>
+            <indexer id="inventory"/>
+        </dependencies>
+    </indexer>
+</config>

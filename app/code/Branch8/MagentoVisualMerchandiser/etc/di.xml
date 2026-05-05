@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--<preference for="Magento\VisualMerchandiser\Model\Category\Builder"
+                type="Branch8\MagentoVisualMerchandiser\Override\Magento\VisualMerchandiser\Model\Category\Builder"/>-->
+    <type name="Magento\VisualMerchandiser\Model\Rules">
+        <plugin name="index_vm_rule" type="Branch8\MagentoVisualMerchandiser\Plugin\Magento\VisualMerchandiser\Model\RulesPlugin" />
+    </type>
+    <type name="YourNamespace\YourModule\Logger\Handler">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </type>
+    <virtualType name="AuditReindexMmerchadiseRuleLogDebug" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/audit.reindex.vmmerchadise.rule.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="AuditReindexMmerchadiseRuleLogDebugLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">AuditReindexMmerchadiseRuleLogDebug</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\MagentoVisualMerchandiser\Helper\Logger">
+        <arguments>
+            <argument name="logger" xsi:type="object">AuditReindexMmerchadiseRuleLogDebugLogger</argument>
+        </arguments>
+    </type>
+    <type name="Magento\VisualMerchandiser\Model\Rules">
+        <plugin name="index_vm_rule" type="Branch8\MagentoVisualMerchandiser\Plugin\Magento\VisualMerchandiser\Model\RulesPlugin" />
+    </type>
+
+    <type name="Magento\VisualMerchandiser\Observer\CategorySaveMerchandiserData">
+        <plugin name="ignore_rebuild_smart_category" type="Branch8\MagentoVisualMerchandiser\Plugin\Magento\VisualMerchandiser\Observer\CategorySaveMerchandiserDataPlugin" />
+    </type>
+    <type name="Magento\VisualMerchandiser\Observer\CatalogCategorySaveBefore">
+        <plugin name="ignore_rebuild_smart_category"
+                type="Branch8\MagentoVisualMerchandiser\Plugin\Magento\VisualMerchandiser\Observer\CatalogCategorySaveBeforePlugin" />
+    </type>
+</config>

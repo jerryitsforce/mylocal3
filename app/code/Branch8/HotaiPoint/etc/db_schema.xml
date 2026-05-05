@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+        <table name="hotai_point_api_record" resource="default" engine="innodb" comment="和泰點數中心API請求紀錄(主要用於和泰點數中心的每日交易總檔同步)">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+
+                <column xsi:type="int" name="trans_type" unsigned="true" nullable="false" identity="false" comment="交易類型 - 1:即時兌點, 2:即時累兌點, 3:即時累點, 4:批次累點, 5:即時退貨, 6:無金額即時累點" />
+                <column xsi:type="varchar" name="trace_no" nullable="false" length="20" comment="和泰點數中心系統追蹤號" />
+                <column xsi:type="varchar" name="bu_no" nullable="false" length="5" comment="特約商通路代碼" />
+                <column xsi:type="varchar" name="oneid" nullable="false" length="36" comment="和泰系統的會員序號" />
+                <column xsi:type="varchar" name="member_account" nullable="false" length="16" comment="和泰系統的會員帳號, 若為國外會員需在手機號碼前帶上國碼, 並用使用-分隔, 本國會員不強制寫入國碼" />
+                <column xsi:type="varchar" name="oneid_type" nullable="false" length="1" comment="和泰系統的會員類別 - P:自然人, C:法人" />
+                <column xsi:type="varchar" name="rs_no" nullable="true" length="10" comment="據點代碼, trans_type為[1、2、3、4、6]時必填, trans_type為[5]時空值" />
+                <column xsi:type="varchar" name="pos_no" nullable="true" length="6" comment="POS機號, trans_type為[1、2、3、4、6]時選填, trans_type為[5]時空值" />
+                <column xsi:type="varchar" name="trans_s_n" nullable="false" length="30" comment="特約商系統交易序號(Magento訂單的唯一識別碼)" />
+                <column xsi:type="datetime" name="trans_datetime" nullable="false" comment="交易時間" />
+                <column xsi:type="varchar" name="trans_desc" nullable="true" length="50" comment="交易備註" />
+                <column xsi:type="varchar" name="add_type" nullable="true" length="1" comment="累點類型 - 1:一般交易累點 / 行銷贈點, 2:點數購買(未開放使用), trans_type為[2、3、6]時必填, trans_type為[1、4、5]時空值" />
+                <column xsi:type="int" name="amt" unsigned="true" nullable="true" identity="false" comment="支付金額, 整數不含小數點, trnas_type為[2、3、4]時必填, trnas_type為[1、5、6]時空值" />
+                <column xsi:type="int" name="point_amt" unsigned="true" nullable="true" identity="false" comment="交易可累點金額, 整數不含小數點, trans_type為[2、3、4]時必填, trans_type為[1、5、6]時空值" />
+                <column xsi:type="int" name="deduction_point" unsigned="true" nullable="true" identity="false" comment="兌點數, 整數不含小數點, trans_type為[1、2]時必填, trans_type為[3、4、5、6]時空值" />
+                <column xsi:type="varchar" name="activity_codes" nullable="true" length="160" comment="行銷代碼(可多筆, 若為多筆時, 請用半形逗號分隔), trans_type為[2、3、4]時選填, trans_type為[1、5、6]時空值" />
+                <column xsi:type="varchar" name="source_trace_no" nullable="true" length="20" comment="點數交易取消時, 需帶入原始累、兌交易的和泰點數中心單號(例:累點交易單號A01取消交易時 - 特約商退貨, 則此處需帶A01), [transType]為[5]時必填, [transType]為[1、2、3、4、6]時空值" />
+                <column xsi:type="varchar" name="app_id" nullable="true" length="30" comment="裝置來源(平台代碼), trans_type為[4]時必填, trans_type為[1、2、3、5、6]時空值" />
+                <column xsi:type="int" name="add_point" unsigned="true" nullable="true" identity="false" comment="累點數, 整數不含小數點, trans_type為[6]時必填, trans_type為[1、2、3、4、5]時空值" />
+                <column xsi:type="varchar" name="point_valid_type" nullable="true" length="1" comment="點數效期類型 - 1:一般點數效期, 2:自訂點數效期, trans_type為[6]時必填, trans_type為[1、2、3、4、5]時空值" />
+                <column xsi:type="varchar" name="point_valid_date" nullable="true" comment="點數效期截止日期: trans_type為[6]且point_valid_type為[2]時必填, trans_type為[1、2、3、4、5] 時空值, 由於值會類似202512, 所以不使用date格式儲存" />
+
+                <column xsi:type="int" name="commit_status" nullable="false" identity="false" default="0" comment="交易是否完成commit - 0:未commit, 1:已commit" />
+                <column xsi:type="datetime" name="commit_datetime" nullable="true" comment="完成commit時間" />
+                <column xsi:type="int" name="sync_status" nullable="false" identity="false" default="0" comment="每日交易總檔同步狀態 - 0:未同步, 1:已同步" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="資料創建時間" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="資料更新時間" />
+
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+
+                <constraint xsi:type="unique" referenceId="HOTAI_POINT_API_RECORD_TRACE_NO">
+                        <column name="trace_no"/>
+                </constraint>
+
+                <index referenceId="HOTAI_POINT_API_RECORD_COMMIT_DATETIME" indexType="btree">
+                        <column name="commit_datetime"/>
+                </index>
+        </table>
+
+        <table name="sales_order">
+                <column xsi:type="int" name="hotai_point_deduction_point_complete" unsigned="false" nullable="false" default="0" comment="和泰點數兌點狀態(-1: 例外失敗, 0: 未執行/不須執行, 1: 底下訂單皆完成兌點Commit或Cancel流程, 2: 正在對底下訂單進行Commit流程中, 3: 正在對底下訂單進行Cancel流程中)" />
+                <column xsi:type="timestamp" name="hotai_point_deduction_point_last_handle_time" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="和泰點數最後執行兌點相關處理時間" />
+                <column xsi:type="int" name="hotai_point_add_point_complete" unsigned="true" nullable="false" default="0" comment="和泰點數累點狀態(需要訂單底下所有商品皆累點成功)" />
+                <column xsi:type="int" name="hotai_point_deduction_point_retry_status" unsigned="false" nullable="false" default="0" comment="和泰點數扣點再次請求狀態(定義見app/code/Branch8/HotaiPoint/Model/DeductionPointRetryStatus.php)" />
+        </table>
+
+        <table name="sales_order_item">
+                <column xsi:type="int" name="hotai_point_deduction_point_sync_from_quote_item_status" unsigned="true" nullable="false" default="0" comment="是否已將兌點資料從quote_item同步過來(0: 未同步, 1: 已同步)" />
+                <column xsi:type="varchar" name="hotai_point_deduction_point_trace_no" nullable="true" length="20" comment="和泰點數中心兌點系統追蹤號" />
+                <column xsi:type="int" name="hotai_point_deduction_point_progress_status" unsigned="false" nullable="false" default="0" comment="和泰點數兌點流程狀態(-1: 例外失敗, 0: 未執行/不須執行, 1: 已圈存待後續Commit或Cancel, 2: 已Commit, 3: 已Cancel)" />
+                <column xsi:type="varchar" name="hotai_point_deduction_point_trans_s_n" nullable="true" length="30" comment="特約商系統交易序號" />
+                <column xsi:type="datetime" name="hotai_point_deduction_point_trans_datetime" nullable="true" comment="和泰點數兌點交易時間" />
+                <column xsi:type="int" name="hotai_point_deduction_point_commit_or_cancel_fail_counter" unsigned="true" nullable="false" default="0" comment="和泰點數兌點Commit或Cancel請求失敗次數" />
+                <column xsi:type="text" name="hotai_point_deduction_point_memo" nullable="true" comment="和泰點數兌點備註" />
+
+                <column xsi:type="varchar" name="hotai_point_add_point_trace_no" nullable="true" length="20" comment="和泰點數中心累點系統追蹤號" />
+                <column xsi:type="int" name="hotai_point_add_point_success" unsigned="true" nullable="false" default="0" comment="和泰點數累點狀態(0: 未執行/未成功, 1: 已成功)" />
+                <column xsi:type="varchar" name="hotai_point_add_point_trans_s_n" nullable="true" length="30" comment="特約商系統交易序號" />
+                <column xsi:type="datetime" name="hotai_point_add_point_trans_datetime" nullable="true" comment="和泰點數累點交易時間" />
+                <column xsi:type="text" name="hotai_point_add_point_memo" nullable="true" comment="和泰點數累點備註" />
+
+                <column xsi:type="varchar" name="hotai_point_return_point_trace_no" nullable="true" length="20" comment="和泰點數中心退貨系統追蹤號" />
+                <column xsi:type="datetime" name="hotai_point_return_point_trans_datetime" nullable="true" comment="和泰點數退點交易時間" />
+
+                <constraint xsi:type="unique" referenceId="SALES_ORDER_ITEM_HOTAI_POINT_DEDUCTION_POINT_TRANS_S_N">
+                        <column name="hotai_point_deduction_point_trans_s_n"/>
+                </constraint>
+
+                <constraint xsi:type="unique" referenceId="SALES_ORDER_ITEM_HOTAI_POINT_ADD_POINT_TRANS_S_N">
+                        <column name="hotai_point_add_point_trans_s_n"/>
+                </constraint>
+        </table>
+
+        <table name="quote">
+                <column xsi:type="int" name="hotai_point_deduction_point_cancel_retry_status" unsigned="false" nullable="false" default="0" comment="和泰點數需嘗試用排程取消圈存狀態(定義見app/code/Branch8/HotaiPoint/Model/DeductionPointCancelRetryStatus.php)" />
+        </table>
+
+        <table name="quote_item">
+                <column xsi:type="varchar" name="hotai_point_deduction_point_trace_no" nullable="true" length="20" comment="和泰點數中心兌點系統追蹤號" />
+                <column xsi:type="int" name="hotai_point_deduction_point_progress_status" unsigned="false" nullable="false" default="0" comment="和泰點數兌點流程狀態(-1: 例外失敗, 0: 未執行/不須執行, 1: 已圈存待後續Commit或Cancel, 2: 正在執行Commit, 3: 已Commit, 4: 正在執行Cancel, 5: 已Cancel)" />
+                <column xsi:type="varchar" name="hotai_point_deduction_point_trans_s_n" nullable="true" length="30" comment="特約商系統交易序號" />
+                <column xsi:type="datetime" name="hotai_point_deduction_point_trans_datetime" nullable="true" comment="和泰點數兌點交易時間" />
+                <column xsi:type="int" name="hotai_point_deduction_point_commit_or_cancel_fail_counter" unsigned="true" nullable="false" default="0" comment="和泰點數兌點Commit或Cancel請求失敗次數" />
+                <column xsi:type="text" name="hotai_point_deduction_point_memo" nullable="true" comment="和泰點數兌點備註" />
+
+                <constraint xsi:type="unique" referenceId="QUOTE_ITEM_HOTAI_POINT_DEDUCTION_POINT_TRANS_S_N">
+                        <column name="hotai_point_deduction_point_trans_s_n"/>
+                </constraint>
+        </table>
+
+        <table name="hotai_point_transfer_point_history" resource="default" engine="innodb" comment="和泰點數轉移點數紀錄">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+                <column xsi:type="int" name="from_customer_id" unsigned="true" nullable="false" identity="false" comment="轉移點數發起方會員的Magento customer ID" />
+                <column xsi:type="varchar" name="from_customer_oneid" nullable="false" comment="轉移點數發起方會員的和泰oneid" />
+                <column xsi:type="varchar" name="from_customer_member_account" nullable="false" comment="轉移點數發起方會員的和泰member account" />
+                <column xsi:type="varchar" name="to_customer_oneid" nullable="false" comment="轉移點數接收方會員的和泰oneid" />
+                <column xsi:type="varchar" name="to_customer_member_account" nullable="false" comment="轉移點數接收方會員的和泰member account" />
+                <column xsi:type="int" name="transfer_point" unsigned="true" nullable="false" identity="false" comment="轉移點數" />
+                <column xsi:type="varchar" name="trans_s_n" nullable="false" length="30" comment="轉移點數交易序號" />
+                <column xsi:type="timestamp" name="trans_at" on_update="false" nullable="false" comment="轉移點數時間" />
+                <column xsi:type="int" name="is_success" nullable="false" identity="false" comment="轉移點數是否成功 - 0:失敗, 1:成功" />
+                <column xsi:type="text" name="memo" nullable="true" comment="轉移點數備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="資料創建時間" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="資料更新時間" />
+
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+        </table>
+
+        <table name="hotai_point_using_coupon_history" resource="default" engine="innodb" comment="和泰點數登錄點數紀錄">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵" />
+                <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" identity="false" comment="登錄點數的Magento customer ID" />
+                <column xsi:type="varchar" name="trans_s_n" nullable="false" length="30" comment="登錄點數交易序號" />
+                <column xsi:type="timestamp" name="trans_at" on_update="false" nullable="false" comment="登錄點數時間" />
+                <column xsi:type="varchar" name="coupon_no" nullable="false" length="30" comment="登錄點數時輸入的序號" />
+                <column xsi:type="int" name="is_success" nullable="false" identity="false" comment="登錄點數是否成功 - 0:失敗, 1:成功" />
+                <column xsi:type="text" name="memo" nullable="true" comment="登錄點數備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="資料創建時間" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="資料更新時間" />
+
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+        </table>
+</schema>

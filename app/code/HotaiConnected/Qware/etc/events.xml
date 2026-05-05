@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="hotai_point_deduction_commit_flow_end">
+        <observer name="qware_ticket_request_observer" instance="HotaiConnected\Qware\Observer\RequestQwareApiForTicket" />
+    </event>
+
+    <!--<event name="catalog_product_save_after">-->
+        <!-- <observer name="qware_auto_create_staging_observer" instance="HotaiConnected\Qware\Observer\AutoCreateStaging" /> -->
+    <!--</event>-->
+</config>

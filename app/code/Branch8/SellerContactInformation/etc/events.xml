@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_customer_save_after">
+        <observer name="seller_info_customer_save_after_observer" 
+                  instance="Branch8\SellerContactInformation\Observer\AdminhtmlCustomerSaveAfterObserver" />
+    </event>
+    <event name="catalog_product_save_before">
+        <observer name="seller_contract_save_commission_source_for_api" instance="Branch8\SellerContactInformation\Observer\ApiSetCommissionSource"/>
+    </event>
+</config>

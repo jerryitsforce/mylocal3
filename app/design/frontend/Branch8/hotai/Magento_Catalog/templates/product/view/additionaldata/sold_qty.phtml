@@ -1,0 +1,22 @@
+<?php
+/**
+ * @var $block Magento\Catalog\Block\Product\View\Description
+ */
+?>
+<?php
+$_helper = $this->helper(Branch8\Catalog\Helper\Data::class);
+$_product = $block->getProduct();
+
+if (!$_product instanceof \Magento\Catalog\Model\Product) {
+    return;
+}
+$sold_qty = (int)$_helper->getQtyOrdered($_product->getId());
+$sold_qty = number_format($sold_qty, 0, '.', ',');
+?>
+<?php if($sold_qty > 0) {
+    if($sold_qty <= 100) {?>
+        <div class="sold-qty"><?= $block->escapeHtml(__("%1 units sold", $sold_qty)); ?></div>
+    <?php } else { ?>
+        <div class="sold-qty"><?= $block->escapeHtml(__("Over %1 units sold", $sold_qty)); ?></div>
+    <?php } ?>
+<?php } ?>

@@ -1,0 +1,80 @@
+<div class="customer-profile"
+     data-role="customer-profile">
+    <table>
+        <tbody class="customer-details">
+        <tr>
+            <td colspan="4" class="main-heading top"
+                data-bind="text:conversationData().customerProfileData.name">
+            </td>
+        </tr>
+        <tr>
+            <td class="bottom-heading top" colspan="4"
+                data-bind="text:conversationData().customerProfileData.email"
+            ></td>
+        </tr>
+        <tr data-bind="visible: true">
+            <td colspan="4" class="view-orders top">
+                <a
+                    target="_blank"
+                    data-bind="href:conversationData().customerProfileData.orderHistoryLink,i18n:'View Orders'">
+                </a>
+            </td>
+        </tr>
+        <tr data-bind="visible: !true">
+            <td colspan="4" class="view-orders top no-orders">
+                No Orders
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="profile-page_img">
+                <img alt="address"
+                     data-bind="attr: {'src': window.chatboxCoreConfig.address}"
+                />
+            </td>
+            <td colspan="3" class="sub-heading" data-bind="text:conversationData().customerProfileData.address"></td>
+        </tr>
+        <tr>
+            <td class="bottom-heading details" colspan="3" data-bind="i18n:'Address'"></td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="profile-page_img">
+                <img alt="phone"
+                     data-bind="attr: {'src': window.chatboxCoreConfig.phone}"
+                />
+            </td>
+            <td class="sub-heading details" data-bind="text:conversationData().customerProfileData.phone_number"></td>
+            <td rowspan="2" class="profile-page_img">
+                <img alt="gender"
+                     data-bind="attr: {'src': window.chatboxCoreConfig.gender}"
+                >
+            </td>
+            <td class="sub-heading details">-</td>
+        </tr>
+        <tr>
+            <td class="bottom-heading details" data-bind="i18n:'Phone Number'"></td>
+            <td class="bottom-heading details" data-bind="i18n:'Gender'"></td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="profile-page_img">
+                <img alt="dollar"
+                     data-bind="attr: {'src': window.chatboxCoreConfig.dollarSign}"
+                />
+            </td>
+            <td class="sub-heading details" data-bind="html:conversationData().customerProfileData.seller_amount"></td>
+            <td rowspan="2" class="profile-page_img">
+                <img alt="orders"
+                     data-bind="attr: {'src': window.chatboxCoreConfig.orders}"
+                />
+            </td>
+            <td class="sub-heading details" data-bind="text:conversationData().customerProfileData.order_count"></td>
+        </tr>
+        <tr>
+            <td class="bottom-heading details" data-bind="i18n:'Base Total'"></td>
+            <td class="bottom-heading details" data-bind="i18n:'Orders'"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="back-link">
+        <a href="#" data-bind="click: closeProfilePanel">« <span data-bind="i18n:'Back'"></span></a>
+    </div>
+</div>

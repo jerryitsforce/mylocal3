@@ -1,0 +1,119 @@
+<?php
+/** @var \Branch8\Mmegamenu\Block\Mmegamenu $block */
+/** @var \Magento\Framework\Escaper $escaper */
+?>
+<?php $megaMenu = $block->getMegamenuItems(); ?>
+<?php $themeHelper = $this->helper('Branch8\Mmegamenu\Helper\Data') ?>
+<?php $objectManager =  \Magento\Framework\App\ObjectManager::getInstance(); ?>
+<?php $logo = $objectManager->get('\Magento\Theme\Block\Html\Header\Logo'); ?>
+
+<?php if((count($megaMenu)>0) || $themeHelper->getStoreConfig('megamenu/general/home')):?>
+    <?php if($themeHelper->getStoreConfig('megamenu/general/homeposition') == "" || $themeHelper->getStoreConfig('megamenu/general/homeposition') == 0): ?>
+        <?php $positionHomeLink = 0; ?>
+    <?php else: ?>
+        <?php $positionHomeLink = $themeHelper->getStoreConfig('megamenu/general/homeposition'); ?>
+    <?php endif ?>
+    <nav class="navigation" role="navigation" data-action="navigation">
+        <ul id="mainMenu" class="nav nav-main nav-main-menu">
+            <?php if(count($megaMenu)>0): ?>
+                <?php if($themeHelper->getStoreConfig('megamenu/general/home')): ?>
+                    <?php if($positionHomeLink <= 0): ?>
+                        <li class="mega-menu-item megamenu-homelink<?php if($themeHelper->getStoreConfig('megamenu/general/homelogo')): ?> logo-item<?php endif ?><?php if($block->isHomePage()): ?> active<?php endif ?>">
+                            <?php if($themeHelper->getStoreConfig('megamenu/general/homelogo')): ?>
+                                <?php if(!$block->isHomePage()): ?>
+                                    <a href="<?= $escaper->escapeUrl($block->getUrl()) ?>" class="level0">
+                                <?php else: ?>
+                                    <strong class="logo">
+                                <?php endif ?>
+                                <img src="<?= $escaper->escapeHtmlAttr($logo->getLogoSrc()) ?>"
+                                     alt="<?= $escaper->escapeHtmlAttr($logo->getLogoAlt()) ?>"
+                                     width="<?= $escaper->escapeHtmlAttr($logo->getLogoWidth()) ?>"
+                                     height="<?= $escaper->escapeHtmlAttr($logo->getLogoHeight()) ?>"
+                                >
+                                <?php if(!$block->isHomePage()): ?>
+                                    </a>
+                                <?php else: ?>
+                                    </strong>
+                                <?php endif ?>
+                            <?php else: ?>
+                                <a href="<?= $escaper->escapeUrl($block->getUrl()) ?>" class="level0">
+                                    <?= /* @noEscape */ $escaper->escapeHtml($themeHelper->getStoreConfig('megamenu/general/hometext')) ?>
+                                </a>
+                            <?php endif ?>
+                        </li>
+                        <?php $i=0; foreach($megaMenu as $item): $i++ ?>
+                            <li data-megamenu-id="<?= $escaper->escapeHtmlAttr($item->getData('megamenu_id')) ?>" class="<?= $escaper->escapeHtmlAttr($block->getClass($item)) ?>">
+                                <?= /* @noEscape */ $block->getMenuHtml($item) ?>
+                            </li>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <?php foreach($megaMenu as $item): ?>
+                            <?php if($item->getPosition() < $positionHomeLink): ?>
+                                <li data-megamenu-id="<?= $escaper->escapeHtmlAttr($item->getData('megamenu_id')) ?>" class="<?= $escaper->escapeHtmlAttr($block->getClass($item)) ?>">
+                                    <?= /* @noEscape */ $block->getMenuHtml($item) ?>
+                                </li>
+                            <?php endif ?>
+                        <?php endforeach ?>
+
+                        <li class="mega-menu-item megamenu-homelink<?php if($themeHelper->getStoreConfig('megamenu/general/homelogo')): ?> logo-item<?php endif ?><?php if($block->isHomePage()): ?> active<?php endif ?>">
+                            <?php if($themeHelper->getStoreConfig('megamenu/general/homelogo')): ?>
+                                <?php if(!$block->isHomePage()): ?>
+                                    <a href="<?= $escaper->escapeUrl($block->getUrl()) ?>" class="level0">
+                                <?php else: ?>
+                                    <strong class="logo">
+                                <?php endif ?>
+                                <img src="<?= $escaper->escapeHtmlAttr($logo->getLogoSrc()) ?>"
+                                     alt="<?= $escaper->escapeHtmlAttr($logo->getLogoAlt()) ?>"
+                                     width="<?= $escaper->escapeHtmlAttr($logo->getLogoWidth()) ?>"
+                                     height="<?= $escaper->escapeHtmlAttr($logo->getLogoHeight()) ?>"
+                                >
+                                <?php if(!$block->isHomePage()): ?>
+                                    </a>
+                                <?php else: ?>
+                                    </strong>
+                                <?php endif ?>
+                            <?php else: ?>
+                                <a href="<?= $escaper->escapeUrl($block->getUrl()) ?>" class="level0">
+                                    <?= $escaper->escapeHtml($themeHelper->getStoreConfig('megamenu/general/hometext')) ?>
+                                </a>
+                            <?php endif ?>
+                        </li>
+
+                        <?php foreach($megaMenu as $item): ?>
+                            <?php if($item->getPosition() >= $positionHomeLink): ?>
+                                <li data-megamenu-id="<?= $escaper->escapeHtmlAttr($item->getData('megamenu_id')) ?>" class="<?= $escaper->escapeHtmlAttr($block->getClass($item)) ?>">
+                                    <?= /* @noEscape */ $block->getMenuHtml($item) ?>
+                                </li>
+                            <?php endif ?>
+                        <?php endforeach ?>
+                    <?php endif ?>
+                <?php else: ?>
+                    <?php $subMenu = ''; ?>
+                    <?php $i=0; foreach($megaMenu as $item): $i++ ?>
+                        <?php if ($i < 3) : ?>
+                        <li data-megamenu-id="<?= $escaper->escapeHtmlAttr($item->getData('megamenu_id')) ?>" class="<?= $escaper->escapeHtmlAttr($block->getClass($item)) ?> testing-1 item-<?= $escaper->escapeHtmlAttr($item->getId()) ?>">
+                            <?= /* @noEscape */ $block->getMenuHtml($item) ?>
+                        </li>
+                        <?php else: ?>
+                        <?php
+                            $subMenu .= "<li data-megamenu-id='{$escaper->escapeHtmlAttr($item->getData('megamenu_id'))}' class='".$escaper->escapeHtmlAttr($block->getClass($item))." testing-2 item-".$escaper->escapeHtmlAttr($item->getId())."'>";
+                            $subMenu .= $block->getMenuHtml($item);
+                            $subMenu .= "</li>";
+                        ?>
+                        <?php endif ?>
+                    <?php endforeach ?>
+                    <?php if ($subMenu != '') : ?>
+                        <li class="sub-static-menu">
+                            <a href="javascript:void(0)" rel="nofollow" class="action btn-sub-menu">
+                                <span><?= $escaper->escapeHtml(__("主打館別")) ?></span>
+                            </a>
+                            <ul class="sub-static-menu-dropdown">
+                                <?= /** @noEscape */ $subMenu ?>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
+                <?php endif ?>
+            <?php endif ?>
+        </ul>
+    </nav>
+<?php endif ?>

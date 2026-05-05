@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var $block \Magento\Framework\View\Element\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $rmaDetails \Webkul\MpRmaSystem\Model\Details
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $helper \Branch8\Rma\Helper\Data
+ */
+$rmaDetails = $block->getRmaDetails();
+$rmaId = $rmaDetails->getId();
+$rmaModel = $block->getRmaModel();
+$helper = $this->helper(\Branch8\Rma\Helper\Data::class);
+//$rmaItemId = $helper->getRmaItems($rmaId)->getItemId();
+?>
+<div class="wk-mprma-container wk-mprma-view">
+    <div class="wk-title">
+        <?= $escaper->escapeHtml(__("Send Message")); ?>
+    </div>
+    <form method="get"
+          action="<?= $escaper->escapeUrl($block->getUrl('mprmasystem/rma/message')); ?>"
+          id="wk_rma_conversation_form" data-mage-init='{"validation":{}}'
+    >
+        <input name="form_key" type="hidden" value="<?= $block->getFormKey() ?>" />
+        <input type="hidden" value="<?= $escaper->escapeHtml($rmaId); ?>" name="rma_id">
+        <fieldset class="fieldset wk-mprma-fieldset wk-close-filedset">
+            <div class="field required">
+                <label for="Enter Message" class="label">
+                    <span><?= $escaper->escapeHtml(__("Enter Message")); ?></span>
+                    <span style="color:#e22626;margin-left: 5px;">*</span>
+                </label>
+                <div class="control">
+                                <textarea name="message" id="message"
+                                          class="textarea admin__control-textarea
+                                    required-entry validate-no-html-tags"></textarea>
+                </div>
+                <div class="wk-action-btn">
+                    <button title="Save" name="buttn"
+                            class="action save primary wk-send" type="submit">
+                        <span><?= $escaper->escapeHtml(__("Send Message")); ?></span>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

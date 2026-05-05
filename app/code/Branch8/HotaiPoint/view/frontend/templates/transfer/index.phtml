@@ -1,0 +1,154 @@
+<?php
+/** @var \Branch8\HotaiPoint\Block\Transfer\Index $block */
+?>
+
+<div class="hotai-point-form-container hotai-point-transfer-container" data-current-step="1">
+    <form class="hotai-point-form" id="hotai-point-transfer-form" action="#" data-mage-init='{"validation": {}}' data-step="1">
+       
+        <fieldset class="fieldset">
+            <div class="field required">
+                <label for="transfer-to" class="label">
+                    <span><?= $block->escapeHtml(__("Destination")); ?></span>
+                </label>
+                <div class="control">
+                    <input type="number"
+                    onwheel="this.blur()"
+                           data-validate="{required:true, 'required-number': true, 'validate-number':true, 'validate-tw-phone': true,'validate-fullwidth-special': true}"
+                           class="input-text required-entry"
+                           title="<?= $block->escapeHtml(__("Please enter phone number")); ?>"
+                           name="transfer-to"
+                           id="transfer-to"
+                           placeholder="<?= $block->escapeHtml(__("Please enter phone number")); ?>"
+                           aria-required="true">
+                </div>
+            </div>
+            <div class="field required">
+                <label for="transfer-point" class="label">
+                    <span><?= $block->escapeHtml(__("Transfer Points")) ?></span>
+                </label>
+                <div class="control">
+                    <input type="number"
+                    onwheel="this.blur()"
+                           data-validate="{required:true, 'required-number': true, 'validate-number':true,'validate-number-range':'1-<?= /* @noEscape */  $block->getMaximumPointTransfer()?>','validate-fullwidth-special': true}"
+                           class="input-text required-entry"
+                           title="<?= $block->escapeHtml(__("Please enter transfer points amount")); ?>"
+                           name="transfer-point"
+                           id="transfer-point"
+                           placeholder="<?= $block->escapeHtml(__("Please enter transfer points amount")); ?>"
+                           aria-required="true"
+                    >
+                           
+                </div>
+            </div>
+        </fieldset>
+        
+    </form>
+
+    <div class="hotai-point-form" data-step="2">
+        <div class="transfer-confirm-details fieldset-card" data-step="2">
+            <div class="section-content">
+                <div class="current-point">
+                    <span class="current-point-text"><?= $block->escapeHtml(__("Confirm Transfer Details")) ?></span>
+                    <span class="hotai-customer-points"></span>
+                </div>
+                <hr />
+                <div class="transfer-info">
+                    <span class="transfer-info-title"><?= $block->escapeHtml(__("Destination")); ?></span>
+                    <span class="transfer-info-phone"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="hotai-point-form" data-step="2">
+        <div class="hotai-point-additional-content sms-verification-code fieldset-card-md">
+            <fieldset class="fieldset">
+                <div class="field required">
+                    <label for="sms-verification-code" class="label">
+                        <span>簡訊驗證碼</span>
+                    </label>
+                    <p class="sms-verification-code-text">系統將傳送簡訊驗證碼至您目前登入的會員行動電話，請在收到簡訊後5分鐘內完成驗證</p>
+                    <div class="sms-verification-code-input-container">
+                        <label for="sms-verification-code" class="label">
+                            <span>****</span>
+                        </label>
+                        <span>-</span>
+                        <input type="text"
+                                class="input-text required-entry"
+                                title="<?= $block->escapeHtml(__("Please enter SMS verification code")); ?>"
+                                name="sms-verification-code"
+                                id="sms-verification-code"
+                                placeholder="<?= $block->escapeHtml(__("Please enter SMS verification code")); ?>"
+                                maxlength="6"
+                            >
+                    </div>
+                    <div class="sms-verification-code-resend-container" data-waiting="false">
+                        <button class="primary" id="get-sms-verification-code-btn" type="button">
+                            <span>重新發送驗證碼</span>
+                        </button>
+                        <div class="wait-message">
+                            <span class="wait-message-time"></span> 後可重新發送驗證碼
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+           
+
+
+            <div class="warning-message">
+                <ul>
+                    <li>
+                        點數移轉一經申請，不得因任何理由要求取消
+                    </li>
+                    <li>
+                        請注意每日取得簡訊驗證碼上限為5次
+                    </li>
+                    <li>
+                        若您的手機號碼有異動請聯繫<a target="_blank" href="https://www.hotaimember.com.tw/Contact/Member">和泰會員中心客服</a>為您服務  
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+  
+    <div class="hotai-point-transfer-confirm-container">
+        <div class="hotai-point-form" data-step="2">
+            <div class="actions">
+                <button class="action secondary action-submit" id="back-to-transfer-btn" type="button">
+                    <span>上一步</span>
+                </button>
+                <button class="action primary action-submit" id="confirm-transfer-btn" type="button" disabled>
+                    <span>確認轉移</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="hotai-point-additional-content">
+            <?= $block->getTransferStaticContent()?>
+        </div>
+    </div>
+
+
+    <div class="hotai-point-form" data-step="1">
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary action-submit" id="transfer-submit-btn" disabled>
+                    <span><?php /* @escapeNotVerified */ echo __('Get SMS Verification Code') ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <?= $block->getChildHtml('branch8_hotai_point_transfer_sms_limit_popup') ?>
+    <?= $block->getChildHtml('branch8_hotai_point_transfer_confirm_popup') ?>
+</div>
+
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "b8HotaiPointTransferForm": {}
+    }
+  }
+</script>
+

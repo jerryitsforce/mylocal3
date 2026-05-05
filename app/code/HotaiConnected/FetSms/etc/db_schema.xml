@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="fet_sms_smslog" resource="default" engine="innodb" comment="FET SMS 發送日誌表">
+        <column xsi:type="int" name="smslog_id" padding="10" unsigned="true" nullable="false" identity="true" comment="SMS Log ID"/>
+        <column xsi:type="text" name="module_name" nullable="false" comment="呼叫模組名稱"/>
+        <column xsi:type="text" name="phone" nullable="false" comment="收件手機號碼"/>
+        <column xsi:type="text" name="content" nullable="false" comment="發送內容(Base64)"/>
+        <column xsi:type="text" name="responseCode" nullable="true" comment="API 回應代碼"/>
+        <column xsi:type="text" name="responseText" nullable="true" comment="API 回應訊息"/>
+        <column xsi:type="text" name="messageId" nullable="true" comment="API 訊息 ID"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" comment="建立時間"/>
+        <column xsi:type="datetime" name="updated_at" nullable="true" comment="更新時間"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="smslog_id"/>
+        </constraint>
+    </table>
+</schema>

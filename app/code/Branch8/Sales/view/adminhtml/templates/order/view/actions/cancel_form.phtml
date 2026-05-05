@@ -1,0 +1,63 @@
+<?php
+/**
+ * @var $block \Magento\Backend\Block\Template
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $cancelModel \Branch8\Sales\ViewModel\CancelModel
+ */
+$cancelModel = $block->getCancelModel();
+?>
+
+<div id="cancel-order-modal-<?= /* @noEscape */
+$cancelModel->getOrder()->getId() ?>" class="cancel-order-modal-wrapper"
+     data-role="cancel-form-modal"
+     style="display: none">
+    <div class="cancel-order-modal-body">
+        <form action="<?= $block->escapeUrl($cancelModel->getCancelUrl()) ?>" data-role="cancel-form"
+              data-mage-init='{"validation":{}}'>
+            <input type="hidden" name="order_id" value="<?= $block->escapeHtml($cancelModel->getOrder()->getId()) ?>"/>
+            <fieldset class="fieldset admin__fieldset " id="base_fieldset">
+                <div class="admin__field field field-entity  with-addon admin__field field field-entity _required">
+                    <label class="label admin__field-label" for="entity">
+                        <span><?= $block->escapeHtml(__("Reason for cancellation")) ?></span>
+                    </label>
+                    <div class="admin__field-control control">
+                        <div class="admin__field">
+                            <select id="cancel-order-reason"
+                                    class="cancel-order-reason required-entry   select admin__control-select"
+                                    name="reason">
+                                <option value=""><?= __('Please Select Option') ?></option>
+                                <?php foreach ($cancelModel->getCancellationReasons() as $key => $description): ?>
+                                    <option value="<?= $escaper->escapeHtml(__($description)) ?>">
+                                        <?= $escaper->escapeHtml(__($description)) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin__field field with-note">
+                    <label class="label admin__field-label" for="cancel-order-reason-description">
+                        <span><?= $block->escapeHtml(__("Description")) ?></span>
+                    </label>
+                    <div class="admin__field-control control">
+                        <div class="admin__field">
+                         <textarea id="cancel-order-reason-description"
+                                   name="reason_description"
+                                   maxlength="20"
+                                   class="cancel-order-reason-description select admin__control-textarea validate-length"
+                                   rows="10"
+                                   placeholder="<?= $escaper->escapeHtml(__("Please describe the reason, limited to 20 words (optional)")) ?>"></textarea>
+                            <div class="note admin__field-note">
+                                <p><?= $escaper->escapeHtml(__("Things to note")) ?></p>
+                                <ol>
+                                    <li><?= $block->escapeHtml(__('Orders can be canceled before 23:59 today.')) ?></li>
+                                    <li><?= $block->escapeHtml(__('After the application is cancelled, Hotai Points will return the points to the original account 30 minutes later.')) ?></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

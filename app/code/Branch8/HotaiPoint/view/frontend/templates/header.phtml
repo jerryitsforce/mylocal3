@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/* @var $block Point */
+
+use Branch8\HotaiPoint\Block\Header\Point;
+$b8CustomerHelper = $this->helper(\Branch8\Customer\Helper\Data::class);
+$subAccountHelper = $this->helper(\Webkul\SellerSubAccount\Helper\Data::class);
+?>
+<div class="dropdown hotai-toplink" style="display: none;" id="header-hotaipoints" data-bind="scope: 'hotaipoints'">
+    <!-- ko if: isLogin() -->
+    <a <?php /* @escapeNotVerified */ echo $block->getLinkAttributes() ?>  class="action dropdown-toggle" data-bind="scope: 'hotaipoints'">
+        <span data-bind="html: hotaipoints().customer_point_icon" class="hotai-totalpoints"></span>
+    </a>
+    <!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "hotaipoints": {
+                        "component": "Branch8_HotaiPoint/js/view/rewards"
+                    }
+                }
+            }
+        }
+    }
+</script>

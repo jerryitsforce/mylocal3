@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_blacklist_keywords" resource="default" engine="innodb" comment="Blacklist Keywords">
+        <column xsi:type="int" name="entity_id" identity="true" unsigned="true" nullable="false"/>
+        <column xsi:type="varchar" name="keyword" length="255" nullable="false"/>
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="BRANCH8_BLACKLIST_KEYWORDS_UNIQUE_TEXT">
+            <column name="keyword"/>
+        </constraint>
+    </table>
+
+</schema>

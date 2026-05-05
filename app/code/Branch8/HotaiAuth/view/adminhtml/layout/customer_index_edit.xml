@@ -1,0 +1,13 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Branch8\HotaiAuth\Block\Adminhtml\Edit\Tab\LoginLogOut" name="customer_edit_tab" template="Branch8_HotaiAuth::tab/customer_login_logout.phtml">
+                <action method="setTabLabel">
+                    <argument name="label" xsi:type="string">Customer Login/Logout</argument>
+                    <argument name="sort_order" xsi:type="number">20</argument>
+                </action>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

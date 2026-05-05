@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_catalog>
+            <product_change_log_cleaner>
+                <days_to_keep>15</days_to_keep>
+            </product_change_log_cleaner>
+        </branch8_catalog>
+        <reports>
+            <options>
+                <use_queue_to_track>1</use_queue_to_track>
+            </options>
+        </reports>
+    </default>
+</config>

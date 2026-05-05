@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+        <section id="order_export" sortOrder="10" showInWebsite="0" showInStore="1" showInDefault="0" translate="label">
+            <label>Order Export</label>
+            <tab>branch8</tab>
+            <resource>Branch8_MarketPlaceOrderExportRabbitMQ::config_order_export</resource>
+            <group id="asynchronous" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+                <label>Asynchronous (Rabbit MQ)</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sender_email_identity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="order_export/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+                <field id="thresh_hold" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Thresh Hold</label>
+                    <validate>validate-zero-or-greate</validate>
+                    <depends>
+                        <field id="order_export/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+                <field id="admin_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Admin Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="order_export/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+                <field id="seller_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Seller Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="order_export/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="email_notification" translate="label" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="asynchronous" sortOrder="10" showInWebsite="0" showInStore="0" showInDefault="1" translate="label">
+                <label>Asynchronous (Rabbit MQ)</label>
+                <field id="enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="sender_email_identity" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="email_notification/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+                <field id="thresh_hold" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Thresh Hold</label>
+                    <validate>validate-zero-or-greate</validate>
+                    <depends>
+                        <field id="email_notification/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+                <field id="admin_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Admin Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="email_notification/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+                <field id="seller_email_template" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="0">
+                    <label>Seller Email Template</label>
+                    <comment>Email template chosen based on theme fallback when "Default" option is selected.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="email_notification/asynchronous/enable">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_marketplaceorderexportrabbitmq" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_MarketPlaceOrderExportRabbitMQ</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\MarketPlaceOrderExportRabbitMQ\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,22 @@
+.admin__field-tooltip .admin__field-tooltip-content:after, .admin__field-tooltip .admin__field-tooltip-content:before{
+  left: 2rem !important;
+}
+.admin__field-saleable-qty .admin__field-tooltip-content{
+  left: -2.5rem;
+}
+.image-panel-preview img {
+  max-width: 100%;
+}
+
+/* Overrides the 
+ * .data-row {cursor: pointer} rule located in 
+ * vendor/magento/theme-adminhtml-backend/Magento_Catalog/web/css/source/_module.less 
+ * to prevent it from affecting product lists in other modules.
+ */
+.admin__data-grid-outer-wrap[data-bind="scope: 'product_listing.product_listing'"] {
+  .admin__data-grid-wrap {
+      .data-row {
+          cursor: default !important; 
+      }
+  }
+}

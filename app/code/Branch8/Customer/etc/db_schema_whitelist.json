@@ -1,0 +1,116 @@
+{
+    "organization_info": {
+        "column": {
+            "organization_identity": true,
+            "company_name": true,
+            "org_rank": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_customer_organization": {
+        "column": {
+            "entity_id": true,
+            "name": true,
+            "created_at": true,
+            "hotai_auth_id": true,
+            "sort_order": true,
+            "hotai1_name": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "BRANCH8_CUSTOMER_ORGANIZATION_HOTAI1_NAME": true
+        }
+    },
+    "branch8_customer_other_organization": {
+        "column": {
+            "entity_id": true,
+            "customer_id": true,
+            "organization_id": true
+        },
+        "index": {
+            "BRANCH8_CUSTOMER_OTHER_ORGANIZATION_CUSTOMER_ID": true,
+            "BRANCH8_CUSTOMER_OTHER_ORGANIZATION_ORGANIZATION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "branch8_level_historys": {
+        "column": {
+            "entity_id": true,
+            "customer_id": true,
+            "current_level": true,
+            "new_level": true,
+            "created_at": true,
+            "details": true
+        },
+        "index": {
+            "BRANCH8_LEVEL_HISTORYS_CUSTOMER_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "sales_order": {
+        "column": {
+            "level": true
+        },
+        "index": {
+            "SALES_ORDER_LEVEL": true
+        }
+    },
+    "customer_group": {
+        "column": {
+            "organization": true,
+            "fullname": true,
+            "nxt_level": true,
+            "prev_level": true,
+            "period": true,
+            "conditions": true,
+            "label": true,
+            "icon": true
+        },
+        "index": {
+            "CUSTOMER_GROUP_ORGANIZATION": true
+        }
+    },
+    "customer_entity": {
+        "column": {
+            "buyer_email": true,
+            "default_convenience_store": true,
+            "seller_phone": true,
+            "prev_org": true,
+            "phone_number": true,
+            "cron_level_run_on": true
+        },
+        "index": {
+            "CUSTOMER_ENTITY_BUYER_EMAIL": true,
+            "CUSTOMER_ENTITY_SELLER_PHONE": true,
+            "CUSTOMER_ENTITY_CRON_LEVEL_RUN_ON": true,
+            "CUSTOMER_ENTITY_IS_ACTIVE": true
+        },
+        "constraint": {
+            "CUSTOMER_ENTITY_EMAIL_WEBSITE_ID": true
+        }
+    },
+    "customer_pending_employee": {
+        "column": {
+            "entity_id": true,
+            "cellphone": true,
+            "isEnabled": true,
+            "organizationIdentity": true,
+            "categoryIdentity": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "CUSTOMER_PENDING_EMPLOYEE_CELLPHONE": true,
+            "CUSTOMER_PENDING_EMPLOYEE_CREATED_AT": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

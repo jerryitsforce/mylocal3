@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="products" class="Magento\Staging\Ui\Component\Form\Fieldset" sortOrder="30">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Products</label>
+        </settings>
+        <modal name="update_form_modal">
+            <settings>
+                <options>
+                    <option name="modalClass" xsi:type="string">scheduled-changes-modal-slide</option>
+                </options>
+            </settings>
+            <insertForm name="update_form_loader" component="Branch8_MarketplaceStaging/js/form/components/insert-form">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="upcomingListingProvider" xsi:type="string">staging_update_edit_product_grid</item>
+                        <item name="removeModalProvider" xsi:type="string">${ $.ns}.${ $.ns}.marketplacestaging_update_remove_form_modal</item>
+                        <item name="removeResponseProvider" xsi:type="string">${ $.removeModalProvider }.update_remove_form_loader:responseData</item>
+                        <item name="modalSubTitleProvider" xsi:type="string">${ $.externalProvider }:data.staging.name</item>
+                        <item name="modalTitleProvider" xsi:type="string">${ $.externalProvider }:data.product.name</item>
+                    </item>
+                </argument>
+                <settings>
+                    <formSubmitType>ajax</formSubmitType>
+                    <renderUrl path="marketplacestaging/mui_render/handle">
+                        <param name="handle">marketplacestaging_update</param>
+                        <param name="block">marketplace_staging</param>
+                    </renderUrl>
+                    <loading>false</loading>
+                    <toolbarContainer>${ $.parentName }</toolbarContainer>
+                    <externalProvider>${ $.ns }.marketplacestaging_update_form_data_source</externalProvider>
+                    <ns>marketplacestaging_update_form</ns>
+                    <imports>
+                        <link name="params.store">${ $.provider }:data.store_id</link>
+                    </imports>
+                </settings>
+            </insertForm>
+        </modal>
+        <insertListing name="staging_update_edit_product_grid">
+            <settings>
+                <dataLinks>
+                    <exports>false</exports>
+                    <imports>true</imports>
+                </dataLinks>
+                <externalProvider>staging_update_edit_product_grid.staging_update_edit_product_grid_data_source</externalProvider>
+                <selectionsProvider>staging_update_edit_product_grid.staging_update_edit_product_grid.staging_update_edit_product_grid_columns.ids</selectionsProvider>
+                <autoRender>true</autoRender>
+                <dataScope>staging_update_edit_product_grid</dataScope>
+                <ns>staging_update_edit_product_grid</ns>
+                <exports>
+                    <link name="updateId">${ $.externalProvider }:params.update_id</link>
+                </exports>
+                <imports>
+                    <link name="updateId">${ $.provider }:data.general.id</link>
+                </imports>
+            </settings>
+        </insertListing>
+    </fieldset>
+</form>

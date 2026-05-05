@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Branch8_MarketPlaceSeller::b8_logging_seller" title="Seller Action Logs" translate="title" module="Branch8_MarketPlaceSeller" sortOrder="80" parent="Magento_Backend::system" dependsOnModule="Branch8_MarketPlaceSeller" resource="Branch8_MarketPlaceSeller::b8_logging_seller"/>
+        <add id="Branch8_MarketPlaceSeller::b8_logging_seller_login_logout" title="Seller login/ logout" translate="title" module="Branch8_MarketPlaceSeller" sortOrder="10" parent="Branch8_MarketPlaceSeller::b8_logging_seller" action="adminhtml/seller/sellerLoginLogout" dependsOnModule="Branch8_MarketPlaceSeller" resource="Branch8_MarketPlaceSeller::b8_logging_seller_login_logout"/>
+    </menu>
+</config>

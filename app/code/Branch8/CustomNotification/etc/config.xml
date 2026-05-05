@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <magenest_notification_box>
+            <notification_box>
+                <order_status_notification>pending,pending_payment,arrived,picked,processing,shipping,tallying,ticket_arrived,complete,closed,canceled,holded</order_status_notification>
+            </notification_box>
+            <web_push_notification>
+                <days_to_keep>90</days_to_keep>
+            </web_push_notification>
+        </magenest_notification_box>
+    </default>
+</config>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Branch8_Blog::js/select/comboTreePlugin.js"/>
+        <script src="Branch8_Blog::js/select/icontain.js"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Blog\Block\Post\ManagePost" name="blog.author.post" as="blog_post" template="Branch8_Blog::post/manage_post.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
+

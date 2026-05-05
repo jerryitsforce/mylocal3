@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_PageBuilder:etc/content_type.xsd">
+    <type name="slide">
+        <appearances>
+            <appearance name="collage-left"
+                        preview_template="Branch8_PageBuilder/content-type/slide/collage-left/preview"
+                        master_template="Branch8_PageBuilder/content-type/slide/collage-left/master">
+                <elements>
+                    <element name="main">
+                        <style name="display" source="display" converter="Magento_PageBuilder/js/converter/style/display" preview_converter="Magento_PageBuilder/js/converter/style/preview/display"/>
+                        <attribute name="creative_name" source="data-creative-name"/>
+                        <attribute name="creative_slot" source="data-creative-slot"/>
+                        <attribute name="promotion_id" source="data-promotion-id"/>
+                        <attribute name="promotion_name" source="data-promotion-name"/>
+                        <attribute name="item_list_id" source="data-item-list-id"/>
+                        <attribute name="item_list_name" source="data-item-list-name"/>
+                        <attribute name="unit_id" source="data-recommendation-id"/>
+                        <attribute name="title" source="data-title"/>
+                        <attribute name="link_text" source="data-link-text"/>
+                        <attribute name="link" source="data-link"/>
+                        <attribute name="show_recommend" source="data-show-recommend"/>
+                        <attribute name="products_count" source="data-products-count"/>
+                        <attribute name="sort_order" source="data-sort-order"/>
+                        <attribute name="condition_option" source="data-condition-option"/>
+                        <attribute name="conditions_encoded" source="data-conditions-encoded"/>
+                        <attribute name="in_page" source="data-in-page"/>
+                        <html name="html" preview_converter="Magento_PageBuilder/js/converter/attribute/preview/store-id"/>
+                    </element>
+                    <element name="wrapper">
+                        <attribute name="background_tag_image" source="data-background-tag-image"/>
+                    </element>
+                </elements>
+                <converters>
+                    <converter name="unitId" component="Branch8_PageBuilder/js/unitId">
+                        <config>
+                            <item name="html_variable" value="html"/>
+                        </config>
+                    </converter>
+                </converters>
+            </appearance>
+            <appearance name="collage-centered"
+                        preview_template="Branch8_PageBuilder/content-type/slide/collage-centered/preview"
+                        master_template="Branch8_PageBuilder/content-type/slide/collage-centered/master">
+                <elements>
+                    <element name="main">
+                        <style name="display" source="display" converter="Magento_PageBuilder/js/converter/style/display" preview_converter="Magento_PageBuilder/js/converter/style/preview/display"/>
+                        <attribute name="creative_name" source="data-creative-name"/>
+                        <attribute name="creative_slot" source="data-creative-slot"/>
+                        <attribute name="promotion_id" source="data-promotion-id"/>
+                        <attribute name="promotion_name" source="data-promotion-name"/>
+                        <attribute name="item_list_id" source="data-item-list-id"/>
+                        <attribute name="item_list_name" source="data-item-list-name"/>
+                        <attribute name="unit_id" source="data-recommendation-id"/>
+                        <attribute name="title" source="data-title"/>
+                        <attribute name="link_text" source="data-link-text"/>
+                        <attribute name="link" source="data-link"/>
+                        <attribute name="show_recommend" source="data-show-recommend"/>
+                        <attribute name="products_count" source="data-products-count"/>
+                        <attribute name="sort_order" source="data-sort-order"/>
+                        <attribute name="condition_option" source="data-condition-option"/>
+                        <attribute name="conditions_encoded" source="data-conditions-encoded"/>
+                        <attribute name="in_page" source="data-in-page"/>
+                        <html name="html" preview_converter="Magento_PageBuilder/js/converter/attribute/preview/store-id"/>
+                    </element>
+                    <element name="wrapper">
+                        <attribute name="background_tag_image" source="data-background-tag-image"/>
+                    </element>
+                </elements>
+                <converters>
+                    <converter name="unitId" component="Branch8_PageBuilder/js/unitId">
+                        <config>
+                            <item name="html_variable" value="html"/>
+                        </config>
+                    </converter>
+                </converters>
+            </appearance>
+            <appearance name="collage-right"
+                        preview_template="Branch8_PageBuilder/content-type/slide/collage-right/preview"
+                        master_template="Branch8_PageBuilder/content-type/slide/collage-right/master">
+                <elements>
+                    <element name="main">
+                        <style name="display" source="display" converter="Magento_PageBuilder/js/converter/style/display" preview_converter="Magento_PageBuilder/js/converter/style/preview/display"/>
+                        <attribute name="creative_name" source="data-creative-name"/>
+                        <attribute name="creative_slot" source="data-creative-slot"/>
+                        <attribute name="promotion_id" source="data-promotion-id"/>
+                        <attribute name="promotion_name" source="data-promotion-name"/>
+                        <attribute name="item_list_id" source="data-item-list-id"/>
+                        <attribute name="item_list_name" source="data-item-list-name"/>
+                        <attribute name="unit_id" source="data-recommendation-id"/>
+                        <attribute name="title" source="data-title"/>
+                        <attribute name="link_text" source="data-link-text"/>
+                        <attribute name="link" source="data-link"/>
+                        <attribute name="show_recommend" source="data-show-recommend"/>
+                        <attribute name="products_count" source="data-products-count"/>
+                        <attribute name="sort_order" source="data-sort-order"/>
+                        <attribute name="condition_option" source="data-condition-option"/>
+                        <attribute name="conditions_encoded" source="data-conditions-encoded"/>
+                        <attribute name="in_page" source="data-in-page"/>
+                        <html name="html" preview_converter="Magento_PageBuilder/js/converter/attribute/preview/store-id"/>
+                    </element>
+                    <element name="wrapper">
+                        <attribute name="background_tag_image" source="data-background-tag-image"/>
+                    </element>
+                </elements>
+                <converters>
+                    <converter name="unitId" component="Branch8_PageBuilder/js/unitId">
+                        <config>
+                            <item name="html_variable" value="html"/>
+                        </config>
+                    </converter>
+                </converters>
+            </appearance>
+            <appearance name="poster"
+                        preview_template="Branch8_PageBuilder/content-type/slide/poster/preview"
+                        master_template="Branch8_PageBuilder/content-type/slide/poster/master">
+                <elements>
+                    <element name="main">
+                        <style name="display" source="display" converter="Magento_PageBuilder/js/converter/style/display" preview_converter="Magento_PageBuilder/js/converter/style/preview/display"/>
+                        <attribute name="creative_name" source="data-creative-name"/>
+                        <attribute name="creative_slot" source="data-creative-slot"/>
+                        <attribute name="promotion_id" source="data-promotion-id"/>
+                        <attribute name="promotion_name" source="data-promotion-name"/>
+                        <attribute name="item_list_id" source="data-item-list-id"/>
+                        <attribute name="item_list_name" source="data-item-list-name"/>
+                        <attribute name="unit_id" source="data-recommendation-id"/>
+                        <attribute name="title" source="data-title"/>
+                        <attribute name="link_text" source="data-link-text"/>
+                        <attribute name="link" source="data-link"/>
+                        <attribute name="show_recommend" source="data-show-recommend"/>
+                        <attribute name="products_count" source="data-products-count"/>
+                        <attribute name="sort_order" source="data-sort-order"/>
+                        <attribute name="condition_option" source="data-condition-option"/>
+                        <attribute name="conditions_encoded" source="data-conditions-encoded"/>
+                        <attribute name="in_page" source="data-in-page"/>
+                        <html name="html" preview_converter="Magento_PageBuilder/js/converter/attribute/preview/store-id"/>
+                    </element>
+                    <element name="wrapper">
+                        <attribute name="background_tag_image" source="data-background-tag-image"/>
+                    </element>
+                </elements>
+                <converters>
+                    <converter name="unitId" component="Branch8_PageBuilder/js/unitId">
+                        <config>
+                            <item name="html_variable" value="html"/>
+                        </config>
+                    </converter>
+                </converters>
+            </appearance>
+        </appearances>
+    </type>
+</config>

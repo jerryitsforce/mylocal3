@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+	<widget id="branch8_pagebuilder_memberbar" class="Branch8\PageBuilder\Block\Widget\Memberbar">
+		<label>Memberbar</label>
+		<description>memberbar</description>
+		<parameters>
+			<parameter name="firsttext" xsi:type="text" visible="true" sort_order="1">
+				<label>first text</label>
+			</parameter>
+			<parameter name="secondtext" xsi:type="text" visible="true" sort_order="3">
+				<label>second text</label>
+			</parameter>
+			<parameter name="pointtext" xsi:type="text" visible="true" sort_order="4">
+				<label>point text</label>
+			</parameter>
+			<parameter name="tickettext" xsi:type="text" visible="true" sort_order="5">
+				<label>ticket text</label>
+			</parameter>
+			<parameter name="firstbutton" xsi:type="text" visible="true" sort_order="6">
+				<label>first button</label>
+			</parameter>
+			<parameter name="firstbuttonurl" xsi:type="text" visible="true" sort_order="7">
+				<label>first button url</label>
+			</parameter>
+			<parameter name="secondbutton" xsi:type="text" visible="true" sort_order="8">
+				<label>second button</label>
+			</parameter>
+			<parameter name="secondbuttonurl" xsi:type="text" visible="true" sort_order="9">
+				<label>second button url</label>
+			</parameter>
+			<parameter name="nonlogintext" xsi:type="text" visible="true" sort_order="10">
+				<label>nonlogin text</label>
+			</parameter>
+			<parameter name="nonloginfirstbutton" xsi:type="text" visible="true" sort_order="11">
+				<label>nonlogin first button</label>
+			</parameter>
+			<parameter name="nonloginfirstbuttonurl" xsi:type="text" visible="true" sort_order="12">
+				<label>nonlogin first button url</label>
+			</parameter>
+			<parameter name="nonloginsecondbutton" xsi:type="text" visible="true" sort_order="13">
+				<label>nonlogin second button</label>
+			</parameter>
+			<parameter name="nonloginsecondbuttonurl" xsi:type="text" visible="true" sort_order="14">
+				<label>nonlogin second button url</label>
+			</parameter>
+		</parameters>
+	</widget>
+</widgets>

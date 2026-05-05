@@ -1,0 +1,14 @@
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+var config = {
+    map: {
+        '*': {
+            dompurify: 'js/purify.min',
+            'plugins/DOMPurify': 'js/purify.min'
+        }
+    }
+
+};

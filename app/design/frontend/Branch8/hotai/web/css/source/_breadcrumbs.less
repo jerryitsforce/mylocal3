@@ -1,0 +1,92 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .breadcrumbs {
+        .lib-breadcrumbs();
+        margin-top: 12px;
+        margin-bottom: 12px;
+
+        .items{
+            line-height: 1.5;
+        }
+
+        strong{
+            color: rgba(153, 153, 153, 0.5);
+        }
+
+        .item:not(:last-child){
+            &:before,
+            &:after{
+                margin: 0;
+                font-size: 12px;
+                line-height: 22px;
+            }
+        }
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .breadcrumbs {
+        .items{
+            > li:last-child{
+                display: none;
+            }
+        }
+
+        .item:not(:last-child){
+            display: none;
+            
+            &:after{
+                content: none;
+            }
+
+            &:before{
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                content: @icon-prev;
+                font-family: 'hotai-icons';
+                vertical-align: top;
+                display: inline-block;
+                font-weight: normal;
+                overflow: hidden;
+                speak: none;
+                text-align: center;
+            }
+        }
+
+        .item:nth-last-child(2) {
+            display: inline-flex;
+        }
+
+        ~ main.page-main{
+            padding-top: 0;
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .breadcrumbs {
+        margin-top: 24px;
+        margin-bottom: 16px;
+        
+        .items{
+            font-size: 14px;
+            line-height: 1.57142857;
+        }
+    }
+}

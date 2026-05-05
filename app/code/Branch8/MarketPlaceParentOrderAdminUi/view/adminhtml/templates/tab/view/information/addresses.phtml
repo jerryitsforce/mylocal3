@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @var \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation $block
+ * @var \Branch8\MarketPlaceParentOrder\Model\ParentOrder $parentOrder
+ * @var \Branch8\MarketPlaceParentOrder\Model\ParentOrderAddress $address
+ */
+
+$parentOrder = $block->getParentBlock()->getParentOrder();
+$detail = $parentOrder->getDetail();
+$shippingAddresses = $parentOrder->getShippingAddress();
+$billingAddresses = $parentOrder->getBillingAddress();
+$allowedAddressHtmlTags = ['b', 'br', 'em', 'i', 'li', 'ol', 'p', 'strong', 'sub', 'sup', 'ul'];
+?>
+<section class="admin__page-section order-addresses">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Address Information') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-billing-address">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Billing Address') ?></span>
+                <?php if ($billingAddresses): ?>
+                    <div class="actions">
+                        <a
+                            href="<?= $block->getUrl('sales/parent_order/address',
+                                ['address_id' => $block->escapeHtml($billingAddresses->getId())]) ?>">
+                            <?= $block->escapeHtml(__('Edit')) ?>
+                        </a>
+                    </div>
+                <?php endif ?>
+            </div>
+            <address class="admin__page-section-item-content">
+                <?= $block->escapeHtml($block->getParentBlock()->getFormattedAddress($billingAddresses), $allowedAddressHtmlTags) ?>
+            </address>
+        </div>
+        <div class="admin__page-section-item order-shipping-address">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Shipping Address') ?></span>
+                <?php if ($shippingAddresses): ?>
+                    <div class="actions">
+                        <a href="<?= $block->getUrl('sales/parent_order/address',
+                            ['address_id' => $block->escapeHtml($shippingAddresses->getId())]) ?>">
+                            <?= $block->escapeHtml(__('Edit')) ?>
+                        </a>
+                    </div>
+                <?php endif ?>
+            </div>
+            <address class="admin__page-section-item-content">
+                <?= $block->escapeHtml($block->getParentBlock()->getFormattedAddress($shippingAddresses), $allowedAddressHtmlTags) ?>
+            </address>
+        </div>
+    </div>
+</section>

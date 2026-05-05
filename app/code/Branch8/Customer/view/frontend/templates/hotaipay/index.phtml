@@ -1,0 +1,135 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\Index $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$nickname = '';
+$customer = $block->getCustomer();
+if($customer){
+    $nickname = $customer->getFirstName() . ' ' . $customer->getLastName();
+    if($customer->getCustomAttribute('nickname')){
+        $nickname = $customer->getCustomAttribute('nickname')->getValue();
+    } else {
+      if (!empty($nickname)) {
+          $nickname = mb_convert_encoding($nickname, 'UTF-8', 'auto');
+          $nickname = trim($nickname);
+          $infoLength = mb_strlen($nickname, 'UTF-8');
+          
+          if ($infoLength > 1) {
+              $maskedPart = str_repeat('○', 2);
+              $unmaskedPart = mb_substr($nickname, -1, 1, 'UTF-8');
+              $nickname = $maskedPart . $unmaskedPart . ' ';
+          }
+      }
+    }
+    $credit_cards = $block->getCreditcardList();
+}
+// $test = '{"code":200,"success":true,"error":null,"count":2,"data":[{"Id":3743,"MemberHashID":4609,"AliasName":"eeee","CardType":"Jcb","BankDesc":"中信JCB晶緻卡","CardNoMask":"****-****-****-3185","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8712","VipNo":"","CardArt":"870871250","IsAvailable":true,"IsOverwrite":true,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-13T11:04:24.810Z","updatedAt":"2024-03-06T09:54:12.106Z","deletedAt":"2024-02-29T04:24:14.893Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"JCB","BIN":"356651","IsDebit":"","TokenFlag":"","OnlineDate":"07/19/2013"}},{"Id":3749,"MemberHashID":4609,"AliasName":"testt","CardType":"Visa","BankDesc":"中國信託和泰聯名卡","CardNoMask":"****-****-****-2573","PromoCode":"HTAPP","PromoRspCode":"00","AffinityCode":"8686","VipNo":"","CardArt":"473868622","IsAvailable":true,"IsOverwrite":true,"IsExpired":false,"AppName":"HTPOS","MemberOneID":"dbb98dae-7860-40d9-b3db-1e36bd0213d9","MemberHash":"32902A68B8762D756CE2B38F03AC6721","createdAt":"2023-11-14T15:08:49.343Z","updatedAt":"2024-03-14T08:10:24.496Z","deletedAt":"2023-12-02T14:41:51.030Z","BinInfo":{"Code":"8221119","BankDesc":"中信銀","CardType":"VISA","BIN":"430451","IsDebit":"","TokenFlag":"","OnlineDate":"12/22/2008"}}]}';
+// $cards = json_decode($test, true);
+// $credit_cards = $cards['data'];
+$jsonLoader = $this->getViewFileUrl('images/animation-onboard.json');
+?>
+<div class="member-hotaipay-wrapper <?= $customer? '': 'member-hotai-guest' ?>">
+  <div class="member-hotaipay-header">
+    <div class="member-hotaipay-logo-wrapper">
+      <div class="member-hotaipay-logo">
+        <dotlottie-player class="player" src="<?= $jsonLoader ?>" background="transparent" speed="1" direction="1"
+          playMode="normal" loop autoplay></dotlottie-player>
+      </div>
+    </div>
+    <?php if($customer): ?>
+    <h1 class="member-hotaipay-title">Hi, <?= $nickname ?></h1>
+    <?php else: ?>
+    <h1 class="member-hotaipay-title"><?= __("認識HOTAI購商城")?></h1>
+    <?php endif; ?>
+  </div>
+  <?= $block->getChildHtml('breadcrumbs') ?>
+  <?= $block->getHotaiPayTopContent() ?>
+  <?php if($customer): ?>
+  <?php if(count($credit_cards)): ?>
+  <div class="member-hotaipay-card-list">
+    <div class="member-hotaipay-card-summary">
+      <h3 class="member-hotaipay-card-summary-title">
+        <?= __('你的和泰Pay已綁定 <strong>%1</strong> 張信用卡', count($credit_cards)) ?></h3>
+      <p class="member-hotaipay-card-summary-sub"><?= $block->escapeHtml(__('(信用卡管理請至會員中心)')) ?></p>
+    </div>
+    <div class="member-hotaipay-card-list-content">
+      <div class="member-hotaipay-card-list-header">
+        <?= $block->escapeHtml(__('展開已綁定信用卡')) ?>
+      </div>
+      <ul class="member-hotaipay-card-list-items">
+        <?php $index = 0; foreach($credit_cards as $credit_card): ?>
+        <?php
+          $default = $credit_card['DefaultCard'];
+          $index++;
+        ?>
+        <li class="member-hotaipay-card-list-item">
+          <span class="card-default <?= $default? 'default':'' ?>"><?= $block->escapeHtml(__('預設'))?></span>
+          <span class="card-type <?= strtolower($credit_card['CardType']) ?>"><span><?= $credit_card['CardType'] ?></span></span>
+          <span class="card-nomask"><?= str_replace('-',' ',$credit_card['CardNoMask']) ?></span>
+          <span class="card-alias-name"><?= $credit_card['AliasName'] ?></span>
+        </li>
+        <?php endforeach; ?>
+      </ul>
+      <button id="member_card_close_btn" class="member-hotaipay-card-close-btn"><span><?= __("Close") ?></span></button>
+    </div>
+  </div>
+  <?php else: ?>
+  <div class="member-hotaipay-cards">
+    <ul class="member-hotaipay-binding-actions">
+      <li class="member-hotaipay-binding-action">
+        <div class="action-text"><?= $block->escapeHtml(__('中信信用卡')) ?></div>
+        <button class="action action-link" id="binding_creditcard_fast_btn"><?= $block->escapeHtml(__('新增中信信用卡')) ?></button>
+      </li>
+      <li class="member-hotaipay-binding-action">
+        <div class="action-text"><?= $block->escapeHtml(__('其他信用卡')) ?></div>
+        <button class="action action-link" id="binding_creditcard_btn"><?= $block->escapeHtml(__('新增其他信用卡')) ?></button>
+      </li>
+    </ul>
+  </div>
+  <?php endif; ?>
+    <?php
+      $warning = $block->getManuallyAddCardWarning();
+    ?>
+    <?php if($warning): ?>
+      <div class="creditcard-member-card-note creditcard-member-card-warning">
+        <p class="creditcard-member-card-note-text"><?= $warning ?></p>
+      </div>
+    <?php endif; ?>
+<?php endif; ?>
+  <?= $block->getHotaiPayBottomContent() ?>
+</div>
+<?php if($customer): ?>
+<?= $block->getChildHtml('hotaipay.popup.quick.card') ?>
+<?= $block->getChildHtml('hotaipay.popup.reminder.guide') ?>
+<?php endif; ?>
+<?php
+$params = $block->getParams();
+$response = $block->getErrorResponse();
+?>
+<?php if(isset($params['StatusDesc'])): ?>
+<?php if(strtoupper($params['StatusDesc']) == 'SUCCESS'): ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.complete') ?>
+<?php else: ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.fail') ?>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php if(isset($response['StatusDesc'])): ?>
+<?php if(strtoupper($response['StatusDesc']) == 'SUCCESS'): ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.complete') ?>
+<?php else: ?>
+<?= $block->getChildHtml('hotaipay.popup.card.binding.fail') ?>
+<?php endif; ?>
+<?php endif; ?>
+
+<?php $block->unsetResponse(); ?>
+
+<script type="text/x-magento-init">
+  {
+        "*": {
+            "b8MemberHotaiPay": {}
+        }
+    }
+</script>

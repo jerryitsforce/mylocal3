@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <wishlist>
+            <price_change_alert>
+                <cron_config>0 8 * * *</cron_config>
+            </price_change_alert>
+        </wishlist>
+        <crontab>
+            <email_notification>
+                <jobs>
+                    <branch8_wishlist_price_change_notification>
+                        <schedule>
+                            <cron_expr>0 8 * * *</cron_expr>
+                        </schedule>
+                    </branch8_wishlist_price_change_notification>
+                </jobs>
+            </email_notification>
+        </crontab>
+    </default>
+    
+</config>

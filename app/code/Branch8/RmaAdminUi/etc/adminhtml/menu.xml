@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Webkul_MpRmaSystem::finance_review"
+             title="Finance Reviews"
+             module="Webkul_MpRmaSystem"
+             sortOrder="50"
+             parent="Webkul_MpRmaSystem::mprmasystem"
+             action="mprmasystem/finance/reviews" resource="Webkul_MpRmaSystem::final_approve"/>
+    </menu>
+</config>

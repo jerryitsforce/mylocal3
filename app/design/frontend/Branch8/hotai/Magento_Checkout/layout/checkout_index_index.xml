@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                            <item name="children" xsi:type="array">
+                                <item name="sidebar" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="totals" xsi:type="array">
+                                                    <item name="children" xsi:type="array">
+                                                        <item name="item-count" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item-count</item>
+                                                            <item name="sortOrder" xsi:type="string">1</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Item Count</item>
+                                                                <item name="template" xsi:type="string">Magento_Checkout/cart/totals/item-count</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="shipping-method" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/shipping-method</item>
+                                                            <item name="sortOrder" xsi:type="string">2</item>
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Shipping Method</item>
+                                                                <item name="template" xsi:type="string">Magento_Checkout/summary/shipping-method</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="shipping" xsi:type="array">
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Shipping Details</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="subtotal" xsi:type="array">
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="excludingTaxMessage" xsi:type="string" translate="true"> </item>
+                                                                <item name="includingTaxMessage" xsi:type="string" translate="true"> </item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="grand-total" xsi:type="array">
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="exclPointLabel" xsi:type="string" translate="true">Order Total</item>
+                                                                <item name="exclPointLabelMobile" xsi:type="string" translate="true">Checkout Amount</item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                </item>
+                                                <item name="cart_items" xsi:type="array">
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                        <item name="additional" xsi:type="array">
+                                            <item name="children" xsi:type="array">
+                                                <item name="extra-grand-total" xsi:type="array">
+                                                    <item name="sortOrder" xsi:type="string">20</item>
+                                                    <item name="component" xsi:type="string">Magento_Tax/js/view/checkout/summary/grand-total</item>
+                                                    <item name="label" xsi:type="string" translate="true">Grand Total</item>
+                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                    <item name="additionalClasses" xsi:type="string">amcheckout-grand-total</item>
+                                                    <item name="config" xsi:type="array">
+                                                        <item name="exclTaxLabel" xsi:type="string" translate="true">Order Total Excl. Tax</item>
+                                                        <item name="inclTaxLabel" xsi:type="string" translate="true">Order Total Incl. Tax</item>
+                                                        <item name="exclPointLabel" xsi:type="string" translate="true">Order Total</item>
+                                                        <item name="exclPointLabelMobile" xsi:type="string" translate="true">Checkout Amount</item>
+                                                        <item name="basicCurrencyMessage" xsi:type="string" translate="true">You will be charged for</item>
+                                                        <item name="title" xsi:type="string" translate="true">Order Total</item>
+                                                    </item>
+                                                </item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Theme\Block\Html\Header\Logo" name="checkout.logo" before="-">
+                <arguments>
+                    <argument name="logoPathResolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoPathResolver</argument>
+                    <argument name="logo_size_resolver" xsi:type="object">Magento\Theme\ViewModel\Block\Html\Header\LogoSizeResolver</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+				<block name="hotaipay.checkout.card.binding.fail" class="Branch8\Customer\Block\Hotaipay\Index" template="Magento_Checkout::popup/card_binding_failed.phtml"/>
+				<block name="hotaipay.checkout.card.binding.complete" class="Branch8\Customer\Block\Hotaipay\Index" template="Magento_Checkout::popup/card_binding_completed.phtml"/>
+                <block name="advance.validate.popup" class="Magento\Framework\View\Element\Template" template="Magento_Checkout::popup/advance_validate_popup.phtml"/>
+        </referenceContainer>
+        <move element="logo" destination="header.wrapper" before="-"/>
+        <referenceBlock name="breadcrumbs">
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">Home</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Home</item>
+                    <item name="title" xsi:type="string" translate="true">Go to Home Page</item>
+                    <item name="link" xsi:type="string">/</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">購物車</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">購物車</item>
+                    <item name="title" xsi:type="string" translate="true">購物車</item>
+                    <item name="link" xsi:type="string">/checkout/cart</item>
+                </argument>
+            </action>
+            <action method="addCrumb">
+                <argument name="crumbName" xsi:type="string" translate="true">結帳</argument>
+                <argument name="crumbInfo" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">結帳</item>
+                    <item name="title" xsi:type="string" translate="true">結帳</item>
+                </argument>
+            </action>
+        </referenceBlock>
+        <referenceBlock name="top.search" remove="true" />
+        <referenceBlock name="megamenu" remove="true" />
+        <referenceBlock name="magenest-notification" remove="true" />
+    </body>
+</page>

@@ -1,0 +1,265 @@
+<?php
+/**
+ * @var $block \Webkul\MpRmaSystem\Block\Adminhtml\Rma\View\Tab\Details
+ * @var $helper \Branch8\Rma\Helper\Data
+ * @var $rmaModel \Branch8\Rma\ViewModel\Rma
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $memo \Magento\Sales\Model\Order\Creditmemo
+ * @var $statusResolver \Branch8\Sales\ViewModel\StatusResolver
+ */
+?>
+<section class="admin__page-section order-view-billing-shipping">
+    <div class="admin__page-section-content">
+        <?php
+        $rmaModel = $block->getRmaModel() ? $block->getRmaModel() : \Magento\Framework\App\ObjectManager::getInstance()->get(
+            \Branch8\Rma\ViewModel\Rma::class
+        );
+        $statusResolver = $block->getStatusModel() ? $block->getStatusModel() : \Magento\Framework\App\ObjectManager::getInstance()->get(
+            \Branch8\Sales\ViewModel\StatusResolver::class
+        );
+        $helper = $this->helper(\Branch8\Rma\Helper\Data::class);
+        $rmaDetails = $helper->getRmaDetails();
+        $memo = $helper->getCreditMemoForRmaDetail($rmaDetails);
+        $orderId = $rmaDetails->getOrderId();
+        $order = $helper->getOrder($orderId);
+        $orderRef = $rmaDetails->getOrderRef();
+        $orderUrl = $block->getUrl("sales/order/view/") . "order_id/" . $rmaDetails->getOrderId();
+        $rmaId = $rmaDetails->getId();
+        $images = $helper->getImages($rmaId);
+        $date = $rmaDetails->getCreatedDate();
+        $date = $block->formatDate($date, \IntlDateFormatter::MEDIUM, true);
+        $sellerName = $helper->getCustomerName($rmaId, true);
+        $customerName = $helper->getCustomerName($rmaId, false);
+        $status = $rmaDetails->getStatus();
+        $finalStatus = $rmaDetails->getFinalStatus();
+        $resolutionType = $rmaDetails->getResolutionType();
+        $rmaStatus = $helper->getRmaStatusTitle($status, $finalStatus);
+        $sellerStatus = $helper->getSellerStatusTitle($rmaDetails->getSellerStatus());
+        $resolution = $helper->getResolutionTypeTitle($resolutionType);
+        $orderStatus = $helper->getOrderStatusTitle($rmaDetails->getOrderStatus());
+        $productDetails = $helper->getRmaProductDetails($rmaId);
+        list($totalPoint, $totalPrice) = $rmaModel->calTotalPointAndTotalPrice($productDetails);
+        $sellerId = $rmaDetails->getSellerId();
+//        $rmaItemId = $helper->getRmaItems($rmaId)->getItemId();
+        $rmaRefundQty = $helper->getRmaItems($rmaId)->getQty();
+        $invoice = $order->getInvoiceCollection()->getFirstItem();
+        $invoiceId = $invoice->getId();
+        $productType = "";
+        $count = 0;
+        $shippingMethod = $order->getShippingMethod();
+        $totalRefundableShippingFee = (int) $order->getShippingInclTax() - (int)$order->getShippingRefunded() - (int)$order->getShippingTaxRefunded();
+        foreach ($productDetails as $product) {
+            $isQtyReturned = $product->getIsQtyReturned();
+            $productTyp = $product->getProductType();
+            if ($productTyp == "simple" || $productTyp == "configurable" || $productTyp == "bundle") {
+                $count++;
+            }
+        }
+        /**
+         * intangible - downloadable or virtual
+         * tangible - simple, configurable and bundle
+         */
+        if ($count == 0) {
+            $productType = "intangible";
+        } else {
+            $productType = "tangible";
+        }
+//        $isTicket = $rmaModel->isTicket($rmaItemId);
+//        $allStatus = $rmaModel->getAllNextStatusOptions($status, $isTicket, $rmaDetails->getIsReplaceAgain());
+        $status = $rmaDetails->getStatus();
+        $rmaHelperData = $this->helper(\Branch8\Rma\Helper\Data::class);
+        $rmaStatus = $rmaHelperData->getAdminAndSellerPanelRmaStatusTitle($status);
+        $readytoShip = $rmaModel->isReadyToBeShipped($status);
+        $canRefundStatus = $rmaModel->canRefund($status);
+        //$canModifyStatus = $statusResolver->canModifyOrdertatus($order);
+        $canAdjustRmaStatus = $statusResolver->canAdjustShippingStatus();
+        ?>
+        <div class="wk-mprma-container wk-mprma-view">
+            <div class="wk-title">
+                <?= $escaper->escapeHtml(__("RMA Details")); ?>
+                <span class="wk-date-info"><?= $escaper->escapeHtml($date); ?></span>
+            </div>
+            <fieldset class="fieldset wk-mprma-fieldset">
+                <div class="field">
+                    <label for="Ordrer Id" class="label">
+                        <span><?= $escaper->escapeHtml(__("Order Id")); ?></span>
+                    </label>
+                    <div class="control">
+                        <a target="_blank" href="<?= $escaper->escapeUrl($orderUrl); ?>">
+                            <?= $escaper->escapeHtml($orderRef); ?>
+                        </a>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="Status" class="label">
+                        <span><?= $escaper->escapeHtml(__("RMA Status")); ?></span>
+                    </label>
+                    <div class="control">
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("RMA Processing Status")); ?> :</span>
+                            <?= $escaper->escapeHtml($rmaStatus); ?>
+                        </div>
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("Order Status")); ?> :</span>
+                            <?= $escaper->escapeHtml($orderStatus); ?>
+                        </div>
+                        <?php if ($rmaDetails->getOrderStatus() == 1): ?>
+                            <div class="wk-row">
+                                <span>
+                                    <?= $escaper->escapeHtml(__("Consignment Number")); ?> :</span>
+                                <?= $escaper->escapeHtml($rmaDetails->getNumber()); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="Resolution Type" class="label">
+                        <span><?= $escaper->escapeHtml(__("Rma Application Content ")); ?></span>
+                    </label>
+                    <div class="control">
+                        <!--  <div class="wk-row">
+                            <span><?php /*= $escaper->escapeHtml(__("Resolution Type:")); */ ?></span>
+                            <?php /*= $escaper->escapeHtml($resolution); */ ?>
+                        </div>-->
+                        <?php
+                        $data = [
+                            'data' => [
+                                'rma_model' => $rmaModel,
+                                'rma_details' => $rmaDetails
+                            ]
+                        ];
+                        ?>
+
+                        <?= $block->getLayout()->createBlock(
+                            \Magento\Backend\Block\Template::class,
+                            'change_resolution_' . $rmaId,
+                            $data
+                        )->setTemplate('Branch8_RmaAdminUi::rma/switchResolution.phtml')->toHtml() ?>
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("Customer Has Received Goods Or Not :")); ?></span>
+                            <?= $escaper->escapeHtml($orderStatus); ?>
+                        </div>
+                    </div>
+                </div>
+                <?php if ($resolutionType == \Webkul\MpRmaSystem\Helper\Data::RESOLUTION_REFUND): ?>
+                    <div class="field wk-refund-block wk-display-none">
+                        <label for="Refund Details" class="label">
+                            <span><?= $escaper->escapeHtml(__("Refund Details")); ?></span>
+                        </label>
+                        <div class="control">
+                            <div class="wk-row">
+                                <span><?= $escaper->escapeHtml(__("Refundable Amount")); ?> :</span>
+                                <span class="wk-refundable-amount"></span>
+                                <?php if ($shippingMethod == "mpfixrate_mpfixrate") { ?>
+                                    <span><?= $escaper->escapeHtml(__("+ Shipping")); ?></span>
+                                <?php } ?>
+                            </div>
+                            <div class="wk-row">
+                                <span><?= $escaper->escapeHtml(__("Refundable Point")); ?> :</span>
+                                <span class="wk-refundable-point"><?= $block->escapeHtml($totalPoint) ?></span>
+                            </div>
+                            <?php if ($rmaDetails->getRefundedAmount() > 0): ?>
+                                <div class="wk-row">
+                                    <span><?= $escaper->escapeHtml(__("Refunded Amount")); ?> :</span>
+                                    <span class="wk-refunded-amount">
+                                        <?= /* @noEscape */
+                                        $order->formatPrice($rmaDetails->getRefundedAmount()); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($memo && $memo->getShippingInclTax() > 0): ?>
+                                <div class="wk-row">
+                                    <span><?= $escaper->escapeHtml(__("Refunded Shipping")); ?> :</span>
+                                    <span class="wk-refunded-amount"><?= $order->formatPrice((int)$memo->getShippingInclTax()); ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div class="field wk-shipping-block">
+                    <label for="Shipping Details" class="label">
+                        <span><?= $escaper->escapeHtml(__("RMA Shipping Details")); ?></span>
+                    </label>
+                    <div class="control">
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("RMA Shipping Receiver")); ?> :</span>
+                            <?= $escaper->escapeHtml($rmaDetails->getRmaReceiver()); ?>
+                        </div>
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("RMA Shipping Phone")); ?> :</span>
+                            <?= $escaper->escapeHtml($rmaDetails->getRmaPhone()); ?>
+                        </div>
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("RMA Shipping Delivery Time")); ?> :</span>
+                            <?= $escaper->escapeHtml($rmaModel->getRmaDeliveryTime($rmaDetails->getRmaDeliveryTime())); ?>
+                        </div>
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("RMA Shipping Address")); ?> :</span>
+                            <?= $escaper->escapeHtml($rmaDetails->getRmaAddress()); ?>
+                        </div>
+                        <div class="wk-row">
+                            <span><?= $escaper->escapeHtml(__("Return/Exchange Reason")); ?> :</span>
+                            <?= $rmaDetails->getRmaReason()? $escaper->escapeHtml($rmaDetails->getRmaReason()):'N/A'; ?>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <?php
+        $data = [
+            'data' => [
+                'rma_model' => $rmaModel,
+                'rma_details' => $rmaDetails,
+                'status_resolver' => $statusResolver,
+                'order' => $order
+            ]
+        ];
+        ?>
+
+        <?= $block->getLayout()->createBlock(
+            \Magento\Backend\Block\Template::class,
+            'change_status_' . $rmaId,
+            $data
+        )->setTemplate('Branch8_RmaAdminUi::rma/view/tab/details/change_status.phtml')->toHtml() ?>
+
+        <?php if ($readytoShip): ?>
+            <?= $block->getLayout()->createBlock(
+                \Magento\Backend\Block\Template::class,
+                'ready_to_ship' . $rmaId,
+                $data
+            )->setTemplate('Branch8_RmaAdminUi::rma/view/tab/details/ready_to_ship.phtml')->toHtml() ?>
+        <?php endif ?>
+        <?php if ($canRefundStatus): ?>
+            <?= $block->getLayout()->createBlock(
+                \Magento\Backend\Block\Template::class,
+                'can_refund_status_' . $rmaId,
+                $data
+            )->setTemplate('Branch8_RmaAdminUi::rma/view/tab/details/can_refund_status.phtml')->toHtml() ?>
+        <?php endif ?>
+        <?= $block->getLayout()->createBlock(
+            \Magento\Backend\Block\Template::class,
+            'change_sendmessage_' . $rmaId,
+            $data
+        )->setTemplate('Branch8_RmaAdminUi::rma/view/tab/details/send_message.phtml')->toHtml() ?>
+    </div>
+</section>
+<?php
+$data = $helper->jsonEncodeData([
+    "totalPrice" => $totalPrice,
+    "totalPriceWithCurrency" => $order->formatPrice($totalPrice),
+    "errorMsg" => __("Partial amount can not be more then %1", $order->formatPrice($totalPrice)),
+    "errorInvalidRefundMsg" => __('Invalid refund amount'),
+    "warningLable" => __("Warning"),
+    "totalPoint" => $totalPoint,
+    "RmaDeclineStatus" => $rmaModel->getDeclineRmaStatuses(),
+    "totalRefundableShippingFee" => $order->formatPrice($totalRefundableShippingFee),
+
+]);
+?>
+<script type="text/x-magento-init">
+    {
+        "body": {
+            "Branch8_Rma/js/rma": <?= $data ?>
+    }
+}
+</script>

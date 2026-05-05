@@ -1,0 +1,530 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Email extend styles
+//  _____________________________________________
+
+//  This file should be used for theme-specific styles for emails that extend or modify the styles in _email.less
+//  This will allow you to edit email styles without copying and editing the _email.less file
+
+//  Importing fonts from an external CSS file, rather than embedding @font-face declarations inside the <style> tag,
+//  as the latter will cause font rendering issues if the web fonts are inaccessible.
+
+@import url("@{baseUrl}css/email-fonts.css");
+
+//
+//  Style for non inline email
+//  _____________________________________________
+
+.email-non-inline {
+    td.footer-content-bottom {
+        > table {
+            td {
+                a {
+                    &:visited,
+                    &:active,
+                    &:hover {
+                        color: #595959 !important;
+                    }
+                }
+            }
+        }
+    }
+
+    table {
+        td {
+            a {
+                &:visited,
+                &:active,
+                &:hover {
+                    color: inherit !important;
+                }
+
+                &.link-as-button {
+                    .lib-css(border-radius, 100px, 1);
+
+                    &:visited,
+                    &:active,
+                    &:hover {
+                        color: #fff !important;
+                        text-decoration: none !important;
+                    }
+                }
+            }
+
+            .link-primary {
+                &:visited,
+                &:active,
+                &:hover {
+                    color: @theme__color__primary !important;
+                }
+            }
+        }
+    }
+
+    table.main-title {
+        .title-mark {
+            > div {
+                .lib-css(border-radius, 100px, 1);
+            }
+        }
+    }
+
+    .col {
+        &.photo {
+            img {
+                .lib-css(border-radius, 16px, 1);
+            }
+        }
+    }
+
+    table.order-info {
+        .lib-css(border-radius, 8px, 1);
+
+        thead th {
+            .lib-css(border-radius, 8px 8px 0 0, 1);
+        }
+    }
+}
+
+//
+//  Main Body
+//  _____________________________________________
+
+body {
+    background: @color-white;
+}
+
+table {
+    &.wrapper {
+        max-width: 580px;
+    }
+
+    &.main {
+        border: 1px solid @border-color__base;
+    }
+
+    td {
+        color: @primary__color;
+        font-size: 14px;
+        line-height: 22px;
+        letter-spacing: 1px;
+        font-weight: 400;
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        .link-primary {
+            color: @theme__color__primary;
+            font-weight: 500;
+        }
+    }
+}
+
+td.wrapper-inner {
+    padding: 36px 24px;
+}
+
+//
+//  Email Header
+//  _____________________________________________
+
+td.header {
+    background-color: @email__header__background-color;
+    padding: 15px 24px;
+    text-align: center;
+
+    .logo {
+        height: 20px;
+
+        img {
+            vertical-align: top;
+        }
+    }
+}
+
+//
+//  Email Footer
+//  _____________________________________________
+
+td.footer {
+    background-color: @email__background-color;
+    padding: 0;
+
+    > table {
+        width: 100%;
+    }
+
+    td.regards {
+        padding: 0 24px 36px 24px;
+
+        p {
+            margin: 0;
+        }
+    }
+
+    td.separate {
+        padding: 0 24px;
+
+        hr {
+            margin: 0;
+            border-top: 8px solid #fafafa;
+        }
+    }
+
+    td.footer-content-top {
+        padding: 36px 24px 60px 24px;
+
+        a {
+            font-weight: 500;
+        }
+    }
+
+    td.footer-content-bottom {
+        padding: 10px 18px;
+        background: #F2F2F2;
+
+        > table {
+            width: 100%;
+
+            td {
+                padding: 6px;
+
+                a {
+                    font-size: 12px;
+                    line-height: 18px;
+                    color: #595959;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Email Content
+//  _____________________________________________
+
+td.main-content {
+    padding: 36px 24px 0 24px;
+
+    table.main-title {
+        width: 100%;
+
+        .title-mark {
+            padding: 6px 8px 0 0;
+            width: 4px;
+
+            > div {
+                width: 4px;
+                height: 18px;
+                background: #ccc;
+                .lib-css(border-radius, 100px, 1);
+            }
+        }
+
+        h1 {
+            font-size: 18px;
+            line-height: 28px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+    }
+
+    p {
+        margin-bottom: 24px;
+
+        &.margin_0 {
+            margin-bottom: 0;
+        }
+    }
+
+    a.link-as-button {
+        color: #fff !important;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 22px;
+        letter-spacing: 1px;
+        text-align: center;
+        padding: 8px 16px;
+        text-decoration: none;
+        background: @theme__color__primary;
+        .lib-css(border-radius, 100px, 1);
+        &.abandoned-cart-action {
+            padding: 11px 32px;
+        }
+
+        &:visited,
+        &:active,
+        &:hover {
+            color: #fff !important;
+            text-decoration: none !important;
+        }
+    }
+
+    .price-box {
+        .price-container {
+            .price-label {
+                width: 0;
+                height: 0;
+                display: none;
+            }
+
+            .price-wrapper {
+                .price {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 22px;
+                    letter-spacing: 1px;
+                    color: @theme__color__primary;
+                }
+            }
+        }
+
+        .old-price {
+            padding-left: 2px;
+
+            .price-container {
+                .price-wrapper {
+                    .price {
+                        font-weight: 400;
+                        color: @secondary__color;
+                        text-decoration: line-through;
+                    }
+                }
+            }
+        }
+    }
+
+    table.product-info {
+        width: 100%;
+
+        tr {
+            &.item {
+                border-bottom: 1px solid @email__border-color;
+
+                &.first {
+                    .col {
+                        &.photo {
+                            padding-top: 0 !important;
+                        }
+
+                        &.item {
+                            padding-top: 0 !important;
+                        }
+                    }
+                }
+
+                &.last {
+                    border-bottom: 0;
+                }
+            }
+        }
+
+        .col {
+            &.photo {
+                width: 100px;
+
+                img {
+                    width: 100px;
+                    .lib-css(border-radius, 16px, 1);
+                }
+            }
+
+            &.item {
+                padding: 8px;
+
+                p {
+                    margin-bottom: 4px;
+                }
+
+                .product.name {
+                    font-weight: 400;
+
+                    a {
+                        text-decoration: none;
+                    }
+                }
+
+                .short-description {
+                    font-size: 12px;
+                    line-height: 18px;
+                    letter-spacing: 1px;
+                    color: #999999;
+                }
+
+                .price-with-qty {
+                    ._qty {
+                        font-size: 12px;
+                        padding-right: 8px;
+                        border-right: 1px solid @email__border-color;
+                    }
+
+                    ._price {
+                        padding-left: 8px;
+                    }
+                }
+            }
+        }
+    }
+
+    table.order-info {
+        width: 100%;
+        border: 1px solid @email__border-color;
+        border-collapse: separate;
+        .lib-css(border-radius, 8px, 1);
+
+        thead {
+            th {
+                font-size: 14px;
+                line-height: 22px;
+                letter-spacing: 1px;
+                font-weight: 500;
+                color: @primary__color;
+                padding: 8px 12px;
+                background: #F2F2F2;
+                .lib-css(border-radius, 8px 8px 0 0, 1);
+            }
+        }
+
+        tbody {
+            > tr > td {
+                padding: 0 12px;
+                width: 100%;
+            }
+
+            .order-main-info {
+                width: 100%;
+
+                tr {
+                    td {
+                        padding: 10px;
+                        border-bottom: 1px solid @email__border-color;
+
+                        &.label {
+                            padding-left: 0;
+                            font-weight: 400;
+                            font-size: 12px;
+                            line-height: 18px;
+                            letter-spacing: 1px;
+                            color: #999999;
+                            white-space: nowrap;
+                        }
+
+                        &.value {
+                            padding-right: 0;
+                            font-weight: 400;
+                            font-size: 12px;
+                            line-height: 18px;
+                            letter-spacing: 1px;
+                            color: @primary__color;
+                            text-align: right;
+
+                            ul {
+                                margin: 0;
+
+                                li {
+                                    list-style-type: none;
+                                    margin-bottom: 3px;
+                                }
+                            }
+                        }
+                    }
+
+                    &.order_items,
+                    &.row_no-border__bottom {
+                        td {
+                            border-bottom: 0;
+                        }
+                    }
+                    .shipment-track {
+                        td {
+                            padding: 0;
+                            border-bottom: 0;
+
+                            a {
+                                color: #231815 !important;
+                                font-size: 12px;
+                                font-weight: 400;
+                                line-height: 18px;
+                                letter-spacing: 1px;
+
+                                &:visited,
+                                &:active,
+                                &:hover {
+                                    color: #de271f !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .a-center {
+        text-align: center;
+    }
+
+    .m-bottom__m {
+        margin-bottom: 36px;
+    }
+
+    .m-bottom__sm {
+        margin-bottom: 24px;
+    }
+}
+
+//
+//  Alert Stock
+//  _____________________________________________
+
+table.alert-stock {
+    margin-bottom: 36px;
+
+    .col {
+        &.item {
+            a.link-as-button {
+                margin-top: 12px;
+                float: left;
+                padding: 5px 16px;
+            }
+        }
+    }
+}
+
+//
+//  Abandoned Cart
+//  _____________________________________________
+
+table.abandoned-cart {
+    margin-bottom: 36px;
+
+    .col {
+        &.photo {
+            padding: 12px 0;
+            width: 92px !important;
+
+            img {
+                width: 92px !important;
+            }
+        }
+
+        &.item {
+            padding: 12px 0 12px 16px !important;
+        }
+    }
+}
+
+//
+//  New Order
+//  _____________________________________________
+
+table.new-order {
+    margin-bottom: 36px;
+}

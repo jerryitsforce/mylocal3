@@ -1,0 +1,242 @@
+<?php
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+declare(strict_types=1);
+
+namespace Branch8\OptionsWithStockAndImages\Plugin\Webkul\OptionsWithStockAndImages\Observer;
+
+use Magento\Framework\App\ResourceConnection;
+use Branch8\OptionsWithStockAndImages\Helper\Salable;
+class CheckoutSubmitAllAfterOff
+{
+    /**
+     * @var \Webkul\OptionsWithStockAndImages\Helper\Data
+     */
+    public $helper;
+
+    /**
+     * @var \Webkul\OptionsWithStockAndImages\Logger\Logger
+     */
+    public $logger;
+
+    /** @var \Magento\Framework\App\ResourceConnection */
+    protected $resource;
+
+    /**
+     * @var \Branch8\OptionsWithStockAndImages\Helper\Salable
+     */
+    protected $salable;
+
+    /**
+     * Constructor
+     *
+     * @param \Webkul\OptionsWithStockAndImages\Helper\Data $helper
+     * @param \Webkul\OptionsWithStockAndImages\Logger\Logger $logger
+     */
+    public function __construct(
+        \Webkul\OptionsWithStockAndImages\Helper\Data $helper,
+        \Webkul\OptionsWithStockAndImages\Logger\Logger $logger,
+        Salable $salable,
+        ResourceConnection $resourceConnection
+    ) {
+        $this->helper = $helper;
+        $this->logger = $logger;
+        $this->salable = $salable;
+        $this->resource = $resourceConnection;
+    }
+
+    /**
+     * Update Table
+     *
+     * @param \Magento\Sales\Model\Order $order
+     * @return void
+     */
+    public function aroundUpdateData(
+        \Webkul\OptionsWithStockAndImages\Observer\CheckoutSubmitAllAfter $subject,
+        \Closure $proceed,
+        $order
+    ) {
+        try {
+            $this->salable->getConnection()->beginTransaction();
+            $subtractStockQty = [];
+            $messages = [];
+            foreach ($order->getAllVisibleItems() as $item) {
+                $comb = "";
+                $option_type_id = [];
+                $product = $item->getProduct();
+                $variationSku = '';
+                $productRowId = $product->getRowId();
+                $optionData = [];
+                $msg = [];
+                $msg[] = __('order: %1', $order->getIncrementId());
+                foreach ($product->getOptions() as $option) {
+                    $optType = $option->getType();
+                    if ($optType == "drop-down" || $optType == "drop_down" || $optType == "radio") {
+                        $optionId = $option->getId();
+                        $optionData[$optionId] = [];
+                        foreach ($option->getValues() as $value) {
+                            $valueId = $value->getId();
+                            $optionData[$optionId][$valueId] = $value->getDefaultTitle();
+                        }
+                    }
+                }
+                if (!empty($optionData)) {
+                    $options = $item->getProductOptions();
+                    $msgCO = [];
+                    if (isset($options['options']) && !empty($options['options'])) {
+                        foreach ($options['options'] as $option) {
+                            $optDataArr = $optionData[$option['option_id']];
+                            if (isset($optDataArr) && isset($optDataArr[$option['option_value']])) {
+                                $comb .= $optDataArr[$option['option_value']] . "_";
+                                $option_type_id[] = $option['option_value'];
+                                $msgCO[] = $option['label'] . ' : ' . $option['value'];
+                            }
+                        }
+                    }
+                    if(count($msgCO)){
+                        $msg[] = __('Custom option: %1', implode(' , ' , $msgCO));
+                    }
+
+                    $comb = trim($comb, "_");
+                    $variation = $this->helper->getCombData($productRowId, $comb);
+                    if ($variation->getId()) {
+                        $price = $variation->getPrice();
+                        $cost = $variation->getCost();
+                        $this->logger->info('CheckoutSubmitAllAfter');
+                        $this->logger->info(json_encode([
+                            'comb' => $comb,
+                            'stock' => $variation->getStock() + $item->getQtyOrdered()
+                        ]));
+                        if ($variation->getIsSync()) {
+                            if (array_key_exists($variation->getSku(), $subtractStockQty)) {
+                                $subtractStockQty[$variation->getSku()] = (int)$subtractStockQty[$variation->getSku()] + $item->getQtyOrdered();
+                            } else {
+                                $subtractStockQty[$variation->getSku()] = $item->getQtyOrdered();
+                            }
+                            $msg[] = __('Variation: %1', $comb);
+                            $messages[$variation->getSku()] = implode(' - ', $msg);
+                        } else {
+                            $qty = $variation->getStock() - $item->getQtyOrdered();
+                            if ($qty < 0) {
+                                $qty = 0;
+                            }
+                            $variation->setStock($qty);
+                        }
+
+                        if (!empty($variation->getSku())) {
+                            $variationSku = $variation->getSku();
+                            $variation->setIsLockSku(1);
+                            if(!empty($variationSku)){
+                                $item->setVariationSku($variationSku);
+                            }
+                        }
+
+                        if(!empty($cost) && $cost > 0){
+                            $item->setBaseCost($cost);
+                            $item->setOriginCost($cost);
+                        }
+                        if(!empty($price) && $price > 0){
+                            $item->setVariationPrice($price);
+                            $item->setOriginalPrice($price);
+                            $item->setBaseOriginalPrice($price);
+                        }
+
+                        $variation->setReadyToShipQty($variation->getReadyToShipQty() + $item->getQtyOrdered());
+
+                        $this->saveObj($variation);
+                        $item->setSpecTitle($variation->getComb());
+                        $item->setSpecialPrice($item->getBasePriceInclTax());
+                    }
+
+                    if(count($option_type_id)){
+                        $customOptionSkus = $this->getCustomOptionSkus($option_type_id);
+                        if(count($customOptionSkus)){
+                            $item->setOptionSku(implode('-', $customOptionSkus));
+                        }
+                        $this->saveCustomOptionIsBought($option_type_id);
+                    }
+                    $item->save();
+                }
+                $this->salable->syncNeedToRefill([$product->getId()]);
+            }
+
+            $this->subtractStockQty($subtractStockQty, $order, $messages);
+
+            $this->salable->getConnection()->commit();
+
+        } catch (\Exception $e) {
+            try {
+                $this->salable->getConnection()->rollBack();
+            } catch (\Exception $e2) {
+                // Ignore rollback error if no transaction active
+            }
+            $this->logger->info($e->getMessage());
+            throw $e;
+        }
+    }
+
+    private function subtractStockQty($skus, $order, $messages){
+        if(count($skus)){
+            foreach($skus as $sku => $qty){
+                $message = __('Product ordered (order: %1)', $order->getIncrementId());
+                if(isset($messages[$sku])){
+                    $message = __('Product ordered (%1)', $messages[$sku]);
+                }
+                $this->salable->subtractStockQty($sku, $qty, $order, $message);
+            }
+        }
+    }
+
+    private function saveItemSku($item, $sku){
+        $item->setSku($sku);
+        $item->save();
+    }
+
+    private function getCustomOptionSkus($option_type_id){
+        $connection = $this->resource->getConnection();
+        $table = $this->resource->getTableName('catalog_product_option_type_value');
+
+        $select = $connection->select()
+            ->from($table, ['sku'])
+            ->where('option_type_id IN (?)', $option_type_id);
+
+        return $connection->fetchCol($select);
+    }
+
+    private function saveCustomOptionIsBought($option_type_id){
+        $connection = $this->resource->getConnection();
+        $table = $this->resource->getTableName('catalog_product_option_type_value');
+
+        $connection->beginTransaction();
+        try{
+            $updateData  = [
+                'is_bought' => 1
+            ];
+            $whereUpdate = [
+                'option_type_id IN (?)'   => $option_type_id
+            ];
+            $connection->update(
+                $table,
+                $updateData,
+                $whereUpdate
+            );
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * Save object
+     *
+     * @param \Webkul\OptionsWithStockAndImages\Model\Variations $object
+     * @return void
+     */
+    private function saveObj($object)
+    {
+        $object->save();
+    }
+}

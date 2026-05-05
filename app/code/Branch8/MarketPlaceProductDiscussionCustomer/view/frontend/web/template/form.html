@@ -1,0 +1,39 @@
+<div class="new-thread-ask-form-info" data-bind="blockLoader: isLoading">
+    <!-- ko foreach: getRegion('before') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+    <form id="create-thread-form" class="form new-thread-ask-form"
+            data-bind="mageInit: {'validation': {}},event: {submit: postThread },afterRender:afterRender.bind($data)"
+            enctype="multipart/form-data">
+        <fieldset class="fieldset">
+            <div class="field question required">
+                <label class="label" for="content">
+                    <span data-bind="i18n: 'Leave your question'"></span>
+                </label>
+                <div class="control">
+                    <textarea name="content"
+                            id="content"
+                            data-bind="value: content, valueUpdate: 'input', attr: { placeholder: $t('請輸入你的問題，將會由商家進行回覆') }"
+                            class="input-text"
+                            rows="5"
+                            aria-required="true"></textarea>
+                    <span class="counter">
+                        <span class="counter" data-bind="text: remaining, css: lengthClass"></span>
+                        /<span class="max" data-bind="text: configurations.maxLength"></span>
+                    </span>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button type="submit" title="Submit"
+                        id="submit-question"
+                        class="button action primary"
+                        data-bind="enable: canPost"
+                >
+                    <span data-bind="i18n: 'Send out'"></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

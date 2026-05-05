@@ -1,0 +1,65 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var Magento\Customer\Block\Account\Customer $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$b8CustomerHelper = $this->helper(\Branch8\Customer\Helper\Data::class);
+$subAccountHelper = $this->helper(\Webkul\SellerSubAccount\Helper\Data::class);
+?>
+<li class="dropdown customer-welcome not-logged-in" data-bind="scope: 'customerWelcome'" id="header-customer-not-logged" style="display: none;">
+<!-- ko ifnot: isLogin() -->
+    <span class="action dropdown-toggle"
+            role="link"
+            tabindex="0"
+            data-bind="mageInit: {'dropdown':{}}"
+            data-toggle="dropdown"
+            data-trigger-keypress-button="true">
+            <span class="text"><?= $block->escapeHtml(__('Login / Register')) ?></span>
+    </span>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "hotaipoints": {
+                            "component": "Branch8_HotaiPoint/js/view/rewards"
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <div class="customer-menu dropdown-list dropdown-center" data-target="dropdown">
+        <div class="welcome" data-bind="scope: 'hotaipoints'">
+            <p data-bind="html: hotaipoints().greeting"></p>
+        </div>
+        <ul class="authorization-links">
+            <li>
+                <a href="<?= $b8CustomerHelper->getRegisterUrl(); ?>"><?= $block->escapeHtml(__("註冊"))?></a>
+            </li>
+            <li class="link authorization-link" data-label="或">
+                <a href="<?= $b8CustomerHelper->getLoginUrl(); ?>"><?= $block->escapeHtml(__("登入"))?></a>
+            </li>
+        </ul>
+    </div>
+<!-- /ko -->
+</li>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "customerWelcome": {
+                        "component": "Magento_Customer/js/customer"
+                    }
+                }
+            }
+        }
+    }
+</script>
+

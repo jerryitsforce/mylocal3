@@ -1,0 +1,127 @@
+<div id="popup-batch-code">
+    <div class="modal-inner-content">
+        <h2><div><?php echo __('Pool:');?> <span id="popup-batch-event-title"></span></div></h2>
+        <br />
+        <input type="hidden" id="batch_event_id">
+        <div id="batch_content">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'plugins/DOMPurify',
+            'mage/mage',
+            'mage/calendar'
+        ],
+        function($, modal, DOMPurify) {
+            jQ = $.noConflict();
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Batch Code List',
+                buttons: [{
+                    text: jQ.mage.__('Close'),
+                    class: 'modal-close',
+                    click: function (){
+                        this.closeModal();
+                    }
+                }]
+            };
+            modal(options, jQ('#popup-batch-code'));
+            jQ(document).on('click', '.view-batch-code-btn', function(){
+                var dataBatch = jQ(this).attr('data');
+                try{
+                    var popupDataArr = JSON.parse(dataBatch);
+                    jQ('#popup-batch-event-title').html(DOMPurify.sanitize(popupDataArr.title));
+                    jQ('#batch_event_id').val(popupDataArr.id);
+                }catch(err) {
+
+                }
+                loadBatchCodes(jQ('#batch_event_id').val());
+                jQ("#popup-batch-code").modal("openModal");
+
+                // jQ.ajax({
+                //     type: "GET",
+                //     url: "<?php echo $this->getUrl('eventticket/event/listBatchCode');?>event_id/"+jQ('#batch_event_id').val(),
+                //     showLoader: true,
+                //     dataType: 'json',
+                //     success: function (response) {
+                //         if(response.error == false){
+                //             jQ('#batch_content').html(DOMPurify.sanitize(response.html));
+                //         }else{
+                //             jQ('#batch_content').html(DOMPurify.sanitize(jQ.mage.__('Something went wrong')));
+                //         }
+                        
+                //     },
+                //     error: function (e) {
+                //         console.log(e);
+                //     }
+                // });
+
+
+            });
+            jQ(document).on('click', '.delete_batch_code', function(){
+                if(!confirm(jQ.mage.__('Do you want to delete this batch code?'))){
+                    return ;
+                }
+                var batchCodeToDel = jQ(this).attr('data-del');
+                try{
+                    var batchCodeToDelData = JSON.parse(batchCodeToDel);
+                    var eventIdToDelBatch = batchCodeToDelData.event_id;
+                    var batchCodeToDelBatch = batchCodeToDelData.batch_code;
+                }catch (err){
+                    alert(jQ.mage.__('Something went wrong'));
+                    return;
+                }
+                var self = this;
+                jQ.ajax({
+                    type: "GET",
+                    url: "<?php echo $this->getUrl('eventticket/event/deleteBatch');?>event_id/"+eventIdToDelBatch+'/batch_code/'+batchCodeToDelBatch,
+                    showLoader: true,
+                    dataType: 'json',
+                    success: function (response) {
+                        if(response.error == false){
+                            loadBatchCodes(eventIdToDelBatch);
+                            alert(jQ.mage.__('Delete Successfully'));
+                        }else{
+                            if(response.msg != '') {
+                                alert(response.msg);
+                            }else{
+                                alert(jQ.mage.__('Delete Fail'));
+                            }
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+
+
+            });
+
+            function loadBatchCodes(eventId){
+                jQ.ajax({
+                    type: "GET",
+                    url: "<?php echo $this->getUrl('eventticket/event/listBatchCode');?>event_id/"+eventId,
+                    showLoader: true,
+                    dataType: 'json',
+                    success: function (response) {
+                        if(response.error == false){
+                            jQ('#batch_content').html(DOMPurify.sanitize(response.html));
+                        }else{
+                            jQ('#batch_content').html(DOMPurify.sanitize(jQ.mage.__('Something went wrong')));
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                });
+            }
+        });
+</script>

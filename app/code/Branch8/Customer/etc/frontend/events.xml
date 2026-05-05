@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="b8_check_not_allow_seller_visit" instance="Branch8\Customer\Observer\PreventSeller" />
+    </event>
+    <event name="controller_action_predispatch_customer_account_loginPost">
+        <observer name="seller_login" disabled="true"/>
+    </event>
+    <event name="customer_logout">
+        <observer name="branch8_customer_logout_cache_cleaner" instance="Branch8\Customer\Observer\CustomerLogoutCacheCleanerObserver" />
+    </event>
+</config>

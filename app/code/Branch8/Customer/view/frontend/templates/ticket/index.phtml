@@ -1,0 +1,302 @@
+<?php
+/** @var \Branch8\Customer\Block\Ticket\Index $block */
+use Branch8\Customer\Helper\Ticket as HelperTicket;
+$tabIndex = [
+    'tab-unused' => 0,
+    'tab-used' => 1,
+    'tab-overdue' => 2
+];
+$tabs = $block->getTabData();
+$ticketActiveTab = $tabIndex[$block->getActiveTab()];
+$searchCirclePNG = $block->getViewFileUrl('images/search-circle.png');
+
+$request = $this->getRequest();
+$qParam = $request->getParam('q');
+$withinXDays = 30;
+$countExpiringTickets = $block->countExpiringUnusedTickets($withinXDays);
+?>
+<div class="member-ticket-container">
+    <div class="ticket-info">
+        <div class="ticket-info-title">
+            <span class="d-none md-block"><?= __('Unused tickets') ?></span>
+            <h4 class="highlight"><?= $block->getTotalUnsedTicket() ?></h4>
+            <span><?= __('open') ?></span>
+        </div>
+        <?php if( $countExpiringTickets > 0): ?>
+            <span class="caption"><?= __("將有{$countExpiringTickets}張票券於{$withinXDays}天內到期") ?></span>
+        <?php endif; ?>
+    </div>
+    <div class="breadcrumbs md-hide">
+        <ul class="items">
+            <li class="item">
+                <a href="/customer/account" title="<?= __('Member Information') ?>"><?= __('會員中心') ?></a>
+            </li>
+            <li class="item d-none">
+                <strong><?= __('Member ticket') ?></strong>
+            </li>
+        </ul>
+    </div>
+    <div class="ticket-content ticket-status-tab">
+        <div class="product data items hotai-member-ticket"
+             data-mage-init='{
+              "mage/tabs": {
+                   "openedState": "active",
+                   "animate": {
+                       "duration": 100
+                   },
+                   "active": <?= /* @noEscape  */ $ticketActiveTab ?>,
+                   "disabledState": "disabled"
+              }
+         }'>
+            <div class="ticket-tab-title">
+                <div class="item title" data-role="collapsible">
+                    <a class="switch" data-toggle="trigger" href="#<?= $tabs[0] ?>">
+                        <?= __('未使用') ?>
+                    </a>
+                </div>
+
+                <div class="item title" data-role="collapsible">
+                    <a class="switch" data-toggle="trigger" href="#<?= $tabs[1] ?>">
+                        <?= __('已使用/歸戶') ?>
+                    </a>
+                </div>
+
+                <div class="item title" data-role="collapsible">
+                    <a class="switch" data-toggle="trigger" href="#<?= $tabs[2] ?>">
+                        <?= __('已過期') ?>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ticket-tab-content">
+                <div id="<?= $tabs[0] ?>" class="item content" data-role="content">
+                    <div class="content-wrapper">
+                        <div class="ticket-list<?= !$block->getUnusedTicketCollection()->getSize() ? ' empty' : '' ?>">
+                            <?php if(!$block->getUnusedTicketCollection()->getSize()):?>
+                                <div class="wrapper-empty">
+                                    <img src="<?= $searchCirclePNG; ?>"/>
+                                    <h6 class="notice"><?= __('目前尚無未使用票券喔！') ?></h6>
+                                </div>
+                            <?php else: ?>
+                                <?php foreach($block->getUnusedTicketCollection() as $item): ?>
+                                    <?= $block->getLayout()->createBlock(\Branch8\Customer\Block\Ticket\Row\Ticket::class)
+                                        ->setData('type', \Branch8\HotaiCore\Model\Ticket\Status::STATUS_UNUSED)
+                                        ->setData('item', $item)
+                                        ->toHtml()
+                                    ?>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </div>
+                    </div>
+
+                    <?php if($block->getUnusedTicketCollection()->getSize() > 10):?>
+                    <div class="member-ticket-toolbar toolbar bottom d-none md-block">
+                        <?= $block->getCollectionPagerHtml(
+                            $block->getUnusedTicketCollection(),
+                            'account.customer.unused.ticket.collection.pager',
+                            $tabs[0]
+                        ) ?>
+                    </div>
+
+                    <div class="account-load-more md-hide">
+                        <button type="button" id="load-more" title="<?= __('顯示更多') ?>" class="action outline-primary action-loadmore" data-tab-id="<?=$tabs[0]?>">
+                            <span><?= __('顯示更多') ?></span>
+                        </button>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <div id="<?= $tabs[1] ?>" class="item content" data-role="content">
+                    <div class="content-wrapper">
+                        <!-- Todo: get ticket used here-->
+                        <div class="ticket-list<?= !$block->getUsedTicketCollection()->getSize() ? ' empty' : '' ?>">
+                            <?php if(!$block->getUsedTicketCollection()->getSize()):?>
+                                <img src="<?= $searchCirclePNG; ?>"/>
+                                <h6 class="notice"><?= __('目前尚無已使用/歸戶票券！') ?></h6>
+                            <?php else: ?>
+                                <?php foreach($block->getUsedTicketCollection() as $item): ?>
+                                    <?= $block->getLayout()->createBlock(\Branch8\Customer\Block\Ticket\Row\Ticket::class)
+                                        ->setData('type', \Branch8\HotaiCore\Model\Ticket\Status::STATUS_USED)
+                                        ->setData('item', $item)
+                                        ->toHtml()
+                                    ?>
+                                <?php endforeach;?>
+
+                            <?php endif;?>
+                        </div>
+                    </div>
+
+                    <?php if($block->getUsedTicketCollection()->getSize() > 10):?>
+                        <div class="member-ticket-toolbar toolbar bottom d-none md-block">
+                            <?= $block->getCollectionPagerHtml(
+                                $block->getUsedTicketCollection(),
+                                'account.customer.used.ticket.collection.pager',
+                                $tabs[1]
+                            ) ?>
+                        </div>
+
+                        <div class="account-load-more md-hide">
+                            <button type="button" id="load-more" title="<?= __('顯示更多') ?>" class="action outline-primary action-loadmore" data-tab-id="<?=$tabs[1]?>">
+                                <span><?= __('顯示更多') ?></span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div id="<?= $tabs[2] ?>" class="item content" data-role="content">
+                    <div class="content-wrapper">
+                        <!-- Todo: get ticket expired here-->
+                        <div class="ticket-list<?= !$block->getOverDueTicketCollection()->getSize() ? ' empty' : '' ?>">
+                            <?php if(!$block->getOverDueTicketCollection()->getSize()):?>
+                                <img src="<?= $searchCirclePNG; ?>"/>
+                                <h6 class="notice"><?= __('目前尚無已過期票券！') ?></h6>
+                            <?php else: ?>
+                                <?php foreach($block->getOverDueTicketCollection() as $item): ?>
+                                    <?= $block->getLayout()->createBlock(\Branch8\Customer\Block\Ticket\Row\Ticket::class)
+                                        ->setData('type', \Branch8\HotaiCore\Model\Ticket\Status::STATUS_OVER_DUE)
+                                        ->setData('item', $item)
+                                        ->toHtml()
+                                    ?>
+                                <?php endforeach;?>
+
+                            <?php endif;?>
+                        </div>
+                    </div>
+                    <?php if($block->getOverDueTicketCollection()->getSize() > 10):?>
+                        <div class="member-ticket-toolbar toolbar bottom d-none md-block">
+                            <?= $block->getCollectionPagerHtml(
+                                $block->getOverDueTicketCollection(),
+                                'account.customer.overdue.ticket.collection.pager',
+                                $tabs[2]
+                            ) ?>
+                        </div>
+
+                        <div class="account-load-more md-hide">
+                            <button type="button" id="load-more" title="<?= __('顯示更多') ?>" class="action outline-primary action-loadmore" data-tab-id="<?=$tabs[2]?>">
+                                <span><?= __('顯示更多') ?></span>
+                            </button>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/modal',
+        'plugins/rollDate',
+        'mage/url',
+        'underscore',
+        'mage/validation',
+        '!domReady'
+    ], function($, modal, rollDate, urlBuilder, _) {
+
+        let filterState = {
+            '<?= $tabs[0] ?>': {
+                curPage: <?= /* @noEscape */ $block->getCurPage($tabs[0]) ?>,
+            },
+            '<?= $tabs[1] ?>': {
+                curPage: <?= /* @noEscape */ $block->getCurPage($tabs[1]) ?>,
+            },
+            '<?= $tabs[2] ?>': {
+                curPage: <?= /* @noEscape */ $block->getCurPage($tabs[2]) ?>,
+            },
+        }
+
+
+        $(document).on('click', '.action-loadmore', function (e) {
+            e.preventDefault();
+            const self = this;
+            const body = $('body')
+            const tabId = $(this).data('tab-id');
+            const tabFilterState = filterState[tabId];
+            const currentPage = tabFilterState.curPage;
+            body.loader('show');
+            // Retrieve current page and calculate next page
+            if (isNaN(currentPage)) {
+                console.error('Invalid current page number');
+                body.loader('hide');
+                return;  // Exit if the current page is not a number
+            }
+
+            const nextPage = tabFilterState.curPage + 1;
+
+            // Validate page size
+            if (isNaN(pageSize) || pageSize <= 0) {
+                console.error('Invalid page size');
+                alert($.mage.__('Invalid page size.'));
+                body.loader('hide');
+                return;  // Exit if page size is not valid
+            }
+
+            // AJAX call to load more categories
+            $.ajax({
+                url: urlBuilder.build('member/ticket/ajax'),
+                type: 'POST',
+                data: {
+                    '<?= HelperTicket::TAB_PARAM ?>': tabId,
+                    '<?= HelperTicket::CUR_PAGE_PARAM ?>': nextPage,
+                    'from': tabFilterState.from,
+                    'to': tabFilterState.to
+                },
+                success: function (response) {
+                    try {
+                        // Check if the response is successful
+                        if (response.success) {
+
+                            filterState[tabId].curPage = nextPage;
+
+                            $(`#${tabId} .content-wrapper .ticket-list`).append(response.html);
+
+                            if (!response.hasMore) {
+                                console.log($(this).closest('.load-more-container'));
+                                $(self).closest('.account-load-more').hide();
+                            }
+                        } else {
+                            console.warn('Response returned as unsuccessful');
+                        }
+                    } catch (err) {
+                        console.error('Error processing response: ', err);
+                    } finally {
+                        body.loader('hide');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // Handle AJAX error
+                    console.error('AJAX request failed: ', textStatus, errorThrown);
+                    body.loader('hide');
+                }
+            });
+        });
+
+
+        function getTabUrl(tabId) {
+            const currentUrl = new URL(window.location.href);
+
+            const state = filterState[tabId];
+
+            if(state.curPage !== 1) {
+                currentUrl.searchParams.set('p', state.curPage);
+            } else {
+                currentUrl.searchParams.delete('p');
+            }
+
+            currentUrl.searchParams.set('t', tabId);
+
+            return currentUrl.toString();
+        }
+
+
+        $('a.switch').on('click', function() {
+            const  href = $(this).attr('href').replace('#', '');
+            history.replaceState(null, '', getTabUrl(href));
+        });
+
+
+    });
+</script>

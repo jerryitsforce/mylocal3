@@ -1,0 +1,27 @@
+<div class="thread-load-more" id="thread_load_more">
+    <button class="action load" data-bind="click: loadMore" data-page="1" data-url="#">
+        <span data-bind="i18n: '顯示更多'"></span>
+    </button>
+</div>
+<div class="pager"> 
+    <div class="pages">
+        <ul data-bind="visible: needPaging" class="items pages-items">
+            <li class="item pages-item-previous" data-bind="css: { disabled: !previousPageActive() }">
+                <a class="action previous" data-bind="click: goToPrevious"> <span data-bind="i18n: 'Previous'"></span></a>
+            </li>
+            <!-- ko foreach: getPages() -->
+            <li class="item" data-bind="css: { active: $parent.currentPage() === $data }">
+                <!-- ko if: $parent.currentPage() === $data -->
+                <strong class="page" data-bind="text: $data"></strong>
+                <!-- /ko -->
+                <!-- ko ifnot: $parent.currentPage() === $data -->
+                    <a class="page" data-bind="click: $parent.goToPage.bind($parent), text: $data"></a>
+                <!-- /ko -->
+            </li>
+            <!-- /ko -->
+            <li class="item pages-item-next" data-bind="css: { disabled: !nextPageActive() }">
+                <a class="action  next" data-bind="click: goToNext"><span data-bind="i18n: 'Next'"></span></a>
+            </li>
+        </ul>
+    </div>
+</div>

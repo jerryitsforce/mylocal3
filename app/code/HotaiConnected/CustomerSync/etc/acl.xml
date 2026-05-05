@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="HotaiConnected_CustomerSync::API" title="HotaiConnected_CustomerSync API" sortOrder="51">
+                    <resource id="HotaiConnected_Customer::API_SyncGet" title="HotaiConnected_Customer API_SyncGetStatus" sortOrder="10"/>
+                    <resource id="HotaiConnected_Customer::API_SyncDelete" title="HotaiConnected_Customer API_SyncDelete" sortOrder="20"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

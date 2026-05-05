@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="payment_method_assign_data">
+        <observer name="hotaipay_payment_gateway_data_assign" 
+                  instance="Branch8\HotaiPay\Observer\DataAssignObserver" />
+    </event>
+    <event name="marketplace_mpsplitorder_submit_after">
+        <observer name="branch8_marketplaceparentorder_save_paymentinfo"
+                  instance="Branch8\HotaiPay\Observer\ParentOrderPaymentData" />
+    </event>
+     <event name="controller_action_predispatch_checkout_onepage_index">
+        <observer name="branch8_onepage_setup_creditcardinfo"
+                  instance="Branch8\HotaiPay\Observer\CreditCardInitSetup" />
+    </event>
+    <event name="controller_action_predispatch_checkout_index_index">
+        <observer name="branch8_onepage_setup_creditcardinfo"
+                  instance="Branch8\HotaiPay\Observer\CreditCardInitSetup" />
+    </event>
+</config>

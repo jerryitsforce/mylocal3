@@ -1,0 +1,34 @@
+<!--@subject {{trans "HOTAI 從舊系統返回通知"}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">您好,</p>
+        </td>
+    </tr>
+    <tr class="email-summary">
+        <td>
+        </td>
+    </tr>
+    <tr class="email-information">
+        <td>
+            <table class="query-details">
+                <tr>
+                    <td class="details">
+                        <p>附上貴公司在HOTAI商城申請退貨的訂單資訊。來到後台查看出貨情況。</p>
+                        <p><a target="_blank" href="{{var base_url}}">HOTAI購賣家後台網址</a></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="details">
+                        <p>HOTAI購商城自動信件，請勿直接回覆此信</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

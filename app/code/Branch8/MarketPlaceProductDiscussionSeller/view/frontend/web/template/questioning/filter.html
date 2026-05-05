@@ -1,0 +1,85 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form class="seller-thread-filter-form" id="more-filter" data-bind="mageInit: {'validation': {}}"
+      enctype="multipart/form-data">
+    <fieldset class="fieldset">
+        <legend data-bind="i18n:'Advance Filter'"></legend>
+        <p data-bind="i18n:'Filter comments by product name, SKU, comment date, or reply date.'"></p>
+        <div class="field">
+            <label for="filter-product-name" class="label">
+                <span data-bind="i18n:'Product Name'"></span>
+            </label>
+            <div class="control">
+                <input type="text" data-role="promptField"
+                       data-bind="attr: { placeholder: $t('輸入商品名稱...') }"
+                       data-validate="{'required':true}"
+                       name="filters[product_name]" id="filter-product-name" class="input-text"/>
+            </div>
+        </div>
+        <div class="field">
+            <label for="filter-product-sku" class="label">
+                <span data-bind="i18n:'commodity'"></span>&nbsp;<span data-bind="i18n:'SKU'"></span>
+            </label>
+            <div class="control">
+                <input type="text" data-role="promptField"
+                       data-bind="attr: { placeholder: $t('輸入商品 SKU...') }"
+                       data-validate="{'required':true}"
+                       name="filters[sku]" id="filter-product-sku" class="input-text"/>
+            </div>
+        </div>
+        <div class="fields">
+            <h4 data-bind="i18n:'Date Range of Messages'"></h4>
+            <div class="field create-date">
+                <label for="prompt-field-create-date-start" class="label">
+                    <span data-bind="i18n:'Start Date'"></span>
+                </label>
+                <div class="control">
+                    <input type="text" data-role="promptField"
+                           data-bind="attr: { placeholder: 'mm/dd/yyyy' },afterRender:initCalendar"
+                           name="filters[created_at_start]"
+                           id="prompt-field-create-date-start" class="input-text"/>
+                </div>
+            </div>
+            <div class="field end-date">
+                <label for="prompt-field-create-date-end" class="label">
+                    <span data-bind="i18n:'End Date'"></span>
+                </label>
+                <div class="control">
+                    <input type="text" data-role="promptField"
+                           data-bind="attr: { placeholder: 'mm/dd/yyyy' },afterRender:initCalendar"
+                           name="filters[created_at_end]"
+                           id="prompt-field-create-date-end" class="input-text"/>
+                </div>
+            </div>
+        </div>
+        <div class="fields">
+            <h4 data-bind="i18n:'Reply Date Range'"></h4>
+            <div class="field create-date">
+                <label for="prompt-field-reply-date-start" class="label">
+                    <span data-bind="i18n:'Start Date'"></span>
+                </label>
+                <div class="control">
+                    <input type="text" data-role="promptField"
+                           data-bind="attr: { placeholder: 'mm/dd/yyyy' },afterRender:initCalendar"
+                           name="filters[seller_replied_at_start]"
+                           id="prompt-field-reply-date-start" class="input-text"/>
+                </div>
+            </div>
+            <div class="field end-date">
+                <label for="prompt-field-reply-end-start" class="label">
+                    <span data-bind="i18n:'End Date'"></span>
+                </label>
+                <div class="control">
+                    <input type="text" data-role="promptField"
+                           data-bind="attr: { placeholder: 'mm/dd/yyyy' },afterRender:initCalendar"
+                           name="filters[seller_replied_at_end]"
+                           id="prompt-field-reply-end-start" class="input-text"/>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>

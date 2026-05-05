@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Mview/etc/mview.xsd">
+    <view id="branch8_seller_shop_name" class="Branch8\SellerInformationProductDataExport\Model\Indexer\SellerShopName" group="indexer">
+        <subscriptions>
+            <table name="marketplace_userdata" entity_column="entity_id" />
+        </subscriptions>
+    </view>
+    <view id="branch8_livesearch_stock_status" class="Branch8\SellerInformationProductDataExport\Model\Indexer\LivesearchStockStatus" group="indexer">
+        <subscriptions>
+            <table name="catalog_product_entity" entity_column="entity_id" />
+            <table name="cataloginventory_stock_item" entity_column="product_id" />
+            <table name="wk_osi_variations" entity_column="product_id" />
+        </subscriptions>
+    </view>
+</config>

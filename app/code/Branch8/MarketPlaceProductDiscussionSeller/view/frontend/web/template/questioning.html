@@ -1,0 +1,26 @@
+<div class="seller-thread-block" data-bind="afterRender:afterRender.bind($data)">
+    <div class="block-content" data-bind="blockLoader: isLoading" id="seller-questions-tab-wrapper">
+        <!-- ko template: 'Branch8_MarketPlaceProductDiscussionSeller/questioning/toolbar' --><!-- /ko -->
+        <div class="seller-thread-tabs" role="tablist" style="display: none">
+            <!-- ko foreach: { data: tabs, as: 'tab' } -->
+            <div class="item title seller-thread-tab"
+                 data-bind="css: {'item title': 'item title', 'active': tab.code===$parent.activeTab()} "
+                 data-role="collapsible">
+                <a class="switch" data-toggle="trigger"
+                   data-bind="attr:{href:'#tab-'+tab.code}"
+                >
+                    <span class="title" data-bind="text:tab.title"></span>
+                    <span class="counter" data-bind="text:$parent.getCounterText(tab.code)"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+        </div>
+        <div class="seller-thread-tab-contents">
+            <!-- ko foreach: { data: tabs, as: 'tab' } -->
+            <div class="item content seller-thread-tab-content" data-role="content" data-bind="attr:{'id':'tab-'+tab.code}">
+                <each args="$parent.getRegion($parent.name+'.'+tab.code)" render=""></each>
+            </div>
+            <!-- /ko -->
+        </div>
+    </div>
+</div>

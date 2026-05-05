@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="amasty_amrolepermissions_rule" resource="default" engine="innodb" comment="Amasty Advanced Permissions Rule Table">
+        <column xsi:type="smallint" name="seller_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Seller Access Mode"/>
+        <column xsi:type="smallint" name="block_access_mode" padding="6" unsigned="false" nullable="false" identity="false" default="0" comment="Block Access Mode"/>
+    </table>
+    <table name="amasty_amrolepermissions_rule_seller" resource="default" engine="innodb"
+           comment="Hotai Advanced Permissions Rule Seller Table">
+        <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Rule Id"/>
+        <column xsi:type="int" name="seller_id" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Seller ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="seller_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_0EC191ADB1333683C276D200E3138D30"
+                    table="amasty_amrolepermissions_rule_seller" column="rule_id"
+                    referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+        <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_SELLER_RULE_ID" indexType="btree">
+            <column name="rule_id"/>
+        </index>
+    </table>
+    <table name="amasty_amrolepermissions_rule_block" resource="default" engine="innodb"
+           comment="Hotai Advanced Permissions Rule Block Table">
+        <column xsi:type="int" name="rule_id" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Rule Id"/>
+        <column xsi:type="int" name="block_id" padding="10" unsigned="true" nullable="false" identity="false"
+                comment="Seller ID"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="block_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_0EC191ADB1333683C276D200E3138D30"
+                    table="amasty_amrolepermissions_rule_block" column="rule_id"
+                    referenceTable="amasty_amrolepermissions_rule" referenceColumn="id" onDelete="CASCADE"/>
+        <index referenceId="AMASTY_AMROLEPERMISSIONS_RULE_BLOCK_RULE_ID" indexType="btree">
+            <column name="rule_id"/>
+        </index>
+    </table>
+    <table name="amasty_amrolepermissions_rule_website">
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="website_id"/>
+        </constraint>
+    </table>
+    <table name="amasty_amrolepermissions_rule_category">
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="category_id"/>
+        </constraint>
+    </table>
+    <table name="amasty_amrolepermissions_rule_storeview">
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="storeview_id"/>
+        </constraint>
+    </table>
+    <table name="amasty_amrolepermissions_rule_product">
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="product_id"/>
+        </constraint>
+    </table>
+    <table name="amasty_amrolepermissions_rule_role">
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="rule_id"/>
+            <column name="role_id"/>
+        </constraint>
+    </table>
+    <table name="sales_order_grid" resource="sales" engine="innodb" comment="Sales Flat Order Grid">
+        <column xsi:type="decimal" name="total_invoiced" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Total Invoiced"/>
+        <column xsi:type="decimal" name="point_used_total" scale="4" unsigned="false" nullable="true" comment="Total Point Used"/>
+
+    </table>
+
+</schema>

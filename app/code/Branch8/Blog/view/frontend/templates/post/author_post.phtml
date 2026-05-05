@@ -1,0 +1,146 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Post\AuthorPost;
+use Branch8\Blog\Model\Post;
+use Magento\Framework\Escaper;
+
+/** @var AuthorPost $block */
+/** @var Escaper $escaper */
+$postCollection = $block->getPostCollection();
+?>
+<?php if (!$block->getAuthorStatus()) : ?>
+    <div>
+        <h3><?= $escaper->escapeHtml(__('Your account must be licensed in order to perform the Post creation and management function')) ?></h3>
+    </div>
+<?php else : ?>
+    <div class="blog-new-post">
+        <button type="button" class="action primary" title="<?= $escaper->escapeHtmlAttr(__('Add New Post')) ?>">
+            <?= $escaper->escapeHtml(__('Add New Post')) ?>
+        </button>
+    </div>
+    <div class="post-list-content" id="blog-list-container">
+        <?php if ($postCollection && count($postCollection) > 0) : ?>
+            <div class="post-list-body">
+                <?php $i = 1 ?>
+                <?php /** @var Post $post */
+                foreach ($postCollection as $post) : ?>
+                    <div data-post-id="<?= $escaper->escapeHtml($post->getId()); ?>"
+                         class="post-list-item col-mp post-item-list mp-12">
+                        <div class="post-item-wraper">
+                            <?= /* @noEscape */ $block->getStatusHtmlById($post->getEnabled()) ?>
+                            <?php if ($post->getImage()) : ?>
+                                <div class="post-image">
+                                    <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                        <img class="img-responsive"
+                                             src="<?= $escaper->escapeUrl($block->resizeImage($post->getImage(), '400x')) ?>"
+                                             alt="<?= $escaper->escapeHtmlAttr($post->getName()) ?>"/>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($post->getImageTwo()) : ?>
+                                <div class="post-image">
+                                    <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                        <img class="img-responsive"
+                                             src="<?= $escaper->escapeUrl($block->resizeImage($post->getImageTwo(), '400x')) ?>"
+                                             alt="<?= $escaper->escapeHtmlAttr($post->getName()) ?>"/>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($post->getImageThree()) : ?>
+                                <div class="post-image">
+                                    <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                        <img class="img-responsive"
+                                             src="<?= $escaper->escapeUrl($block->resizeImage($post->getImageThree(), '400x')) ?>"
+                                             alt="<?= $escaper->escapeHtmlAttr($post->getName()) ?>"/>
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            <div class="post-info-wraper">
+                                <h2 class="mp-post-title">
+                                    <a class="post-link-title" title="<?= $escaper->escapeHtml($post->getName()); ?>"
+                                       href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                        <?= $escaper->escapeHtml($post->getName()) ?>
+                                    </a>
+                                </h2>
+                                <div class="mp-post-info">
+                                    <?= /* @noEscape */ $block->getPostInfo($post) ?>
+                                </div>
+                                <div class="post-short-description">
+                                    <p>
+                                        <?= /* @noEscape */ $block->maxShortDescription($post->getShortDescription()) ?>
+                                    </p>
+                                </div>
+                                <div class="mp-clearfix"></div>
+                                <div class="mp-post-meta-info mp-alignright">
+                                    <div class="actions">
+                                        <a class="mp-read-more" href="<?= $escaper->escapeUrl($post->getUrl()) ?>"
+                                           title="<?= $escaper->escapeHtmlAttr(__('Read More')) ?>">
+                                            <?= $escaper->escapeHtml(__('Read More')) ?>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-info-action" data-postId="<?= $escaper->escapeHtml($post->getId()); ?>">
+                                <div class="blog-post-duplicate">
+                                    <img
+                                        src="<?= $escaper->escapeUrl($block->getViewFileUrl('Branch8_Blog::media/images/duplicate.svg')) ?>"
+                                        align="middle"
+                                        alt="<?= $escaper->escapeHtmlAttr(__('Duplicate')); ?>"
+                                        title="<?= $escaper->escapeHtmlAttr(__('Duplicate')) ?>"
+                                    />
+                                </div>
+                                <div class="blog-post-edit" >
+                                    <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('Branch8_Blog::media/images/writing.svg')) ?>"
+                                         align="middle"
+                                         alt="<?= $escaper->escapeHtmlAttr(__('Edit')); ?>"
+                                         title="<?= $escaper->escapeHtmlAttr(__('Edit')) ?>"
+                                    />
+                                </div>
+                                <div class="blog-post-delete">
+                                    <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('Branch8_Blog::media/images/delete.svg')) ?>"
+                                         align="middle"
+                                         alt="<?= $escaper->escapeHtmlAttr(__('Delete')) ?>"
+                                         title="<?= $escaper->escapeHtmlAttr(__('Delete')) ?>"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php $i++; ?>
+                    <?php if ($i % 2 == 0) : ?>
+                        <div class="mp-clear"></div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <div class="mp-clear"></div>
+            </div>
+            <?= $block->getPagerHtml() ?>
+        <?php else : ?>
+            <?= $escaper->escapeHtml(__('There are no posts at this moment')) ?>
+        <?php endif; ?>
+        <?= /* @noEscape */ $block->getChildHtml('additional') ?>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Branch8_Blog/js/managePost": {
+                    "deleteUrl": "<?= $escaper->escapeHtml($block->getUrl('blog/post/deletepost')) ?>",
+                        "basePubUrl": "<?= $escaper->escapeHtml($block->getBaseMediaUrl()) ?>",
+                        "postDatas": <?= $escaper->escapeHtml($block->getPostDatas($postCollection)) ?>,
+                        "editorVersion": "<?= $escaper->escapeHtml($block->getVersion()) ?>",
+                        "magentoVersion": "<?= $escaper->escapeHtml($block->getMagentoVersion()) ?>"
+                    }
+                }
+            }
+    </script>
+    <script>
+        require(['jquery'], function ($) {
+            $('.limiter').css('float', 'right');
+        });
+    </script>
+    <div id="blog-new-post-popup" style="display: none"><?= $block->getChildHtml('blog_manage_post') ?></div>
+<?php endif; ?>

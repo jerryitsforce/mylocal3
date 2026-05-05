@@ -1,0 +1,367 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ *
+ * 注意事項：
+ * - $_helper->isAllowed() 對「主帳號賣家」會直接放行，主帳號測試時子選單會全部顯示。
+ * - 只有以「子帳號」登入時才會套用子帳號的權限交集檢查，子選單才會依勾選權限被篩選。
+ * - 若要驗證子帳號權限，請以子帳號登入再檢查選單顯示狀況。
+ */
+?>
+<?php
+/**
+ * @var $_helper \Branch8\Marketplace\Override\Webkul\Marketplace\Helper\Data
+ * @var $block \Webkul\Marketplace\Block\Account\Navigation
+ * @var $scopeConfig \Magento\Framework\App\Config\ScopeConfigInterface
+ */
+    $_helper = $block->getMpHelper();
+    $isPartner= $_helper->isSeller();
+    $magentoCurrentUrl = $block->getCurrentUrl();
+    $allow_pro_type=$_helper->getAllowedProductType();
+    $isSellerGroup = $_helper->isSellerGroupModuleInstalled();
+    $productNotificationCount = $block->getProductNotificationCount();
+    $orderNotificationCount = $block->getOrderNotificationCount();
+    $transactionCount = $block->getTransactionNotificationCount();
+    // CheckoutManagement Helper - 用於動態生成選單
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $checkoutManagementHelper = $objectManager->get('HotaiConnected\CheckoutManagement\Helper\Data');
+    $scopeConfig = $objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+?>
+<nav data-mage-init='{"Webkul_Marketplace/js/sellerNavigation": {}}' class="wk-mp-menu wk-mp-main">
+    <ul id="wk-mp-nav">
+        <?php if ($isPartner): ?>
+            <?php if ($_helper->isAllowed('marketplace/account/dashboard')): ?>
+                <li class="wk-mp-item-dashboard level-0
+                <?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/account/dashboard')
+                ? "current active":"";?>" id="wk-mp-menu-dashboard" >
+                    <a href="<?= $escaper->escapeUrl($block
+                    ->getUrl('marketplace/account/dashboard', ['_secure' => $block
+                    ->getRequest()->isSecure()])); ?>"
+                    class="<?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/account/dashboard')
+                    ? "active":"";?>">
+                        <span><?= /* @noEscape */ __('Dashboard') ?></span>
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if ($_helper->isAllowed('marketplace/order/history')): ?>
+                <li class="nav item notification-link wk-mp-item-order level-0
+                <?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/order')
+                && (!strpos($magentoCurrentUrl, 'marketplace/order/shipping/'))
+                ? "current active":"";?>" id="wk-mp-menu-order" >
+                    <a href="#" onclick="return false;" class="">
+                        <span><?= /* @noEscape */ __('Orders')?></span>
+                    </a>
+                    <div class="wk-mp-submenu">
+                      <a href="#" class="action-close _close" data-role="wk-mp-close-submenu"></a>
+                        <ul>
+                            <li data-ui-id="menu-webkul-marketplace-menu" class="item-menu parent level-1">
+                                <strong class="wk-mp-submenu-group-title">
+                                    <span><?= /* @noEscape */ __('Menu')?></span>
+                                </strong>
+                                <div class="wk-mp-submenu">
+                                    <ul>
+                                        <li class="level-2">
+                                            <a href="<?= $escaper->escapeUrl($block
+                                                ->getUrl('marketplace/order/history', ['_secure' => $block
+                                                    ->getRequest()->isSecure()])); ?>"
+                                               class="<?= /* @noEscape */
+                                               strpos($magentoCurrentUrl, 'marketplace/order')
+                                               && (!strpos($magentoCurrentUrl, 'marketplace/order/shipping/')) ? "active" : ""; ?>">
+                                                <span><?= /* @noEscape */
+                                                    __('Orders') ?></span>
+                                            </a>
+                                        </li>
+                                        <li class="level-2">
+                                            <a href="<?= $escaper->escapeUrl($block
+                                                ->getUrl('marketplace/order/orderfiles', ['_secure' => $block
+                                                    ->getRequest()->isSecure()])); ?>"
+                                               class="<?= /* @noEscape */
+                                               strpos($magentoCurrentUrl, 'marketplace/order')
+                                               && (!strpos($magentoCurrentUrl, 'marketplace/order/shipping/')) ? "active" : ""; ?>">
+                                                <span><?= /* @noEscape */
+                                                    __('Download Order Files') ?></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif; ?>
+            <?php
+            // 取得目前登入用戶的 seller_code（主帳號＝getCustomerId 對應的 seller_id；子帳號＝所屬賣家的 seller_id）
+            $sellerId = null;
+            if ($isPartner) {
+                $subAccountHelper = $objectManager->get(\Webkul\SellerSubAccount\Helper\Data::class);
+                if ($subAccountHelper->isSubAccount()) {
+                    $subAccount = $subAccountHelper->getCurrentSubAccount();
+                    $sellerId = $subAccount ? (int)$subAccount->getSellerId() : null;
+                } else {
+                    $sellerId = (int)$_helper->getCustomerId();
+                }
+            }
+            $sellerCode = '';
+            if ($sellerId) {
+                $branch8MpHelper = $objectManager->get(\Branch8\Marketplace\Helper\Data::class);
+                $sellerCode = $branch8MpHelper->getSellerCode($sellerId) ?: '';
+            }
+
+            // 僅以下 seller_code 顯示 Bill 母選單與子選單（可依需求修改）
+            $billAllowedSellerCodes = ['B0008', 'HTC01',
+                'A0001','A0005','A0007','F0001','E0004',
+                'A0009','E0006','A0011','A0014','A0016',
+                'A0033','A0037','D0035','D0036','B0020',
+                'D0040','A0049','A0050','A0051','A0053',
+                'A0054','A0055','A0056','A0058','B0022',
+                'K0001','A0065','B0024','A0070','F0005',
+                'K0002','D0044','B0027','D0045','B0028',
+                'K0003','A0077','A0078','A0079','A0080',
+                'B0029','D0048','K0004','K0005','K0006',
+                'K0007','M0003','M0006','M0007','M0009',
+                'M0010','M0012','M0013','M0019','M0020',
+                'M0021','M0022','M0023','M0026','M0028',
+                'M0029','K0010','M0030','M0031','M0032',
+                'M0033','M0034','M0035','HTC07','M0038',
+                'M0039'
+            ];
+            $showBillMenu = !empty($sellerCode) && in_array($sellerCode, $billAllowedSellerCodes, true);
+
+            // Bill menu - 使用權限驅動生成選單，且須在允許的 seller_code 清單內
+            $billPath = 'marketplace/bill';
+            $billConfig = $showBillMenu ? $checkoutManagementHelper->getParentMenuConfig($billPath) : FALSE;
+            if ($billConfig && $_helper->isAllowed($billPath)) :
+                // 取得配置中定義的所有子選單
+                $allChildMenus = $checkoutManagementHelper->getChildMenus($billPath);
+
+                // 檢查當前 URL 是否匹配母選單或子選單路徑
+                $isActive = false;
+                if ($magentoCurrentUrl) {
+                    $isActive = strpos($magentoCurrentUrl, $billPath) !== false;
+                }
+            ?>
+                <li class="wk-mp-item-checkout level-0 <?= /* @noEscape */ $isActive ? "current active" : ""; ?>" id="wk-mp-menu-checkout" >
+                    <a href="#" onclick="return false;" class="">
+                        <span><?= /* @noEscape */ $billConfig['label'] ?></span>
+                    </a>
+                    <div class="wk-mp-submenu">
+                        <strong class="wk-mp-submenu-title"><?= /* @noEscape */ $billConfig['label'] ?></strong>
+                        <a href="#" class="action-close _close" data-role="wk-mp-close-submenu"></a>
+                        <ul>
+                            <li data-ui-id="menu-webkul-marketplace-menu" class="item-menu parent level-1">
+                                <strong class="wk-mp-submenu-group-title">
+                                    <span><?= /* @noEscape */ __('Menu')?></span>
+                                </strong>
+                                <div class="wk-mp-submenu">
+                                    <ul>
+                                        <?php foreach ($allChildMenus as $childPath => $childLabel): ?>
+                                            <?php if ($_helper->isAllowed($childPath)): ?>
+                                                <li class="level-2">
+                                                    <a href="<?= $escaper->escapeUrl($block->getUrl($childPath, ['_secure' => $block->getRequest()->isSecure()])); ?>"
+                                                        class="<?= /* @noEscape */ strpos($magentoCurrentUrl, $childPath)? "active":"";?>">
+                                                        <span><?= /* @noEscape */ __($childLabel) ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($_helper->isAllowed('gift-order/marketplace/giftorder')): ?>
+                <li class="wk-mp-item-gift-order level-0
+                <?= /* @noEscape */ strpos($magentoCurrentUrl, 'gift-order/marketplace/giftorder')
+                ? "current active":"";?>" id="wk-mp-menu-gift-order" >
+                    <a href="<?= $escaper->escapeUrl($block
+                    ->getUrl('gift-order/marketplace/giftorder', ['_secure' => $block
+                    ->getRequest()->isSecure()])); ?>"
+                    class="<?= /* @noEscape */ strpos($magentoCurrentUrl, 'gift-order/marketplace/giftorder')
+                    ? "active":"";?>">
+                        <span><?= /* @noEscape */ __('Gift Order Recipient Inquiry') ?></span>
+                    </a>
+                </li>
+                <?php endif; ?>
+            <?php
+                $actions = ["marketplace/product/add", "marketplace/product/productlist",
+                "marketplace/product_attribute/new"];
+                ?>
+            <?php if ($_helper->isAllowed($actions)): ?>
+                <li class="wk-mp-item-product level-0 <?= /* @noEscape */
+                strpos($magentoCurrentUrl, 'marketplace/product/')? "current active":"";?>"
+                 id="wk-mp-menu-product">
+                    <a href="#" onclick="return false;" class="">
+                        <span><?= /* @noEscape */ __('Products')?></span>
+                    </a>
+                    <div class="wk-mp-submenu">
+                        <strong class="wk-mp-submenu-title"><?= /* @noEscape */ __('Products')?></strong>
+                        <a href="#" class="action-close _close" data-role="wk-mp-close-submenu"></a>
+                        <ul>
+                            <li data-ui-id="menu-webkul-marketplace-menu" class="item-menu parent level-1">
+                                <strong class="wk-mp-submenu-group-title">
+                                    <span><?= /* @noEscape */ __('Menu')?></span>
+                                </strong>
+                                <div class="wk-mp-submenu">
+                                    <ul>
+                                        <?php if ($_helper->isAllowed('marketplace/product/add')): ?>
+                                            <li class="level-2">
+                                                <a href="<?= $escaper->escapeUrl($block
+                                                ->getUrl('marketplace/product/add', ['_secure' => $block
+                                                ->getRequest()->isSecure()])); ?>">
+                                                    <span><?= /* @noEscape */ __('Add Products') ?></span>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                        <?php if ($_helper->isAllowed('marketplace/product/productlist')): ?>
+                                            <li class="level-2">
+                                                <a href="<?= $escaper->escapeUrl($block
+                                                ->getUrl('marketplace/product/productlist', ['_secure' => $block
+                                                ->getRequest()->isSecure()])); ?>">
+                                                    <span><?= /* @noEscape */ __('My Products List') ?></span>
+                                                </a>
+                                            </li>
+                                            <li class="level-2">
+                                                <a href="<?= $escaper->escapeUrl($block
+                                                    ->getUrl('marketplacectrl/temp/productlist', ['_secure' => $block
+                                                        ->getRequest()->isSecure()])); ?>">
+                                                    <?= /* @noEscape */ __('Product Drafts') ?>
+                                                </a>
+                                            </li>
+                                            <li class="level-2">
+                                                <a href="<?= $escaper->escapeUrl($block
+                                                    ->getUrl('marketplacectrl/inventoryimport/index', ['_secure' => $block
+                                                        ->getRequest()->isSecure()])); ?>">
+                                                    <?= /* @noEscape */ __('Import Product Inventory') ?>
+                                                </a>
+                                            </li>
+                                        <?php endif; ?>
+                                        <?php if ($_helper->isAllowed('marketplace/product_attribute/new')): ?>
+                                            <?php if (strpos($allow_pro_type, 'configurable') !== false): ?>
+                                                <li class="level-2">
+                                                    <a href="<?= $escaper->escapeUrl($block
+                                                    ->getUrl('marketplace/product_attribute/new', ['_secure' => $block
+                                                    ->getRequest()->isSecure()])); ?>">
+                                                        <span><?= /* @noEscape */ __('Configurable Attribute') ?></span>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            <?php endif; ?>
+            <?php
+            $actions = [
+                "marketplace/product/discussions"
+            ];
+            $isEnable = $scopeConfig->getValue('product_discussion/general/enabled')
+            ?>
+           <?php if ($_helper->isAllowed($actions) && $isEnable): ?>
+                <li class="wk-mp-item-discussions level-0
+                <?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/product/discussions')
+                    ? "current active":"";?>" id="wk-mp-menu-gift-order" >
+                    <a href="<?= $escaper->escapeUrl(
+                        $block->getUrl('marketplace/product/discussions',
+                            ['_secure' => $block->getRequest()->isSecure()])); ?>"
+                       class="<?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/product/discussions')
+                           ? "active":"";?>">
+                        <span><?= /* @noEscape */ __('Q&A') ?></span>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($_helper->isAllowed('marketplace/account/customer')): ?>
+                <?php if ($_helper->getSellerProfileDisplayFlag()): ?>
+                    <li class="nav item notification-link wk-mp-item-customer level-0
+                    <?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/account/customer')
+                    ? "current active":"";?>" id="wk-mp-menu-customer" >
+                        <a href="<?= $escaper->escapeUrl($block
+                        ->getUrl('marketplace/account/customer/', ['_secure' => $block->getRequest()->isSecure()])); ?>"
+                        class="<?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/account/customer')
+                        ? "active":"";?>">
+                            <span><?= /* @noEscape */ __('Customers') ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if ($_helper->isAllowed('marketplace/transaction/history')): ?>
+                <li class="nav item notification-link wk-mp-item-transaction level-0
+                <?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/transaction/history')
+                ? "current active":"";?>" id="wk-mp-menu-transaction" >
+                    <a href="<?= $escaper->escapeUrl($block
+                    ->getUrl('marketplace/transaction/history', ['_secure' => $block
+                    ->getRequest()->isSecure()])); ?>" class="<?= /* @noEscape */
+                    strpos($magentoCurrentUrl, 'marketplace/transaction/history')? "active":"";?>">
+                        <span><?= /* @noEscape */ __('Transactions') ?></span>
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if ($_helper->isAllowed('marketplace/account/earning')): ?>
+                <li class="nav item notification-link wk-mp-item-earning level-0
+                 <?= /* @noEscape */ strpos($magentoCurrentUrl, 'marketplace/account/earning')
+                    ? "current active":"";?>" id="wk-mp-menu-earning" >
+                    <a href="<?= $escaper->escapeUrl($block
+                    ->getUrl('marketplace/account/earning', ['_secure' => $block
+                    ->getRequest()->isSecure()])); ?>" class="<?= /* @noEscape */
+                    strpos($magentoCurrentUrl, 'marketplace/account/earning')? "active":"";?>">
+                        <span><?= /* @noEscape */ __('Earnings') ?></span>
+                    </a>
+                </li>
+            <?php endif; ?>
+            <?php if ($_helper->isAllowed('marketplace/order/shipping')): ?>
+                <?php if ($_helper->getIsOrderManage()=="1"): ?>
+                    <li class="wk-mp-item-order-shipping level-0 <?= /* @noEscape */
+                     strpos($magentoCurrentUrl, 'marketplace/order/shipping')
+                     ? "current active":"";?>" id="wk-mp-menu-order-shipping" >
+                        <a href="<?= $escaper->escapeUrl($block
+                        ->getUrl('marketplace/order/shipping', ['_secure' => $block
+                        ->getRequest()->isSecure()])); ?>" class="<?= /* @noEscape */
+                        strpos($magentoCurrentUrl, 'marketplace/order/shipping')? "active":"";?>">
+                            <span><?= /* @noEscape */ __('Manage Print PDF Header Info') ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php if ($_helper->isAllowed('marketplace/account/review')): ?>
+                <?php if ($_helper->getSellerProfileDisplayFlag()): ?>
+                    <li class="wk-mp-item-review level-0 <?= /* @noEscape */
+                    strpos($magentoCurrentUrl, 'marketplace/account/review')
+                    ? "current active":"";?>" id="wk-mp-menu-review" >
+                        <a href="<?= $escaper->escapeUrl($block
+                        ->getUrl('marketplace/account/review', ['_secure' => $block
+                        ->getRequest()->isSecure()])); ?>" class="<?= /* @noEscape */
+                        strpos($magentoCurrentUrl, 'marketplace/account/review')? "active":"";?>">
+                            <span><?= /* @noEscape */ __('Review') ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+            <?php endif; ?>
+            <?= $block->getChildHtml('layout2_seller_account_navigation');?>
+            <?= $block->getChildHtml('layout2_seller_account_navigation_settings_menu'); ?>
+        <?php else: ?>
+            <?= $block->getChildHtml('layout2_seller_account_navigation');?>
+            <li class="wk-mp-item-order-shipping level-0 <?= /* @noEscape */
+            strpos($magentoCurrentUrl, 'marketplace/account/becomeseller')
+            ? "current active":"";?>" id="wk-mp-menu-becomeseller" >
+                <a href="<?= $escaper->escapeUrl($block
+                ->getUrl('marketplace/account/becomeseller/', ['_secure' => $block
+                ->getRequest()->isSecure()])); ?>" class="<?= /* @noEscape */
+                strpos($magentoCurrentUrl, 'marketplace/account/becomeseller')? "active":"";?>">
+                    <span><?= /* @noEscape */ __('Become Seller') ?></span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>

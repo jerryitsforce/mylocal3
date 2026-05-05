@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="wishlist_add_product">
+        <observer name="branch8_wishlist_stock_alert_add" instance="Branch8\WishlistStockAlert\Observer\WishlistAddProductObserver"/>
+    </event>
+
+    <event name="sales_order_place_after">
+        <observer name="branch8_wishlist_check_stock_after_order" instance="Branch8\WishlistStockAlert\Observer\CheckStockAfterOrderObserver"/>
+    </event>
+
+</config>

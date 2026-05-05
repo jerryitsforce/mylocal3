@@ -1,0 +1,26 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\GA4\Block\Fail
+ */
+?>
+<?php if ($block->isEnabled()) : ?>
+    <?php
+    $errMsg = $block->getCheckoutErrorMsg();
+    $purchaseData = [
+        'transaction_id' => $block->getIncrementId(),
+        'error_log' => $errMsg['error'] ?? '',
+    ];
+    $event = [
+        'event' => 'purchase_fail',
+        'ecommerce' => $purchaseData,
+    ];
+    ?>
+
+    <?php
+    $block->setDataLayerOption('purchase_fail', $event);
+    ?>
+<?php endif; ?>
+<?php
+$block->unsetCheckoutErrorMsg();
+?>

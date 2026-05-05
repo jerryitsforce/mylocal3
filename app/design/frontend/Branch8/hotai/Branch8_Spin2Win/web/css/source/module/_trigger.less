@@ -1,0 +1,133 @@
+//
+//  Common
+//  ---------------------------------------------
+
+& when (@media-common = true) {
+  .spin-trigger-wrapper {
+    display: none;
+    position: fixed;  
+    bottom: 156px;
+    right: 9px;
+    z-index: 18;
+    
+    &.show {
+      display: block;
+    }
+
+    .cms-index-index & {
+      bottom: 242px;
+      right: 9px;
+    }
+  }
+
+  .spin-trigger-action {
+    position: relative;
+
+    .magetop_quickview-catalog_product-view & {
+      display: none;
+    }
+
+    .action {
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+    }
+
+    &__close-btn {
+      position: absolute;
+      right: 2px;
+      top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    & &__close-icon {
+      background: var(--color-white);
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 0 1px 1px;
+
+      &:extend(.abs-hotai-icon all);
+      &:before {
+        content: var(--icon-remove1);
+        font-size: 20px;
+        color: var(--color-black-solid);
+        line-height: 1;
+      }
+
+      span {
+        display: none;
+      }
+    }
+
+    & &__submit {
+      background: radial-gradient(circle, #C5171E 65%, #E84D46 100%);
+      border: 2px solid #ffffff;
+      background-clip: padding-box;
+      width: 74px;
+      height: 74px;
+      border-radius: 40px;
+      position: relative;
+      box-shadow: 0 0 10px 1px rgba(35, 24, 21, 0.1);
+      box-sizing: inherit;
+
+      img {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+    }
+  }
+
+}
+
+// Mobile
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .checkout-cart-index .spin-trigger-wrapper {
+    bottom: 186px;    
+    right: 18px;
+  }
+  
+  .checkout-index-index .spin-trigger-wrapper {
+    bottom: 264px;
+    right: 18px;
+  }
+}
+
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .spin-trigger-wrapper {
+    bottom: 96px;
+    right: 7px;
+
+    .cms-index-index & {
+      bottom: 206px;
+      right: 7px;
+    }
+  }
+
+  .spin-trigger-action {
+    & &__submit {
+      border: 4px solid #ffffff;
+      width: 98px;
+      height: 98px;
+      border-radius: 53px;
+    }
+
+    &__close-btn {
+      right: 4px;
+      top: 4px;
+    }
+  }
+}

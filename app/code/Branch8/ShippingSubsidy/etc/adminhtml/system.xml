@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2025 Branch8. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="100">
+            <label>Branch8</label>
+        </tab>
+        <section id="shipping_subsidy" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Shipping Subsidy</label>
+            <tab>branch8</tab>
+            <resource>Branch8_ShippingSubsidy::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Custom Subsidy</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable shipping fee sharing between seller and platform</comment>
+                </field>
+                <field id="subsidy_mode" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subsidy Mode</label>
+                    <source_model>Branch8\ShippingSubsidy\Model\Config\Source\SubsidyMode</source_model>
+                    <comment>Choose between percentage or fixed amount subsidy</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="home_delivery_subsidy" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Home Delivery Subsidy</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment>Platform subsidy value for home delivery</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="store_pickup_subsidy" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Pickup Subsidy</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <comment>Platform subsidy value for store pickup</comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

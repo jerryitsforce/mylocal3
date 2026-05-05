@@ -1,0 +1,342 @@
+<?php
+/**
+ * @var Branch8\Spin2Win\Block\Notification\Detail $block
+ */
+/** @var Branch8\Spin2Win\Helper\Data $spinHelper */
+$spinHelper = $this->helper(\Branch8\Spin2Win\Helper\Data::class);
+
+/** @var Magento\Customer\Helper\Address $addressHelper */
+$addressHelper = $block->getData('addressHelper');
+/** @var \Magento\Directory\Helper\Data $directoryHelper */
+$directoryHelper = $block->getData('directoryHelper');
+/** @var \Magento\Customer\ViewModel\Address\RegionProvider $regionProvider */
+$regionProvider = $block->getRegionProvider();
+
+$placeholderNoItemImgUrl = $block->getViewFileUrl('images/no-item.svg');
+$placeholderCouponImgUrl = $block->getViewFileUrl('images/placeholder-coupon.svg');
+$placeholderTicketImgUrl = $block->getViewFileUrl('images/placeholder-ticket.svg');
+$placeholderDefaultImgUrl = $block->getViewFileUrl('images/placeholder-default.svg');
+$placeholderPointsImgUrl = $block->getViewFileUrl('images/placeholder-points.svg');
+$placeholderCouponPPImgUrl = $block->getViewFileUrl('images/placeholder-coupon-pp.svg');
+$placeholderTicketPPImgUrl = $block->getViewFileUrl('images/placeholder-ticket-pp.svg');
+$placeholderDefaultPPImgUrl = $block->getViewFileUrl('images/placeholder-default-pp.svg');
+$placeholderPointsPPImgUrl = $block->getViewFileUrl('images/placeholder-points-pp.svg');
+
+$jsonMotionStarPopup= $this->getViewFileUrl('images/motion_star_popup.json');
+$jsonMotionStarMainPc = $this->getViewFileUrl('images/motion_star_main_pc.json');
+$jsonMotionStarMainMb = $this->getViewFileUrl('images/motion_star_main_mb.json');
+
+$reportData = $block->getDetailPrize();
+// var_dump($reportData); die();
+$customer = $block->getCustomer();
+$notification = $block->getNotification();
+?>
+<?php if($reportData && $reportData['entity_id']):?>
+  <?php 
+    $type = $reportData['result']; 
+    $address = $block->getAddress($reportData['spin_id'], $reportData['entity_id']);
+    $consolation = $block->getConsolation();
+    // var_dump($consolation);
+  ?>
+<div class="spin2win-notification-detail">
+  <div class="spin2win-notification-detail__content">
+    <div class="spin2win-notification-detail__header">
+      <h2 class="spin2win-notification-detail__title"><?= $notification['description']; ?></h2>
+      <?php if($consolation && $consolation['consolation_report_id']) :?>
+        <?php $consolationType = $consolation['consolation_type']; ?> 
+        <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::COUPON_TYPE) :?>
+          <!-- <div class="spin2win-notification-detail__item-content"><p>獎品已歸戶，請至「優惠券」查詢<p></div> -->
+          <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('結帳輸入折扣碼「%1」即可使用', $consolation['coupon']))?><p></div>
+        <?php endif; ?>  
+        <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::VIRTUAL_TYPE) :?>
+          <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('獎品已歸戶，請至「'))?><a href="<?= $block->getUrl('member/ticket/detail') ?>id/<?= $consolation['serial_number_id'] ?>" title="<?= $block->escapeHtml(__('票券'))?>"><?= $block->escapeHtml(__('票券'))?></a><?= $block->escapeHtml(__('」查詢'))?><p></div>
+        <?php endif; ?>  
+        <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE) :?>
+          <?php if(!$address): ?>
+          <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('請於'))?> <span class="number"><?= $consolation['expire_date'] ?></span> <?= $block->escapeHtml(__('前填寫收件資訊，逾期將失去獲獎資格'))?><p></div>
+          <?php else: ?>
+          <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('獎品準備中，預計'))?> <span class="number"><?= $consolation['expire_date']?></span> <?= $block->escapeHtml(__('寄出'))?><p></div>
+          <?php endif; ?>
+        <?php endif; ?>  
+        <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::REWARD_POINT_TYPE) :?>
+          <div class="spin2win-notification-detail__item-content"><p>獎品已歸戶，請至「<a href="<?= $block->getUrl('hotai_point/detail') ?>?t=tab-history" title="會員中心">會員中心</a>」查詢<p></div>
+        <?php endif; ?> 
+      <?php else: ?> 
+        <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::COUPON_TYPE) :?>
+          <!-- <div class="spin2win-notification-detail__item-content"><p>獎品已歸戶，請至「優惠券」查詢<p></div> -->
+          <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('結帳輸入折扣碼「%1」即可使用', $reportData['coupon']))?><p></div>
+        <?php endif; ?>  
+        <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::VIRTUAL_TYPE) :?>
+          <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('獎品已歸戶，請至「'))?><a href="<?= $block->getUrl('member/ticket/detail') ?>id/<?= $reportData['serial_number_id'] ?>" title="<?= $block->escapeHtml(__('票券'))?>"><?= $block->escapeHtml(__('票券'))?></a><?= $block->escapeHtml(__('」查詢'))?><p></div>
+        <?php endif; ?>  
+        <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE) :?>
+          <?php if(!$address): ?>
+            <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('請於'))?> <span class="number"><?= $reportData['expire_date']?></span> <?= $block->escapeHtml(__('前填寫收件資訊，逾期將失去獲獎資格'))?><p></div>
+          <?php else: ?>
+            <div class="spin2win-notification-detail__item-content"><p><?= $block->escapeHtml(__('獎品準備中，預計'))?> <span class="number"><?= $reportData['expire_date'] ?></span> <?= $block->escapeHtml(__('寄出'))?><p></div>
+          <?php endif; ?>
+        <?php endif; ?>  
+        <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::REWARD_POINT_TYPE) :?>
+          <div class="spin2win-notification-detail__item-content"><p>獎品已歸戶，請至「<a href="<?= $block->getUrl('hotai_point/detail') ?>?t=tab-history" title="會員中心">會員中心</a>」查詢<p></div>
+        <?php endif; ?>  
+      <?php endif; ?> 
+    </div>
+    <div class="spin2win-notification-detail__item">
+      <?php if($consolation && $consolation['consolation_report_id']) :?>
+        <?php $consolationType = $consolation['consolation_type']; ?>
+        <div class="spin2win-notification-detail__item-image">
+          <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::COUPON_TYPE) :?>
+            <?php 
+            $imageUrl = $consolation['image'];
+            $classImg = (!$imageUrl || $imageUrl == '')? 'no-image' : '';
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderCouponImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?>  
+          <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::VIRTUAL_TYPE) :?>
+            <?php 
+            $imageUrl = $consolation['image'];
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderTicketPPImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?>  
+          <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE) :?>
+            <?php 
+            $imageUrl = $consolation['image'];
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderDefaultPPImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?>  
+          <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::REWARD_POINT_TYPE) :?>
+            <?php 
+            $imageUrl = $consolation['image'];
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderPointsPPImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?> 
+        </div>
+        <div class="spin2win-notification-detail__item-body">
+          <h3 class="spin2win-notification-detail__item-title"><?= $consolation['consolation_title']; ?></h3>
+          <?php if($consolationType == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE) :?>
+            <p class="spin2win-notification-detail__item-description"><?= $block->escapeHtml(__('隨機花色')) ?></p>
+          <?php else: ?>
+            <p class="spin2win-notification-detail__item-description"><?php echo $block->escapeHtml(__('有效日期:')); ?> <?= $block->formatPrizeDate($consolation['created_at'])?>~<?= $consolation['expire_date'] ?></p>
+          <?php endif; ?>
+        </div>
+      <?php else: ?> 
+        <div class="spin2win-notification-detail__item-image">
+          <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::COUPON_TYPE) :?>
+            <?php 
+            $imageUrl = $reportData['image'];
+            $classImg = (!$imageUrl || $imageUrl == '')? 'no-image' : '';
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderCouponImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?>  
+          <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::VIRTUAL_TYPE) :?>
+            <?php 
+            $imageUrl = $reportData['image'];
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderTicketPPImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?>  
+          <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE) :?>
+            <?php 
+            $imageUrl = $reportData['image'];
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderDefaultPPImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?>  
+          <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::REWARD_POINT_TYPE) :?>
+            <?php 
+            $imageUrl = $reportData['image'];
+            if (!$imageUrl || $imageUrl == '') {
+              $imageUrl = $placeholderPointsPPImgUrl;
+            }
+            ?>
+            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $block->escapeHtml(__('No Image')); ?>" />
+          <?php endif; ?> 
+        </div>
+        <div class="spin2win-notification-detail__item-body">
+          <h3 class="spin2win-notification-detail__item-title">
+            <?= $block->escapeHtml(str_replace(['\\n', '\n'], '', $reportData['segment_label'])); ?>
+          </h3>
+          <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE) :?>
+            <p class="spin2win-notification-detail__item-description"><?= $block->escapeHtml(__('隨機花色')) ?></p>
+          <?php else: ?>
+            <p class="spin2win-notification-detail__item-description"><?php echo $block->escapeHtml(__('有效日期:')); ?> <?= $block->formatPrizeDate($reportData['created_at'])?>~<?= $reportData['expire_date'] ?></p>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?> 
+    </div>
+  </div>
+  <?php if($type == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE || ($consolation && $consolation['consolation_type'] == \Branch8\Spin2Win\Model\Config\Source\SegmentType::PHYSICAL_TYPE)) :?>
+  <div class="spin2win-notification-detail__address">
+    <h2 class="spin2win-notification-detail__address-title">收件人資訊</h3>
+    <div class="spin2win-notification-detail__address-form">
+      <?php if (!$address): ?>
+      <form class="form-address"
+            action="<?= $escaper->escapeUrl($block->getAddressSaveUrl()) ?>"
+            method="post"
+            id="address-form"
+            enctype="multipart/form-data"
+            data-hasrequired="<?= $escaper->escapeHtmlAttr(__('* Required Fields')) ?>">
+        <fieldset class="fieldset">
+          <?= $block->getBlockHtml('formkey') ?>
+          <input name="sid" type="hidden" value="<?= $escaper->escapeHtmlAttr($reportData['spin_id']) ?>" />
+          <input name="segment_report_id" type="hidden" value="<?= $escaper->escapeHtmlAttr($reportData['entity_id']) ?>" />
+          <div class="fields d-flex">
+            <div class="field field-name-name required">
+                <label class="label" for="name">
+                    <span><?= $block->escapeHtml(__("姓名"))?></span>
+                </label>
+                <div class="control">
+                    <input type="text" 
+                          name="name" 
+                          value="" 
+                          title="<?= $block->escapeHtml(__("請輸入姓名"))?>" 
+                          data-validate="{required:true, 'validate-fullwidth-special': true}" 
+                          class="input-text required-entry" 
+                          placeholder="<?= $block->escapeHtml(__("請輸入姓名"))?>" 
+                          id="name" 
+                          aria-required="true"/>
+                </div>
+            </div>    
+            <div class="field phone_number required">
+                <label for="phone_number" class="label">
+                    <span><?= $block->escapeHtml(__("手機號碼"))?></span>
+                </label>
+                <div class="control">
+                  <input type="number"
+                        name="phone_number"
+                        data-validate="{required:true, 'required-number': true, 'validate-number':true, 'validate-tw-phone': true,'validate-fullwidth-special': true}"
+                        id="phone_number"
+                        minlength="10"
+                        maxlength="10"
+                        placeholder="<?= $block->escapeHtml(__('請輸入手機號碼')) ?>"
+                        value=""
+                        title="<?= $block->escapeHtmlAttr(__('手機號碼')) ?>"
+                        class="input-text required-entry"
+                         aria-required="true"
+                  />
+                </div>
+            </div>
+          </div>
+          <div class="field country required hidden" style="display: none;">
+            <label class="label" for="country"><span><?= $block->escapeHtml(__('國家')) ?></span>
+            </label>
+            <div class="control">
+              <?= $block->getCountryHtmlSelect() ?>
+            </div>
+          </div>
+          <div class="field city region required">
+            <label class="label" for="region_id">             
+              <span><?= $block->escapeHtml(__("地址"))?></span>
+            </label>
+            <div class="d-flex">
+              <div class="control">
+                  <select id="region_id" name="region_id" title="<?= $block->escapeHtml(__("地址"))?>" class="region_id required-entry no-selected" aria-required="true" defaultvalue="0" style="display: inline-block;">
+                    <option value=""><?= $block->escapeHtml(__("請選擇縣市"))?></option>
+                  </select>
+                  <input type="text" name="region" value="" title="<?= $block->escapeHtml(__("地址"))?>" placeholder="請選擇縣市" data-validate="{required:true}" class="input-text validate-not-number-first" id="region" aria-required="true" style="display: none;">
+              </div>
+              <div class="control">
+                <input type="text" name="city" value="" title="<?= $block->escapeHtml(__("地址"))?>" data-validate="{required:true}" class="input-text required-entry" placeholder="<?= $block->escapeHtml(__("請選擇鄉鎮市區"))?>" id="city" aria-required="true" style="display: none;">
+                <select class="required-entry validate-unsupported-city no-selected" name="city_id" id="city_id">
+                  <option value=""><?= $block->escapeHtml(__("請選擇鄉鎮市區"))?></option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="field street required ">
+              <div class="control">
+                  <input type="text" 
+                        name="street" 
+                        data-validate="{required:true, 'validate-fullwidth-special': true}" 
+                        value="" 
+                        title="<?= $block->escapeHtml(__("地址"))?>" 
+                        id="street" 
+                        placeholder="<?= $block->escapeHtml(__("請輸入收件地址"))?>" 
+                        class="input-text required-entry" 
+                        aria-required="true"/>
+              </div>
+          </div>
+          <input name="zip" id="zip" type="hidden" value="" />
+        </fieldset>
+        <div class="actions-toolbar">
+          <div class="primary">
+              <button type="submit" class="action save primary disabled" data-action="save-address" title="<?= $block->escapeHtml(__("確認送出"))?>">
+                  <span><?= $block->escapeHtml(__("確認送出"))?></span>
+              </button>
+          </div>
+        </div>
+      </form>
+    <?php
+    $regionJson = /* @noEscape */ $regionProvider->getRegionJson();
+    $regionId = (int) $block->getRegionId();
+    $countriesWithOptionalZip = /* @noEscape */ $directoryHelper->getCountriesWithOptionalZip(true);
+    ?>
+      <script type="text/x-magento-init">
+          {
+            "#address-form": {
+                "addressValidation": {
+                },
+                "spin2winAddressForm": {
+                }
+            },
+            "#country": {
+                "spinDirectoryRegionUpdater": {
+                  "optionalRegionAllowed": true,
+                  "regionListId": "#region_id",
+                  "regionInputId": "#region",
+                  "postcodeId": "#zip",
+                  "form": "#address-form",
+                  "regionJson": <?= /* @noEscape */ $regionJson ?>,
+                  "defaultRegion": <?= /* @noEscape */ $regionId ?>,
+                  "countriesWithOptionalZip": <?=  /* @noEscape */ $countriesWithOptionalZip ?>
+                }
+            }
+          }
+      </script>
+      <?php else: ?>
+      <div class="spin2win-notification-detail__address-listing">
+        <div class="fields d-flex">
+          <div class="spin2win-notification-detail__address-listing-item">
+            <span class="spin2win-notification-detail__address-listing-item-label"><?= $block->escapeHtml(__("姓名"))?></span>
+            <span class="spin2win-notification-detail__address-listing-item-value"><?= $spinHelper->getOAuthName($address['name']) ?></span>
+          </div>
+          <div class="spin2win-notification-detail__address-listing-item">
+            <span class="spin2win-notification-detail__address-listing-item-label"><?= $block->escapeHtml(__("小姐"))?></span>
+            <span class="spin2win-notification-detail__address-listing-item-value"><?= $spinHelper->getOAuthPhone($address['phone_number']) ?></span>
+          </div>
+        </div>
+        <div class="spin2win-notification-detail__address-listing-item">
+          <span class="spin2win-notification-detail__address-listing-item-label"><?= $block->escapeHtml(__("地址"))?></span>
+          <span class="spin2win-notification-detail__address-listing-item-value"><?= $spinHelper->getAddress($address) ?></span>
+        </div>
+      </div>
+      <?php endif; ?>
+    </div>
+  </div> 
+  <?php else: ?>
+  <div class="spin2win-notification-detail__footer">
+      <a href="<?php echo $block->getUrl(''); ?>" class="action primary spin2win-notification-detail__action-button" id="getStartedBtn"><?= $block->escapeHtml(__('立即使用'))?></a>
+      <!-- <button class="action primary spin2win-notification-detail__action-button" id="getStartedBtn"><?= $block->escapeHtml(__('立即使用'))?></button> -->
+  </div>
+  <?php endif; ?>
+</div>
+<?php endif; ?>

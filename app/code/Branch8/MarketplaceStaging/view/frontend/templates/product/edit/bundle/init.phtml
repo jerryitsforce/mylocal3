@@ -1,0 +1,84 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpBundleProduct
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+
+?>
+<?php
+/**
+ * @var $block \Branch8\MarketplaceStaging\Block\Product\Edit\Bundle\Init\Bundle
+ */
+?>
+<?php $messageContent = __('We can\'t save custom-defined options for bundles with dynamic pricing.'); ?>
+<div id="staging_bundle_product_container" class="entry-edit form-inline">
+    <fieldset class="fieldset">
+        <div class="field field-ship-bundle-items">
+            <label for="staging_shipment_type" class="label"><?= $block->escapeHtml(__('Ship Bundle Items')); ?></label>
+            <div class="control">
+                <select
+                        id="staging_shipment_type"
+                        name="<?= $block->escapeHtml($block->getFieldSuffix()) ?>[shipment_type]"
+                        class="select">
+                    <option value="1"><?= $block->escapeHtml(__('Separately')); ?></option>
+                    <option value="0"
+                        <?php if ($block->getProduct()->getShipmentType() == 0): ?>
+                                    selected="selected"<?php endif; ?>>
+                        <?= $block->escapeHtml(__('Together')) ?>
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div id="staging_product_bundle_container" class="entry-edit custom-options bundle sortable-wrapper">
+            <div class="fieldset-wrapper" id="staging-product-custom-options-wrapper" data-block="product-custom-options">
+                <div class="fieldset-wrapper-content"
+                    id="staging-product-custom-options-content"
+                    data-role="product-custom-options-content">
+                    <fieldset class="fieldset">
+                        <div class="messages">
+                            <div class="message message-error" id="staging-dynamic-price-warning" style="display: none;">
+                                <div class="message-inner">
+                                    <div class="message-content">
+                                        <?= $block->escapeHtml($messageContent); ?>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button id="staging_add_new_defined_option" title="Add New Option"
+                                    type="button" class="action-default scalable add"
+                                    data-ui-id="admin-product-options-add-buttons">
+                                <span><?= $block->escapeHtml(__('Add Options')); ?></span>
+                            </button>
+                        </div>
+
+                        <div id="staging_bundle_product_options_container" class="sortable-wrapper">
+                            <div id="staging_bundle_product_options_container_top"></div>
+                            <?= /* @noEscape */ $block->getOptionsBoxHtml();?>
+                        </div>
+                        <div class ="admin_grid_data_provider" id="staging_data_add_products_to_option"
+                             style="display:block;">
+                                <?= /* @noEscape */ $block->getChildHtml("bundle_product_grid_add"); ?>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <?= /* @noEscape */ $block->getAddButtonHtml() ?>
+    </fieldset>
+</div>
+
+<input type="hidden" name="affect_bundle_product_selections" value="1" />
+
+<script>
+require(["prototype", "mage/adminhtml/form"], function(){
+    // re-bind form elements onchange
+    varienWindowOnload(true);
+});
+</script>

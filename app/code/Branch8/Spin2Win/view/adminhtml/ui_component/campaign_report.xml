@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">campaign_report.campaign_report_data_source</item>
+            <item name="deps" xsi:type="string">campaign_report.campaign_report_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">campaign_report_columns</item>
+    </argument>
+    <dataSource name="campaign_report_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\EventTicket\Ui\DataProvider\TicketEvent\ListingDataProvider</argument>
+            <argument name="name" xsi:type="string">campaign_report_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">entity_id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                </item>
+            </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="templates" xsi:type="array">
+                        <item name="filters" xsi:type="array">
+                            <item name="select" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                                <item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="campaign_report_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="entity_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">textRange</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">25</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                </item>
+            </argument>
+        </column>
+        <column name="name">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="sortOrder" xsi:type="number">10</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/text</bodyTmpl>
+                <label translate="true">Spin Event Name</label>
+            </settings>
+        </column>
+        
+        <column name="start_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Spin Start Time</item>
+                    <item name="sortOrder" xsi:type="number">15</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="end_date" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Spin End Time</item>
+                    <item name="sortOrder" xsi:type="number">16</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="total_draws" class="Branch8\Spin2Win\Ui\Component\Listing\Column\NumberDraws">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Total Draws</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="filter" xsi:type="string">false</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="num_of_participiants" class="Branch8\Spin2Win\Ui\Component\Listing\Column\NumberParticipiants">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Number of Participants</item>
+                    <item name="sortOrder" xsi:type="number">25</item>
+                    <item name="filter" xsi:type="string">false</item>
+                </item>
+            </argument>
+        </column>
+
+        <column name="points_redeemed" class="Branch8\Spin2Win\Ui\Component\Listing\Column\NumberPointRedeemed">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Points Redeemed</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/text</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+            </settings>
+        </column>
+
+        <column name="redemption_report"
+                class="Branch8\Spin2Win\Ui\Component\Listing\Column\RedemptionDownload">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="link" xsi:type="string">redemption_report</item>
+                    <item name="target" xsi:type="string">_blank</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+            <settings>
+                <sortable>false</sortable>
+                <filter>text</filter>
+                <label translate="true">Point Redemption Report</label>
+            </settings>
+        </column>
+        <column name="drawn_report"
+                class="Branch8\Spin2Win\Ui\Component\Listing\Column\DrawnDownload">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="link" xsi:type="string">import_mapping</item>
+                    <item name="target" xsi:type="string">_blank</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="filter" xsi:type="string">false</item>
+                    <item name="sortOrder" xsi:type="number">45</item>
+                </item>
+            </argument>
+            <settings>
+                <sortable>false</sortable>
+                <filter>text</filter>
+                <label translate="true">Draw Result Report</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

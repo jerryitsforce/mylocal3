@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="branch8_microsoftclarity" translate="label" sortOrder="900" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Microsoft Clarity</label>
+            <tab>branch8</tab>
+            <resource>Branch8_MicrosoftClarity::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="clarity_project_id_seller" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Clarity Project ID For Seller</label>
+                </field>
+                <field id="clarity_project_id_admin" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Clarity Project ID For Admin</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

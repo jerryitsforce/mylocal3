@@ -1,0 +1,39 @@
+<?php
+/** @var \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems $block */
+?>
+<!-- 可申請退換貨 Can Create Rma Request-->
+<?php if(
+    // !$block->isPassedSameDay($this->getItem()->getOrder()) &&
+    $block->canCreateRmaRequest($this->getItem())):?>
+    <?php $rmaButtunLabel = __('Apply for Return or Exchange');?>
+    <button
+        id="request_return_exchange_<?=$this->getItem()->getItemId()?>"
+        type="submit"
+        data-item-id = "<?=$this->getItem()->getItemId()?>"
+        data-order-id = "<?=$this->getItem()->getOrderId()?>"
+        title="<?=$block->escapeHtml($rmaButtunLabel)?>"
+        class="action-return-exchange-primary">
+        <span> <?=$block->escapeHtml($rmaButtunLabel)?> </span>
+    </button>
+<?php endif;?>
+
+<!-- 取消退換貨 Cancel Rma Application-->
+<?php if($block->canCancelRmaRequest($this->getItem()->getFlowStatus())): ?>
+    <?php $btnTitle = $block->getCancelRmaRequestBtnTitle($this->getItem()->getFlowStatus()); ?>
+    <form id="cancel_rma_request<?=$block->getRmaId($this->getItem())?>" action="/customsales/order/cancelrma" method="post">
+    </form>
+    <?php
+    $rmaItem = $block->getRmaDataForCancel($this->getItem());
+    ?>
+    <button
+        id="request_cancel_return_exchange"
+        type="submit"
+        data-rma-type="<?= $rmaItem->getResolutionType();?>"
+        data-rma-id = "<?= $rmaItem->getId();?>"
+        data-item-id = "<?=$this->getItem()->getItemId()?>"
+        title="<?=$block->escapeHtml(__($btnTitle))?>"
+        class="action-cancel-return-exchange-primary">
+
+        <span> <?=$block->escapeHtml(__($btnTitle))?> </span>
+    </button>
+<?php endif;?>

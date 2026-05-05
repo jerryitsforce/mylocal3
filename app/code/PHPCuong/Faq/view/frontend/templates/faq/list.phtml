@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var \PHPCuong\Faq\Block\Faq\Account\Faq $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$faqItems = $block->getData('faq_items');
+$categoryId = $block->getData('category_id');
+$helper = $this->helper(PHPCuong\Faq\Helper\Category::class);
+?>
+
+<?php if (!empty($faqItems)): ?>
+    <?php foreach ($faqItems as $faq): ?>
+        <li class="item" id="faq-id-<?= $escaper->escapeHtmlAttr($faq['faq_id']) ?>" data-role="collapsible">
+            <a href="javascript:void(0)" data-role="trigger">
+                <?= $escaper->escapeHtml($faq['title']) ?><span class="arrow"></span>
+            </a>
+            <div class="description" data-role="content"><?= $helper->filterProvider($faq['content']) ?></div>
+        </li>
+    <?php endforeach; ?>
+<?php else: ?>
+    <div id="tab-<?= $escaper->escapeHtmlAttr($categoryId) ?>" class="faq-tab-content active">
+        <p><?= $escaper->escapeHtml(__('No FAQs available for this category.')) ?></p>
+    </div>
+<?php endif; ?>

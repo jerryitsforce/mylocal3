@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_MpMassUpload
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="massupload_upload" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Webkul\MpMassUpload\Block\Adminhtml\Upload\Upload" name="b8_massupload_upload" template="Branch8_MarketplaceProductImport::product/upload.phtml" cacheable="false"/>
+        </referenceContainer>
+    </body>
+</page>

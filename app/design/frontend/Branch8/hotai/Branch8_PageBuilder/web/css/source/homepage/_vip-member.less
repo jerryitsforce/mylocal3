@@ -1,0 +1,224 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    [data-content-type="button-item"].action-small{
+        padding: 0;
+
+        [class^="pagebuilder-button"]{
+            padding: 4px 16px;
+        }
+    }
+
+    .vip-member-section{
+        .pagebuilder-banner-content{
+            color: #ffffff;
+
+            h2, h3, h4, h5{
+                color: inherit;
+            }
+
+            .pagebuilder-button-link{
+                color: inherit;
+                padding: 0;
+                margin-bottom: 0;
+                .lib-icon-font(
+                    @_icon-font-content: '\e903',
+                    @_icon-font-size: 24px,
+                    @_icon-font-line-height: 24px
+                );
+
+                &:hover{
+                    opacity: 0.7 !important;
+                }
+            }
+        }
+
+        .color-primary{
+            .pagebuilder-banner-content{
+                color: @primary__color;
+            }
+        }
+
+        [data-content-type="buttons"][data-appearance="inline"]{
+            [data-content-type="button-item"]:last-child{
+                [class^="pagebuilder-button"]{
+                    margin-right: 0;
+                }
+            }
+        }
+
+        .pagebuilder-banner-content{
+            h3,
+            h4,
+            h5,
+            h6{
+                margin-bottom: 6px;
+            }
+        }
+
+        .products{
+            margin-bottom: 0;
+            .block-title{
+                margin: 0;
+            }
+        }
+    }
+
+    #html-body .vip-member-section{
+        [data-content-type="divider"] hr{
+            display: block;
+        }
+    }
+    
+}
+
+//
+//  Mobile (style-m.css)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    #html-body .vip-member-section{
+        .pagebuilder-column-group:not(.vip-member-products){
+            display: contents;
+            .pagebuilder-column-line{
+                display: contents;
+
+                .pagebuilder-column{
+                    padding-left: 0;
+                    padding-right: 0;
+                    margin-left: -@layout__width-xs-indent !important;
+                    margin-right: -@layout__width-xs-indent !important;
+                    flex-basis: auto;
+                    max-width: none;
+                    width: auto;
+                }
+            }
+        }
+        .pagebuilder-column-group.vip-member-products{
+            margin-left: -@layout__width-xs-indent !important;
+            margin-right: -@layout__width-xs-indent !important;
+            padding-left: @layout__width-xs-indent;
+            padding-right: @layout__width-xs-indent;
+            padding-bottom: 14px;
+            margin-bottom: 12px;
+        }
+
+        .pagebuilder-banner-rounded-corner,
+        .pagebuilder-banner-rounded-corner .pagebuilder-banner-wrapper,
+        .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+            border-radius: 0;
+        }
+    }
+
+    .vip-member-section{
+        margin-bottom: 38px;
+        .pagebuilder-banner-content{
+            font-size: 12px;
+            line-height: 1.5;
+
+            h3{
+                font-size: 18px;
+                line-height: 1.55555555555556;
+            }
+        }
+
+        .heading{
+            order: 1;
+        }
+
+        .products{
+            margin-top: 16px;
+        }
+
+        .pagebuilder-column-group:not(.vip-member-products) .pagebuilder-column:first-child{
+            margin-bottom: 0;
+            order: 2;
+        }
+
+        .pagebuilder-column-group.vip-member-products{
+            order: 3;
+        }
+
+        .pagebuilder-column-group:not(.vip-member-products) .pagebuilder-column{
+            order: 4;
+            margin-bottom: 12px;
+        }
+
+        .dark-theme-mobile{
+            color: #ffffff;
+
+            .product-item-name > a,
+            .product-item .price-box .price,
+            .product-item .price-box .price-label,
+            .product-item .tocart{
+                color: inherit;
+            }
+
+            .product-item .tocart{
+                &:hover{
+                    background-color: #DE271F;
+                    border-color:#DE271F;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop (style-l.css)
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = (@screen__m)) {
+    .vip-member-section{
+        margin-bottom: 120px;
+
+        .heading{
+            margin-bottom: 34px;
+        }
+
+        .pagebuilder-column{
+            [data-content-type="banner"]{
+                display: flex;
+                height: 100%;
+
+                > a,
+                > div{
+                    display: flex;
+                    width: 100%;
+                }
+            }
+        }
+
+        .pagebuilder-banner-content{
+            h3{
+                line-height: 1.42857;
+                margin-bottom: 8px;
+            }
+        }
+
+        .pagebuilder-desktop-normal-appearance{
+            .pagebuilder-banner-content{
+                color: @primary__color;
+            }
+        }
+    }
+
+    #html-body .vip-member-section{
+        .pagebuilder-column-group.dark-theme-mobile{
+            background-color: transparent;
+        }
+    }
+}
+
+.media-minmax-width(@break-min, @break-max) when (@break-min = @screen__m) and (@break-max = @screen__l) {
+    .vip-member-section{
+        .pagebuilder-banner-rounded-corner .pagebuilder-banner-wrapper{
+            max-width: 56%;
+        }
+    }
+}

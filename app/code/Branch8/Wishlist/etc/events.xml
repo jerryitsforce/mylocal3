@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="wishlist_product_add_after">
+        <observer name="branch8_wishlist_custom_save_price" instance="Branch8\Wishlist\Observer\CustomSavePrice" />
+    </event>
+</config>

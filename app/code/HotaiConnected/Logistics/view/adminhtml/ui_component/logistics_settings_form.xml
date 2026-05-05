@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">logistics_settings_form.logistics_settings_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">新增物流設定</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">返回</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <namespace>logistics_settings_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>logistics_settings_form.logistics_settings_form_data_source</dep>
+        </deps>
+        <buttons>
+            <button name="save">
+                <class>save primary</class>
+                <label translate="true">儲存</label>
+            </button>
+        </buttons>
+    </settings>
+    <dataSource name="logistics_settings_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="logistics/settings/save"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="logistics_settings_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">基本資訊</label>
+        </settings>
+        <field name="seller_id" sortOrder="10" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">logistics_settings</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">特約商</label>
+                <dataScope>seller_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="HotaiConnected\Logistics\Model\Config\Source\Seller"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="logistics_company_id" sortOrder="20" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">logistics_settings</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">物流商</label>
+                <dataScope>logistics_company_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="HotaiConnected\Logistics\Model\Config\Source\Company"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="hct_account" sortOrder="30" formElement="input" component="HotaiConnected_Logistics/js/form/element/hct-field">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">logistics_settings</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">新竹物流帳號</label>
+                <dataScope>hct_account</dataScope>
+                <visible>false</visible>
+            </settings>
+        </field>
+        <field name="hct_password" sortOrder="40" formElement="input" component="HotaiConnected_Logistics/js/form/element/hct-field">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">logistics_settings</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">新竹物流密碼</label>
+                <dataScope>hct_password</dataScope>
+                <visible>false</visible>
+            </settings>
+        </field>
+    </fieldset>
+</form>

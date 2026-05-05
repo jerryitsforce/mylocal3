@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\MarketPlaceProductDiscussionCustomer\Controller\Thread\NewAction">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceProductDiscussionCustomer\Controller\Ajax\LoadThread">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceProductDiscussionCustomer\Controller\Ajax\PostThread">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Customer\Controller\Plugin\Account">
+        <arguments>
+            <argument name="allowedActions" xsi:type="array">
+                <item name="Questioning" xsi:type="string">questioning</item>
+                <item name="filterThreads" xsi:type="string">filterthreads</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceProductDiscussionCustomer\ViewModel\Customer">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceProductDiscussionCustomer\Controller\Member\FilterThreads">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketPlaceProductDiscussionCustomer\Controller\Ajax\DeleteThread">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+</config>

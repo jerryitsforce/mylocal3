@@ -1,0 +1,45 @@
+<?php
+/*
+ * @var \Branch8\GiftToFriend\Block\Confirmation\Items $block 
+ */
+$helper = $this->helper(\Webkul\Marketplace\Helper\Data::class);
+$flagshipHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+$items = $block->getItems();
+?>
+<div class="giftbox-confirm-order-listing">
+  <ul class="giftbox-confirm-order-items">
+    <?php foreach ($items as $item): ?>
+    <?php if (!$flagshipHelper->isProductShippingFee($item)): ?>
+    <li class="giftbox-confirm-order-item">
+      <a href="<?= /* @escapeNotVerified */  $item->getProduct()->getProductUrl() ?>" class="giftbox-confirm-order-item-img" tabindex="-1">
+        <span class="product-image-container">
+          <span class="product-image-wrapper" style="padding-bottom: 100%">
+            <img class="product-image-photo" width="240" height="240" src="<?= $escaper->escapeHtml($block->getImageUrl($item->getProduct())) ?>" alt="<?= $escaper->escapeHtml($item->getName()) ?>" />
+          </span>
+        </span>
+      </a>
+      <div class="giftbox-confirm-order-item-info">
+        <h3 class="giftbox-confirm-order-item-name">
+          <a class="giftbox-confirm-order-item-link" href="<?= /* @escapeNotVerified */ $item->getProduct()->getProductUrl() ?>">
+            <?= $escaper->escapeHtml($item->getName()) ?>
+          </a>
+        </h3>
+        <?php if ($_options = $block->getItemOptions($item->getProductOptions())): ?>
+          <?php foreach ($_options as $_option): ?>
+              <?php if (!$block->getPrintStatus()): ?>
+                  <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                  <p class="giftbox-confirm-order-item-option">
+                      <?= $block->escapeHtml($_formatedOptionValue['value'], ['a']) ?>
+                  </p>
+              <?php else: ?>
+                  <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                  <p class="giftbox-confirm-order-item-option"><?= $block->escapeHtml($optionValue) ?></p>
+              <?php endif; ?>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
+    </li>
+    <?php endif; ?>
+    <?php endforeach; ?>
+  </ul>
+</div>

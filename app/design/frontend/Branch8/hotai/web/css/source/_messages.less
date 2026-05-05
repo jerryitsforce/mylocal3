@@ -1,0 +1,164 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .message.info {
+        &:before{
+            content: var(--icon-notice);
+        }
+    }
+
+    .message.error {
+        &:before{
+            content: var(--icon-msg-error);
+        }
+    }
+
+    .message.warning {
+        &:before{
+            content: var(--icon-warning);
+        }
+    }
+
+    .message.notice {
+        &:before{
+            content: var(--icon-notice);
+        }
+    }
+
+    .message.success {
+        &:before{
+            content: var(--icon-msg-success);
+        }
+    }
+    
+    body:not(.page-layout-seller-2columns-left) {
+        .page.messages{
+            &:extend(.abs-toast all);
+            &:extend(.abs-caption1-medium all);
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            z-index: 110;
+            text-align: center;
+            padding-left: var(--layout-indent__width);
+            padding-right: var(--layout-indent__width);
+            will-change: bottom, visibility;
+            transition: bottom 300ms linear, visibility 1s ease-out;
+            visibility: hidden;
+
+            &.__show{
+                bottom: 88px;
+                visibility: visible;
+            }
+        }
+    }
+    
+
+    body.page-layout-seller-2columns-left {
+        .message.info {
+            > *:first-child:before{
+                content: var(--icon-notice);
+            }
+        }
+    
+        .message.error {
+            > *:first-child:before{
+                content: var(--icon-error);
+            }
+        }
+    
+        .message.warning {
+            > *:first-child:before{
+                content: var(--icon-warning);
+            }
+        }
+    
+        .message.notice {
+            > *:first-child:before{
+                content: var(--icon-notice);
+            }
+        }
+    
+        .message.success {
+            > *:first-child:before{
+                content: var(--icon-success);
+            }
+        }
+
+        .message.info {
+            &:extend(.abs-message-for-seller all);
+            > *:first-child:before{
+                color: #007bdb;
+            }
+        }
+
+        .message.error {
+            &:extend(.abs-message-for-seller all);
+            > *:first-child:before{
+                color: #e22626;
+            }
+        }
+
+        .message.success {
+            &:extend(.abs-message-for-seller all);
+            > *:first-child:before{
+                color: #79a22e;
+            }
+        }
+
+        .message.warning {
+            &:extend(.abs-message-for-seller all);
+            > *:first-child:before{
+                color: #eb5202;
+            }
+        }
+
+        .message.notice {
+            &:extend(.abs-message-for-seller all);
+            > *:first-child:before{
+                color: #007bdb;
+            }
+        }
+    }
+    
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break = @screen__s) {
+    body:not(.page-layout-seller-2columns-left) {
+        .page.messages{
+            .message {
+                width: auto;
+                min-width: 343px;
+            }
+        }
+    }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body:not(.page-layout-seller-2columns-left) {
+        .page.messages{
+            &:extend(.abs-toast all);
+            &:extend(.abs-caption1-medium all);
+
+            &.__show{
+                bottom: 60px;
+            }
+        }
+    }
+}

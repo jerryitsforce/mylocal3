@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="marketplace_product_version" resource="default" engine="innodb"
+           comment="Marketplace Product Version Table">
+        <column xsi:type="smallint" name="created_from" unsigned="true" nullable="false" default="0" identity="false"
+                comment="Created From"/>
+        <column xsi:type="datetime" name="schedule_start_time" comment="Schedule Start Time"/>
+        <column xsi:type="datetime" name="schedule_end_time" comment="Schedule End Time"/>
+    </table>
+    <table name="marketplace_product_version_data" resource="default" engine="innodb"
+           comment="Marketplace Product Version Data Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="parent_id" nullable="false" unsigned="true" identity="false"
+                comment="Marketplace Product Version ID"/>
+        <column xsi:type="mediumtext" name="information" nullable="true"
+                comment="Information for create schedule"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MARKETPLACE_PRODUCT_VERSION_DATA_PARENT_ID_MARKETPLACE_PRODUCT_VERSION_ID" table="marketplace_product_version_data"
+                    column="parent_id" referenceTable="marketplace_product_version" referenceColumn="id" onDelete="CASCADE"/>
+        <index referenceId="MARKETPLACE_PRODUCT_VERSION_DATA_PARENT_ID" indexType="btree">
+            <column name="parent_id"/>
+        </index>
+    </table>
+</schema>

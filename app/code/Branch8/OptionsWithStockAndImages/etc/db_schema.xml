@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_OptionsWithStockAndImages
+ * @author    Webkul Software Private Limited
+ * @copyright Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="wk_osi_variations" resource="default" engine="innodb" comment="Options With Stock And Images Variation Table">
+    <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="ID"/>
+    <column xsi:type="text" name="comb" nullable="false" comment="Combination"/>
+    <column xsi:type="decimal" name="weight" onCreate="migrateDataFrom(weight)" scale="4" precision="12" unsigned="false" nullable="true" comment="Weight"/>
+    <column xsi:type="text" name="image" nullable="false" comment="Image"/>
+    <column xsi:type="int" name="stock" padding="11" unsigned="false" nullable="true" identity="false" default="0" onCreate="migrateDataFrom(stock)" comment="Stock"/>
+    <column xsi:type="int" name="product_id" padding="11" unsigned="false" nullable="false" identity="false" comment="product_id"/>
+      <column xsi:type="int" name="mageproduct_id" unsigned="true" nullable="false" identity="false"
+              comment="Magento Product ID"/>
+    <column xsi:type="text" name="sku" nullable="false" comment="sku"/>
+    <column xsi:type="int" name="is_sync" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="is_sync"/>
+    <column xsi:type="int" name="is_lock_sku" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="is_lock_sku"/>
+    <column xsi:type="int" name="product_item_id" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="product_item_id"/>
+    <column xsi:type="int" name="ready_to_ship_qty" padding="11" unsigned="false" nullable="true" identity="false" default="0" onCreate="migrateDataFrom(ready_to_ship_qty)" comment="ready_to_ship_qty"/>
+    <column xsi:type="int" name="follow_simple_sku_cost_setting" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="follow_simple_sku_cost_setting"/>
+    <column xsi:type="int" name="cost_setting" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="cost_setting"/>
+    <column xsi:type="int" name="commission_percent" padding="11" nullable="false" identity="false" default="0" comment="commission_percent"/>
+    <column xsi:type="int" name="cost" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="cost"/>
+    <column xsi:type="int" name="price" padding="11" unsigned="false" nullable="false" identity="false" default="0" comment="price"/>
+    <column xsi:type="int" name="follow_simple_sku_price_setting" padding="11" unsigned="false" nullable="false" identity="false" default="1" comment="follow_simple_sku_price_setting"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="entity_id"/>
+    </constraint>
+      <index referenceId="WK_OSI_VARIATIONS_PRODUCT_ID" indexType="btree">
+          <column name="product_id"/>
+      </index>
+      <index referenceId="WK_OSI_VARIATIONS_MAGEPRODUCT_ID" indexType="btree">
+          <column name="mageproduct_id"/>
+      </index>
+  </table>
+  <table name="catalog_product_option_type_value" resource="default" engine="innodb"
+           comment="Catalog Product Option Type Value Table">
+        <column xsi:type="int" name="option_type_id" unsigned="true" nullable="false" identity="true"
+                comment="Option Type ID"/>
+        <column xsi:type="int" name="option_id" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Option ID"/>
+        <column xsi:type="varchar" name="sku" nullable="true" length="64" comment="SKU"/>
+        <column xsi:type="smallint" name="is_bought" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Is Bought"/>
+        <column xsi:type="smallint" name="is_visible" unsigned="false" nullable="false" identity="false"
+                default="1" comment="Is Visible"/>
+        <column xsi:type="int" name="product_item_id" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Product Item ID"/>
+        <column xsi:type="int" name="sort_order" unsigned="true" nullable="false" identity="false"
+                default="0" comment="Sort Order"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="option_type_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="CAT_PRD_OPT_TYPE_VAL_OPT_ID_CAT_PRD_OPT_OPT_ID"
+                    table="catalog_product_option_type_value" column="option_id" referenceTable="catalog_product_option"
+                    referenceColumn="option_id" onDelete="CASCADE"/>
+        <index referenceId="CATALOG_PRODUCT_OPTION_TYPE_VALUE_OPTION_ID" indexType="btree">
+            <column name="option_id"/>
+        </index>
+    </table>
+    <table name="wk_osi_swatch" resource="default" engine="innodb" comment="Options With Stock And Images Swatch Table">
+      <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="ID"/>
+      <column xsi:type="int" name="option_id" padding="11" unsigned="true" nullable="false" default="0" identity="false" comment="option_id"/>
+      <column xsi:type="text" name="title" nullable="false" comment="Swtach Title"/>
+      <column xsi:type="int" name="is_swatch" padding="11" unsigned="false" nullable="false" identity="false" comment="is Swatch?"/>
+      <column xsi:type="int" name="product_id" padding="11" unsigned="true" nullable="false" default="0" identity="false" comment="product_id"/>
+      <constraint xsi:type="primary" referenceId="PRIMARY">
+        <column name="entity_id"/>
+      </constraint>
+      <constraint xsi:type="foreign" referenceId="WK_OSI_SWATCH_PRODUCT_ID_CAT_PRD_ENTT_ENTT_ID" table="wk_osi_swatch" column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE" disabled="true"/>
+      <index referenceId="WK_OSI_SWATCH_PRODUCT_ID_CAT_PRD_ENTT_ENTT_ID" indexType="btree">
+          <column name="product_id"/>
+      </index>
+      <constraint xsi:type="foreign" referenceId="WK_OSI_SWATCH_OPTION_ID_CATALOG_PRODUCT_OPTION_OPTION_ID" table="wk_osi_swatch" column="option_id" referenceTable="catalog_product_option" referenceColumn="option_id" onDelete="CASCADE" disabled="true"/>
+      <index referenceId="WK_OSI_SWATCH_OPTION_ID_CATALOG_PRODUCT_OPTION_OPTION_ID" indexType="btree">
+          <column name="option_id"/>
+      </index>
+      <constraint xsi:type="foreign" referenceId="WK_OSI_SWATCH_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID" disabled="true"/>
+    </table>
+    <table name="sales_order_item">
+      <column xsi:type="text" name="option_sku" nullable="true" comment="Option sku"/>
+      <column xsi:type="text" name="variation_sku" nullable="true" comment="Variation sku"/>
+      <column xsi:type="text" name="spec_title" nullable="true" comment="Variation comb"/>
+      <column xsi:type="varchar" name="combo" length="512" nullable="true" comment="Product Combination"/>
+    </table>
+    <table name="branch8_variations_price_index" resource="default" engine="innodb" comment="Branch8 Custom Option Price Index">
+        <column xsi:type="varchar" name="variation_comb" nullable="false" length="255" comment="wk_osi_variations Comb"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="int" name="customer_group_id" unsigned="true" nullable="false" comment="Customer Group ID"/>
+        <column xsi:type="int" name="website_id" unsigned="true" nullable="false" comment="Website ID"/>
+        <column xsi:type="decimal" name="final_price" scale="4" precision="12" unsigned="false" nullable="true" comment="Calculated Final Price for the option"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="variation_comb"/>
+            <column name="product_id"/>
+            <column name="customer_group_id"/>
+            <column name="website_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_OPTION_PRICE_IDX_PRD_ID" table="branch8_variations_price_index" column="product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="quote_item">
+        <column xsi:type="varchar" name="combo"  length="512" nullable="true" comment="Product Combination"/>
+    </table>
+    <table name="wk_osi_variations_fix_ready_to_ship_qty" resource="default" engine="innodb" comment="Tracking table for fixed ready_to_ship_qty">
+        <column xsi:type="int" name="id" padding="11" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="varchar" name="variation_comb" nullable="false" length="255" comment="Variation Combo"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="int" name="order_id" unsigned="true" nullable="false" comment="Order ID"/>
+        <column xsi:type="int" name="item_id" unsigned="true" nullable="false" comment="Order Item ID"/>
+        <column xsi:type="decimal" name="qty" scale="4" precision="12" unsigned="false" nullable="false" comment="Qty"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="WK_OSI_VAR_FIX_RTS_QTY_ITEM_ID" indexType="btree">
+            <column name="item_id"/>
+        </index>
+        <index referenceId="WK_OSI_VAR_FIX_RTS_QTY_ORDER_PRODUCT" indexType="btree">
+            <column name="order_id"/>
+            <column name="product_id"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @var $block \Branch8\CatalogCustom\Block\Widget\CategoryList
+ * @var $escaper \Magento\Framework\Escaper
+ */
+
+use Magento\Framework\App\Action\Action;
+
+$categories = $block->getCategoryList();
+$type = 'widget-product-grid';
+$isShowFull = $block->getIsShowInformation();
+$widgetLocation = $block->getData('widget_location') ?? 'mall_list';
+$mallName = $block->getData('mall_name');
+
+$itemListNameTemplates = [
+    'mall_list' => '館別頁_{{mall_name}}_{{category_name}}',
+    'flagshipmall_category' => '品牌旗艦館_{{mall_name}}_{{category_name}}',
+];
+
+$itemListId = $widgetLocation;
+$itemListNameTemplate = $itemListNameTemplates[$widgetLocation] ?? '{{category_name}}';
+$itemListNameTemplate = $mallName ? str_replace('{{mall_name}}', $mallName, $itemListNameTemplate) : $itemListNameTemplate;
+
+if ($categories):
+?>
+    <div class="has-ga4-settings category_list_widget">
+        <div class="block widget widget-category-list grid">
+            <div class="block-content">
+                <div class="category-list-title">
+                    <ul class="category-list-title-items">
+                        <?php
+                        $count = 1;
+                        foreach ($categories as $category): ?>
+                            <li class="category-list-title-item">
+                                <a href="<?= "#" . $category->getUrlKey() ?>" <?php if ($count === 1) {
+                                                                                echo 'class="active"';
+                                                                            } ?> class="category-list-title-item-link">
+                                    <?= $block->escapeHtml(__($category->getName())) ?>
+                                </a>
+                            </li>
+                        <?php $count++;
+                        endforeach; ?>
+                    </ul>
+                </div>
+
+                <?php foreach ($categories as $category): ?>
+                    <?php
+                    $itemListName = str_replace('{{category_name}}', $category->getName(), $itemListNameTemplate);
+                    ?>
+                    <div id="<?= $category->getUrlKey() ?>"
+                        class="category-block"
+                        data-category-id="<?= $category->getId() ?>"
+                        data-ga4-event-uid="<?= uniqid('category_widget_products_') ?>"
+                        data-item-list-id="<?= $itemListId ?>"
+                        data-item-list-name="<?= $itemListName ?>"
+                        data-loaded="false">
+                        <div class="category-products-wrapper">
+                            <?php /* Content will be loaded via AJAX */ ?>
+                            <div class="ajax-loader" style="display: none; text-align: center; padding: 20px;">
+                                <span><?= $block->escapeHtml(__('Loading...')) ?></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "b8_category_custom": {
+                    "ajaxUrl": "<?= $escaper->escapeUrl($block->getAjaxUrl()) ?>",
+                    "widgetSettings": {
+                        "max_product": "<?= $escaper->escapeHtmlAttr($block->getMaxProducts()) ?>",
+                        "widget_location": "<?= $escaper->escapeHtmlAttr($widgetLocation) ?>",
+                        "mall_name": "<?= $escaper->escapeHtmlAttr($mallName) ?>",
+                        "show_full_info": "<?= $escaper->escapeHtmlAttr($isShowFull) ?>"
+                    }
+                }
+            }
+        }
+    </script>
+<?php
+endif; ?>

@@ -1,0 +1,943 @@
+<?php
+/** @var $block \Webkul\Marketplace\Block\Account\Editprofile */
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getHelper();
+$partner = $block->getPersistentData();
+if (empty($partner)) {
+    $partner=$helper->getSeller();
+}
+$profile_hint_status = $helper->getProfileHintStatus();
+$currencySymbol = $helper->getCurrencySymbol();
+$formPostUrl = $block->getUrl(
+    'marketplace/account/editProfilePostCustom',
+    ["_secure" => $block->getRequest()->isSecure()]
+);
+$questIcon = $block->getViewFileUrl('Webkul_Marketplace::images/quest.png');
+$deleteIcon = $block->getViewFileUrl('Webkul_Marketplace::images/deleteIcon.png');
+$countryflag = $block->getViewFileUrl('Webkul_Marketplace::images/country/countryflags/');
+$sellerHelper = $this->helper('Branch8\SellerContactInformation\Helper\Data');
+$sellerShippingHelper = $this->helper('Branch8\SellerContactInformation\Helper\SellerShipping');
+?>
+<form action="<?= $escaper->escapeUrl($formPostUrl) ?>"
+    enctype="multipart/form-data"
+    method="post" data-role="form-profile-validate"
+    data-mage-init='{"validation":{}}'>
+    <div class="wk-mp-design">
+        <fieldset class="fieldset info wk-mp-fieldset">
+            <div data-mage-init='{"formButtonAction": {}}'
+                class="wk-mp-page-title legend" id="wk-mp-editprofile-form">
+                <span><?= /* @noEscape */ __('Edit Seller Profile Information') ?></span>
+                <button class="button wk-mp-btn"
+                    title="<?= /* @noEscape */ __('Save Seller Profile Information') ?>"
+                    type="submit" id="save-btn">
+                    <span><span><?= /* @noEscape */ __('Save Seller Profile Information') ?></span></span>
+                </button>
+            </div>
+            <?= $block->getBlockHtml('seller.formkey')?>
+            <?= $block->getBlockHtml('formkey')?>
+
+
+            <div class="field">
+                <div class="field field_seller_code" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Seller Code') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="seller_code"
+                               name="seller_code"
+                               value="<?= $escaper->escapeHtml($partner['seller_code']); ?>"
+                               title="<?= /* @noEscape */ __('Seller Code') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_company_name" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Company Name') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="company_name"
+                               name="company_name"
+                               value="<?= $escaper->escapeHtml($partner['company_name']); ?>"
+                               title="<?= /* @noEscape */ __('Company Name') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_company_address" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Company Address') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="company_address"
+                               name="company_address"
+                               value="<?= $escaper->escapeHtml($partner['company_address']); ?>"
+                               title="<?= /* @noEscape */ __('Company Address') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_company_phone" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Company Phone Number') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="company_phone"
+                               name="company_phone"
+                               value="<?= $escaper->escapeHtml($partner['company_phone']); ?>"
+                               title="<?= /* @noEscape */ __('Company Phone Number') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field profile" style="width:47%;margin-right:20px;">
+                    <label for="shoptitle"><?= /* @noEscape */ __('Shop Title  ( Store Name )') ?></label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="shop_title"
+                               name="shop_title"
+                               value="<?= $escaper->escapeHtml($partner['shop_title']); ?>"
+                               title="<?= /* @noEscape */ __('Shop Title  ( Store Name )')?>"
+                               class="input-text" />
+                    </div>
+                </div>
+                <div class="field field_company_representative" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Company Representative') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="company_representative"
+                               name="company_representative"
+                               value="<?= $escaper->escapeHtml($partner['company_representative']); ?>"
+                               title="<?= /* @noEscape */ __('Company Representative') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_hot_tag" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('HOT TAG') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="hot_tag"
+                               name="hot_tag"
+                               value="<?= $escaper->escapeHtml($partner['hot_tag']); ?>"
+                               title="<?= /* @noEscape */ __('HOT TAG') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+
+
+            <h3><?= /* @noEscape */ __('Invoice And Bank Information') ?></h3>
+            <div class="field">
+                <div class="field field_invoice_company_no" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Invoice Company No') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="invoice_company_no"
+                               name="invoice_company_no"
+                               value="<?= $escaper->escapeHtml($partner['invoice_company_no']); ?>"
+                               title="<?= /* @noEscape */ __('Invoice Company No') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_invoice_company_name" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Invoice Company Name') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="invoice_company_name"
+                               name="invoice_company_name"
+                               value="<?= $escaper->escapeHtml($partner['invoice_company_name']); ?>"
+                               title="<?= /* @noEscape */ __('Invoice Company Name') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_invoice_company_address" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Invoice Company Address') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="invoice_company_address"
+                               name="invoice_company_address"
+                               value="<?= $escaper->escapeHtml($partner['invoice_company_address']); ?>"
+                               title="<?= /* @noEscape */ __('Invoice Company Address') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_bank" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Bank') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank"
+                               name="bank"
+                               value="<?= $escaper->escapeHtml($partner['bank']); ?>"
+                               title="<?= /* @noEscape */ __('Bank') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_bank_type" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Bank Type') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank_type"
+                               name="bank_type"
+                               value="<?= $escaper->escapeHtml($partner['bank_type']); ?>"
+                               title="<?= /* @noEscape */ __('Bank Type') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_bank_branch_type" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Bank Branch Type') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank_branch_type"
+                               name="bank_branch_type"
+                               value="<?= $escaper->escapeHtml($partner['bank_branch_type']); ?>"
+                               title="<?= /* @noEscape */ __('Bank Branch Type') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_bank_code" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Bank No') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank_code"
+                               name="bank_code"
+                               value="<?= $escaper->escapeHtml($partner['bank_code']); ?>"
+                               title="<?= /* @noEscape */ __('Bank No') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_bank_branch_no" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Bank Branch No') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank_branch_no"
+                               name="bank_branch_no"
+                               value="<?= $escaper->escapeHtml($partner['bank_branch_no']); ?>"
+                               title="<?= /* @noEscape */ __('Bank Branch No') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_bank_account" style="width:47%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Bank Account') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank_account"
+                               name="bank_account"
+                               value="<?= $escaper->escapeHtml($partner['bank_account']); ?>"
+                               title="<?= /* @noEscape */ __('Bank Account') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_bank_memo" style="width:47%;">
+                    <label><?= /* @noEscape */ __('Bank Memo') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="bank_memo"
+                               name="bank_memo"
+                               value="<?= $escaper->escapeHtml($partner['bank_memo']); ?>"
+                               title="<?= /* @noEscape */ __('Bank Memo') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+
+
+            <h3><?= /* @noEscape */ __('Contact Information') ?></h3>
+            <div class="field">
+                <div class="field field_primary_contact" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Main Contact') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="primary_contact"
+                               name="primary_contact"
+                               value="<?= $escaper->escapeHtml($partner['primary_contact']); ?>"
+                               title="<?= /* @noEscape */ __('Main Contact') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_contact_number" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __("Main Contact's Phone Number") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="contact_number"
+                               name="contact_number"
+                               value="<?= $escaper->escapeHtml($partner['contact_number']); ?>"
+                               title="<?= /* @noEscape */ __("Main Contact's Phone Number") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_primary_contact_email" style="width:30%;">
+                    <label><?= /* @noEscape */ __("Main Contact's Email") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="primary_contact_email"
+                               name="primary_contact_email"
+                               value="<?= $escaper->escapeHtml($partner['primary_contact_email']); ?>"
+                               title="<?= /* @noEscape */ __("Main Contact's Email") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_financial_liaison" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Finance Contact') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="financial_liaison"
+                               name="financial_liaison"
+                               value="<?= $escaper->escapeHtml($partner['financial_liaison']); ?>"
+                               title="<?= /* @noEscape */ __('Finance Contact') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_financial_liaison_contact_number" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __("Finance Contact's Phone Number") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="financial_liaison_contact_number"
+                               name="financial_liaison_contact_number"
+                               value="<?= $escaper->escapeHtml($partner['financial_liaison_contact_number']); ?>"
+                               title="<?= /* @noEscape */ __("Finance Contact's Phone Number") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_financial_liaison_email" style="width:30%;">
+                    <label><?= /* @noEscape */ __("Finance Contact's Email") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="financial_liaison_email"
+                               name="financial_liaison_email"
+                               value="<?= $escaper->escapeHtml($partner['financial_liaison_email']); ?>"
+                               title="<?= /* @noEscape */ __("Finance Contact's Email") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_customer_service_contact" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Customer Service Contact') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="customer_service_contact"
+                               name="customer_service_contact"
+                               value="<?= $escaper->escapeHtml($partner['customer_service_contact']); ?>"
+                               title="<?= /* @noEscape */ __('Customer Service Contact') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_customer_service_contact_number" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __("Customer Service Contact's Phone Number") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="customer_service_contact_number"
+                               name="customer_service_contact_number"
+                               value="<?= $escaper->escapeHtml($partner['customer_service_contact_number']); ?>"
+                               title="<?= /* @noEscape */ __("Customer Service Contact's Phone Number") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_customer_service_contact_email" style="width:30%;">
+                    <label><?= /* @noEscape */ __("Customer Service Contact's Email") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="customer_service_contact_email"
+                               name="customer_service_contact_email"
+                               value="<?= $escaper->escapeHtml($partner['customer_service_contact_email']); ?>"
+                               title="<?= /* @noEscape */ __("Customer Service Contact's Email") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="field field_logistics_and_delivery_contract" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Logistics And Delivery Contact') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="logistics_and_delivery_contract"
+                               name="logistics_and_delivery_contract"
+                               value="<?= $escaper->escapeHtml($partner['logistics_and_delivery_contract']); ?>"
+                               title="<?= /* @noEscape */ __('Logistics And Delivery Contact') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_logistics_and_delivery_phone_number" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __("Logistics And Delivery Phone Number") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="logistics_and_delivery_phone_number"
+                               name="logistics_and_delivery_phone_number"
+                               value="<?= $escaper->escapeHtml($partner['logistics_and_delivery_phone_number']); ?>"
+                               title="<?= /* @noEscape */ __("Logistics And Delivery Phone Number") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_logistics_and_delivery_email" style="width:30%;">
+                    <label><?= /* @noEscape */ __("Logistics And Delivery Email") ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="logistics_and_delivery_email"
+                               name="logistics_and_delivery_email"
+                               value="<?= $escaper->escapeHtml($partner['logistics_and_delivery_email']); ?>"
+                               title="<?= /* @noEscape */ __("Logistics And Delivery Email") ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+
+
+            <?php
+            $commissionData = $sellerHelper->getCommissionData($partner['seller_id']);
+            ?>
+            <h3><?= /* @noEscape */ __('Commission Settings And Contract') ?></h3>
+            <div class="field">
+                <div class="field field_commission" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Commission Verification Percentage (%)') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="commission"
+                               name="commission"
+                               value="<?= $escaper->escapeHtml($commissionData['min_commission_rate']); ?>"
+                               title="<?= /* @noEscape */ __('Commission Verification Percentage (%)') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_commission" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Total Contract Commission Percentage (%)') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="commission"
+                               name="commission"
+                               value="<?= $escaper->escapeHtml($commissionData['current_val']); ?>"
+                               title="<?= /* @noEscape */ __('Total Contract Commission Percentage (%)') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+                <div class="field field_applicable_contracts_and_quotations" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Applicable Contracts And Quotations File') ?> </label>
+                    <div class="control">
+                        <input type="text" disabled
+                               id="applicable_contracts_and_quotations"
+                               name="applicable_contracts_and_quotations"
+                               value="<?= $escaper->escapeHtml($partner['applicable_contracts_and_quotations']); ?>"
+                               title="<?= /* @noEscape */ __('Applicable Contracts And Quotations File') ?>"
+                               class="input-text"/>
+                    </div>
+                </div>
+            </div>
+
+            <h3><?= /* @noEscape */ __('Shipping And Freight Settings') ?></h3>
+            <div class="field">
+                <div class="field field_is_allow_large_item" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Allow large item') ?> </label>
+                    <div class="control">
+                        <select type="select" disabled
+                                id="large_item"
+                                name="large_item"
+                                title="<?= /* @noEscape */ __('Allow large item') ?>"
+                                class="select">
+                            <option value="1" <?php if ($partner['is_allow_large_item'] == 1) echo 'selected="selected"'?>><?= $block->escapeHtml(__('Enable')) ?></option>
+                            <option value="0" <?php if ($partner['is_allow_large_item'] == 0) echo 'selected="selected"'?>><?= $block->escapeHtml(__('Disable')) ?></option>
+                        </select>
+                    </div>
+                </div>
+                <?php
+                    $selectedPreservationStatus = $partner['preservation_status'];
+                    if ($selectedPreservationStatus === null) {
+                        $arraySelectedPreservationStatus = [];
+                    } else {
+                        $arraySelectedPreservationStatus = explode(",", $selectedPreservationStatus);
+                    }
+                    $preservationStatusOptions = $sellerHelper->getPreservationStatusOptions();
+                ?>
+                <div class="field field_preservation_status" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Preservation Status') ?> </label>
+                    <div class="control">
+                        <select type="select" disabled multiple="multiple"
+                                id="preservation_status"
+                                name="preservation_status"
+                                title="<?= /* @noEscape */ __('Preservation Status') ?>"
+                                class="select">
+                            <?php foreach($preservationStatusOptions as $option) { ?>
+                                <option <?php if(in_array($option['value'], $arraySelectedPreservationStatus)) {echo 'selected';}?> value="<?= $escaper->escapeHtml($option['value']); ?>"><?= $escaper->escapeHtml($option['label']); ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <?php
+                    $shippingMethods = (string) $partner['shipping_methods'];
+                    $arrayShippingMethods = explode(",", $shippingMethods);
+                    $allActiveShippingMethods = $sellerShippingHelper->getAllCarriers();
+                    ?>
+                <div class="field field_shipping_methods" style="width:30%;margin-right:20px;">
+                    <label><?= /* @noEscape */ __('Shipping Methods') ?> </label>
+                    <div class="control">
+                        <select type="select" disabled multiple="multiple"
+                                id="shipping_methods"
+                                name="shipping_methods"
+                                title="<?= /* @noEscape */ __('Shipping Methods') ?>"
+                                class="select">
+                            <?php foreach ($allActiveShippingMethods as $_method) {?>
+                                <option <?php if(in_array($_method['code'], $arrayShippingMethods)){echo 'selected';}?> value="<?php echo $_method['code'];?>"><?php echo $_method['label'];?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <h3><?= /* @noEscape */ __('Other Information') ?></h3>
+            <?php
+            if ($helper->getActiveColorPicker()) {?>
+                <div class="field profile">
+                    <label for="background_width"><?= /* @noEscape */ __('Theme : Background Color') ?> </label>
+                    <?php
+                    if ($profile_hint_status && $helper->getProfileHintBc()) {?>
+                        <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                        class='questimg'
+                        title="<?= $escaper->escapeHtml($helper->getProfileHintBc()) ?>"/>
+                        <?php
+                    } ?>
+                    <div class="control">
+                        <input type="text" id="background_width"
+                        name="background_width"
+                        value="<?= $escaper->escapeHtml($partner['background_width']); ?>"
+                        title="background_width" class="input-text" />
+                        <span class="color-pick"
+                        data-role="color-pick"
+                        data-mage-init='{
+                            "colorPickerFunction":{
+                                "spanBackgroundColor" : "<?= $escaper
+                                ->escapeHtml($partner['background_width'])?>",
+                                "getActiveColorPickerStatus" : "<?= $escaper
+                                ->escapeHtml($helper->getActiveColorPicker())?>",
+                                "backgroundWidthSelector" : "#background_width"
+                            }
+                        }'>
+                        </span>
+                    </div>
+                </div>
+                <?php
+            } ?>
+
+            <div class="field profile">
+                <label for="banner-pic"> <?= /* @noEscape */ __('Company Banner') ?> </label>
+                <?php
+                if ($profile_hint_status && $helper->getProfileHintBanner()) {?>
+                    <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                    class='questimg'
+                    title="<?= $escaper->escapeHtml($helper->getProfileHintBanner()) ?>"/>
+                    <?php
+                } ?>
+                <div class="control">
+                    <input type="file" id="banner-pic" name="banner_pic"  title="Banner Pic" class="banner" size="26" />
+                    <div class="profileimage-set">
+                          <div class="setimage">
+                            <img class="wk-banner"
+                            alt=" <?= /* @noEscape */ __('no image') ?>"
+                            src="<?= $escaper->escapeUrl($helper->getMediaUrl().'avatar/'.$partner['banner_pic']); ?>"/>
+                            <?php
+                            $bannerpic = $partner['banner_pic'];
+                            $logopic = $partner['logo_pic'];
+                            if ($bannerpic && !$partner['is_default_banner']) {
+                                ?>
+                                <span class="wk-profileimagedelete"
+                                    title="<?= /* @noEscape */ __('Delete')?>">
+                                    <img src="<?= $escaper->escapeUrl($deleteIcon); ?>"
+                                    alt="<?= /* @noEscape */ __('Delete Image')?>"
+                                    title="<?= /* @noEscape */ __('Delete Image')?>"/>
+                                </span>
+                                <?php
+                            }?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field profile">
+                <label for="logo-pic"> <?= /* @noEscape */ __('Company Logo') ?> </label>
+                <?php
+                if ($profile_hint_status && $helper->getProfileHintLogo()) {?>
+                    <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                    class='questimg'
+                    title="<?= $escaper->escapeHtml($helper->getProfileHintLogo()) ?>"/>
+                    <?php
+                } ?>
+                <div class="control">
+                    <input type="file" id="logo-pic"
+                    alt="no image" name="logo_pic"
+                    title="<?= /* @noEscape */ __('Seller Logo')?>"
+                    class="banner" size="26"/>
+                    <div class="logoimage-set">
+                        <div class="setimage">
+                            <img class="prev-img"
+                            src="<?= $escaper
+                            ->escapeUrl($helper->getMediaUrl().'avatar/'.$partner['logo_pic']); ?>"/>
+                            <?php
+                            if ($logopic && !$partner['is_default_logo']) {
+                                ?>
+                                <span class="wk-logoimagedelete"
+                                    title="<?= /* @noEscape */ __('Delete')?>">
+                                    <img src="<?= $escaper
+                                    ->escapeUrl($deleteIcon); ?>"
+                                    alt="<?= /* @noEscape */ __('Delete Image')?>"
+                                    title="<?= /* @noEscape */ __('Delete Image')?>"/>
+                                </span>
+                                <?php
+                            }?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="field profile">
+                <label for="company_description"><?= /* @noEscape */ __('Company Description') ?></label>
+                <?php
+                if ($profile_hint_status && $helper->getProfileHintDesc()) {?>
+                    <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                    class='questimg'
+                    title="<?= $escaper->escapeHtml($helper->getProfileHintDesc()) ?>"/>
+                    <?php
+                } ?>
+                <?php
+                $cDesc = $partner['company_description'];
+                if (!empty($partner['company_description'])) {
+                    $cDesc = trim($partner['company_description']);
+                }
+                ?>
+                <div class="control wk-border-box-sizing">
+                    <textarea disabled type="text" id="company_description"
+                    name="company_description" title="company_description"
+                    class="input-text compdesi"
+                    ><?= /* @noEscape */ $cDesc; ?> </textarea>
+
+                </div>
+            </div>
+            <?php $showCountry = false; ?>
+            <?php if($showCountry) { ?>
+                <div class="field profile">
+                    <label for="country_pic"> <?= /* @noEscape */ __('Country') ?> </label>
+                    <?php
+                    if ($profile_hint_status && $helper->getProfileHintCountry()) {?>
+                        <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                        class='questimg'
+                        title="<?= $escaper->escapeHtml($helper->getProfileHintCountry()) ?>"/>
+                        <?php
+                    } ?>
+                    <div class="control">
+                        <select name="country_pic" id="country-pic">
+                            <option value="" selected="selected" disabled="disabled">
+                                <?= /* @noEscape */ __('Select Country')?>
+                            </option>
+                        <?php foreach ($block->getCountryOptionArray() as $country) {?>
+                            <option <?php
+                            if ($country['value']!='') {
+                                $cSelect = $partner['country_pic']==$country['value']?"selected='selected'":""; ?>
+                                value="<?= $escaper->escapeHtml($country['value']); ?>" <?= /* @noEscape */ $cSelect?>>
+                                <?= $escaper->escapeHtml($country['label']);?>
+                                </option>
+                                <?php
+                            }
+                        } ?>
+                        </select>
+                        <img class="country_img_prev" alt="no image"
+                        src="<?= /* @noEscape */ $countryflag."/".strtoupper(
+                            $partner['country_pic']==""?"xx":$partner['country_pic']
+                        ).".png"; ?>"/>
+                    </div>
+                </div>
+            <?php } ?>
+            <div class="field profile">
+                <label for="meta_keywords"><?= /* @noEscape */ __('Meta Keywords') ?></label>
+                <label class="control-notification">
+                (<?= /* @noEscape */ __("Enter Meta Keywords Comma(',') Separated.."); ?>)
+                </label>
+                <?php
+                if ($profile_hint_status && $helper->getProfileHintMeta()) {?>
+                    <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                    class='questimg'
+                    title="<?= $escaper->escapeHtml($helper->getProfileHintMeta()) ?>"/>
+                    <?php
+                } ?>
+                 <?php
+                    $metaKey = $partner['meta_keyword'];
+                    if (!empty($partner['meta_keyword'])) {
+                        $metaKey = trim($partner['meta_keyword']);
+                    }
+                    ?>
+                <div class="control">
+                    <textarea disabled type="text" id="meta_keywords" name="meta_keyword" title="Meta Keyword"
+                    class="input-text compdesi"
+                    ><?= /* @noEscape */ $metaKey; ?></textarea>
+                </div>
+            </div>
+            <div class="field profile">
+                <label for="meta_description"><?= /* @noEscape */ __('Meta Description') ?></label>
+                <?php
+                if ($profile_hint_status && $helper->getProfileHintMetaDesc()) {?>
+                    <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                    class='questimg'
+                    title="<?= $escaper->escapeHtml($helper->getProfileHintMetaDesc()) ?>"/>
+                    <?php
+                } ?>
+                 <?php
+                    $metaDesc = $partner['meta_description'];
+                    if (!empty($partner['meta_description'])) {
+                        $metaDesc = trim($partner['meta_description']);
+                    }
+                    ?>
+                <div class="control">
+                <textarea type="text" id="meta_description" disabled
+                    name="meta_description" title="Meta Description" class="input-text compdesi"
+                    ><?= /* @noEscape */ $metaDesc ?></textarea>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>
+<?php
+$profileUrl = 'marketplace/seller/profile/shop/'.$partner['shop_url'];
+$collectionUrl = 'marketplace/seller/collection/shop/'.$partner['shop_url'];
+$feedbackUrl = 'marketplace/seller/feedback/shop/'.$partner['shop_url'];
+$locationUrl = 'marketplace/seller/location/shop/'.$partner['shop_url'];
+$policyUrl = 'marketplace/seller/policy/shop/'.$partner['shop_url'];
+
+if ($helper->getUrlRewrite()) { ?>
+    <br/><br/>
+    <?php
+    $rewriteUrl = $block->getUrl(
+        'marketplace/account/rewriteUrlPost',
+        ["_secure" => $block->getRequest()->isSecure()]
+    );
+    ?>
+    <form action="<?= $escaper->escapeUrl($rewriteUrl) ?>"
+        enctype="multipart/form-data" method="post"
+        data-role="form-urlrewrite-validate"
+        data-mage-init='{"validation":{}}'>
+        <div class="page-title" style="width:100%;display:inline-block;">
+            <h2 style="float:left;">
+                <?= /* @noEscape */ __('Manage Your Shop Url') ?>
+            </h2>
+            <button class="button wk-mp-btn"
+                title="<?= /* @noEscape */ __('Set Your New Shop Url') ?>"
+                type="submit" style="float:right;">
+                <span><span><?= /* @noEscape */ __('Save Url') ?></span></span>
+            </button>
+        </div>
+        <?= $block->getBlockHtml('seller.formkey')?>
+        <?= $block->getBlockHtml('formkey')?>
+        <div class="wk-mp-design">
+            <fieldset class="fieldset info wk-mp-fieldset">
+                <legend class="legend"><span><?= /* @noEscape */ __('Edit Your Shop Url') ?></span></legend>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Profile Page Target Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        value="<?= /* @noEscape */ $profileUrl ?>" readonly/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Profile Page Request Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        name="profile_request_url" id="profile_request_url"
+                        value="<?= /* @noEscape */ $helper->getRewriteUrlPath($profileUrl) ?>"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Collection Page Target Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        value="<?= /* @noEscape */ $collectionUrl ?>" readonly/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Collection Page Request Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        name="collection_request_url" id="collection_request_url"
+                        value="<?= /* @noEscape */ $helper->getRewriteUrlPath($collectionUrl) ?>"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Review Page Target Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        value="<?= /* @noEscape */ $feedbackUrl; ?>" readonly/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Review Page Request Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        name="review_request_url" id="review_request_url"
+                        value="<?= /* @noEscape */ $helper->getRewriteUrlPath($feedbackUrl) ?>"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Location Page Target Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        value="<?= /* @noEscape */ $locationUrl; ?>" readonly/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Location Page Request Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        name="location_request_url" id="location_request_url"
+                        value="<?= /* @noEscape */ $helper->getRewriteUrlPath($locationUrl) ?>"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <label><?= /* @noEscape */ __('Privacy Policy Page Request Url Path') ?></label>
+                    <div class="control">
+                        <input type="text" class="input-text"
+                        name="policy_request_url" id="policy_request_url"
+                        value="<?= /* @noEscape */ $helper->getRewriteUrlPath($policyUrl) ?>"/>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    <?php
+}
+?>
+<br/><br/>
+<?php
+$savePaymentInfoUrl = $block->getUrl(
+    'marketplace/account/savePaymentInfo',
+    ["_secure" => $block->getRequest()->isSecure()]
+);
+?>
+<form action="<?= $escaper->escapeUrl($savePaymentInfoUrl) ?>"
+    enctype="multipart/form-data" method="post"
+    data-role="form-payment-validate" data-mage-init='{"validation":{}}'>
+    <div class="wk-mp-page-title page-title">
+        <h2><?= /* @noEscape */ __('Edit Payment Information') ?></h2>
+        <button class="button wk-mp-btn"
+        title="<?= /* @noEscape */ __('Save Payment') ?>" type="submit">
+            <span><span><?= /* @noEscape */ __('Save Payment') ?></span></span>
+        </button>
+    </div>
+    <?= $block->getBlockHtml('seller.formkey')?>
+    <?= $block->getBlockHtml('formkey')?>
+    <div class="wk-mp-design">
+        <fieldset class="fieldset info wk-mp-fieldset">
+            <legend class="legend">
+            <span><?= /* @noEscape */ __('Payment Information') ?></span>
+            </legend>
+            <div class="field">
+                <label><?= /* @noEscape */ __('Payment Details') ?></label>
+                <?php
+                if ($profile_hint_status && $helper->getProfileHintBank()) {?>
+                    <img src="<?= $escaper->escapeUrl($questIcon); ?>"
+                    class='questimg'
+                    title="<?= $escaper->escapeHtml($helper->getProfileHintBank()) ?>"/>
+                    <?php
+                } ?>
+                <div class="control">
+                    <textarea class="input-text" name="payment_source"
+                    id="payment-source" title="payment source"
+                    cols="1" rows="3" ><?= /* @noEscape */ $partner['payment_source']; ?></textarea>
+
+
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>
+<br/><br/>
+<?php if ($helper->getMinOrderSettings()): ?>
+    <?php
+    $saveMinOrderUrl = $block->getUrl(
+        'marketplace/account/saveMinOrder',
+        ["_secure" => $block->getRequest()->isSecure()]
+    );
+    ?>
+    <form action="<?= $escaper->escapeUrl($saveMinOrderUrl) ?>"
+    method="post" data-mage-init='{"validation":{}}'>
+        <div class="wk-mp-page-title page-title">
+            <h2><?= /* @noEscape */ __('Set Minimum Order Amount') ?></h2>
+            <button class="button wk-mp-btn"
+            title="<?= /* @noEscape */ __('Save') ?>" type="submit">
+                <span><span><?= /* @noEscape */ __('Save') ?></span></span>
+            </button>
+        </div>
+        <?= $block->getBlockHtml('seller.formkey')?>
+        <?= $block->getBlockHtml('formkey')?>
+        <div class="wk-mp-design">
+            <fieldset class="fieldset info wk-mp-fieldset">
+                <div class="field required">
+                    <label class="label">
+                    <?= /* @noEscape */ __('Minimum Amount') ?>
+                    <b><?= /* @noEscape */ " (".$currencySymbol.")"; ?></b>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                        class="input-text validate-number required-entry validate-greater-than-zero"
+                        name="min_order_amount" title="Minimum Order Amount"
+                        value ="<?= $escaper->escapeHtml($block->getMinimumOrderValue())?>"
+                        id="min_order_amount" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    <br/><br/>
+<?php endif; ?>
+<?= $block->getChildHtml(); ?>
+<div class="field profile wk-profile-links-container">
+    <div class="wk-profile-links">
+        <a class="btn-primary"
+        href="<?= /* @noEscape */ $helper->getRewriteUrl($profileUrl); ?>"
+        target="_blank"><?= /* @noEscape */ __('View Profile') ?></a>
+    </div>
+</div>
+<div class="buttons-set">
+    <p class="back-link">
+        <a href="javascript:;"
+            onclick="javascript: window.history.back();"
+            class="left">&laquo; <?= /* @noEscape */ __('Back') ?></a>
+    </p>
+</div>
+<?php
+$formData = [
+    'countryPicSelector' => '#country-pic',
+    'countryImgPrevSelector' => '.country_img_prev',
+    'countryLatitudeSelector' => '#country-latitude',
+    'countryLongitudeSelector' => '#country-longitude',
+    'countryImgPrev' => $block->getViewFileUrl("Webkul_Marketplace::images/country/countryflags/"),
+    'backgroundWidthSelector' => '#background_width',
+    'logoPicSelector' => '#logo-pic',
+    'bannerPicSelector' => '#banner-pic',
+    'leftButtonSelector' => '.left',
+    'buttonsSetLastSelector' => '.buttons-set:last',
+    'inputTextSelector' => '.input-text',
+    'profileimageSetSpanSelector' => '.profileimage-set span',
+    'bannerSelector' => '.wk-banner',
+    'bannerDeleteAjaxUrl' => $block->getUrl(
+        'marketplace/account/deleteSellerBanner',
+        ['_secure' => $block->getRequest()->isSecure()]
+    ),
+    'setimageSelector' => '.setimage',
+    'profileImageDeleteSelector' => '.wk-profileimagedelete img',
+    'logoImageSetSpanSelector' => '.logoimage-set span',
+    'logoSelector' => '.wk-logo',
+    'logoDeleteAjaxUrl' => $block->getUrl(
+        'marketplace/account/deleteSellerLogo',
+        ['_secure' => $block->getRequest()->isSecure()]
+    ),
+    'logoImageDeleteSelector' => '.wk-logoimagedelete img'
+];
+$serializedFormData = $viewModel->getJsonHelper()->jsonEncode($formData);
+?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "editSellerProfile": <?= /* @noEscape */ $serializedFormData; ?>
+        }
+    }
+</script>

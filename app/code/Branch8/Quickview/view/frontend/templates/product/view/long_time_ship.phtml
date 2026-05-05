@@ -1,0 +1,12 @@
+<?php
+/**
+ * @var Branch8\Quickview\Block\Product\View\LongTimeShip $block
+ */
+?>
+<?php $product = $block->getProduct(); ?>
+<?php if ($product?->getShowLongTimeShip() && $product?->getLongTimeShip()): ?>
+<?php $text = $product->getAttributeText('long_time_ship'); ?>
+    <div class="pdp_long_time_ship">
+        ※<?= /* @noEscape */ $block->escapeHtml(__('Longer lead time (%1)', $text)) ?>
+    </div>
+<?php endif; ?>

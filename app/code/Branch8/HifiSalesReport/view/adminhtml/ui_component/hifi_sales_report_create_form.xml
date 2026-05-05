@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">hifi_sales_report_create_form.hifi_sales_report_create_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">New Sales Report For HIFI</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/display/records</item>
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" >
+                <class>save primary</class>
+                <label translate="true">Save</label>
+            </button>
+        </buttons>
+        <namespace>new_hifi_sales_report_create_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>hifi_sales_report_create_form.hifi_sales_report_create_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="hifi_sales_report_create_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="hifi_sales_report/create/submit"/>
+        </settings>
+        <dataProvider class="Branch8\HifiSalesReport\Model\Record\Create\DataProvider" name="hifi_sales_report_create_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>record_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">General</label>
+        </settings>
+        <field name="invoice_change_start_date" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">hifi_sales_report_record</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Invoice Change Start Date</label>
+                <dataScope>invoice_change_start_date</dataScope>
+            </settings>
+            <!-- 2024-11-15 remove "invoice change date" limit for staging testing -->
+            <!-- <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="minDate" xsi:type="string">-100y</option>
+                            <option name="maxDate" xsi:type="string">-1d</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements> -->
+        </field>
+        <field name="invoice_change_end_date" formElement="date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">hifi_sales_report_record</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Invoice Change End Date</label>
+                <dataScope>invoice_change_end_date</dataScope>
+            </settings>
+            <!-- 2024-11-15 remove "invoice change date" limit for staging testing -->
+            <!-- <formElements>
+                <date>
+                    <settings>
+                        <options>
+                            <option name="minDate" xsi:type="string">-100y</option>
+                            <option name="maxDate" xsi:type="string">-1d</option>
+                        </options>
+                    </settings>
+                </date>
+            </formElements> -->
+        </field>
+        <field name="collecting_method" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">hifi_sales_report_record</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Collecting Method</label>
+                <dataScope>collecting_method</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\HifiSalesReport\Model\HifiSalesReportRecord\Source\CollectingMethod"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="handle_diff" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">hifi_sales_report_record</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Handle Diff</label>
+                <dataScope>handle_diff</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options>
+                            <!-- just want to set default value, ugly though -->
+                            <option name="0" xsi:type="array">
+                                <item name="value" xsi:type="string">1</item>
+                                <item name="label" xsi:type="string" translate="true">Yes</item>
+                                <!-- <item name="value" xsi:type="string">0</item>
+                                <item name="label" xsi:type="string" translate="true">No</item> -->
+                            </option>
+                            <option name="1" xsi:type="array">
+                                <!-- <item name="value" xsi:type="string">1</item>
+                                <item name="label" xsi:type="string" translate="true">Yes</item> -->
+                                <item name="value" xsi:type="string">0</item>
+                                <item name="label" xsi:type="string" translate="true">No</item>
+                            </option>
+                        </options>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

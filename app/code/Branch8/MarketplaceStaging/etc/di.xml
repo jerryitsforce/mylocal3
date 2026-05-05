@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\MarketplaceStaging\Block\Widget\Button\ToolbarInterface" type="Branch8\MarketplaceStaging\Block\Widget\Button\Toolbar" />
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="marketplacestaging_upcoming_grid_data_source" xsi:type="string">stagingCatalogUpcomingResult</item>
+                <item name="marketplacestaging_update_select_grid_data_source" xsi:type="string">stagingMarketplaceUpdateSelectResult</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="stagingMarketplaceUpdateSelectResult" type="Magento\Staging\Model\Entity\Update\Select\SearchResult">
+        <arguments>
+            <argument name="entityRequestName" xsi:type="string">id</argument>
+            <argument name="entityTable" xsi:type="string">catalog_product_entity</argument>
+            <argument name="entityColumn" xsi:type="string">entity_id</argument>
+        </arguments>
+    </virtualType>
+    <preference for="Branch8\MarketplaceStaging\Api\ProductVersionDataRepositoryInterface"
+                type="Branch8\MarketplaceStaging\Model\ProductVersionDataRepository"/>
+    <preference for="Branch8\MarketplaceStaging\Api\Data\ProductVersionDataInterface"
+                type="Branch8\MarketplaceStaging\Model\ProductVersionData"/>
+    <preference for="Branch8\MarketplaceStaging\Api\Data\ProductVersionDataSearchResultsInterface"
+                type="Magento\Framework\Api\SearchResults"/>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="staginggrouped_product_listing_data_source" xsi:type="string">Branch8\MarketplaceStaging\Model\ResourceModel\Product\Grid\GroupedCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="stagingbundleproduct_product_listing_data_source" xsi:type="string">Branch8\MarketplaceStaging\Model\ResourceModel\Product\Grid\BundleCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Webkul\MpGroupedProduct\Model\ResourceModel\Product\Grid\Collection"
+                type="Branch8\MarketplaceStaging\Model\ResourceModel\Product\Grid\Override\GroupedCollection"/>
+    <preference for="Webkul\MpBundleProduct\Model\ResourceModel\Product\Grid\Collection"
+                type="Branch8\MarketplaceStaging\Model\ResourceModel\Product\Grid\Override\BundleCollection"/>
+    <type name="Magento\Staging\Model\Entity\Update\Action\Save\SaveAction">
+        <plugin name="Branch8_MarketplaceStaging::scheduleUpdateSave" type="Branch8\MarketplaceStaging\Plugin\Magento\Staging\Model\Entity\Update\Action\Save\SaveAction" />
+    </type>
+    <type name="Magento\Staging\Model\Entity\Update\Action\Save\AssignAction">
+        <plugin name="Branch8_MarketplaceStaging::scheduleUpdateAssign" type="Branch8\MarketplaceStaging\Plugin\Magento\Staging\Model\Entity\Update\Action\Save\AssignAction" />
+    </type>
+
+    <type name="Branch8\MarketplaceStaging\Model\Ticket\SynchronizerPool">
+        <arguments>
+            <argument name="synchronizers" xsi:type="array">
+                <item name="2" xsi:type="object">Branch8\Yoxi\Model\Ticket\Synchronizer\Proxy</item>
+                <item name="3" xsi:type="object">Branch8\Edenred\Model\Ticket\Synchronizer\Proxy</item>
+                <item name="4" xsi:type="object">Branch8\FamilyBonusPin\Model\Ticket\Synchronizer\Proxy</item>
+                <item name="5" xsi:type="object">Branch8\GeneralNotifyTicket\Model\Ticket\Synchronizer\Proxy</item>
+                <item name="6" xsi:type="object">Branch8\GeneralNonNotifyTicket\Model\Ticket\Synchronizer\Proxy</item>
+                <item name="7" xsi:type="object">Branch8\Qware\Model\Ticket\Synchronizer\Proxy</item>
+                <item name="8" xsi:type="object">Branch8\Openhub\Model\Ticket\Synchronizer\Proxy</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Branch8\MarketplaceStaging\Helper\Data">
+        <arguments>
+            <argument name="synchronizerPool" xsi:type="object">Branch8\MarketplaceStaging\Model\Ticket\SynchronizerPool</argument>
+        </arguments>
+    </type>
+</config>

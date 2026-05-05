@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="edenred" translate="label" sortOrder="500">
+            <label>Edenred</label>
+        </tab>
+        <section id="edenred" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>General</label>
+            <tab>edenred</tab>
+            <resource>Branch8_Edenred::config</resource>
+            <group id="api" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>API</label>
+                <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
+                    <label>General</label>
+                    <field id="api_mode" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="0" translate="label" type="select">
+                        <label>API Mode</label>
+                        <comment></comment>
+                        <source_model>Branch8\Edenred\Model\Config\Source\ApiMode</source_model>
+                    </field>
+                    <field id="client_order_number_prefix" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Client Order Number Prefix</label>
+                        <validate>validate-length maximum-length-5</validate>
+                        <comment>Maximum 5 characters, default value: ED_</comment>
+                    </field>
+                </group>
+                <group id="dev" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label">
+                    <label>Dev Setting</label>
+                    <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Domain</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="api_version" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Version</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="ssl_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>SSL Key</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="ssl_iv" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>SSL IV</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="consumer_code" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Consumer Code</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="dynamic_voucher_guid_page_url" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Dynamic Voucher Guid Page Url</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Example: https://txpuat.tixpress.tw/viewvoucher.aspx?voucherguid=</comment>
+                    </field>
+                    <field id="notification_allowed_ips" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Notification Allowed IPs</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                You can fill in multiple IPs and separate them by commas,
+                                <br>
+                                and you can fill in blank space for better reading purpose.
+                                <br>
+                                Example: 60.251.133.138, 60.248.156.173, 60.248.156.174
+                            ]]>
+                        </comment>
+                    </field>
+                </group>
+                <group id="production" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                    <label>Production Setting</label>
+                    <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Domain</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="api_version" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>API Version</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="ssl_key" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>SSL Key</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="ssl_iv" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>SSL IV</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="consumer_code" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Consumer Code</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="dynamic_voucher_guid_page_url" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Dynamic Voucher Guid Page Url</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>Example: https://txpuat.tixpress.tw/viewvoucher.aspx?voucherguid=</comment>
+                    </field>
+                    <field id="notification_allowed_ips" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Notification Allowed IPs</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                You can fill in multiple IPs and separate them by commas,
+                                <br>
+                                and you can fill in blank space for better reading purpose.
+                                <br>
+                                Example: 60.251.133.138, 60.248.156.173, 60.248.156.174
+                            ]]>
+                        </comment>
+                    </field>
+                </group>
+            </group>
+            <group id="others" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>Others</label>
+                <field id="qty_validator_when_checkout_enable" showInDefault="1" showInStore="0" showInWebsite="0" sortOrder="0" translate="label" type="select">
+                    <label>Validate quantity when checkout enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+
+        <section id="branch8_debug">
+            <group id="branch8_edenred" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Edenred</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\Edenred\Model\Config\Source\LogOption</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

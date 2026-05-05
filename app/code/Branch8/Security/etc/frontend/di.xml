@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Csp\Model\Mode\ConfigManager">
+        <plugin name="branch_custom_set_report"
+                type="Branch8\Security\Plugin\ReportOnly"
+                sortOrder="10"/>
+    </type>
+    <type name="Branch8\Customer\CustomerData\Common">
+        <plugin name="branch8_security_common_data" type="Branch8\Security\Plugin\CustomerDataCommonPlugin"/>
+    </type>
+</config>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="send.app.notification" request="Branch8\AppNotification\Api\Data\NotificationMessageInterface">
+        <handler name="send.app.notification.handler" type="Branch8\AppNotification\Model\Queue\SendAppNotification" method="execute" />
+    </topic>
+</config>

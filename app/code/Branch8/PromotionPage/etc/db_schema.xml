@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalogrule" resource="default" comment="CatalogRule">
+        <column xsi:type="smallint" name="is_promotion" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Is Active"/>
+        <column xsi:type="smallint" name="is_vip" unsigned="false" nullable="false" identity="false"
+                default="0" comment="Is Vip"/>
+    </table>
+    <table name="catalogrule_is_vip" engine="innodb" resource="default" comment="VIP Product Index">
+        <column xsi:type="int" name="product_id" nullable="false"/>
+        <column xsi:type="int" name="customer_group_id" nullable="false"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="product_id"/>
+            <column name="customer_group_id"/>
+        </constraint>
+    </table>
+</schema>

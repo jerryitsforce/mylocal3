@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="virtual_ticket" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Virtual Ticket</label>
+            <tab>branch8</tab>
+            <resource>Branch8_Yoxi::config</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30" translate="label">
+                <label>General</label>
+                <field id="ticket_attribute_set" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Ticket Attribute Set</label>
+                    <source_model>Magento\Catalog\Model\Product\AttributeSet\Options</source_model>
+                </field>
+
+            </group>
+        </section>
+        <section id="catalog">
+            <group id="seo">
+                <field id="pdp_prefix" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Product Detail Page Prefix</label>
+                </field>
+            </group>
+        </section>
+        <section id="branch8_catalog" translate="label" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Catalog</label>
+            <tab>branch8</tab>
+            <resource>Branch8_Catalog::config</resource>
+            <group id="massaction_settings" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Mass Action Settings</label>
+                <field id="hide_delete_product" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Hide Delete Product Mass Action</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="schedule_setting" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Product Schedule setting</label>
+                <field id="enable_seller" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable for Seller</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="enable_backend" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Enable for Headquarters</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="product_status_change_log_cleaner" translate="label" sortOrder="500" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Product Status Change Log Cleaner</label>
+                <field id="months_to_keep" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Months to Keep</label>
+                    <validate>validate-number validate-greater-than-zero required-entry</validate>
+                    <comment>Delete log entries older than this number of months</comment>
+                </field>
+            </group>
+            <group id="images" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Images</label>
+                <field id="validate_image_tags" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Validate Image Tags</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="image_tags_to_validate" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Image tags need to validate (separate by ',')</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,110 @@
+{
+    "search_query": {
+        "column": {
+            "is_pin_search_term": true
+        }
+    },
+    "b8_tracking_price_cost_change": {
+        "column": {
+            "entity_id": true,
+            "product_id": true,
+            "sku": true,
+            "current_cost": true,
+            "new_cost": true,
+            "current_price": true,
+            "new_price": true,
+            "action_log": true,
+            "created_at": true
+        },
+        "index": {
+            "B8_TRACKING_PRICE_COST_CHANGE_PRODUCT_ID": true,
+            "B8_TRACKING_PRICE_COST_CHANGE_SKU": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "commission_percent": true,
+            "main_category": true,
+            "main_category_name": true
+        },
+        "index": {
+            "SALES_ORDER_ITEM_PRODUCT_ID": true
+        }
+    },
+    "catalog_product_preorder": {
+        "column": {
+            "product_id": true,
+            "status": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "CATALOG_PRODUCT_PREORDER_STATUS": true
+        }
+    },
+    "catalog_product_copy_tracking": {
+        "column": {
+            "product_id": true,
+            "has_draft": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "CAT_PRD_COPY_TRACKING_PRD_ID_CAT_PRD_ENTT_ENTT_ID": true
+        }
+    },
+    "catalog_product_entity_datetime": {
+        "column": {
+            "value_id": true
+        }
+    },
+    "catalog_product_entity_decimal": {
+        "column": {
+            "value_id": true
+        }
+    },
+    "catalog_product_entity_int": {
+        "column": {
+            "value_id": true
+        }
+    },
+    "catalog_product_entity_text": {
+        "column": {
+            "value_id": true
+        }
+    },
+    "catalog_product_entity_varchar": {
+        "column": {
+            "value_id": true
+        }
+    },
+    "branch8_product_change_history": {
+        "column": {
+            "history_id": true,
+            "product_id": true,
+            "changed_field": true,
+            "before_value": true,
+            "after_value": true,
+            "changed_by": true,
+            "changed_by_id": true,
+            "created_at": true,
+            "updated_in_bulk": true,
+            "trace_log": true
+        },
+        "index": {
+            "BRANCH8_PRODUCT_CHANGE_HISTORY_PRODUCT_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "quote_item": {
+        "column": {
+            "main_category": true,
+            "main_category_name": true
+        }
+    }
+}

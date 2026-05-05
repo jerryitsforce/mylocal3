@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <product_discussion>
+            <seller>
+                <page_size>5</page_size>
+                <seller_reply_template>product_discussion_seller_reply_template</seller_reply_template>
+                <seller_reply_identity>support</seller_reply_identity>
+            </seller>
+        </product_discussion>
+    </default>
+</config>

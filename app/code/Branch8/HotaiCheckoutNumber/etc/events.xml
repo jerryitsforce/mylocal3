@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="ecpay_invoice_before_issue_for_no_money">
+        <observer name="hotai_checkout_number_set_for_no_money" instance="Branch8\HotaiCheckoutNumber\Observer\SetCheckoutNumberForNoMoney" />
+    </event>
+</config>

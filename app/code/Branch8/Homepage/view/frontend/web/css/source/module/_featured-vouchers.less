@@ -1,0 +1,104 @@
+body#html-body .featured-vouchers-section .banner-title {
+    &:extend(body#html-body .vip-member-section .banner-title all);
+}
+body#html-body .featured-vouchers-section .banner-content {
+    &:extend(body#html-body .vip-member-section .banner-content all);
+}
+body#html-body .featured-vouchers-section .pagebuilder-banner-button{
+    &:extend(body#html-body .recommended-section .pagebuilder-banner-button all);
+}
+& when (@media-common = true) {
+    body#html-body{
+        .featured-vouchers-section-title {
+            &:before,
+            &:after {
+                content: "\e920";
+            }
+        }
+        .featured-vouchers-section{
+            overflow: auto;
+            .pagebuilder-column-line{
+                margin: 0 -10px;
+                .pagebuilder-column{
+                    margin: 0 10px!important;
+                }
+            }
+            .bottom-banner{
+                .pagebuilder-column{
+                    flex-direction: row;
+                    align-self: flex-start;
+                    justify-content: space-evenly;
+                    flex-wrap: wrap;
+                    position: relative;
+                    [data-content-type="heading"]{
+                        flex: 0 0 100%;
+                    }
+                    figure{
+                        width: ~'calc(33.33% - 20px)';
+                    }
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        margin: -13px;
+                        width: 26px;
+                        height: 26px;
+                        border-radius: 50%;
+                        left: 0;
+                        top: 0;
+                        background-color: white;
+                        border: 1px solid white;
+                        border-right-color: #e6e6e6;
+                        transform: rotate(46deg);
+                        z-index: 9;
+                    }
+                    &:after {
+                        content: "";
+                        position: absolute;
+                        margin: -13px;
+                        width: 26px;
+                        height: 26px;
+                        border-radius: 50%;
+                        right: 0;
+                        top: 0;
+                        background-color: white;
+                        border: 1px solid white;
+                        border-left-color: #e6e6e6;
+                        transform: rotate(-46deg);
+                        z-index: 9;
+                    }
+                }
+            }
+            .banner-title,
+            .banner-content{
+                color: @color-white;
+            }
+        }
+    }
+}
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body#html-body .featured-vouchers-section .pagebuilder-column-line .pagebuilder-column {
+        min-width: 372px;
+    }
+    body#html-body .featured-vouchers-section .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+        padding: 24px 0 24px 24px;
+        align-items: center;
+    }
+}
+
+@media only screen and (max-width: @screen__m) {
+    body#html-body .featured-vouchers-section{
+        .pagebuilder-column-line{
+            flex-wrap: nowrap;
+            .pagebuilder-column {
+                min-width: 288px;
+            }
+            .pagebuilder-overlay.pagebuilder-poster-overlay{
+                padding: 20px;
+            }
+        }
+        .pagebuilder-banner-rounded-corner .pagebuilder-banner-content{
+            padding: 20px 0 20px 20px;
+            align-items: center;
+        }
+    } 
+}

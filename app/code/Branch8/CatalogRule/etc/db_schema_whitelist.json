@@ -1,0 +1,52 @@
+{
+    "catalogrule_approval": {
+        "column": {
+            "entity_id": true,
+            "rule_id": true,
+            "post_data": true,
+            "post_type": true,
+            "owner": true,
+            "status": true,
+            "created_at": true,
+            "updated_at": true,
+            "reject_reason": true,
+            "catalogrule_id": true,
+            "submitter": true,
+            "approver": true,
+            "staging_id": true
+        },
+        "index": {
+            "CATALOGRULE_APPROVAL_RULE_ID": true,
+            "CATALOGRULE_APPROVAL_OWNER": true,
+            "CATALOGRULE_APPROVAL_STATUS": true,
+            "CATALOGRULE_APPROVAL_CREATED_AT": true,
+            "CATALOGRULE_APPROVAL_CATALOGRULE_ID": true,
+            "CATALOGRULE_APPROVAL_SUBMITTER": true,
+            "CATALOGRULE_APPROVAL_APPROVER": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "catalogrule_change_log": {
+        "column": {
+            "entity_id": true,
+            "catalogrule_id": true,
+            "old_data": true,
+            "approved_data": true,
+            "submitter": true,
+            "approver": true,
+            "created_at": true,
+            "approval_id": true,
+            "status": true,
+            "reject_reason": true
+        },
+        "index": {
+            "CATALOGRULE_CHANGE_LOG_CATALOGRULE_ID": true,
+            "CATALOGRULE_CHANGE_LOG_APPROVER": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

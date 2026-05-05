@@ -1,0 +1,47 @@
+{
+    "hifi_sales_report_record": {
+        "column": {
+            "record_id": true,
+            "invoice_change_start_date": true,
+            "invoice_change_end_date": true,
+            "collecting_method": true,
+            "closing_date": true,
+            "transfer_status": true,
+            "sales_order_ids": true,
+            "original_main_file_name": true,
+            "modified_main_file_name": true,
+            "original_detail_file_name": true,
+            "modified_detail_file_name": true,
+            "status": true,
+            "creator_admin_id": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true,
+            "sales_report_main_file_name": true,
+            "sales_report_detail_file_name": true,
+            "batch_code": true,
+            "invoice_status": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "hifi_sales_report_sub_record": {
+        "column": {
+            "record_id": true,
+            "parent_id": true,
+            "batch_code": true,
+            "invoice_status": true,
+            "invoice_change_date": true,
+            "sync_status": true,
+            "sync_result": true,
+            "memo": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_CA5AB8DC02B39E28D5A12BD15471ADCF": true
+        }
+    }
+}

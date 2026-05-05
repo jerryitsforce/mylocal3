@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+	<table name="branch8_every8d_smslog" resource="default" engine="innodb" comment="branch8_every8d_smslog Table">
+		<column xsi:type="int" name="smslog_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+		<constraint xsi:type="primary" referenceId="PRIMARY">
+			<column name="smslog_id"/>
+		</constraint>
+		<column name="phone" nullable="false" xsi:type="text" comment="phone"/>
+		<column name="content" nullable="false" xsi:type="text" comment="content"/>
+		<column name="response" nullable="false" xsi:type="text" comment="response"/>
+		<column name="ip" nullable="false" xsi:type="text" comment="ip"/>
+		<column name="created_at" nullable="false" xsi:type="timestamp" comment="created_at" default="CURRENT_TIMESTAMP"/>
+		<column name="updated_at" nullable="false" xsi:type="timestamp" comment="updated_at" default="CURRENT_TIMESTAMP" on_update="true"/>
+	</table>
+</schema>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="Tigren\SplitCart\Plugin\Magento\Quote\Model\Quote"
+            type="Branch8\TigrenSplitCart\Plugin\Magento\Quote\Model\Quote" sortOrder="99999" />
+    </type>
+
+    <type name="Magento\Quote\Model\Quote\Address">
+        <plugin name="Magento\Quote\Model\Quote\Address"
+                type="Branch8\TigrenSplitCart\Plugin\Magento\Quote\Model\Quote\Address" />
+    </type>
+
+    <type name="Magento\Rule\Model\Condition\AbstractCondition">
+        <plugin name="Tigren\SplitCart\Plugin\Magento\Rule\Model\Condition\AbstractCondition"
+                type="Branch8\TigrenSplitCart\Plugin\Magento\Rule\Model\Condition\AbstractCondition" />
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\AbstractItem">
+        <plugin sortOrder="1" name="ignore_item_not_available_to_checkout" type="Branch8\TigrenSplitCart\Plugin\Magento\Quote\Model\Quote\Item\AbstractItem"/>
+    </type>
+</config>

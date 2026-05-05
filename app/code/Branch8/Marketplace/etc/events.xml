@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_register_success">
+        <observer name="webkul_marketplace_customer_register_success_observer" disabled="true" />
+        <observer name="b8_update_mp_customer_register_success_observer" instance="Branch8\Marketplace\Plugin\Webkul\Marketplace\Observer\CustomerRegisterSuccessObserver"/>
+    </event>
+    <event name="marketplace_seller_save_after">
+        <observer name="b8_create_partner_data_when_create_seller" instance="Branch8\Marketplace\Observer\CreatePartnerData"/>
+    </event>
+</config>

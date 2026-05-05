@@ -1,0 +1,142 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+
+/** @var $block \Webkul\Marketplace\Block\Product\Create */
+$viewModel = $block->getViewModel();
+$marketplaceStagingHelper = $block->getViewHelper();
+$productId = $block->getRequest()->getParam('id');
+$stagingId = $block->getRequest()->getParam('update_id');
+$prevSetId = $block->getRequest()->getParam('prev_set_id');
+$upsellProducts = [];
+if ($productId) {
+    $productColl = $block->getProduct($productId);
+    $upsellProductColl = $productColl->getProductLinks();
+    foreach ($upsellProductColl as $key => $value) {
+        if ($value['link_type'] == 'upsell') {
+            $productBySku = $block->getProductBySku($value['linked_product_sku']);
+            array_push($upsellProducts, $productBySku->getId());
+        }
+    }
+}
+$stagingInfo = $marketplaceStagingHelper->getStagingInfo($stagingId);
+?>
+
+<form action="<?= $block->escapeUrl($block->getUrl('marketplacestaging/product/save', ['_secure' => $block
+    ->getRequest()->isSecure()])) ?>" enctype="multipart/form-data" method="post"
+      id="staging-product" class="marketplace-staging-product" data-form="staging-product" data-mage-init='{"validation":{}}'>
+    <div data-mage-init='{"formButtonAction": {}}' class="wk-mp-page-title legend">
+        <button class="button wk-mp-btn primary" title="<?= $block->escapeHtml(__('Save')) ?>"
+                type="button" id="save-btn">
+            <span><span><?= $block->escapeHtml(__('Save')) ?></span></span>
+        </button>
+        <?php if($marketplaceStagingHelper->canRemoveFromUpdate($stagingId)): ?>
+        <a class="button wk-mp-btn" data-url="<?= $block->escapeUrl($block->getUrl('marketplacestaging/product/delete', ['_secure' => $block->getRequest()->isSecure()])) ?>" title="<?= $block->escapeHtml(__('Remove from Update')) ?>"
+                type="button" id="remove-btn">
+            <span><span><?= $block->escapeHtml(__('Remove from Update')) ?></span></span>
+        </a>
+        <?php endif; ?>
+    </div>
+    <div class="messages"></div>
+    <?= $block->getBlockHtml('formkey')?>
+    <?= $block->getBlockHtml('seller.formkey')?>
+    <input type="hidden" name="id" value="<?= /* @noEscape */ $productId; ?>" />
+    <input type="hidden" name="product_id" value="<?= /* @noEscape */ $productId; ?>" />
+    <div id="staging-product-block">
+        <h3 class="title">
+            <?= /* @noEscape */$block->escapeHtml(__('Schedule Update')); ?>
+        </h3>
+        <div id="staging-product-block-wrapper" class="fieldset-schedule">
+            <div class="admin__fieldset-wrapper-content _hide">
+                <fieldset class="admin__fieldset">
+                    <div class="fieldset-wrapper" data-level="0" data-index="staging_save">
+                        <div class="admin__fieldset-wrapper-content _hide">
+                            <fieldset class="admin__fieldset">
+                                <div class="field admin__field-collapsible required" name="data.staging.mode">
+                                    <div class="control">
+                                        <div class="field admin__field-option">
+                                            <input type="radio" class="seller__control-radio" checked id="staging-mode-save" name="staging[mode]" data-index="staging_save_mode" value="save">
+                                            <?php if ($stagingId): ?>
+                                            <label class="label" for="staging-mode-save"><?= __('Edit Existing Update') ?></label>
+                                            <?php else: ?>
+                                            <label class="label" for="staging-mode-save"><?= __('Save as a New Update') ?></label>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="mode-save" class="stage-mode">
+                                    <fieldset class="fieldset info wk-mp-fieldset">
+                                        <div class="field" name="data.staging.update_id" style="display: none;">
+                                            <div class="control">
+                                                <input class="input-text" type="text" name="staging[update_id]" value="<?= $stagingId ?>">
+                                                <input class="input-text" type="hidden" name="update_id" value="<?= $stagingId ?>">
+                                            </div>
+                                        </div>
+                                        <div class="field required" name="data.staging.name">
+                                            <label class="label" for="staging-name"><span><?= $block->escapeHtml(__('Update Name')) ?></span></label>
+                                            <div class="control">
+                                                <input class="input-text required-entry" type="text" name="staging[name]" id="staging-name" value="<?= $stagingInfo['name'] ?>">
+                                            </div>
+                                        </div>
+                                        <div class="field" name="data.staging.description">
+
+                                            <label class="label" for="staging_description"><span><?= $block->escapeHtml(__('Description')) ?></span></label>
+
+                                            <div class="control">
+                                                <textarea class="seller__control-textarea" name="staging[description]" cols="15" rows="2" aria-describedby="notice-SWXQ8QQ" id="staging_description"><?= $stagingInfo['description'] ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="field required" name="data.staging.start_time">
+
+                                            <label class="label" for="start_time"><span><?= $block->escapeHtml(__('Start Date')) ?></span></label>
+
+                                            <div class="control">
+                                                <input class="input-text datetimepicker required-entry" type="text" value="<?= $stagingInfo['start_time'] ?>" name="staging[start_time]" aria-required="true" aria-invalid="false" id="start_time" autocomplete="on">
+                                            </div>
+                                        </div>
+                                        <div class="field" name="data.staging.end_time">
+
+                                            <label class="label" for="end_time"><span><span><?= $block->escapeHtml(__('End Date')) ?></span></label>
+
+                                            <div class="control">
+                                                <input class="input-text datetimepicker" type="text" value="<?= $stagingInfo['end_time'] ?>" name="staging[end_time]" aria-invalid="false" id="end_time" autocomplete="on">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="fieldset-wrapper" data-level="0" data-index="staging_select">
+                        <div class="admin__fieldset-wrapper-content _hide">
+                            <fieldset class="admin__fieldset">
+                                <div class="field admin__field-collapsible" name="data.staging.mode">
+                                    <div class="control">
+                                        <input type="radio" class="seller__control-radio" id="staging-mode-assign" name="staging[mode]" data-index="staging_select_mode" value="assign">
+                                        <label class="label" for="staging-mode-assign"><?= $block->escapeHtml(__('Assign to Existing Update')) ?></label>
+                                    </div>
+                                </div>
+                                <div id="mode-assign" class="stage-mode" style="display: none;">
+                                    <div class="field required">
+                                        <?= $block->getChildHtml('marketplacestaging_update_select_grid'); ?>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <?= $block->getChildHtml('marketplace_product_edit'); ?>
+</form>
+<?= $block->getChildHtml('marketplacestaging_product_related_product'); ?>
+<?= $block->getChildHtml('marketplacestaging_product_upsell_product'); ?>
+<?= $block->getChildHtml('marketplacestaging_product_crosssell_product'); ?>

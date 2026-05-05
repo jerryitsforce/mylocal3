@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp/etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="dotlottie_scripts" type="host">unpkg.com/@dotlottie/</value>
+                <value id="cdnjs_dompurify" type="host">https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.0/</value>
+                <value id="cdnjs_select2" type="host">https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/</value>
+                <value id="cdnjs_codemirror" type="host">https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.13.0/</value>
+                <value id="optimonk" type="host">*.optimonk.com</value>
+                <value id="adobe_helix_rum" type="host">https://rum.hlx.page/</value>
+                <value id="ms_clarity" type="host">*.clarity.ms</value>
+                <value id="scupio" type="host">*.scupio.com</value>
+                <value id="demdex" type="host">*.demdex.com</value>
+                <value id="demdex" type="host">*.criteo.com</value>
+                <value id="purifyjs2" type="host">https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.7/purify.min.js</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="abode" type="host">*.abode.com</value>
+                <value id="optimonk" type="host">*.optimonk.com</value>
+                <value id="hotaimember" type="host">hotaimember.com.tw/</value>
+                <value id="ms_clarity" type="host">*.clarity.ms</value>
+                <value id="scupio" type="host">*.scupio.com</value>
+                <value id="demdex" type="host">*.demdex.com</value>
+                <value id="demdex" type="host">*.criteo.com</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="abode" type="host">*.abode.com</value>
+                <value id="blob_url" type="host">blob:</value>
+                <value id="azureedge" type="host">*.azureedge.net</value>
+                <value id="adobedtm" type="host">*.adobedtm.com</value>
+                <value id="magentosite" type="host">*.magentosite.cloud</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="abode" type="host">*.abode.com</value>
+                <value id="scupio" type="host">*.scupio.com</value>
+                <value id="demdex" type="host">*.demdex.com</value>
+                <value id="demdex" type="host">*.criteo.com</value>
+            </values>
+        </policy>
+        <policy id="style-src">
+            <values>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="abode" type="host">*.abode.com</value>
+                <value id="scupio" type="host">*.scupio.com</value>
+                <value id="demdex" type="host">*.demdex.com</value>
+                <value id="demdex" type="host">*.criteo.com</value>
+            </values>
+        </policy>
+        <policy id="font-src">
+            <values>
+                <value id="gstatic" type="host">*.gstatic.com</value>
+                <value id="abode" type="host">*.abode.com</value>
+                <value id="scupio" type="host">*.scupio.com</value>
+                <value id="demdex" type="host">*.demdex.com</value>
+                <value id="demdex" type="host">*.criteo.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

@@ -1,0 +1,50 @@
+<div class="exception-auth-v4-card">
+    <header class="exception-auth-v4-card__head">
+        <span class="exception-auth-v4-card__index">#<%- itemIndex %></span>
+        <div class="exception-auth-v4-card__merchant">
+            <span class="exception-auth-v4-card__merchant-name"><%- shop_title %></span>
+            <% if (seller_code !== '-') { %>
+            <span class="exception-auth-v4-card__merchant-code"><%- seller_code %></span>
+            <% } %>
+        </div>
+        <span class="exception-auth-v4-card__status <%- statusClass %>"><%- exception_status %></span>
+    </header>
+
+    <div class="exception-auth-v4-card__meta">
+        <div class="exception-auth-v4-card__field">
+            <span class="exception-auth-v4-card__label">結帳批次</span>
+            <span class="exception-auth-v4-card__value"><%- batch_num %></span>
+        </div>
+        <div class="exception-auth-v4-card__field">
+            <span class="exception-auth-v4-card__label">資料來源</span>
+            <span class="exception-auth-v4-card__value"><%- data_source %></span>
+        </div>
+        <div class="exception-auth-v4-card__field">
+            <span class="exception-auth-v4-card__label">館長</span>
+            <span class="exception-auth-v4-card__value"><%- salesperson_role_name %></span>
+        </div>
+        <div class="exception-auth-v4-card__field">
+            <span class="exception-auth-v4-card__label">建立日期</span>
+            <span class="exception-auth-v4-card__value"><%- created_date %></span>
+        </div>
+    </div>
+
+    <% if (hasReason) { %>
+    <section class="exception-auth-v4-card__note">
+        <span class="exception-auth-v4-card__note-label">說明</span>
+        <p class="exception-auth-v4-card__note-text"><%- reason %></p>
+    </section>
+    <% } %>
+
+    <% if (hasShowValueEntries) { %>
+    <footer class="exception-auth-v4-card__metrics">
+        <% showValueEntries.forEach(function(entry) { %>
+        <div class="exception-auth-v4-card__metric">
+            <span class="exception-auth-v4-card__metric-label"><%- entry.label %></span>
+            <span class="exception-auth-v4-card__metric-value"><%- entry.value %></span>
+        </div>
+        <% }); %>
+    </footer>
+    <% } %>
+</div>
+

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">customer_ticket_listing.customer_ticket_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>customer_ticket_columns</spinner>
+        <deps>
+            <dep>customer_ticket_listing.customer_ticket_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="customer_ticket_listing_data_source"
+                component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">ticket_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+                      name="customer_ticket_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>ticket_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <!--<bookmark name="bookmarks"/>-->
+        <columnsControls name="customer_ticket_columns"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters" component="Branch8_HelpDesk/js/view/grid/filters">
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+        </filters>
+        <massaction/>
+        <paging name="listing_paging">
+            <settings>
+                <options>
+                    <option name="5" xsi:type="array">
+                        <item name="value" xsi:type="number">5</item>
+                        <item name="label" xsi:type="string">5</item>
+                    </option>
+                    <option name="10" xsi:type="array">
+                        <item name="value" xsi:type="number">10</item>
+                        <item name="label" xsi:type="string">10</item>
+                    </option>
+                    <option name="15" xsi:type="array">
+                        <item name="value" xsi:type="number">15</item>
+                        <item name="label" xsi:type="string">15</item>
+                    </option>
+                </options>
+                <pageSize>5</pageSize>
+            </settings>
+        </paging>
+    </listingToolbar>
+    <columns name="customer_ticket_columns">
+        <column name="code">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Ticket ID</label>
+            </settings>
+        </column>
+        <column name="title">
+            <settings>
+                <filter>text</filter>
+                <editor>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">true</rule>
+                    </validation>
+                    <editorType>text</editorType>
+                </editor>
+                <label translate="true">Title</label>
+            </settings>
+        </column>
+        <column name="frontend_status" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <options class="Branch8\HelpDesk\Model\Ticket\FrontendStatus"/>
+                <filter>select</filter>
+                <editor>
+                    <editorType>select</editorType>
+                </editor>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions"
+                       class="Branch8\HelpDesk\Ui\Component\Frontend\Listing\Column\BlockActions">
+            <settings>
+                <indexField>ticket_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

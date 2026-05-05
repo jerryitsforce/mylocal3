@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Trigger when saving section app_settings -->
+    <event name="admin_system_config_changed_section_app_settings">
+        <observer name="branch8_appsettings_push_firestore"
+                  instance="Branch8\AppSettings\Observer\VersioningChanged"/>
+    </event>
+</config>

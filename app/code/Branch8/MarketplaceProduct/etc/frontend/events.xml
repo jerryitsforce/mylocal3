@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_controller_product_view">
+        <observer name="branch8_marketplace_catalog_controller_product_preview"
+                  instance="Branch8\MarketplaceProduct\Observer\ProcessProductPreviewObserver"/>
+    </event>
+    <event name="marketplace_product_validate_post_before_save">
+       <observer name="branch8_marketplace_catalog_validate_image_tags"
+                 instance="Branch8\MarketplaceProduct\Observer\ValidateImageTagsObserver"/>
+   </event>
+</config>

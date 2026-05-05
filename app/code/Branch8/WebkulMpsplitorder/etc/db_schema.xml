@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
+        <column xsi:type="int" name="parent_id" unsigned="true" nullable="false" identity="false"
+                comment="parent_quote_id"/>
+    </table>
+    <table name="marketplace_mpsplitorder" resource="default" engine="innodb" comment="Marketplace Split Order Table">
+        <column xsi:type="int" name="master_quote_id" unsigned="true" nullable="true" identity="false"
+                comment="Use For tracking"/>
+    </table>
+    <table name="sales_order">
+        <column xsi:type="varchar" name="reserve_hotai_parent_order_number" nullable="true"  default="null" comment="Reserve Hotai Parent Order Number" />
+    </table>
+
+</schema>

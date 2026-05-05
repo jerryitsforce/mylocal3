@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2025 Branch8. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <shipping_subsidy>
+            <general>
+                <enabled>0</enabled>
+                <subsidy_mode>percent</subsidy_mode>
+                <home_delivery_subsidy>0</home_delivery_subsidy>
+                <store_pickup_subsidy>0</store_pickup_subsidy>
+            </general>
+        </shipping_subsidy>
+    </default>
+</config>

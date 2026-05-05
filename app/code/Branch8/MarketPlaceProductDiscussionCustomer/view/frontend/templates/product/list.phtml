@@ -1,0 +1,26 @@
+<?php
+/**
+ * @var $block \Branch8\MarketPlaceProductDiscussionCustomer\Block\Product\Discussions\ListDiscussions
+ * @var $thread \Branch8\MarketPlaceProductDiscussion\Model\Thread
+ * @var $escaper \Magento\Framework\Escaper
+ * @var $messages \Branch8\MarketPlaceProductDiscussion\Model\ResourceModel\Message\Collection
+ * @var $mesasge  \Branch8\MarketPlaceProductDiscussion\Model\Message
+ */
+$threads = $block->getDiscussions();
+$collection = $block->getCollection();
+?>
+<div class="thread-main-wrapper thread-listing-wrapper" id="thread-main-list">
+    <div class="prd-discussion-list-wrapper" data-bind="scope:'threadsComponent'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <div class="prd-ask-question-wrapper" data-bind="scope:'askQuestionComponent'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": <?= $block->getJsLayout() ?>
+        }
+    }
+    </script>
+</div>

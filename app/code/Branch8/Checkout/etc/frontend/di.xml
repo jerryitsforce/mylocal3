@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\DefaultConfigProvider">
+        <plugin name="b8_customer_buyer_email" type="Branch8\Checkout\Plugin\Model\DefaultConfigProvider" sortOrder="50" />
+    </type>
+
+    <preference for="Magento\Checkout\Controller\Cart\UpdatePost" type="Branch8\Checkout\Override\Controller\Cart\UpdatePost"/>
+    <type name="Magento\Checkout\Controller\Cart\Delete">
+        <plugin name="b8_delete_cart_item_return_json" type="Branch8\Checkout\Plugin\Controller\Cart\Delete" sortOrder="50" />
+    </type>
+</config>

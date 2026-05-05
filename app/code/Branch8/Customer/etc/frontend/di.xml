@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\HotaiAuth\Helper\HotaiLogin">
+        <plugin name="check_update_organization" type="Branch8\Customer\Plugin\UpdateOrganization"/>
+    </type>
+    <type name="Magenest\NotificationBox\Controller\Customer\GetNotificationData">
+        <plugin name="b8_check_notification_seller" type="Branch8\Customer\Plugin\Notification"/>
+    </type>
+    <type name="Webkul\Marketplace\Controller\Account\Login">
+        <plugin name="b8_set_seller_login_redirect" type="Branch8\Customer\Plugin\SellerLoginRedirect"/>
+    </type>
+    <preference for="Magento\Customer\Block\Account\AuthorizationLink" type="Branch8\Customer\Block\Account\AuthorizationLink"/>
+    <preference for="Magento\Customer\Block\Account\RegisterLink" type="Branch8\Customer\Block\Account\RegisterLink"/>
+    <type name="Magento\Customer\Model\Data\Customer">
+        <plugin name="b8_custom_set_get_email"
+                type="Branch8\Customer\Plugin\BuyerSellerEmail"
+                sortOrder="10"/>
+    </type>
+    <preference for="Magento\Captcha\Observer\CheckUserLoginObserver" type="Branch8\Customer\Observer\RecaptchaCheckUserLoginObserver"/>
+    <preference for="Magento\Customer\Block\Address\Book" type="Branch8\Customer\Block\Address\Book"/>
+    <preference for="Magento\Customer\Block\Account\Dashboard\Info" type="Branch8\Customer\Block\Account\Dashboard\Info"/>
+    <preference for="Magento\Customer\Controller\Address\FormPost" type="Branch8\Customer\Override\Controller\Address\FormPost"/>
+    <type name="Magento\Customer\Block\Address\Edit">
+        <plugin name="b8_custom_block_address_edit_set_title"
+                type="Branch8\Customer\Plugin\Block\Address\Edit"
+                sortOrder="0"/>
+    </type>
+    <type name="Magento\Customer\Model\Session">
+        <plugin name="check_seller_or_buyer_set_login_url"
+                type="Branch8\Customer\Plugin\SetLoginUrl"
+                sortOrder="10"/>
+    </type>
+    <type name="Branch8\HotaiAuth\Helper\HotaiLogin">
+        <plugin name="b8customer_set_not_seller_login"
+                type="Branch8\Customer\Plugin\SetNotSellerLogin"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="branch8_customer_data" xsi:type="string">Branch8\Customer\CustomerData\Common</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Branch8\Customer\CustomerData\Common">
+        <plugin name="branch8_customer_common_data" type="Branch8\Customer\Plugin\CustomerDataCommonPlugin"/>
+    </type>
+    <type name="Branch8\HotaiAuth\Controller\Redirect\Index">
+        <plugin name="branch8_update_car_owner_after_login"
+                type="Branch8\Customer\Plugin\CarOwner"
+                sortOrder="10"/>
+    </type>
+    <type name="Branch8\HotaiAuth\Helper\HotaiLogin">
+        <plugin name="branch8_update_customer_ticket"
+                type="Branch8\Customer\Plugin\QueueUpdateCustomerTicket"
+                sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Customer\Model\Visitor">
+        <plugin name="Branch8_Customer::trackCustomerVisitorqueue"
+                type="Branch8\Customer\Plugin\Magento\Customer\Model\VisitorPlugin"/>
+    </type>
+</config>

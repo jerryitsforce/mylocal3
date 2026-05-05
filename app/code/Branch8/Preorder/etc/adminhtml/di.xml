@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\MarketplacePreorder\Ui\Component\Listing\Column\ProductName"
+                type="Branch8\Preorder\Ui\Component\Listing\Column\ProductName" />
+    <preference for="Webkul\MarketplacePreorder\Ui\Component\Listing\Column\Price"
+                type="Branch8\Preorder\Ui\Component\Listing\Column\Price" />
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="product_preorder_modifier" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Preorder\Ui\DataProvider\Product\Validate</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Magento\CatalogStaging\Ui\DataProvider\Product\Form\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="product_preorder_stg_modifier" xsi:type="array">
+                    <item name="class" xsi:type="string">Branch8\Preorder\Ui\DataProvider\Product\Validate</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

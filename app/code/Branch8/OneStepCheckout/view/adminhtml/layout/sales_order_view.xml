@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="order_additional_info">
+            <block class="Branch8\OneStepCheckout\Block\Adminhtml\Order\AdditionalInfo" name="hotai_order_additional_info" 
+               template="Branch8_OneStepCheckout::order/view/additional-info.phtml" after="-"/>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,56 @@
+<!--@subject {{trans "Your Wishlist Item is Back in Stock!"}} @-->
+<!--@vars {
+"var alertGrid":"Grid Items",
+"var customer_name":"Customer Name",
+"var service_contact_information":"Service Contact Information",
+"var disclaimer_text":"Disclaimer Text",
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table>
+    <tr class="email-intro">
+        <td>
+            <p class="greeting">{{trans "Hello %customer_name," customer_name=$customer_name}}</p>
+            <p>
+                {{trans "Great news! Items from your wishlist is now back in stock:"}}
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td class="email-content">
+            {{var alertGrid|raw}}
+            <p>
+                {{trans "This product was out of stock when you added it to your wishlist, but it's now available again.
+                Don't miss out!"}}
+            </p>
+        </td>
+    </tr>
+    <tr class="email-outro">
+        <td>
+            <p>
+                {{trans "Thank you for shopping with us!"}}
+            </p>
+        </td>
+    </tr>
+    {{depend service_contact_information}}
+    <tr class="email-outro">
+        <td>
+            <p>
+                {{var service_contact_information|raw}}
+            </p>
+        </td>
+    </tr>
+    {{/depend}}
+    {{depend disclaimer_text}}
+    <tr class="email-outro">
+        <td>
+            <p>
+                {{var disclaimer_text|raw}}
+            </p>
+        </td>
+    </tr>
+    {{/depend}}
+</table>
+
+{{template config_path="design/email/footer_template"}}

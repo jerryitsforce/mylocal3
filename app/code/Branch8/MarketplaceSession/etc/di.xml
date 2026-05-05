@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Session\SessionManager">
+        <plugin name="Branch8_MarketplaceSession::SessionManager_Plugin"
+                type="Branch8\MarketplaceSession\Plugin\SessionManager"
+                sortOrder="1" />
+    </type>
+    <!-- Override Branch8_Customer SetNotSellerLogin plugin -->
+    <preference
+        for="Branch8\Customer\Plugin\SetNotSellerLogin"
+        type="Branch8\MarketplaceSession\Plugin\SetNotSellerLogin"
+    />
+</config>

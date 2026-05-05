@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="marketplace_mpsplitorder" resource="default" engine="innodb" comment="Marketplace Split Order Table">
+        <column xsi:type="varchar" name="increment_id" nullable="true" length="50" comment="Increment ID" disabled="true"/>
+        <column xsi:type="varchar" name="state" nullable="true" length="32" comment="Payment State" disabled="true"/>
+        <column xsi:type="varchar" name="status" nullable="true" length="32" comment="Payment Status" disabled="true"/>
+        <column xsi:type="varchar" name="coupon_code" nullable="true"  length="255" comment="Payment Coupon Code" disabled="true"/>
+        <column xsi:type="varchar" name="cc_token_id" nullable="true" length="255" comment="Cc Token Id" disabled="true"/>
+        <column xsi:type="varchar" name="cc_type" nullable="true" length="255" comment="Cc Type" disabled="true"/>
+        <column xsi:type="varchar" name="cc_owner" nullable="true" length="255" comment="Cc Owner" disabled="true"/>
+        <column xsi:type="varchar" name="cc_last_4" nullable="true" length="255" comment="Cc Last 4" disabled="true"/>
+        <column xsi:type="varchar" name="mac" nullable="true" length="255" comment="Payment Mac" disabled="true"/>
+        <column xsi:type="decimal" name="grand_total" scale="4" precision="20" default="0.0000" unsigned="false" nullable="false" comment="Grand Total" disabled="true"/>
+        <column xsi:type="blob" name="txn" nullable="true" comment="Payment Txn" disabled="true"/>
+        <column xsi:type="blob" name="reqjsonpwd" nullable="true" comment="Payment Reqjsonpwd" disabled="true"/>
+        <column xsi:type="blob" name="get_txn_err_result" nullable="true" comment="Payment Get Txn Error Result" disabled="true"/>
+        <column xsi:type="blob" name="get_payment_result" nullable="true" comment="Payment Payment Result" disabled="true"/>
+        <column xsi:type="blob" name="additional_information" nullable="true" comment="Additional Information" disabled="true"/>
+        <column xsi:type="blob" name="old_quote" nullable="true" comment="Old Quote Information" disabled="true"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" comment="Creation Time" disabled="true"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" comment="Update Time" disabled="true"/>
+    </table>
+    <table name="sales_parent_order_payment" resource="default" engine="innodb" comment="Marketplace Split Order Table">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="parent_id" unsigned="true" nullable="true" identity="false"
+                comment="Sales Parent Detail ID"/>
+        <column xsi:type="decimal" name="base_amount_ordered" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Amount Ordered"/>
+        <column xsi:type="decimal" name="base_amount_paid" scale="4" precision="20" unsigned="false" nullable="true"
+                comment="Base Amount Paid"/>
+        <column xsi:type="decimal" name="base_amount_refunded" scale="4" precision="20" unsigned="false"
+                nullable="true" comment="Base Amount Refunded"/>
+        <column xsi:type="decimal" name="base_amount_canceled" scale="4" precision="20" unsigned="false"
+                nullable="true" comment="Base Amount Canceled"/>
+        <column xsi:type="int" name="quote_payment_id" unsigned="false" nullable="true" identity="false"
+                comment="Quote Payment ID"/>
+        <column xsi:type="varchar" name="cc_token_id" nullable="true" length="255" comment="Cc Token Id"/>
+        <column xsi:type="varchar" name="cc_type" nullable="true" length="255" comment="Cc Type"/>
+        <column xsi:type="varchar" name="cc_owner" nullable="true" length="255" comment="Cc Owner"/>
+        <column xsi:type="varchar" name="cc_last_4" nullable="true" length="255" comment="Cc Last 4"/>
+        <column xsi:type="int" name="bin_info_code" nullable="true" comment="BinInfo Code" />
+        <column xsi:type="varchar" name="mac" nullable="true" length="255" comment="Payment Mac"/>
+        <column xsi:type="text" name="txn" nullable="true" comment="Payment Txn"/>
+        <column xsi:type="text" name="reqjsonpwd" nullable="true" comment="Payment Reqjsonpwd"/>
+        <column xsi:type="text" name="get_txn_err_result" nullable="true" comment="Payment Get Txn Error Result"/>
+        <column xsi:type="text" name="get_payment_result" nullable="true" comment="Payment Payment Result"/>
+        <column xsi:type="text" name="additional_information" nullable="true" comment="Additional Information"/>
+        <column xsi:type="varchar" name="co_branded" nullable="true" length="255" comment="Co-Branded Card"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" comment="Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="SALES_PARENT_ORDER_PAYMENT_PARENT_ID_SALES_PARENT_ORDER_ENTITY_ID"
+                    table="sales_parent_order_payment"
+                    column="parent_id" referenceTable="marketplace_mpsplitorder"
+                    referenceColumn="index_id" onDelete="CASCADE"/>
+        <index referenceId="SALES_PARENT_ORDER_PAYMENT_PARENT_ORDER_ID" indexType="btree">
+            <column name="parent_id"/>
+        </index>
+    </table>
+    <table name="hotaipay_creditcard" resource="default" engine="innodb" comment="HotaiPay Creditcard Table">
+	<column xsi:type="int" name="creditcard_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+	<constraint xsi:type="primary" referenceId="PRIMARY">
+		<column name="creditcard_id"/>
+	</constraint>
+	<column name="is_main" nullable="true" xsi:type="smallint" comment="is_main" identity="false" disabled="true"/>
+        <column name="member_one_id" nullable="true" xsi:type="varchar"  length="255" comment="Member One Id" />
+        <column name="customer_id" xsi:type="int" unsigned="true" nullable="true" identity="false"
+                comment="Magento Customer Entity ID"/>
+        <column name="creditcard_toke_id" nullable="true" xsi:type="varchar"  length="255" comment="Credit Card Id" />
+        <column name="type" nullable="true" xsi:type="varchar"  length="255" comment="Credit Card Type" />
+        <column name="bank" nullable="true" xsi:type="varchar"  length="255" comment="Bank" />
+        <column name="bank_desc" nullable="true" xsi:type="varchar"  length="255" comment="BankDesc" />
+        <column name="number_mask" nullable="true" xsi:type="varchar"  length="255" comment="Number Mask" />
+        <column name="affinity_code" nullable="true" xsi:type="int"  comment="Affinity Code" />
+        <column name="alias_name" nullable="true" xsi:type="varchar"  length="255" comment="Alias Name" />
+        <column name="is_default" nullable="true" xsi:type="smallint" comment="Is Default Card" identity="false"/>
+        <column name="is_debit" nullable="true" xsi:type="smallint" comment="Is Debit Card" identity="false"/>
+        <column name="is_ctbc" nullable="true" xsi:type="smallint" comment="Is CTBC Card" identity="false"/>
+        <column name="is_ht" nullable="true" xsi:type="smallint" comment="Is Hotai Card" identity="false"/>
+        <column name="bin_info_code" nullable="true" xsi:type="int"  comment="BinInfo Code" />
+        <column name="bin" nullable="true" xsi:type="int"  comment="BinInfo Bin" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" comment="Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" comment="Update Time"/>
+        <index referenceId="CreditCard_MEMBER_ONE_ID" indexType="btree">
+            <column name="member_one_id"/>
+        </index>
+        <index referenceId="CreditCard_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <constraint xsi:type="foreign"
+                    referenceId="CreditCard_CUSTOMER_ID"
+                    table="hotaipay_creditcard"
+                    column="customer_id" referenceTable="customer_entity"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+    <table name="hotaipay_message" resource="default" engine="innodb" comment="Hotaipay Message">
+        <column xsi:type="int" name="message_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity Id"/>
+	<column name="type" nullable="true" xsi:type="varchar" comment="type" length="255"/>
+        <column name="status" nullable="true" xsi:type="varchar" comment="status" length="255"/>
+        <column name="error_code" nullable="true" xsi:type="varchar" comment="error_code" length="255"/>
+        <column name="description" nullable="true" xsi:type="varchar" comment="description" length="255"/>
+        <column name="front_display_des" nullable="true" xsi:type="varchar" comment="front display des" length="255"/>
+        <column name="is_fraud" nullable="true" xsi:type="smallint" comment="Is Fraud" identity="false"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+		<column name="message_id"/>
+	</constraint>
+    </table>
+</schema>

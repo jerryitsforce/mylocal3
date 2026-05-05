@@ -1,0 +1,149 @@
+<?php
+
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/**
+ * Product carousel widget template
+ *
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$preOrderHelper = $this->helper(\Branch8\Preorder\Override\Helper\Data::class);
+$helperLabel = $this->helper(\Branch8\PromotionPage\Helper\Data::class);
+/** @var Branch8\GA4\Helper\ProductHelper $productHelper */
+$productHelper = $this->helper(\Branch8\GA4\Helper\ProductHelper::class);
+
+$ga4Data = [
+    'item_list_id' => $this->getData('item_list_id'),
+    'item_list_name' => $this->getData('item_list_name'),
+    'promotion_id' => $this->getData('promotion_id'),
+    'promotion_name' => $this->getData('promotion_name'),
+];
+
+$ga4SettingsObject = new \Magento\Framework\DataObject($ga4Data);
+
+$additionalParams = [];
+foreach ($ga4Data as $key => $value) {
+    if (!empty($value)) {
+        $additionalParams[$key] = $value;
+    }
+}
+$additionalParams = $additionalParams ? ['_query' => $additionalParams] : ['_query' => ["referer" => "card"]];
+$attrDataStr = "
+data-item-list-id='{$ga4SettingsObject->getData('item_list_id')}'
+data-item-list-name='{$ga4SettingsObject->getData('item_list_name')}'
+data-promotion-id='{$ga4SettingsObject->getData('promotion_id')}'
+data-promotion-name='{$ga4SettingsObject->getData('promotion_name')}'
+";
+
+?>
+<?php if ($exist = ($block->getProductCollection() && $block->getProductCollection()->count())): ?>
+    <?php
+    $type = 'widget-product-carousel';
+
+    $image = 'new_products_content_widget_grid';
+    $items = $block->getProductCollection()->getItems();
+
+    $showWishlist = true;
+    $showCompare = true;
+    $showCart = true;
+    $templateType = \Magento\Catalog\Block\Product\ReviewRendererInterface::SHORT_VIEW;
+    ?>
+    <?php
+    $products = [];
+    $iterator = 1;
+    foreach ($items as $_item) {
+        $index = $iterator - 1;
+        $additionalParams['_query']['position'] = $index;
+        $isPreorder = $preOrderHelper->isPreorder($_item->getId());
+        $livesearch_instock = $_item->getData('livesearch_instock') === '0' ? false : true;
+        $index_stock_status_label = $_item->getAttributeText('index_stock_status');
+        $is_oos_label = ($index_stock_status_label === '缺貨' || $index_stock_status_label === 'Out of Stock' || !$livesearch_instock);
+
+        $isSaleable = $_item->isSaleable();
+        $isAvailable = $_item->isAvailable() || $_item->getIsSalable();
+
+        if ($index_stock_status_label === '預購') {
+            $isSaleable = true;
+        }
+
+        if ($is_oos_label && !$isPreorder) {
+            $isSaleable = false;
+            $isAvailable = false;
+        }
+
+        if ($isSaleable) {
+            $limitPurchasedViewModel = \Magento\Framework\App\ObjectManager::getInstance()->get(\Branch8\LimitPurchased\ViewModel\Product\LimitPurchased::class);
+            $maxQty = $limitPurchasedViewModel->getMaxAllowedQty($_item);
+            if ($maxQty !== null && $maxQty <= 0) {
+                $isSaleable = false;
+            }
+        }
+
+        $_item->setData('ga4_settings', $ga4SettingsObject);
+
+        $postParams = [];
+        if ($isSaleable) {
+            $postParams = $block->getAddToCartPostParams($_item);
+        }
+
+        $products[] = [
+            'id' => $_item->getId(),
+            'sku' => $_item->getSku(),
+            'name' => $_item->getName(),
+            'url' => htmlspecialchars_decode($block->getProductUrl($_item, $additionalParams)),
+            'imageUrl' => $block->getImage($_item, $image)->toHtml(),
+            'priceHtml' => $block->getProductPriceHtml($_item, $type),
+            'reviewsSummaryHtml' => $templateType ? $block->getReviewsSummaryHtml($_item, $templateType) : '',
+            'isSaleable' => $isSaleable,
+            'isAvailable' => $isAvailable,
+            'isPreorder' => $isPreorder,
+            'isOOS' => ($is_oos_label && !$isPreorder),
+            'isVip' => $helperLabel->isProductInVipCategory($_item),
+            'ga4ItemJson' => $productHelper->getGa4ItemJson($_item, $index),
+            'addToCartParams' => [
+                'action' => $postParams['action'] ?? '',
+                'data' => $postParams['data'] ?? []
+            ],
+            'ga4Data' => [
+                'itemListId' => $block->getData('item_list_id'),
+                'itemListName' => $block->getData('item_list_name'),
+                'promotionId' => $block->getData('promotion_id'),
+                'promotionName' => $block->getData('promotion_name'),
+            ],
+            'productDetailsHtml' => $block->getProductDetailsHtml($_item),
+            'addToWishlistParams' => ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow() && $showWishlist) ? $block->getAddToWishlistParams($_item) : '',
+            'addToCompareParams' => ($block->getAddToCompareUrl() && $showCompare) ? $this->helper(\Magento\Catalog\Helper\Product\Compare::class)->getPostDataParams($_item) : '',
+            'labels' => [
+                'addToCart' => __('Add to Cart'),
+                'inStock' => __('In stock'),
+                'outOfStock' => __('缺貨中'),
+                'addToWishlist' => __('Add to Wish List'),
+                'addToCompare' => __('Add to Compare'),
+                'preorder' => __('Preorder'),
+                'vip' => 'VIP'
+            ]
+        ];
+        $iterator++;
+    }
+
+    $widgetData = [
+        'products' => $products,
+        'title' => $block->getTitle(),
+        'mode' => $type,
+        'showWishlist' => $showWishlist,
+        'showCompare' => $showCompare,
+        'showCart' => $showCart
+    ];
+    $uniqueId = uniqid('react-product-carousel-');
+    ?>
+
+    <div class="react-product-widget react-product-carousel"
+         id="<?= $uniqueId ?>"
+         data-widget='<?= $escaper->escapeHtmlAttr(json_encode($widgetData)) ?>'
+         data-widget-id="<?= $uniqueId ?>">
+    </div>
+<?php endif; ?>

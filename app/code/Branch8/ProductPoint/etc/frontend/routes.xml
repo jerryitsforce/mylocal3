@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Thiet Doan (thietdv@gmail.com)
+ * @copyright Copyright (c) 2019 Branch8
+ * @package Branch8_Cms
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="standard">
+        <route id="productpoint" frontName="productpoint">
+            <module name="Branch8_ProductPoint" />
+        </route>
+    </router>
+</config>

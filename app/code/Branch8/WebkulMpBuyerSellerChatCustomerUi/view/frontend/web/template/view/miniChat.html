@@ -1,0 +1,17 @@
+<!-- ko if: window.chatboxCoreConfig.serverRunning -->
+<div class="chat-loading-mask" data-role="chat-loader"
+     data-bind="visible: showLoader"
+>
+    <div class="chat-loader">
+        <img alt="Loading..." data-bind="attr: {'src': window.chatboxCoreConfig.loaderImage}">
+    </div>
+</div>
+<div  class="chat-module-wrapper minichat" data-role="chat-module">
+    <div id="frame" class="ui-chat chat-panel"
+         data-role="chatPanel" data-bind="visible:chatBoxVisible(),afterRender:afterRender">
+        <!-- ko foreach: getRegion('chat-history') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+    </div>
+</div>
+<!--/ko-->

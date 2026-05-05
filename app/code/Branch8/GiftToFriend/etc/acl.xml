@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales">
+                    <resource id="Magento_Sales::sales_operation">
+                        <resource id="Branch8_GiftToFriend::gift_orders" title="Gift Order Recipient Lookup" translate="title" sortOrder="310">
+                            <resource id="Branch8_GiftToFriend::actions" title="Operations" translate="title" sortOrder="10">
+                                <resource id="Branch8_GiftToFriend::mass_actions_remove_gift_box"
+                                          title="Remove Gift Box" translate="title"
+                                          sortOrder="100"/>
+                            </resource>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

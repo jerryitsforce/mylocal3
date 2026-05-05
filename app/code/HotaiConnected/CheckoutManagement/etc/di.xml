@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Webkul\SellerSubAccount\Helper\Data">
+        <!-- 將 CheckoutManagement 的權限與子選單映射註冊進子帳號權限流程 -->
+        <!-- 頁面顯示/隱藏依賴 Plugin：HotaiConnected\CheckoutManagement\Plugin\Webkul\SellerSubAccount\Helper\Data -->
+        <plugin name="hotai_connected_checkout_management_add_seller_permission" 
+                type="HotaiConnected\CheckoutManagement\Plugin\Webkul\SellerSubAccount\Helper\Data"/>
+    </type>
+</config>
+

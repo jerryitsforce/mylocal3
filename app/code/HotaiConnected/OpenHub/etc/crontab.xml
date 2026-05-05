@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<!-- minute(0-59) hour(0-23) dayOfMonth(1-31) month(1-12) dayOfWeek(0-7, sunday=0or7) -->
+	<group id="ticket_cron_update">
+		<job instance="HotaiConnected\OpenHub\Cron\TicketRequestRetry" method="execute" name="openhub_ticket_request_retry">
+			<schedule>*/10 * * * *</schedule>
+		</job>
+	</group>
+</config>

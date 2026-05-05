@@ -1,0 +1,47 @@
+<?php
+/**
+ * @var Branch8\Customer\Block\Hotaipay\Index $block
+ */
+$msg = $block->getCompleteMsg();
+?>
+
+<?php
+$params = $block->getOriginalParams();
+$response = $block->getErrorResponse();
+?>
+<?php if(isset($params['StatusDesc'])): ?>
+  <?php if (strtoupper($params['StatusDesc']) == 'SUCCESS') : ?>
+    <div id="modal-card-binding-completed" class="modal-hide">
+      <div class="modal-custom-content">
+        <p><?= $msg ?></p>
+      </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+      "*": {
+          "b8SetupCardSuccess": {}
+      }
+    }
+    </script>
+  <?php endif; ?>
+<?php endif; ?>
+
+<?php if(isset($response['StatusDesc'])): ?>
+  <?php if (strtoupper($response['StatusDesc']) == 'SUCCESS'): ?>
+    <div id="modal-card-binding-completed" class="modal-hide">
+      <div class="modal-custom-content">
+        <p><?= $msg ?></p>
+      </div>
+    </div>
+    <script type="text/x-magento-init">
+    {
+      "*": {
+          "b8SetupCardSuccess": {}
+      }
+    }
+    </script>
+  <?php endif; ?>
+<?php endif; ?>
+
+<?php $block->unsetResponse(); ?>
+

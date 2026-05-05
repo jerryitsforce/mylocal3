@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_save_before">
+        <observer name="branch8_catalog_is_hidden_before_save_product" instance="Branch8\Catalog\Observer\BeforeSaveProduct"/>
+<!--        <observer name="branch8_catalog_save_init_gross_profit" instance="Branch8\Catalog\Observer\InitGrossProfit"/>-->
+        <observer name="b8_catalog_product_cost_rounding" instance="Branch8\Catalog\Observer\RoundCostBeforeSave"/>
+    </event>
+    <event name="catalog_product_save_after">
+        <observer name="branch8_catalog_tracking_price_cost_change" instance="Branch8\Catalog\Observer\TrackingPriceCostChange"/>
+        <observer name="branch8_detech_save_store1" instance="Branch8\Catalog\Observer\SaveStore1"/>
+        <observer name="branch8_catalog_tracking_product_status_change" instance="Branch8\Catalog\Observer\TrackingProductStatusChange" />
+        <observer name="branch8_catalog_store_categories" instance="Branch8\Catalog\Observer\ProductSaveAfterObserver" />
+    </event>
+
+    <event name="catalog_category_save_after">
+        <observer name="b8_catalog_category_tracking_product_assigned_change" instance="Branch8\Catalog\Observer\TrackingCategoryProductAssignedChange" />
+    </event>
+    <event name="catalog_product_attribute_update_before">
+        <observer name="b8_catalog_product_status_attribute_update" instance="Branch8\Catalog\Observer\ProductStatusAttributeUpdateBeforeObserver" />
+    </event>
+
+    <event name="sales_quote_item_save_before">
+        <observer name="branch8_quote_track_main_category" instance="Branch8\Catalog\Observer\TrackMainCategory" />
+    </event>
+    <event name="catalog_category_save_before">
+        <observer name="branch8_force_cateogry_store0" instance="Branch8\Catalog\Observer\CategoryStore0"  />
+    </event>
+</config>

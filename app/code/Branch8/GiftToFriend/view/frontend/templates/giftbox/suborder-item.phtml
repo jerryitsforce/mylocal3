@@ -1,0 +1,80 @@
+<?php
+use Magento\Sales\Model\Order;
+use Branch8\MarketPlaceParentOrder\Model\ParentOrder;
+use Branch8\GiftToFriend\Block\History\Listing;
+use Branch8\HotaiCore\Model\Order\Status;
+
+$mpRmaHelper = $this->helper(\Branch8\Rma\Helper\Data::class);
+
+$viewModel = $block->getViewModel();
+
+$customerInfoHelper = $this->helper('Branch8\Customer\Helper\Info');
+$giftConfirmHelper = $this->helper(\Branch8\GiftToFriend\Helper\Confirm::class);
+$_order = $block->getOrder();
+$parentBlock = $block->getHistoryBlock();
+?>
+<?php 
+  $isGiftOrder = $block->isGiftOrder($_order);
+  $expiredDate = $giftConfirmHelper->getOrderExpiredDate($_order->getGiftExpiredAt(), 'Y/m/d H:i');
+  $giftConfirmUrl = $giftConfirmHelper->getConfirmationUrl($_order);
+?>
+<div class="giftbox-listing-order-item" data-parent-number="<?= $_order->getData('increment_id') ?>" data-invoice-fail="<?= $block->hasInvoiceFail($_order)? '1' : '0' ?>"  data-full-points-products="<?= $block->hasOnlyPointsProducts($_order)? '1' : '0' ?>">
+  <?php $parentOrderStatus = $parentBlock->getParentOrderStatus($_order) ?>
+  <div class="giftbox-listing-short-info" data-parent-order-status="<?= $parentOrderStatus ?>" data-order-detail-state="<?= $_order->getDetail()->getState() ?>" data-order-detail-status="<?= $_order->getDetail()->getStatus() ?>" data-order-detail-rma="<?= $_order->getDetail()->getRmaStatus() ?>">
+    <h2 class="giftbox-listing-order-item-title">
+      <span><?= $block->escapeHtml(__('收禮資訊')); ?></span>
+      <span data-parent-id="parent-<?= $_order->getId() ?>" class="giftbox-listing-order-status <?= $parentOrderStatus ?>">
+          <?= $parentBlock->getParentOderStatusLabel($parentOrderStatus) ?>
+      </span>
+    </h2>
+    <div class="giftbox-listing-order-item-info">
+      <div class="giftbox-listing-order-item-info-item">
+        <span class="giftbox-listing-order-item-info-label"><?= $block->escapeHtml(__('訂單編號')); ?></span>
+        <span class="giftbox-listing-order-item-info-value">
+            <?= $block->escapeHtml(__("No.%1",
+                              $_order->getData('hotai_parent_order_number') ?
+                                  $_order->getData('hotai_parent_order_number') : $_order->getData('increment_id')
+                          )) ?>
+          </span>
+      </div>
+      <div class="giftbox-listing-order-item-info-item">
+        <span class="giftbox-listing-order-item-info-label"><?= $block->escapeHtml(__('贈禮人')); ?></span>
+        <span class="giftbox-listing-order-item-info-value"><?= $_order->getData('customer_name');?></span>
+      </div>
+      <div class="giftbox-listing-order-item-info-item">
+        <span class="giftbox-listing-order-item-info-label"><?= $block->escapeHtml(__('收件人')); ?></span>
+        <span class="giftbox-listing-order-item-info-value"><?= $parentBlock->renderBillingInfo($_order, 'name') ?></span>
+      </div>
+      <div class="giftbox-listing-order-item-info-item">
+        <span class="giftbox-listing-order-item-info-label"><?= $block->escapeHtml(__('手機號碼')); ?></span>
+        <span class="giftbox-listing-order-item-info-value"><?= $parentBlock->renderBillingInfo($_order, 'phone') ?></span>
+      </div>
+      <?php if(!$parentBlock->isTicketOrder($_order)): ?>
+        <div class="giftbox-listing-order-item-info-item">
+          <span class="giftbox-listing-order-item-info-label"><?= $block->escapeHtml(__('取貨方式')); ?></span>
+          <span class="giftbox-listing-order-item-info-value">宅配 (<?= $parentBlock->renderBillingInfo($_order, 'street') ?>)</span>
+        </div>
+      <?php endif; ?>
+    </div>
+    <div class="giftbox-listing-order-item-action">
+      <a href="<?= $parentBlock->getContactServiceUrl($_order)?>" class="action secondary contact-service"
+        title="<?= $block->escapeHtml(__('聯繫客服')) ?>">
+        <span><?= $block->escapeHtml(__('聯繫客服')) ?></span>
+      </a>
+    </div>
+  </div>
+  <div class="giftbox-listing-detail">
+    <?php
+    $block->getChildBlock('sub_order_items')->setOrder($_order)->setItemsCollection('');
+    ?>
+    <?= $block->getChildHtml('sub_order_items', false) ?>
+  </div>
+  <div class="giftbox-listing-action-view-full">
+    <button class="action view-full" title="<?= $block->escapeHtml(__('詳情')) ?>">
+      <span><?= $block->escapeHtml(__('詳情')) ?></span>
+    </button>
+    <button class="action view-less" title="<?= $block->escapeHtml(__('收合')) ?>">
+      <span><?= $block->escapeHtml(__('收合')) ?></span>
+    </button>
+  </div>
+</div>

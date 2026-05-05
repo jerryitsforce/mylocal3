@@ -1,0 +1,21 @@
+
+<?php
+$historyDetail = $this->getData('historyDetail');
+$order = $historyDetail->getOrder();
+$resourceOwner = $historyDetail->getResourceOwner();
+$dataHistory = json_decode($resourceOwner, true);
+
+?>
+<h3><?php echo __('Order # %1', $order->getIncrementId());?></h3>
+<div class="content"><?php echo __('Content: ').$historyDetail->getComment();?></div>
+<?php
+foreach($dataHistory as $key => $_his){
+    if($key == 'command_data'){
+        $cmdData = json_decode($_his, true);
+        $_his = implode(' ', $cmdData);
+        echo '<p>'.ucfirst($key).': '.$_his.'</p>';
+    }else{
+        echo '<p>'.ucfirst($key).': '.$_his.'</p>';
+    }
+}
+?>

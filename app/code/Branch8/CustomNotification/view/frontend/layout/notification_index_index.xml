@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <attribute name="class" value="account"/>
+    </body>
+
+    <referenceContainer name="page.top">
+        <container name="customer.page.top" htmlTag="div" htmlClass="customer-header-wrapper">
+            <block class="Branch8\Customer\Block\Account\Header" name="customer.account.header" template="account/header.phtml" before="-"/>
+        </container>
+    </referenceContainer>
+
+    <referenceContainer name="content">
+        <block class="Branch8\CustomNotification\Block\Notification" name="notification_custom" cacheable="false"
+               template="Branch8_CustomNotification::custompage.phtml">
+        </block>
+    </referenceContainer>
+</page>

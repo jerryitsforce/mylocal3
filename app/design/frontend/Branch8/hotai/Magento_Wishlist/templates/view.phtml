@@ -1,0 +1,96 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable PHPCompatibility.Miscellaneous.RemovedAlternativePHPTags.MaybeASPOpenTagFound
+/** @var \Magento\Wishlist\Block\Customer\Wishlist $block */
+$totalRecords = $block->getWishlistItems()?->getSize();
+?>
+<div class="block-wishlist-info">
+<?php if ($this->helper(\Magento\Wishlist\Helper\Data::class)->isAllow()) : ?>
+    <?php if ($block->getWishlistItems() && $totalRecords): ?>
+        <div class="toolbar wishlist-toolbar">
+            <span class="wishlist-total">
+                <?php echo $block->escapeHtml(__("Total %1 records", $totalRecords))?>
+            </span>
+            <strong class="backward"></strong>
+            <strong role="heading" aria-level="2">
+                <?= $block->escapeHtml(__("My Wish List"))  ?>(<?= $totalRecords ?>)
+            </strong>
+            <input hidden id="header-total-records" value="<?=$totalRecords?>"/>
+            <button class="wishlist-remove-all"type="button">
+                <span><?php echo $block->escapeHtml(__("Delete All"))?></span>
+            </button>
+        </div>
+    <?= ($block->getChildHtml('wishlist.rss.link')) ?>
+        <form class="form-wishlist-items" id="wishlist-view-form"
+              data-mage-init='{"wishlist":{
+          "addToCartUrl":<?= /* @noEscape */ $block->getItemAddToCartParams("%item%") ?>,
+          "addAllToCartUrl":<?= /* @noEscape */ $block->getAddAllToCartParams() ?>,
+          "commentString":""},
+          "validation": {}}' action="<?= $block->escapeUrl($block->getUrl('wishlist/index/update', ['wishlist_id' => $block->getWishlistInstance()->getId()])) ?>" method="post">
+            <?= $block->getChildHtml('top') ?>
+            <?php if ($block->hasWishlistItems()) : ?>
+                <?= $block->getBlockHtml('formkey') ?>
+                <?php $block->getChildBlock('items')->setItems($block->getWishlistItems()); ?>
+                <?= $block->getChildHtml('items') ?>
+            <?php else : ?>
+                <div class="message info empty"><span><?= $block->escapeHtml(__('You have no items in your wish list.')) ?></span></div>
+            <?php endif ?>
+            <?= $block->getChildHtml('wishlist_item_pager'); ?>
+            <?php if ($block->getWishlistItems()->getCurPage() < $block->getWishlistItems()->getLastPageNumber()): ?>
+                <button class="wishlist-load-more" type="button" data-event-page="1" data-last-page="<?= $block->getWishlistItems()->getLastPageNumber()?>">
+                    <span><?php echo $block->escapeHtml(__("Load More"))?></span>
+                </button>
+            <?php endif; ?>
+
+        </form>
+        <script id="form-tmpl" type="text/x-magento-template">
+            <form id="wishlist-hidden-form" method="post" action="<%- data.url %>" class="no-display">
+                <% if (data.qty) { %>
+                <input name="qty" value="<%- data.qty %>">
+                <% } %>
+
+                <% if (data.item) { %>
+                <input name="item" value="<%- data.item %>">
+                <% } %>
+
+                <% if (data.entity) { %>
+                <input name="entity" value="<%- data.entity %>">
+                <% } %>
+            </form>
+        </script>
+        <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_Wishlist/js/custom-wishlist": {}
+                }
+            }
+        </script>
+    <?php else: ?>
+        <div class="toolbar wishlist-toolbar">
+            <span class="wishlist-total">
+            </span>
+            <strong class="backward"></strong>
+            <strong role="heading" aria-level="2">
+                <?= $block->escapeHtml(__("My Wish List"))  ?>
+            </strong>
+        </div>
+        <div class="empty">
+            <div class="wishlist-empty-img">
+                <img src="<?= $this->getViewFileUrl('images/wishlist-empty.svg');?>"/>
+            </div>
+            <span class="notice"><?= $block->escapeHtml(__("目前尚無任何追蹤商品喔！"))?></span>
+        </div>
+    <?php endif;?>
+<?php endif ?>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Wishlist/js/app-wishlist": {}
+        }
+    }
+</script>

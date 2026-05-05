@@ -1,0 +1,18 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="pagebuilder-content-type pagebuilder-products" data-bind="event: { mouseover: onMouseOver, mouseout: onMouseOut }, mouseoverBubble: false">
+    <div attr="data.main.attributes" ko-style="data.main.style" css="data.main.css">
+        <div class="pagebuilder-block-placeholder flex-container">
+            <div><i class="icon-pagebuilder-productrecommendations-image"></i><i class="icon-pagebuilder-productrecommendations-info"></i></div>
+            <div><i class="icon-pagebuilder-productrecommendations-image"></i><i class="icon-pagebuilder-productrecommendations-info"></i></div>
+            <div><i class="icon-pagebuilder-productrecommendations-image"></i><i class="icon-pagebuilder-productrecommendations-info"></i></div>
+        </div>
+        <div class="info-div"><span class="info-text">This Product Point rendering is an approximation only.</span></div>
+    </div>
+    <render args="getOptions().template" ></render>
+</div>

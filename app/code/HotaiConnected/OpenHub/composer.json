@@ -1,0 +1,39 @@
+{
+    "name": "hotaiconnected/openhub",
+    "description": "HotaiConnected OpenHub Ticket Module - External API Integration for GeneralNotifyTicket",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "HotaiConnected Team",
+            "email": "dev@hotaiconnected.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0|^8.1|^8.2",
+        "magento/framework": "*",
+        "magento/module-catalog": "*",
+        "magento/module-sales": "*",
+        "magento/module-customer": "*"
+    },
+    "suggest": {
+        "branch8/general-notify-ticket": "Required for ticket functionality",
+        "branch8/hotai-core": "Required for core functionality",
+        "branch8/ticket-api": "Required for API functionality"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "HotaiConnected\\OpenHub\\": ""
+        }
+    },
+    "extra": {
+        "magento": {
+            "component-type": "magento2-module",
+            "module-name": "HotaiConnected_OpenHub"
+        }
+    }
+}

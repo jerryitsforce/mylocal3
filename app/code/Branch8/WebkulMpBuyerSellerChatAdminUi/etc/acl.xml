@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Webkul_Marketplace::marketplace" title="Marketplace Management" sortOrder="10" >
+                    <resource id="Webkul_Marketplace::menu" title="Menu" sortOrder="10">
+                        <resource id="Webkul_MpBuyerSellerChat::menu" title="Buyer Seller Chat" sortOrder="10">
+                            <resource id="Webkul_MpBuyerSellerChat::profiles" title="Buyer Seller Chat Profiles" sortOrder="20" />
+                            <resource id="Webkul_MpBuyerSellerChat::message" title="Manage Message" sortOrder="40" />
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

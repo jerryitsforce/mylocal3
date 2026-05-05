@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+	<group id="hotai_point_update">
+		<!-- minute(0-59) hour(0-23) dayOfMonth(1-31) month(1-12) dayOfWeek(0-7, sunday=0or7) -->
+		<!-- <job instance="Branch8\HotaiPoint\Cron\AddPointToCompleteSalesOrder" method="execute" name="hotai_point_add_point_to_complete_sales_order">
+            <schedule>0 5 * * *</schedule>
+        </job> -->
+		<job instance="Branch8\HotaiPoint\Cron\SyncApiRecord" method="execute" name="hotai_point_sync_api_record">
+			<schedule>0 2 * * *</schedule>
+		</job>
+		<job instance="Branch8\HotaiPoint\Cron\RemoveSyncBackupFile" method="execute" name="hotai_point_remove_sync_backup_file">
+			<schedule>0 0 * * *</schedule>
+		</job>
+		<job instance="Branch8\HotaiPoint\Cron\DeductionPointCancelForPendingPaymentOrders" method="execute" name="hotai_point_deduction_point_cancel_for_pending_payment_orders">
+			<schedule>*/5 * * * *</schedule>
+		</job>
+		<job instance="Branch8\HotaiPoint\Cron\DeductionRetry" method="execute" name="hotai_point_deduction_point_retry">
+			<schedule>*/10 * * * *</schedule>
+		</job>
+		<job instance="Branch8\HotaiPoint\Cron\DeductionCancelRetry" method="execute" name="hotai_point_deduction_point_cancel_retry">
+			<schedule>*/30 * * * *</schedule>
+		</job>
+	</group>
+</config>

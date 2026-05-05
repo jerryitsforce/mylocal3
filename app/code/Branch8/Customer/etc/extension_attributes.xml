@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    <extension_attributes for="Magento\Customer\Api\Data\GroupInterface">
+        <attribute code="organization" type="int" />
+        <attribute code="fullname" type="string" />
+        <attribute code="nxt_level" type="int" />
+        <attribute code="prev_level" type="int" />
+        <attribute code="period" type="int" />
+        <attribute code="conditions" type="string" />
+        <attribute code="label" type="string" />
+        <attribute code="icon" type="string" />
+    </extension_attributes>
+    <extension_attributes for="Magento\Customer\Api\Data\CustomerInterface">
+		<attribute code="nickname" type="string"/>
+	</extension_attributes>
+    <extension_attributes for="Magento\Customer\Api\Data\AddressInterface">
+        <attribute code="is_default_convenience_store" type="int" />
+    </extension_attributes>
+</config>

@@ -1,0 +1,24 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\GA4\Block\Cart
+ */
+?>
+
+<?php if ($block->isEnabled()) : ?>
+    <?php if (($items = $block->getProducts())) : ?>
+        <?php
+        $event = [
+            'event' => 'view_cart',
+            'ecommerce' => [
+                'currency' => $block->getCurrencyCode(),
+                'value' => $block->getGa4Total(),
+                'items' => $items
+            ],
+        ];
+        ?>
+        <?php
+        $block->setDataLayerOption('view_cart', $event);
+        ?>
+    <?php endif; ?>
+<?php endif; ?>

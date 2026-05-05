@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="sales_convert_master_quote_to_sub_quote">
+            <field name="applied_rule_ids">
+                <aspect name="to_sub_quote" />
+            </field>
+        </fieldset>
+        <fieldset id="sales_convert_master_quote_item_to_sub_quote_item">
+            <field name="applied_rule_ids">
+                <aspect name="to_sub_quote_item"/>
+            </field>
+            <field name="applied_rule_names">
+                <aspect name="to_sub_quote_item"/>
+            </field>
+        </fieldset>
+        <fieldset id="quote_convert_item">
+            <field name="applied_rule_ids">
+                <aspect name="to_order_item" />
+            </field>
+            <field name="applied_rule_names">
+                <aspect name="to_order_item" />
+            </field>
+        </fieldset>
+    </scope>
+</config>

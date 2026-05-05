@@ -1,0 +1,223 @@
+<?php
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) 2023 Amasty
+ * @package One Step Checkout Thank you Page 2 for Magento 2 (System)
+ */
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\Onepage\Success\Details
+ * @var $escaper Magento\Framework\Escaper
+ */
+
+$giftHelper = $this->helper(\Branch8\GiftToFriend\Helper\Data::class);
+$giftConfirmHelper = $this->helper(\Branch8\GiftToFriend\Helper\Confirm::class);
+$customerInfoHelper = $this->helper('Branch8\Customer\Helper\Info');
+$flagshipStoreSaleHelper = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+$totals = $block->getTotals(); // Retrieve all totals from the block
+
+// Initialize variables to hold specific totals
+$grandTotal = 0;
+$shippingAmount = 0;
+$discountAmount = 0;
+$subtotal = 0;
+$discountValue = 0;
+foreach ($totals as $total) {
+    switch ($total->getCode()) {
+        case 'grand_total':
+            $grandTotal = $total->getValue();
+            break;
+        case 'shipping_include_tax':
+            $shippingAmount = $total->getValue();
+            break;
+        case 'point_discount':
+            $discountAmount = $total->getValue();
+            break;
+        case 'discount':
+            $discountValue = $total->getValue();
+            break;
+        case 'subtotal_include_tax':
+            $subtotal = $total->getValue();
+            break;
+    }
+}
+
+$block->getCartData($block->getOrder()->getDetail()->getCustomerId());
+$giftEnabled = $giftHelper->isFeatureEnable();
+$showShippingInfo = true;
+if($giftEnabled && $block->getOrder()->getDetail()->getIsGiftOrder() && !$block->getOrder()->getDetail()->getIsGiftConfirmed()) {
+    $showShippingInfo = false;
+}
+?>
+<div class="order-details-wrapper">
+    <div class="block block-order-details">
+        <!-- Order Header -->
+        <div class="block-title">
+            <strong><?= $escaper->escapeHtml(__('Order Information')) ?></strong>
+            <span><?= $escaper->escapeHtml(__('No.')) ?><?= $escaper->escapeHtml($block->getOrder()->getDetail()->getIncrementId()) ?></span>
+        </div>
+        <div class="block-content">
+            <div class="order-details-info">
+                <div class="order-details-left">
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Buyer')) ?></strong> <?= $block->getCustomerName($block->getOrder()->getDetail()->getCustomerId()) ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Mall ID')) ?></strong> <?= $block->getOrder()->getDetail()->getCustomerId() ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Payment Method')) ?></strong>
+                        <?= $block->getPaymentInfoHtml() ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Payment Status')) ?></strong>
+                        <?= $escaper->escapeHtml(__(
+                            strtolower($block->getOrder()->getDetail()->getStatus()) === 'processing' ? 'Success' :
+                                (@strpos(@strtolower($block->getOrder()->getDetail()->getStatus()), 'pending') !== false ? 'Pending' :
+                                    @ucfirst($block->getOrder()->getDetail()->getStatus()))
+                        )) ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Invoice information')) ?></strong>
+                        <?php
+                        $invoiceType = $block->getOrder()->getDetail()->getEcpayInvoiceCarruerType();
+                        $customerCompany = $block->getOrder()->getDetail()->getEcpayInvoiceCustomerCompany();
+                        $customerIdentifier = $block->getOrder()->getDetail()->getEcpayInvoiceCustomerIdentifier();
+                        $invoiceCarruerNum = $block->getOrder()->getDetail()->getEcpayInvoiceCarruerNum();
+                        $seletedInvoice = '';
+
+                        switch($invoiceType){
+                            case '3':
+                                $seletedInvoice = __("手機條碼載具").' : '.$invoiceCarruerNum;
+                                break;
+                            case '0':
+                                if ($customerIdentifier != ''){
+                                    $seletedInvoice = __("三聯式發票(公司)").' <br/> '.$customerCompany.'/'.$customerIdentifier;
+                                } else{
+                                    $seletedInvoice = __("二聯式發票(個人)");
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        ?>
+                        <?= $seletedInvoice ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Order Date')) ?></strong>
+                        <?= $escaper->escapeHtml($block->getOrderDate($block->getOrder()->getDetail()->getCreatedAt())) ?>
+                    </div>
+                </div>
+
+                <!-- Order Totals -->
+                <div class="order-details-right">
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Total Amount')) ?></strong> <?= $block->getOrder()->formatPrice(($subtotal)) ?>
+                    </div>
+                    <?php if($discountValue): ?>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('優惠折扣')) ?></strong><?= $block->getOrder()->formatPrice(($discountValue)) ?>
+                    </div>
+                    <?php endif; ?>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Points Discount')) ?></strong><?= $block->getOrder()->formatPrice($discountAmount?? 0) ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Shipping Fee')) ?></strong> <?= $block->getOrder()->formatPrice($shippingAmount) ?>
+                    </div>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Amount Paid')) ?></strong> <?= $block->getOrder()->formatPrice($grandTotal) ?>
+                    </div>
+                    <?php if($block->getOrder()->getDetail()->getOrderNote()): ?>
+                    <div class="order-details-row">
+                        <strong><?= $escaper->escapeHtml(__('Order Note')) ?></strong>
+                        <div class="order-note">
+                            <?= $block->getOrder()->getDetail()->getOrderNote() ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="order-actions">
+                <a href="<?= $block->getDownloadPdfUrl() ?>" class="action secondary action-small"><?= $escaper->escapeHtml(__('Download PDF')) ?></a>
+                <a href="<?= $block->getOrderDetailUrl() ?>" class="action primary action-small primary"><?= $escaper->escapeHtml(__('Check Order')) ?></a>
+            </div>
+        </div>
+    </div>
+    <?php if($showShippingInfo): ?>
+    <div class="block block-order-shipping-info">
+        <div class="block-title">
+            <strong><?= $escaper->escapeHtml(__('Recipient Information')) ?></strong>
+        </div>
+        <div class="block-content">
+            <div class="order-details-info">
+                <div class="order-details-left">
+
+                    <?php
+                        $telephone = '';
+                        $receiptionName = '';
+                        $order = $block->getOrder();
+
+                    // Check if the shipping address exists and has a telephone
+                    if($order->getShippingAddress()){
+                        if($order->getShippingAddress()->getTelephone()){
+                            $telephone = $order->getShippingAddress()->getTelephone();
+                        }
+                        if($order->getShippingAddress()->getFirstName() || $order->getShippingAddress()->getLastName()){
+                            $receiptionName = $order->getShippingAddress()->getFirstName();
+                        }
+                    }elseif($order->getBillingAddress()){
+                        if($order->getBillingAddress()->getTelephone()){
+                        // Fallback to billing address if no shipping address or shipping address phone is missing
+                            $telephone = $order->getBillingAddress()->getTelephone();
+                        }
+
+                        if($order->getBillingAddress()->getFirstName() || $order->getBillingAddress()->getLastName()){
+                            $receiptionName = $order->getBillingAddress()->getFirstName();
+                        }
+                    }
+
+                    ?>
+                    <?php if($receiptionName): ?>
+                        <div class="order-details-row">
+                            <strong><?= $escaper->escapeHtml(__('Name')) ?></strong> <?= $escaper->escapeHtml($customerInfoHelper->getOAuthName('',$receiptionName)) ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if($telephone): ?>
+                        <div class="order-details-row">
+                            <strong><?= $escaper->escapeHtml(__('Phone Number')) ?></strong> <?= $escaper->escapeHtml($customerInfoHelper->getOAuthPhone($telephone)) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="order-details-right">
+                    <div class="order-details-row"><strong><?= $escaper->escapeHtml(__('Shipping Method')) ?></strong>
+                        <?php if($order->getShippingAddress()): ?>
+                            <?= $escaper->escapeHtml(preg_match('/^[^-]+/', trim($block->getOrder()->getDetail()->getShippingDescription()), $matches) ? $matches[0] : '') ?>
+                        <?php else: ?>
+                            <?= $escaper->escapeHtml(__('Electronic ticket')) ?>
+                        <?php endif; ?>
+                    </div>
+                    <?php if($order->getShippingAddress()): ?>
+                    <?php if($block->getOrder()->getDetail()->getShippingMethod() == 'hotai_711_hotai_711'): ?>
+                            <div class="order-details-row">
+                                <strong><?= $escaper->escapeHtml(__('Address')) ?></strong>
+                                <address>711 <?= $escaper->escapeHtml($block->getParentOrder()->getShippingAddress()->getCity()) ?></address>
+                            </div>
+                        <?php else: ?>
+                        <div class="order-details-row">
+                            <strong><?= $escaper->escapeHtml(__('Address')) ?></strong>
+                            <address><?= $escaper->escapeHtml($block->formatAddress($block->getParentOrder()->getShippingAddress())) ?></address>
+                        </div>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+<!--            --><?php //= $block->getChildHtml('info') ?>
+<!--            --><?php //= $block->getChildHtml('comments') ?>
+    <?= $block->getChildHtml('checkout_success_page_order_view') ?>
+</div>

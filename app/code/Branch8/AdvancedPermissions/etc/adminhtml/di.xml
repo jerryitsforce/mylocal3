@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author Amasty Team
+ * @copyright Copyright (c) Amasty (https://www.amasty.com)
+ * @package Advanced Permissions for Magento 2
+ */-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Amasty\Rolepermissions\Ui\DataProvider\Product\Form\Modifier\Owner">
+        <plugin name="Branch8_AdvancedPermissions::RemoveProductOwnerField"
+                type="Branch8\AdvancedPermissions\Plugin\AmastyRolepermissions\Ui\DataProvider\Product\Form\Modifier\Owner" />
+    </type>
+    <type name="Magento\Catalog\Ui\DataProvider\Product\Form\ProductDataProvider">
+        <plugin name="Amasty_Rolepermissions::ProductDataProvider" disabled="true"/>
+        <plugin name="Amasty_Rolepermissions::ProductDataProvider" type="Branch8\AdvancedPermissions\Plugin\Catalog\Ui\DataProvider\Product\Form\ProductDataProvider"/>
+    </type>
+    <type name="Webkul\Marketplace\Block\Adminhtml\Customer\Edit">
+        <plugin name="Branch8_AdvancedPermissions::WebkulMarketplaceFixCustomerEdit"
+                type="Branch8\AdvancedPermissions\Plugin\WebkulMarketplace\Block\Adminhtml\Customer\Edit" />
+    </type>
+    <virtualType name="OrderGridProductTypeSelect" type="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Magento\Catalog\Model\Product\Type</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="OrderGridSalespersonSelect" type="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Branch8\AdvancedPermissions\Model\Options\Salesperson</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="OrderGridShippingMethodSelect" type="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Branch8\AdvancedPermissions\Model\Options\ShippingMethod</argument>
+            <argument name="defaultLabel" xsi:type="string">No Shipping</argument>
+        </arguments>
+    </virtualType>
+    <type name="Amasty\Rolepermissions\Observer\Admin\CollectionLoadBeforeObserver">
+        <plugin name="Branch8_AdvancedPermissions::fixSlowLoading"
+                type="Branch8\AdvancedPermissions\Plugin\Amasty\Rolepermissions\Observer\Admin\CollectionLoadBeforeObserverPlugin"/>
+    </type>
+    <type name="Amasty\Rolepermissions\Block\Adminhtml\Role\Tab\Scope">
+        <plugin name="Branch8_AdvancedPermissions::AmastyRolepermissionsScopeTab"
+                type="Branch8\AdvancedPermissions\Plugin\AmastyRolepermissions\Block\Adminhtml\Role\Tab\Scope" />
+    </type>
+</config>

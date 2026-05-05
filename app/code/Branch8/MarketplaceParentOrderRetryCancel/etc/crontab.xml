@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="b8_cron_group">
+        <job name="b8_markketplace_recreate_parent_order"
+             instance="Branch8\MarketplaceParentOrderRetryCancel\Cron\RecreateParentOrderCronProcedure" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+        <job name="b8_markketplace_cancel_parent_order"
+             instance="Branch8\MarketplaceParentOrderRetryCancel\Cron\CancelParentOrderCronProcedure" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

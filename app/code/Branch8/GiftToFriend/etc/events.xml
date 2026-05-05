@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="marketplace_mpsplitorder_submit_after">
+        <observer name="gift_order_set_data_checkout" instance="Branch8\GiftToFriend\Observer\GiftOrderObserver" />
+    </event>
+    <event name="sales_parent_order_detail_save_after">
+        <observer name="gift_order_push_sales_presentative_api" instance="Branch8\GiftToFriend\Observer\SalesPresentativePush" />
+    </event>
+</config>

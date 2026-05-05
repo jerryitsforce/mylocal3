@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiAuth\Block\Account\GroupApps
+ */
+?>
+
+
+<?php
+$groupApps = $block->getData('group_apps');
+?>
+<div class="groupapps-description">
+    <span><?= $block->escapeHtml(__('Hotai Group members can use the same group (mobile phone number) to directly log in to group-related services.')) ?></span>
+</div>
+<div class="groupapp-container">
+    <?php foreach ($groupApps as $groupApp) : ?>
+        <div class="groupapp-item">
+            <a href="<?= $block->escapeUrl($groupApp['url']) ?>" class="groupapp-item-link" target="_blank">
+                <img class="groupapp-item-image" src="<?= $block->escapeUrl($groupApp['picUrl']) ?>" alt="<?= $block->escapeHtml($groupApp['name']) ?>" />
+                <p class="groupapp-item-name"><?= $block->escapeHtml($groupApp['name']) ?></p>
+            </a>
+        </div>
+    <?php endforeach ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8GroupApps": {}
+        }
+    }
+</script>

@@ -1,0 +1,68 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Branch8_HelpDesk::css/backend.css"/>
+    </head>
+    <update handle="customer_account" />
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="helpdesk.ticket.view" template="Branch8_HelpDesk::ticket/view.phtml"
+                   cacheable="false">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="ticketCreateForm" xsi:type="array">
+                                <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/view-ticket</item>
+                                <item name="config" xsi:type="array">
+                                    <item name="configuration" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getConfig"/>
+                                </item>
+                                <item name="children" xsi:type="array">
+                                    <item name="postReply" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/view-ticket/post-reply-form</item>
+                                        <item name="displayArea" xsi:type="string">postReply</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="configuration" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getPostReplyConfiguration"/>
+                                        </item>
+                                        <item name="children" xsi:type="array">
+                                            <item name="messages" xsi:type="array">
+                                                <item name="component" xsi:type="string">Magento_Ui/js/view/messages</item>
+                                                <item name="displayArea" xsi:type="string">messages</item>
+                                            </item>
+                                            <item name="attachment" xsi:type="array">
+                                                <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/file-uploader</item>
+                                                <item name="config" xsi:type="array">
+                                                    <item name="isMultipleFiles" xsi:type="boolean">true</item>
+                                                    <item name="template" xsi:type="string">Branch8_HelpDesk/form/element/uploader</item>
+                                                    <item name="previewTmpl" xsi:type="string">Branch8_HelpDesk/form/element/attachment-preview</item>
+                                                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/image</item>
+                                                    <item name="maxImageUploadCount" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getMaxImageUploadCount"/>
+                                                    <item name="maxFileSizeInMb" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getMaxFileSize"/>
+                                                    <item name="uploaderConfig" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getUploaderConfig"/>
+                                                </item>
+                                                <item name="dataScope" xsi:type="string">attachment</item>
+                                                <item name="displayArea" xsi:type="string">attachment</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                    <item name="history" xsi:type="array">
+                                        <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/view-ticket/history-ticket</item>
+                                        <item name="displayArea" xsi:type="string">history</item>
+                                        <item name="config" xsi:type="array">
+                                            <item name="configuration" xsi:type="helper" helper="Branch8\HelpDesk\ViewModel\TicketData::getHistoryConfiguration"/>
+                                        </item>
+                                        <item name="children" xsi:type="array">
+                                            <item name="paging" xsi:type="array">
+                                                <item name="component" xsi:type="string">Branch8_HelpDesk/js/view/view-ticket/history-ticket/paging</item>
+                                                <item name="displayArea" xsi:type="string">paging</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

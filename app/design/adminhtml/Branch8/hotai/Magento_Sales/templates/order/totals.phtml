@@ -1,0 +1,82 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var \Magento\Sales\Block\Adminhtml\Order\Totals $block */
+$order = $block->getOrder();
+$isFlagshipStoreProcessOrder = $order->getData('is_flagship_store_process_order');
+$adminHelper = $this->helper(\Magento\Sales\Helper\Admin::class);
+$isShippingExisted = false;
+?>
+<table class="data-table admin__table-secondary order-subtotal-table">
+    <?php $_totals = $block->getTotals('footer') ?>
+
+    <?php if ($_totals) : ?>
+        <tfoot>
+        <?php foreach ($block->getTotals('footer') as $_code => $_total) : ?>
+            <?php if ($_total->getBlockName()) : ?>
+                <?= $block->getChildHtml($_total->getBlockName(), false) ?>
+            <?php else : ?>
+                <tr class="col-<?= $block->escapeHtmlAttr($_code) ?>">
+                    <td <?= /* @noEscape */ $block->getLabelProperties() ?> class="label">
+                        <strong><?= $block->escapeHtml($_total->getLabel()) ?></strong>
+                    </td>
+                    <td <?= /* @noEscape */ $block->getValueProperties() ?>>
+                        <strong><?= /* @noEscape */ $block->formatValue($_total) ?></strong>
+                    </td>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        </tfoot>
+    <?php endif; ?>
+
+    <?php $_totals = $block->getTotals('')?>
+    <?php if ($_totals) : ?>
+        <tbody>
+        <?php foreach ($_totals as $_code => $_total) : ?>
+            <?php if ($_total->getBlockName()) : ?>
+                <?= $block->getChildHtml($_total->getBlockName(), false) ?>
+            <?php else : ?>
+                <tr class="col-<?= $block->escapeHtmlAttr($_code) ?>">
+                    <td <?= /* @noEscape */ $block->getLabelProperties() ?> class="label">
+                        <?php if ($_total->getStrong()) : ?>
+                            <strong><?= $block->escapeHtml($_total->getLabel()) ?></strong>
+                        <?php else : ?>
+                            <?= $block->escapeHtml($_total->getLabel()) ?>
+                        <?php endif?>
+                    </td>
+
+                    <?php if ($_total->getStrong()) : ?>
+                        <td <?= /* @noEscape */ $block->getValueProperties() ?>>
+                            <strong><?= /* @noEscape */ $block->formatValue($_total) ?></strong>
+                        </td>
+                    <?php else : ?>
+                        <td <?= /* @noEscape */ $block->getValueProperties() ?>>
+                            <?php if($isFlagshipStoreProcessOrder) :?>
+                                <?php if($_total->getCode() == 'subtotal'): ?>
+                                    <span><?= /* @noEscape */ $adminHelper->displayPrices($order, 0, 0); ?></span>
+                                <?php elseif($_total->getCode() == 'shipping'):?>
+                                <?php $isShippingExisted = true;?>
+                                    <span><?= /* @noEscape */ $adminHelper->displayPrices($order, $order->getBaseSubtotalInclTax(),  $order->getSubtotalInclTax()); ?></span>
+                                <?php else:?>
+                                    <span><?= /* @noEscape */ $block->formatValue($_total) ?></span>
+                                <?php endif;?>
+                            <?php else :?>
+                                <span><?= /* @noEscape */ $block->formatValue($_total) ?></span>
+                            <?php endif;?>
+                        </td>
+                    <?php endif; ?>
+                </tr>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        <?php if($isFlagshipStoreProcessOrder && !$isShippingExisted):?>
+        <tr>
+            <td class="col-shipping-amount"><?php echo __('Shipping & Handling');?></td>
+            <td><?php echo $adminHelper->displayPrices($order, $order->getSubtotalInclTax(), $order->getSubtotalInclTax());?></td>
+        </tr>
+        <?php endif;?>
+        </tbody>
+    <?php endif; ?>
+</table>

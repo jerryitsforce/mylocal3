@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Branch8\MaskCustomerInformation\Observer\Frontend\HideSensitiveDefaultObserver">
+        <arguments>
+            <argument name="permission" xsi:type="object">Branch8\MaskCustomerInformation\Model\GlobalPermission</argument>
+            <argument name="collectionChecks" xsi:type="array">
+                <item name="market_place_orders" xsi:type="array">
+                    <item name="AsyncMarketPlaceOrderGrid" xsi:type="string">Webkul\Marketplace\Model\ResourceModel\Orders\Collection</item>
+                    <item name="AsyncMarketPlaceOrderGridInterceptor" xsi:type="string">Webkul\Marketplace\Model\ResourceModel\Orders\Collection\Interceptor</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

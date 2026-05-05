@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+
+    <!--Admin Emails-->
+    <template id="helpdesk_email_settings_admin_setting_admin_new_ticket_template"
+              label="New Staff Ticket"
+              file="notification_staff_new_ticket_template.html" type="html"
+              module="Branch8_HelpDesk" area="frontend"/>
+    <template id="helpdesk_email_settings_admin_setting_admin_new_message_template" label="New Staff Message"
+              file="notification_staff_new_message_template.html" type="html"
+              module="Branch8_HelpDesk" area="frontend"/>
+    <template id="helpdesk_email_settings_admin_setting_user_ticket_assigned_template" label="Assigned Ticket To User Template"
+              file="notification_staff_ticket_assined_template.html" type="html"
+              module="Branch8_HelpDesk" area="frontend"/>
+
+    <!-- Admin Emails-->
+
+    <!--    Customer Emails-->
+    <template id="helpdesk_email_settings_customer_setting_customer_new_ticket_template"
+              label="New Customer Ticket"
+              file="notification_new_ticket_template.html" type="html" module="Branch8_HelpDesk" area="frontend"/>
+    <template id="helpdesk_email_settings_customer_setting_customer_new_message_template"
+              label="New Customer Message"
+              file="notification_new_message_template.html" type="html" module="Branch8_HelpDesk" area="frontend"/>
+    <template id="helpdesk_email_settings_customer_setting_customer_new_status_template"
+              label="Status Message" file="notification_status_ticket_template.html" type="html"
+              module="Branch8_HelpDesk" area="frontend"/>
+    <!--    Customer Emails-->
+</config>

@@ -1,0 +1,19 @@
+<tr class="totals item-count">
+    <th class="mark" colspan="1" scope="row" data-bind="i18n: title"></th>
+    <td class="amount" data-th="Item count">
+        <span class="item-count-price" data-bind="html: getTotalCount()"></span>
+    </td>
+</tr>
+<!-- ko if: getItems() -->
+<!-- ko foreach: {data: getItems(), as: 'item'} -->
+<tr class="totals item-selected">
+    <th class="mark" scope="row">
+        <span class="item-name" data-bind="text: item.name"></span>
+    </th>
+    <td class="amount">
+        <span class="item-price" data-bind="text: $parent.getFormattedPrice(item.price_incl_tax)"></span>
+        <span class="item-qty" data-bind="text: $parent.renderQty(item.qty)"></span>
+    </td>
+</tr>
+<!-- /ko -->
+<!-- /ko -->

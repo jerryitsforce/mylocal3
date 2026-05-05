@@ -1,0 +1,28 @@
+{
+    "quote_item": {
+        "column": {
+            "applied_rule_names": true,
+            "current_product_row_id": true,
+            "schedule_change_special_price": true,
+            "schedule_change_special_price_start": true,
+            "schedule_change_special_price_end": true
+        }
+    },
+    "sales_order_item": {
+        "column": {
+            "applied_rule_names": true,
+            "current_product_row_id": true,
+            "schedule_change_special_price": true,
+            "schedule_change_special_price_start": true,
+            "schedule_change_special_price_end": true
+        }
+    },
+    "quote": {
+        "column": {
+            "distribution_thermosphere": true,
+            "site_free_shipping_threshold": true,
+            "site_shipping_fee": true,
+            "order_free_shipping_threshold": true
+        }
+    }
+}

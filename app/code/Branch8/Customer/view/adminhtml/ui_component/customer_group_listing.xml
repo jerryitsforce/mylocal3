@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="customer_group_columns">
+        <column name="organization" component="Magento_Ui/js/grid/columns/select" sortOrder="2">
+            <settings>
+                <options class="Branch8\Customer\Model\Config\Source\Organization"/>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <label translate="true">Organization</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="prev_level" component="Magento_Ui/js/grid/columns/select" sortOrder="3">
+            <settings>
+                <options class="Magento\Customer\Model\Config\Source\Group"/>
+                <filter>false</filter>
+                <dataType>select</dataType>
+                <label translate="true">Previous level</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="nxt_level" component="Magento_Ui/js/grid/columns/select" sortOrder="4">
+            <settings>
+                <options class="Magento\Customer\Model\Config\Source\Group"/>
+                <filter>false</filter>
+                <dataType>select</dataType>
+                <label translate="true">Next level</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="period" sortOrder="5">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">Period(month)</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+    </columns>
+</listing>

@@ -1,0 +1,25 @@
+<?php
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/* @var $block \HotaiConnected\UiShared\Block\Adminhtml\Common\JSConfig */
+/* @var $escaper \Magento\Framework\Escaper */
+
+// 共用設定區塊：使用 Hidden Input 作為可靠的配置來源
+// 優點：DOM 元素立即可用，不依賴 JS 初始化時序，除錯容易
+$config = $block->getSharedData();
+?>
+<!-- 使用 data-* 屬性儲存配置，避免多個 input 元素 -->
+<div id="js-shared-config"
+     data-x-magento-auth="<?= $escaper->escapeHtmlAttr($config['X-Magento-Auth'] ?? '') ?>"
+     style="display:none;"></div>
+
+<div id="loading-mask" data-role="loader" data-loaded="true">
+     <div class="loading-mask" data-role="loader" >
+          <div class="loader"><img alt="" src="<?= $escaper->escapeUrl($block->getViewFileUrl('images/loader-1.gif')) ?>">
+               <p>請稍等...</p>
+          </div>
+     </div>
+</div>

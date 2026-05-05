@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!--    create firebase-messaging-sw file -->
+    <event name="admin_system_config_changed_section_magenest_notification_box">
+        <observer name="custom_admin_system_config_changed_section_general" instance="Magenest\NotificationBox\Observer\SaveConfig"/>
+    </event>
+
+</config>

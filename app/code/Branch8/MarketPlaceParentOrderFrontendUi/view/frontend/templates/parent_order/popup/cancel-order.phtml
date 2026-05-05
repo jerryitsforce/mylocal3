@@ -1,0 +1,50 @@
+<?php
+/** 
+ * @var $block Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\CancelOrder
+ * @var $escaper Magento\Framework\Escaper 
+ */
+?>
+<div id="cancel-order-modal" class="modal-hide">
+    <div class="modal-custom-content">
+        <form class="cancel-order-form" action="<?= $block->getUrl('sales/parentOrder/cancelorder') ?>" id="cancel_order_form" method="post" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
+            <input type="hidden" value="" name="order_id" id="order_id"/>
+            <fieldset class="fieldset">
+                <div class="field required">
+                    <label for="reason" class="label">
+                        <span><?= $block->escapeHtml(__("Reason for cancellation")); ?></span>
+                    </label>
+                    <div class="control">
+                        <select id="reason" class="cancel-order-reason" name="reason" data-validate="{required:true}">
+                            <option value=""><?= __('Select Reason') ?></option>
+                            <?php foreach ($block->getReasons() as $key => $description): ?>
+                                <option value="<?= $escaper->escapeHtml(__($description)) ?>">
+                                    <?= $escaper->escapeHtml(__($description)) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="field required">
+                    <label for="reason_description" class="label hidden">
+                        <span><?= $block->escapeHtml(__("")); ?></span>
+                    </label>
+                    <div class="control">
+                        <textarea id="reason_description"
+                        maxlength="20"
+                        data-validate="{'validate-fullwidth-special': true}"
+                        name="reason_description"
+                        class="reason-description"
+                        placeholder="<?= $escaper->escapeHtml(__("Please describe the reason, limited to 20 words (optional)")) ?>"></textarea>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="custom-notice">
+                <h3><?= $escaper->escapeHtml(__("Things to note")) ?></h3>
+                <ol>
+                    <li><?= $block->escapeHtml(__('Orders can be canceled before 23:59 today.')) ?></li>
+                    <li><?= $block->escapeHtml(__('After the application is cancelled, Hotai Points will return the points to the original account 30 minutes later.')) ?></li>
+                </ol>
+            </div>
+        </form>
+    </div>
+</div>

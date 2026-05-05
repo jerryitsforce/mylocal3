@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">brand_form.brand_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Settings</item>
+        <item name="reverseMetadata" xsi:type="boolean">true</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Branch8\BrandManagement\Block\Adminhtml\Brand\Edit\SaveButton"/>
+            <button name="save_and_continue" class="Branch8\BrandManagement\Block\Adminhtml\Brand\Edit\SaveAndContinueButton"/>
+            <button name="delete" class="Branch8\BrandManagement\Block\Adminhtml\Brand\Edit\DeleteButton"/>
+            <button name="back" class="Branch8\BrandManagement\Block\Adminhtml\Brand\Edit\BackButton"/>
+        </buttons>
+        <namespace>brand_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>brand_form.brand_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="brand_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="brandmanagement/brand/save"/>
+        </settings>
+        <dataProvider class="Branch8\BrandManagement\Model\Brand\DataProvider" name="brand_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>option_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    
+    <!-- Brand Options Fieldset -->
+    <fieldset name="brand_options">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Brand Options</label>
+        </settings>
+        <field name="option_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Option ID</label>
+                <visible>false</visible>
+                <dataScope>option_id</dataScope>
+            </settings>
+        </field>
+        <field name="is_featured" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="number">0</item>
+                            <item name="label" xsi:type="string">No</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="number">1</item>
+                            <item name="label" xsi:type="string">Yes</item>
+                        </item>
+                    </item>
+                    <item name="default" xsi:type="number">0</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Is Featured</label>
+                <dataScope>is_featured</dataScope>
+            </settings>
+        </field>
+        <field name="is_show_in_widget" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="number">0</item>
+                            <item name="label" xsi:type="string">No</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="number">1</item>
+                            <item name="label" xsi:type="string">Yes</item>
+                        </item>
+                    </item>
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Show in Brand List Widget</label>
+                <dataScope>is_show_in_widget</dataScope>
+            </settings>
+        </field>
+        <field name="is_show_in_slider" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="number">0</item>
+                            <item name="label" xsi:type="string">No</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="number">1</item>
+                            <item name="label" xsi:type="string">Yes</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Show in Brand Slider Widget</label>
+                <dataScope>is_show_in_slider</dataScope>
+            </settings>
+        </field>
+        <field name="slider_position" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Position in Slider</label>
+                <dataScope>slider_position</dataScope>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="en_alphabet" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">English Alphabet</label>
+                <dataScope>en_alphabet</dataScope>
+            </settings>
+        </field>
+        <field name="ch_alphabet" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">brand_options</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Chinese Alphabet</label>
+                <dataScope>ch_alphabet</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    
+    <!-- SEO Fieldset -->
+    <fieldset name="seo_fieldset">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">SEO</label>
+        </settings>
+        <field name="url_alias" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">seo</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">URL Alias</label>
+                <dataScope>url_alias</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    
+    <!-- Meta Data Fieldset -->
+    <fieldset name="meta_data_fieldset">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Meta Data</label>
+        </settings>
+        <field name="meta_title" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">meta_data</item>
+                    <item name="service" xsi:type="array">
+                        <item name="template" xsi:type="string">ui/form/element/helper/service</item>
+                        <item name="defaults" xsi:type="array">
+                            <item name="meta_title" xsi:type="string">value</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Meta Title</label>
+                <dataScope>meta_title</dataScope>
+            </settings>
+        </field>
+        <field name="meta_description" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">meta_data</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Meta Description</label>
+                <dataScope>meta_description</dataScope>
+            </settings>
+        </field>
+        <field name="meta_keywords" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">meta_data</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Meta Keywords</label>
+                <dataScope>meta_keywords</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+    
+    <!-- Page Content Fieldset (renamed to 'base' to match Amasty structure) -->
+    <fieldset name="base">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Page Content</label>
+        </settings>
+        <field name="value" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Brand Name</label>
+                <dataScope>value</dataScope>
+            </settings>
+        </field>
+        <field name="sort_order" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Sort Order</label>
+                <dataScope>sort_order</dataScope>
+            </settings>
+        </field>
+        <field name="title" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                    <item name="service" xsi:type="array">
+                        <item name="template" xsi:type="string">ui/form/element/helper/service</item>
+                        <item name="defaults" xsi:type="array">
+                            <item name="title" xsi:type="string">value</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Page Title</label>
+                <dataScope>title</dataScope>
+            </settings>
+        </field>
+        <field name="description" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="template" xsi:type="string">ui/form/field</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/wysiwyg</item>
+                    <item name="source" xsi:type="string">page_content</item>
+                    <item name="label" xsi:type="string" translate="true">Description</item>
+                    <item name="wysiwygConfigData" xsi:type="array">
+                        <item name="is_pagebuilder_enabled" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Description</label>
+                <dataScope>description</dataScope>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+        <field name="image" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Image</label>
+                <dataScope>image</dataScope>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="brandmanagement/brand/imageUpload"/>
+                        </uploaderConfig>
+                        <previewTmpl>Magento_Catalog/image-preview</previewTmpl>
+                        <openDialogTitle>Media Gallery</openDialogTitle>
+                        <initialMediaGalleryOpenSubpath>brandmanagement</initialMediaGalleryOpenSubpath>
+                        <allowedExtensions>jpg jpeg gif png bmp svg</allowedExtensions>
+                        <maxFileSize>5242880</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+        <!-- Hidden checkbox for image deletion (compatible with Amasty's image_delete handling) -->
+        <field name="image_delete" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <visible>false</visible>
+                <dataScope>image_delete</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="short_description" formElement="textarea">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Short Description</label>
+                <dataScope>short_description</dataScope>
+            </settings>
+        </field>
+        <field name="image_alt" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Image Alt</label>
+                <dataScope>image_alt</dataScope>
+                <notice translate="true">Image Alt will be used for the brand image on the brand page</notice>
+            </settings>
+        </field>
+        <field name="top_cms_block_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Top CMS Block</label>
+                <dataScope>top_cms_block_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\BrandManagement\Model\Config\Source\CmsBlock"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="bottom_cms_block_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Bottom CMS Block</label>
+                <dataScope>bottom_cms_block_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\BrandManagement\Model\Config\Source\CmsBlock"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="show_brand_info" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="number">0</item>
+                            <item name="label" xsi:type="string">No</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="number">1</item>
+                            <item name="label" xsi:type="string">Yes</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Display Additional Brand Information</label>
+                <dataScope>show_brand_info</dataScope>
+                <disabled>true</disabled>
+                <notice translate="true">The functionality is available as part of an active product subscription or support subscription.</notice>
+            </settings>
+        </field>
+        <field name="brand_info_block_position" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">page_content</item>
+                    <item name="options" xsi:type="array">
+                        <item name="0" xsi:type="array">
+                            <item name="value" xsi:type="string">top</item>
+                            <item name="label" xsi:type="string">Top</item>
+                        </item>
+                        <item name="1" xsi:type="array">
+                            <item name="value" xsi:type="string">bottom</item>
+                            <item name="label" xsi:type="string">Bottom</item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Brand Info Block Position</label>
+                <dataScope>brand_info_block_position</dataScope>
+                <visible>false</visible>
+            </settings>
+        </field>
+    </fieldset>
+    
+    <!-- Other Fieldset -->
+    <fieldset name="other_fieldset">
+        <settings>
+            <collapsible>true</collapsible>
+            <label translate="true">Other</label>
+        </settings>
+        <field name="slider_image" formElement="imageUploader">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">other</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Small Image</label>
+                <dataScope>slider_image</dataScope>
+                <elementTmpl>ui/form/element/uploader/image</elementTmpl>
+                <notice translate="true">Used in Brands Slider, Product Page Icon &amp; Swatch for Multiselect Attribute.</notice>
+            </settings>
+            <formElements>
+                <imageUploader>
+                    <settings>
+                        <required>false</required>
+                        <uploaderConfig>
+                            <param xsi:type="url" name="url" path="brandmanagement/brand/sliderImageUploader"/>
+                        </uploaderConfig>
+                        <previewTmpl>Magento_Catalog/image-preview</previewTmpl>
+                        <openDialogTitle>Media Gallery</openDialogTitle>
+                        <initialMediaGalleryOpenSubpath>brandmanagement</initialMediaGalleryOpenSubpath>
+                        <allowedExtensions>jpg jpeg gif png bmp svg</allowedExtensions>
+                        <maxFileSize>5242880</maxFileSize>
+                    </settings>
+                </imageUploader>
+            </formElements>
+        </field>
+        <!-- Hidden checkbox for slider image deletion (compatible with Amasty's slider_image_delete handling) -->
+        <field name="slider_image_delete" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">other</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <visible>false</visible>
+                <dataScope>slider_image_delete</dataScope>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="small_image_alt" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">other</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Small Image Alt</label>
+                <dataScope>small_image_alt</dataScope>
+                <notice translate="true">Small Image Alt will be used for the brand image in brand pop-up, brand slider, on all brands and product pages.</notice>
+            </settings>
+        </field>
+    </fieldset>
+    
+</form>

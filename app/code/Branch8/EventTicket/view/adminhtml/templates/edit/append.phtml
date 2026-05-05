@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    require(['jquery','uiRegistry'], function ($, registry){
+        var notEditType = <?php echo $this->canEditType();?>;
+        var editPoolInterval = setInterval(function(){
+            if($('select[name="ticket_type"]').length){
+                if(notEditType){
+                    $('select[name="ticket_type"]').attr('disabled', 'disabled');
+                }
+                clearTimeout(editPoolInterval);
+            }
+        }, 200);
+
+        var disableSeller = <?php echo $this->canEditSeller();?>;
+        var editSellerInterval = setInterval(function(){
+            var sellerIdField = registry.get('index=seller_id');
+            if(sellerIdField){
+                if(disableSeller){
+                    sellerIdField.disabled(true)
+                }
+                clearTimeout(editSellerInterval);
+            }
+        }, 200);
+    });
+
+</script>

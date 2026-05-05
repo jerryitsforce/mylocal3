@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_role_delegate" resource="default" engine="innodb" comment="Branch8 Role Delegate">
+        <column xsi:type="int" name="id" nullable="false" unsigned="true" identity="true" comment="Id"/>
+        <column xsi:type="int" name="user_id" nullable="false" unsigned="true" comment="Original User"/>
+        <column xsi:type="int" name="delegate_user_id" nullable="false" unsigned="true" comment="Delegate User"/>
+        <column xsi:type="int" name="role_id" nullable="true" unsigned="true" comment="Delegated Role Id"/>
+        <column xsi:type="datetime" name="start_at" nullable="false" comment="Start At"/>
+        <column xsi:type="datetime" name="end_at" nullable="false" comment="End At"/>
+        <column xsi:type="text" name="status" nullable="false" comment="Status"/>
+        <column xsi:type="int" name="created_by" nullable="false" unsigned="true" comment="Created By"/>
+        <column xsi:type="int" name="updated_by" nullable="false" unsigned="true" comment="Updated By"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="false"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="true" on_update="true" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <index referenceId="IDX_ROLE_DELEGATE_USER">
+            <column name="user_id"/>
+        </index>
+        <index referenceId="IDX_ROLE_DELEGATE_DELEGATE">
+            <column name="delegate_user_id"/>
+        </index>
+        <index referenceId="IDX_ROLE_DELEGATE_STATUS">
+            <column name="status"/>
+        </index>
+    </table>
+</schema>

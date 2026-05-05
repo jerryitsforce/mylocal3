@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <broker topic="send.app.notification" type="amqp" exchange="send.app.notification.exchange">
+        <queue name="send_app_notification" consumer="sendAppNotification"
+               consumerInstance="Magento\Framework\MessageQueue\Consumer"
+               handler="Branch8\AppNotification\Model\Queue\SendAppNotification::execute" maxMessages="100"/>
+    </broker>
+</config>
+

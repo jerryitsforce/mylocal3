@@ -1,0 +1,15 @@
+<form action="<?= $block->getUrl('productgridexport/import/upload') ?>" method="post" enctype="multipart/form-data">
+    <fieldset class="admin__fieldset">
+        <legend class="admin__legend"><span><?= __('Import Inventory') ?></span></legend>
+        <div class="admin__field">
+            <label class="admin__field-label" for="import_file"><?= __('CSV/Excel File') ?></label>
+            <div class="admin__field-control">
+                <input type="file" name="import_file" id="import_file" required accept=".csv,.xls,.xlsx"/>
+            </div>
+        </div>
+        <div class="admin__actions">
+            <button type="submit" class="action-primary"><span><?= __('Upload') ?></span></button>
+        </div>
+    </fieldset>
+    <?= $block->getBlockHtml('formkey') ?>
+</form>

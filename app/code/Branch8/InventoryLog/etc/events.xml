@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="branch8_inventory_log_order_place" instance="Branch8\InventoryLog\Observer\CheckoutAllSubmitAfter" />
+    </event>
+
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="branch8_inventory_log_credit_memo" instance="Branch8\InventoryLog\Observer\RefundOrderInventoryObserver"/>
+    </event>
+
+    <event name="sales_order_invoice_save_after">
+        <observer name="branch8_inventory_log_invoice_save" instance="Branch8\InventoryLog\Observer\InvoiceSaveAfter" />
+    </event>
+</config>

@@ -1,0 +1,24 @@
+<?php
+/** @var $block \Branch8\MarketplaceProduct\Block\Product\PriceChangePopup */
+/** @var $escaper \Magento\Framework\Escaper */
+?>
+<div data-placeholder="branch8-price-change-popup" style="display: none;">
+    <div data-bind="scope: 'price-change-popup'">
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    </div>
+</div>
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "price-change-popup": {
+                    "component": "Branch8_MarketplaceProduct/js/product/price-change-popup",
+                    "shoppingCartUrl": "<?= $block->getShoppingCartUrl(); ?>",
+                    "popupContent": "<?= $escaper->escapeJs($block->getMessage()); ?>"
+                }
+            }
+        }
+    }
+}
+</script>

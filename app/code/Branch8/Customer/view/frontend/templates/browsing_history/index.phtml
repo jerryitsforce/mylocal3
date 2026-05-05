@@ -1,0 +1,10 @@
+<?php
+
+/** @var \Branch8\Customer\Block\BrowsingHistory\Index $block */
+?>
+<div class="member-browsing-history">
+    <?php echo $block->getChildHtml("recently_viewed")?>
+    <?php if ($block->getPagerHtml()): ?>
+        <div class="order-products-toolbar toolbar bottom"><?=$block->getPagerHtml()?></div>
+    <?php endif?>
+</div>

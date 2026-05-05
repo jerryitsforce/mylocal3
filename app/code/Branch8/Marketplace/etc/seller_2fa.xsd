@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="config">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element  name="seller_2fa_urls" type="seller_2fa_urls" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="seller_2fa_urls">
+        <xs:sequence>
+           <xs:element minOccurs="1" maxOccurs="unbounded" name="item" type="item"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="item">
+        <xs:sequence>
+            <xs:element name="url" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="module" type="xs:normalizedString"/>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © HotaiConnected. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="HotaiConnected_UiShared::css/vendor/tabulator/tabulator.min.css"/>
+        <css src="HotaiConnected_UiShared::css/vendor/sumoselect/sumoselect.min.css"/>
+        <css src="HotaiConnected_CheckoutManagement::css/checkoutarea/index.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content" htmlTag="div" htmlClass="checkout-management">
+            <!-- 共用資料區塊（透過 js-config 注入，集中管理 token / key / header 等） -->
+            <block class="HotaiConnected\UiShared\Block\Adminhtml\Common\JSConfig" name="shared.jsconfig" template="HotaiConnected_UiShared::shared/js-config.phtml" before="checkout.management.checkout.index"/>
+            
+            <!-- 結帳管理主內容 Block：包含共用篩選器 -->
+            <block class="Magento\Backend\Block\Template" name="checkout.management.checkout.index" template="HotaiConnected_CheckoutManagement::checkoutarea/index.phtml">
+                <block class="Magento\Backend\Block\Template" name="shared.filters" template="HotaiConnected_UiShared::shared/filters.phtml"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
+

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">general_non_notify_ticket_record_overview.general_non_notify_ticket_record_overview_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>general_non_notify_ticket_record_columns</spinner>
+        <deps>
+            <dep>general_non_notify_ticket_record_overview.general_non_notify_ticket_record_overview_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="general_non_notify_ticket_record_overview_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="cacheRequests" xsi:type="boolean">false</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magento_Catalog::products</aclResource>
+        <dataProvider class="Branch8\GeneralNonNotifyTicket\Ui\DataProvider\Product\GeneralNonNotifyTicketRecordOverviewDataProvider" name="general_non_notify_ticket_record_overview_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>record_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <filters name="listing_filters">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="params" xsi:type="array">
+                        <item name="filters_modifier" xsi:type="array"/>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <statefull>
+                    <property name="applied" xsi:type="boolean">false</property>
+                </statefull>
+            </settings>
+        </filters>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="general_non_notify_ticket_record_columns" class="Magento\Ui\Component\Listing\Columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">GeneralNonNotifyTicketRecordOverviewGrid</item>
+                    <item name="target" xsi:type="string">selectReview</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <column name="batch_code" sortOrder="10">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Batch code</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <!-- <column name="safety_stock" sortOrder="20">
+            <settings>
+                <label translate="true">Safety stock</label>
+                <sortable>false</sortable>
+            </settings>
+        </column> -->
+        <column name="sale_start_time" sortOrder="30">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Sale start time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="sale_end_time" sortOrder="40">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Sale end time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="use_start_time" sortOrder="50">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Use start time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="use_end_time" sortOrder="60">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Use end time</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="due_days" sortOrder="70">
+            <settings>
+                <label translate="true">Due days</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="total_count" sortOrder="80">
+            <settings>
+                <label translate="true">Total count</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="sold_count" sortOrder="90">
+            <settings>
+                <label translate="true">Sold count</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="used_count" sortOrder="100">
+            <settings>
+                <label translate="true">Used count</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <actionsColumn name="delete_unsold" class="Branch8\GeneralNonNotifyTicket\Ui\Component\Listing\Columns\DeleteUnsold">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="indexField" xsi:type="string">record_id</item>
+                    <item name="sortOrder" xsi:type="number">110</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

@@ -1,0 +1,376 @@
+<?php
+/**
+* @var $block \Ecpay\Invoice\Block\Adminhtml\Order\OrderInvoice
+*/
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo $block->getViewFileUrl('Ecpay_Invoice::css/order/invoice-block.css')?>">
+
+<section class="admin__page-section order-view-custom-block" id="invoice-block">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Ecpay Invoice Infomation');?></span>
+    </div>
+
+    <div class="invoice-msg" id="invoice-msg" style="display: none;">
+        <span class="msg" id="invoice-msg-content"></span>
+    </div>
+
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item invoice-information">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Invoice Infomation');?></span> <!--發票資訊-->
+            </div>
+            <div class="admin__page-section-item-content invoice-info">
+                <label><?= __('Invoice Number：');?></label> <!--發票號碼-->
+                <span id="invoice_no"></span>
+                <br>
+                <label><?= __('Invoice Issuance Time：');?></label> <!--開立時間-->
+                <span id="invoice_date"></span>
+                <br>
+                <label><?= __('Random Number：');?></label> <!--隨機碼-->
+                <span id="invoice_random_num"></span>
+                <br>
+                <label><?= __('Invoice Mode：');?></label> <!--發票開立-->
+                <span id="invoice_type"></span>
+                <br>
+
+                <div id="invoice_info">
+                    <label><?= __('Invoice Info Type：');?></label> <!--開立方式-->
+                    <span id="invoice_issue_type"></span>
+                    <br>
+                    <label><?= __('Transaction Number：');?></label> <!--交易單號-->
+                    <span id="invoice_od_sob"></span>
+                    <br>
+
+                    <div id="invoice_codes">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <?php if ($block->getGrandTotal() !== 0) : ?>
+<!--            <div id="invoice-btns-block">-->
+<!--                <input type="button" class="action-default scalable action-save action-secondary" id="create_invoice_btn" value="--><?php //= __('Issue Invoice');?><!--" />-->
+<!--            </div>-->
+            <?php endif; ?>
+        </div>
+        <div class="admin__page-section-item invoice-manual-form">
+            <?php
+            /** @var \Ecpay\Invoice\ViewModel\ManualInvoice $manualInvoiceViewModel */
+            $manualInvoiceViewModel = $block->getData('manual_invoice_view_model')?
+                :\Magento\Framework\App\ObjectManager::getInstance()->get(\Ecpay\Invoice\ViewModel\ManualInvoice::class);
+            ?>
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Manual Invoice');?></span>
+            </div>
+            <div class="admin__page-section-item-content invoice-form">
+                <form id="manual-invoice-form">
+                    <div class="admin__field admin__field-invoice-number">
+                        <div class="admin__field-label">
+                            <label for="manual_invoice_number"><?= __('Invoice Number');?></label> <!--發票號碼-->
+                        </div>
+                        <div class="admin__field-control">
+                            <input type="text"
+                                   id="manual_invoice_number"
+                                   name="manual_invoice_number"
+                                   class="admin__control-text"
+                                   value="<?= $block->escapeHtmlAttr($manualInvoiceViewModel->getInvoiceNumber()) ?>"
+                                   disabled>
+                        </div>
+                    </div>
+
+                    <div class="admin__field admin__field-invoice-date">
+                        <div class="admin__field-label">
+                            <label for="manual_invoice_date"><?= __('Invoice Issuance Time');?></label> <!--發票開立時間-->
+                        </div>
+                        <div class="admin__field-control">
+                            <input type="date"
+                                   id="manual_invoice_date"
+                                   name="manual_invoice_date"
+                                   class="admin__control-text"
+                                   placeholder=""
+                                   value="<?= $block->escapeHtmlAttr($manualInvoiceViewModel->getInvoiceDate()) ?>"
+                                   disabled>
+                        </div>
+                    </div>
+
+                    <div class="admin__field admin__field-random-number">
+                        <div class="admin__field-label">
+                            <label for="manual_random_number"><?= __('Random Number');?></label> <!--隨機號碼-->
+                        </div>
+                        <div class="admin__field-control">
+                            <input type="number"
+                                   id="manual_random_number"
+                                   name="manual_random_number"
+                                   class="admin__control-text"
+                                   value="<?= $block->escapeHtmlAttr($manualInvoiceViewModel->getRandomCode()) ?>"
+                                   disabled>
+                        </div>
+                    </div>
+
+                    <div class="admin__field admin__field-invoice-type">
+                        <div class="admin__field-label">
+                            <label for="manual_invoice_type"><?= __('Invoice Mode');?></label> <!--發票方式-->
+                        </div>
+                        <div class="admin__field-control">
+                            <select id="manual_invoice_type" name="manual_invoice_type" class="admin__control-select" disabled>
+                                <option value="personal" <?= $manualInvoiceViewModel->getInvoiceType() === 'personal' || $manualInvoiceViewModel->getInvoiceType() === 'p' || empty($manualInvoiceViewModel->getInvoiceType()) ? 'selected' : '' ?>>
+                                    <?= __('Personal');?>
+                                </option>
+                                <option value="company" <?= $manualInvoiceViewModel->getInvoiceType() === 'company' || $manualInvoiceViewModel->getInvoiceType() === 'c' ? 'selected' : '' ?>>
+                                    <?= __('Manual Company');?>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin__field admin__field-invoice-info-type">
+                        <div class="admin__field-label">
+                            <label for="manual_invoice_info_type"><?= __('Manual Invoice Type');?></label> <!--發票類型-->
+                        </div>
+                        <div class="admin__field-control">
+                            <select id="manual_invoice_info_type" name="manual_invoice_info_type" class="admin__control-select" disabled>
+                                <option value="issue" <?= $manualInvoiceViewModel->getInvoiceStatus() === 'issue' ? 'selected' : '' ?>>
+                                    <?= __('Issue');?>
+                                </option>
+                                <option value="void" <?= $manualInvoiceViewModel->getInvoiceStatus() === 'void' ? 'selected' : '' ?>>
+                                    <?= __('Void Invoice');?>
+                                </option>
+                                <option value="allowance" <?= $manualInvoiceViewModel->getInvoiceStatus() === 'allowance' ? 'selected' : '' ?>>
+                                    <?= __('Allowance');?>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin__field admin__field-transaction-number">
+                        <div class="admin__field-label">
+                            <label for="manual_transaction_number"><?= __('Transaction Number');?></label> <!--交易編號-->
+                        </div>
+                        <div class="admin__field-control">
+                            <input type="text"
+                                   id="manual_transaction_number"
+                                   name="manual_transaction_number"
+                                   class="admin__control-text"
+                                   value="<?= $block->escapeHtmlAttr($manualInvoiceViewModel->getTransactionNumber()) ?>"
+                                   disabled>
+                        </div>
+                    </div>
+
+                    <!-- 公司相關欄位 -->
+                    <div class="admin__field admin__field-company-name company-fields"
+                         style="<?= ($manualInvoiceViewModel->getInvoiceType() === 'c' || $manualInvoiceViewModel->getInvoiceType() === 'company') ? 'display: block;' : 'display: none;' ?>">
+                        <div class="admin__field-label">
+                            <label for="manual_company_name"><?= __('Manual Company Name');?></label>
+                        </div>
+                        <div class="admin__field-control">
+                            <input type="text"
+                                   id="manual_company_name"
+                                   name="manual_company_name"
+                                   class="admin__control-text"
+                                   value="<?= $block->escapeHtmlAttr($manualInvoiceViewModel->getCompanyName()) ?>"
+                                   disabled>
+                        </div>
+                    </div>
+
+                    <div class="admin__field admin__field-tax-id company-fields"
+                         style="<?= ($manualInvoiceViewModel->getInvoiceType() === 'c' || $manualInvoiceViewModel->getInvoiceType() === 'company') ? 'display: block;' : 'display: none;' ?>">
+                        <div class="admin__field-label">
+                            <label for="manual_tax_id"><?= __('Tax ID');?></label>
+                        </div>
+                        <div class="admin__field-control">
+                            <input type="text"
+                                   id="manual_tax_id"
+                                   name="manual_tax_id"
+                                   class="admin__control-text"
+                                   value="<?= $block->escapeHtmlAttr($manualInvoiceViewModel->getTaxId()) ?>"
+                                   disabled>
+                        </div>
+                    </div>
+
+                    <!-- 操作按鈕 -->
+                    <div class="admin__field admin__field-actions invoice-actions">
+                        <button type="button" id="manual-edit-invoice-btn" class="action-default scalable"><?= __('Edit');?></button> <!--編輯-->
+                        <button type="button" id="manual-save-invoice-btn" class="action-primary scalable" style="display: none;"><?= __('Confirm');?></button> <!--確定-->
+                        <div id="manual-invoice-message-container"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Ecpay_Invoice/js/order/invoice-ajax": {
+            "baseUrl": <?php echo json_encode($block->getBaseUrl()); ?>,
+            "encryptData": <?php echo $block->getEncryptData(); ?>,
+            "invoiceData": <?php echo $block->getInvoiceData(); ?>,
+            "invoiceModuleEnable": <?php echo $block->getIvoiceModuleEnable(); ?>
+        }
+    }
+}
+</script>
+
+<script>
+require([
+    'jquery',
+    'domReady!'
+], function ($) {
+    'use strict';
+
+
+    // 發票方式選擇邏輯 - 使用事件委派
+    $(document).on('change', '#manual_invoice_type', function() {
+        var selectedValue = $(this).val();
+        var companyFields = $('.company-fields');
+
+        if (selectedValue === 'company') {
+            companyFields.css('display', 'block').show();
+        } else {
+            companyFields.css('display', 'none').hide();
+            // 清空公司相關欄位
+            $('#manual_company_name, #manual_tax_id').val('');
+        }
+    });
+
+    // 編輯按鈕功能
+    $('#manual-edit-invoice-btn').on('click', function() {
+        var formFields = $('#manual-invoice-form input, #manual-invoice-form select');
+        var editBtn = $('#manual-edit-invoice-btn');
+        var saveBtn = $('#manual-save-invoice-btn');
+        var invoiceTypeSelect = $('#manual_invoice_type');
+
+        // 啟用所有欄位
+        formFields.prop('disabled', false);
+
+        // 切換按鈕顯示
+        editBtn.hide();
+        saveBtn.show();
+
+        // 隱藏錯誤消息
+        $('.admin__field').removeClass('_error');
+
+        // 清空訊息容器
+        $('#manual-invoice-message-container').empty().show();
+    });
+
+    // 確定按鈕功能
+    $('#manual-save-invoice-btn').on('click', function() {
+        var isValid = validateManualForm();
+
+        if (isValid) {
+            // 收集表單資料
+            var formData = {
+                'invoice': {
+                    'invoice_number': $('#manual_invoice_number').val(),
+                    'invoice_date': $('#manual_invoice_date').val(),
+                    'random_number': $('#manual_random_number').val(),
+                    'invoice_type': $('#manual_invoice_type').val(),
+                    'invoice_info_type': $('#manual_invoice_info_type').val(),
+                    'transaction_number': $('#manual_transaction_number').val(),
+                    'company_name': $('#manual_company_name').val(),
+                    'tax_id': $('#manual_tax_id').val()
+                }
+            };
+
+            // 取得訂單 ID
+            var orderId = getOrderIdFromUrl();
+
+            // AJAX 提交
+            $.ajax({
+                url: '<?= $block->getUrl('manual_invoice/order/saveInvoice') ?>',
+                type: 'POST',
+                data: {
+                    'order_id': orderId,
+                    'invoice': formData.invoice
+                },
+                showLoader: true,
+                success: function(response) {
+                    if (response.success) {
+                        // 成功時禁用所有欄位
+                        var formFields = $('#manual-invoice-form input, #manual-invoice-form select');
+                        formFields.prop('disabled', true);
+
+                        // 切換按鈕顯示
+                        $('#manual-save-invoice-btn').hide();
+                        $('#manual-edit-invoice-btn').show();
+
+                        // 隱藏錯誤狀態
+                        $('.admin__field').removeClass('_error');
+
+                        // 顯示成功訊息
+                        $('#manual-invoice-message-container').html('<div class="message message-success">' + response.message + '</div>');
+                        setTimeout(function() {
+                            $('#manual-invoice-message-container').fadeOut();
+                        }, 3000);
+                    } else {
+                        $('#manual-invoice-message-container').html('<div class="message message-error">' + (response.message || 'Save failed') + '</div>');
+                    }
+                },
+                error: function() {
+                    $('#manual-invoice-message-container').html('<div class="message message-error">Network error, please try again later</div>');
+                }
+            });
+        }
+    });
+
+    // 手動發票表單驗證函數
+    function validateManualForm() {
+        var isValid = true;
+        var requiredFields = [
+            '#manual_invoice_number',
+            '#manual_invoice_date',
+            '#manual_random_number',
+            '#manual_invoice_type',
+            '#manual_invoice_info_type',
+            '#manual_transaction_number'
+        ];
+
+        // 如果選擇了統編，則公司欄位也是必填
+        if ($('#manual_invoice_type').val() === 'company') {
+            requiredFields.push('#manual_company_name', '#manual_tax_id');
+        }
+
+        // 清除之前的錯誤狀態
+        $('.admin__field').removeClass('_error');
+
+        // 檢查每個必填欄位 (只在欄位啟用時檢查)
+        requiredFields.forEach(function(fieldId) {
+            var field = $(fieldId);
+            var fieldContainer = field.closest('.admin__field');
+
+            // 只檢查啟用的欄位
+            if (!field.prop('disabled') && (!field.val() || field.val().trim() === '')) {
+                fieldContainer.addClass('_error');
+                isValid = false;
+            }
+        });
+
+        // 顯示或隱藏錯誤消息
+        if (!isValid) {
+            $('#manual-invoice-message-container').html('<div class="message message-error"><?= __('Please fill in the correct information');?></div>');
+        } else {
+            $('#manual-invoice-message-container').empty();
+        }
+
+        return isValid;
+    }
+
+    // 從 URL 取得訂單 ID 的函數
+    function getOrderIdFromUrl() {
+        var url = window.location.href;
+        var matches = url.match(/\/order_id\/(\d+)/);
+        return matches ? matches[1] : null;
+    }
+
+    // 頁面載入時檢查並顯示公司欄位
+    $(document).ready(function() {
+        var invoiceTypeSelect = $('#manual_invoice_type');
+        var currentInvoiceType = invoiceTypeSelect.val();
+
+        if (currentInvoiceType === 'company') {
+            $('.company-fields').css('display', 'block').show();
+        }
+    });
+});
+</script>

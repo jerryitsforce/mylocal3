@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <exportButton class="JustBetter\ProductGridExport\Ui\Component\ExportButton">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="options" xsi:type="array">
+                        <item name="csv" xsi:type="array">
+                            <item name="value" xsi:type="string">csv</item>
+                            <item name="label" xsi:type="string" translate="true">CSV</item>
+                            <item name="url" xsi:type="string">productgridexport/export/gridToCsv</item>
+                        </item>
+                        <item name="xls" xsi:type="array">
+                            <item name="value" xsi:type="string">xls</item>
+                            <item name="label" xsi:type="string" translate="true">Modify Product XLS</item>
+                            <item name="url" xsi:type="string">productgridexport/export/productExport</item>
+                        </item>
+                        <item name="inventory_csv" xsi:type="array">
+                            <item name="value" xsi:type="string">inventory_csv</item>
+                            <item name="label" xsi:type="string" translate="true">Export Product Inventory CSV</item>
+                            <item name="url" xsi:type="string">productgridexport/export/productInventoryExport</item>
+                        </item>
+                    </item>
+                    <item name="selectProvider" xsi:type="string">marketplace_products_listing.marketplace_products_listing.products_columns.productIds</item>
+                </item>
+            </argument>
+        </exportButton>
+    </listingToolbar>
+</listing>

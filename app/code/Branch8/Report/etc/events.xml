@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_product_save_before">
+        <observer name="Branch8_Report::product_change_log" instance="Branch8\Report\Observer\ProductChangeLogBeforeObserver"/>
+    </event>
+    <event name="catalog_product_save_after">
+        <observer name="Branch8_Report::product_change_log" instance="Branch8\Report\Observer\ProductChangeLogAfterObserver"/>
+    </event>
+    <event name="catalog_product_attribute_update_before">
+        <observer name="Branch8_Report::product_attribute_update" instance="Branch8\Report\Observer\ProductAttributeUpdateBeforeObserver" />
+    </event>
+    <event name="catalog_product_import_bunch_save_after">
+        <observer name="Branch8_Report::product_import" instance="Branch8\Report\Observer\AfterImportDataObserver"/>
+    </event>
+</config>

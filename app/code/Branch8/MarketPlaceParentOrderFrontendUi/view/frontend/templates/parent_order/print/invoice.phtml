@@ -1,0 +1,100 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\PrintOrder\Invoice
+ * @var $invoice \Magento\Sales\Model\Order\Invoice
+ */
+?>
+<?php $order = $block->getOrder() ?>
+<?php $invoice = $block->getInvoice() ?>
+<?php if ($invoice) : ?>
+    <?php $invoices = [$invoice]; ?>
+<?php else : ?>
+    <?php $invoices = $order->getInvoiceCollection() ?>
+<?php endif; ?>
+<div class="order-details-items invoice">
+    <?php foreach ($invoices as $invoice) : ?>
+
+        <div class="order-title">
+            <strong><?= $block->escapeHtml(__('Invoice #')) ?><?= $block->escapeHtml($invoice->getIncrementId()) ?></strong>
+        </div>
+        <div class="table-wrapper table-order-items invoice">
+            <table class="data table table-order-items invoice" id="my-invoice-table-<?= (int)$invoice->getId() ?>">
+                <caption class="table-caption"><?= $block->escapeHtml(__('Items Invoiced')) ?></caption>
+                <thead>
+                <tr>
+                    <th class="col name"><?= $block->escapeHtml(__('Product Name')) ?></th>
+                    <th class="col sku"><?= $block->escapeHtml(__('SKU')) ?></th>
+                    <th class="col price"><?= $block->escapeHtml(__('Price')) ?></th>
+                    <th class="col qty"><?= $block->escapeHtml(__('Qty Invoiced')) ?></th>
+                    <th class="col subtotal"><?= $block->escapeHtml(__('Subtotal')) ?></th>
+                </tr>
+                </thead>
+                <?php $_items = $invoice->getItemsCollection(); ?>
+                <?php foreach ($_items as $_item) : ?>
+                    <?php if (!$_item->getOrderItem()->getParentItem()) : ?>
+                        <tbody>
+                        <?= $block->getItemHtml($_item) ?>
+                        </tbody>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <tfoot>
+                <?= $block->getInvoiceTotalHtml($invoice) ?>
+                </tfoot>
+            </table>
+        </div>
+
+    <?php endforeach; ?>
+    <div class="block block-order-details-view">
+        <div class="block-title">
+            <strong><?= $block->escapeHtml(__('Order Information')) ?></strong>
+        </div>
+        <div class="block-content">
+            <?php if (!$order->isVirtual()) : ?>
+                <div class="box box-order-shipping-address">
+                    <div class="box-title">
+                        <strong><?= $block->escapeHtml(__('Shipping Address')) ?></strong>
+                    </div>
+                    <div class="box-content">
+                        <address><?= $block->formatAddress($order->getShippingAddress()) ?></address>
+                    </div>
+                </div>
+
+                <div class="box box-order-shipping-method">
+                    <div class="box-title">
+                        <strong><?= $block->escapeHtml(__('Shipping Method')) ?></strong>
+                    </div>
+                    <div class="box-content">
+                        <?php if ($order->getDetail()->getShippingDescription()) : ?>
+                            <?= $block->escapeHtml($order->getDetail()->getShippingDescription()) ?>
+                        <?php else : ?>
+                            <?= $block->escapeHtml(__('No shipping information available')) ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <div class="box box-order-billing-address">
+                <div class="box-title">
+                    <strong><?= $block->escapeHtml(__('Billing Address')) ?></strong>
+                </div>
+                <div class="box-content">
+                    <?php $_billing = $order->getBillingAddress() ?>
+                    <address><?= $block->formatAddress($_billing) ?></address>
+                </div>
+            </div>
+
+            <div class="box box-order-billing-method">
+                <div class="box-title">
+                    <strong><?= $block->escapeHtml(__('Payment Method')) ?></strong>
+                </div>
+                <div class="box-content">
+                    <?= $block->getPaymentInfoHtml() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

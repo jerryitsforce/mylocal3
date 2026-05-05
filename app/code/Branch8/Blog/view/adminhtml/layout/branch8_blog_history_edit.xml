@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Blog\Block\Adminhtml\Post\Edit" name="branch8_blog_post_edit"/>
+        </referenceContainer>
+        <referenceContainer name="left">
+            <block class="Branch8\Blog\Block\Adminhtml\Post\Edit\Tabs" name="branch8_blog_post_tabs">
+                <block class="Branch8\Blog\Block\Adminhtml\Post\Edit\Tab\Post" name="branch8_blog_post_edit_tab_post"/>
+                <block class="Branch8\Blog\Block\Adminhtml\Post\Edit\Tab\Product" name="branch8_blog_post_edit_tab_product"/>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">post</argument>
+                    <argument name="block" xsi:type="string">branch8_blog_post_edit_tab_post</argument>
+                </action>
+                <action method="addTab">
+                    <argument name="name" xsi:type="string">product</argument>
+                    <argument name="block" xsi:type="string">branch8_blog_post_edit_tab_product</argument>
+                </action>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="financial_reconciliation" resource="default" engine="innodb" comment="賣家結算記錄表">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="datetime" name="from" nullable="false" comment="訂單結帳序號異動日(起)"/>
+        <column xsi:type="datetime" name="to" nullable="false" comment="訂單結帳序號異動日(迄)"/>
+        <column xsi:type="varchar" name="seller_code" length="255" nullable="false" comment="特約商代碼"/>
+        <column xsi:type="varchar" name="batch_num" length="255" nullable="false" comment="結帳批次"/>
+        <column xsi:type="int" name="exclude_settled_orders" padding="10" unsigned="true" nullable="false" default="0" comment="排除已結帳訂單(0, 1)"/>
+        <column xsi:type="int" name="exclude_pending_gift_order" padding="10" unsigned="true" nullable="false" default="0" comment="排除未確認禮物訂單(0, 1)"/>
+        <column xsi:type="varchar" name="shipping_status" length="255" nullable="true" comment="商品物流狀態"/>
+        <column xsi:type="varchar" name="invoice_status" length="10" nullable="true" comment="發票狀態"/>
+        <column xsi:type="varchar" name="ticket_status" length="30" nullable="true" comment="票券狀態"/>
+        <column xsi:type="int" name="settlement_status" padding="10" unsigned="true" nullable="false" comment="帳單狀態(1:建立, 2:解除)"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="新增日期"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="更新日期"/>
+        <column xsi:type="int" name="changed_by_id" padding="10" unsigned="true" nullable="false" comment="由哪一個admin_user新增或更新"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+    <table name="financial_reconciliation_invoice" resource="default" engine="innodb" comment="發票紀錄表">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="ID"/>
+        <column xsi:type="int" name="fr_id" padding="10" unsigned="true" nullable="false" comment="Financial Reconciliation ID"/>
+        <column xsi:type="varchar" name="invoice_number" length="10" nullable="false" comment="發票號碼"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY_FINANCIAL_RECONCILIATION_INVOICE">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FK_FINANCIAL_RECONCILIATION_INVOICE_FR_ID" table="financial_reconciliation_invoice" column="fr_id" referenceTable="financial_reconciliation" referenceColumn="id" onDelete="CASCADE"/>
+    </table>
+      <table name="financial_reconciliation_exception" resource="default" engine="innodb" comment="Financial Reconciliation Exception Table">
+        <column xsi:type="int" name="id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="fr_id" padding="10" unsigned="true" nullable="false" comment="Financial Reconciliation ID"/>
+        <column xsi:type="int" name="order_id" padding="10" unsigned="true" nullable="false" comment="Sales Order ID"/>
+        <column xsi:type="int" name="item_id" padding="10" unsigned="true" nullable="false" comment="Sales Order Item ID"/>
+        <column xsi:type="decimal" name="commission_rate" scale="4" precision="12" nullable="false" default="0.0000" comment="Commission Rate"/>
+        <column xsi:type="decimal" name="agreed_service_fee" scale="4" precision="12" nullable="false" default="0.0000" comment="Agreed Service Fee"/>
+        <column xsi:type="decimal" name="net_sales" scale="4" precision="12" nullable="false" default="0.0000" comment="Net Sales"/>
+        <column xsi:type="decimal" name="purchase_cost" scale="4" precision="12" nullable="false" default="0.0000" comment="Purchase Cost"/>
+        <column xsi:type="decimal" name="marketing_fee" scale="4" precision="12" nullable="false" default="0.0000" comment="Marketing Fee"/>
+        <column xsi:type="decimal" name="logistic_support_fee" scale="4" precision="12" nullable="false" default="0.0000" comment="Logistic Support Fee"/>
+        <column xsi:type="int" name="exception_status" padding="10" unsigned="true" nullable="false" default="0" comment="Status"/>
+        <column xsi:type="text" name="reason" nullable="true" comment="exception reason"/>
+        <column xsi:type="datetime" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Creation Time"/>
+        <column xsi:type="datetime" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY_FINANCIAL_RECONCILIATION_EXCEPTION">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FR_EXCEPTION_TO_SALES_ORDER"
+                    table="financial_reconciliation_exception"
+                    column="order_id" referenceTable="sales_order" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="FR_EXCEPTION_TO_ORDER_ITEM"
+                    table="financial_reconciliation_exception"
+                    column="item_id" referenceTable="sales_order_item" referenceColumn="item_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="FR_EXCEPTION_TO_FINANCIAL_RECONCILIATION"
+                    table="financial_reconciliation_exception"
+                    column="fr_id" referenceTable="financial_reconciliation" referenceColumn="id"
+                    onDelete="CASCADE"/>
+    </table>
+</schema>

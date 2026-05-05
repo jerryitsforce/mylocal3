@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">rma_create_form.rma_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Branch8\RmaAdminUi\Block\Adminhtml\Form\Edit\SaveButton"/>
+            <button name="back" class="Branch8\RmaAdminUi\Block\Adminhtml\Form\Edit\BackButton"/>
+        </buttons>
+        <namespace>rma_create_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>rma_create_form.rma_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="rma_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <validateUrl path="reqrma/rma/ValidatePost"/>
+            <submitUrl path="reqrma/rma/createPost"/>
+        </settings>
+        <dataProvider class="Branch8\RmaAdminUi\Model\Ui\Form\DataProvider"
+                      name="rma_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="order">
+        <settings>
+            <label translate="true">Order Information</label>
+        </settings>
+        <field name="order_id"
+               formElement="hidden" sortOrder="5"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>order_id</dataScope>
+                <imports>
+                    <link name="textLabel">
+                        rma_create_form.rma_create_form.order.insert_order_listing_modal.rma_order_choose_grid:order_id
+                    </link>
+                </imports>
+            </settings>
+        </field>
+        <field name="order_increment_id"
+               formElement="input" sortOrder="10"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Order ID</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <visible>true</visible>
+                <dataScope>order_increment_id</dataScope>
+                <imports>
+                    <link name="value">
+                        rma_create_form.rma_create_form.order.insert_order_listing_modal.rma_order_choose_grid:order_increment_id
+                    </link>
+                </imports>
+            </settings>
+        </field>
+        <container sortOrder="10" name="order_btn" component="Magento_Ui/js/form/components/group">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="formElement" xsi:type="string">container</item>
+                    <item name="breakLine" xsi:type="boolean">false</item>
+                    <item name="dataScope" xsi:type="string"/>
+                    <item name="label" xsi:type="string"/>
+                </item>
+            </argument>
+            <button name="orders" component="Magento_Ui/js/form/components/button"
+                    template="ui/form/components/button/container">
+                <settings>
+                    <title translate="true">Assign</title>
+                    <dataScope/>
+                </settings>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="formElement" xsi:type="string">container</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">
+                                    rma_create_form.rma_create_form.order.insert_order_listing_modal
+                                </item>
+                                <item name="actionName" xsi:type="string">toggleModal</item>
+                            </item>
+                        </item>
+                        <item name="additionalForGroup" xsi:type="boolean">true</item>
+                        <item name="additionalClasses" xsi:type="string">admin__field-medium</item>
+                    </item>
+                </argument>
+            </button>
+        </container>
+        <modal name="insert_order_listing_modal">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="provider" xsi:type="string">rma_create_form.rma_create_form_data_source</item>
+                    <item name="onCancel" xsi:type="string">actionDone</item>
+                    <item name="options" xsi:type="array">
+                        <item name="title" xsi:type="string">Order</item>
+                        <item name="buttons" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="targetName" xsi:type="string">index = rma_order_choose_grid</item>
+                                        <item name="actionName" xsi:type="string">save</item>
+                                    </item>
+                                    <item name="1" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <insertListing name="rma_order_choose_grid"
+                           component="Branch8_RmaAdminUi/js/create/order/order-insert-listing"
+            >
+                <settings>
+                    <dataLinks>
+                        <exports>false</exports>
+                        <imports>true</imports>
+                    </dataLinks>
+                    <autoRender>true</autoRender>
+                    <selectionsProvider>rma_order_choose_grid.rma_order_choose_grid.rma_order_columns
+                    </selectionsProvider>
+                    <exports>
+                        <link name="order_id">rma_create_form.rma_create_form.order.order_id:value</link>
+                        <link name="order_increment_id">rma_create_form.rma_create_form.order.order_increment_id:value
+                        </link>
+                        <link name="customer_name">rma_create_form.rma_create_form.customer.rma_receiver:value</link>
+                        <link name="customer_phone">rma_create_form.rma_create_form.customer.rma_phone:value</link>
+                        <link name="shipping_zipcode">rma_create_form.rma_create_form.customer.rma_zipcode:value</link>
+                        <link name="shipping_city">rma_create_form.rma_create_form.customer.rma_city:value</link>
+                        <link name="shipping_region">rma_create_form.rma_create_form.customer.rma_region:value</link>
+                        <link name="shipping_address_0">rma_create_form.rma_form_data_source:data.rma_address.0:value
+                        </link>
+                        <link name="shipping_address_1">rma_create_form.rma_form_data_source:data.rma_address.1:value
+                        </link>
+                        <link name="shipping_address_2">rma_create_form.rma_form_data_source:data.rma_address.2:value
+                        </link>
+                    </exports>
+                    <dataScope>rma_order_choose_grid</dataScope>
+                    <ns>rma_order_choose_grid</ns>
+                </settings>
+            </insertListing>
+        </modal>
+        <dynamicRows name="list_rma_items" sortOrder="20"
+                     component="Branch8_RmaAdminUi/js/create/form/dnd-rma-items"
+
+        >
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="dataProvider" xsi:type="string">data.rma_detail.rma_order_choose_grid</item>
+                    <item name="map" xsi:type="array">
+                        <item name="is_checked" xsi:type="string">item_id</item>
+                        <item name="item_id" xsi:type="string">item_id</item>
+                        <item name="product_image" xsi:type="string">product_image</item>
+                        <item name="sku" xsi:type="string">sku</item>
+                        <item name="name" xsi:type="string">name</item>
+                        <item name="original_qty" xsi:type="string">original_qty</item>
+                    </item>
+                    <item name="identificationDRProperty" xsi:type="string">item_id</item>
+                </item>
+                <item name="config" xsi:type="array">
+                    <item name="loadItemUrl" xsi:type="url" path="reqrma/rma/GetAvaiableRmaItems"/>
+                    <item name="required" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">RMA Items</label>
+                <defaultRecord>false</defaultRecord>
+                <addButton>false</addButton>
+                <deleteProperty>true</deleteProperty>
+                <recordTemplate>record</recordTemplate>
+                <identificationProperty>item_id</identificationProperty>
+                <links>
+                    <link name="insertData">${ $.provider }:${ $.dataProvider }</link>
+                    <link name="order_id">
+                        rma_create_form.rma_create_form.order.insert_order_listing_modal.rma_order_choose_grid:order_id
+                    </link>
+                </links>
+                <dndConfig>
+                    <param name="enabled" xsi:type="boolean">false</param>
+                    <param name="template" xsi:type="string">ui/dynamic-rows/cells/dnd</param>
+                </dndConfig>
+                <columnsHeader>true</columnsHeader>
+            </settings>
+            <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="isTemplate" xsi:type="boolean">true</item>
+                        <item name="is_collection" xsi:type="boolean">true</item>
+                        <item name="dataScope" xsi:type="string"/>
+                        <item name="positionProvider" xsi:type="string">position</item>
+                    </item>
+                </argument>
+                <field name="is_checked" sortOrder="0" formElement="checkbox">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="dataType" xsi:type="string">boolean</item>
+                            <item name="default" xsi:type="boolean">false</item>
+                            <item name="formElement" xsi:type="string">checkbox</item>
+                            <item name="label" xsi:type="string" translate="true">#</item>
+                            <item name="dataScope" xsi:type="string">is_checked</item>
+                        </item>
+                    </argument>
+                    <formElements>
+                        <checkbox>
+                            <settings>
+                                <prefer>checkbox</prefer>
+                                <valueMap>
+                                    <map name="false" xsi:type="boolean">false</map>
+                                    <map name="true" xsi:type="boolean">true</map>
+                                </valueMap>
+                            </settings>
+                        </checkbox>
+                    </formElements>
+                </field>
+                <field name="item_id" sortOrder="10" formElement="input">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <label translate="true">Item ID</label>
+                        <dataScope>item_id</dataScope>
+                        <labelVisible>true</labelVisible>
+                    </settings>
+                </field>
+                <field name="product_image" sortOrder="20" formElement="input">
+                    <settings>
+                        <elementTmpl>Branch8_RmaAdminUi/form/dynamic-row-image-preview</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>product_image</dataScope>
+                        <label translate="true">Image</label>
+                        <labelVisible>false</labelVisible>
+                    </settings>
+                </field>
+                <field name="sku" formElement="input" sortOrder="30">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>sku</dataScope>
+                        <label translate="true">Sku</label>
+                        <labelVisible>false</labelVisible>
+                    </settings>
+                </field>
+                <field name="name" formElement="input" sortOrder="50">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>name</dataScope>
+                        <label translate="true">Item Name</label>
+                        <labelVisible>false</labelVisible>
+                    </settings>
+                </field>
+                <field name="original_qty" formElement="input" sortOrder="60">
+                    <settings>
+                        <elementTmpl>ui/dynamic-rows/cells/text</elementTmpl>
+                        <dataType>text</dataType>
+                        <dataScope>original_qty</dataScope>
+                        <label translate="true">Return Qty</label>
+                        <labelVisible>false</labelVisible>
+                    </settings>
+                </field>
+            </container>
+        </dynamicRows>
+    </fieldset>
+    <fieldset name="customer">
+        <settings>
+            <label translate="true">Customer Information</label>
+        </settings>
+        <field name="rma_receiver" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">RMA Customer Name</label>
+                <visible>true</visible>
+                <dataScope>rma_receiver</dataScope>
+            </settings>
+        </field>
+        <field name="rma_phone" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation/>
+                <dataType>text</dataType>
+                <label translate="true">RMA Customer Phone</label>
+                <visible>true</visible>
+                <dataScope>rma_phone</dataScope>
+            </settings>
+        </field>
+        <field name="rma_zipcode" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation/>
+                <dataType>text</dataType>
+                <label translate="true">RMA Zip Code</label>
+                <visible>true</visible>
+                <dataScope>rma_zipcode</dataScope>
+            </settings>
+        </field>
+        <field name="rma_region" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation/>
+                <dataType>text</dataType>
+                <label translate="true">RMA Region</label>
+                <visible>true</visible>
+                <dataScope>rma_region</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\RmaAdminUi\Ui\Form\RegionOptions"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="rma_city" formElement="select" component="Branch8_RmaAdminUi/js/create/form/taiwan-cities">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">RMA City</label>
+                <visible>true</visible>
+                <dataScope>rma_city</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="rma_address">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string" translate="true">Branch8_RmaAdminUi/js/create/form/rmaAddress</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">RMA Address</item>
+                    <item name="required" xsi:type="boolean">true</item>
+                    <item name="size" xsi:type="number">1</item>
+                    <item name="formElement" xsi:type="string">multiline</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="source" xsi:type="string">rma_detail</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="additionalClasses" xsi:type="string">_required</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">RMA Address</label>
+                <visible>true</visible>
+                <dataScope>rma_address</dataScope>
+            </settings>
+        </field>
+
+    </fieldset>
+    <fieldset name="setting">
+        <settings>
+            <label translate="true">Settings</label>
+        </settings>
+        <radioset name="resolution_type" sortOrder="5">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                    <item name="additionalInfo" xsi:type="string">Additional information</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Choose Return or Exchange</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">1</item>
+                        <item name="label" xsi:type="string" translate="true">Return</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">2</item>
+                        <item name="label" xsi:type="string" translate="true">Exchange</item>
+                    </option>
+                </options>
+                <dataScope>resolution_type</dataScope>
+            </settings>
+        </radioset>
+        <radioset name="order_status" sortOrder="10">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                    <item name="additionalInfo" xsi:type="string">Additional information</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Have You Receive Goods Yet</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">1</item>
+                        <item name="label" xsi:type="string" translate="true">Yes, Received.</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">2</item>
+                        <item name="label" xsi:type="string" translate="true">No, Not Received.</item>
+                    </option>
+                </options>
+                <dataScope>order_status</dataScope>
+            </settings>
+        </radioset>
+        <field name="reasons" formElement="select" sortOrder="15">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Reasons of Return or Exchange</label>
+                <dataScope>reasons</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\RmaAdminUi\Model\Config\Source\Reasons"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="additional_info" formElement="textarea" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Description</label>
+                <visible>true</visible>
+                <dataScope>description</dataScope>
+            </settings>
+        </field>
+        <radioset name="rma_delivery_time" sortOrder="25">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">rma_detail</item>
+                    <item name="additionalInfo" xsi:type="string">Additional information</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Delivery Time</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <options>
+                    <option name="0" xsi:type="array">
+                        <item name="value" xsi:type="number">0</item>
+                        <item name="label" xsi:type="string" translate="true">不指定</item>
+                    </option>
+                    <option name="1" xsi:type="array">
+                        <item name="value" xsi:type="number">1</item>
+                        <item name="label" xsi:type="string" translate="true">上午時段 (9:00-12:59)</item>
+                    </option>
+                    <option name="2" xsi:type="array">
+                        <item name="value" xsi:type="number">2</item>
+                        <item name="label" xsi:type="string" translate="true">下午時段 (13:00-17:59)</item>
+                    </option>
+
+                    <!--   <option name="3" xsi:type="array">
+                           <item name="value" xsi:type="number">3</item>
+                           <item name="label" xsi:type="string" translate="true">Evening （17:00-19:00)</item>
+                       </option>-->
+
+                </options>
+                <dataScope>rma_delivery_time</dataScope>
+            </settings>
+        </radioset>
+    </fieldset>
+</form>

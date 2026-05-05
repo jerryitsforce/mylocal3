@@ -1,0 +1,19 @@
+<?php
+declare(strict_types=1);
+/**
+ * @project    HotaiConnected
+ * @package    Branch8
+ * @author     cuongho803@gmail.com
+ * @date       22/03/2026
+ */
+/**
+ * @var $viewModel \Branch8\BlackListKeyWords\ViewModel\Config
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ */
+$blackList = json_encode($block->getViewModel()->getConfig());
+?>
+<?php $scriptString = <<<script
+          window.blacklistWords=$blackList;
+script;
+?>
+<?= /* @noEscape */$secureRenderer->renderTag('script', ['type' => 'text/javascript'], $scriptString, false); ?>

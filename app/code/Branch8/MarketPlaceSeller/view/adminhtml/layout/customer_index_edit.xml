@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+            <block class="Branch8\MarketPlaceSeller\Block\Adminhtml\Customer\Edit\DisapproveSellerTab" name="seller_edit_disapprove_seller_tab_view" />
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <!-- etc/adminhtml/menu.xml -->
+    <menu>
+        <add id="Branch8_BlackListKeyWords::keyword"
+             title="Keywords"
+             module="Branch8_BlackListKeyWords"
+             sortOrder="10"
+             parent="Magento_Backend::content"
+             resource="Branch8_BlackListKeyWords::management"/>
+        <add id="Branch8_BlackListKeyWords::blacklist"
+             title="Black List"
+             module="Branch8_BlackListKeyWords"
+             sortOrder="12"
+             parent="Branch8_BlackListKeyWords::keyword"
+             resource="Branch8_BlackListKeyWords::management"
+             action="blacklist_words/keyword/index"/>
+    </menu>
+</config>

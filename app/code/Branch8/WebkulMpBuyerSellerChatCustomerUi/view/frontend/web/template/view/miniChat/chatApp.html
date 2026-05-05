@@ -1,0 +1,36 @@
+<div class="content">
+    <div class="contact-profile">
+        <!-- ko if: currentConversationData -->
+        <div class="wrap">
+            <span class="status online" data-bind="attr:{class:getCssStatus(currentConversationData().sellerChatStatus)}"></span>
+            <img data-bind="attr:{src:currentConversationData().sellerImage}" alt="">
+        </div>
+        <p data-bind="text:currentConversationData().sellerNickName?currentConversationData().sellerNickName:currentConversationData().sellerName"></p>
+        <!-- /ko -->
+        <div class="social-media" data-role="model-chat-controls">
+            <i class="fa fa-volume-up" aria-hidden="true" data-bind="click:enableDisableSound">
+            </i>
+            <i class="fa fa-caret-square-o-down" aria-hidden="true" data-bind="click:minimizeChatWindow">
+            </i>
+            <audio controls="controls" class="wk_sound_play hide" id="myAudio" data-bind="visible:false"
+                   style="display: none;">
+                <source data-bind="attr: {'src': window.chatboxCoreConfig.soundUrl}" type="audio/ogg">
+            </audio>
+        </div>
+    </div>
+    <!-- ko if: getRegion('chatScreen')().length > 0 -->
+    <!-- ko foreach: { data: getRegion('chatScreen'), as: 'element' } -->
+    <!-- ko template: element.getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+    <!--/ko-->
+    <!-- ko if: isLoggedIn()===false  -->
+    <div class="chat">
+        <div class="empty">
+            <p data-bind="i18n: 'Please logged in before chat with seller'"></p>
+            <a data-bind="attr:{href:generalConfig.loginUrl}" class="action primary action-start-chat secondary">
+                <span data-bind="i18n: 'Login'"></span>
+            </a>
+        </div>
+    </div>
+    <!--/ko-->
+</div>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="hifi_sales_report" translate="label" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>HIFI Sales Report</label>
+            <tab>branch8</tab>
+            <resource>Branch8_HifiSalesReport::config</resource>
+            <group id="general" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="40" translate="label">
+                <label>General</label>
+                <field id="payment_methods_belong_to_credit_card" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment methods belong to "credit card"</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Magento\Payment\Model\Config\Source\Allmethods</source_model>
+                </field>
+                <field id="payment_methods_belong_to_convenient_store" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Payment methods belong to "convenient store"</label>
+                    <can_be_empty>1</can_be_empty>
+                    <source_model>Magento\Payment\Model\Config\Source\Allmethods</source_model>
+                </field>
+                <field id="item_desc_string_length_limit" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>HIFI Sync ITEM_DESC String Length Limit</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Field in HIFI detail file for syncing to HIFI API ITEM_DESC field will be crop, ensure the string is less than this limit(there will be a default limit value if this setting is blank).</comment>
+                    <!-- integer greater than 0 -->
+                    <validate>validate-digits validate-not-negative-number validate-greater-than-zero</validate>
+                </field>
+            </group>
+            <group id="api" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="50" translate="label">
+                <label>API</label>
+                <field id="api_domain" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Domain</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>UAT: https://api-uat.hotaishop.com.tw/</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

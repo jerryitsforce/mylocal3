@@ -1,0 +1,162 @@
+<div class="rma-notice" data-bind="visible: isExpiredPoint, i18n: '此訂單點數即將到期，建議採取換貨避免退還點數無法使用。'"></div>
+<form method="post"
+    id="new_rma_form" enctype="multipart/form-data" 
+    data-bind="attr: {action: createFormUrl, class: isLoading()? 'new-rma-form loading' : 'new-rma-form'}, mageInit: {'validation': {}}">
+    <fieldset class="fieldset wk-mprma-fieldset">
+        <div class="rma-items" id="rma_items">
+            <!-- ko foreach: getRegion('rmaItems') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+            <!-- /ko -->
+        </div>
+        <div class="required field" data-bind="visible: !isLoading()">
+            <label for="resolution_type" class="label">
+                <span class="resolution_type" data-bind="i18n: 'Choose Return or Exchange'"></span>
+            </label>
+            <div class="control control-group">
+                <!-- ko if: isVirtual -->
+                <div class="control-group-item">
+                    <input type="radio" id="return" name="resolution_type" value="1" checked="true" data-validate="{'required':true}"/>
+                    <label for="return" data-bind="i18n: 'Choose Return'"></label>
+                </div>
+                <!-- /ko -->
+                <!-- ko ifnot: isVirtual -->
+                <div class="control-group-item">
+                    <input type="radio" id="return" name="resolution_type" value="1"  data-validate="{'required':true}"/>
+                    <label for="return" data-bind="i18n: 'Choose Return'"></label>
+                </div>
+                <div class="control-group-item">
+                    <input type="radio" id="exchange" name="resolution_type" value="2"/>
+                    <label for="exchange" data-bind="i18n: 'Choose Exchange'"></label>
+                </div>
+                <!-- /ko -->
+                
+            </div>
+        </div>
+        <!-- ko ifnot: isVirtual -->
+        <div class="required field" data-bind="visible: !isLoading()">
+            <label for="order_status" class="label">
+                <span class="order_status" data-bind="i18n: 'Have You Received Goods Yet'"></span>
+            </label>
+            <div class="control control-group">
+                <div class="control-group-item">
+                    <input type="radio" id="is_received_goods_true" name="order_status" value="1" data-validate="{'required':true}"/>
+                    <label for="is_received_goods_true" data-bind="i18n: 'Yes, Received'"></label>
+                </div>
+                <div class="control-group-item">
+                    <input type="radio" id="is_received_goods_false" name="order_status" value="0"/>
+                    <label for="is_received_goods_false" data-bind="i18n: 'No, Not Received'"></label>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+        <div class="required field" data-bind="visible: !isLoading()">
+            <label for="return_or_exchange_reason" class="label">
+                <span class="return_or_exchange_reason" data-bind="i18n: 'Reasons of Return or Exchange'"></span>
+            </label>
+            <div class="control" id="reason_control">
+                <!-- ko foreach: getRegion('reasons') -->
+                <!-- ko template: getTemplate() --><!-- /ko -->
+                <!-- /ko -->
+            </div>
+            
+            <div id="return_or_exchange_reason_additional_info" class="control-extra">
+                <textarea name="additional_info"
+                    class="reason_info"
+                    maxlength="20"
+                    data-validate="{'validate-fullwidth-special': true}"
+                    data-bind="attr: {placeholder: $t('請描述原因，限20字 (非必填)')}"></textarea>
+            </div>
+        </div>
+        <!-- ko ifnot: isVirtual -->
+        <div class="required field" data-bind="visible: !isLoading()">
+            <label for="return_or_exchange_customer_name" class="label">
+                <span class="return_or_exchange_customer_name" data-bind="i18n: 'RMA Customer Name'"></span>
+            </label>
+            <div class="control">
+                <input type="text" id="return_or_exchange_customer_name_masked" class="masked-input"
+                    data-bind="value: orderInfo()?.customer_name_masked || '', attr: {placeholder: $t('請輸入姓名')}" />
+                <input type="text" id="return_or_exchange_customer_name" name="rma_receiver" class="unmasked-input hide"
+                    data-validate='{"required":true, "validate-fullwidth-special": true}'
+                    data-bind="value: orderInfo()?.customer_name || '', attr: {placeholder: $t('請輸入姓名')}" />
+                <span class="rma-address-info rma-receiver"
+                    data-bind="visible: false, text: orderInfo()?.customer_name_masked"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: isVirtual -->
+        <div class="required field" data-bind="visible: !isLoading()">
+            <label for="return_or_exchange_phone_number" class="label">
+                <span class="return_or_exchange_phone_number" data-bind="i18n: 'RMA Phone Number'"></span>
+            </label>
+            <div class="control">
+                <input type="text" id="return_or_exchange_phone_number_masked" class="masked-input"
+                    data-bind="value: orderInfo()?.phone_masked || '', attr: {placeholder: $t('請輸入手機號碼')}" />
+                <input type="text" id="return_or_exchange_phone_number" name="rma_phone" class="unmasked-input hide"
+                    data-validate="{required:true, 'validate-tw-phone': true,'validate-fullwidth-special': true}"
+                    minlength="10" maxlength="10"
+                    data-bind="value: orderInfo()?.phone || '', attr: {placeholder: $t('請輸入手機號碼')}" />
+                <span class="rma-address-info rma-phone" data-bind="visible: false, text: orderInfo()?.phone_masked"></span>
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: isVirtual -->
+        <div class="required field" data-bind="visible: !isLoading()">
+            <label for="return_or_exchange_order_address" class="label">
+                <span class="return_or_exchange_order_address" data-bind="i18n:'RMA Address'"></span>
+            </label>
+            <div class="control control-group-row">
+                <div class="control-group-item" id="order_address_region">
+                    <!-- ko foreach: getRegion('rmaRegion') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+                <div class="control-group-item" id="order_address_city">
+                    <!-- ko foreach: getRegion('rmaCity') -->
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="control-extra">
+                <input type="text" id="return_or_exchange_order_address_street_masked" class="masked-input" value=""
+                    data-bind="value: orderInfo()?.shipping_address_street_masked || '', attr: {placeholder: $t('請輸入收件地址')}" />
+                <input type="text" id="return_or_exchange_order_address_street" name="rma_address[]"
+                    data-bind="value: orderInfo()?.shipping_address_street || '', attr: {placeholder: $t('請輸入收件地址')}"
+                    class="unmasked-input hide" data-validate='{"required":true, "validate-fullwidth-special": true}' />
+            </div>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: isVirtual -->
+        <div class="required field rma-delivery-time" data-bind="visible: !isLoading()">
+            <label for="rma_delivery_time" class="label">
+                <span class="rma_delivery_time" data-bind="i18n: 'RMA Delivery Time'"></span>
+            </label>
+            <div class="control control-group">
+                <div class="control-group-item">
+                    <input type="radio" id="rma_delivery_time_morning" name="rma_delivery_time"  data-bind="value: 1"/>
+                    <label for="rma_delivery_time_morning" data-bind="i18n: '上午時段 (9:00-12:59)'"></label>
+                </div>
+                <div class="control-group-item">
+                    <input type="radio" id="rma_delivery_time_afternoon" name="rma_delivery_time" data-bind="value: 2"/>
+                    <label for="rma_delivery_time_afternoon" data-bind="i18n: '下午時段 (13:00-17:59)'"></label>
+                </div>
+                <div class="control-group-item">
+                    <input type="radio" id="rma_delivery_time_not_specific" name="rma_delivery_time" data-bind="value: 0" data-validate="{'required':true}"/>
+                    <label for="rma_delivery_time_not_specific" data-bind="i18n: '不指定'"></label>
+                </div>
+            </div>
+        </div>
+        <!-- /ko -->
+    </fieldset>
+    <div class="custom-notice" data-bind="visible: !isLoading()">
+        <h3 data-bind="i18n: 'Things to note'"></h3>
+        <ol>
+            <li data-bind="i18n: 'Points will be refunded immediately if the order is canceled, and the refund will take 7-14 working days to be returned to the original bank (depending on the card-issuing bank).'"></li>
+            <li data-bind="i18n: 'After the returned goods are recovered and checked correctly, the platform completes the return process and the points will be returned immediately; refunds will take 7-14 working days to be returned to the original card bank (depending on the card-issuing bank).'"></li>
+            <li data-bind="i18n: 'Points expire during the return period and will no longer be reissued. If you have any concerns, it is recommended to use [Exchange] to avoid damage to your rights and interests.'"></li>
+            <li data-bind="i18n: 'If the returned order is offset by using a coupon, the coupon will not be reissued.'"></li>
+            <li data-bind="i18n: 'Please handle returns within the seven-day hesitation period. (The hesitation period is not a trial period). When returning the product, it must be returned to the original state when you received the product (including accessories, internal and external packaging, related documents, gifts, etc.). If the return is incomplete, the refund will be subject to an appropriate fee. For detailed regulations, please see the return and exchange regulations.'"></li>
+        </ol>
+    </div>
+    <input type="hidden" name="item_id" data-bind="value: orderItemId || ''" />
+    <input type="hidden" name="order_id" data-bind="value: orderId || ''" />
+</form>

@@ -1,0 +1,115 @@
+// =============================================
+//  Table Cells - Common Styles
+// =============================================
+//  此檔案包含 Tabulator cell 的共用樣式
+//  
+//  目前包含：
+//  1. 狀態指示器樣式 (Status Indicator Pattern)
+//     - ticket_status   (票券狀態)
+//     - shipping_status (商品物流狀態)
+//     - invoice_status  (發票狀態)
+//  
+//  設計理念：極簡點狀指示器 + 統一視覺語言
+//  - 無背景框，極簡風格
+//  - 所有狀態統一使用綠色圓點燈號
+//  - 一致的 hover 效果
+//  - 符合 BEM 規範
+//
+//  如果未來需要新增其他共用的 cell 樣式模式，請加入此檔案
+//
+//  @created 2025-10-28 - 重構：合併 3 個狀態指示器樣式
+// =============================================
+
+// =============================================
+//  1. Status Indicator Pattern (狀態指示器)
+// =============================================
+//  用於：票券狀態、物流狀態、發票狀態
+//
+//  HTML 結構：
+//  <div class="tabulator-cell">
+//    <div class="xxx-status">
+//      <span class="xxx-status__item">狀態名稱</span>
+//      <span class="xxx-status__item">狀態名稱</span>
+//    </div>
+//  </div>
+// =============================================
+
+// 限制在 Tabulator cell 範圍內（避免全域污染）
+.tabulator-cell {
+    // Cell 對齊方式：靠上對齊（當顯示所有狀態時會有多行）
+    vertical-align: top;
+    
+    // 狀態容器（共用 - 垂直排列）
+    .ticket-status,
+    .shipping-status,
+    .invoice-status {
+        display: flex;
+        flex-direction: column;  // 垂直排列（一行一個狀態）
+        gap: 8px;                // 垂直間距
+        align-items: flex-start; // 靠左對齊
+        position: relative;
+    }
+
+    // 狀態項目（共用）
+    .ticket-status__item,
+    .shipping-status__item,
+    .invoice-status__item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;                    // 燈號與文字間距
+        font-size: 1.3rem;
+        line-height: 1.4;
+        color: #333;
+        white-space: nowrap;
+        
+        // 綠色圓點燈號（所有狀態統一）
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #4caf50;   // 綠色（活躍狀態）
+            flex-shrink: 0;              // 不縮小
+        }
+        
+        // Hover 效果（輕微高亮）
+        &:hover {
+            color: #000;
+            
+            &::before {
+                background-color: #45a049;  // 燈號稍微變深
+            }
+        }
+        
+        // Modifier: inactive（非活躍狀態 - 灰色燈號）
+        &--inactive {
+            color: #999;  // 灰色文字
+            
+            &::before {
+                background-color: #ccc;  // 灰色燈號
+            }
+            
+            &:hover {
+                color: #666;  // hover 時稍微變深
+                
+                &::before {
+                    background-color: #999;
+                }
+            }
+        }
+    }
+    
+    & .nested-expand-btn {
+        margin-right: 8px !important;
+        padding: 0 !important;
+        font-size: 8px !important;
+        background-color: transparent;
+        width: 14px;
+        height: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="catalogrule_approval" resource="default" engine="innodb" comment="CatalogRule approval data">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="catalogrule_id" nullable="true" default="0" />
+        <column xsi:type="text" name="post_data" nullable="false" />
+        <column xsi:type="int" name="post_type" nullable="false"  />
+        <column xsi:type="varchar" name="submitter" nullable="false"  />
+        <column xsi:type="varchar" name="approver" nullable="false"  />
+        <column xsi:type="int" name="status" nullable="false" />
+        <column xsi:type="timestamp" name="created_at" nullable="false" />
+        <column xsi:type="timestamp" name="updated_at" nullable="true" />
+        <column xsi:type="varchar" name="reject_reason" nullable="true"  />
+        <column xsi:type="int" name="staging_id" nullable="true" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+        <index referenceId="CATALOGRULE_APPROVAL_RULE_ID" indexType="btree">
+            <column name="catalogrule_id"/>
+        </index>
+        <index referenceId="CATALOGRULE_APPROVAL_SUBMITTER" indexType="btree">
+            <column name="submitter"/>
+        </index>
+        <index referenceId="CATALOGRULE_APPROVAL_APPROVER" indexType="btree">
+            <column name="approver"/>
+        </index>
+        <index referenceId="CATALOGRULE_APPROVAL_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+        <index referenceId="CATALOGRULE_APPROVAL_CREATED_AT" indexType="btree">
+            <column name="created_at"/>
+        </index>
+    </table>
+    <table name="catalogrule_change_log" resource="default" engine="innodb">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="int" name="catalogrule_id" nullable="false" default="0" />
+        <column xsi:type="text" name="old_data" nullable="true" />
+        <column xsi:type="text" name="approved_data" nullable="false" />
+        <column xsi:type="varchar" name="submitter" nullable="false"  />
+        <column xsi:type="varchar" name="approver" nullable="false"  />
+        <column xsi:type="timestamp" name="created_at" nullable="false" />
+        <column xsi:type="int" name="approval_id" nullable="false" />
+        <column xsi:type="int" name="status" nullable="false" default="1" />
+        <column xsi:type="varchar" name="reject_reason" nullable="true"  />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id" />
+        </constraint>
+
+        <index referenceId="CATALOGRULE_CHANGE_LOG_RULE_ID" indexType="btree">
+            <column name="catalogrule_id"/>
+        </index>
+        <index referenceId="CATALOGRULE_CHANGE_LOG_APPROVER" indexType="btree">
+            <column name="approver"/>
+        </index>
+    </table>
+</schema>

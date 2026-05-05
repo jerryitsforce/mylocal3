@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    <topic name="buyer.login.update.gift.ticket" request="string" is_synchronous="false" />
+    <topic name="visitor.track" request="string" is_synchronous="false"/>
+</config>

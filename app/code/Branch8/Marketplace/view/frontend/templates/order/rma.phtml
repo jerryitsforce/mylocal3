@@ -1,0 +1,209 @@
+<?php
+/**
+ * @var $rmaModel Branch8\Marketplace\ViewModel\RmaModel
+ */
+$orderId = $block->getRequest()->getParam('id');
+$order = $block->getOrder($orderId);
+$rmaData = $block->getRmaData($orderId);
+$items = $rmaData['items'];
+$orderDetails = $rmaData['order_details'];
+$reasons = $block->getAllReasonsForSeller();
+$customerName = $orderDetails['customer_name'] ?? '';
+$street = $orderDetails['shipping_address_street'] ?? '';
+$currentCity = $orderDetails['shipping_address_city'] ?? '';
+$currentRegion = $orderDetails['shipping_address_region'] ?? '';
+$phone = $orderDetails['phone'] ?? '';
+$regions = $block->getRmaModel()->getRegionCityOptions();
+?>
+
+<form method="post"
+      action="<?= $escaper->escapeUrl($block->getUrl('reqrma/seller/create')); ?>"
+      id="wk_seller_new_rma_form" enctype="multipart/form-data" data-mage-init='{"validation":{}}'>
+    <fieldset class="fieldset wk-mprma-fieldset">
+        <div class="required field">
+            <input type='hidden' id='order_id' name='order_id' value='<?= $escaper->escapeHtml($orderId) ?>'>
+        </div>
+        <div class="required field">
+            <label for="order_items" class="label">
+                <span class="order_items"><?= $escaper->escapeHtml(__("Choose Rma Items")); ?></span>
+            </label>
+            <div class="control">
+                <?php foreach ($items as $item): ?>
+                    <div>
+                        <input type="checkbox" id="order_item-<?= $item['itemId'] ?>" name="order_items[]"
+                               value="<?= $item['itemId'] ?>"/>
+                        <label
+                            for="order_item-<?= $item['itemId'] ?>"><?= $escaper->escapeHtml(__($item['name'])); ?></label>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="required field">
+            <label for="resolution_type" class="label">
+                <span class="resolution_type"><?= $escaper->escapeHtml(__("Choose Return or Exchange")); ?></span>
+            </label>
+            <div class="control">
+                <div>
+                    <input type="radio" id="return" name="resolution_type" value="1" required/>
+                    <label for="return"><?= $escaper->escapeHtml(__("Choose Return")); ?></label>
+                </div>
+                <div>
+                    <input type="radio" id="exchange" name="resolution_type" value="2"/>
+                    <label for="exchange"><?= $escaper->escapeHtml(__("Choose Exchange")); ?></label>
+                </div>
+            </div>
+        </div>
+        <div class="required field">
+            <label for="order_status" class="label">
+                <span class="order_status"><?= $escaper->escapeHtml(__("Have You Received Goods Yet")); ?></span>
+            </label>
+            <div class="control">
+                <div>
+                    <input type="radio" id="is_received_goods_true" name="order_status" value="1" required/>
+                    <label for="is_received_goods_true"><?= $escaper->escapeHtml(__("Yes, Received.")); ?></label>
+                </div>
+                <div>
+                    <input type="radio" id="is_received_goods_false" name="order_status" value="0"/>
+                    <label for="is_received_goods_false"><?= $escaper->escapeHtml(__("No, Not Received.")); ?></label>
+                </div>
+            </div>
+        </div>
+        <div class="required field">
+            <label for="return_or_exchange_reason" class="label">
+                <span
+                    class="return_or_exchange_reason"><?= $escaper->escapeHtml(__("Reasons of Return or Exchange")); ?></span>
+            </label>
+            <div class="control required">
+                <select id="return_or_exchange_reason" name="reason_id">
+                    <option value="" required
+                            disabled><?= $escaper->escapeHtml(__("Please Choose Reason.")); ?></option>
+                    <?php foreach ($reasons as $reasonId => $reason): ?>
+                        <option value="<?= $reasonId ?>"><?= $reason ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div id="return_or_exchange_reason_additional_info" class="control">
+                <textarea name="additional_info" class="validate-no-html-tags"
+                          placeholder="<?= $escaper->escapeHtml(__("Please Describe Your Reasons. 20 characters limited.")); ?>"></textarea>
+            </div>
+        </div>
+        <div class="required field">
+            <label for="return_or_exchange_customer_name" class="label">
+                <span
+                    class="return_or_exchange_customer_name"><?= $escaper->escapeHtml(__("RMA Customer Name")); ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="return_or_exchange_customer_name" name="rma_receiver"
+                       value="<?= $customerName ?>" data-validate="{'required':true}">
+                <span class="rma-receiver"></span>
+            </div>
+        </div>
+        <div class="field">
+            <label for="return_or_exchange_phone_number" class="label">
+                <span
+                    class="return_or_exchange_phone_number"><?= $escaper->escapeHtml(__("RMA Phone Number")); ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="return_or_exchange_phone_number" name="rma_phone" value="<?= $phone ?>"/>
+                <span class="rma-phone"></span>
+            </div>
+        </div>
+        <div class="field">
+            <label for="return_or_exchange_order_address" class="label">
+                <span class="return_or_exchange_order_address"><?= $escaper->escapeHtml(__("RMA Zipcode")); ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="return_or_exchange_order_address_zipcode" name="rma_zipcode" value="">
+            </div>
+        </div>
+        <div class="field">
+            <label for="return_or_exchange_order_address_region" class="label">
+                <span class="return_or_exchange_order_address"><?= $escaper->escapeHtml(__("RMA Region")); ?></span>
+            </label>
+            <div class="control">
+                <select id="return_or_exchange_order_address_region" name="rma_region">
+                    <?php foreach ($regions as $region): ?>
+                        <option value="<?= trim($escaper->escapeHtml($region['value'])) ?>" <?php if($currentRegion===$region['value']):?>selected="selected"<?php endif?>>
+                            <?= $escaper->escapeHtml($region['label']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="required field">
+            <label for="return_or_exchange_order_address_city" class="label">
+                <span class="return_or_exchange_order_address"><?= $escaper->escapeHtml(__("RMA City")); ?></span>
+            </label>
+            <div class="control">
+                <select id="return_or_exchange_order_address_city"
+                        name="rma_city"
+                        title="Rma/City"
+                        class="validate-select region_id"
+                >
+                    <option value=""><?= __('Please select city') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="required field">
+            <label for="return_or_exchange_order_address" class="label">
+                <span class="return_or_exchange_order_address"><?= $escaper->escapeHtml(__("RMA Address")); ?></span>
+            </label>
+            <div class="control">
+                <input type="text" id="return_or_exchange_order_address_street" name="rma_address[]"
+                       value="<?= $escaper->escapeHtml($street) ?>">
+                <span><b><?= __('Original Address:') ?></b><?= $escaper->escapeHtml($street) ?></span>
+                <button type="button" id="split_address" disabled="disabled">
+                    <span class="rma-address"><?= __('Split Address') ?></span>
+                </button>
+
+            </div>
+        </div>
+        <div class="required field rma-delivery-time">
+            <label for="rma_delivery_time" class="label">
+                <span class="rma_delivery_time"><?= $escaper->escapeHtml(__("RMA Delivery Time")); ?></span>
+            </label>
+            <div class="control">
+                <div>
+                    <input type="checkbox" id="rma_delivery_time_morning" name="rma_delivery_time[]" value="1"/>
+                    <label
+                        for="rma_delivery_time_morning"><?= $escaper->escapeHtml(__("Morning（9:00-12:59）")); ?></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="rma_delivery_time_afternoon" name="rma_delivery_time[]" value="2"/>
+                    <label
+                        for="rma_delivery_time_afternoon"><?= $escaper->escapeHtml(__("Afternoon（13:00-17:59）")); ?></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="rma_delivery_time_not_specific" name="rma_delivery_time[]" value="0"
+                           required/>
+                    <label for="rma_delivery_time_not_specific"><?= $escaper->escapeHtml(__("Not Specific")); ?></label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <button type="submit" form="wk_seller_new_rma_form" value="create rma">Create Rma</button>
+</form>
+<script type="text/javascript">
+    require(['jquery'], function ($) {
+        $("#wk_seller_new_rma_form").on('submit', function () {
+            // prevent duplicate form submissions
+            $(this).find(":submit").attr('disabled', 'disabled');
+        });
+    });
+</script>
+<script type="text/x-magento-init">
+    {
+        "#return_or_exchange_order_address_region": {
+            "Branch8_Marketplace/js/taiwan-city-updater": {
+                "optionalRegionAllowed": true,
+                "cityListId": "#return_or_exchange_order_address_city",
+                "currentCity":"<?= $escaper->escapeHtml($currentCity) ?>",
+                "form": "#wk_seller_new_rma_form",
+                "regionCitiesJson": <?= json_encode($regions) ?>,
+                "addressInput":"#return_or_exchange_order_address_street",
+                "zipcodeInput":"#return_or_exchange_order_address_zipcode",
+                "splitAddressTrigger":"#split_address"
+    }
+ }
+}
+</script>

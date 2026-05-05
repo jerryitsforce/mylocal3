@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\RoleDelegate\Api\DelegateRepositoryInterface"
+                type="Branch8\RoleDelegate\Repository\DelegateRepository"/>
+    <type name="Magento\Framework\AuthorizationInterface">
+        <plugin name="branch8_role_delegate_authorization_plugin" type="Branch8\RoleDelegate\Plugin\AuthorizationPlugin" sortOrder="10"/>
+    </type>
+    <type name="Branch8\RoleDelegate\Model\ResourceModel\Delegate\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">branch8_role_delegate</argument>
+            <argument name="eventPrefix" xsi:type="string">role_delegate</argument>
+            <argument name="eventObject" xsi:type="string">_role_delegate_grid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\RoleDelegate\Model\ResourceModel\Delegate\Collection</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="roledelegate_manage_listing_data_source" xsi:type="string">Branch8\RoleDelegate\Model\ResourceModel\Delegate\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Amasty\Rolepermissions\Helper\Data">
+        <plugin name="branch8_role_delegate_amasty_role_permissions_helper_data" type="Branch8\RoleDelegate\Plugin\Amasty\Rolepermissions\Helper\Data" sortOrder="10"/>
+    </type>
+    <virtualType name="Branch8\RoleDelegate\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8-role-delegate.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8RoleDelegateLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Branch8\RoleDelegate\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\RoleDelegate\Cron\ProcessDelegation">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8RoleDelegateLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RoleDelegate\Controller\Adminhtml\Manage\Cancel">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8RoleDelegateLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RoleDelegate\Observer\SaveUserAfter">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8RoleDelegateLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RoleDelegate\Plugin\AuthorizationPlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8RoleDelegateLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\RoleDelegate\Plugin\Amasty\Rolepermissions\Helper\Data">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8RoleDelegateLogger</argument>
+        </arguments>
+    </type>
+</config>

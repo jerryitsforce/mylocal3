@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!--
+        This event must in global scope , checkout is using webapi_rest scope
+    -->
+
+    <!--
+           Disable because this event is deal with Mysql Transaction , order is not committed and data not already in db => payment method not found
+       -->
+    <event name="sales_order_save_after">
+        <observer name="sales_order_save_after" disabled="true"/>
+    </event>
+
+    <!--    do not use "sales_order_place_after" => this event in MYSQL transaction ,
+    see code vendor/magento/module-quote/Model/QuoteManagement.php (line 623)-->
+
+    <event name="checkout_submit_all_after">
+        <observer name="sales_order_save_after" instance="Ecpay\General\Observer\OrderSaveAfter"/>
+    </event>
+
+</config>

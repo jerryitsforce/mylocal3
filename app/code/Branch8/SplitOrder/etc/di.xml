@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Branch8\SplitOrder\Api\OrderRelationRepositoryInterface" type="Branch8\SplitOrder\Model\OrderRelationRepository"/>
+	<preference for="Branch8\SplitOrder\Api\Data\OrderRelationInterface" type="Branch8\SplitOrder\Model\OrderRelation"/>
+	<preference for="Branch8\SplitOrder\Api\Data\OrderRelationSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+</config>

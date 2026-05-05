@@ -1,0 +1,2120 @@
+<?php
+
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+/** @var $block \Webkul\Marketplace\Block\Product\Create */
+
+$viewModel = $block->getViewModel();
+/** @var \Branch8\MarketplaceStaging\Helper\Data $marketplaceStagingHelper */
+$marketplaceStagingHelper = $block->getViewHelper();
+$helper = $viewModel->getHelper();
+$mkProductHelper = $this->helper(\Branch8\MarketplaceProduct\Helper\Config::class);
+$product_hint_status = $helper->getProductHintStatus();
+$currency_code = $helper->getCurrentCurrencyCode();
+$currencySymbol = $helper->getCurrencySymbol();
+$product_id = $block->getRequest()->getParam('id');
+$tempId = $block->getRequest()->getParam('temp_id');
+$productColl = $block->getProduct($product_id);
+if (!$productColl->getIsDraft()) {
+    $productColl->setData('salable_qty', $marketplaceStagingHelper->getSalableQty($productColl));
+}
+$tierPrices = $productColl->getData('tier_price');
+$websiteIds = $productColl->getWebsiteIds();
+$attribute_set_id = $productColl['attribute_set_id'];
+$sellerComissionRate = $marketplaceStagingHelper->getCommisionRates($helper->getCustomerId());
+if ($block->getRequest()->getParam('set')) {
+    $attribute_set_id = $block->getRequest()->getParam('set');
+}
+$defaultShippingMethod = 'hotai_delivery_hotai_delivery';
+$stockItem = $marketplaceStagingHelper->getStockItem($product_id);
+$attributes = $marketplaceStagingHelper->getAttributesByAttributeSetId($attribute_set_id, $productColl['type_id']);
+$setName = '';
+$productUrl = $product_id ? ($productColl->getUrlModel()->getUrl($productColl) ?? '') : '';
+$listAttribute1 = [
+    'brand' => '',
+    'shipping_method' => '',
+    'preservation_status' => '',
+    'virtual_product_type' => ''
+];
+$listAttribute2 = [
+    'point_money_config_type' => '',
+    'point_money_config_product_point' => '',
+    'point_money_config_free_ratio_upper_redeem_limit_type' => '',
+    'point_money_config_free_ratio_upper_redeem_limit_value' => '',
+    'point_money_config_free_ratio_lower_redeem_limit_type' => '',
+    'point_money_config_free_ratio_lower_redeem_limit_value' => '',
+    'display_serial_number' => '',
+    'display_barcode' => '',
+    'barcode_type' => '',
+    'is_offline_operation' => '',
+    'exchange_url' => '',
+    'exchange_hint' => '',
+    'return_ticket_value' => '',
+    'salable_qty' => '',
+];
+$listAttribute3 = [
+    'show_long_time_ship' => '',
+    'long_time_ship' => '',
+    'wk_marketplace_preorder' => '',
+    'preorder_mode' => '',
+    'preorder_x_days' => '',
+    'preorder_start_date' => '',
+    'preorder_end_date' => '',
+    'preorder_ship_date' => '',
+    'wk_marketplace_availability' => '',
+    'preorder_use_qty' => '',
+    'wk_mppreorder_qty' => '',
+    'limit_purchased_enable' => '',
+    'limit_purchased_qty' => '',
+    'limit_purchased_start_time' => '',
+    'limit_purchased_end_time' => '',
+    'individual_product' => '',
+    'limit_purchased_customer_group' => '',
+    'eighteen_product' => '',
+    'search_tag' => '',
+];
+foreach ($attributes as $key => $attribute) {
+    if (array_key_exists($attribute->getAttributeCode(), $listAttribute1)) {
+        $listAttribute1[$attribute->getAttributeCode()] = $attribute;
+        unset($attributes[$key]);
+    } elseif (array_key_exists($attribute->getAttributeCode(), $listAttribute2)) {
+        $listAttribute2[$attribute->getAttributeCode()] = $attribute;
+        unset($attributes[$key]);
+    } elseif (array_key_exists($attribute->getAttributeCode(), $listAttribute3)) {
+        $listAttribute3[$attribute->getAttributeCode()] = $attribute;
+        unset($attributes[$key]);
+    }
+}
+//$attributeSelector = $marketplaceStagingHelper->getAttributeSelector($attributes);
+$marketplaceProduct = $marketplaceStagingHelper->getAttributeSelectedByProduct($product_id, $productColl['row_id']);
+$skuType = $helper->getSkuType();
+$weightUnit = $helper->getWeightUnit();
+$isAllowLargeItem = $marketplaceStagingHelper->isAllowSettingLargeItem();
+$hotaiShippingHelper = $this->helper(\Branch8\HotaiShipping\Helper\Data::class);
+$sellerSetting = $marketplaceStagingHelper->getSellerSetting($helper->getCustomerId());
+$virtualTicketAttributeSetIds = $marketplaceStagingHelper->getTicketAttributeSet();
+$defaultShippingMethod = 'hotai_delivery_hotai_delivery';
+$flagShipStoreHelperSales = $this->helper(\Branch8\FlagshipStore\Helper\Sales::class);
+$validatePostProductUrl = $block->getUrl('marketplacectrl/product/validate');
+?>
+<script>
+(function() {
+    // 1. Force override browser scroll restoration iteratively just in case Magento routers reset it
+    var enforceScrollRestoration = function() {
+        if ('scrollRestoration' in history && history.scrollRestoration !== 'manual') {
+            history.scrollRestoration = 'manual';
+        }
+    };
+    enforceScrollRestoration();
+    var scrollInterval = setInterval(enforceScrollRestoration, 500);
+
+    // 2. Add flag on save intent (use mousedown to absolutely beat any jQuery preventDefault/stopImmediatePropagation)
+    document.addEventListener('DOMContentLoaded', function() {
+        var saveBtn = document.getElementById('save-btn');
+        if (saveBtn) {
+            saveBtn.addEventListener('mousedown', function() {
+                sessionStorage.setItem('seller_product_saved_v3', '1');
+            });
+            // Also listen on purely form submission
+            var form = document.getElementById('edit-product');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    sessionStorage.setItem('seller_product_saved_v3', '1');
+                });
+            }
+        }
+    });
+
+    // 3. Centralized aggressive scroll-locker
+    if (sessionStorage.getItem('seller_product_saved_v3')) {
+        sessionStorage.removeItem('seller_product_saved_v3');
+        var userScrolled = false;
+        var startTime = Date.now();
+        var lockDuration = 10000; // 10 FULL SECONDS: Outlasts even the slowest Knockout/AJAX responses
+
+        // Listen for intent to abandon the lock
+        var stopLock = function() { userScrolled = true; };
+        window.addEventListener('wheel', stopLock, { passive: true });
+        window.addEventListener('touchmove', stopLock, { passive: true });
+        window.addEventListener('keydown', function(e) {
+            // Space, PageUp, PageDown, End, Home, ArrowUp, ArrowDown
+            if ([32, 33, 34, 35, 36, 38, 40].indexOf(e.keyCode) > -1) {
+                userScrolled = true;
+            }
+        }, { passive: true });
+
+        var lockScroll = function() {
+            if (userScrolled || (Date.now() - startTime) > lockDuration) {
+                clearInterval(scrollInterval); // Clean up memory and CPU usage
+                window.removeEventListener('wheel', stopLock);
+                window.removeEventListener('touchmove', stopLock);
+                return; // Stop locking
+            }
+            if (window.scrollY > 0 || document.documentElement.scrollTop > 0) {
+                window.scrollTo(0, 0);
+            }
+            requestAnimationFrame(lockScroll);
+        };
+        requestAnimationFrame(lockScroll);
+    } else {
+        // If not a saved reload, clear interval early
+        setTimeout(function() { clearInterval(scrollInterval); }, 5000);
+    }
+})();
+
+<?php
+$productData = $productColl->getData();
+$productData['price'] = (int)$productData['price'];
+$productData['special_price'] = (int)$productData['special_price'];
+$productData['cost'] = (int)$productData['cost'];
+if ($product_id) {
+    $isInFlagShipStore = $marketplaceStagingHelper->isInFlagshipStore($product_id);
+} else {
+    $isInFlagShipStore = $marketplaceStagingHelper->isSellerInFlagshipStore($helper->getCustomerId());
+}
+
+if (!empty($marketplaceStagingHelper->getFlagshipCategoryIds()) && $isInFlagShipStore){
+    $productData['flagstore_category'] = $productColl->getFlagstoreCategory();
+}
+
+?>
+var productData = <?php echo json_encode($productData);?>;
+
+<?php
+$productOptions = $productColl->getOptions();
+$productOptionsData = [];
+foreach($productOptions as $_productOption){
+    $productOptionsData[] = $_productOption->getData();
+}
+?>
+var productOptions = <?php echo json_encode($productOptionsData);?>;
+</script>
+<form action="<?= $block->escapeUrl($block->getUrl('marketplace/product/save', ['_secure' => $block
+                    ->getRequest()->isSecure()])) ?>" enctype="multipart/form-data" method="post"
+    id="edit-product" data-form="edit-product" data-mage-init='{"validation":{}}'>
+    <input type="hidden" name="editor_updated_fields" id="editor_updated_fields" value="" />
+    <div class="wk-mp-design" id="wk-bodymain">
+        <fieldset class="fieldset info wk-mp-fieldset">
+            <div data-mage-init='{"formButtonAction": {}}' class="wk-mp-page-title legend">
+                <span><?= $block->escapeHtml(__('Edit Product')) ?></span>
+                <?php if ($helper->getIsProductEditApproval()): ?>
+                    <button class="button wk-mp-btn" title="<?= $block->escapeHtml(__('Apply Review')) ?>"
+                        type="button" id="save-btn">
+                        <span><span><?= $block->escapeHtml(__('Apply Review')) ?></span></span>
+                    </button>
+                    <button class="button wk-mp-btn" title="<?= $block->escapeHtml(__('Save Draft & Duplicate')) ?>"
+                        type="button" id="save-draft-duplicate-btn">
+                        <span><span><?= $block->escapeHtml(__('Save Draft & Duplicate')) ?></span></span>
+                    </button>
+                    <button class="button wk-mp-btn" title="<?= $block->escapeHtml(__('Save Draft')) ?>"
+                        type="button" id="save-draft-btn">
+                        <span><span><?= $block->escapeHtml(__('Save Draft')) ?></span></span>
+                    </button>
+                <?php else: ?>
+                    <button class="button wk-mp-btn" title="<?= $block->escapeHtml(__('Save')) ?>"
+                        type="button" id="save-btn">
+                        <span><span><?= $block->escapeHtml(__('Save')) ?></span></span>
+                    </button>
+                <?php endif; ?>
+                <?php if ($tempId): ?>
+                    <button class="button wk-mp-btn"
+                        onclick="location.href='<?= $block->getUrl('marketplacectrl/temp/productlist') ?>'" type="button">
+                        <span><span><?= $block->escapeHtml(__('Back to List')) ?></span></span>
+                    </button>
+                <?php else: ?>
+                    <button class="button wk-mp-btn"
+                        onclick="location.href='<?= $block->getUrl('marketplace/product/productlist') ?>'" type="button">
+                        <span><span><?= $block->escapeHtml(__('Back to List')) ?></span></span>
+                    </button>
+                <?php endif; ?>
+            </div>
+            <?= $block->getBlockHtml('formkey') ?>
+            <?= $block->getBlockHtml('seller.formkey') ?>
+            <input id="product_type_id" name="type" type="hidden"
+                value="<?= /* @noEscape */ $productColl['type_id'] ?>">
+            <input type="hidden" name="id" value="<?= /* @noEscape */ $product_id; ?>" />
+            <input type="hidden" name="product_id" value="<?= /* @noEscape */ $product_id; ?>" />
+            <input type="hidden" name="temp_id" value="<?= /* @noEscape */ $tempId; ?>" />
+            <?php if (count($helper->getAllowedSets()) > 1) { ?>
+                <div class="field required">
+                    <label class="label"><?= $block->escapeHtml(__('Attribute Set')) ?>:</label>
+                    <div class="control">
+                        <select name="set" id="attribute-set-id" class="required-entry">
+                            <?php foreach ($helper->getAllowedSets() as $set) { ?>
+                                <?php if ($productColl['type_id'] == 'virtual' && $set['value'] == '4') continue; ?>
+                                <option value="<?= $block->escapeHtml($set['value']) ?>"
+                                    data-url="<?= $block->escapeUrl($block->getUrl(
+                                                    'marketplace/product/edit',
+                                                    ['id' => $product_id, 'set' => $set['value']]
+                                                )) ?>"
+                                    <?php if ($attribute_set_id == $set['value']) {
+                                        $setName = $set['label']; ?> selected="selected" <?php } ?>>
+                                    <?= $block->escapeHtml($set['label']) ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <?php
+            } else {
+                $allowedSets = $helper->getAllowedSets();
+                if (!empty($allowedSets)) { ?>
+                    <input type="hidden" name="set" id="attribute-set-id"
+                        value="<?= /* @noEscape */ $allowedSets[0]['value'] ?>" />
+                <?php
+                } else { ?>
+                    <input type="hidden" name="set" id="attribute-set-id"
+                        value="<?= /* @noEscape */ $attribute_set_id ?>" />
+            <?php
+                }
+            } ?>
+            <?php if ($product_id && (!$marketplaceProduct || !$marketplaceProduct->getNewNeedApprove())): ?>
+                <div class="field required">
+                    <label class="label"><?= $block->escapeHtml(__('Status')) ?>:</label>
+                    <?php
+                    $enableStatusCheck = "";
+                    $disableStatusCheck = "";
+                    if ($productColl->getStatus() == 1) {
+                        $enableStatusCheck =  'checked';
+                    }
+                    if ($productColl->getStatus() == 2) {
+                        $disableStatusCheck =  'checked';
+                    }
+                    ?>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('status') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip-top<?php endif ?>">
+                        <div class="actions-switch" data-role="switcher">
+                            <input type="hidden" value="2" name="status" />
+                            <input type="checkbox" id="status" class="actions-switch-checkbox" name="status" value="1"
+                                <?= /* @noEscape */ $enableStatusCheck ?>>
+                            <label class="actions-switch-label" for="status">
+                                <span class="actions-switch-inner">
+                                    <span class="actions-switch-indicator"></span>
+                                    <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                </span>
+                            </label>
+                        </div>
+                        <?= $hint ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Product Name')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('name') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <input type="text" class="required-entry input-text" name="product[name]" id="name"
+                        value="<?= $block->escapeHtml($productColl->getName()); ?>" />
+                    <?= $hint ?>
+                </div>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Short Description')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('short_description') ?>
+                <div class="control wk-border-box-sizing<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <textarea name="product[short_description]" class="required-entry input-text" id="short_description"
+                        rows="5" cols="75"><?= /* @noEscape */ $productColl->getShortDescription(); ?></textarea>
+                    <?= $hint ?>
+                </div>
+            </div>
+            <?php
+            if ($skuType == 'static') { ?>
+                <div class="field required">
+                    <label class="label"><?= $block->escapeHtml(__('SKU')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('name') ?>
+                    <?php $isTracked = $marketplaceStagingHelper->isProductCopyTracked((int)$productColl->getId()); ?>
+                    <?php $skuValue = !$isTracked ? $productColl->getSku() : ''; ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <input name="product[sku]" id="sku"
+                            <?php if (!empty($skuValue) && $product_id): ?> readonly <?php endif; ?>
+                            class="required-entry validate-length maximum-length-64 input-text" type="text"
+                            value="<?= $block->escapeHtml($skuValue); ?>" />
+                        <?= $hint ?>
+                        <div id="skuavail">
+                            <span class="success-msg skuavailable"><?= $block->escapeHtml(__('SKU Available')) ?></span>
+                        </div>
+                        <div id="skunotavail">
+                            <span class="error-msg skunotavailable">
+                                <?= $block->escapeHtml(__('SKU Already Exist')) ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            } ?>
+
+            <?php foreach ($listAttribute1 as $attribute): ?>
+                <?php if (!$attribute) continue; ?>
+                <?php $_attrCode = $attribute->getAttributeCode(); ?>
+                <?php if ($productColl['type_id'] == 'virtual' && $_attrCode == 'shipping_method'): continue;
+                endif; ?>
+                <div id="field_<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>" class="field<?php if ($attribute->getIsRequired() || $_attrCode == 'preservation_status'): ?> required<?php endif; ?>">
+                    <label class="label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <?= $block->escapeHtml($attribute->getStoreLabel()) ?><b><?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:
+                        <?php else: ?>
+                            <?= $block->escapeHtml($attribute->getStoreLabel()) ?>:
+                        <?php endif; ?>
+                    </label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml($_attrCode) ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <input type="text" class="input-text validate-number validate-zero-or-greater<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php elseif ($attribute->getFrontendInput() == 'textarea' || $attribute->getFrontendInput() == 'texteditor' || $attribute->getFrontendInput() == 'pagebuilder'): ?>
+                            <textarea class="textarea<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                rows="3"><?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?></textarea>
+                            <?php if ($attribute->getIsWysiwygEnabled()): ?>
+                                <script>
+                                    require([
+                                        "jquery",
+                                        "mage/translate",
+                                        "mage/adminhtml/events",
+                                        "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                                    ], function(jQuery) {
+                                        let wysiwyg<?= $attribute->getAttributeCode() ?> = new wysiwygSetup("<?= $attribute->getAttributeCode() ?>",
+                                            <?= \Branch8\MarketplaceStaging\Model\WysiwygSetupConfig::getToolBarConfig($block->getWysiwygUrl()) ?>
+                                        );
+                                        wysiwyg<?= $attribute->getAttributeCode() ?>.setup("exact");
+                                    });
+                                </script>
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'date'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($marketplaceStagingHelper->formatDate($productColl[$attribute->getAttributeCode()])) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: false,
+                                        showOtherMonths: true,
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'datetime'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: true,
+                                        showOtherMonths: true,
+                                        timeFormat: 'h:mm TT',
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'boolean'): ?>
+                            <div class="actions-switch" data-role="switcher">
+                                <input type="hidden" value="0" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]" />
+                                <input type="checkbox" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                    id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                    class="actions-switch-checkbox" value="1"
+                                    <?php if ($productColl[$attribute->getAttributeCode()]): ?>checked<?php endif; ?>
+                                    aria-required="true">
+                                <label class="actions-switch-label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                                    <span class="actions-switch-inner">
+                                        <span class="actions-switch-indicator"></span>
+                                        <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        <?php elseif ($attribute->getFrontendInput() == 'select'):
+                            $sellerPreservationStatusArr = [];
+                            if ($attribute->getAttributeCode() == 'preservation_status') {
+                                $sellerPreservationStatus = $sellerSetting->getPreservationStatus();
+                                if ($sellerPreservationStatus === NULL) {
+                                    $sellerPreservationStatusArr = [];
+                                } else {
+                                    $sellerPreservationStatusArr = explode(',', $sellerPreservationStatus);
+                                }
+                                $sellerPreservationStatusArr = is_array($sellerPreservationStatusArr) ? $sellerPreservationStatusArr : [$sellerPreservationStatusArr];
+                            }
+                        ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                <?php if ($_attrCode == 'virtual_product_type'): ?> disabled<?php endif; ?>
+                                class="select<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?> <?php echo ($attribute->getAttributeCode() == 'preservation_status') ? 'preservation_required' : ''; ?>">
+                                <?php
+                                foreach ($attribute->getSource()->getAllOptions() as $option):
+                                    if ($attribute->getAttributeCode() == 'preservation_status' && (!isset($option['value']) || !in_array($option['value'], $sellerPreservationStatusArr))) {
+                                        continue;
+                                    }
+                                    if ($_attrCode == 'virtual_product_type') {
+                                        $productColl[$attribute->getAttributeCode()] = $marketplaceStagingHelper->getVirtualIdBySet($setName);
+                                    }
+                                ?>
+                                    <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                        <?php if ($option['value'] == $productColl[$attribute->getAttributeCode()]) {
+                                            echo 'selected="selected"';
+                                        } ?>>
+                                        <?= $block->escapeHtml($option['label']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($_attrCode == 'virtual_product_type'): ?>
+                                <input type="hidden" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                    value="<?= $marketplaceStagingHelper->getVirtualIdBySet($setName) ?>" />
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'multiselect'): ?>
+                            <?php
+                            $values = $productColl[$attribute->getAttributeCode()];
+                            if ($values && is_string($values) && (string)$values != '') {
+                                $values = explode(',', $values);
+                            } elseif (!is_array($values) && (string)$values != '') {
+                                $values = [$values];
+                            } elseif ((is_string($values) && $values == '') || (is_array($values) && empty($values))) {
+                                // $values = [$defaultShippingMethod];
+                                $values = [];
+                            }
+                            if ($values == null) {
+                                $values = [];
+                            }
+                            ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>][]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                class="multiselect<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" multiple="multiple">
+                                <?php
+                                $options = $attribute->getSource()->getAllOptions();
+                                $shippingMethodsArr = [];
+                                $shippingMethodToCompare = [];
+                                if ($attribute->getAttributeCode() == 'shipping_method') {
+                                    //limit method by seller setting
+                                    $shippingMethods = $sellerSetting->getShippingMethods();
+                                    $shippingMethodsArr = explode(',', (string)$shippingMethods);
+                                    $mappingMethods = $hotaiShippingHelper->mappingMethod();
+
+                                    foreach ($mappingMethods as $methodCode => $_mapMethod) {
+                                        if (in_array($_mapMethod, $shippingMethodsArr)) {
+                                            $shippingMethodToCompare[] = $methodCode;
+                                        }
+                                    }
+                                    if (empty($values)) {
+                                        /**
+                                         * Set default shipping method
+                                         */
+                                        $values = [$defaultShippingMethod];
+                                    }
+                                }
+
+                                foreach ($options as $option):
+                                    if ($attribute->getAttributeCode() == 'shipping_method' && (!isset($option['value'][0]['value']) || !in_array($option['value'][0]['value'], $shippingMethodToCompare))) {
+                                        continue;
+                                    }
+                                ?>
+                                    <?php
+                                    if (!is_array($option['value'])) {
+                                        if ($option['value'] == '') {
+                                            continue;
+                                        }
+                                    ?>
+                                        <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                            <?php if (in_array($option['value'], $values)) {
+                                                echo 'selected="selected"';
+                                            } ?>>
+                                            <?= $block->escapeHtml($option['label']) ?></option>
+                                    <?php } else { ?>
+                                        <optgroup label="<?php echo $block->escapeHtml($option['label']); ?>"></optgroup>
+                                        <?php
+                                        foreach ($option['value'] as $_option) {
+                                            if ($_option['value'] == '') {
+                                                continue;
+                                            }
+                                        ?>
+                                            <option value="<?= $block->escapeHtml($_option['value']) ?>"
+                                                <?php if (in_array($_option['value'], $values)) {
+                                                    echo 'selected="selected"';
+                                                } ?>>
+                                                <?= $block->escapeHtml($_option['label']) ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php else: ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php endif; ?>
+                        <?= $hint ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="field required">
+                <label class="label"><?= $escaper->escapeHtml(__('Main Category')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('main_category') ?>
+                <?php if ($helper->getIsAdminViewCategoryTree()) { ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>" data-bind="scope: 'sellerCategory'">
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <?= $hint ?>
+                    </div>
+                    <script type="text/x-magento-init">
+                        {
+                            "*": {
+                                "Magento_Ui/js/core/app": {
+                                    "components": {
+                                        "sellerCategory": {
+                                            "component": "Branch8_MarketplaceStaging/js/product/seller-main-category-tree",
+                                            "template" : "Branch8_MarketplaceStaging/seller-main-category-tree",
+                                            "filterOptions": true,
+                                            "levelsVisibility": "4",
+                                            "allowSelectLevel": "4",
+                                            "options": <?= /* @noEscape */ $marketplaceStagingHelper->getCategoriesTree()?>,
+                                            "value": <?= /* @noEscape */ json_encode($productColl->getMainCategory())?>,
+                                            "element":"product[main_category]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </script>
+                <?php } else { ?>
+                    <div class="wk-field wk-category">
+                        <div class="wk-for-validation">
+                            <div id="wk-category-label"><?= $escaper->escapeHtml(__("CATEGORIES")); ?></div>
+                            <?php
+                            $mainCat = $productColl->getMainCategory();
+                            ?>
+                            <?php
+                            if ($helper->getAllowedCategoryIds()) {
+                                $storeconfig_catids = explode(',', trim($helper->getAllowedCategoryIds()));
+                                foreach ($storeconfig_catids as $storeconfig_catid) {
+                                    $cat_model = $block->getCategory()->load($storeconfig_catid);
+                                    if (isset($cat_model["entity_id"]) && $cat_model["entity_id"]) {
+                            ?>
+                                        <div class="wk-cat-container">
+                                            </span><span class="wk-foldersign"></span>
+                                            <span class="wk-elements wk-cat-name">
+                                                <?= $escaper->escapeHtml($cat_model->getName()) ?>
+                                            </span>
+                                            <?php
+                                            if ($cat_model["entity_id"] == $mainCat) { ?>
+                                                <input class="wk-elements" type="radio"
+                                                    name="product[main_category]"
+                                                    value=<?= $escaper->escapeHtml($cat_model['entity_id']) ?> checked />
+                                            <?php
+                                            } else { ?>
+                                                <input class="wk-elements" type="radio"
+                                                    name="product[main_category]"
+                                                    value='<?= $escaper->escapeHtml($cat_model['entity_id']) ?>' />
+                                            <?php
+                                            } ?>
+                                        </div>
+                                    <?php
+                                    }
+                                }
+                            } else {
+                                $count = 0;
+                                $category_helper = $viewModel->getCategoryHelper();
+                                $category_model = $block->getCategory();
+                                $_categories = $category_helper->getStoreCategories();
+                                foreach ($_categories as $_category) {
+                                    $count++;
+                                    if (count($category_model->getAllChildren($category_model
+                                        ->load($_category['entity_id']))) - 1 > 0) { ?>
+                                        <div class="wk-cat-container" style="margin-left:0px;">
+                                            <span class="wk-plus">
+                                            </span><span class="wk-foldersign"></span>
+                                            <span class="wk-elements wk-cat-name">
+                                                <?= $escaper->escapeHtml($_category->getName()) ?>
+                                            </span>
+                                            <?php
+                                            if ($_category["entity_id"] == $mainCat) { ?>
+                                                <input class="wk-elements" type="radio"
+                                                    name="product[main_category]"
+                                                    value=<?= $escaper->escapeHtml($_category['entity_id']) ?> checked />
+                                            <?php
+                                            } else { ?>
+                                                <input class="wk-elements" type="radio"
+                                                    name="product[main_category]"
+                                                    value='<?= $escaper->escapeHtml($_category['entity_id']) ?>' />
+                                            <?php
+                                            } ?>
+                                        </div>
+                                    <?php
+                                    } else { ?>
+                                        <div class="wk-cat-container">
+                                            </span><span class="wk-foldersign"></span>
+                                            <span class="wk-elements wk-cat-name">
+                                                <?= $escaper->escapeHtml($_category->getName()) ?></span>
+                                            <?php
+                                            if ($_category["entity_id"] == $mainCat) { ?>
+                                                <input class="wk-elements" type="radio"
+                                                    name="product[main_category]"
+                                                    value=<?= $escaper->escapeHtml($_category['entity_id']) ?> checked />
+                                            <?php
+                                            } else { ?>
+                                                <input class="wk-elements" type="radio"
+                                                    name="product[main_category]"
+                                                    value='<?= $escaper->escapeHtml($_category['entity_id']) ?>' />
+                                            <?php
+                                            } ?>
+                                        </div>
+                            <?php
+                                    }
+                                }
+                            } ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <!-- Branch8 Product Certification Panel -->
+            <?php
+            $certificationBlock = $block->getLayout()->createBlock(\Branch8\ProductCertification\Block\Product\Certification::class);
+            if ($certificationBlock && $certificationBlock->isEnabled()):
+                $rowId = (int)($productColl->getData('row_id') ?: $product_id);
+                $preCerts = $certificationBlock->getPreloadedData($rowId);
+                if ($productColl->getData('branch8_certifications_post')) {
+                    $preCerts = json_decode($productColl->getData('branch8_certifications_post'), true);
+                }
+            ?>
+                <div class="field branch8-certification-field" style="margin-bottom: 25px;">
+                    <label class="label"><span><?= $block->escapeHtml(__('Product Certifications')) ?></span></label>
+                    <div class="control" data-bind="scope: 'productCertificationPanel'">
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                    </div>
+                    <script type="text/x-magento-init">
+                        {
+                    "*": {
+                        "Magento_Ui/js/core/app": {
+                            "components": {
+                                "productCertificationPanel": {
+                                    "component": "Branch8_ProductCertification/js/components/certification-panel",
+                                    "ajaxUrl": "<?= /* @noEscape */ $block->getUrl('product_certification/ajax/getbycategory') ?>",
+                                    "preloadedData": <?= /* @noEscape */ json_encode($preCerts) ?>
+                                }
+                            }
+                        }
+                    }
+                }
+                </script>
+                </div>
+            <?php endif; ?>
+            <?php if (!empty($marketplaceStagingHelper->getFlagshipCategoryIds()) && $isInFlagShipStore): ?>
+                <div class="field required">
+                    <label class="label"><?= $escaper->escapeHtml(__('Flagstore Category')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('flagstore_category') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>" data-bind="scope: 'flagstoreCategory'">
+                        <!-- ko template: getTemplate() --><!-- /ko -->
+                        <?= $hint ?>
+                    </div>
+                    <script type="text/x-magento-init">
+                        {
+                            "*": {
+                                "Magento_Ui/js/core/app": {
+                                    "components": {
+                                        "flagstoreCategory": {
+                                            "component": "Branch8_MarketplaceStaging/js/product/seller-main-category-tree",
+                                            "template" : "Branch8_MarketplaceStaging/seller-flagstore-category-tree",
+                                            "filterOptions": true,
+                                            "levelsVisibility": "1",
+                                            "options": <?= /* @noEscape */ $marketplaceStagingHelper->getCategoriesTree(true)?>,
+                                            "allowSelectLevel": "<?= /* @noEscape */ $marketplaceStagingHelper->getMinLevel()?>",
+                                            "value": <?= /* @noEscape */ json_encode($productColl->getFlagstoreCategory())?>,
+                                            "element": "product[flagstore_category]"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </script>
+                </div>
+            <?php endif; ?>
+            <div class="field required <?php if ($productColl['type_id'] == 'configurable') { ?> no-display <?php } ?>">
+                <label class="label"><?= $block->escapeHtml(__('Price')) ?><b>
+                        <?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:</label>
+                <?php $price = $productColl->getPrice(); ?>
+                <?php if ($price) {
+                    $price = round((float)$price);
+                } ?>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('price') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <input type="text" class="required-entry validate-zero-or-greater input-text integer"
+                        name="product[price]" id="price" value="<?= /* @noEscape */ $price ?>"
+                        data-ui-id="product-tabs-attributes-tab-fieldset-element-text-product-price" />
+                    <?= $hint ?>
+                </div>
+            </div>
+            <?php if ($productColl['type_id'] != 'grouped') { ?>
+                <div class="field required <?php if (in_array($productColl['type_id'], ['grouped'])) { ?> no-display <?php } ?>">
+                    <label class="label"><?= $block->escapeHtml(__('Special Price')) ?><b>
+                            <?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:</label>
+                    <?php $specialPrice = $productColl->getSpecialPrice(); ?>
+                    <?php if ($specialPrice) {
+                        $specialPrice = round((float)$specialPrice);
+                    } ?>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('special_price') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <input type="text" class="required-entry validate-zero-or-greater input-text integer special-price-custom-validation"
+                            name="product[special_price]" id="special_price" value="<?= /* @noEscape */ $specialPrice ?>"
+                            data-ui-id="product-tabs-attributes-tab-fieldset-element-text-product-special-price" />
+                        <?= $hint ?>
+                    </div>
+                </div>
+                <div class="field <?php if (in_array($productColl['type_id'], ['configurable', 'bundle', 'grouped'])) { ?> no-display<?php } else { ?> required<?php } ?>">
+                    <span class="label"><?= $block->escapeHtml(__('Cost setting')) ?>:</span>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('cost_setting') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <?php foreach (\Branch8\Catalog\Model\Source\CostSetting::getOptionArray() as $opKey => $_option): ?>
+                            <label><input type="radio" name="product[cost_setting]" <?php echo ($opKey == $productColl->getCostSetting()) ? 'checked' : ''; ?> value="<?= $block->escapeHtml($opKey) ?>" /> <?php echo $_option; ?></label><br />
+                        <?php endforeach; ?>
+                        <?= $hint ?>
+                    </div>
+                </div>
+
+                <div class="field <?php if (in_array($productColl['type_id'], ['configurable', 'bundle', 'grouped'])) { ?> no-display <?php } ?>">
+                    <label class="label"><?= $block->escapeHtml(__('Commission Rate')) ?><b>
+                            <?= /* @noEscape */ " (%)"; ?></b>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('commission_percent') ?>
+                    <?php
+                    $commissionRateValidate = 'validate-zero-or-greater';
+                    if($mkProductHelper->isAllowNegativeGrossProfit()){
+                        $commissionRateValidate = 'validate-number';
+                    }
+                    ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <input type="text" class="required-entry <?php echo $commissionRateValidate;?> input-text"
+                            name="product[commission_percent]" id="commission_percent" value="<?= /* @noEscape */ $productColl->getCommissionPercent() ?>"
+                            data-ui-id="product-tabs-attributes-tab-fieldset-element-text-product-commission-percent"/>
+                        <?= $hint ?>
+                    </div>
+                </div>
+                <div id="field_commission_source" class="field <?php if (in_array($productColl['type_id'], ['configurable', 'bundle', 'grouped'])) { ?> no-display <?php } ?>">
+                    <label class="label"><?= $block->escapeHtml(__('Commission Source')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('commission_source') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <div class="commission_source"><?php echo $marketplaceStagingHelper->getCommissionSourceTxt($productColl->getCommissionSource(), $sellerComissionRate); ?></div>
+                        <input type="hidden" name="product[commission_source]" id="commission_source_input" value="<?php echo $productColl->getCommissionSource(); ?>" />
+                        <?= $hint ?>
+                    </div>
+                </div>
+                <div class="field required <?php if (in_array($productColl['type_id'], ['configurable', 'bundle', 'grouped'])) { ?> no-display <?php } ?>">
+                    <label class="label"><?= $block->escapeHtml(__('Cost')) ?><b>
+                            <?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('cost') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <input type="text" class="required-entry validate-zero-or-greater input-text"
+                            name="product[cost]" id="cost" value="<?= /* @noEscape */ $productColl->getCost() ?>"
+                            data-ui-id="product-tabs-attributes-tab-fieldset-element-text-product-cost" />
+                        <?= $hint ?>
+                    </div>
+                </div>
+            <?php
+            }
+            ?>
+            <div class="field field-visually-hidden" style="position: absolute;visibility:hidden;" id="attribute-tier_price-container"
+                data-attribute-code="tier_price">
+                <label class="label"><span><?= $block->escapeHtml(__('Customer Group Price')) ?></span></label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('tier_price') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <table class="admin__control-table tiers_table" id="tiers_table">
+                        <thead>
+                            <tr>
+                                <th class="col-customer-group"><?= $block->escapeHtml(__('Customer Group')) ?></th>
+                                <th class="col-qty required"><?= $block->escapeHtml(__('Quantity')) ?></th>
+                                <th class="col-price required" colspan="2">
+                                    <?= $block->escapeHtml(__('Price')) ?>
+                                </th>
+                                <th class="col-delete"><?= $block->escapeHtml(__('Action')) ?></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tier_price_container"></tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="col-actions-add">
+                                    <button class="action-primary wk-booking-row-add-btn" id="add_tier_price_item" type="button" data-role="action" data-day-type="1">
+                                        <span><?= $block->escapeHtml(__('Add')) ?></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <?= $hint ?>
+                    <script data-template="tier-price-fixed-row-template" type="text/x-magento-template">
+                        <tr data-index="<%- data.index %>">
+                            <td class="col-customer-group">
+                                <select class="custgroup required-entry" name="product[tier_price][<%- data.index %>][cust_group]" id="tier_price_row_<%- data.index %>_cust_group">
+                                    <?php foreach ($marketplaceStagingHelper->getCustomerGroups() as $_groupId => $_groupName): ?>
+                                        <option value="<?= $block->escapeHtml($_groupId) ?>"><?= $block->escapeHtml($_groupName) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td class="col-qty">
+                                <input class="qty required-entry validate-greater-than-zero" type="text" name="product[tier_price][<%- data.index %>][price_qty]" value="<%- data.price_qty %>" id="tier_price_row_<%- data.index %>_price_qty" />
+                            </td>
+                            <td class="col-type-price">
+                                <select class="type-price" name="product[tier_price][<%- data.index %>][value_type]" id="tier_price_row_<%- data.index %>_value_type">
+                                    <?php foreach ($marketplaceStagingHelper->getPriceTypes() as $priceType): ?>
+                                        <option value="<?= $block->escapeHtml($priceType['value']) ?>"><?= $block->escapeHtml($priceType['label']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td class="col-price">
+                                <div class="admin__control-addon">
+                                    <input class="validate-greater-than-zero required-entry integer" type="text" name="product[tier_price][<%- data.index %>][price]" value="<%- data.price %>" id="tier_price_row_<%- data.index %>_price" />
+                                    <label class="admin__addon-prefix" for="tier_price_row_<%- data.index %>_price">
+                                        <span><?= $currencySymbol ?></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="col-delete">
+                                <input type="hidden" name="product[tier_price][<%- data.index %>][delete]" class="delete" value="" id="tier_price_row_<%- data.index %>_delete" />
+                                <input type="hidden" name="product[tier_price][<%- data.index %>][price_id]" value="<%- data.price_id %>" />
+                                <input type="hidden" name="product[tier_price][<%- data.index %>][website_id]" value="<?= $marketplaceStagingHelper->getDefaultWebsite($productColl) ?>" />
+                                <button title="<?= $block->escapeHtml(__('Delete Tier')) ?>" type="button" class="action-delete delete icon-btn delete-product-option" id="tier_price_row_<%- data.index %>_delete_button">
+                                    <span><?= $block->escapeHtml(__("Delete")) ?></span>
+                                </button>
+                            </td>
+                        </tr data-index="<%- data.index %>">
+                    </script>
+                    <script data-template="tier-price-percent-row-template" type="text/x-magento-template">
+                        <tr data-index="<%- data.index %>">
+                            <td class="col-customer-group">
+                                <select class="custgroup required-entry" name="product[tier_price][<%- data.index %>][cust_group]" id="tier_price_row_<%- data.index %>_cust_group">
+                                    <?php foreach ($marketplaceStagingHelper->getCustomerGroups() as $_groupId => $_groupName): ?>
+                                        <option value="<?= $block->escapeHtml($_groupId) ?>"><?= $block->escapeHtml($_groupName) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td class="col-qty">
+                                <input class="qty required-entry validate-greater-than-zero" type="text" name="product[tier_price][<%- data.index %>][price_qty]" value="<%- data.price_qty %>" id="tier_price_row_<%- data.index %>_price_qty" />
+                            </td>
+                            <td class="col-type-price">
+                                <select class="type-price" name="product[tier_price][<%- data.index %>][value_type]" id="tier_price_row_<%- data.index %>_value_type">
+                                    <?php foreach ($marketplaceStagingHelper->getPriceTypes() as $priceType): ?>
+                                        <option value="<?= $block->escapeHtml($priceType['value']) ?>"><?= $block->escapeHtml($priceType['label']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td class="col-price">
+                                <div class="admin__control-addon">
+                                    <input class="validate-greater-than-zero required-entry integer" type="text" name="product[tier_price][<%- data.index %>][percentage_value]" value="<%- data.percentage_value %>" id="tier_price_row_<%- data.index %>_percentage_value" />
+                                    <label class="admin__addon-prefix" for="tier_price_row_<%- data.index %>_percentage_value">
+                                        <span>%</span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td class="col-delete">
+                                <input type="hidden" name="product[tier_price][<%- data.index %>][delete]" class="delete" value="" id="tier_price_row_<%- data.index %>_delete" />
+                                <input type="hidden" name="product[tier_price][<%- data.index %>][price_id]" value="<%- data.price_id %>" />
+                                <input type="hidden" name="product[tier_price][<%- data.index %>][website_id]" value="<?= $marketplaceStagingHelper->getDefaultWebsite($productColl) ?>" />
+                                <button title="<?= $block->escapeHtml(__('Delete Tier')) ?>" type="button" class="action-delete delete icon-btn delete-product-option" id="tier_price_row_<%- data.index %>_delete_button">
+                                    <span><?= $block->escapeHtml(__("Delete")) ?></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </script>
+                </div>
+            </div>
+            <?php if ($marketplaceStagingHelper->canShowMsrp()): ?>
+                <div class="field-visually-hidden" style="position:absolute;visibility:hidden;">
+                    <div class="field <?php if ($productColl['type_id'] == 'configurable') { ?> no-display <?php } ?>">
+                        <label class="label"><?= $block->escapeHtml(__('Minimum Advertised Price')) ?><b>
+                                <?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:</label>
+                        <?php $hint = $marketplaceStagingHelper->getHintHtml('msrp') ?>
+                        <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                            <?php $msrp = $productColl->getMsrp(); ?>
+                            <?php if ($msrp) {
+                                $msrp = round((float)$msrp);
+                            } ?>
+                            <input type="text" class="validate-zero-or-greater input-text integer"
+                                name="product[msrp]" id="msrp" value="<?= /* @noEscape */ $msrp ?>"
+                                data-ui-id="product-tabs-attributes-tab-fieldset-element-text-product-msrp" />
+                            <?= $hint ?>
+                        </div>
+                    </div>
+                    <div class="field <?php if ($productColl['type_id'] == 'configurable') { ?> no-display <?php } ?>">
+                        <label class="label"><?= $block->escapeHtml(__('Display Actual Type')) ?>:</label>
+                        <div class="control">
+                            <select name="product[msrp_display_actual_price_type]" id="msrp_display_actual_price_type">
+                                <?php foreach ($marketplaceStagingHelper->getMsrpTypeOptions() as $option): ?>
+                                    <option<?php if ($productColl->getMsrpDisplayActualPriceType() == $option['value']): ?> selected<?php endif ?> value="<?= $block->escapeHtml($option['value']) ?>"><?= $block->escapeHtml($option['label']) ?></option>
+                                    <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php foreach ($listAttribute2 as $attribute): ?>
+                <?php if (!$attribute) continue; ?>
+                <?php $_attrCode = $attribute->getAttributeCode(); ?>
+                <?php
+                $validatePointClass = '';
+                $pointFieldRequiredClass = '';
+                if (in_array($_attrCode, [
+                    'point_money_config_free_ratio_upper_redeem_limit_value',
+                    'point_money_config_free_ratio_lower_redeem_limit_value',
+                    'point_money_config_free_ratio_upper_redeem_limit_type',
+                    'point_money_config_free_ratio_lower_redeem_limit_type'
+                ])) {
+                    $pointFieldRequiredClass = 'required';
+                }
+                if ($_attrCode == 'point_money_config_free_ratio_upper_redeem_limit_value') {
+                    $validatePointClass .= ' free-ratio-upper-redeem-value-validation ';
+                }
+                if ($_attrCode == 'point_money_config_free_ratio_lower_redeem_limit_value') {
+                    $validatePointClass .= ' free-ratio-lower-redeem-value-validation ';
+                }
+                ?>
+
+                <?php if ($_attrCode == 'salable_qty') continue; ?>
+                <?php if ($productColl['type_id'] == 'virtual' && $_attrCode == 'shipping_method'): continue;
+                endif; ?>
+                <div id="field_<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>" class="field <?php echo $pointFieldRequiredClass; ?> <?php if ($attribute->getIsRequired()): ?> required<?php endif; ?>">
+                    <label class="label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <?= $block->escapeHtml($attribute->getStoreLabel()) ?><b><?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:
+                        <?php else: ?>
+                            <?= $block->escapeHtml($attribute->getStoreLabel()) ?>:
+                        <?php endif; ?>
+                    </label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml($_attrCode) ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <input type="text" class="input-text validate-number validate-zero-or-greater<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php elseif ($attribute->getFrontendInout() == 'textarea' || $attribute->getFrontendInput() == 'texteditor' || $attribute->getFrontendInput() == 'pagebuilder'): ?>
+                            <textarea class="textarea<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                rows="3"><?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?></textarea>
+                            <?php if ($attribute->getIsWysiwygEnabled()): ?>
+                                <script>
+                                    require([
+                                        "jquery",
+                                        "mage/translate",
+                                        "mage/adminhtml/events",
+                                        "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                                    ], function(jQuery) {
+                                        let wysiwyg<?= $attribute->getAttributeCode() ?> = new wysiwygSetup("<?= $attribute->getAttributeCode() ?>",
+                                            <?= \Branch8\MarketplaceStaging\Model\WysiwygSetupConfig::getToolBarConfig($block->getWysiwygUrl()) ?>
+                                        );
+                                        wysiwyg<?= $attribute->getAttributeCode() ?>.setup("exact");
+                                    });
+                                </script>
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'date'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($marketplaceStagingHelper->formatDate($productColl[$attribute->getAttributeCode()])) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: false,
+                                        showOtherMonths: true,
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'datetime'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: true,
+                                        showOtherMonths: true,
+                                        timeFormat: 'h:mm TT',
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'boolean'): ?>
+                            <div class="actions-switch" data-role="switcher">
+                                <input type="hidden" value="0" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]" />
+                                <input type="checkbox" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                    id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                    class="actions-switch-checkbox" value="1"
+                                    <?php if ($productColl[$attribute->getAttributeCode()]): ?>checked<?php endif; ?>
+                                    aria-required="true">
+                                <label class="actions-switch-label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                                    <span class="actions-switch-inner">
+                                        <span class="actions-switch-indicator"></span>
+                                        <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        <?php elseif ($attribute->getFrontendInput() == 'select'):
+                            $sellerPreservationStatusArr = [];
+                            if ($attribute->getAttributeCode() == 'preservation_status') {
+                                $sellerPreservationStatus = $sellerSetting->getPreservationStatus();
+                                if ($sellerPreservationStatus === NULL) {
+                                    $sellerPreservationStatusArr = [];
+                                } else {
+                                    $sellerPreservationStatusArr = explode(',', $sellerPreservationStatus);
+                                }
+                                $sellerPreservationStatusArr = is_array($sellerPreservationStatusArr) ? $sellerPreservationStatusArr : [$sellerPreservationStatusArr];
+                            }
+                        ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                class="select<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>">
+                                <?php
+                                foreach ($attribute->getSource()->getAllOptions() as $option):
+                                    if ($attribute->getAttributeCode() == 'preservation_status' && (!isset($option['value']) || !in_array($option['value'], $sellerPreservationStatusArr))) {
+                                        continue;
+                                    }
+                                ?>
+                                    <option value="<?= $block->escapeHtml($option['value']) ?>" <?php if ($marketplaceStagingHelper->getDisableOption($setName, $_attrCode, $option['value'])): ?> disabled<?php endif; ?>
+                                        <?php if ($option['value'] == $productColl[$attribute->getAttributeCode()]) {
+                                            echo 'selected="selected"';
+                                        } ?>>
+                                        <?= $block->escapeHtml($option['label']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php elseif ($attribute->getFrontendInput() == 'multiselect'): ?>
+                            <?php
+                            $values = $productColl[$attribute->getAttributeCode()];
+                            if ($values && is_string($values)) {
+                                $values = explode(',', $values);
+                            } elseif (!is_array($values)) {
+                                $values = [$values];
+                            } ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>][]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                class="multiselect<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" multiple="multiple">
+                                <?php
+                                $options = $attribute->getSource()->getAllOptions();
+                                $shippingMethodsArr = [];
+                                $shippingMethodToCompare = [];
+                                if ($attribute->getAttributeCode() == 'shipping_method') {
+                                    //limit method by seller setting
+                                    $shippingMethods = $sellerSetting->getShippingMethods();
+                                    $shippingMethodsArr = explode(',', (string)$shippingMethods);
+                                    $mappingMethods = $hotaiShippingHelper->mappingMethod();
+
+                                    foreach ($mappingMethods as $methodCode => $_mapMethod) {
+                                        if (in_array($_mapMethod, $shippingMethodsArr)) {
+                                            $shippingMethodToCompare[] = $methodCode;
+                                        }
+                                    }
+                                }
+
+                                foreach ($options as $option):
+                                    if ($attribute->getAttributeCode() == 'shipping_method' && (!isset($option['value'][0]['value']) || !in_array($option['value'][0]['value'], $shippingMethodToCompare))) {
+                                        continue;
+                                    }
+                                ?>
+                                    <?php
+                                    if (!is_array($option['value'])) {
+                                        if ($option['value'] == '') {
+                                            continue;
+                                        }
+                                    ?>
+                                        <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                            <?php if (in_array($option['value'], $values)) {
+                                                echo 'selected="selected"';
+                                            } ?>>
+                                            <?= $block->escapeHtml($option['label']) ?></option>
+                                    <?php } else { ?>
+                                        <optgroup label="<?= $block->escapeHtml($option['label']); ?>"></optgroup>
+                                        <?php
+                                        foreach ($option['value'] as $_option) {
+                                            if ($_option['value'] == '') {
+                                                continue;
+                                            }
+                                        ?>
+                                            <option value="<?= $block->escapeHtml($_option['value']) ?>"
+                                                <?php if (in_array($_option['value'], $values)) {
+                                                    echo 'selected="selected"';
+                                                } ?>>
+                                                <?= $block->escapeHtml($_option['label']) ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php else: ?>
+
+                            <input type="text" class="input-text <?php echo $validatePointClass; ?> <?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                                                                ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php endif; ?>
+                        <?= $hint ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+            <input id="inventory_manage_stock" type="hidden" name="product[stock_data][manage_stock]" value="<?= $stockItem->getManageStock() ?>">
+            <input type="hidden" value="<?= $stockItem->getManageStock() ?>" name="product[stock_data][use_config_manage_stock]"
+                id="inventory_use_config_manage_stock">
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Stock Availability')) ?>:</label>
+                <?php
+                $stockSelect = "";
+                $outStockSelect = "";
+                $is_in_stock = $productColl['quantity_and_stock_status']['is_in_stock'] ?? 1;
+                if ($is_in_stock == 1) {
+                    $stockSelect = "selected";
+                }
+                if ($is_in_stock == 0) {
+                    $outStockSelect = "selected";
+                }
+                ?>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('is_in_stock') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <select id="" class="select" name="product[quantity_and_stock_status][is_in_stock]" disabled>
+                        <option <?= /* @noEscape */ $stockSelect ?> value="1">
+                            <?= $block->escapeHtml(__("In Stock")); ?></option>
+                        <option <?= /* @noEscape */ $outStockSelect ?> value="0">
+                            <?= $block->escapeHtml(__("Out of Stock")); ?></option>
+                    </select>
+                    <?= $hint ?>
+                </div>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Stock')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('stock') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <input type="text" class="required-entry validate-number input-text"
+                        name="product[quantity_and_stock_status][qty]" id="qty" disabled
+                        value="<?= /* @noEscape */ $productColl['quantity_and_stock_status']['qty'] ?>" />
+                    <?php if ($stockItem && $stockItem->getItemId() && !$stockItem->getManageStock()): ?>
+                        <input type="hidden" name="product[quantity_and_stock_status][qty]" value="<?= $productColl['quantity_and_stock_status']['qty'] ?>">
+                    <?php endif; ?>
+                    <?= $hint ?>
+                </div>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Salable Inventory')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('Salable Inventory') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <input type="text" class="required-entry validate-number input-text"
+                        name="product[salable_qty]" id="salable_qty"
+                        <?php if ($stockItem && $stockItem->getItemId() && !$stockItem->getManageStock()): ?> disabled <?php endif; ?>
+                        value="<?= /* @noEscape */ $productColl['salable_qty'] ?>" />
+                    <?= $hint ?>
+                </div>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Visibility')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('visibility') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <select id="visibility" class=" required-entry required-entry select"
+                        name="product[visibility]">
+                        <?php
+                        $product_visibility = $helper->getVisibilityOptionArray();
+                        foreach ($product_visibility as $key => $value) {
+                            $visSelect = "";
+                            if ($key == $productColl->getVisibility()) {
+                                $visSelect = "selected='selected'";
+                            }
+                        ?>
+                            <option value="<?= $block->escapeHtml($key) ?>"
+                                <?= /* @noEscape */ $visSelect ?>>
+                                <?= $block->escapeHtml($value) ?></option>
+                        <?php
+                        } ?>
+                    </select>
+                    <?= $hint ?>
+                </div>
+            </div>
+            <?php
+            $css = '';
+            $class = '';
+            if ($productColl['type_id'] == 'virtual') {
+                $css = ' style="position: absolute;visibility:hidden;"';
+                $class = ' field-visually-hidden';
+            }
+            ?>
+            <div class="field required<?= $class ?>" <?= $css ?>>
+                <label class="label"><?= $block->escapeHtml(__('Weight')) ?> (<?= $block
+                                                                                    ->escapeHtml($weightUnit) ?>):</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('weight') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>" data-role="weight-switcher">
+                    <div class="control field-visually-hidden" style="position: absolute;visibility:hidden;">
+                        <div class="actions-switch" data-role="switcher" style="margin: 10px 0;">
+                            <input type="hidden" value="0" name="product[product_has_weight]" />
+                            <input type="checkbox" id="weight-switcher" class="actions-switch-checkbox" name="product[product_has_weight]" value="1"
+                                <?php if (
+                                    $productColl['type_id'] == 'simple' ||
+                                    ($productColl['type_id'] == 'configurable' && !empty($productColl['weight']))
+                                ) { ?> checked <?php } ?>>
+                            <label class="actions-switch-label" for="weight-switcher">
+                                <span class="actions-switch-inner">
+                                    <span class="actions-switch-indicator"></span>
+                                    <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <input type="text" class="validate-number validate-greater-than-zero input-text"
+                            name="product[weight]" id="weight"
+                            value="<?= $block->escapeHtml($productColl->getWeight()); ?>"
+                            <?php if ($productColl['type_id'] == 'downloadable' || $productColl['type_id'] == 'virtual') {
+                            ?>disabled="disabled" <?php } ?> />
+                        <?= $hint ?>
+                    </div>
+                </div>
+            </div>
+            <div id="field_is_returnable" class="field required">
+                <label class="label" for="is_returnable">
+                    <?= $block->escapeHtml(__('Enable RMA')) ?>:
+                </label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('is_returnable') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <div class="actions-switch" data-role="switcher">
+                        <input type="hidden" value="0" name="product[is_returnable]" />
+                        <input type="checkbox" id="is-returnable" class="actions-switch-checkbox" name="product[is_returnable]" value="1"
+                            <?php if ($productColl['is_returnable'] == 1) { ?> checked <?php } ?>>
+                        <label class="actions-switch-label" for="is-returnable">
+                            <span class="actions-switch-inner">
+                                <span class="actions-switch-indicator"></span>
+                                <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                            </span>
+                        </label>
+                    </div>
+                    <?= $hint ?>
+                    <input type="hidden" id="use_config_is_returnable" name="product[use_config_is_returnable]" value="<?php if ($productColl['is_returnable'] == 2): ?>1<?php else: ?>0<?php endif ?>" />
+                </div>
+            </div>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Tax Class')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('tax_class_id') ?>
+                <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <select id="tax-class-id" class=" required-entry required-entry select"
+                        name="product[tax_class_id]" disabled>
+                        <option value="0"><?= $block->escapeHtml(__('None')) ?></option>
+                        <?php
+                        $taxid = $productColl->getData('tax_class_id');
+                        $taxes = $helper->getTaxClassModel();
+                        foreach ($taxes as $tax) {
+                        ?>
+                            <option <?= $taxid == $tax->getId() ? 'selected' : ''; ?>
+                                value="<?= $block->escapeHtml($tax->getId()) ?>">
+                                <?= $block->escapeHtml($tax->getClassName()) ?></option>
+                        <?php
+                        } ?>
+                    </select>
+                    <input type="hidden" name="product[tax_class_id]" value="<?= $block->escapeHtml($taxid) ?>" />
+                    <?= $hint ?>
+                </div>
+            </div>
+
+            <?php foreach ($listAttribute3 as $attribute): ?>
+                <?php if (!$attribute) continue; ?>
+                <?php $_attrCode = $attribute->getAttributeCode(); ?>
+                <?php $iSearchTagAttribute = $_attrCode === 'search_tag'; ?>
+                <?php
+                $preorderModeStartEndFieldRequiredClass = '';
+                if (in_array($_attrCode, [
+                    'preorder_start_date',
+                    'preorder_end_date',
+                    'wk_marketplace_availability',
+                    'preorder_ship_date',
+                    'preorder_x_days',
+                    'wk_mppreorder_qty'
+                ])) {
+                    $preorderModeStartEndFieldRequiredClass = 'required';
+                }
+                $preorderModeStartEndFieldValidateClass = '';
+                if ($_attrCode == 'preorder_start_date') {
+                    $preorderModeStartEndFieldValidateClass = 'preorder-mode-startend-start-date-validation';
+                }
+                if ($_attrCode == 'preorder_end_date') {
+                    $preorderModeStartEndFieldValidateClass = 'preorder-mode-startend-end-date-validation';
+                }
+                if ($_attrCode == 'wk_marketplace_availability') {
+                    $preorderModeStartEndFieldValidateClass = 'preorder-mode-startend-available-date-validation';
+                }
+                if ($_attrCode == 'preorder_ship_date') {
+                    $preorderModeStartEndFieldValidateClass = 'preorder-mode-shipdate-ship-date-validation';
+                }
+                if ($_attrCode == 'preorder_x_days') {
+                    $preorderModeStartEndFieldValidateClass = 'preorder-mode-xday-x-day-validation';
+                }
+                if ($_attrCode == 'wk_mppreorder_qty') {
+                    $preorderModeStartEndFieldValidateClass = 'preorder-mode-startend-max-qty-validation';
+                }
+                ?>
+                <?php if ($productColl['type_id'] == 'virtual' && $_attrCode == 'shipping_method'): continue;
+                endif; ?>
+                <div id="field_<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>" class="<?php echo $preorderModeStartEndFieldRequiredClass; ?> field<?php if ($attribute->getIsRequired()): ?> required<?php endif; ?>">
+                    <label class="label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <?= $block->escapeHtml($attribute->getStoreLabel()) ?><b><?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:
+                        <?php else: ?>
+                            <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>:
+                        <?php endif; ?>
+                    </label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml($_attrCode) ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <input type="text" class="input-text validate-number validate-zero-or-greater<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php elseif ($attribute->getIsWysiwygEnabled() || $attribute->getFrontendInput() == 'textarea' || $attribute->getFrontendInput() == 'texteditor' || $attribute->getFrontendInput() == 'pagebuilder'): ?>
+                            <textarea class="textarea<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?> <?php if ($iSearchTagAttribute): ?> validate-product-tag <?php endif ?>"
+                                name="product[<?= $block
+                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                rows="3"><?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?></textarea>
+                            <?php if ($attribute->getIsWysiwygEnabled()): ?>
+                                <script>
+                                    require([
+                                        "jquery",
+                                        "mage/translate",
+                                        "mage/adminhtml/events",
+                                        "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                                    ], function(jQuery) {
+                                        let wysiwyg<?= $attribute->getAttributeCode() ?> = new wysiwygSetup("<?= $attribute->getAttributeCode() ?>",
+                                            <?= \Branch8\MarketplaceStaging\Model\WysiwygSetupConfig::getToolBarConfig($block->getWysiwygUrl()) ?>
+                                        );
+                                        wysiwyg<?= $attribute->getAttributeCode() ?>.setup("exact");
+                                    });
+                                </script>
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'textarea'): ?>
+                            <textarea class="textarea<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?> <?php if ($iSearchTagAttribute): ?> validate-product-tag <?php endif ?>" name="product[<?= $block
+                                                                                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                rows="3"><?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?></textarea>
+                        <?php elseif ($attribute->getFrontendInput() == 'date'): ?>
+                            <input type="text" class="input-text <?php echo $preorderModeStartEndFieldValidateClass; ?> <?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                                                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($marketplaceStagingHelper->formatDate($productColl[$attribute->getAttributeCode()])) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: false,
+                                        showOtherMonths: true,
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'datetime'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: true,
+                                        showOtherMonths: true,
+                                        timeFormat: 'h:mm TT',
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'boolean'): ?>
+                            <div class="actions-switch" data-role="switcher">
+                                <input type="hidden" value="0" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]" />
+                                <input type="checkbox" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                    id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                    class="actions-switch-checkbox" value="1"
+                                    <?php if ($productColl[$attribute->getAttributeCode()]): ?>checked<?php endif; ?>
+                                    aria-required="true">
+                                <label class="actions-switch-label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                                    <span class="actions-switch-inner">
+                                        <span class="actions-switch-indicator"></span>
+                                        <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <?php elseif ($attribute->getFrontendInput() == 'select'):
+                            $sellerPreservationStatusArr = [];
+                            if ($attribute->getAttributeCode() == 'preservation_status') {
+                                $sellerPreservationStatus = $sellerSetting->getPreservationStatus();
+                                if ($sellerPreservationStatus === NULL) {
+                                    $sellerPreservationStatusArr = [];
+                                } else {
+                                    $sellerPreservationStatusArr = explode(',', $sellerPreservationStatus);
+                                }
+                                $sellerPreservationStatusArr = is_array($sellerPreservationStatusArr) ? $sellerPreservationStatusArr : [$sellerPreservationStatusArr];
+                            }
+                            if ($attribute->getAttributeCode() == 'wk_marketplace_preorder') {
+                                $preOrderEnable = '';
+                                $preOrderDisable = '';
+                                foreach ($attribute->getSource()->getAllOptions() as $option) {
+                                    if ($option['label'] == __('Enable')) {
+                                        $preOrderEnable = $option['value'];
+                                    } else {
+                                        $preOrderDisable = $option['value'];
+                                    }
+                                }
+
+                            ?>
+                                <div class="actions-switch" data-role="switcher">
+                                    <input type="hidden" value="<?php echo $preOrderDisable; ?>" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]" />
+                                    <input type="checkbox"
+                                        name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                        id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                        class="actions-switch-checkbox" value="<?php echo $preOrderEnable; ?>"
+                                        <?php if ($preOrderEnable == $productColl[$attribute->getAttributeCode()]): ?>checked<?php endif; ?>
+                                        aria-required="true">
+                                    <label class="actions-switch-label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                                        <span class="actions-switch-inner">
+                                            <span class="actions-switch-indicator"></span>
+                                            <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            <?php
+                            } else {
+                            ?>
+                                <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                    id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                    title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                    class="select<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>">
+                                    <?php
+                                    foreach ($attribute->getSource()->getAllOptions() as $option):
+                                        if ($attribute->getAttributeCode() == 'preservation_status' && (!isset($option['value']) || !in_array($option['value'], $sellerPreservationStatusArr))) {
+                                            continue;
+                                        }
+                                    ?>
+                                        <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                            <?php if ($option['value'] == $productColl[$attribute->getAttributeCode()]) {
+                                                echo 'selected="selected"';
+                                            } ?>>
+                                            <?= $block->escapeHtml($option['label']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php
+                            }
+                            ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'multiselect'): ?>
+                            <?php
+                            $values = $productColl[$attribute->getAttributeCode()];
+                            if ($values && is_string($values)) {
+                                $values = explode(',', $values);
+                            } elseif (!is_array($values)) {
+                                $values = [$values];
+                            } ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>][]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                class="multiselect<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" multiple="multiple">
+                                <?php
+                                $options = $attribute->getSource()->getAllOptions();
+                                $shippingMethodsArr = [];
+                                $shippingMethodToCompare = [];
+                                if ($attribute->getAttributeCode() == 'shipping_method') {
+                                    //limit method by seller setting
+                                    $shippingMethods = $sellerSetting->getShippingMethods();
+                                    $shippingMethodsArr = explode(',', (string)$shippingMethods);
+                                    $mappingMethods = $hotaiShippingHelper->mappingMethod();
+
+                                    foreach ($mappingMethods as $methodCode => $_mapMethod) {
+                                        if (in_array($_mapMethod, $shippingMethodsArr)) {
+                                            $shippingMethodToCompare[] = $methodCode;
+                                        }
+                                    }
+                                }
+
+                                foreach ($options as $option):
+                                    if ($attribute->getAttributeCode() == 'shipping_method' && (!isset($option['value'][0]['value']) || !in_array($option['value'][0]['value'], $shippingMethodToCompare))) {
+                                        continue;
+                                    }
+                                ?>
+                                    <?php
+                                    if (!is_array($option['value'])) {
+                                        if ($option['value'] == '') {
+                                            continue;
+                                        }
+                                    ?>
+                                        <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                            <?php if (in_array($option['value'], $values)) {
+                                                echo 'selected="selected"';
+                                            } ?>>
+                                            <?= $block->escapeHtml($option['label']) ?></option>
+                                    <?php } else { ?>
+                                        <optgroup label="<?php echo $block->escapeHtml($option['label']); ?>"></optgroup>
+                                        <?php
+                                        foreach ($option['value'] as $_option) {
+                                            if ($_option['value'] == '') {
+                                                continue;
+                                            }
+                                        ?>
+                                            <option value="<?= $block->escapeHtml($_option['value']) ?>"
+                                                <?php if (in_array($_option['value'], $values)) {
+                                                    echo 'selected="selected"';
+                                                } ?>>
+                                                <?= $block->escapeHtml($_option['label']) ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php else: ?>
+                            <input type="text" class="input-text <?php echo $preorderModeStartEndFieldValidateClass; ?> <?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                                                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php endif; ?>
+                        <?= $hint ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+            <?php foreach ($attributes as $attribute): ?>
+                <?php $_attrCode = $attribute->getAttributeCode(); ?>
+                <?php if ($_attrCode == 'large_item' && !$isAllowLargeItem): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'marketing_code'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'main_category'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'flagstore_category'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'flagship_store_process_seller_id'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'dpa_image'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'is_returnable'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'product_name_sub'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'is_hidden'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'large_item'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'sitemap_exclude'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'hot_sell'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'allow_customer_groups'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'livesearch_categories'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'seller_shop_name'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'livesearch_instock'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'min_variation_price'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'color'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'vip_price_priority'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'hotai1_FRCD'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'hotai1_PARTNO'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'hotai1_PARTCUSTID'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'hotai1_EMPRTAX'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'need_to_refill'): continue;
+                endif; ?>
+                <?php if ($_attrCode == 'commission_source'): continue;
+                endif; ?>
+                <?php if (strpos($_attrCode, 'index_') !== false): continue;
+                endif; ?>
+                <?php if ($productColl['type_id'] == 'virtual' && $_attrCode == 'shipping_method'): continue;
+                endif; ?>
+                <div id="field_<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>" class="field<?php if ($attribute->getIsRequired()): ?> required<?php endif; ?>">
+                    <label class="label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?><b><?= /* @noEscape */ " (" . $currencySymbol . ")"; ?></b>:
+                        <?php else: ?>
+                            <?= $block->escapeHtml(__($attribute->getStoreLabel())) ?>:
+                        <?php endif; ?>
+                    </label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml($_attrCode) ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <?php if ($attribute->getFrontendInput() == 'price'): ?>
+                            <input type="text" class="input-text validate-number validate-zero-or-greater<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php elseif ($attribute->getIsWysiwygEnabled() || $attribute->getFrontendInput() == 'texteditor' || $attribute->getFrontendInput() == 'pagebuilder' || $attribute->getFrontendInput() == 'textarea'): ?>
+                            <?php
+                            if (in_array($attribute->getAttributeCode(), ['recommendation', 'note', 'specification'])) { ?>
+                                <button type="button" onclick="toggleEditor('<?php echo ucfirst($attribute->getAttributeCode()); ?>')"><?php echo __('Show/Hide Editor'); ?></button>
+                            <?php } ?>
+                            <textarea class="textarea<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                rows="3"><?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?></textarea>
+                            <?php if ($attribute->getIsWysiwygEnabled()): ?>
+                                <script>
+                                    require([
+                                        "jquery",
+                                        "mage/translate",
+                                        "mage/adminhtml/events",
+                                        "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                                    ], function(jQuery) {
+                                        wysiwyg<?= ucfirst($attribute->getAttributeCode()) ?> = new wysiwygSetup("<?= $attribute->getAttributeCode() ?>",
+                                            <?= \Branch8\MarketplaceStaging\Model\WysiwygSetupConfig::getToolBarConfig($block->getWysiwygUrl()) ?>
+                                        );
+                                        wysiwyg<?php echo ucfirst($attribute->getAttributeCode()); ?>.setup("exact");
+                                    });
+                                </script>
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'textarea'): ?>
+                            <?php
+                            if (in_array($attribute->getAttributeCode(), ['recommendation', 'note', 'specification'])) { ?>
+                                <button type="button" onclick="toggleEditor('<?php echo ucfirst($attribute->getAttributeCode()); ?>')"><?php echo __('Show/Hide Editor'); ?></button>
+                            <?php } ?>
+                            <textarea class="textarea<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                    ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                rows="3"><?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?></textarea>
+                            <?php if ($helper->isWysiwygEnabled()): ?>
+                                <script>
+                                    require([
+                                        "jquery",
+                                        "mage/translate",
+                                        "mage/adminhtml/events",
+                                        "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                                    ], function(jQuery) {
+                                        wysiwyg<?= ucfirst($attribute->getAttributeCode()) ?> =
+                                            new wysiwygSetup("<?= $attribute->getAttributeCode() ?>",
+                                                <?= \Branch8\MarketplaceStaging\Model\WysiwygSetupConfig::getToolBarConfig($block->getWysiwygUrl()) ?>
+                                            );
+                                        wysiwyg<?php echo ucfirst($attribute->getAttributeCode()); ?>.setup("exact");
+                                    });
+                                </script>
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'date'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($marketplaceStagingHelper->formatDate($productColl[$attribute->getAttributeCode()])) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: false,
+                                        showOtherMonths: true,
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'datetime'): ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                            <script>
+                                require([
+                                    "jquery",
+                                    'mage/translate',
+                                    "mage/calendar"
+                                ], function($, $t) {
+                                    $("#<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>").calendar({
+                                        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        changeYear: true,
+                                        changeMonth: true,
+                                        showsTime: true,
+                                        showOtherMonths: true,
+                                        timeFormat: 'h:mm TT',
+                                        buttonText: $t('Select Date'),
+                                        currentText: $t('Go Today'),
+                                        closeText: $t('Close'),
+                                        showOn: 'button'
+                                    });
+                                });
+                            </script>
+                        <?php elseif ($attribute->getFrontendInput() == 'boolean'): ?>
+                            <div class="actions-switch" data-role="switcher">
+                                <input type="hidden" value="0" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]" />
+                                <input type="checkbox" name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                    id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                    class="actions-switch-checkbox" value="1"
+                                    <?php if ($productColl[$attribute->getAttributeCode()]): ?>checked<?php endif; ?>
+                                    aria-required="true">
+                                <label class="actions-switch-label" for="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>">
+                                    <span class="actions-switch-inner">
+                                        <span class="actions-switch-indicator"></span>
+                                        <span class="actions-switch-text" data-label-yes="<?= __('Yes') ?>" data-label-no="<?= __('No') ?>"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <?php if ($_attrCode == 'hide_product_on_search' && !empty($productUrl)): ?>
+                                <?php $hide_product_on_search = $productColl[$attribute->getAttributeCode()] ?? 0 ?>
+                                <div class="hide_product_on_search actions-copy <?php if ($hide_product_on_search == 0): ?>hide<?php endif; ?>">
+                                    <p>
+                                        <span class="text-copy"><?= $block->escapeHtml($productUrl) ?></span>
+                                        <span class="icon icon-copy" data-clipboard-text="<?= $block->escapeHtml($productUrl) ?>"><img class="spacer" src="<?= /* @noEscape */ $block->getViewFileUrl('Branch8_MarketplaceStaging::images/icon-copy.svg') ?>" /></span>
+                                    </p>
+                                </div>
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'select'):
+                            $sellerPreservationStatusArr = [];
+                            if ($attribute->getAttributeCode() == 'preservation_status') {
+                                $sellerPreservationStatus = $sellerSetting->getPreservationStatus();
+                                if ($sellerPreservationStatus === NULL) {
+                                    $sellerPreservationStatusArr = [];
+                                } else {
+                                    $sellerPreservationStatusArr = explode(',', $sellerPreservationStatus);
+                                }
+                                $sellerPreservationStatusArr = is_array($sellerPreservationStatusArr) ? $sellerPreservationStatusArr : [$sellerPreservationStatusArr];
+                            }
+                        ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                class="select<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>">
+                                <?php
+                                foreach ($attribute->getSource()->getAllOptions() as $option):
+                                    if ($attribute->getAttributeCode() == 'preservation_status' && (!isset($option['value']) || !in_array($option['value'], $sellerPreservationStatusArr))) {
+                                        continue;
+                                    }
+                                ?>
+                                    <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                        <?php if ($option['value'] == $productColl[$attribute->getAttributeCode()]) {
+                                            echo 'selected="selected"';
+                                        } ?>>
+                                        <?= $block->escapeHtml($option['label']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?php if ($attribute->getAttributeCode() == 'is_returnable'): ?>
+                                <input type="hidden" id="use_config_is_returnable" name="product[use_config_is_returnable]" value="<?php if ($productColl[$attribute->getAttributeCode()] == 2): ?>1<?php else: ?>0<?php endif ?>" />
+                            <?php endif; ?>
+                        <?php elseif ($attribute->getFrontendInput() == 'multiselect'): ?>
+                            <?php
+                            $values = $productColl[$attribute->getAttributeCode()];
+                            if ($values && is_string($values)) {
+                                $values = explode(',', $values);
+                            } elseif (!is_array($values)) {
+                                $values = [$values];
+                            } ?>
+                            <select name="product[<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>][]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                title="<?= $block->escapeHtmlAttr($attribute->getStoreLabel()) ?>"
+                                class="multiselect<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" multiple="multiple">
+                                <?php
+                                $options = $attribute->getSource()->getAllOptions();
+                                $shippingMethodsArr = [];
+                                $shippingMethodToCompare = [];
+                                if ($attribute->getAttributeCode() == 'shipping_method') {
+                                    //limit method by seller setting
+                                    $shippingMethods = $sellerSetting->getShippingMethods();
+                                    $shippingMethodsArr = explode(',', (string)$shippingMethods);
+                                    $mappingMethods = $hotaiShippingHelper->mappingMethod();
+
+                                    foreach ($mappingMethods as $methodCode => $_mapMethod) {
+                                        if (in_array($_mapMethod, $shippingMethodsArr)) {
+                                            $shippingMethodToCompare[] = $methodCode;
+                                        }
+                                    }
+                                }
+
+                                foreach ($options as $option):
+                                    if ($attribute->getAttributeCode() == 'shipping_method' && (!isset($option['value'][0]['value']) || !in_array($option['value'][0]['value'], $shippingMethodToCompare))) {
+                                        continue;
+                                    }
+                                ?>
+                                    <?php
+                                    if (!is_array($option['value'])) {
+                                        if ($option['value'] == '') {
+                                            continue;
+                                        }
+                                    ?>
+                                        <option value="<?= $block->escapeHtml($option['value']) ?>"
+                                            <?php if (in_array($option['value'], $values)) {
+                                                echo 'selected="selected"';
+                                            } ?>>
+                                            <?= $block->escapeHtml($option['label']) ?></option>
+                                    <?php } else { ?>
+                                        <optgroup label="<?php echo $block->escapeHtml($option['label']); ?>"></optgroup>
+                                        <?php
+                                        foreach ($option['value'] as $_option) {
+                                            if ($_option['value'] == '') {
+                                                continue;
+                                            }
+                                        ?>
+                                            <option value="<?= $block->escapeHtml($_option['value']) ?>"
+                                                <?php if (in_array($_option['value'], $values)) {
+                                                    echo 'selected="selected"';
+                                                } ?>>
+                                                <?= $block->escapeHtml($_option['label']) ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    <?php
+                                    }
+                                    ?>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php elseif ($attribute->getAttributeCode() == 'main_category'): ?>
+                            <select name="product[main_category]" id="main_category" class="required-entry">
+                                <option value=""></option>
+                                <?php if ($helper->getAllowedCategoryIds()) :
+                                    $storeConfigCatIds = explode(',', trim($helper->getAllowedCategoryIds()));
+                                    $categories = $marketplaceStagingHelper->getTreeByCategoryIds($storeConfigCatIds);
+                                    if (!empty($categories)) {
+                                        foreach ($categories as $category) {
+                                ?>
+                                            <option value="<?= $category['value']; ?>" <?php echo ($productColl->getMainCategory() == $category['value']) ? ' selected' : '' ?>><?php echo $block->escapeHtml($category['label']) ?></option>
+                                <?php
+                                        }
+                                    }
+                                endif;
+                                ?>
+                            </select>
+                        <?php else: ?>
+                            <input type="text" class="input-text<?php if ($attribute->getIsRequired()): ?> required-entry<?php endif; ?>" name="product[<?= $block
+                                                                                                                                                            ->escapeHtmlAttr($attribute->getAttributeCode()) ?>]"
+                                id="<?= $block->escapeHtmlAttr($attribute->getAttributeCode()) ?>"
+                                value="<?= $block->escapeHtml($productColl[$attribute->getAttributeCode()]) ?>" />
+                        <?php endif; ?>
+                        <?= $hint ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="field required">
+                <label class="label"><?= $block->escapeHtml(__('Product Description')) ?>:</label>
+                <?php $hint = $marketplaceStagingHelper->getHintHtml('description') ?>
+                <div class="control wk-border-box-sizing<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                    <button type="button" onclick="toggleEditor('Description')"><?php echo __('Show/Hide Editor'); ?></button>
+                    <textarea name="product[description]" class="required-entry" id="description"
+                        rows="5" cols="75"><?= /* @noEscape */ $productColl->getDescription(); ?></textarea>
+                    <?= $hint ?>
+                    <?php if ($helper->isWysiwygEnabled()): ?>
+                        <script>
+                            require([
+                                "jquery",
+                                "mage/translate",
+                                "mage/adminhtml/events",
+                                "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                            ], function(jQuery) {
+                                wysiwygDescription = new wysiwygSetup(
+                                    "description",
+                                    <?= \Branch8\MarketplaceStaging\Model\WysiwygSetupConfig::getToolBarConfig($block->getWysiwygUrl()) ?>
+                                );
+                                wysiwygDescription.setup("exact");
+                            });
+                        </script>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="field-visually-hidden" style="position:absolute;visibility:hidden;">
+                <div class="field">
+                    <label class="label"><?= $block->escapeHtml(__('Url Key')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('url_key') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <input type="text" class="input-text" name="product[url_key]" id="url_key"
+                            value="<?= $block->escapeHtml($productColl['url_key']) ?>" />
+                        <?= $hint ?>
+                    </div>
+                </div>
+                <?php if (!$helper->getCustomerSharePerWebsite()): ?>
+                    <div class="field required">
+                        <label class="label"><?= $block->escapeHtml(__('Product in Websites')) ?>:</label>
+                        <?php $hint = $marketplaceStagingHelper->getHintHtml('website_ids') ?>
+                        <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                            <select id="websites" class="required-entry select" name="product[website_ids][]" multiple>
+                                <?php $websites = $helper->getAllWebsites(); ?>
+                                <?php foreach ($websites as $website): ?>
+                                    <option value="<?= /* @noEscape */ $website->getWebsiteId() ?>"
+                                        <?= in_array($website->getWebsiteId(), $websiteIds) ? 'selected' : ''; ?>>
+                                        <?=  /* @noEscape */ $website->getName() ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <?= $hint ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div class="field">
+                    <label class="label"><?= $block->escapeHtml(__('Meta Title')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('meta_title') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <input type="text" class="input-text" name="product[meta_title]" id="meta_title"
+                            value="<?= $block->escapeHtml($productColl['meta_title']) ?>" />
+                        <?= $hint ?>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label"><?= $block->escapeHtml(__('Meta Keywords')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('meta_keyword') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <textarea class="textarea" id="meta_keyword" name="product[meta_keyword]"><?= $block->escapeHtml($productColl['meta_keyword']) ?></textarea>
+                        <?= $hint ?>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label"><?= $block->escapeHtml(__('Meta Description')) ?>:</label>
+                    <?php $hint = $marketplaceStagingHelper->getHintHtml('meta_description') ?>
+                    <div class="control<?php if ($hint): ?> _with-tooltip<?php endif ?>">
+                        <textarea class="textarea" id="meta_description" name="product[meta_description]"><?= $block->escapeHtml($productColl['meta_description']) ?></textarea>
+                        <?= $hint ?>
+                    </div>
+                </div>
+            </div>
+            <?= $block->getChildHtml(); ?>
+        </fieldset>
+    </div>
+</form>
+<?php
+$formData = [
+    'productTypeId' => $productColl['type_id'],
+    //    'categories' => implode(',', $categories),
+    'productStatus' => $product_id ? $productColl->getStatus() : '',
+    'countryPicSelector' => '#country-pic',
+    'verifySkuAjaxUrl' => $block->getUrl('marketplace/product/verifysku', ['_secure' => $block
+        ->getRequest()->isSecure()]),
+    'productid'  => $product_id,
+    'categoryTreeAjaxUrl' => $block->getUrl('marketplace/product/categorytree/', ['_secure' => $block
+        ->getRequest()->isSecure()]),
+    'validateUrl' => $validatePostProductUrl
+];
+$serializedFormData = $viewModel->getJsonHelper()->jsonEncode($formData);
+$formDataTierPrice = [
+    'defaultCustomerGroup' => $block->escapeHtml($marketplaceStagingHelper->getDefaultCustomerGroup()),
+    'currencySymbol' => $block->escapeHtml($currencySymbol),
+    'tierPriceInfo' => $marketplaceStagingHelper->getFormatTierPrices($block->escapeHtml($tierPrices)),
+    'sellerId' => $block->escapeHtml($helper->getCustomerId()),
+];
+$serializedFormDataTierPrice = $viewModel->getJsonHelper()->jsonEncode($formDataTierPrice);
+?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "sellerEditProduct": <?= /* @noEscape */ $serializedFormData; ?>
+        }
+    }
+</script>
+<script>
+    <?php if ($dupId = $block->getRequest()->getParam('temp_dup_id')): ?>
+        window.open('<?= $block->getUrl('marketplace/product/edit', ['temp_id' => $dupId]); ?>', '_blank');
+    <?php endif; ?>
+    require([
+        "jquery",
+        "Webkul_Marketplace/catalog/type-events"
+    ], function($, TypeSwitcher){
+        $('#edit-product').trigger('processStart');
+        var $form = $('[data-form=edit-product]');
+        $form.data('typeSwitcher', TypeSwitcher.init());
+        $('#attribute-set-id').change(function() {
+            let urlSet = $('option:selected', this).attr('data-url');
+            window.location.href = urlSet;
+        });
+        $('#save-draft-btn').click(function() {
+            $("#edit-product").append('<input type="hidden" name="back" value="draft">');
+            $('#save-btn').trigger('click');
+        });
+        $('#save-draft-duplicate-btn').click(function() {
+            $("#edit-product").append('<input type="hidden" name="back" value="draft-duplicate">');
+            $('#save-btn').trigger('click');
+        });
+    });
+    var sellerCommissionData = <?php echo json_encode($marketplaceStagingHelper->getSellerInfo()); ?>;
+    var ticketAttributeSet = <?php echo json_encode(explode(',', (string)$virtualTicketAttributeSetIds)); ?>;
+    var productTypeId = "<?php echo $productColl['type_id']; ?>";
+    var productAttributeSetId = "<?php echo $this->getRequest()->getParam('set', false) ? $this->getRequest()->getParam('set') : $productColl['attribute_set_id']; ?>";
+</script>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Webkul_Marketplace/js/product/weight-handler": {},
+            "Webkul_Marketplace/catalog/apply-to-type-switcher": {},
+            "Branch8_MarketplaceStaging/js/product/tier-price": <?= /* @noEscape */ $serializedFormDataTierPrice; ?>
+        }
+    }
+</script>
+<script>
+    function toggleEditor(attr) {
+        var editorObjName = 'wysiwyg' + attr;
+        var editorObj = eval(editorObjName);
+        editorObj.toggle();
+    }
+    var isAllowNegativeGrossProfit = <?php echo $mkProductHelper->isAllowNegativeGrossProfit() ? 'true' : 'false'?>;
+</script>

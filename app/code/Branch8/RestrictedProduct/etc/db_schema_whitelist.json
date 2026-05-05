@@ -1,0 +1,8 @@
+{
+    "amasty_groupcat_rule": {
+        "column": {
+            "forbidden_specificed_url": true,
+            "forbidden_page_id_for_guest": true
+        }
+    }
+}

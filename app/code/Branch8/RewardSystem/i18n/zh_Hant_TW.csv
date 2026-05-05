@@ -1,0 +1,49 @@
+"Delete successfully","刪除成功"
+"Delete failed","刪除失敗"
+"Add Automated Reward","新增自動化獎勵"
+"Automated Rewards",""
+"User Limit","使用者限制"
+"Event Limit","活動限制"
+"Triggers","觸發器"
+"Reward","報酬"
+"Meet any of the conditions","符合任一條件 (OR)"
+"Meet all conditions","符合所有條件 (AND)"
+"Add new condition","新增條件"
+"Compound logic","複合邏輯"
+"API Call Trigger","API 呼叫觸發"
+"Visit Specific Link Trigger","訪問指定連結觸發"
+"First Purchase Trigger","首次購買觸發"
+"Membership Level Change","會員等級變更"
+"API Key","API 金鑰"
+"Order Status","訂單狀態"
+"Level","級別"
+"Reward Type","獎勵類型"
+"Ticket Pool","票券球池"
+"Notification Settings Management"," 通知設定管理"
+"Notification Title (Maximum 100 characters)","通知標題（最多 100 字元）"
+"Notification Content (Maximum 500 characters)","通知內容（最多 500 字元）"
+"characters","字元"
+"Supported dynamic variables: {customer_name}, {reward_code}, {reward_title}, {expiry_date}","支援動態變數：{customer_name}、{reward_code}、{reward_title}、{expiry_date}"
+"Notification Preview","通知預覽"
+"If you select "First Purchase Trigger" the limit for users will be "Total Usage Limit per User" and the number of wins for each account during the program is 1.","如果您選擇“首次購買觸發”，則用戶限制為“每個用戶總使用次數”，活動期間每個帳戶的中獎次數為1次。"
+"Do you want to delete the event?","您想刪除該事件嗎？"
+"Batch code was expired at %s","批次代碼已於 %s 過期"
+"Notification title should be less than 100 characters.","通知標題應少於 100 個字元。"
+"Notification content should be less than 500 characters.","通知內容應少於 500 個字元。"
+"Automated Rewards","「自動化獎勵管理」"
+"Delete","刪除"
+"Reward System Listing","自動化獎勵管理",
+"Total Usage Limit per User","每個用戶總使用次數",
+"Daily Usage Limit per User","每個用戶每日使用次數",
+"User Limit Qty","用戶限制數量",
+"Total Usage Limit for the Entire Campaign","整個活動總使用次數",
+"Daily Usage Limit for the Entire Campaign","整個活動每日使用次數",
+"Second","秒",
+"Trigger condition","觸發條件設定",
+"Event Limit Qty","時間與次數限制",
+"If you select ""First Purchase Trigger"" the limit for users will be ""Total Usage Limit per User"" and the number of wins for each account during the campaign is 1.","若選擇「首次購買觸發」，則用戶的限制為「每位用戶的總使用次數限制」，且在活動期間每個帳號的中獎次數為 1。"
+"Reached the maximum daily usage limit per user.","已達到每位用戶的每日使用次數上限。",
+"Reached the maximum total usage limit per user.","已達到每位用戶的總使用次數上限。",
+"Total daily usage limit for the entire campaign has been reached.","已達整個活動的每日總使用次數上限。",
+"Total usage limit for the campaign has been reached.","已達整個活動的總使用次數上限"
+"Must start with %1","需以%1為開頭"

@@ -1,0 +1,279 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+  .gifttofriend-giftbox-service {
+    .breadcrumbs {
+      .items > li:last-child {
+        
+      }
+    }
+  }
+
+  .giftorder-loading {
+    display: flex;
+    width: 100%;
+    min-height: 300px;
+  }
+
+  .giftorder-loader {
+    margin: auto;
+    width: 32px;
+    aspect-ratio: 2;
+    --_g: no-repeat radial-gradient(circle closest-side, var(--color-red-base) 90%, transparent);
+    background: var(--_g) 0% 50%, var(--_g) 50% 50%, var(--_g) 100% 50%;
+    background-size: 20% 50%;
+    animation: l3 1s infinite linear;
+    height: auto;
+    position: static;
+  }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .gifttofriend-giftbox-service {
+    .page-title-wrapper {
+      display: none;
+    }
+
+    .breadcrumbs {
+      border-bottom: 1px solid var(--color-gray-light1);
+      padding-bottom: 14px;
+      margin-top: 14px;
+      text-align: center;
+      position: relative;
+      margin-bottom: 0;
+
+      strong {
+        &:extend(.abs-mb-h6-bold all);
+        color: var(--color-black-solid);
+      }
+
+      .items > li {
+        &:nth-last-child(2) {
+          position: absolute;
+          left: 14px;
+          top: -1px;
+
+          &::before {
+            display: none;
+          }
+
+          a {
+              font-size: 0;
+              color: var(--color-black-solid1);
+              transform: scaleX(-1);
+              display: inline-block;
+              text-decoration: none;
+              text-indent: -9999em;
+              line-height: 0;
+
+              &::before {
+                  font-style: normal;
+                  font-weight: normal;
+                  line-height: 1;
+                  font-family: var(--font-hotai-icons);
+                  content: var(--icon-arrow);
+                  font-size: 24px;
+                  line-height: 1.2;
+              }
+          }
+        }
+
+        &:last-child {
+          display: inline-flex;
+        }
+      }
+    }
+
+    // .breadcrumbs {
+    //   display: block;
+    //   position: relative;
+    //   margin: 0;
+    //   z-index: 1;
+    //   min-height: 0;
+
+    //   .items {
+    //       position: absolute;
+    //       left: 52px;
+    //       top: 12px;
+
+    //       li:first-child {
+    //           display: none;
+    //       }
+
+    //       li:last-child {
+    //           display: block;
+    //       }
+    //   }
+    // }
+  }
+
+  .giftorder-service {
+    #helpdesk-form {
+      margin-top: 23px;
+
+      input[type="text"], 
+      input[type="password"], 
+      input[type="url"], input[type="tel"], 
+      input[type="search"], input[type="number"], 
+      input[type*="date"], input[type="email"] {
+        height: 40px;
+      }
+
+      .actions-toolbar {
+        margin-top: 14px;;
+      }
+    }
+
+    .form-style-primary {
+      .fieldset {
+        margin: 0 0 14px;
+
+        > .field  {
+          &.message {
+            margin-bottom: 56px;
+          }
+
+          select {
+            height: 40px;
+          }
+
+          textarea {
+            min-height: 80px;
+          }
+
+          > .label {
+            &:extend(.abs-mb-body-text-bold all);
+          }
+
+          .file-uploader .file-uploader-summary {
+            .file-uploader-placeholder {
+              width: 80px;
+              height: 80px;
+              margin: 8px 10px 10px 0;
+
+              &.placeholder-document:before {
+                top: 7px;
+                position: relative;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+//
+//  Tablet
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+  .gifttofriend-giftbox-service {
+    .page-title-wrapper {
+      .page-title {
+        &:extend(.abs-tb-h2 all);
+        margin: 0;
+      }
+    }
+
+    .breadcrumbs,
+    main.page-main {
+      max-width: 860px;;
+    }
+
+    main.page-main {
+      padding-top: 18px;
+    }
+
+    .breadcrumbs {
+      .item {
+        &:last-child {
+          display: none;
+        }
+
+        &:not(:last-child) {
+          &::after {
+            display: none;
+          }
+
+          &::before {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 13px;
+            line-height: 20px;
+            content: var(--icon-prev1);
+            font-family: var(--font-hotai-icons);
+            margin: 0 -2px 0 0;
+            vertical-align: middle;
+            display: inline-block;
+            font-weight: normal;
+            overflow: hidden;
+            speak: none;
+            text-align: center;
+            position: relative;
+            left: 0;
+            top: -1px;
+          }
+        }
+      }
+    }
+  }
+
+  .giftorder-service {
+    #helpdesk-form {
+      .form-panel {
+        padding: 40px 40px 2px 40px;
+      }
+      
+      .fieldset > .field {
+        &.field-nick-name {
+          width: 100%;
+          margin-right: 0;
+        }
+
+        &.field-email {
+          width: 100%;
+        }
+
+        textarea {
+          min-height: 120px;
+        }
+
+        .file-uploader .file-uploader-summary .file-uploader-placeholder {
+          width: 108px;
+          height: 108px;
+          margin: 8px 10px 8px 0;
+
+          &.placeholder-document:before {
+            top: 7px;
+            position: relative;
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__sl) {
+  .gifttofriend-giftbox-service {
+    .page-title-wrapper {
+      .page-title {
+        &:extend(.abs-dk-h2 all);
+      }
+    }
+  }
+}

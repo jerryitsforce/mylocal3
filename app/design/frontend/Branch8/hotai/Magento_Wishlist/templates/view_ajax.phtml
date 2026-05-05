@@ -1,0 +1,26 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable PHPCompatibility.Miscellaneous.RemovedAlternativePHPTags.MaybeASPOpenTagFound
+/** @var \Magento\Wishlist\Block\Customer\Wishlist $block */
+?>
+<?php if ($block->hasWishlistItems()) : ?>
+    <?php $currentPage = $block->getRequest()->getParam('p'); ?>
+    <?php  $i = 0; foreach ($block->getWishlistItems() as $item) : ?>
+        <?php $i++; ?>
+        <li data-row="product-item" class="product-item <?= ($i === 1) ? 'page-first-item-'.$currentPage : '' ?>" data-page="<?= $currentPage ?>" id="item_<?= $block->escapeHtmlAttr($item->getId()) ?>">
+            <div class="product-item-info" data-container="product-grid">
+                <?php echo $block->getLayout()->getBlock("customer.wishlist.item.image")->setItem($item)->toHtml(); ?>
+                <div class="product-item-details">
+                    <?php echo $block->getLayout()->getBlock("customer.wishlist.item.name")->setItem($item)->toHtml(); ?>
+                    <?php echo $block->getLayout()->getBlock("customer.wishlist.item.price")->setItem($item)->toHtml(); ?>
+                    <?php echo $block->getLayout()->getBlock("customer.wishlist.item.cart")->setItem($item)->toHtml(); ?>
+                </div>
+            </div>
+        </li>
+    <?php endforeach; ?>
+<?php endif ?>
+

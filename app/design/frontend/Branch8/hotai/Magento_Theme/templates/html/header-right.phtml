@@ -1,0 +1,17 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<div class="header-right">
+    <a class="nav-item nav-home" title="<?= $block->escapeHtml(__('Home')) ?>"
+    href="<?= $block->escapeUrl($block->getUrl('/')) ?>">
+        <span class="text"><?= $block->escapeHtml(__('Home')) ?></span>
+    </a>
+    <?= $block->getChildHtml() ?>
+</div>

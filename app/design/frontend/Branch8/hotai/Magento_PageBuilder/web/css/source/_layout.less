@@ -1,0 +1,100 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Product -- Full Width
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .product-full-width-section {
+        padding: .5em 0;
+
+        .block.review-add {
+            margin-top: 2.7rem;
+        }
+    }
+
+    .page-main-details .product-section-title {
+        border-bottom: 1px solid @color-gray-middle2;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+    }
+
+    .additional-attributes-wrapper .additional-attributes {
+        border: none;
+        width: auto;
+
+        > tbody > tr {
+            > th {
+                border: none;
+                padding: 5.5px 30px 10px 0;
+            }
+            > td {
+                border: none;
+                padding: 5.5px 5px 10px;
+            }
+        }
+    }
+
+    [data-content-type="row"][data-appearance="full-bleed"] .tabs-content [data-content-type="divider"],
+    .main-container{
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        box-sizing: border-box;
+    }
+
+    .page-layout-cms-full-width{
+        .page-main{
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    [data-content-type='row'][data-appearance='contained'],
+    body[class$='full-width'] [data-content-type='row'][data-appearance='full-width'] > .row-full-width-inner{
+        padding-left: var(--layout-indent__width);
+        padding-right: var(--layout-indent__width);
+    }
+
+    [data-content-type="row"][data-appearance="full-bleed"] .tabs-content [data-content-type="divider"],
+    .main-container{
+        padding-left: var(--layout-indent__width);
+        padding-right: var(--layout-indent__width);
+    }
+
+    [data-content-type='row'][data-appearance='contained'] [data-content-type='row'][data-appearance='contained'], 
+    body[class$='full-width'] [data-content-type='row'][data-appearance='full-width'] > .row-full-width-inner 
+    [data-content-type='row'][data-appearance='full-width'] > .row-full-width-inner,
+    .page-main [data-content-type='row'][data-appearance='contained']{
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+//
+//  Page -- Full Width
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .cms-index-index.page-layout-cms-full-width .nav-sections {
+        margin-bottom: 0;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    [data-content-type="row"][data-appearance="full-bleed"] .tabs-content [data-content-type="divider"],
+    .main-container{
+        max-width: var(--layout__max-width);
+    }
+}

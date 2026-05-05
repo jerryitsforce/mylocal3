@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="marketplace_email_low_stock_custom_template"
+              label="Low Stock Notification Mail to Seller After Orer Placed Custom"
+              file="low_stock.html" type="html" module="Branch8_Marketplace" area="frontend"/>
+    <template id="marketplace_email_rma_request_for_seller"
+              label="RMA Request Notification"
+              file="rma_request_seller.html" type="html" module="Branch8_Marketplace" area="frontend"/>
+    <template id="mprmasystem_email_rma_request_from_be_for_seller"
+              label="RMA Request From Headquarters or Distributor"
+              file="rma_request_from_be.html" type="html" module="Branch8_Marketplace" area="frontend"/>
+    <template id="buyer_seller_chat_email_offline_customer_email_template_custom"
+              label="Unread Chat Notification" file="customer_offline.html" type="html" module="Branch8_Marketplace" area="frontend"/>
+    <template id="marketplace_email_becomeseller_request_auto_approve_notification_template"
+        label="Register Seller Auto Approve Request" file="auto_approve_seller.html" type="html" module="Branch8_Marketplace" area="frontend"/>
+    <template id="marketplace_email_seller_forgot_password_template"
+              label="Seller and Sub account forgot password" file="forgot_password.html" type="html" module="Branch8_Marketplace" area="frontend"/>
+</config>

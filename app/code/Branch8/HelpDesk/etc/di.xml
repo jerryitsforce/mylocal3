@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Branch8\HelpDesk\Api\Data\TicketInterface" type="Branch8\HelpDesk\Model\Ticket"/>
+    <preference for="Branch8\HelpDesk\Api\Data\GuardTicketInterface" type="Branch8\HelpDesk\Model\Ticket"/>
+    <preference for="Branch8\HelpDesk\Api\Data\MessageInterface" type="Branch8\HelpDesk\Model\Message"/>
+    <preference for="Branch8\HelpDesk\Api\Data\AttachmentInterface" type="Branch8\HelpDesk\Model\Attachment"/>
+    <preference for="Branch8\HelpDesk\Api\TicketRepositoryInterface" type="Branch8\HelpDesk\Model\TicketRepository"/>
+    <preference for="Branch8\HelpDesk\Api\MessageRepositoryInterface" type="Branch8\HelpDesk\Model\MessageRepository"/>
+    <preference for="Branch8\HelpDesk\Api\AttachmentRepositoryInterface" type="Branch8\HelpDesk\Model\AttachmentRepository"/>
+    <preference for="Branch8\HelpDesk\Model\EmailNotificationInterface" type="Branch8\HelpDesk\Model\EmailNotification"/>
+    <preference for="Branch8\HelpDesk\Api\Data\MessageSearchResultInterface" type="Branch8\HelpDesk\Model\ResourceModel\Message\Collection"/>
+    <preference for="Branch8\HelpDesk\Api\Data\AttachmentSearchResultInterface" type="Branch8\HelpDesk\Model\ResourceModel\Attachment\Collection"/>
+    <preference for="Branch8\HelpDesk\Api\Data\FindYourOrdersDataInterface" type="Branch8\HelpDesk\Model\Order"/>
+    <preference for="Branch8\HelpDesk\Api\Data\FindYourOrdersSearchResultInterface" type="Branch8\HelpDesk\Model\ResourceModel\Order\Collection"/>
+    <preference for="Branch8\HelpDesk\Api\FindYourOrderServiceInterface" type="Branch8\HelpDesk\Model\FindYourOrderService"/>
+    <virtualType name="Branch8\HelpDesk\Logger\Handler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/branch8_helpdesk.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Branch8HelpDeskLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="handlers" xsi:type="array">
+                <item name="debug" xsi:type="object">Branch8\HelpDesk\Logger\Handler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Branch8\HelpDesk\Helper\Logger">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8HelpDeskLogger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\Model\Ticket\AttachmentUploader">
+        <arguments>
+            <argument name="logger" xsi:type="object">Branch8\HelpDesk\Helper\Logger</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\HelpDesk\Api\MessageRepositoryInterface">
+        <plugin name="Branch8_HelpDesk::addAttachmentToMessage" type="Branch8\HelpDesk\Plugin\MessageRepositoryPlugin"/>
+    </type>
+    <type name="Branch8\HelpDesk\Api\TicketRepositoryInterface">
+        <plugin name="Branch8_HelpDesk::addAttachmentToTicket" type="Branch8\HelpDesk\Plugin\TicketRepositoryPlugin"/>
+    </type>
+
+    <virtualType name="messageAttachmentUploader" type="Branch8\HelpDesk\Model\Ticket\AttachmentUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">helpdesk/tmp/attachment</argument>
+            <argument name="basePath" xsi:type="string">helpdesk/attachment</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="customer_ticket_listing_data_source" xsi:type="string">Branch8\HelpDesk\Model\ResourceModel\Ticket\Grid\CustomerTicketCollection</item>
+                <item name="ticket_listing_data_source" xsi:type="string">Branch8\HelpDesk\Model\ResourceModel\Ticket\Grid\Collection</item>
+                <item name="category_listing_data_source" xsi:type="string">Branch8\HelpDesk\Model\ResourceModel\Category\Collection</item>
+                <item name="team_listing_data_source" xsi:type="string">Branch8\HelpDesk\Model\ResourceModel\Team\Collection</item>
+                <item name="helpdesk_team_user_grid_data_source" xsi:type="string">Branch8\HelpDesk\Model\ResourceModel\User\GridCollection</item>
+                <item name="helpdesk_customer_choose_grid_data_source" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection</item>
+                <item name="helpdesk_user_choose_grid_data_source" xsi:type="string">Branch8\HelpDesk\Model\ResourceModel\User\GridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="HelpDeskModifierPool" type="Magento\Ui\DataProvider\Modifier\Pool"/>
+    <type name="Branch8\HelpDesk\Model\Ticket\Create\DataProvider">
+        <arguments>
+            <argument name="primaryFieldName" xsi:type="string">ticket_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="pool" xsi:type="object">HelpDeskModifierPool</argument>
+        </arguments>
+    </type>
+</config>

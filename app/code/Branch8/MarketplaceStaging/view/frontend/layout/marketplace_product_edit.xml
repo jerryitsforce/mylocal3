@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Branch8_MarketplaceStaging::css/select2.min.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketplaceStaging\Block\Update\Upcoming" name="catalog.product.marketplacestaging.update.grid.wrapper" before="marketplace_product_edit" cacheable="false">
+                <container name="catalog.product.marketplacestaging.update.grid" htmlTag="div" htmlClass="block-schedule block">
+                    <block class="Branch8\MarketplaceStaging\Block\Update\Entity\Toolbar" name="marketplacestaging.schedule.title" template="Branch8_MarketplaceStaging::schedule-title.phtml">
+                        <arguments>
+                            <argument name="requestFieldName" xsi:type="string">id</argument>
+                            <argument name="modalPath" xsi:type="string">marketplacestaging_upcoming_form.marketplacestaging_upcoming_form.marketplacestaging_update_form_modal</argument>
+                            <argument name="loaderPath" xsi:type="string">marketplacestaging_upcoming_form.marketplacestaging_upcoming_form.marketplacestaging_update_form_modal.update_form_loader</argument>
+                        </arguments>
+                    </block>
+                    <uiComponent name="marketplacestaging_upcoming_form"/>
+                </container>
+            </block>
+            <block class="Magento\Framework\View\Element\Template" name="disable.wysiswyg" template="Branch8_MarketplaceStaging::wysiwyg-disable.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="marketplace_product_edit">
+            <arguments>
+                <argument name="view_helper" xsi:type="object">Branch8\MarketplaceStaging\Helper\Data</argument>
+            </arguments>
+            <action method="setTemplate">
+                <argument name="template" xsi:type="string">Branch8_MarketplaceStaging::product/edit.phtml</argument>
+            </action>
+            <block class="Branch8\MarketplaceStaging\Block\CustomOption\Options" name="b8.custom.options.template.options" cacheable="false"/>
+            <block class="Branch8\MarketplaceStaging\Block\CustomOption\Variation" name="managevariation" template="Branch8_MarketplaceStaging::catalog/product/edit/managevariation.phtml" cacheable="false"/>
+        </referenceBlock>
+        <referenceBlock name="marketplace_product_cart_limit" remove="true"/>
+        <referenceBlock name="marketplace_product_downloadable_links" template="Branch8_MarketplaceStaging::product/webkul/edit/downloadable/links.phtml"/>
+        <referenceBlock name="marketplace_product_downloadable_samples" template="Branch8_MarketplaceStaging::product/webkul/edit/downloadable/samples.phtml"/>
+        <referenceBlock name="step1" template="Branch8_MarketplaceStaging::product/edit/attribute/steps/wk_select_attributes.phtml"/>
+    </body>
+</page>

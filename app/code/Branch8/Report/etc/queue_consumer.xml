@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <consumer name="event.report.tracking" queue="event.report.tracking"
+              connection="amqp"
+              maxMessages="1000"
+              consumerInstance="Magento\Framework\MessageQueue\Consumer"
+              handler="Branch8\Report\Model\Queue\Consumers::execute"/>
+</config>

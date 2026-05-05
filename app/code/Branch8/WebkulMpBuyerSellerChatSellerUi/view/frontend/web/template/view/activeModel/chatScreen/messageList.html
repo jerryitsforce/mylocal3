@@ -1,0 +1,49 @@
+<div class="reply-container" data-bind="visible:minimized()===false, event: { scroll: debounceHandleScroll }">
+    <!-- ko if: messages().length > 0  -->
+    <ol class="discussion"
+        data-bind="attr:{'id':'messageFrame-'+conversationData().conversationUniqueId}"
+    >
+        <!-- ko foreach: messages -->
+        <li data-bind="attr: { class: $data.senderUniqueId==$parent.conversationData().sellerUniqueId?'self seller':'other',
+            'read':is_read,'id':'message-'+unique_id}">
+            <!-- ko if: messageType=='text' -->
+            <div class="messages"  data-type='text' data-bind="normalizeText:message"></div>
+            <!-- /ko -->
+            <!-- ko if: messageType=='html'  -->
+            <div class="messages" data-bind="html:$parent.UNTIL.messageTextToHtml(message)"></div>
+            <!-- /ko -->
+            <!-- ko if: messageType=='image'   -->
+            <div class="messages">
+                <a target="_blank" data-bind="attr:{href:$parent.UNTIL.getMetaValue('url',meta)}">
+                    <img data-bind="attr:{src:$parent.UNTIL.getMetaValue('url',meta)}"
+                         style="max-height:150px;" class="message-image"/>
+                </a>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: messageType=='video'   -->
+            <div class="message">
+                <video controls>
+                    <source
+                        data-bind="
+                                attr:{src:$parent.UNTIL.getMetaValue('url',meta),
+                                   type:$parent.UNTIL.getMetaValue('type',meta)
+                                }"/>
+                </video>
+            </div>
+            <!-- /ko -->
+            <!-- ko if: messageType=='file'   -->
+            <div class="messages">
+                <a target="_blank" data-bind="attr:{href:$parent.generalConfig.mediaUr+message}">
+                    <span data-bind="text:$parent.generalConfig.downLoadFileText"></span>
+                </a>
+            </div>
+            <!-- /ko -->
+            <div class="time">
+                <time data-bind="text:$parent.UNTIL.formatLocalDate(date)"></time>
+            </div>
+        </li>
+        <!-- /ko -->
+    </ol>
+    <!-- /ko -->
+</div>
+

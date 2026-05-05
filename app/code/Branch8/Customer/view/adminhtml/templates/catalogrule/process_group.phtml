@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    var ruleId = <?php echo (int)$this->getRuleData()->getId()?>;
+    var allGroups = <?php echo $this->getAllGroups(); ?>;
+    var currentOrganization = <?php echo $this->getRuleOrganization();?>;
+    var currentGroups = <?php echo $this->getRuleGroups();?>;
+    require(["jquery", 'domReady!'], function ($) {
+        jQuery(document).ajaxComplete(function() {
+            if(ruleId){
+                $('select[name="organization"]').val(currentOrganization).change();
+                //load group by organization
+                changeOrganization(currentOrganization, allGroups);
+            }else{
+                $('select[name="customer_group_ids"]').html('');
+                $('select[name="customer_group_ids"]').trigger('change');
+            }
+
+            $('select[name="organization"]').change(function(){
+                var organizationId = $(this).val();
+                changeOrganization(organizationId, allGroups);
+            });
+            function changeOrganization(organizationId, allGroups){
+                $('select[name="customer_group_ids"]').html('');
+                $.each(allGroups, function(groupId, group){
+                    if(group.organization == organizationId){
+                        var selected = '';
+                        if(currentGroups.includes(groupId+'')){
+                            selected = 'selected';
+                        }
+                        $('select[name="customer_group_ids"]').append('<option '+selected+' data-title="'+group.value+'" value="'+groupId+'">'+group.value+'</option>');
+                    }
+                });
+                $('select[name="customer_group_ids"]').trigger('change');
+            }
+        });
+
+    });
+</script>

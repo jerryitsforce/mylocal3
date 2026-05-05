@@ -1,0 +1,104 @@
+<div id="sidepanel">
+    <div id="profile">
+        <div class="wrap">
+            <img id="profile-img"
+                 data-bind="attr:{'src':customerChatProfile().image,'class':getCssStatus(customerChatProfile().status)},
+                 click:showHideStatusSelection"
+            />
+            <p data-bind="text:customerChatProfile().name"></p>
+            <div id="status-options">
+                <ul>
+                    <li id="status-online">
+                        <span class="status-circle"></span>
+                        <p data-status='1' data-bind="i18n:STATUS.ONLINE_LABEL,
+                        click:changeChatStatus"></p>
+                    </li>
+                    <li id="status-busy">
+                        <span class="status-circle"></span>
+                        <p data-status='2' data-bind="i18n:STATUS.BUSY_LABEL,
+                        click:changeChatStatus">
+                        </p>
+                    </li>
+                    <li id="status-offline">
+                        <span class="status-circle"></span>
+                        <p data-status='0' data-bind="i18n:STATUS.OFFLINE_LABEL,
+                        click:changeChatStatus"></p>
+                    </li>
+                </ul>
+                <hr class="line-after-profile-status">
+                <ul>
+                    <li id="settings">
+                        <render args="settingTemplate"></render>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="search">
+        <label for="search-seller">
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </label>
+        <input type="text" data-bind="value: searchContact, valueUpdate: 'input'"
+               id="search-seller" placeholder="Search contacts..."/>
+    </div>
+    <div id="contacts">
+        <ul data-role="list-sellers" data-bind="foreach: filteredConversationList">
+            <li class=""
+                data-bind="attr:{'class':$parent.getContactClass($data)},click:function(data, event) { $parent.sellerRowClick($data) }">
+                <div class="wrap">
+                    <span class="contact-status"
+                          data-bind="attr:{class: $parent.getCssStatus(sellerChatStatus)}"></span>
+                    <img data-bind="attr:{'src':sellerImage}" alt=""/>
+                    <div class="meta">
+                        <p class="name" data-bind="text:sellerNickName ? sellerNickName :sellerName"></p>
+                        <p class="unread badge"
+                           data-bind="text:customerTotalUnreadMessages,
+                            visible: customerTotalUnreadMessages > 0" >
+                        </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--   <div id="bottom-bar">
+           <render args="settingTemplate"></render>
+       </div>-->
+</div>
+<div class="content">
+    <div class="contact-profile">
+        <!-- ko if: currentConversationData -->
+        <img data-bind="attr:{src:currentConversationData().sellerImage}"
+             alt=""/>
+        <p data-bind="text:currentConversationData().nickName?currentConversationData().nickName:currentConversationData().sellerName"></p>
+        <!-- /ko -->
+        <div class="social-media" data-role="model-chat-controls">
+            <i class="fa fa-volume-up" aria-hidden="true"
+               data-bind="click:enableDisableSound">
+            </i>
+            <i class="fa fa-caret-square-o-down" aria-hidden="true"
+               data-bind="click:minimizeChatWindow">
+            </i>
+            <audio controls="controls" class="wk_sound_play hide" id="myAudio" data-bind="visible:false">
+                <source data-bind="attr: {'src': window.chatboxCoreConfig.soundUrl}" type="audio/ogg"></source>
+            </audio>
+        </div>
+    </div>
+    <!-- ko if: getRegion('chatScreen')().length > 0 -->
+        <!-- ko foreach: { data: getRegion('chatScreen'), as: 'element' } -->
+        <!-- ko template: element.getTemplate() --><!-- /ko -->
+        <!-- /ko -->
+    <!--/ko-->
+    <!-- ko if: getRegion('chatScreen')().length == 0 -->
+    <div class="chat">
+        <div class="empty">
+            <p data-bind="i18n: 'Welcome you to HOTAIGO'"></p>
+            <p data-bind="i18n: 'Begin chat with seller'"></p>
+        </div>
+    </div>
+    <!--/ko-->
+</div>
+<div id="profile-image-uploader">
+    <!-- ko foreach: getRegion('changeProfileImage') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+</div>

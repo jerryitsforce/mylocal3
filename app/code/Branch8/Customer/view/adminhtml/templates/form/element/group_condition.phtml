@@ -1,0 +1,26 @@
+<div>
+    <div class="admin__field field with-condition-num">
+        <label class="label admin__field-label" for="condition_num_orders"><span><?php echo __("Completed orders");?></span></label>
+        <div class="admin__field-control control">
+            <input id="condition_num_orders" name="condition_num_orders" value="" title="<?php echo __('Total orders');?>" class="input-text admin__control-text" type="text">
+        </div>
+    </div>
+
+    <div class="admin__field field field-tax_combine">
+        <label class="label admin__field-label" for="condition_combine"><span><?php echo __("Combine");?></span></label>
+        <div class="admin__field-control control">
+            <select id="condition_combine" name="condition_combine" title="Combine" class="select admin__control-select">
+                <option value="0">- - - - - - - -</option>
+                <option value="<?php echo \Branch8\Customer\Helper\Group::COMBINE_AND;?>">AND</option>
+                <option value="<?php echo \Branch8\Customer\Helper\Group::COMBINE_OR;?>">OR</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="admin__field field">
+        <label class="label admin__field-label" for="condition_total_value"><span><?php echo __("Total order value");?></span></label>
+        <div class="admin__field-control control">
+            <input id="condition_total_value" name="condition_total_value" value="" title="Total value" class="input-text admin__control-text" type="text">
+        </div>
+    </div>
+</div>

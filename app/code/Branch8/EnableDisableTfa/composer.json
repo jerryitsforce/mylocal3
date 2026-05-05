@@ -1,0 +1,25 @@
+{
+    "name": "branch8/module-enabledisabletfa",
+    "description": "Adds enable disable switch for the Two-factor Authorization",
+    "type": "magento2-module",
+    "license": "MIT",
+    "version": "1.0.1",
+    "authors": [
+        {
+            "name": "Dev",
+            "email": "dev@branch8.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "magento/module-two-factor-auth": "1.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Branch8\\EnableDisableTfa\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

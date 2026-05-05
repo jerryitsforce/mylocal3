@@ -1,0 +1,218 @@
+// /**
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //  Using buttons mixins
+    button,
+    a.action.primary,
+    .action-primary {
+        .lib-css(border-radius, @button__border-radius);
+        letter-spacing: 1px;
+    }
+
+    button {
+        &:not(.primary) {
+            .lib-css(box-shadow, none);
+
+            &:active {
+                .lib-css(box-shadow, @button__shadow-active);
+            }
+        }
+    }
+
+    body {
+        &:not(._keyfocus) {
+            button {
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+    }
+
+    a.action.primary {
+        .lib-link-as-button();
+    }
+
+    .action.primary,
+    .action-primary {
+        .lib-button-primary();
+
+        &:hover {
+            border-color: var(--color-red-light2);
+            background-color: var(--color-red-light2);
+        }
+
+        &.action-small{
+            padding: 4px 16px;
+        }
+    }
+
+    .action.secondary,
+    .a-button{
+        .lib-button();
+        .lib-css(border-radius, @button__border-radius);
+        text-align: center;
+
+        &:hover{
+            text-decoration: none;
+        }
+
+        &.action-small{
+            padding: 4px 16px;
+        }
+
+        &.action-md{
+            padding: 9px 16px;
+        }
+
+        &.action-sm{
+            padding: 4px 12px;
+        }
+    }
+
+    .action-small{
+        padding: 4px 16px;
+    }
+
+    .btn-icon,
+    .banner-with-btn-icon-only .pagebuilder-banner-button{
+        font-size: 0;
+        border: 1px solid transparent;
+        gap: 0 !important;
+
+        &:hover{
+            border: 1px solid;
+            border-radius: 4px;
+        }
+
+        &.btn-arrow-right{
+            .lib-icon-font(
+                @_icon-font-content: '',
+                @_icon-font-position: after,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 24px
+            );
+            
+            &:after{
+                content: '\e903';
+            }
+        }
+    }
+
+    button.loading{
+        position: relative;
+        &:before{
+            content: '';
+            position: absolute;
+            top: -1px;
+            bottom: -1px;
+            left: -1px;
+            right: -1px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+        &:after{
+            content: '';
+            display: inline-block;
+            &:extend(.abs-loader-spinner all);
+            width: 24px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -8px;
+            margin-left: -12px;
+        }
+    }
+
+    .btn-icon-left{
+        &.action,
+        .pagebuilder-button-primary,
+        .pagebuilder-button-secondary,
+        .pagebuilder-button-link{
+            .lib-icon-font(
+                @_icon-font-content: '',
+                @_icon-font-position: before,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 22px
+            );
+            display: inline-flex !important;
+            gap: 3px;
+            align-items: center;
+    
+            &:after{
+                display: none;
+            }
+        }
+        
+    }
+
+    .btn-icon-right{
+        &.action,
+
+        .pagebuilder-button-primary,
+        .pagebuilder-button-secondary,
+        .pagebuilder-button-link{
+            .lib-icon-font(
+                @_icon-font-content: '',
+                @_icon-font-position: after,
+                @_icon-font-size: 24px,
+                @_icon-font-line-height: 22px
+            );
+            display: inline-flex !important;
+            gap: 3px;
+            align-items: center;
+
+            &:before{
+                display: none;
+            }
+        }
+        
+    }
+
+    .btn-icon-down{
+        &.action,
+        .pagebuilder-button-primary,
+        .pagebuilder-button-secondary,
+        .pagebuilder-button-link{
+            &:before,
+            &:after{
+                content: '\e91d';
+                .lib-css(transform, rotate(-90deg), 1)
+            }
+        }
+        
+    }
+
+    .btn-icon-up{
+        &.action,
+        .pagebuilder-button-primary,
+        .pagebuilder-button-secondary,
+        .pagebuilder-button-link{
+            &:before,
+            &:after{
+                content: '\e91d';
+                .lib-css(transform, rotate(90deg), 1)
+            }
+        }
+    }
+
+    .btn-icon-arrow-right{
+        &.action,
+        .pagebuilder-button-primary,
+        .pagebuilder-button-secondary,
+        .pagebuilder-button-link{
+            &:before,
+            &:after{
+                content: '\e903';
+            }
+        }
+    }
+}

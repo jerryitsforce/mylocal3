@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <buyer_seller_chat>
+            <notification>
+                <enable>0</enable>
+                <cc_sub_accounts>1</cc_sub_accounts>
+                <unread_email_template>buyer_seller_chat_notification_email_unread_email_template</unread_email_template>
+                <!--<reminder_day_offset>1</reminder_day_offset>-->
+                <remind_frequency>15</remind_frequency>
+                <remind_interval>30</remind_interval>
+                <cron_exp>*/15 * * * *</cron_exp>
+            <!--    <max_retry>1</max_retry>-->
+                <unread_sender_email_identity>general</unread_sender_email_identity>
+            </notification>
+            <customer_notification_box>
+                <enable>1</enable>
+                <delay>300</delay>
+                <cleanup_days>7</cleanup_days>
+            </customer_notification_box>
+        </buyer_seller_chat>
+        <branch8_debug>
+            <branch8_webkulmpbuyersellerchatunreadmessagereminder>
+                <log_file>system,exception</log_file>
+            </branch8_webkulmpbuyersellerchatunreadmessagereminder>
+        </branch8_debug>
+    </default>
+</config>

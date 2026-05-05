@@ -1,0 +1,58 @@
+<?php
+/**
+ * @var \PHPCuong\Faq\Block\Faq\Account\Faq $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+
+$currentPage = $block->getCurrentPage();
+$totalPages = $block->getTotalPages();
+?>
+
+<div class="mgn-notification-pager toolbar bottom">
+    <div class="pager">
+        <div class="pages">
+            <strong class="label pages-label" id="paging-label">Page</strong>
+            <ul class="items pages-items" aria-labelledby="paging-label">
+                <li class="item pages-item-previous">
+                    <?php if ($currentPage > 1): ?>
+                        <a class="action previous" href="#" data-page="<?= $escaper->escapeHtmlAttr($currentPage - 1) ?>">
+                            <span class="label">Page</span><span><?= $escaper->escapeHtml(__('Previous')) ?></span>
+                        </a>
+                    <?php else: ?>
+                        <a class="action previous disabled" href="#" aria-disabled="true">
+                            <span class="label">Page</span><span><?= $escaper->escapeHtml(__('Previous')) ?></span>
+                        </a>
+                    <?php endif; ?>
+                </li>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="item <?= $i == $currentPage ? 'current' : '' ?>">
+                        <?php if ($i == $currentPage): ?>
+                            <strong class="page">
+                                <span class="label">You're currently reading page</span>
+                                <span><?= $escaper->escapeHtml($i) ?></span>
+                            </strong>
+                        <?php else: ?>
+                            <a href="#" class="page" data-page="<?= $escaper->escapeHtmlAttr($i) ?>">
+                                <span class="label">Page</span>
+                                <span><?= $escaper->escapeHtml($i) ?></span>
+                            </a>
+                        <?php endif; ?>
+                    </li>
+                <?php endfor; ?>
+
+                <li class="item pages-item-next">
+                    <?php if ($currentPage < $totalPages): ?>
+                        <a class="action next" href="#" data-page="<?= $escaper->escapeHtmlAttr($currentPage + 1) ?>">
+                            <span class="label">Page</span><span><?= $escaper->escapeHtml(__('Next')) ?></span>
+                        </a>
+                    <?php else: ?>
+                        <a class="action next disabled" href="#" aria-disabled="true">
+                            <span class="label">Page</span><span><?= $escaper->escapeHtml(__('Next')) ?></span>
+                        </a>
+                    <?php endif; ?>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

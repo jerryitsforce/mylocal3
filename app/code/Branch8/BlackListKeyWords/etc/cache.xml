@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Cache/etc/cache.xsd">
+    <type name="branch8_blacklist_keywords" translate="label,description" instance="Branch8\BlackListKeyWords\Model\Cache\Type">
+        <label>BlackList Keywords Cache</label>
+        <description>Cache all blacklist keywords</description>
+    </type>
+</config>

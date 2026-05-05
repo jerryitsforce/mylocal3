@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="magento_banner_resource_banner_content_select_init">
+        <observer name="restrict_app_web" instance="Branch8\Cms\Observer\RestrictLoadBanner" />
+    </event>
+</config>

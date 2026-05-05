@@ -1,0 +1,21 @@
+{
+    "visual_merchandiser_rule_index": {
+        "column": {
+            "entity_id": true,
+            "vm_rule_id": true,
+            "last_index": true,
+            "status": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "VISUAL_MERCHANDISER_RULE_INDEX_VM_RULE_ID": true,
+            "FK_56285742D75B235D28B64FBCDA8A5123": true
+        }
+    },
+    "visual_merchandiser_rule": {
+        "column": {
+            "use_advance_rule": true,
+            "advance_conditions_serialized": true
+        }
+    }
+}

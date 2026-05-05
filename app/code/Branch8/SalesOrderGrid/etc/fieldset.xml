@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:DataObject/etc/fieldset.xsd">
+    <scope id="global">
+        <fieldset id="sales_convert_master_quote_to_sub_quote">
+            <field name="customer_phone_number">
+                <aspect name="to_sub_quote" />
+            </field>
+        </fieldset>
+        <fieldset id="customer_account">
+            <field name="phone_number">
+                <aspect name="to_quote" targetField="customer_phone_number" />
+            </field>
+        </fieldset>
+        <fieldset id="sales_convert_quote">
+            <field name="customer_phone_number">
+                <aspect name="to_order" />
+            </field>
+        </fieldset>
+    </scope>
+</config>

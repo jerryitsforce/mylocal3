@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/Ui/etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">edit_ticket_event_form.ticket_event_form_data_source</item>
+            <item name="deps" xsi:type="string">edit_ticket_event_form.ticket_event_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Ticket Pool Form</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">edit_ticket_event_form</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">Back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/listEvent</item>
+            </item>
+            <item name="save" xsi:type="string">Branch8\EventTicket\Block\Adminhtml\Event\Edit\Buttons\Save</item>
+        </item>
+    </argument>
+
+    <dataSource name="ticket_event_form_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">Branch8\EventTicket\Ui\DataProvider\FormDataProvider</argument>
+            <argument name="name" xsi:type="string">ticket_event_form_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="eventticket/event/save"/>
+        </settings>
+    </dataSource>
+
+    <fieldset name="information">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string"/>
+            </item>
+        </argument>
+
+        <!-- This field represents form id and is hidden -->
+        <field name="entity_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">ID</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">hidden</item>
+                    <item name="source" xsi:type="string">entity_id</item>
+                </item>
+            </argument>
+        </field>
+        <field name="ticket_type" sortOrder="3">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Ticket Type</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">3</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Branch8\EventTicket\Model\Config\Source\TicketType</item>
+            </argument>
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>general_non_notify</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.is_offline_operation</target>
+                                    <callback>show</callback>
+                                </action>
+                                <action name="1">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.display_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>yoxi</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.is_offline_operation</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.exchange_hint</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.display_type</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="3">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.barcode_type</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>edenred</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.is_offline_operation</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.exchange_hint</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.display_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="3">
+                            <value>family_bonus_pin</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.is_offline_operation</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.exchange_hint</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="2">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.display_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="4">
+                            <value>general_notify</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.is_offline_operation</target>
+                                    <callback>hide</callback>
+                                </action>
+                                <action name="1">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.display_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+        </field>
+
+        <field name="is_offline_operation" sortOrder="5">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Is Offline Opreation</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Branch8\HotaiCore\Model\Product\IsOfflineOperation</item>
+            </argument>
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.exchange_url</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.exchange_url</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+        </field>
+        <field name="exchange_url" sortOrder="7">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Exchange URL</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">exchange_url</item>
+                    <item name="dataScope" xsi:type="string">exchange_url</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="exchange_hint" sortOrder="8">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Exchange Hint</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">exchange_hint</item>
+                    <item name="dataScope" xsi:type="string">exchange_hint</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+        <field name="name" sortOrder="9">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Name</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">name</item>
+                    <item name="dataScope" xsi:type="string">name</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+        <field name="is_enable" sortOrder="11" formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">is_enable</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Enable</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="display_type" sortOrder="15">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Display Barcode</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">11</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Branch8\HotaiCore\Model\Product\DisplayBarcode</item>
+            </argument>
+            <settings>
+                <switcherConfig>
+                    <rules>
+                        <rule name="0">
+                            <value>0</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.barcode_type</target>
+                                    <callback>hide</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="1">
+                            <value>1</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.barcode_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                        <rule name="2">
+                            <value>2</value>
+                            <actions>
+                                <action name="0">
+                                    <target>edit_ticket_event_form.edit_ticket_event_form.information.barcode_type</target>
+                                    <callback>show</callback>
+                                </action>
+                            </actions>
+                        </rule>
+                    </rules>
+                    <enabled>true</enabled>
+                </switcherConfig>
+            </settings>
+        </field>
+        <field name="barcode_type" sortOrder="16">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Barcode Type</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">16</item>
+                </item>
+                <item name="options" xsi:type="object">Branch8\HotaiCore\Model\Product\BarcodeType</item>
+            </argument>
+        </field>
+        <field name="display_serial_number" sortOrder="17">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Display Serial Number</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">17</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+            </argument>
+        </field>
+        <field name="seller_id" sortOrder="18" component="Magento_Ui/js/form/element/ui-select" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Seller</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">11</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <dataScope>seller_id</dataScope>
+                <componentType>field</componentType>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\EventTicket\Model\Config\Source\SellerList"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="amount" sortOrder="20">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Amount</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">amount</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+<!--        <field name="start_date" sortOrder="25" formElement="date">-->
+<!--            <argument name="data" xsi:type="array">-->
+<!--                <item name="config" xsi:type="array">-->
+<!--                    <item name="source" xsi:type="string">start_date</item>-->
+<!--                </item>-->
+<!--            </argument>-->
+<!--            <settings>-->
+<!--                <dataType>text</dataType>-->
+<!--                <label translate="true">Start Date</label>-->
+<!--            </settings>-->
+<!--            <formElements>-->
+<!--                <date>-->
+<!--                    <settings>-->
+<!--                        <options>-->
+<!--                            <option name="dateFormat" xsi:type="string">MMM d, y</option>-->
+<!--                            <option name="showsTime" xsi:type="boolean">true</option>-->
+<!--                        </options>-->
+<!--                    </settings>-->
+<!--                </date>-->
+<!--            </formElements>-->
+<!--        </field>-->
+
+        <field name="image_url">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">string</item>
+                    <item name="label" xsi:type="string" translate="true">Image</item>
+                    <item name="formElement" xsi:type="string">imageUploader</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">ui/form/element/uploader/preview</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
+                    <item name="allowedExtensions" xsi:type="string">jpg jpeg png</item>
+                    <item name="uploaderConfig" xsi:type="array">
+                        <item name="url" xsi:type="url" path="eventticket/event/imageUrlUploader"/>
+                    </item>
+                    <item name="source" xsi:type="string">image_url</item>
+                </item>
+            </argument>
+        </field>
+
+
+        <field name="description" sortOrder="40">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Description</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="cols" xsi:type="number">15</item>
+                    <item name="rows" xsi:type="number">5</item>
+                    <item name="source" xsi:type="string">description</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
+
+
+    </fieldset>
+</form>

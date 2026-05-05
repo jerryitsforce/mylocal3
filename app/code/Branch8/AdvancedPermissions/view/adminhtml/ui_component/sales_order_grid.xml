@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="increment_id">
+            <settings>
+                <label translate="true">Order Number</label>
+            </settings>
+        </column>
+        <column name="status">
+            <settings>
+                <label translate="true">Order Status</label>
+                <options class="Branch8\Sales\Ui\Component\Listing\Column\Status\Options"/>
+            </settings>
+        </column>
+        <column name="seller" class="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\Customerlink">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter/>
+                <label translate="true">Seller Name</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="nickname" class="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\Customerlink">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Nickname</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="customer_phone_number">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Mobile Number</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="salesperson" class="OrderGridSalespersonSelect">
+            <settings>
+                <filter/>
+                <options class="Branch8\AdvancedPermissions\Model\Options\Salesperson"/>
+                <dataType>select</dataType>
+                <label translate="true">Salesperson</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="shipping_method" class="OrderGridShippingMethodSelect">
+            <settings>
+                <filter>select</filter>
+                <options class="Branch8\AdvancedPermissions\Model\Options\ShippingMethod"/>
+                <dataType>select</dataType>
+                <label translate="true">Shipping Method</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="product_sku">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Product SKU</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="product_name">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Product Name</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="product_type" class="OrderGridProductTypeSelect">
+            <settings>
+                <filter/>
+                <options class="Magento\Catalog\Model\Product\Type"/>
+                <dataType>select</dataType>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <label translate="true">Product Type</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="item_trans_sn">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Point TransSN</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="invoice_status" class="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\InvoiceDate" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Sales\Ui\Component\Listing\Column\Invoice\State\Options"/>
+                <dataType>select</dataType>
+                <label translate="true">Invoice Status</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="invoice_modification_date" class="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\InvoiceDate" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Invoice Modification Date</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+    </columns>
+</listing>

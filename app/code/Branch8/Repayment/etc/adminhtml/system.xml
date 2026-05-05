@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+		<section id="repayment" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+			<label>Repayment</label>
+			<tab>branch8</tab>
+			<resource>Branch8_Repayment::config_branch8_repayment</resource>
+			<group id="payment" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>Payment</label>
+				<field id="method" translate="label" type="multiselect" sortOrder="1" showInDefault="1">
+                    <label>Available Method</label>
+                    <source_model>Branch8\Repayment\Model\Config\Source\Method</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+			</group>
+		</section>
+        <section id="branch8_debug">
+            <group id="branch8_repayment" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Branch8_Repayment</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Log Files</label>
+                    <source_model>Branch8\Repayment\Model\Config\Source\LogOption</source_model>
+                </field>
+            </group>
+        </section>
+	</system>
+</config>

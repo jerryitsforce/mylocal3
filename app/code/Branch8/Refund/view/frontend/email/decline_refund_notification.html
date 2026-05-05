@@ -1,0 +1,16 @@
+<!--@subject {{trans "Decline Refund Notification"}} @-->
+
+<!--@vars {
+"var incrementId":"incrementId",
+"var customerName":"customer name"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+Dear {{trans "%customerName" customerName=$customerName}}, 
+<br>
+
+Refund of Order {{trans "#%incrementId" incrementId=$incrementId}} is failed, please contact your bank, credit
+card issuer, or contact us.
+
+{{template config_path="design/email/footer_template"}}

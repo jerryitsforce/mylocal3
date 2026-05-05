@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="branch8_salesrule_isnot_filter" resource="default" engine="innodb"
+           comment="Branch8 SalesRule 'is not' Attribute Condition Storage">
+        <column xsi:type="int" name="filter_id" identity="true" unsigned="true" nullable="false" comment="Filter ID"/>
+        <column xsi:type="int" name="rule_id" unsigned="true" nullable="false" comment="Rule ID"/>
+        <column xsi:type="varchar" name="attribute" length="256" nullable="false" comment="Condition Attribute"/>
+        <column xsi:type="varchar" name="filter_text" length="512" nullable="false" comment="Condition Filter Text"/>
+        <column xsi:type="boolean" name="is_contain" nullable="false" default="0" comment="Flag if rule is contain"/>
+        <column xsi:type="boolean" name="is_one_of" nullable="false" default="0" comment="Flag if rule is one of"/>
+        <column xsi:type="boolean" name="flag_contain" nullable="false" default="0" comment="Flag if contain or not contain"/>
+        <column xsi:type="boolean" name="is_coupon" nullable="false" default="0" comment="Flag if rule has coupon"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="filter_id"/></constraint>
+        <constraint xsi:type="foreign" referenceId="BRANCH8_ISNOT_RULE_RULE_ID_SALESRULE_RULE_ID"
+                    table="branch8_salesrule_isnot_filter" column="rule_id"
+                    referenceTable="salesrule" referenceColumn="rule_id" onDelete="CASCADE"/>
+        <index referenceId="BRANCH8_ISNOT_RULE_RULE_ID" indexType="btree"><column name="rule_id"/></index>
+    </table>
+</schema>

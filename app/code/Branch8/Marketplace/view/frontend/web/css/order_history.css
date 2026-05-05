@@ -1,0 +1,15 @@
+.import_tracking_wrap{
+
+}
+#form_import{
+    margin:20px;
+}
+.tracking_number_all, .carrier_title_all{
+    width: 250px !important;
+}
+.import_tracking_wrap {
+    position: relative;
+    z-index: 100;
+    text-align: right;
+    padding: 20px 0;
+}

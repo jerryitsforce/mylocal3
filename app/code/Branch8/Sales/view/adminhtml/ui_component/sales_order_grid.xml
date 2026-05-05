@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="parent_increment_id"
+                component="Magento_Ui/js/grid/columns/link"
+                class="Branch8\MarketPlaceParentOrderAdminUi\Ui\Component\Listing\Column\ViewParentOrderAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="link" xsi:type="string">parent_link</item>
+                    <item name="target" xsi:type="string">_blank</item>
+                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Parent Order ID</label>
+            </settings>
+        </column>
+        <column name="rma_status" sortOrder="76" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <sortable>false</sortable>
+                <options class="Branch8\HotaiCore\Model\Config\Source\RmaStatus" />
+                <label translate="true">RMA Status</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

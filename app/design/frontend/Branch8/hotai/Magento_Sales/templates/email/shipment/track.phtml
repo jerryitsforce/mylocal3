@@ -1,0 +1,35 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+?>
+<?php
+/* @var \Branch8\Sales\Block\Order\Email\Shipment\Items $block */
+/* @var \Magento\Sales\Api\Data\ShipmentInterface $_shipment */
+$_shipment = $block->getShipment();
+$logisticsCompanies = $block->getLogisticsCompanies();
+?>
+
+<?php
+/* @var \Magento\Sales\Model\Order $_order */
+$_order = $block->getOrder() ?>
+<?php if ($_shipment && $_order) : ?>
+    <?php $trackCollection = $_shipment->getTracksCollection() ?>
+    <?php if ($trackCollection) : ?>
+        <table class="shipment-track">
+            <tbody>
+            <?php  /* @var \Magento\Sales\Model\Order\Shipment\Track $_item */ ?>
+            <?php foreach ($trackCollection as $_item) : ?>
+                <tr>
+                    <td>
+                        <a href="<?= $block->escapeUrl($logisticsCompanies[$_item->getTitle()] ?? '#') ?>" target="_blank">
+                            <?= $block->escapeHtml($_item->getNumber()) ?>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+<?php endif; ?>

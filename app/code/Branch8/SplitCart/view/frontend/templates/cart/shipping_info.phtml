@@ -1,0 +1,55 @@
+<?php
+/**
+ * @var $hotaiShippingHelper \Branch8\HotaiShipping\Helper\Data
+ */
+$type = $this->getData('cartType');
+$_typeItems = $this->getData('items');
+$hotaiShippingHelper = $this->helper(\Branch8\HotaiShipping\Helper\Data::class);
+$priceHelper = $this->helper(\Magento\Framework\Pricing\Helper\Data::class);
+$sellerShippingMethods = $this->getData('sellerShippingMethods');
+?>
+
+<?php
+$freeShippingData = $hotaiShippingHelper->getSubCartFreeShippingData($type, explode(',', $sellerShippingMethods), $_typeItems);
+?>
+<?php if(!empty($freeShippingData)): ?>
+<?php
+    $carrierCount = $freeShippingData['carrier_count'];
+    $matchNum = $freeShippingData['match_num'];
+    // $class = ($carrierCount == $matchNum) ? 'reached' : ($matchNum === 0 ? 'not-reached' : '');
+?>
+<div class="free-shipping-result">
+  <?php foreach($freeShippingData['fresshipping_messages'] as $key => $message): ?>
+  <div class="free-shipping-result-item <?= $key ?>"><?= $message ?></div>
+  <?php endforeach;?>
+  <div class="free-shipping-threshold">
+    <div class="free-shipping-threshold-title">
+      <span class="free-shipping-threshold-title-left"><?= __("運費")?></span>
+      <span class="free-shipping-threshold-title-label">
+        <?= __("商品小計:")?>
+        <span class="free-shipping-threshold-title-price"><?= $priceHelper->currency($freeShippingData['sub_cart_total'], true, false) ?></span>
+      </span>
+    </div>
+    <div class="free-shipping-threshold-list">
+      <?php foreach($freeShippingData['carries_shipping_fee'] as $methodCode => $methodData):?>
+      <div class="free-shipping-threshold-item <?= $methodCode?>">
+        <div class="free-shipping-threshold-col">
+          <span class="method-name"><?= $methodData['title'] ?> : </span>
+          <span class="shipping-fee"><?= $methodData['shipping_fee_formated'] ?></span>
+        </div>
+        <div class="free-shipping-threshold-col">
+          <?php if($freeShippingData['sub_cart_total'] < $methodData['threshold']): ?>
+            <?php $sub = $priceHelper->currency($methodData['threshold'] - $freeShippingData['sub_cart_total'], true, false); ?>
+            <span class="free-shipping-threshold-message"><?= __("差<span>%1</span>達免運門檻", $sub);?></span>
+          <?php else: ?>
+            <span class="free-shipping-threshold-message"><?= __("已達免運門檻");?></span>
+          <?php endif; ?>
+        </div>
+      </div>
+      <?php endforeach;?>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" value="<?php echo $sellerShippingMethods;?>" class="seller_shipping_method">
+<?php endif; ?>

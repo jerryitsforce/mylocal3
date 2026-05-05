@@ -1,0 +1,65 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\GA4\Block\Product
+ */
+
+use Branch8\GA4\Model\Event;
+
+$request = $block->getRequest();
+
+$itemListId = $request->getParam('item_list_id');
+$itemListName = $request->getParam('item_list_name');
+$promotionId = $request->getParam('promotion_id');
+$promotionName = $request->getParam('promotion_name');
+$referer = $request->getParam('referer');
+$fromCart = $request->getParam('from_cart');
+$quickview = filter_var($request->getParam('quickview'), FILTER_VALIDATE_BOOLEAN);
+
+$type = Event::VIEW_ITEM_PRODUCT_LANDING;
+$item = $block->getGa4DetailProductPush();
+if ($itemListId || $itemListName || $promotionId || $promotionName || $referer || $fromCart || $quickview) {
+    $type = $quickview ? '商品卡_購物車_popup' : Event::VIEW_ITEM_PRODUCT_CARD;
+
+    unset($item['item_list_id']);
+    unset($item['item_list_name']);
+    unset($item['promotion_id']);
+    unset($item['promotion_name']);
+
+    if (!empty($itemListId)) {
+        $item['item_list_id'] = $itemListId;
+    }
+    if (!empty($itemListName)) {
+        $item['item_list_name'] = $itemListName;
+    }
+    if (!empty($promotionId)) {
+        $item['promotion_id'] = $promotionId;
+    }
+    if (!empty($promotionName)) {
+        $item['promotion_name'] = $promotionName;
+    }
+} else {
+    $itemListId = 'product_landing';
+    $itemListName = '商品頁_landing';
+}
+
+?>
+<?php if ($block->isEnabled()) : ?>
+    <?php if ($item) : ?>
+        <?php
+
+        $currentProduct = $block->getCurrentProduct();
+        $event = [
+            'event' => Event::VIEW_ITEM,
+            'type' => $type,
+            'ecommerce' => [
+                'currency' => $block->getCurrencyCode(),
+                'value' => $block->formatMoney($currentProduct->getFinalPrice()),
+                'items' => [$item]
+            ],
+        ];
+        $block->setDataLayerOption(Event::VIEW_ITEM, $event);
+
+        ?>
+    <?php endif; ?>
+<?php endif; ?>

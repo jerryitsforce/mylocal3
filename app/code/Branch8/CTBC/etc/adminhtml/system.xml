@@ -1,0 +1,58 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+	<system>
+		<section id="branch8_debug" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+			<class>separator-top</class>
+			<label>Debug Log</label>
+			<tab>branch8</tab>
+			<resource>Branch8_HotaiCore::debug_log</resource>
+			<group id="b8_ctbc" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+				<label>Branch8_CTBC</label>
+				<field id="log_type" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+					<label>Log Files</label>
+					<source_model>Branch8\CTBC\Model\Config\Source\LogClass</source_model>
+					<can_be_empty>1</can_be_empty>
+				</field>
+			</group>
+		</section>
+
+		<tab id="branch8" translate="label" sortOrder="500">
+            <label>Branch8</label>
+        </tab>
+		<section id="ctbc" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+			<label>CTBC</label>
+			<tab>branch8</tab>
+			<resource>Branch8_CTBC::config_branch8_ctbc</resource>
+			<group id="server" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>Server</label>
+				<field id="url" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>Url</label>
+					<comment/>
+				</field>
+				<field id="timeout" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>Timeout</label>
+					<comment/>
+				</field>
+				<field id="mackey" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>MacKey</label>
+					<comment/>
+				</field>
+			</group>
+			<group id="auth_rev" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+				<label>AuthRev</label>
+				<field id="merid" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>MERID</label>
+					<comment/>
+				</field>
+				<field id="mid" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>MID</label>
+					<comment/>
+				</field>
+				<field id="tid" type="text" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
+					<label>TID</label>
+					<comment/>
+				</field>
+			</group>
+		</section>
+	</system>
+</config>

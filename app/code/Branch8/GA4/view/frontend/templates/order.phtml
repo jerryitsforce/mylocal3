@@ -1,0 +1,33 @@
+<?php
+// @codingStandardsIgnoreFile
+/**
+ * @var $block \Branch8\GA4\Block\Order
+ */
+?>
+<?php if ($block->isEnabled()) : ?>
+    <?php
+
+    $order = $block->getOrder();
+    $products = $block->getProducts();
+    $purchaseData = [
+        'transaction_id' => $block->getIncrementId(),
+        'value' => $block->getGa4Total(),
+        'coupon' => (string)$order->getCouponCode(),
+        'tax' => $block->formatMoney($block->getTaxAmount()),
+        'shipping' => $block->formatMoney($block->getShippingAmount()),
+        'currency' => $block->getCurrencyCode(),
+        'points' => $block->getPoints(),
+        'remainder_points' => $block->getRemainingPoints()
+    ];
+    $purchaseData['items'] = $products;
+    $event = [
+        'currency' => $block->getCurrencyCode(),
+        'event' => 'purchase',
+        'ecommerce' => $purchaseData,
+    ];
+    ?>
+
+    <?php
+    $block->setDataLayerOption('purchase', $event);
+    ?>
+<?php endif; ?>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <dataSource name="merchandiser_product_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <filterUrlParams>
+                <param name="cache_key">*</param>
+                <param name="category_id">%category_id%</param>
+            </filterUrlParams>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magento_Catalog::products</aclResource>
+        <dataProvider class="Branch8\Catalog\Model\VisualMerchandiser\Product\DataProvider" name="merchandiser_product_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="merchandiser_product_columns">
+        <column name="seller_shop_name" component="Magento_Ui/js/grid/cells/sanitizedHtml">
+            <settings>
+                <filter>text</filter>
+                <bodyTmpl>ui/grid/cells/sanitizedHtml</bodyTmpl>
+                <label translate="true">Store Name</label>
+            </settings>
+        </column>
+        <column name="commission_percent">
+            <settings>
+                <filter>textRange</filter>
+                <dataType>number</dataType>
+                <label translate="true">Commission Rate</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

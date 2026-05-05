@@ -1,0 +1,17 @@
+<?php
+/**
+ * @var Branch8\GiftToFriend\Block\Confirmation\RecipientConfirmation $block
+ */
+$title = $block->escapeHtml(__('Gift Confirmation'));
+$siteName = $block->escapeHtml(__('Hotai'));
+$description = $block->escapeHtml(__('Gift Confirmation Description'));
+$imageUrl = $block->getViewFileUrl('Branch8_GiftToFriend::images/gift-placeholder.png');
+$pageUrl = $block->getUrl('*/*/*', ['_current' => true, '_use_rewrite' => true]);
+?>
+
+<meta property="og:type" content="gift" />
+<meta property="og:title" content="<?= $block->escapeHtmlAttr($title) ?>" />
+<meta property="og:description" content="<?= $block->escapeHtmlAttr($description) ?>" />
+<meta property="og:image" content="<?= $imageUrl ?>" />
+<meta property="og:url" content="<?= $pageUrl ?>" />
+<meta property="og:site_name" content="<?= $block->escapeHtmlAttr($siteName) ?>" />

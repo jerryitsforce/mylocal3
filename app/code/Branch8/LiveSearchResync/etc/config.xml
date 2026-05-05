@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <livesearch_resync>
+                <log_types>system.log,exception.log</log_types>
+            </livesearch_resync>
+        </branch8_debug>
+    </default>
+</config>

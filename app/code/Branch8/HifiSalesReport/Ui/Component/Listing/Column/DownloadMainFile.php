@@ -1,0 +1,67 @@
+<?php
+
+namespace Branch8\HifiSalesReport\Ui\Component\Listing\Column;
+
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\UiComponent\ContextInterface;
+use Magento\Framework\View\Element\UiComponentFactory;
+use Magento\Ui\Component\Listing\Columns\Column;
+use Branch8\HifiSalesReport\Helper\Common as CommonHelper;
+
+class DownloadMainFile extends Column
+{
+    /** @var UrlInterface */
+    protected $urlBuilder;
+
+    public function __construct(
+        ContextInterface $context,
+        UiComponentFactory $uiComponentFactory,
+        UrlInterface $urlBuilder,
+        array $components = [],
+        array $data = []
+    ) {
+        $this->urlBuilder = $urlBuilder;
+        parent::__construct($context, $uiComponentFactory, $components, $data);
+    }
+
+    public function prepareDataSource(array $dataSource)
+    {
+        if (isset($dataSource['data']['items'])) {
+            foreach ($dataSource['data']['items'] as &$item) {
+                if (isset($item['record_id'])) {
+                    $item[$this->getData('name')] = [
+                        'download_original_file' => [
+                            'href'   => $this->getLinkUrlForColumn($item['record_id'], CommonHelper::FILE_TYPE_ORIGINAL_MAIN_FILE),
+                            'target' => '_blank',
+                            'label'  => __('Original File')
+                        ],
+                        'download_modified_file' => [
+                            'href'   => $this->getLinkUrlForColumn($item['record_id'], CommonHelper::FILE_TYPE_MODIFIED_MAIN_FILE),
+                            'target' => '_blank',
+                            'label'  => __('Modified File')
+                        ]
+                    ];
+                }
+            }
+        }
+
+        return $dataSource;
+    }
+
+    /**
+     * 根據傳入的結帳報表紀錄ID回傳下載地址
+     *
+     * @param integer $record_id
+     * @return string
+     */
+    protected function getLinkUrlForColumn(int $record_id, string $file_type): string
+    {
+        return $this->urlBuilder->getUrl(
+            'hifi_sales_report/download/mainfile',
+            [
+                'record_id' => $record_id,
+                'file_type' => $file_type,
+            ]
+        );
+    }
+}

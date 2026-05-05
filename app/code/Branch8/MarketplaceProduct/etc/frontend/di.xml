@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Webkul\Marketplace\Controller\Product\Save"
+                type="Branch8\MarketplaceProduct\Controller\Product\Save"/>
+    <preference for="Webkul\MpBundleProduct\Controller\Product\Save"
+                type="Branch8\MarketplaceProduct\Controller\Product\Save"/>
+    <preference for="Webkul\Marketplace\Controller\Product\SaveProduct"
+                type="Branch8\MarketplaceProduct\Rewrite\SaveProduct"/>
+    <type name="Branch8\MarketplaceProduct\Block\Product\View\Gallery">
+        <arguments>
+            <argument name="galleryImagesConfig" xsi:type="array">
+                <item name="small_image" xsi:type="array">
+                    <item name="image_id" xsi:type="string">product_page_image_small</item>
+                    <item name="data_object_key" xsi:type="string">small_image_url</item>
+                    <item name="json_object_key" xsi:type="string">thumb</item>
+                </item>
+                <item name="medium_image" xsi:type="array">
+                    <item name="image_id" xsi:type="string">product_page_image_medium</item>
+                    <item name="data_object_key" xsi:type="string">medium_image_url</item>
+                    <item name="json_object_key" xsi:type="string">img</item>
+                </item>
+                <item name="large_image" xsi:type="array">
+                    <item name="image_id" xsi:type="string">product_page_image_large</item>
+                    <item name="data_object_key" xsi:type="string">large_image_url</item>
+                    <item name="json_object_key" xsi:type="string">full</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <preference for="Magento\LiveSearchAdapter\Model\ResourceModel\Fulltext\Collection\SearchResultApplier"
+                type="Branch8\MarketplaceProduct\Model\ResourceModel\Fulltext\Collection\SearchResultApplier"/>
+    <preference for="Magento\Elasticsearch\Model\ResourceModel\Fulltext\Collection\SearchResultApplier"
+                type="Branch8\MarketplaceProduct\Model\ResourceModel\Fulltext\Collection\Elasticsearch\SearchResultApplier"/>
+    <preference for="Webkul\Marketplace\Block\Collection" type="Branch8\MarketplaceProduct\Block\Collection"/>
+    <preference for="Webkul\Marketplace\Model\ResourceModel\Product\FrontGrid\Collection" type="Branch8\MarketplaceProduct\Rewrite\Model\ResourceModel\Product\FrontGrid\Collection"/>
+    <type name="Webkul\Marketplace\Controller\Product\Builder">
+        <plugin name="Branch8_MarketplaceProduct::marketplace_product_helper_init"
+                type="Branch8\MarketplaceProduct\Plugin\Webkul\Marketplace\Controller\Product\Builder"
+                sortOrder="100"/>
+    </type>
+    <type name="Webkul\Marketplace\Block\Product\Create">
+        <plugin name="Branch8_MarketplaceProduct::marketplace_product_create"
+                type="Branch8\MarketplaceProduct\Plugin\Webkul\Marketplace\Block\Product\Create"
+                sortOrder="100"/>
+    </type>
+    <preference for="Webkul\Marketplace\Controller\Product\Edit"
+                type="Branch8\MarketplaceProduct\Controller\Product\Edit"/>
+    <preference for="Webkul\Marketplace\Controller\Product\Gallery\Upload"
+                type="Branch8\MarketplaceProduct\Controller\Product\Gallery\Upload"/>
+    <preference for="Webkul\Marketplace\Controller\Wysiwyg\Gallery\Upload"
+                type="Branch8\MarketplaceProduct\Controller\Wysiwyg\Gallery\Upload"/>
+    <type name="Branch8\MarketplaceProduct\Controller\Product\Validate">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Branch8\MarketplaceProduct\Model\Validator">
+        <arguments>
+            <argument name="instances" xsi:type="array">
+                <item name="validate_image_tags" xsi:type="object">Branch8\MarketplaceProduct\Model\Product\ImageTagsValidator</item>
+            </argument>
+        </arguments>
+    </type>
+    <!-- plugin for Customer Id -->
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="marketplace-abstractaction-customerid-plugin-new" type="Webkul\Marketplace\Plugin\App\Action\Context" sortOrder="15"/>
+    </type>
+    <!-- plugin end -->
+    <type name="Magento\Catalog\Model\Product\Image\UrlBuilder">
+        <plugin name="Branch8_MarketplaceProduct::catalog_model_image_url_builder_plugin"
+                type="Branch8\MarketplaceProduct\Plugin\Magento\Catalog\Model\Product\Image\UrlBuilder"
+                sortOrder="100"/>
+    </type>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+        <plugin name="branch8_marketplace_product_data_provider" type="Branch8\MarketplaceProduct\Plugin\Ui\DataProvider\Product\MarketplaceProductDataProvider" sortOrder="10"/>
+    </type>
+
+    <type name="Branch8\MarketplaceProduct\Model\PostSaveProcessor\Composite">
+        <arguments>
+            <argument name="processors" xsi:type="array">
+                <item name="sku" xsi:type="object">Branch8\MarketplaceProduct\Model\PostSaveProcessor\Sku</item>
+                <item name="productType" xsi:type="object">Branch8\MarketplaceProduct\Model\PostSaveProcessor\ProductType</item>
+                <item name="stock" xsi:type="object">Branch8\MarketplaceProduct\Model\PostSaveProcessor\StockAndQuantity</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Block\Cart\Sidebar">
+        <plugin name="Branch8_MarketplaceProduct::checkout_cart_sidebar_shopping_cart_url"
+                type="Branch8\MarketplaceProduct\Plugin\Magento\Checkout\Block\Cart\Sidebar"
+                sortOrder="100"/>
+    </type>
+    <!-- Plugin to add special customer flag to HTTP Context for FPC variations -->
+    <type name="Branch8\MarketplaceProduct\Plugin\Customer\CustomerSessionContext">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\App\ActionInterface">
+        <plugin name="Branch8_MarketplaceProduct::customer_session_context"
+                type="Branch8\MarketplaceProduct\Plugin\Customer\CustomerSessionContext"
+                sortOrder="10"/>
+    </type>
+</config>

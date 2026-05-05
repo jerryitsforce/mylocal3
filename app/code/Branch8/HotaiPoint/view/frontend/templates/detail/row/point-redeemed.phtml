@@ -1,0 +1,46 @@
+<?php
+/** @var \Branch8\HotaiPoint\Block\Detail\Row\PointHistoryRow $block */
+
+$pointHelper = $block->getPointHelper();
+$isDeduction = (float)$block->getData('deductionPoint') > 0 || (float)$block->getData('moveOut') > 0;
+?>
+
+<tr class="has-collapsible-content" data-expand-content-row="point-expired-collapsible-row-<?=$block->getData('uniqueId')?>">
+    <td>
+        <p class="source-name">
+            <?=$block->getData('rsName')?>
+        </p>
+        <p class="show-on-mobile">
+            <span class="tx-date">
+                <?= $block->getData('transDate') ? $block->createDateFromFormat($block->getData('transDate'))->format('Y/m/d') : ''?>
+            </span>
+            <?php if($block->getData('pointExpireDate')): ?>
+            <span class="dash">-</span>
+            <span class="exp-date">
+                <?= $block->createDateFromFormat($block->getData('pointExpireDate'))->format('Y/m/d') ?>
+            </span>
+            <?php endif; ?>
+        </p>
+    </td>
+    <td class="hide-on-mobile td"><?= $block->getData('transDate') ? $block->createDateFromFormat($block->getData('transDate'))->format('Y/m/d') : ''?></td>
+    <td class="<?= $isDeduction ? 'deduct-point' : 'add-point'?>">
+        <?= $block->getPointHelper()->formatPoints(-((float)$block->getData('deductionPoint') > 0 ? $block->getData('deductionPoint') : $block->getData('moveOut')), true, true)?>
+    </td>
+</tr>
+<tr id="point-expired-collapsible-row-<?=$block->getData('uniqueId')?>" class="collapsible-content record-comment point-expired-collapsible-row-<?=$block->getData('uniqueId')?> hidden">
+    <td colspan="3">
+        <hr style="margin: 0;" />
+        <div class="point-records-collapsible-container">
+            <div class="point-records-collapsible-item">
+                <div class="comment-title">
+                    <span class="title">
+                        <?=$escaper->escapeHtml(__('備註')) ?>
+                    </span>
+                </div>
+                <span class="comment-content">
+                        <?=$block->getData('transDesc')?>
+                </span>
+            </div>
+        </div>
+    </td>
+</tr>

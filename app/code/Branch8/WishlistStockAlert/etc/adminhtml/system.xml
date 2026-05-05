@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="branch8" translate="label" sortOrder="400">
+            <label>Branch8</label>
+        </tab>
+        <section id="wishlist_stock_alert" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Wishlist Stock Alert</label>
+            <tab>branch8</tab>
+            <resource>Branch8_WishlistStockAlert::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enable Stock Alerts</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>wishlist_stock_alert/general/enabled</config_path>
+                </field>
+                <field id="sender_email" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <config_path>wishlist_stock_alert/general/sender_email</config_path>
+                </field>
+                <field id="email_template" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Email Template</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <config_path>wishlist_stock_alert/general/email_template</config_path>
+                </field>
+                <field id="service_contact_information" translate="label" type="textarea" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Service Contact Information</label>
+                </field>
+                <field id="disclaimer_text" translate="label" type="textarea" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Disclaimer Text</label>
+                </field>
+                <field id="cron_path_generate" translate="label comment" type="text" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Generate Queue Items Cron Path</label>
+                    <comment>Generate Queue will be process (job code:branch8_restock_alert_build_queue)</comment>
+                </field>
+                <field id="cron_path_process" translate="label comment" type="text" sortOrder="70" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Process Queue Item Cron Path</label>
+                    <comment>Process Items Queued (job code:branch8_restock_alert_build_queue)</comment>
+                </field>
+                <field id="cron_path_clean" translate="label comment" type="text" sortOrder="80" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Clean Queue Item Cron Path</label>
+                </field>
+                <field id="process_queue_type" translate="label comment" type="select" sortOrder="800" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Process Queue Type</label>
+                    <source_model>Branch8\WishlistStockAlert\Model\Config\ProcessQueueType</source_model>
+                </field>
+
+            </group>
+        </section>
+        <section id="branch8_debug">
+            <group id="branch8_wishliststockalert" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Wishlist Stock Alert</label>
+                <field id="log_file" translate="label" type="multiselect" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Log Files</label>
+                    <source_model>Branch8\WishlistStockAlert\Model\Config\Source\LogTypes</source_model>
+                    <can_be_empty>1</can_be_empty>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

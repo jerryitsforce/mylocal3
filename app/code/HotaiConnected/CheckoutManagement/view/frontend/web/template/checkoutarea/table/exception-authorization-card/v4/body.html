@@ -1,0 +1,19 @@
+<div class="exception-auth-v4__view exception-auth-v4__view--list is-active">
+    <ul class="exception-auth-v4-list">
+        <% if (listItems && listItems.length > 0) { %>
+            <%= listItems %>
+        <% } else { %>
+            <li class="exception-auth-v4__empty">無資料</li>
+        <% } %>
+    </ul>
+</div>
+<div class="exception-auth-v4__view exception-auth-v4__view--card">
+    <div class="exception-auth-v4-card__scroller">
+        <% if (cardItems && cardItems.length > 0) { %>
+            <%= cardItems %>
+        <% } else { %>
+            <div class="exception-auth-v4__empty">無資料</div>
+        <% } %>
+    </div>
+</div>
+

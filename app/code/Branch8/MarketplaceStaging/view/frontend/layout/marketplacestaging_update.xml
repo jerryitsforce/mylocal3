@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="seller-1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles"/>
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" name="marketplace_staging" template="Branch8_MarketplaceStaging::product/staging.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                    <argument name="view_helper" xsi:type="object">Branch8\MarketplaceStaging\Helper\Data</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="marketplace_staging">
+            <uiComponent name="marketplacestaging_update_select_grid"/>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" name="marketplace_product_edit" template="Branch8_MarketplaceStaging::product/stage_edit.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                    <argument name="view_helper" xsi:type="object">Branch8\MarketplaceStaging\Helper\Data</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" name="marketplacestaging_product_related_product" template="Branch8_MarketplaceStaging::product/related_product.phtml" ifconfig="marketplace/product_settings/allow_related_product" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" name="marketplacestaging_product_upsell_product" template="Branch8_MarketplaceStaging::product/upsell_product.phtml" ifconfig="marketplace/product_settings/allow_upsell_product" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" name="marketplacestaging_product_crosssell_product" template="Branch8_MarketplaceStaging::product/crosssell_product.phtml" ifconfig="marketplace/product_settings/allow_crosssell_product" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="marketplacestaging_product_related_product">
+            <uiComponent name="marketplacestaging_related_product_listing"/>
+        </referenceContainer>
+        <referenceContainer name="marketplacestaging_product_upsell_product">
+            <uiComponent name="marketplacestaging_upsell_product_listing"/>
+        </referenceContainer>
+        <referenceContainer name="marketplacestaging_product_crosssell_product">
+            <uiComponent name="marketplacestaging_crosssell_product_listing"/>
+        </referenceContainer>
+        <referenceContainer name="marketplace_product_edit">
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" ifconfig="google/analytics/active" name="product_view_optimization" template="Webkul_Marketplace::product/product-view-optimization.phtml" cacheable="false"/>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Helper\Form\Gallery\Content" name="marketplace_product_gallery" template="Branch8_MarketplaceStaging::product/helper/gallery.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\MarketplaceStaging\Block\CustomOption\StagingOptions" name="b8.custom.options.template.options" cacheable="false"/>
+            <block class="Branch8\MarketplaceStaging\Block\CustomOption\StagingVariation" name="staging.managevariation" template="Branch8_MarketplaceStaging::catalog/product/edit/managevariation.phtml" cacheable="false"/>
+
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Downloadable" name="marketplace_product_downloadable" template="Branch8_MarketplaceStaging::product/edit/downloadable.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Variations\Config" name="marketplace_product_add_configurable" template="Branch8_MarketplaceStaging::product/edit/super/config.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+
+            <block class="Branch8\MarketplaceStaging\Block\Product\Create" name="edit_bundle_product_form" template="Branch8_MarketplaceStaging::product/edit/bundle.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\MpBundleProduct\ViewModel\BundleViewModel</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Bundle\Catalog\Option" name="bundle_product_grid_edit" template="Branch8_MarketplaceStaging::product/edit/bundle/add.phtml" cacheable="false"/>
+            <referenceBlock name="edit_bundle_product_form">
+                <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Bundle\Init\Bundle" name="bundle_product_edit" cacheable="false" />
+            </referenceBlock>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Group" name="grouped_product_grid" template="Branch8_MarketplaceStaging::product/edit/grouped/grouped.phtml" cacheable="false">
+                <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Grouped\AssociatedProducts\ListAssociatedProducts" name="grouped_product_name" as="list" template="Branch8_MarketplaceStaging::product/edit/grouped/list.phtml"/>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="marketplace_product_gallery">
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\NewVideo" name="new-video" template="Branch8_MarketplaceStaging::product/edit/video.phtml" cacheable="false"/>
+        </referenceBlock>
+        <referenceBlock name="marketplace_product_downloadable">
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Downloadable\Links" name="marketplace_product_downloadable_links" template="Branch8_MarketplaceStaging::product/edit/downloadable/links.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Downloadable\Samples" name="marketplace_product_downloadable_samples" template="Branch8_MarketplaceStaging::product/edit/downloadable/samples.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="marketplace_product_add_configurable">
+            <block class="Branch8\MarketplaceStaging\Block\Product\Edit\Variations\Config\Matrix" name="sellermatrix" template="Branch8_MarketplaceStaging::product/edit/super/matrix.phtml" cacheable="false">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+        <referenceBlock name="sellermatrix">
+            <block class="Branch8\MarketplaceStaging\Block\Component\StepsWizard" name="staging-variation-steps-wizard">
+                <block class="Webkul\Marketplace\Block\Product\Steps\SelectAttributes" name="step1" template="Branch8_MarketplaceStaging::product/edit/attribute/steps/select_attributes.phtml">
+                    <uiComponent name="marketplacestaging_product_attributes_listing"/>
+                </block>
+                <block class="Webkul\Marketplace\Block\Product\Steps\AttributeValues" name="step2" template="Branch8_MarketplaceStaging::product/edit/attribute/steps/attributes_values.phtml"/>
+                <block class="Webkul\Marketplace\Block\Product\Steps\Bulk" name="step3" template="Branch8_MarketplaceStaging::product/edit/attribute/steps/bulk.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">Webkul\Marketplace\ViewModel\HelperViewModel</argument>
+                    </arguments>
+                </block>
+                <block class="Webkul\Marketplace\Block\Product\Steps\Summary" name="step4" template="Branch8_MarketplaceStaging::product/edit/attribute/steps/summary.phtml"/>
+            </block>
+        </referenceBlock>
+        <referenceContainer name="bundle_product_grid_edit">
+            <uiComponent name="stagingbundleproduct_product_listing"/>
+        </referenceContainer>
+        <referenceContainer name="grouped_product_grid">
+            <uiComponent name="staginggrouped_product_listing"/>
+        </referenceContainer>
+    </body>
+</page>

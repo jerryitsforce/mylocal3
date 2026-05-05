@@ -1,0 +1,271 @@
+<?php
+use \Branch8\Spin2Win\Model\Config\Source\SpinType;
+$spinInfo = $block->getSpinInfo();
+$websites = $block->getWebsites();
+$customergroups = $block->getCustomerGroups();
+$spinType = $block->getSpinInfo()->getSpinType();
+$spinTypeConfigSource = new SpinType();
+$allSpinTypes = $spinTypeConfigSource->getAllOptions();
+$branch8Spin2WinHelper = $this->helper(\Branch8\Spin2Win\Helper\Data::class);
+?>
+<div class="spin-content-information admin__scope-old">
+    <div class="form-inline entry-edit">
+        <form class="spin-form" action="<?= /* @noEscape */ $block->getUrl('spintowin/manage/save') ?>"
+              enctype="multipart/form-data" method="post" id="spininfoformedit">
+            <?= /* @noEscape */ $block->getBlockHtml('formkey')?>
+            <fieldset class="fieldset admin__fieldset">
+                <legend class="legend">
+                    <span><?= /* @noEscape */ __('Spin Campaign Information') ?></span>
+                </legend>
+                <div class="admin__field field field-attribute_label  required _required">
+                    <div class="control">
+                        <input type="hidden" value="<?= /* @noEscape */  $spinInfo->getEntityId(); ?>"
+                               name="entity_id" />
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="name">
+                        <span><?= /* @noEscape */ __('Campaign Name')?></span>
+                    </label>
+                    <div class="control">
+                        <input id="name" name="name" type="text" class="input-text required-entry validate-no-html-tags"
+                               value="<?= /* @noEscape */  $spinInfo->getName(); ?>" />
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label">
+                    <label class="label" for="spin_description">
+                        <span><?= /* @noEscape */ __('Campaign Description')?></span>
+                    </label>
+                    <div class="control">
+                    <textarea id="spin_description" name="spin_description"><?= /* @noEscape */  $spinInfo->getSpinDescription(); ?></textarea>
+                    </div>
+                </div>
+                <?php
+                $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+                $wysiwygObj = $objectManager->create(\Magento\Cms\Model\Wysiwyg\Config::class);
+                $wysiwygConfig = json_encode($wysiwygObj->getConfig()->getData());
+                ?>
+                <script>
+                    require([
+                    "jquery", 
+                    "mage/translate", 
+                    "mage/adminhtml/events", 
+                    "mage/adminhtml/wysiwyg/tiny_mce/setup"
+                    ], function(jQuery){
+                        wysiwygcompany_description = new wysiwygSetup("spin_description", <?php echo $wysiwygConfig;?>);
+                        wysiwygcompany_description.setup("exact");
+                    });
+                </script>
+                <div class="field admin__field field-attribute_label required _required">
+                    <label class="label" for="scheduled">
+                        <span><?= /* @noEscape */ __('Scheduled')?></span>
+                    </label>
+                    <div class="control">
+                        <select id="scheduled" name="scheduled" type="text" class="input-text required-entry">
+                            <option <?= /* @noEscape */ $spinInfo->getScheduled()? 'selected':''; ?> value="1">
+                                <?= /* @noEscape */ __('Yes')?></option>
+                            <option <?= /* @noEscape */ $spinInfo->getId()
+                            && !$spinInfo->getScheduled()? 'selected':''; ?> value="0"><?= /* @noEscape */ __('No')?>
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="start_date">
+                        <span><?= /* @noEscape */ __('Start Date')?></span>
+                    </label>
+                    <div class="admin__field-control calenderdate">
+                        <input id="start_date" name="start_date" type="text" class="input-text required-entry"
+                               value="<?= /* @noEscape */  $branch8Spin2WinHelper->spinEditFormConvert($spinInfo->getStartDate()); ?>" />
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="end_date">
+                        <span><?= /* @noEscape */ __('End Date')?></span>
+                    </label>
+                    <div class="admin__field-control calenderdate">
+                        <input id="end_date" name="end_date" type="text" class="input-text required-entry"
+                               value="<?= /* @noEscape */  $branch8Spin2WinHelper->spinEditFormConvert($spinInfo->getEndDate()); ?>" />
+                    </div>
+                </div>
+                <div class="field admin__field field-attribute_label required _required">
+                    <label class="label" for="status">
+                        <span><?= /* @noEscape */ __('Status')?></span>
+                    </label>
+                    <div class="control">
+                        <select id="status" name="status" type="text" class="input-text required-entry">
+                            <option <?= /* @noEscape */ $spinInfo->getStatus()? 'selected':''; ?> value="1">
+                                <?= /* @noEscape */ __('Enabled')?></option>
+                            <option <?= /* @noEscape */ $spinInfo->getId()
+                            && !$spinInfo->getStatus()? 'selected':''; ?> value="0">
+                                <?= /* @noEscape */ __('Disabled')?></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="customergroup_ids">
+                        <span><?= /* @noEscape */ __('Customer Groups')?></span>
+                    </label>
+                    <div class="control">
+                        <select id="customergroup_ids" name="customergroup_ids[]"
+                                class="input-text required-entry select multiselect admin__control-multiselect"
+                                style="height:10em" size="10" multiple="multiple">
+                            <?php
+                            foreach ($customergroups as $customergroup) { ?>
+                                <?php if($customergroup['value'] == 0){continue;}?>
+                                <option <?php if (in_array(
+                                    $customergroup['value'],
+                                    explode(',', $spinInfo->getCustomergroupIds()??'')
+                                )
+                                ) { ?>
+                                    <?= /* @noEscape */ 'selected'; ?>
+                                <?php } ?> value="<?= /* @noEscape */ $customergroup['value'] ?>">
+                                    <?= /* @noEscape */ __($customergroup['label'])?>
+                                </option>
+                            <?php }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="website_ids">
+                        <span><?= /* @noEscape */ __('Websites')?></span>
+                    </label>
+                    <div class="control">
+                        <select id="website_ids" name="website_ids[]"
+                                class="input-text required-entry select multiselect admin__control-multiselect"
+                                style="height:10em" size="10" multiple="multiple">
+                            <?php
+                            foreach ($websites as $website) { ?>
+                                <option <?php if (in_array($website['value'], explode(',', $spinInfo->getWebsiteIds()??''))
+                                ) { ?>
+                                    <?= /* @noEscape */ 'selected'; ?>
+                                <?php } ?> value="<?= /* @noEscape */ $website['value'] ?>">
+                                    <?= /* @noEscape */ __($website['label'])?>
+                                </option>
+                            <?php }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label">
+                    <label class="label" for="priority">
+                        <span><?= /* @noEscape */ __('Priority')?></span>
+                    </label>
+                    <div class="control">
+                        <input id="priority" name="priority" type="text"
+                               class="input-text validate-number validate-zero-or-greater"
+                               value="<?= /* @noEscape */  $spinInfo->getPriority(); ?>" />
+                        <div class="note admin__field-note" id="priority-note">
+                            <?= /* @noEscape */ __('The default value is 0. The higher the value, the higher the priority.');?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field admin__field field-attribute_label required _required">
+                    <label class="label" for="spin_type">
+                        <span><?= /* @noEscape */ __('Type')?></span>
+                    </label>
+                    <div class="control">
+                        <select id="spin_type" name="spin_type" type="text" class="input-text required-entry">
+                            <?php foreach($allSpinTypes as $_spType){?>
+                            <option value="<?php echo $_spType['value'];?>" <?php echo ($_spType['value'] == $spinType) ? 'selected': '';?>><?php echo $_spType['label'];?></option>
+                            <?php }?>
+                        </select>
+                    </div>
+                </div>
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="x_times">
+                        <span><?= /* @noEscape */ __('X Times')?></span>
+                    </label>
+                    <div class="control">
+                        <input id="x_times" name="x_times" type="text" class="input-text required-entry validate-no-html-tags"
+                               value="<?= /* @noEscape */  $spinInfo->getXTimes(); ?>" />
+                    </div>
+                </div>
+                <div class="field admin__field field-attribute_label required _required">
+                    <label class="label" for="allow_redeem_point">
+                        <span><?= /* @noEscape */ __('Allow Redeem Point')?></span>
+                    </label>
+                    <div class="control">
+                        <select id="allow_redeem_point" name="allow_redeem_point" type="text" class="input-text required-entry">
+                            <option <?= /* @noEscape */ $spinInfo->getId()
+                            && !$spinInfo->getAllowRedeemPoint()? 'selected':''; ?> value="0">
+                                <?= /* @noEscape */ __('No')?></option>
+                            <option <?= /* @noEscape */ $spinInfo->getAllowRedeemPoint()? 'selected':''; ?> value="1">
+                                <?= /* @noEscape */ __('Yes')?></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="point_to_drawn">
+                        <span><?= /* @noEscape */ __('X Points')?></span>
+                    </label>
+                    <div class="control">
+                        <input id="point_to_drawn" name="point_to_drawn" type="text" class="input-text required-entry validate-no-html-tags"
+                               value="<?= /* @noEscape */  $spinInfo->getPointToDrawn(); ?>" />
+                        <div class="note admin__field-note" id="point_to_drawn_note"><?php echo __('X Points = 1 Draw');?></div>
+                    </div>
+                </div>
+
+                <div class="field admin__field  field-attribute_label  required _required">
+                    <label class="label" for="redeem_point_to_drawn_limit_per_day">
+                        <span><?= /* @noEscape */ __('Max. Daily redemption limit')?></span>
+                    </label>
+                    <div class="control">
+                        <input id="redeem_point_to_drawn_limit_per_day" name="redeem_point_to_drawn_limit_per_day" type="text" class="input-text required-entry validate-no-html-tags"
+                               value="<?= /* @noEscape */  $spinInfo->getRedeemPointToDrawnLimitPerDay(); ?>" />
+                    </div>
+                </div>
+
+                <div class="field admin__field field-attribute_label required _required">
+                    <label class="label" for="slow_stock_alert_email_tmp">
+                        <span><?= /* @noEscape */ __('Low stock alert emails')?></span>
+                    </label>
+                    <div class="control">
+                        <?php
+                        $savedEmail = explode(',', (string)$spinInfo->getSlowStockAlertEmail());
+                        ?>
+                        <select id="slow_stock_alert_email_tmp" name="slow_stock_alert_email_tmp[]" type="text" class="input-text required-entry" multiple>
+                        <?php 
+                        foreach($branch8Spin2WinHelper->getConfigEmailSlowStock() as $_email){?>
+                            <option value="<?= $_email;?>" <?= in_array($_email, $savedEmail) ? 'selected':'';?>><?= $_email;?></option>
+                        <?php
+                        }
+
+                        ?>
+                        </select>
+                        <input id="slow_stock_alert_email" type="hidden" value="<?php echo $spinInfo->getSlowStockAlertEmail();?>" name="slow_stock_alert_email" />
+                    </div>
+                </div>
+
+                <button title="<?= /* @noEscape */ __('Save Info') ?>" type="button" id="update-spininfo"
+                        class="action-default save spin-save"
+                <?= /* @noEscape */ ($block->getRequest()->getParam('id')? 'spin-save-ajax':'') ?>"
+                data-spin-bind-form="spininfoformedit">
+                <span><?= /* @noEscape */ __('Save Info') ?></span>
+                <span class="admin__page-nav-item-messages">
+                        <span class="admin__page-nav-item-message _changed">
+                            <span class="admin__page-nav-item-message-icon"></span>
+                            <span class="admin__page-nav-item-message-tooltip"
+                                  data-bind="i18n:'Changes have been made to this section that have not been saved.'">
+                            </span>
+                        </span>
+                    </span>
+                </button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "spininfo": {
+                "consolation_save_url": "<?php echo $this->getUrl('spintowin/consolation/save');?>"
+            }
+        }
+    }
+</script>
+

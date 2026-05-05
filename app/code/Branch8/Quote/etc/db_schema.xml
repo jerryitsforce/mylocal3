@@ -1,0 +1,37 @@
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="quote_item">
+        <column xsi:type="text" name="applied_rule_names" nullable="true" comment="Applied Rule Names"/>
+        <column xsi:type="int" name="current_product_row_id" nullable="true" comment="Current Product Row Id(for tracking)"/>
+        <column xsi:type="int" name="remain_qty_after_fullpoint_checkout" nullable="true" comment="Full point checkout, back old qty before fullpoint checkout"/>
+        <column xsi:type="decimal" name="schedule_change_special_price"
+                unsigned="true" scale="4" precision="12"
+                nullable="true" comment="Schedule Change Special Price"/>
+        <column xsi:type="datetime" name="schedule_change_special_price_start"
+                nullable="true"
+                comment="Scheduled Changes Of Special Price Start Date"/>
+        <column xsi:type="datetime" name="schedule_change_special_price_end"
+                nullable="true"
+                comment="Scheduled Changes Of Special Price End Date"/>
+
+    </table>
+    <table name="sales_order_item">
+        <column xsi:type="text" name="applied_rule_names" nullable="true" comment="Applied Rule Names"/>
+        <column xsi:type="int" name="current_product_row_id" nullable="true" comment="Current Product Row Id(for tracking)"/>
+        <column xsi:type="decimal" name="schedule_change_special_price"
+                unsigned="true" scale="4" precision="12"
+                nullable="true" comment="Schedule Change Special Price"/>
+        <column xsi:type="datetime" name="schedule_change_special_price_start"
+                nullable="true"
+                comment="Scheduled Changes Of Special Price Start Date"/>
+        <column xsi:type="datetime" name="schedule_change_special_price_end"
+                nullable="true"
+                comment="Scheduled Changes Of Special Price End Date"/>
+    </table>
+
+    <table name="quote">
+        <column xsi:type="text" name="distribution_thermosphere" nullable="true" comment="Distribution Thermosphere"/>
+        <column xsi:type="int" name="site_free_shipping_threshold" unsigned="true" nullable="true" comment="(All Site) Free Shipping Threshold"/>
+        <column xsi:type="int" name="site_shipping_fee" unsigned="true" nullable="true" comment="(All Site) Shipping Fee"/>
+        <column xsi:type="int" name="order_free_shipping_threshold" unsigned="true" nullable="true" comment="Order Free Shipping Threshold"/>
+    </table>
+</schema>

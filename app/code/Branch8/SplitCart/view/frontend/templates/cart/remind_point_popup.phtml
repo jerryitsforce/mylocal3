@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+$b8CustomerHelper = $this->helper(\Branch8\Customer\Helper\Data::class);
+?>
+<div id="modal-reminder-point" class="modal-hide">
+  <div class="modal-custom-content">
+    <?= $b8CustomerHelper->getPointReminderContent() ?>
+  </div>
+</div>
+<script type="text/x-magento-init">
+  {
+    "*": {
+        "reminPointPopup": {
+          "modalId": "modal-reminder-point"
+        }
+    }
+}
+</script>

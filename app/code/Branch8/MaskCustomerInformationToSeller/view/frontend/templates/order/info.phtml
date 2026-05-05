@@ -1,0 +1,101 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+/**
+ * @var $maskedModel \Branch8\MaskCustomerInformation\ViewModel\MaskPersonal
+ */
+$maskedModel = $block->getMaskViewModel();
+$viewModel = $block->getViewModel();
+$orderId = $block->getRequest()->getParam('id');
+$order = $block->Order->load($orderId);
+$orderStatusLabel = $order->getStatusLabel();
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getHelper();
+$shippingAddress = $order->getShippingAddress();
+$billingAddress = $order->getBillingAddress();
+if ($order) {
+    $order->setData($maskedModel->mask('market_place_orders', $order->getData()));
+}
+if ($shippingAddress) {
+    $shippingAddress->setData($maskedModel->mask('market_place_orders', $shippingAddress->getData()));
+}
+if ($billingAddress) {
+    $billingAddress->setData($maskedModel->mask('market_place_orders', $billingAddress->getData()));
+}
+?>
+<section class="wk-mp-order-view-account-information">
+    <div class="page-title-wrapper">
+        <h1 class="page-title">
+            <span data-ui-id="page-title-wrapper" class="base">
+                <?=
+                __('Order #%1', $order->getRealOrderId()) ?>
+            </span>
+        </h1>
+        <span class="order-status"><?= $escaper->escapeHtml($orderStatusLabel) ?></span>
+        <div class="order-date">
+            <?=
+            __('<span class="label">Order Date:</span> %1', '<date>' . $block
+                    ->formatDate($order->getCreatedAt(), \IntlDateFormatter::MEDIUM, true, $block
+                        ->getTimezoneForStore($order->getStore())) . '</date>') ?>
+        </div>
+    </div>
+    <?php if ($helper->getSellerProfileDisplayFlag()) { ?>
+        <div class="block block-order-details-view">
+            <div class="block-title">
+                <strong><?= __('Buyer Information') ?></strong>
+            </div>
+            <div class="block-content">
+                <div class="box-content">
+                    <div class="box">
+                        <div class="wk-row">
+                            <span class="label"><?= __('Customer Name') ?> : </span>
+                            <span class="value">
+                                <?= $escaper->escapeHtml($order->getCustomerName()); ?></span>
+                        </div>
+                        <div class="wk-row">
+                            <span class="label"><?= __('Email') ?> : </span>
+                            <span class="value">
+                                <?= $escaper->escapeHtml($order->getCustomerEmail()); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+</section>
+
+<section class="wk-mp-order-addresses">
+    <div class="block block-order-details-view">
+        <div class="block-title">
+            <strong><?= __('Order Information') ?></strong>
+        </div>
+        <div class="block-content">
+            <?php if ($helper->getSellerProfileDisplayFlag()) { ?>
+                <?php if ($block->isOrderCanShip($order)): ?>
+                    <div class="box box-order-shipping-address">
+                        <strong class="box-title"><span>
+                            <?= __('Shipping Address') ?></span></strong>
+                        <div class="box-content">
+                            <address><?= $block->getFormattedAddress($shippingAddress); ?></address>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div class="box box-order-billing-address">
+                    <strong class="box-title">
+                        <span><?= __('Billing Address') ?></span>
+                    </strong>
+                    <div class="box-content">
+                        <address><?= $block->getFormattedAddress($billingAddress); ?></address>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</section>

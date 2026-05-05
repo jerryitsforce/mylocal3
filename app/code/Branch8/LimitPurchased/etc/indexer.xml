@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="branch8_limit_purchased" view_id="branch8_limit_purchased" class="Branch8\LimitPurchased\Model\Indexer\LimitPurchased">
+        <title translate="true">Limit Purchased</title>
+        <description translate="true">Index Limit Purchased data for faster access.</description>
+    </indexer>
+</config>

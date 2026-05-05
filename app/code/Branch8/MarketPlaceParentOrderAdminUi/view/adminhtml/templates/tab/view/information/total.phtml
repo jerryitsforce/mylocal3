@@ -1,0 +1,84 @@
+<?php
+
+/**
+ * @var $block \Magento\Backend\Block\Template
+ */;
+
+?>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Order Total') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?= $block->getChildHtml('history') ?>
+        <div class="admin__page-section-item order-totals">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Order Totals') ?></span>
+            </div>
+            <table class="data-table admin__table-secondary order-subtotal-table">
+                <?php $footer = $block->getParentBlock()->getTotals('footer') ?>
+                <?php if ($footer) : ?>
+                    <tfoot>
+                    <?php foreach ($footer as $_code => $_total) : ?>
+                        <?php if ((bool)$_total->getNotShow() === true || $_total->getCode()==='paid') {
+                            continue;
+                        } ?>
+                        <?php if ($_total->getBlockName()) : ?>
+                            <?= $block->getChildHtml($_total->getBlockName(), false) ?>
+                        <?php else : ?>
+                            <tr class="col-<?= $block->escapeHtmlAttr($_code) ?>">
+                                <td <?= $block->getLabelProperties() ?> class="label"
+                                                                        style="width: 50%;text-align: left">
+                                    <strong>
+                                        <?= $block->escapeHtml($_total->getLabel()) ?>
+                                    </strong>
+                                </td>
+                                <td <?= $block->getValueProperties() ?>>
+                                    <strong><?= $block->getParentBlock()->displayPrices($_total->getValue()) ?></strong>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    </tfoot>
+                <?php endif; ?>
+                <?php $_totals = $block->getParentBlock()->getTotals('') ?>
+                <?php if ($_totals) : ?>
+                    <tbody>
+                    <?php foreach ($_totals as $_code => $_total) : ?>
+                        <?php if ((bool)$_total->getNotShow() === true) {
+                            continue;
+                        } ?>
+                        <?php if ($_total->getBlockName()) : ?>
+                            <?= $block->getChildHtml($_total->getBlockName(), false) ?>
+                        <?php else : ?>
+                            <tr class="col-<?= $block->escapeHtmlAttr($_code) ?>">
+                                <td <?= $block->getLabelProperties() ?> class="label"
+                                                                        style="width: 50%;text-align: left">
+                                    <?php if ($_total->getStrong()) : ?>
+                                        <strong><?= $block->escapeHtml($_total->getLabel()) ?></strong>
+                                    <?php else : ?>
+                                        <?= $block->escapeHtml($_total->getLabel()) ?>
+                                    <?php endif ?>
+                                </td>
+                                <?php if ($_total->getStrong()) : ?>
+                                    <td <?= $block->getValueProperties() ?>>
+                                        <strong>
+                                            <?= $block->getParentBlock()
+                                                ->displayPrices($_total->getValue()) ?>
+                                        </strong>
+                                    </td>
+                                <?php else : ?>
+                                    <td <?= $block->getValueProperties() ?>>
+                                        <span><?= $block->getParentBlock()->displayPrices($_total->getValue()) ?></span>
+                                    </td>
+                                <?php endif; ?>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                    </tbody>
+                <?php endif; ?>
+            </table>
+
+        </div>
+    </div>
+</section>

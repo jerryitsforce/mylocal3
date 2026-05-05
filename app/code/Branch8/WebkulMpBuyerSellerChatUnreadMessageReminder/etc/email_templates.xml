@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="buyer_seller_chat_notification_email_unread_email_template"
+              label="Un-read Chat Message" file="unread_message.html"
+              type="html" module="Branch8_WebkulMpBuyerSellerChatUnreadMessageReminder"
+              area="frontend"/>
+</config>

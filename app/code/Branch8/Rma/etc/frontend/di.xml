@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:ObjectManager/etc/config.xsd">
+	<preference for="Webkul\MpRmaSystem\Block\Seller\Rma" type="Branch8\Rma\Block\Seller\Rma" />
+    <type name="Branch8\Rma\Controller\Rma\Change">
+        <arguments>
+            <argument name="session" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <virtualType name="OrderGridShippingMethodSelect" type="Branch8\AdvancedPermissions\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Branch8\AdvancedPermissions\Model\Options\ShippingMethod</argument>
+            <argument name="defaultLabel" xsi:type="string">No Shipping</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="RmaSalespersonSelect" type="Branch8\Rma\Ui\Component\Listing\Column\Select">
+        <arguments>
+            <argument name="option" xsi:type="object">Branch8\AdvancedPermissions\Model\Options\Salesperson</argument>
+        </arguments>
+    </virtualType>
+</config>

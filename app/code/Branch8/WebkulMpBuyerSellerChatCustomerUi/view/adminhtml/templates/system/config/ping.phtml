@@ -1,0 +1,17 @@
+<?php
+/** @var \Branch8\WebkulMpBuyerSellerChatCustomerUi\Block\Adminhtml\System\Config\PingButton $block */
+?>
+<div class="actions actions-test-email">
+    <button class="actions-test-email" type="button" id="<?= $block->getHtmlId() ?>">
+        <span><?= $block->escapeHtml($block->getButtonLabel()) ?></span>
+    </button>
+</div>
+<script type="text/x-magento-init">
+    {
+        "#buyer_seller_chat_general_settings": {
+            "Branch8_WebkulMpBuyerSellerChatCustomerUi/js/pingButton": {
+                "ajaxUrl": "<?= $block->escapeHtml($block->getButtonUrl()) ?>"
+            }
+        }
+    }
+</script>

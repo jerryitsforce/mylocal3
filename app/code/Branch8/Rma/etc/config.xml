@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_rma>
+                <log_file>false</log_file>
+            </branch8_rma>
+        </branch8_debug>
+        <mprmasystem>
+            <settings>
+                <rma_cancel_delay_time>5</rma_cancel_delay_time>
+                <seller_can_change_resolution_type>0</seller_can_change_resolution_type>
+            </settings>
+            <email>
+                <reject_by_seller>mprmasystem_email_reject_by_seller</reject_by_seller>
+                <reject_exchange_by_seller>mprmasystem_email_reject_exchange_by_seller</reject_exchange_by_seller>
+                <rma_request_from_be_for_seller>mprmasystem_email_rma_request_from_be_for_seller</rma_request_from_be_for_seller>
+            </email>
+        </mprmasystem>
+    </default>
+</config>

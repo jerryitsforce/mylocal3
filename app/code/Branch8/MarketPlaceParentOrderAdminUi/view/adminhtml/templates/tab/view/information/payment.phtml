@@ -1,0 +1,53 @@
+<?php
+
+/** @var \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\OrderInformation $block */
+
+$parentOrder = $block->getParentBlock()->getParentOrder();
+$detail = $parentOrder->getDetail();
+$coBrandedHelper = $this->helper(\Branch8\HotaiPay\Helper\CreditCard\CoBranded::class);
+$allPayments = $parentOrder->getAllPayments();
+$payment = current($allPayments);
+$paymentMethod = $payment->getMethod();
+?>
+<section class="admin__page-section order-view-billing-shipping">
+    <div class="admin__page-section-title">
+        <span class="title"><?= __('Payment &amp; Shipping Method') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__page-section-item order-payment-method">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Payment Information') ?></span>
+            </div>
+            <div class="admin__page-section-item-content">
+                <div class="order-payment-method-title">
+                    <?= $block->getParentBlock()->getPaymentInformation(); ?>
+                </div>
+                <?php
+                if($paymentMethod == 'hotaipay'){
+                    echo '<div>'.$coBrandedHelper->getCoBrandedForParentOrderId($parentOrder->getId()).'</div>';
+                }
+                ?>
+                <div class="order-payment-currency">
+                    <?= $block->escapeHtml(__('The order was placed using %1.', $detail->getOrderCurrencyCode())) ?>
+                </div>
+                <div class="order-payment-additional">
+                </div>
+            </div>
+        </div>
+
+        <div class="admin__page-section-item order-shipping-method">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('Shipping & Handling Information') ?></span>
+            </div>
+
+            <div class="admin__page-section-item-content">
+                <?php if ($detail->getShippingDescription()): ?>
+                    <strong><?= $block->escapeHtml($detail->getShippingDescription()) ?></strong>
+                <?php endif ?>
+                <span class="price"><?= $block->getParentBlock()->totalShippingLabel($parentOrder) ?></span>
+            </div>
+        </div>
+
+</section>
+
+

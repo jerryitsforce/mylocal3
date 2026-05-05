@@ -1,0 +1,8 @@
+<!-- ko if: isShow -->
+<select id="return_or_exchange_order_address_city" name="rma_address[]" data-validate="{'required':true, 'validate-unsupported-city': true}">
+    <option value="" data-bind="i18n: '鄉鎮市區'"></option>
+    <!-- ko foreach: { data: cities, as: 'city' } -->
+    <option data-bind="attr:{ value: city}, i18n: city"></option>
+    <!-- /ko -->
+</select>
+<!-- /ko -->

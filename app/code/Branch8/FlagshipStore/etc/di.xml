@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="flagship_store_index_data_source" xsi:type="string">FlagshipStoreCollection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="FlagshipStoreCollection" type="Branch8\FlagshipStore\Ui\DataProvider\FlagshipStore\Listing\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">flagship_store</argument>
+            <argument name="resourceModel" xsi:type="string">Branch8\EventTicket\Model\ResourceModel\TicketEvent</argument>
+        </arguments>
+    </virtualType>
+
+    <!--<type name="Magento\SalesRule\Model\Rule\Condition\Product">
+        <plugin name="cart_rule_flagship_store"
+                type="Branch8\FlagshipStore\Plugin\SalesRule\Model\Condition\FlagshipStore"/>
+    </type>-->
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="is_flagship_store_process_order" xsi:type="string">sales_order.is_flagship_store_process_order</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

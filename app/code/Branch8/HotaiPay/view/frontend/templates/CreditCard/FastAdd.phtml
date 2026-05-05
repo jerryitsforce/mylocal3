@@ -1,0 +1,21 @@
+<?php
+/**
+ * @var $block \Branch8\HotaiPay\Block\Api\AddCard
+ */
+?>
+<?php
+$encryptData = $block->getData('encryptData');
+$sessionId = $block->getData('sessionId');
+$endpoint = $block->getCreditCardFastUrl();
+?>
+<div>
+    <form name="setup_creditcard" id="setup_creditcard" method="post" enctype="multipart/form-data" action="<?=$block->escapeUrl($block->getCreditCardFastUrl())?>">
+        <input type="hidden" id="setup_creditcard_data" name = "EncryptData" value='<?=$block->getData('encryptData')?>'/>
+        <input type="hidden" id="setup_creditcard_data" name = "sessionId" value='<?=$block->getData('sessionId')?>'/>
+    </form>
+</div>
+
+<script>
+    var form = document.getElementById("setup_creditcard");
+    form.submit();
+</script>

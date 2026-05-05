@@ -1,0 +1,78 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+use Branch8\Blog\Block\Widget\Posts;
+use Magento\Framework\Escaper;
+
+/** @var Posts $block */
+/** @var Escaper $escaper */
+$posts = $block->getCollection();
+?>
+<div class="blog-widget-title"><a></a></div>
+<div class="post-list-container mpcss" id="blog-list-container">
+    <div class="widget-title">
+        <a href="<?= $escaper->escapeUrl($block->getBlogUrl('')) ?>"><?= $escaper->escapeHtml($block->getTitle()) ?></a>
+    </div>
+    <div class="row">
+        <?php foreach ($posts as $post) : ?>
+            <div class="post-list-item" style="margin-left: 5px">
+                <div class="post-item-wraper">
+                    <?php if ($post->getImage()) : ?>
+                        <div class="post-image">
+                            <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                <img class="img-responsive" style="height: 220px"
+                                     src="<?= $escaper->escapeUrl($block->resizeImage($post->getImage(), '400x')) ?>"
+                                     alt="<?= $escaper->escapeHtml($post->getName()); ?>"/>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($post->getImageTwo()) : ?>
+                        <div class="post-image">
+                            <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                <img class="img-responsive" style="height: 220px"
+                                     src="<?= $escaper->escapeUrl($block->resizeImage($post->getImageTwo(), '400x')) ?>"
+                                     alt="<?= $escaper->escapeHtml($post->getName()); ?>"/>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($post->getImageThree()) : ?>
+                        <div class="post-image">
+                            <a href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                <img class="img-responsive" style="height: 220px"
+                                     src="<?= $escaper->escapeUrl($block->resizeImage($post->getImageThree(), '400x')) ?>"
+                                     alt="<?= $escaper->escapeHtml($post->getName()); ?>"/>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    <div class="post-info-wraper">
+                        <h2 class="mp-post-title" style="font-size: 22px">
+                            <a class="post-link-title" title="<?= $escaper->escapeHtmlAttr($post->getName()) ?>"
+                               href="<?= $escaper->escapeUrl($post->getUrl()) ?>">
+                                <?= $escaper->escapeHtml($post->getName()) ?>
+                            </a>
+                        </h2>
+                        <div class="mp-post-info">
+                            <?= /** @noEscape */ $block->getPostInfo($post) ?>
+                        </div>
+                        <div class="post-short-description">
+                            <p><?= /** @noEscape */ $post->getShortDescription() ?></p>
+                        </div>
+                        <div class="mp-clearfix"></div>
+                        <div class="mp-post-meta-info mp-alignright">
+                            <div class="actions">
+                                <a class="mp-read-more" href="<?= $escaper->escapeUrl($post->getUrl()) ?>"
+                                   title="<?= $escaper->escapeHtmlAttr(__('Read More')) ?>">
+                                    <?= $escaper->escapeHtml(__('Read more')) ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

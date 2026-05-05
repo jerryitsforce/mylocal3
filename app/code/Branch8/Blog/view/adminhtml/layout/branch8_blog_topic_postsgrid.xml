@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+-->
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <container name="root" label="Root">
+        <block class="Branch8\Blog\Block\Adminhtml\Topic\Edit\Tab\Post" name="topic.edit.tab.post"/>
+    </container>
+</layout>

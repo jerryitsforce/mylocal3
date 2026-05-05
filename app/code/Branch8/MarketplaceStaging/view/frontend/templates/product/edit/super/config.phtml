@@ -1,0 +1,104 @@
+<?php
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+?>
+<?php
+/** @var $block \Webkul\Marketplace\Block\Product\Edit\Tab\Variations\Config */
+/** @var $escaper \Magento\Framework\Escaper */
+$viewModel = $block->getViewModel();
+$helper = $viewModel->getHelper();
+$productType = $block->getRequest()->getParam('type');
+if ($block->getSellerProduct()->getId()) {
+    $productType = $block->getSellerProduct()->getTypeId();
+}
+$type = 'configurable';
+$isConfigurableProduct = $block->getSellerProduct()->getTypeId() === $type ||
+ $block->getRequest()->has('attributes');
+$allowedTypes = explode(',', $helper->getAllowedProductType());
+if (in_array($type, $allowedTypes) && ($productType == 'simple'
+    || $productType == 'virtual' || $productType == 'configurable')) { ?>
+    <script>
+        var BASE_URL = '';
+        var FORM_KEY = "";
+    </script>
+    <div class="entry-edit form-inline" id="staging_super_config" data-panel="product-variations">
+        <div data-bind="scope: 'staging-variation-steps-wizard'" class="product-create-configuration">
+            <div class="product-create-configuration-info">
+                <div class="note" data-role="staging-product-create-configuration-info">
+                    <?= $escaper->escapeHtml(__('Configurable products allow customers to choose options (Ex: shirt color). '));?>
+                    <?= $escaper->escapeHtml(__('You need to create a simple product for each configuration (Ex: a product for each color).'));?>
+                </div>
+            </div>
+            <div class="product-create-configuration-actions" data-action="staging-product-create-configuration-buttons">
+                <div class="product-create-configuration-action">
+                    <button type="button" data-action="open-steps-wizard"
+                    title="Create Product Configurations" class="action-secondary" data-bind="click: open">
+                    <span data-role="button-label" data-edit-label="<?=  /* @noEscape */ __('Edit Configurations') ?>">
+                        <?= /* @escapeNotVerified */ $block->getSellerProduct()->getId() && $isConfigurableProduct
+                            ? $escaper->escapeHtml(__('Edit Configurations'))
+                            : $escaper->escapeHtml(__('Create Configurations'))
+                        ?>
+                    </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="fieldset">
+            <?= $block->getChildHtml('sellermatrix'); ?>
+
+            <!-- Select Associated Product popup -->
+            <div data-grid-id="associated-products-container">
+                <div class="admin__data-grid-outer-wrap"
+                     data-bind="scope: 'stagingconfigurable_associated_product_listing.stagingconfigurable_associated_product_listing'">
+                    <div data-role="spinner"
+                         data-component=
+                         "stagingconfigurable_associated_product_listing.stagingconfigurable_associated_product_listing.product_columns"
+                         class="admin__data-grid-loading-mask">
+                        <div class="spinner">
+                            <span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+
+                </div>
+            </div>
+
+            <input type="hidden" name="affect_configurable_product_attributes" value="1" />
+        </div>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "stagingConfigurableProductGrid": {
+                            "component": "Branch8_MarketplaceStaging/js/variations/product-grid",
+                            "productsFilter": "stagingconfigurable_associated_product_listing.stagingconfigurable_associated_product_listing.listing_top.listing_filters",
+                            "productsProvider": "stagingconfigurable_associated_product_listing.data_source",
+                            "productsMassAction": "stagingconfigurable_associated_product_listing.stagingconfigurable_associated_product_listing.product_columns.ids",
+                            "productsColumns": "stagingconfigurable_associated_product_listing.stagingconfigurable_associated_product_listing.product_columns",
+                            "productsGridUrl": "<?= $block->escapeUrl($block
+                            ->getUrl('marketplace/product/associated_grid', ['componentJson' => true,'_secure' => $block
+                            ->getRequest()->isSecure()]))?>",
+                            "stagingConfigurableVariations": "stagingConfigurableVariations"
+                        }
+                    }
+                },
+                "Branch8_MarketplaceStaging/js/configurable-type-handler": {
+                    "blockId": "#staging_super_config",
+                    "tabId": "staging_super_config",
+                    "hasVariations": "<?= $isConfigurableProduct ? 'true' : 'false' ?>"
+                }
+            }
+        }
+    </script>
+    <?php
+} ?>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">sales_parent_gift_order_grid.sales_parent_gift_order_grid_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>sales_parent_gift_order_columns</spinner>
+        <deps>
+            <dep>sales_parent_gift_order_grid.sales_parent_gift_order_grid_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="sales_parent_gift_order_grid_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Magento_Sales::sales_order</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider"
+                      name="sales_parent_gift_order_grid_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>main_table.entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <exportButton name="export_button"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <filterSelect name="store_id" provider="${ $.parentName }">
+                <settings>
+                    <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                    <caption translate="true">All Store Views</caption>
+                    <label translate="true">Purchase Point</label>
+                    <dataScope>store_id</dataScope>
+                    <imports>
+                        <link name="visible">ns = ${ $.ns }, index = ${ $.index }:visible</link>
+                    </imports>
+                </settings>
+            </filterSelect>
+        </filters>
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <action name="cancel">
+                <settings>
+                    <url path="sales/parent_giftOrder/massRemoveGiftBox"/>
+                    <type>cancel</type>
+                    <label translate="true">Remove from Gift Box</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="sales_parent_gift_order_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">sales_parent_gift_grid_order_grid.sales_parent_gift_order_grid.sales_parent_gift_order_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">view</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+        <selectionsColumn name="ids" component="Magento_Sales/js/grid/columns/multiselect">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="increment_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Gift Order Number</label>
+            </settings>
+        </column>
+        <column name="buyer_phone_number" class="Branch8\GiftToFriend\Ui\Component\Listing\Column\BuyerPhone">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Buyer's Phone Number</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="customer_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Gift Member</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="recipient_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Name</label>
+            </settings>
+        </column>
+        <column name="recipient_telephone">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Phone Number</label>
+            </settings>
+        </column>
+        <column name="shipping_address">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Recipient Address</label>
+            </settings>
+        </column>
+        <column name="product_name" class="Branch8\GiftToFriend\Ui\Component\Listing\Column\ProductName">
+            <settings>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>text</filter>
+                <label translate="true">Product Name</label>
+                <visible>false</visible>
+            </settings>
+        </column>
+        <column name="is_gift_confirmed" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Gift Status</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Creation Time</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="gift_confirmed_at" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Form Submission Time</label>
+            </settings>
+        </column>
+        <column name="gift_last_access_time" class="Magento\Ui\Component\Listing\Columns\Date" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Last Access Time</label>
+            </settings>
+        </column>
+        <column name="is_removed_gift_box" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+                <label translate="true">Remove Gift Box</label>
+                <visible>true</visible>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Branch8\MarketPlaceParentOrderAdminUi\Ui\Component\Listing\Column\ViewAction">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="viewUrlPath" xsi:type="string">sales/parent_order/view</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                </item>
+            </argument>
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
+</listing>

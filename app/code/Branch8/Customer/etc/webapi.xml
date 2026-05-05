@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+<!--    <route url="/V1/customer/updateOrganization" method="POST">-->
+<!--        <service class="Branch8\Customer\Api\CustomerInterface" method="updateOrganization" />-->
+<!--        <resources>-->
+<!--            <resource ref="Branch8_Customer::organization" />-->
+<!--        </resources>-->
+<!--    </route>-->
+<!--    <route url="/V1/customer/update-customer-organization" method="POST">-->
+<!--        <service class="Branch8\Customer\Api\CustomerInterface" method="updateOrganizationByPhone" />-->
+<!--        <resources>-->
+<!--            <resource ref="Branch8_Customer::organization" />-->
+<!--        </resources>-->
+<!--    </route>-->
+        <route url="/V1/customer/browsing-history" method="GET">
+            <service class="Branch8\Customer\Api\CustomerManagementInterface" method="getCustomerBrowsingHistory" />
+            <resources>
+                <resource ref="self"/>
+            </resources>
+            <data>
+                <parameter name="customerId" force="true">%customer_id%</parameter>
+            </data>
+        </route>
+</routes>

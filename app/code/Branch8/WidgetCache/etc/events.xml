@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Clear widget cache when product is saved -->
+    <event name="catalog_product_save_after">
+        <observer name="branch8_widget_cache_clear_on_product_save" 
+                  instance="Branch8\WidgetCache\Observer\ProductSaveAfter"/>
+    </event>
+    
+    <!-- Clear widget cache when product is deleted -->
+    <event name="catalog_product_delete_after">
+        <observer name="branch8_widget_cache_clear_on_product_delete" 
+                  instance="Branch8\WidgetCache\Observer\ProductSaveAfter"/>
+    </event>
+    
+    <!-- Clear widget cache when product attributes are updated in bulk -->
+    <event name="catalog_product_attribute_update_before">
+        <observer name="branch8_widget_cache_clear_on_product_attribute_update" 
+                  instance="Branch8\WidgetCache\Observer\ProductAttributeUpdate"/>
+    </event>
+</config>
+

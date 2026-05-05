@@ -1,0 +1,185 @@
+<?php
+declare(strict_types=1);
+
+namespace Branch8\MarketPlaceParentOrder\Observer;
+
+use Branch8\MarketPlaceParentOrder\Api\ParentOrderManagementInterface;
+use Branch8\MarketPlaceParentOrder\Api\ParentOrderRepositoryInterface;
+use Branch8\MarketPlaceParentOrder\Model\ParentOrderAddress;
+use Branch8\MarketPlaceParentOrder\Model\ParentOrderFactory;
+use Branch8\MarketPlaceParentOrder\Model\Services\AssignDataForParentOrder;
+use Branch8\MarketPlaceParentOrder\Model\Services\CopyAddressesFromSalesOrderToParentOrder;
+use Branch8\MarketPlaceParentOrder\Model\Services\ProcessParentOrdersWhenCheckoutWithFullPoint;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Sales\Model\OrderRepository;
+use Psr\Log\LoggerInterface;
+use Webkul\Mpsplitorder\Model\Mpsplitorder;
+
+class PopulateParentOrderData implements ObserverInterface
+{
+    /**
+     * @var ParentOrderRepositoryInterface
+     */
+    private ParentOrderRepositoryInterface $parentOrderRepository;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+    private OrderRepository $orderRepository;
+    private AssignDataForParentOrder $assignDataForParentOrder;
+    private ParentOrderFactory $parentOrderFactory;
+    private CopyAddressesFromSalesOrderToParentOrder $copyAddressesFromSalesOrder;
+
+    private ParentOrderManagementInterface $parentOrderManagement;
+    private ProcessParentOrdersWhenCheckoutWithFullPoint $processParentOrderWithFullpoint;
+    /**
+     * @var \Magento\Customer\Model\ResourceModel\CustomerRepository
+     */
+    protected $customerRepository;
+
+    /**
+     * @param ParentOrderRepositoryInterface $parentOrderRepository
+     * @param OrderRepository $orderRepository
+     * @param ParentOrderFactory $parentOrderFactory
+     * @param AssignDataForParentOrder $assignDataForParentOrder
+     * @param CopyAddressesFromSalesOrderToParentOrder $copyAddressesFromSalesOrderToParentOrder
+     * @param ParentOrderManagementInterface $parentOrderManagement
+     * @param ProcessParentOrdersWhenCheckoutWithFullPoint $processParentOrdersWhenCheckoutWithFullPoint
+     * @param LoggerInterface $logger
+     * @param \Magento\Customer\Model\ResourceModel\CustomerRepository $customerRepository
+     */
+    public function __construct(
+        ParentOrderRepositoryInterface               $parentOrderRepository,
+        OrderRepository                              $orderRepository,
+        ParentOrderFactory                           $parentOrderFactory,
+        AssignDataForParentOrder                     $assignDataForParentOrder,
+        CopyAddressesFromSalesOrderToParentOrder     $copyAddressesFromSalesOrderToParentOrder,
+        ParentOrderManagementInterface               $parentOrderManagement,
+        ProcessParentOrdersWhenCheckoutWithFullPoint $processParentOrdersWhenCheckoutWithFullPoint,
+        LoggerInterface                              $logger,
+        \Magento\Customer\Model\ResourceModel\CustomerRepository $customerRepository
+    )
+    {
+        $this->assignDataForParentOrder = $assignDataForParentOrder;
+        $this->logger = $logger;
+        $this->orderRepository = $orderRepository;
+        $this->parentOrderFactory = $parentOrderFactory;
+        $this->parentOrderRepository = $parentOrderRepository;
+        $this->copyAddressesFromSalesOrder = $copyAddressesFromSalesOrderToParentOrder;
+        $this->parentOrderManagement = $parentOrderManagement;
+        $this->processParentOrderWithFullpoint = $processParentOrdersWhenCheckoutWithFullPoint;
+        $this->customerRepository = $customerRepository;
+    }
+
+    /**
+     * Get information from a sub order then copy them to parent order
+     * @param Observer $observer
+     * @return void
+     */
+    public function execute(Observer $observer)
+    {
+        /**
+         * @var $dataObject Mpsplitorder
+         * Todo:
+         * We can move this action into cron process to reduce the checkout time
+         */
+        $dataObject = $observer->getData('data_object');
+        try {
+            if ($dataObject && $dataObject->isObjectNew() && $dataObject->getId()) {
+                $id = $dataObject->getId();
+                $shippingAddress = $billingAddress = '';
+                try {
+                    $suborders = explode(',', $dataObject->getData('order_ids'));
+                } catch (\Exception $exception) {
+                    $suborders = [];
+                }
+                $lastSubOrder = null;
+                foreach ($suborders as $subOrderId) {
+                    $subOrder = $this->orderRepository->get(
+                        $subOrderId
+                    );
+                    if ($subOrder->getShippingAddress()) {
+                        $lastSubOrder = $subOrder;
+                        break;
+                    }
+                }
+                if (!$lastSubOrder) {
+                    $lastSubOrder = $this->orderRepository->get(
+                        $dataObject->getData('last_order_id')
+                    );
+                }
+                $detail = $this->assignDataForParentOrder->copy(
+                    $lastSubOrder
+                );
+                $addresses = $this->copyAddressesFromSalesOrder->copy($lastSubOrder);
+                $detail->setParentId((int)$id);
+                if ($addresses) {
+                    /**
+                     * @var $address ParentOrderAddress
+                     */
+                    foreach ($addresses as $address) {
+                        $address->setParentOrderId((int)$id)->save();
+                        if ($address->getAddressType() === ParentOrderAddress::TYPE_SHIPPING) {
+                            $shippingAddress = $address;
+                        }
+                        if ($address->getAddressType() === ParentOrderAddress::TYPE_BILLING) {
+                            $billingAddress = $address;
+                        }
+                    }
+                }
+                if ($shippingAddress) {
+                    $detail->setShippingAddress($shippingAddress->getId());
+                }
+                if ($billingAddress) {
+                    $detail->setBillingAddress($billingAddress->getId());
+                }
+                $detail->setPaymentMethod(
+                    $lastSubOrder->getPayment() ?
+                        $lastSubOrder->getPayment()->getMethod() : ''
+                );
+                $detail->setIncrementId($dataObject->getData('hotai_reserved_order_id'));
+                if ($suborders) {
+                    $this->parentOrderManagement->assignSubordersToParentOrder(
+                        $id,
+                        $suborders
+                    );
+                }
+                $detail->save();
+                /**
+                 * Reset billing name for virtual order
+                 */
+                $masterQuote = $observer->getData('quote');
+                if($masterQuote->isVirtual()) {
+                    $customerId = $masterQuote->getCustomerId();
+                    $customer = $this->customerRepository->getById($customerId);
+                    $customerFirstname = $customer->getFirstname();
+                    $telephone = $customer->getCustomAttribute('phone_number')->getValue();
+                    $sqlParentBillingName = 'update sales_parent_order_address set firstname="' . $customerFirstname . '", lastname="Hotai", telephone="'.$telephone.'" where parent_order_id=' . $dataObject->getId() . ' and address_type="billing"';
+                    $this->parentOrderFactory->create()
+                        ->getResourceCollection()->getConnection()
+                        ->query($sqlParentBillingName);
+
+                }
+                //app/code/Branch8/MarketPlaceParentOrder/Model/Services/ProcessParentOrdersWhenCheckoutWithFullPoint.php make $order->getSubOrders() return empty array
+                //so i use $this->parentOrderFactory->create()->load($orderId) instead of $this->orderRepository->get($orderId);
+                //TODO: in future, we should use $this->orderRepository->get($orderId) instead of $this->parentOrderFactory->create()->load($orderId)
+                $parentOrder = $this->parentOrderFactory->create()->load((int)$dataObject->getId());
+
+                $parentOrder->setDetail($detail);
+                // send mail
+                if($parentOrder->getDetail()->getStatus() == \Magento\Sales\Model\Order::STATE_PROCESSING){
+                    $this->parentOrderManagement->sendConfirmationEmail($parentOrder);
+                }
+
+                /*
+                * TODO process by cron
+                *
+                */
+                $this->processParentOrderWithFullpoint->execute($parentOrder);
+            }
+        } catch (\Exception $exception) {
+            $this->logger->critical($exception->getMessage());
+        }
+    }
+}

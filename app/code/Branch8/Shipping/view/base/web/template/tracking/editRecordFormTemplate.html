@@ -1,0 +1,34 @@
+<td>
+    <select id="edit-tracking-carrier-<%- data.id %>" name="edit-tracking-carrier-<%- data.id %>">
+            <option value=""><%= _.i18n('-- Please Select --') %></option>
+            <% _.each(data.carrierList, function(url,name) { %>
+                <option value="<%- name %>" data-url="<%- url %>" <%= name === data.carrier ? 'selected' : '' %> >
+                    <%- name %>
+                </option>
+            <% }); %>
+</select>
+
+</td>
+<td class="logistics-provider-name-col" style="display:none;"></td>
+<td>
+    <input type="text" id="edit-tracking-number-<%- data.id %>" name="edit-tracking-number-<%- data.id %>" value="<%- data.tracking_number %>"/>
+</td>
+<td>
+    <button data-role="save-tracking" class="save action-primary"
+            data-id="<%- data.id %>"
+            data-carrier="<%- data.carrier %>"
+            data-tracking-number="<%- data.tracking_number %>"
+            data-shipment-id="<%- data.shipment_id %>"
+    >
+        <%= _.i18n('Save') %>
+    </button>
+    <button data-role="cancel-edit-tracking" class="cancel-edit-tracking action-secondary"
+            data-id="<%- data.id %>"
+            data-carrier="<%- data.carrier %>"
+            data-tracking-number="<%- data.tracking_number %>"
+            data-shipment-id="<%- data.shipment_id %>"
+    >
+        <%= _.i18n('Cancel') %>
+    </button>
+</td>
+

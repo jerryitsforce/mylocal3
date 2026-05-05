@@ -1,0 +1,38 @@
+#filters-form {
+    
+    & .admin__form-field {
+
+        &-control {
+            &[data-type="date-range"] {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                & > div {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+
+                    & > button.ui-datepicker-trigger {
+                        right: 10px;
+                    }
+                }
+
+                & input._has-datepicker {
+                    padding-right: 4rem;
+                }
+            }
+            &[data-type="text"] {
+                & input[name="tax_id_number"] {
+                    text-transform: uppercase;
+                }
+            }
+
+            & div.mage-error {
+                padding-top: 5px;
+                font-size: 12px;
+                color: #e02b27;
+            }
+        }
+    }
+}
+

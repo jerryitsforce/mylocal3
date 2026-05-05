@@ -1,0 +1,92 @@
+{
+    "magenest_notification": {
+        "column": {
+            "customer_levels": true,
+            "content": true,
+            "url_key": true,
+            "condition": true,
+            "oneid_list": true,
+            "target_type": true,
+            "oneid_list_file": true,
+            "oneid_import_history": true
+        },
+        "index": {
+            "MAGENEST_NOTIFICATION_TARGET_TYPE": true
+        }
+    },
+    "magenest_customer_notification": {
+        "column": {
+            "order_id": true,
+            "condition": true,
+            "oneid_list": true,
+            "target_type": true
+        },
+        "index": {
+            "MAGENEST_CUSTOMER_NOTIFICATION_STATUS": true,
+            "MAGENEST_CUSTOMER_NOTIFICATION_NOTIFICATION_ID": true,
+            "MAGENEST_CUSTOMER_NOTIFICATION_ORDER_ID": true,
+            "MAGENEST_CUSTOMER_NOTIFICATION_NOTIFICATION_TYPE": true,
+            "MAGENEST_CUSTOMER_NOTIFICATION_TARGET_TYPE": true
+        }
+    },
+    "magenest_notification_queue": {
+        "column": {
+            "order_id": true
+        }
+    },
+    "magenest_notification_type": {
+        "column": {
+            "is_personal": true
+        }
+    },
+    "magenest_notification_customer_index": {
+        "column": {
+            "entity_id": true,
+            "notification_id": true,
+            "customer_id": true
+        },
+        "index": {
+            "MAGENEST_NOTIFICATION_CUSTOMER_INDEX_NOTIFICATION_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGENEST_NOTIFICATION_CUSTOMER_INDEX_NOTIFICATION_ID_CUSTOMER_ID": true,
+            "MAGENEST_NTFC_CSTR_IDX_NTFC_ID_MAGENEST_NTFC_ID": true,
+            "MAGENEST_NTFC_CSTR_IDX_CSTR_ID_CSTR_ENTT_ENTT_ID": true
+        }
+    },
+    "magenest_notification_oneid_process": {
+        "column": {
+            "entity_id": true,
+            "started_at": true,
+            "user_id": true,
+            "imported_file": true,
+            "execution_time": true,
+            "summary": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "magenest_notification_oneid_import_history": {
+        "column": {
+            "entity_id": true,
+            "started_at": true,
+            "user_id": true,
+            "imported_file": true,
+            "execution_time": true,
+            "summary": true,
+            "notification_id": true,
+            "oneid_list": true,
+            "user": true,
+            "import_data": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "MAGENEST_NTFC_ONEID_IMPORT_HISTORY_NTFC_ID_MAGENEST_NTFC_ID": true
+        },
+        "index": {
+            "MAGENEST_NOTIFICATION_ONEID_IMPORT_HISTORY_USER": true
+        }
+    }
+}

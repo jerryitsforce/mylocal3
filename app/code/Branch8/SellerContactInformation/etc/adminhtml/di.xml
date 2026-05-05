@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Ui\Component\Form\AddressFieldset">
+        <plugin name="hide-customer-addresses-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerFieldset" sortOrder="1"/>
+    </type>
+    <type name="Branch8\CustomerAttribute\Block\Adminhtml\Edit\Tab\LoginLogOut">
+        <plugin name="hide-log-in-log-out-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\Tab\View">
+        <plugin name="hide-customer-view-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\CustomerOrdersTab">
+        <plugin name="hide-orders-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Rma\Block\Adminhtml\Customer\Edit\Tab\Rma">
+        <plugin name="hide-rma-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Sales\Block\Adminhtml\ShoppingCartsTab">
+        <plugin name="hide-shopping-carts-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Wishlist\Block\Adminhtml\WishlistTab">
+        <plugin name="hide-wish-list-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\GiftRegistry\Block\Adminhtml\Customer\Edit\Tab\Giftregistry">
+        <plugin name="hide-gift-registry-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\CustomerBalance\Block\Adminhtml\Customer\Edit\Tab\Customerbalance">
+        <plugin name="hide-store-credit-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Customer\Block\Adminhtml\Edit\Tab\Newsletter">
+        <plugin name="hide-newsletter-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Paypal\Block\Adminhtml\Customer\Edit\Tab\Agreement">
+        <plugin name="hide-billing-agreement-tab-if-customer-is-seller" 
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Review\Block\Adminhtml\ReviewTab">
+        <plugin name="hide-produdct-review-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+    <type name="Magento\Reward\Block\Adminhtml\Customer\Edit\Tab\Reward">
+        <plugin name="hide-reward-points-tab-if-customer-is-seller"
+                type="Branch8\SellerContactInformation\Plugin\Block\Adminhtml\Customer\Edit\HideCustomerTabs" sortOrder="1"/>
+    </type>
+
+    <preference for="Magento\Customer\Block\Adminhtml\Edit\BackButton"
+                type="Branch8\SellerContactInformation\Block\Adminhtml\Customer\Edit\BackButton"/>
+
+    
+</config>

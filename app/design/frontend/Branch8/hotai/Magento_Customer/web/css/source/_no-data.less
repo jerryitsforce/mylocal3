@@ -1,0 +1,76 @@
+//
+//  Common
+//  _____________________________________________
+
+& when (@media-common =true) {
+    .no-data {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        .no-data-img {
+            display: flex;
+            background-color: @color-white;
+            border-radius: 100%;
+            margin-top: 30px;
+            margin-bottom: 12px;
+
+            img {
+                padding: 10px;
+            }
+        }
+
+        .no-data-text {
+            @abs-h6();
+            margin-bottom: 32px;
+        }
+
+        .actions-toolbar {
+            .action {
+                padding: 10px 31px 10px 28px;
+                height: 44px;
+                border: none;
+            }
+        }
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__sl) {
+    .no-data {
+        .no-data-img {
+            margin-top: 60px;
+            margin-bottom: 16px;
+        }
+
+        .no-data-text {
+            &:extend(.abs-dk-h6);
+
+            margin-bottom: 40px;
+        }
+    }
+
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    .no-data-img {
+        margin-top: 36px;
+        margin-bottom: 12px;
+
+        .no-data-text {
+            margin-bottom: 32px;
+        }
+    }
+
+    .account-tab-content:has(.no-data) {
+        background: unset;
+        box-shadow: unset;
+    }
+}

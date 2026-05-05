@@ -1,0 +1,31 @@
+<?php
+/**
+ * @var Branch8\Quickview\Block\Product\View\ShippingMethod $block
+ */
+$product = $block->getProduct();
+$methods = $block->getProductShippingMethod($product);
+if(!$product->isVirtual()){
+    if($methods){
+?>
+    <div class="pdp_shipping_method">
+        <div class="label"><?php echo __('Delivery method');?></div>
+        <div class="value shipping_method_items">
+        <?php
+        foreach($methods as $method){
+            echo '<div class="pdp_product_shipping_method">'.$method.'</div>';
+        }
+        ?>
+        </div>
+    </div>
+<?php
+    }
+} else { ?>
+    <div class="pdp_shipping_method">
+        <div class="label"><?php echo __('Delivery method');?></div>
+        <div class="value shipping_method_items">
+            <div class="pdp_product_shipping_method"><?= $block->escapeHtml(__('Electronic Tickets')) ?></div>
+        </div>
+    </div>
+<?php 
+}
+?>

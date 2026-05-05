@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Webkul Software.
+ *
+ * @category  Webkul
+ * @package   Webkul_Marketplace
+ * @author    Webkul
+ * @copyright Copyright (c) Webkul Software Private Limited (https://webkul.com)
+ * @license   https://store.webkul.com/license.html
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Ui/etc/ui_configuration.xsd">
+    <columns name="marketplace_products_columns">
+        <actionsColumn name="pro_deny" class="Branch8\MarketplaceStaging\Ui\Component\Listing\Column\Disapprove">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Webkul_Marketplace/js/grid/columns/prodeny</item>
+                    <item name="indexField" xsi:type="string">mageproduct_id</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Disapprove</item>
+                    <item name="sortOrder" xsi:type="number">14</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_width" xsi:type="number">138</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="header-right" template="Magento_Theme::html/header-right.phtml" before="top.search">
+                <block class="Magento\Framework\View\Element\Html\Links" name="header.custom.links">
+                    <arguments>
+                        <argument name="css_class" xsi:type="string">authorization-actions</argument>
+                    </arguments>
+                    <block class="Magento\Customer\Block\Account\Customer" name="authorization" template="Magento_Customer::account/authorization.phtml">
+                        <arguments>
+                            <argument name="sortOrder" xsi:type="number">10</argument>
+                        </arguments>
+                    </block>
+                </block>
+                <block class="Magento\Customer\Block\Account\Customer" name="recently-viewed-link" template="Magento_Customer::account/recently-viewed-link.phtml" before="-"/>
+            </block>
+        </referenceContainer>
+        <referenceBlock name="my-account-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Member Center</argument>
+                <argument name="sortOrder" xsi:type="number">110</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="top.links">
+            <block class="Magento\Framework\View\Element\Template" name="account.links" template="Magento_Theme::html/account-links.phtml" before="-"/>
+            <!-- <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-top-orders-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">sales/order/history</argument>
+                    <argument name="label" xsi:type="string" translate="true">My Orders</argument>
+                    <argument name="sortOrder" xsi:type="number">120</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" name="customer-account-top-my-tickets-yoxi">
+                <arguments>
+                    <argument name="path" xsi:type="string">yoxi/detail/index</argument>
+                    <argument name="label" xsi:type="string" translate="true">My Tickets</argument>
+                    <argument name="sortOrder" xsi:type="number">200</argument>
+                </arguments>
+            </block> -->
+            <block class="Branch8\Catalog\Block\RecentlyViewed" name="customer-account-top-recently-viewed" template="Branch8_Customer::browsing_history/widget/viewed_list.phtml" after="-">
+            </block>
+        </referenceBlock>
+        <referenceContainer name="footer-container">
+            <block class="Magento\Framework\View\Element\Template" name="back.to.top" template="Magento_Theme::html/back-to-top.phtml" after="-"/>
+        </referenceContainer>
+        <move element="customer" destination="header.custom.links"/>
+        <move element="register-link" destination="authorization"/>
+        <move element="authorization-link-login" destination="authorization"/>
+        <move element="magenest-notification" destination="header-right"/>
+        <referenceBlock name="register-link">
+            <arguments>
+                <argument name="label" xsi:type="string" translate="true">Register</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceContainer name="header.panel.wrapper" remove="true" />
+        <referenceContainer name="compare-link-wrapper" remove="true" />
+        <referenceBlock name="my-account-link" remove="true" />
+        <referenceBlock name="navigation.sections" remove="true" />
+        <referenceContainer name="after.body.start">
+            <block class="Magento\Framework\View\Element\Template" name="added_loading" template="Magento_Theme::html/loading.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

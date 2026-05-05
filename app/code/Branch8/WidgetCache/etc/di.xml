@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Widget Cache Plugin for Catalog Product List Widget -->
+    <type name="Magento\CatalogWidget\Block\Product\ProductsList">
+        <plugin name="branch8_widget_cache_catalog_products_list_plugin"
+                type="Branch8\WidgetCache\Plugin\CatalogWidget\ProductsListPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Widget Cache Plugin for CMS Block Widget -->
+    <type name="Magento\Cms\Block\Widget\Block">
+        <plugin name="branch8_widget_cache_cms_block_plugin"
+                type="Branch8\WidgetCache\Plugin\Cms\BlockPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Widget Cache Plugin for Product Point Widget -->
+    <type name="Branch8\ProductPoint\Block\Widget\ProductPoint">
+        <plugin name="branch8_widget_cache_product_point_plugin"
+                type="Branch8\WidgetCache\Plugin\ProductPoint\ProductPointPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Widget Cache Plugin for Best Seller Widget -->
+    <type name="Branch8\BestSeller\Block\Widget\BestSellerProduct">
+        <plugin name="branch8_widget_cache_best_seller_plugin"
+                type="Branch8\WidgetCache\Plugin\BestSeller\BestSellerPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Widget Cache Plugin for Brand List Widget -->
+    <type name="Branch8\Brand\Block\Widget\BrandList">
+        <plugin name="branch8_widget_cache_brand_list_plugin"
+                type="Branch8\WidgetCache\Plugin\Brand\BrandListPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Widget Cache Plugin for Category List Widget -->
+    <type name="Branch8\CatalogCustom\Block\Widget\CategoryList">
+        <plugin name="branch8_widget_cache_category_list_plugin"
+                type="Branch8\WidgetCache\Plugin\CatalogCustom\CategoryListPlugin"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Plugin to clear widget cache when inventory source items are saved -->
+    <type name="Magento\InventoryApi\Api\SourceItemsSaveInterface">
+        <plugin name="branch8_widget_cache_source_items_save_plugin"
+                type="Branch8\WidgetCache\Plugin\Inventory\SourceItemsSavePlugin"
+                sortOrder="100"/>
+    </type>
+
+    <!-- Plugin to clear widget cache when stock item is saved (Advanced Inventory) -->
+    <type name="Magento\CatalogInventory\Api\StockItemRepositoryInterface">
+        <plugin name="branch8_widget_cache_stock_item_repository_plugin"
+                type="Branch8\WidgetCache\Plugin\Inventory\StockItemRepositoryPlugin"
+                sortOrder="100"/>
+    </type>
+
+    <!-- Virtual type for Widget Cache -->
+    <virtualType name="Branch8\WidgetCache\Model\WidgetCache">
+        <arguments>
+            <argument name="cache" xsi:type="object">Magento\Framework\App\Cache</argument>
+            <argument name="cacheTypeList" xsi:type="object">Magento\Framework\App\Cache\TypeListInterface</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- Custom logger (rotating, daily) -->
+    <type name="Branch8\WidgetCache\Logger\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">widgetcache</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="rotating" xsi:type="object">Branch8\WidgetCache\Logger\Handler\Rotating</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Configure Rotating handler with dependencies -->
+    <type name="Branch8\WidgetCache\Logger\Handler\Rotating">
+        <arguments>
+            <argument name="directoryList" xsi:type="object">Magento\Framework\Filesystem\DirectoryList</argument>
+            <argument name="file" xsi:type="object">Magento\Framework\Filesystem\Io\File</argument>
+            <argument name="maxFiles" xsi:type="number">14</argument>
+        </arguments>
+    </type>
+
+    <!-- Console Commands -->
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="widget_cache_stats" xsi:type="object">Branch8\WidgetCache\Console\Command\CacheStatsCommand</item>
+                <item name="widget_cache_clear" xsi:type="object">Branch8\WidgetCache\Console\Command\CacheClearCommand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

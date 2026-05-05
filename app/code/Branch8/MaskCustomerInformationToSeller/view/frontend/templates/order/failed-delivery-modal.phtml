@@ -1,0 +1,14 @@
+<?php
+/** @var $escaper Magento\Framework\Escaper */
+?>
+<div id="failed-delivery-modal-<?=/* @noEscape */ $block->getOrder()->getId() ?>" class="failed-delivery-modal-wrapper" >
+    <div class="failed-delivery-modal-body">
+        <textarea id="failed-delivery-description-<?=/* @noEscape */ $block->getOrder()->getId() ?>"
+                  maxlength="20"
+                  class="failed-delivery-description"
+                  placeholder="<?= $escaper->escapeHtml(__("Please describe the reason, limited to 20 words (optional)")) ?>"></textarea>
+    </div>
+</div>
+
+
+

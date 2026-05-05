@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var Magento\Framework\View\Element\Template $block
+ */
+$parentBlock = $block->getParentBlock();
+$order = $parentBlock->getOrder();
+$contactServiceUrl = $order? $parentBlock->getContactServiceUrl($order) : $parentBlock->getContactServiceUrl(null);
+// $contactServiceUrl = $parentBlock->getCustomerServiceUrl();
+$faqUrl = $parentBlock->getFAQUrl();
+?>
+<div class="giftbox-confirm-info">
+  <div class="giftbox-confirm-info-box">
+    <h3><?= $block->escapeHtml(__("注意事項")); ?></h3>
+    <ul>
+      <li><?= $block->escapeHtml(__("如有客服需求，請撥打：02-5570-1788  ( 服務時間：週一至週五 09:00-17:00 )。如遇忙線，感謝您的耐⼼等待；或您也可以使⽤"))?><a href="<?= $contactServiceUrl ?>" title="客服表單">客服表單</a><?= $block->escapeHtml(__(" ，填具相關詢問事項，我們將盡快以Email回覆。")); ?></li>
+      <li><?= $block->escapeHtml(__("HOTAI購商城採用電子發票，如需紙本發票，請填寫"));?><a href="<?= $contactServiceUrl ?>" title="客服表單">客服表單</a><?= $block->escapeHtml(__("。發票將於到貨後猶豫期+7個工作天以平信寄出。")); ?></li>
+      <li><?= $block->escapeHtml(__("關於退換貨，請參閱"));?><a href="<?= $faqUrl  ?>" title="常見問題">常見問題</a><?= $block->escapeHtml(__("的「退換貨問題」說明。")); ?></li>
+      <li><?= $block->escapeHtml(__("提醒您，若您選擇超商取貨，但貨到後未至門市取件，將會影響您未來使用超商取貨服務的權益。")); ?></li>
+    </ul>
+  </div>
+  <div class="giftbox-confirm-show-more">
+    <button class="action show-more" id="giftbox-confirm-show-more-button" title="<?= $block->escapeHtml(__("顯示全部"))?>">
+      <span><?= $block->escapeHtml(__("顯示全部"))?></span>
+    </button>
+  </div>
+</div>
+<script type="text/x-magento-init">
+{
+  "*": {
+    "giftNote": {}
+  }
+}
+</script>

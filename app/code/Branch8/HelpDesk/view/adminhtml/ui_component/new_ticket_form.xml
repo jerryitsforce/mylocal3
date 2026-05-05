@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">new_ticket_form.ticket_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Ticket Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save" class="Branch8\HelpDesk\Block\Adminhtml\Ticket\Create\SaveButton"/>
+            <button name="back" class="Branch8\HelpDesk\Block\Adminhtml\Ticket\Create\BackButton"/>
+        </buttons>
+        <namespace>new_ticket_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>new_ticket_form.ticket_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="ticket_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="helpdesk/ticket_create/save"/>
+        </settings>
+        <dataProvider class="Branch8\HelpDesk\Model\Ticket\Create\DataProvider"
+                      name="ticket_form_data_source"
+        >
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>ticket_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label translate="true">Ticket Information</label>
+        </settings>
+        <field name="title" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Title</label>
+                <dataScope>title</dataScope>
+            </settings>
+        </field>
+        <field name="category_id" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Category</label>
+                <dataScope>category_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\HelpDesk\Model\Ticket\Source\Category"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="priority" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Priority</label>
+                <dataScope>priority</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\HelpDesk\Model\Ticket\Priority"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="status" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Status</label>
+                <dataScope>status</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\HelpDesk\Model\Ticket\Status"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="content" formElement="wysiwyg">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                    <item name="wysiwygConfigData" xsi:type="array">
+                        <item name="is_pagebuilder_enabled" xsi:type="boolean">false</item>
+                        <item name="add_variables" xsi:type="boolean">false</item>
+                        <item name="add_widgets" xsi:type="boolean">false</item>
+                        <item name="add_images" xsi:type="boolean">false</item>
+                        <item name="add_directives" xsi:type="boolean">false</item>
+                        <item name="toggle_button" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <label translate="true">Content</label>
+                <dataScope>content</dataScope>
+            </settings>
+            <formElements>
+                <wysiwyg>
+                    <settings>
+                        <wysiwyg>true</wysiwyg>
+                    </settings>
+                </wysiwyg>
+            </formElements>
+        </field>
+        <field name="attachment" formElement="fileUploader"
+               component="Branch8_HelpDesk/js/view/file-uploader"
+               class="Branch8\HelpDesk\Ui\Component\Backend\Form\Field\Attachments"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="isMultipleFiles" xsi:type="boolean">true</item>
+                    <item name="template" xsi:type="string">ui/form/element/uploader/uploader</item>
+                    <item name="previewTmpl" xsi:type="string">Branch8_HelpDesk/form/element/attachment-preview</item>
+                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/image</item>
+                </item>
+            </argument>
+            <settings>
+                <label translate="true">Attachments</label>
+            </settings>
+            <formElements>
+                <fileUploader>
+                    <settings>
+                        <uploaderConfig>
+                            <param xsi:type="string" name="url">path/to/controller</param>
+                        </uploaderConfig>
+                    </settings>
+                </fileUploader>
+            </formElements>
+        </field>
+
+    </fieldset>
+    <fieldset name="customer">
+        <settings>
+            <label translate="true">Customer Information</label>
+        </settings>
+        <field name="customer_id" formElement="input" sortOrder="5"
+               component="Branch8_HelpDesk/js/ticket/create/form/assign"
+               template="Branch8_HelpDesk/ticket/create/form/assign"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>customer_id</dataScope>
+                <imports>
+                    <link name="textLabel">
+                        new_ticket_form.new_ticket_form.customer.insert_customer_listing_modal.helpdesk_customer_choose_grid:customer_email
+                    </link>
+                </imports>
+            </settings>
+        </field>
+        <container sortOrder="10" name="customer_btn">
+            <button name="customers" component="Magento_Ui/js/form/components/button">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="label" xsi:type="string" translate="true">Customer</item>
+                        <item name="title" xsi:type="string" translate="true">Assign</item>
+                        <item name="displayAsLink" xsi:type="boolean">false</item>
+                        <item name="labelVisible" xsi:type="boolean">true</item>
+                        <item name="template" xsi:type="string">ui/form/components/button/container</item>
+                        <item name="actions" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="targetName" xsi:type="string">
+                                    new_ticket_form.new_ticket_form.customer.insert_customer_listing_modal
+                                </item>
+                                <item name="actionName" xsi:type="string">toggleModal</item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </button>
+        </container>
+        <modal name="insert_customer_listing_modal">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="provider" xsi:type="string">new_ticket_form.new_ticket_form_data_source</item>
+                    <item name="onCancel" xsi:type="string">actionDone</item>
+                    <item name="options" xsi:type="array">
+                        <item name="title" xsi:type="string">All Customers</item>
+                        <item name="buttons" xsi:type="array">
+                            <item name="0" xsi:type="array">
+                                <item name="actions" xsi:type="array">
+                                    <item name="0" xsi:type="array">
+                                        <item name="targetName" xsi:type="string">index =
+                                            helpdesk_customer_choose_grid
+                                        </item>
+                                        <item name="actionName" xsi:type="string">save</item>
+                                    </item>
+                                    <item name="1" xsi:type="string">closeModal</item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </item>
+            </argument>
+            <insertListing name="helpdesk_customer_choose_grid"
+                           component="Branch8_HelpDesk/js/ticket/create/customer-insert-listing">
+                <settings>
+                    <dataLinks>
+                        <exports>false</exports>
+                        <imports>true</imports>
+                    </dataLinks>
+                    <autoRender>true</autoRender>
+                    <selectionsProvider>
+                        helpdesk_customer_choose_grid.helpdesk_customer_choose_grid.helpdesk_customer_choose_grid_columns
+                    </selectionsProvider>
+                    <exports>
+                        <link name="customer_id">new_ticket_form.new_ticket_form.customer.customer_id:value</link>
+                        <link name="customer_email">new_ticket_form.new_ticket_form.customer.customer_email:value</link>
+                        <link name="customer_name">new_ticket_form.new_ticket_form.customer.customer_name:value</link>
+                        <link name="phone_number">new_ticket_form.new_ticket_form.customer.phone:value</link>
+                    </exports>
+                    <dataScope>helpdesk_customer_choose_grid</dataScope>
+                    <ns>helpdesk_customer_choose_grid</ns>
+                </settings>
+            </insertListing>
+        </modal>
+        <field name="customer_email" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="validate-email" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Customer Email</label>
+                <dataScope>customer_email</dataScope>
+            </settings>
+        </field>
+        <field name="customer_name" sortOrder="30" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Customer Name</label>
+                <dataScope>customer_name</dataScope>
+            </settings>
+        </field>
+        <field name="phone" sortOrder="40" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Phone</label>
+                <dataScope>phone</dataScope>
+            </settings>
+        </field>
+        <field name="notify_customer"
+               component="Magento_Ui/js/form/element/single-checkbox-toggle-notice"
+               formElement="checkbox">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="default" xsi:type="number">1</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>boolean</dataType>
+                <label translate="true">Notify Customer</label>
+            </settings>
+            <formElements>
+                <checkbox>
+                    <settings>
+                        <valueMap>
+                            <map name="false" xsi:type="number">0</map>
+                            <map name="true" xsi:type="number">1</map>
+                        </valueMap>
+                        <prefer>toggle</prefer>
+                    </settings>
+                </checkbox>
+            </formElements>
+        </field>
+        <field name="order" formElement="select"
+               component="Branch8_HelpDesk/js/view/find-your-order"
+               class="Branch8\HelpDesk\Ui\Component\Backend\Form\Field\FindYourOrder"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="pageLimit" xsi:type="string">50</item>
+                    <item name="showPath" xsi:type="boolean">false</item>
+                    <item name="showCheckbox" xsi:type="string">false</item>
+                    <item name="searchOptions" xsi:type="boolean">true</item>
+                    <item name="filterOptions" xsi:type="string">true</item>
+                    <item name="filterOptionsFocus" xsi:type="string">true</item>
+                    <item name="searchUrl" xsi:type="string">helpdesk/ticket/LoadRecentOrders</item>
+                    <item name="selectedPlaceholders" xsi:type="array">
+                        <item name="defaultPlaceholder" xsi:type="string" translate="true">Type to find order (Order Id,Shipping,Billing ...</item>
+                    </item>
+                </item>
+            </argument>
+            <settings>
+                <elementTmpl>ui/grid/filters/elements/ui-select</elementTmpl>
+                <dataType>text</dataType>
+                <label translate="true">Order</label>
+                <dataScope>order</dataScope>
+                <imports>
+                    <link name="checkCustomerId">${ $.provider }:${ $.parentScope }.customer_id</link>
+                </imports>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="team">
+        <settings>
+            <label translate="true">Team Information</label>
+        </settings>
+        <field name="team_id" sortOrder="20" formElement="select"
+         class="Branch8\HelpDesk\Ui\Component\Backend\Form\Field\Team"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Team</label>
+                <dataScope>team_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Branch8\HelpDesk\Model\Ticket\Source\Team"/>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="user_id" sortOrder="30" formElement="select"
+               component="Branch8_HelpDesk/js/ticket/create/form/user"
+        >
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">ticket</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">User</label>
+                <dataScope>user_id</dataScope>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <filterBy>
+                            <field>team_id</field>
+                            <target>${ $.provider }:${ $.parentScope }.team_id</target>
+                        </filterBy>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+    </fieldset>
+</form>

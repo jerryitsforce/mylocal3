@@ -1,0 +1,178 @@
+<div id="popup-mapping">
+    <div class="modal-inner-content">
+        <h2><div><?php echo __('Pool:');?> <span id="popup-mapping-event-title"></span></div></h2>
+        <br />
+        <div id="mapping_content">
+            <form id="popup-mappping-form">
+                <input type="hidden" name="mapping_event_id" id="mapping_event_id">
+                <p><a href="<?php echo $this->getUrl('eventticket/event/importMappingTemplate');?>" target="_blank"><?php echo __('Download sample import file');?></a> </p>
+                <p class="import-row _required">
+                    <label class="admin__field-label">
+                        <span><?php echo __('Import file');?></span>
+                    </label>
+                <div>
+                    <input type="file" name="import_mapping_file" id="import_mapping_file">
+                    <?php echo $block->getBlockHtml('formkey')?>
+                </div>
+                </p>
+                <p class="import-row">
+                    <input type="button" id="import_mapping_btn" value="Import" class="action-default primary"/>
+                </p>
+                <div id="result-mapping-error" class="message message-error error hidden"></div>
+                <div id="result-mapping-success" class="message message-success success hidden"></div>
+                <div id="importProcessPercent" style="text-align: left; height: 50px;line-height: 50px;font-size: 50px"></div>
+                <input type="button" id="retry_import_subrequest" class="action-default primary hidden" value="<?php echo __('Retry');?>" class="action-default primary"/>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal',
+            'plugins/DOMPurify',
+            'mage/mage',
+            'mage/calendar'
+        ],
+        function($, modal, DOMPurify) {
+            jQ = $.noConflict();
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Import Mapping Serial & One ID',
+                buttons: [{
+                    text: jQ.mage.__('Close'),
+                    class: 'modal-close',
+                    click: function (){
+                        this.closeModal();
+                    }
+                }]
+            };
+            modal(options, jQ('#popup-mapping'));
+
+            totalItemsImport = 0;
+            importPercent = '0&#37;';
+            subRequestUrl = '';
+
+            jQ(document).on('click', '.import-mapping-btn', function(){
+                var dataMapping = jQ(this).attr('data-mapping');
+                try{
+                    var popupDataArr = JSON.parse(dataMapping);
+                    jQ('#popup-mapping-event-title').html(DOMPurify.sanitize(popupDataArr.title));
+                    jQ('#mapping_event_id').val(popupDataArr.id);
+                }catch(err) {
+
+                }
+                jQ('#popup-mappping-form').trigger("reset");
+                resetMessage();
+
+                jQ('#popup-mapping').modal("openModal");
+            });
+
+            var totalItemsImport = 0;
+            var importPercent = '0&#37;';
+            var subRequestUrl = '';
+            jQ(document).on('click', '#import_mapping_btn', function(){
+
+                if(jQ('#import_mapping_file').val() == ''){
+                    jQ('#result-mapping-error').html(DOMPurify.sanitize(jQ.mage.__('Please select import file.')));
+                    jQ('#result-mapping-error').removeClass('hidden');
+                    return;
+                }else{
+                    resetMessage();
+                }
+                if(!confirm(jQ.mage.__("Are you sure you want to import?"))){
+                    return;
+                }
+                var form = new FormData(document.getElementById('popup-mappping-form'));
+                jQ.ajax({
+                    type: "POST",
+                    url: "<?php echo $this->getUrl('eventticket/ticket/importMapping');?>",
+                    processData: false,
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    data: form,
+                    showLoader: true,
+                    dataType: 'json',
+                    async:true,
+                    success: function (response) {
+                        if(response.error == false){
+                            jQ('#popup-mappping-form').trigger("reset");
+                            totalItemsImport = response.data.totalItems;
+                            /**
+                             * Run sub import queue
+                             */
+                            subRequestUrl = response.data.mappingSubRequestUrl;console.log(subRequestUrl);
+                            if(subRequestUrl){
+                                jQ('#importProcessPercent').html('0%');
+                                importSubRequest(subRequestUrl);
+                            }
+                        }else{
+                            resetMessage();
+                            jQ('#result-mapping-error').html(DOMPurify.sanitize(response.msg));
+                            jQ('#result-mapping-error').removeClass('hidden');
+                        }
+                    },
+                    error: function (e) {
+                        resetMessage();
+                        jQ('#result-mapping-error').html(DOMPurify.sanitize(jQ.mage.__("Import fail, please refresh and try again.")));
+                        jQ('#result-mapping-error').removeClass('hidden');
+                    }
+                });
+
+
+            });
+
+            function importSubRequest(url){
+                jQ.ajax({
+                    type: "GET",
+                    url: url,
+                    async: true,
+                    showLoader: true,
+                    success: function (responseSub) {
+                        importPercent = (100 - Math.trunc(responseSub.remain / totalItemsImport * 100)) + '&#37;';
+                        jQ('#importProcessPercent').html(DOMPurify.sanitize(importPercent));
+
+                        if (responseSub.error == false) {
+
+                            if(responseSub.remain == 0){
+                                resetMessage();
+                                jQ('#result-mapping-success').html(DOMPurify.sanitize(jQ.mage.__('Import successfully.')));
+                                jQ('#result-mapping-success').removeClass('hidden');
+                                jQ('#popup-mappping-form').trigger("reset");
+                            }else{
+                                importSubRequest(url);
+                            }
+
+                        }else{
+                            resetMessage();
+                            jQ('#result-mapping-error').html(DOMPurify.sanitize(jQ.mage.__('Import fail, please see import log.')));
+                            jQ('#result-mapping-error').removeClass('hidden');
+                            jQ('#retry_import_subrequest').removeClass('hidden');
+                        }
+                    },
+                    error: function (e) {
+                        resetMessage();
+                        jQ('#result-mapping-error').html(DOMPurify.sanitize(jQ.mage.__('Import fail, please see import log.')));
+                        jQ('#result-mapping-error').removeClass('hidden');
+                        jQ('#retry_import_subrequest').removeClass('hidden');
+                    }
+                });
+            }
+            jQ(document).on('click', '#retry_import_subrequest', function (){
+                importSubRequest(subRequestUrl);
+            });
+            function resetMessage(){
+                jQ('#importProcessPercent').html('');
+                jQ('#result-mapping-error').html('');
+                jQ('#result-mapping-success').html('');
+                jQ('#result-mapping-success').addClass('hidden');
+                jQ('#result-mapping-error').addClass('hidden');
+                jQ('#retry_import_subrequest').addClass('hidden');
+            }
+
+        });
+</script>

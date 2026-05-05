@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">blacklist_keywords_form.blacklist_keywords_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">General Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+       <buttons>
+           <button name="save" class="Branch8\BlackListKeyWords\Block\Adminhtml\Edit\Buttons\Save"/>
+           <button name="save_and_continue"
+                   class="Branch8\BlackListKeyWords\Block\Adminhtml\Edit\Buttons\SaveAndContinue"/>
+           <button name="delete" class="Branch8\BlackListKeyWords\Block\Adminhtml\Edit\Buttons\Delete"/>
+           <button name="back" class="Branch8\BlackListKeyWords\Block\Adminhtml\Edit\Buttons\Back"/>
+        </buttons>
+        <namespace>blacklist_keywords_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>blacklist_keywords_form.blacklist_keywords_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="blacklist_keywords_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="blacklist_words/keyword/save"/>
+        </settings>
+        <dataProvider class="Branch8\BlackListKeyWords\Model\Keyword\DataProvider"
+                      name="blacklist_keywords_form_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <collapsible>false</collapsible>
+            <label translate="true">General</label>
+            <componentType>fieldset</componentType>
+            <additionalClasses>
+                <class name="keywords-form-information">true</class>
+            </additionalClasses>
+        </settings>
+        <field name="keyword" sortOrder="50" formElement="input">
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">keyword</label>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="max_text_length" xsi:type="number">64</rule>
+                </validation>
+            </settings>
+        </field>
+    </fieldset>
+</form>

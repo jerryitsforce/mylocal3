@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_catalog_product_save_entity_after">
+        <observer name="b8_warning_commission" instance="Branch8\Catalog\Observer\WarningCommission" />
+        <observer name="b8_set_seller_for_child_product" instance="Branch8\Catalog\Observer\SetSellerForChild" />
+        <observer name="branch8_disapprove_pending_approval_request" instance="Branch8\Catalog\Observer\DisapprovePendingApprovalRequest" />
+    </event>
+    <event name="admin_set_seller_child_product">
+        <observer name="set_seller_for_child_product" instance="Webkul\Marketplace\Observer\CatalogProductSaveAfterObserver" />
+    </event>
+    <event name="controller_action_predispatch_catalog_product_save">
+        <observer name="backend_validate_seller_parent_child" instance="Branch8\Catalog\Observer\BundleGroupedValidateSeller"/>
+    </event>
+    <event name="catalog_product_save_before">
+        <observer name="branch8_catalog_remove_special_to_date" instance="Branch8\Catalog\Observer\Adminhtml\RemoveSpecialToDateBeforeSave" />
+    </event>
+    <event name="product_attribute_form_build_front_tab">
+        <observer name="layeredNavigation" disabled="true" />
+        <observer name="b8LayeredNavigation" instance="Branch8\Catalog\Observer\Edit\Tab\Front\ProductAttributeFormBuildFrontTabObserver" />
+    </event>
+    <event name="catalog_category_save_after">
+        <observer name="b8_catalog_category_save_after" instance="Branch8\Catalog\Observer\CategorySaveAfter" />
+    </event>
+</config>

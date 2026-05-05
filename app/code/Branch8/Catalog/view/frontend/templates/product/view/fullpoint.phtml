@@ -1,0 +1,74 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate.FoundThis
+
+/**
+ * Product view template
+ *
+ * @var $block \Magento\Catalog\Block\Product\View
+ */
+
+/** @var Escaper $escaper */
+?>
+<?php 
+$_product = $block->getProduct(); 
+?>
+<input type="hidden" id="fullpoint_checkout_url" value="<?php echo $this->getUrl('fullpoint-checkout');?>" />
+<input type="hidden" id="fullpoint_product_sku" value="<?php echo $this->getUrl('catalog/product/fullpoint');?>?sku=<?= $escaper->escapeHtml(urlencode(urlencode($_product->getSku()))) ?>" />
+<div class="fullpoint-error-popup modal-hide" id="modal_fullpoint_error_popup">
+  <div class="modal-custom-content">
+    <div id="fullpoint_error_message"><?= __("您的剩餘點數為 <span>%1</span> 點，不足購買此商品，請調整數量或選擇其他商品。", "XX")?></div>
+  </div>
+</div>
+<div class="fullpoint-confirm-popup modal-hide" id="modal_fullpoint_confirm_popup">
+  <div class="modal-custom-content">
+    <div class="fullpoint-pdp-info">
+      <div class="fullpoint-pdp-photo">
+        <img src="<?= $escaper->escapeHtml($_product->getImageUrl()) ?>" alt="<?= $escaper->escapeHtml($_product->getName()) ?>" />
+      </div>
+      <div class="fullpoint-pdp-details">
+        <h4 class="fullpoint-pdp-name"><?= $escaper->escapeHtml($_product->getName()) ?></h4>
+        <div class="fullpoint-pdp-price">
+          <span class="fullpoint-pdp-price-value">NT$4</span>
+        </div>
+        <div class="fullpoint-pdp-attribute">
+          <?php if ($_product?->getShowLongTimeShip() && $_product?->getLongTimeShip()): ?>
+          <?php $text = $_product->getAttributeText('long_time_ship'); ?>
+              <div class="pdp_long_time_ship">
+                  ※<?= /* @noEscape */ $block->escapeHtml(__('Longer lead time (%1)', $text)) ?>
+              </div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <div class="fullpoint-pdp-options-container"></div>
+    <div class="fullpoint-pdp-qty-container">
+      <div class="fullpoint-pdp-box-tocart"></div>
+    </div>
+    <div class="fullpoint-pdp-note">
+      <p><?= __("購買即視為同意") ?><a href="<?= $this->getUrl('faq', ['_query' => ['tab' => 7]]) ?>"><?= __("商品退/換貨辦法") ?></a></p>
+    </div>
+    <div class="fullpoint-pdp-summary">
+      <div class="fullpoint-pdp-total">
+        <span class="fullpoint-pdp-total-label"><?= __("總點數") ?></span>
+        <span class="fullpoint-pdp-total-price" id="fullpoint_total_price">1,200</span>
+      </div>
+      <div class="fullpoint-pdp-actions">
+        <button type="button" class="action primary fullpoint-confirm-payment" id="fullpoint_confirm_payment_button"><?= __("確認付款") ?></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "b8CheckFullPointProduct": {
+              "url": "<?php echo $this->getUrl('catalog/product/fullpoint');?>?sku=<?= $escaper->escapeHtml(urlencode(urlencode($_product->getSku()))) ?>"
+            }
+        }
+    }
+</script>

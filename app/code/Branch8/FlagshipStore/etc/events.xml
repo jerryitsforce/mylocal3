@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_flagship_shipping_order_all_after">
+        <observer name="branch8_marketplace_sales_order_place_after_observer" instance="Webkul\Marketplace\Observer\SalesOrderPlaceAfterObserver" />
+        <observer name="branch8_mark_precess_order_flagship_sttore" instance="Branch8\FlagshipStore\Observer\MarkFlagshipOrder" />
+    </event>
+</config>

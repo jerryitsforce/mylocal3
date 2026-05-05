@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Model\ProductRepository">
+        <plugin name="b8_support_import_product_add_image" type="Branch8\Catalog\Plugin\AddImportImage"/>
+        <plugin name="b8_support_update_preservation_status" type="Branch8\Catalog\Plugin\UpdateValuePreservationNormal"/>
+    </type>
+    <preference for="Branch8\Catalog\Api\Data\ImageImportDataInterface" type="Branch8\Catalog\Model\Api\Data\ImageImportDataRequest"/>
+</config>

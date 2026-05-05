@@ -1,0 +1,131 @@
+<?php
+/** @var \Branch8\Customer\Block\Level\Detail $block */
+/** @var \Magento\Framework\Escaper $escaper */
+$currentLevel = $block->getGroup(
+    $block->getCustomer()->getGroupId()
+);
+$membershipDetailDescription = null; //$block->getMembershipLevelDescription();
+$nextLevel = null; //$block->getNextLevel();
+$memberInstructionHtml = $block->getMemberLevelInstructionHtml();
+?>
+<div class="member-level-container">
+    <div class="level-top">
+        <div class="level-top-left">
+            <?php
+            $groupData = $block->getGroupData($block->getCustomer()->getGroupId());
+            ?>
+            <img src="<?php echo $groupData['groupIcon'];?>">
+            <div>
+                <div class="current-level">目前級別 :</div>
+                <div class="current-level-label"><?php echo $groupData['groupName'];?></div>
+            </div>
+        </div>
+        <?php if($block->getVipCategoryUrl()): ?>
+        <div class="level-top-right">
+            <a href="<?= $block->getVipCategoryUrl() ?>">VIP優惠商品</a>
+        </div>
+        <?php endif; ?>
+    </div>
+    <?php if(!empty($nextLevel)): ?>
+    <div class="next-level">
+        <div class="section-title">
+            <span>升級任務</span>
+            <span class="tooltip">
+                <a href="#" class="tooltip-toggle"></a>
+                <span class="tooltip-content">達成下一階級會員等級所需條件即可升等。會員等級於每年 1/1 重置，以前一年 1/1-12/31 的訂單數及訂單金額為依據，重置為訂單條件相符的會員等級。</span>
+            </span>
+        </div>
+        <div class="desktop-container">
+            <div class="section-content">完成任務，升級<span class="next-level-name"><?= $nextLevel['name'] ?></span></div>
+            <div class="progress-order">
+                <?php if(isset($nextLevel['condition']['condition_num_orders'])) : ?>
+                <div class="progress-order-number-container">
+                    <div class="sub-title">訂單</div>
+                    <div class="sub-content">
+                        <span class="value"><?= $nextLevel['currentData']['numOfOrder'];?></span>
+                        <span class="divider">/</span>
+                        <span class="condition"><?= $nextLevel['condition']['condition_num_orders'];?></span>
+                    </div>
+                    <div class="progress-order-full">
+                        <span class="progress-order-number" style="width:<?= $nextLevel['currentData']['numOfOrderPercent'] ?>%"></span>
+                        <span class="progress-order-circle" style="left:<?= $nextLevel['currentData']['numOfOrderPercent'] - 1 ?>%"></span>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php if (isset($nextLevel['condition']['condition_total_value'])) : ?>
+                <div class="progress-order-total-container">
+                    <div class="sub-title">消費</div>
+                    <div class="sub-content">
+                        <span class="value"><?= $nextLevel['currentData']['totalValue'];?></span>
+                        <span class="divider">/</span>
+                        <span class="condition"><?= $nextLevel['condition']['condition_total_value'] ?></span>
+                    </div>
+                    <div class="progress-order-full">
+                        <span class="progress-order-total" style="width:<?= $nextLevel['currentData']['totalValuePercent'];?>%"></span>
+                        <span class="progress-order-circle" style="left:<?= $nextLevel['currentData']['totalValuePercent'] - 1;?>%;"></span>
+                    </div>
+                </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+    <?php if(!empty($membershipDetailDescription)): ?>
+    <div class="same-org">
+        <div class="section-title">會員等級</div>
+        <table class="level-description-table">
+            <tr>
+                <th>會員等級</th>
+                <th>升等條件</th>
+                <th>會員優惠</th>
+            </tr>
+            <!-- todo: show the gold, silver,... instead of hard code -->
+<!--            <tr>-->
+<!--                <td><img src="--><?php //echo $groupData['groupIcon'];?><!--" /><span>金級會員</span></td>-->
+<!--                <td>消費滿4筆且滿12000元</td>-->
+<!--                <td>獨享指定商品最高95折</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><img src="--><?php //echo $groupData['groupIcon'];?><!--" /><span>金級會員</span></td>-->
+<!--                <td>消費滿4筆且滿12000元</td>-->
+<!--                <td>獨享指定商品最高95折</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td><img src="--><?php //echo $groupData['groupIcon'];?><!--" /><span>金級會員</span></td>-->
+<!--                <td>消費滿4筆且滿12000元</td>-->
+<!--                <td>獨享指定商品最高95折</td>-->
+<!--            </tr>-->
+            <?php foreach($membershipDetailDescription as $item): ?>
+            <tr>
+                <td><img src="<?= $escaper->escapeHtmlAttr($item['group_data']['groupIcon']); ?>" /><span><?= $escaper->escapeHtmlAttr($item['group_data']['groupName']); ?></span></td>
+                <td><?= $item['condition_text']; ?></td>
+                <td><?= $item['benefit']; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    <?php endif; ?>
+    <?php if(!empty($memberInstructionHtml)): ?>
+    <div class="level-benefit">
+        <div class="section-title">活動辦法及說明</div>
+        <div class="section-content">
+            <?= $memberInstructionHtml ?>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
+
+<script type="text/javascript">
+    require([
+        'jquery'
+    ], function($) {
+        $(document).ready(function() {
+            var $showMoreBtn = $('.show-more-btn');
+            var $moreContent = $('.more-content');
+            $showMoreBtn.on('click', function() {
+                $moreContent.show();
+                $showMoreBtn.hide()
+            });
+        });
+    });
+</script>

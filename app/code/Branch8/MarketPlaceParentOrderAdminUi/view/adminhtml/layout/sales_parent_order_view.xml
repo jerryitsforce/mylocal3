@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="editor"/>
+    <head>
+        <css src="Branch8_MarketPlaceParentOrderAdminUi::css/module.css"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <referenceContainer name="admin.scope.col.wrap" htmlClass="admin__old" /> <!-- ToDo UI: remove this wrapper with old styles removal. The class name "admin__old" is for tests only, we shouldn't use it in any way -->
+            <uiComponent name="sales_parent_order_form"/>
+            <block class="Magento\Backend\Block\Template"
+                   name="cancel_form_template"
+                   template="Branch8_MarketPlaceParentOrderAdminUi::order/view/actions/cancel_form.phtml">
+                <arguments>
+                    <argument name="cancel_model" xsi:type="object">Branch8\MarketPlaceParentOrderAdminUi\ViewModel\CancelModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

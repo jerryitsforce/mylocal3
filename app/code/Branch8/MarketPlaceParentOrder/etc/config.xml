@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <branch8_debug>
+            <branch8_marketplaceparentorder>
+                <enabled>0</enabled>
+                <log_file>false</log_file>
+            </branch8_marketplaceparentorder>
+        </branch8_debug>
+        <sales_email>
+            <parent_order_comment>
+                <enabled>1</enabled>
+                <template>sales_email_parent_order_comment_template</template>
+                <guest_template>sales_email_parent_order_comment_guest_template</guest_template>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+            </parent_order_comment>
+            <parent_order_cancel>
+                <enabled>1</enabled>
+                <template>sales_email_parent_order_cancel_template</template>
+                <guest_template>sales_email_parent_order_cancel_guest_template</guest_template>
+                <identity>sales</identity>
+            </parent_order_cancel>
+            <parent_order>
+                <enabled>1</enabled>
+                <template>sales_email_parent_order_template</template>
+                <guest_template>sales_email_parent_order_guest_template</guest_template>
+                <identity>sales</identity>
+                <copy_method>bcc</copy_method>
+            </parent_order>
+        </sales_email>
+        <sales_pdf>
+            <order>
+                <use_subset_font>0</use_subset_font>
+                <note><![CDATA[如有客服需求，請撥打：02-5589-0886 ( 服務時間: 周⼀~周五 09:00-12:00 / 13:30-17:30 )。如遇忙線，感謝您的耐⼼等待；或您也
+可以使⽤客服表單 ，填具相關詢問事項，我們將盡快以Email回覆。
+HOTAI購商城開立發票為電⼦發票，開立後系統將⾃動上傳財政部。
+關於退換貨，請參閱常⾒問題的「退換貨問題」說明。
+提醒您，若您選擇超商取貨，但貨到後未⾄⾨市取件，將會影響您未來使⽤超商取貨服務的權益。]]></note>
+                <footer_note>和泰聯網股份有限公司 | 55384114 | 台北市中山區松江路433號12樓</footer_note>
+            </order>
+        </sales_pdf>
+    </default>
+</config>

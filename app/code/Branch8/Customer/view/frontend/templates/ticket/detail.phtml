@@ -1,0 +1,593 @@
+<?php
+/** @var \Branch8\Customer\Block\Ticket\Detail $block */
+
+use Branch8\HotaiCore\Model\Product\BarcodeType;
+use Branch8\HotaiCore\Model\Ticket\Status;
+
+$productHelper = $this->helper(Magento\Catalog\Helper\Output::class);
+
+$mockUrl = [
+    'name' => 'iRent汽車時數券600分鐘(不限車型)',
+    'image' => 'https://integration-5ojmyuq-2ntakmlqwmx4i.ap-3.magentosite.cloud/media/.thumbswysiwyg/3.png',
+    'period' => '2023/08/11-2024/09/04',
+    'specifications' => '規格說明規格說明規格說明',
+    'issue' => '27日後別期',
+    'serial' => 'BS75WQPT',
+    'qrcode' => 'https://integration-5ojmyuq-2ntakmlqwmx4i.ap-3.magentosite.cloud/media/.thumbswysiwyg/qrcode.png',
+    'barcode' => 'https://integration-5ojmyuq-2ntakmlqwmx4i.ap-3.magentosite.cloud/media/.thumbswysiwyg/barcode.png',
+    'password' => '1234',
+    'winner' => 'https://integration-5ojmyuq-2ntakmlqwmx4i.ap-3.magentosite.cloud/media/wysiwyg/Lucky_Draw_Result_1.png'
+];
+
+$photoClass = [
+    Status::STATUS_OVER_DUE => 'expired',
+    Status::STATUS_USED => 'used',
+    Status::STATUS_UNUSED => 'unused'
+];
+
+$ticket = $block->getTicket();
+if($ticket->getData('isGiftTicket')){
+    $giftTicket = $ticket->getData('giftTicketData');
+    $productId = $giftTicket['event_id'];
+    $status = $giftTicket['ticket_status'];
+
+    $imageUrl = $giftTicket['image_url'];
+    $ticketImage = $block->getGiftTicketImage($imageUrl);
+    $ticketName = $giftTicket['name'];
+    $period = $block->getPeriodTimeText($giftTicket);
+    $remainDays = $block->getGiftTicketRemainDays($giftTicket['use_end_time']);
+    $shouldShowSerialNumber = (int)$giftTicket['display_serial_number'];
+    $serialNumber = $giftTicket['serial_number'];
+    $shouldSHowBarcode = $block->shouldGiftTicketShowBarCode($giftTicket['display_type']);
+    $barcodeType = $giftTicket['barcode_type'];
+    $ticketDescription = $giftTicket['description'];
+    $shouldShowPassword = $block->shouldGiftTicketShowPassword($giftTicket);
+    $shouldShowCancelTicketButton = $this->shouldGiftTicketShowCancelTicketButton($giftTicket);
+    $shouldShowDownloadButton = $this->shouldGiftTicketShowDownloadButton($giftTicket);
+    $shouldShowRedeemButton = $block->shouldGiftTicketShowRedeemButton($giftTicket);
+    $exchangeHint = $block->getGiftTicketExchangeHint($giftTicket);
+    $markAsUsed = 'pool-mark-as-used';
+    $poolSetUsedUrl = '/poolticket/handle/setUsed';
+    $redeemUrl = $this->getGiftTicketRedeemUrl($giftTicket);
+}else{
+    $product = $ticket->getData('product');
+    $status = $ticket->getStatus();
+    $productId = $product->getId();
+    $ticketImage = $block->getProductImage($product);
+    $ticketName = $product->getName();
+    $period = $block->getProductTicketPeriodTimeText($ticket);
+    $remainDays = $block->getRemainDay($ticket->getUseEndTime());
+    $shouldShowSerialNumber = $block->shouldShowSerialNumber();
+    $serialNumber = $ticket->getTicketUniqueContent();
+    $shouldSHowBarcode = $block->shouldShowBarCode();
+    $ticketDescription = $productHelper->productAttribute($product, $product->getData('note'), 'note');
+    $barcodeType = $block->getBarCodeType();
+    $shouldShowPassword = $block->shouldShowPassword();
+    $shouldShowCancelTicketButton = $block->shouldShowCancelTicketButton();
+    $shouldShowDownloadButton = $block->shouldShowDownloadButton();
+    $shouldShowRedeemButton = $block->shouldShowRedeemButton();
+    $exchangeHint = $block->getExchangeHint();
+    $markAsUsed = 'mark-as-used';
+    $poolSetUsedUrl = '/GeneralNonNotifyTicket/handle/setused';
+    $redeemUrl = $block->getRedeemUrl();
+}
+
+
+$buttonAdditionClass = $status != Status::STATUS_UNUSED ? 'disabled' : '';
+$buttonAdditionAttr = $status != Status::STATUS_UNUSED ? 'disabled="disabled"' : '';
+$qrCodeClass = in_array($status, [Status::STATUS_USED, Status::STATUS_OVER_DUE]) ? 'hide' : '';
+?>
+<?php if($block->isLoggedIn()){?>
+<div class="breadcrumbs">
+    <ul class="items">
+        <li class="item">
+            <a href="/member/ticket/index/" title="<?= __('回到票券主頁') ?>"><?= __('回到票券主頁') ?></a>
+        </li>
+        <li class="item d-none">
+            <strong><?= __('Member ticket') ?></strong>
+        </li>
+    </ul>
+</div>
+<?php }?>
+<div class="ticket-detail-wrapper" data-product-id="<?= $productId ?>">
+    <input type="hidden" name="form_key" value="<?= $block->getFormKey() ?>"/>
+    <div class="detail-box">
+        <div class="ticket-items">
+            <div class="ticket-item-photo <?= $photoClass[$status] ?? '' ?>">
+                <img height="100%" width="100%" src="<?= $ticketImage ?>">
+                <?php if (in_array($status, [Status::STATUS_USED])) : ?>
+                    <span class="ticket-used"><?= __('已使用') ?></span>
+                <?php elseif (in_array($status, [Status::STATUS_OVER_DUE])) : ?>
+                    <span class="ticket-expired"><?= __('已過期') ?></span>
+                <?php endif; ?>
+            </div>
+            <div class="ticket-item-content">
+                <div class="ticket-item-content-wrapper">
+                    <p class="ticket-item-name"><?= $ticketName ?></p>
+
+                    <?php if($period):?>
+                        <div class="ticket-item period">
+                            <span class="label"><?= __('使用期限 : ') ?></span>
+                            <span class="value"><?= $period ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if($block->isEdenredTicket($ticket)):?>
+                        <div class="ticket-item">
+                            <span class="label"><?= __('宜睿訂單編號 : ') ?></span>
+                            <span class="value"><?= $block->getEdenredClientOrderNumber($ticket) ?></span>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if($remainDays > 0 && $status == Status::STATUS_UNUSED):?>
+                        <div class="ticket-item issue"><?= __('%1日後到期', $remainDays) ?></div>
+                    <?php endif; ?>
+
+                    <?php if($shouldShowPassword && $photoClass[$status] == 'expired'): ?>
+                        <small class="expried-label md-none"><?= __('已過期') ?></small>
+                    <?php endif; ?>
+                </div>
+
+                <div class="ticket-details d-none md-block">
+                    <?php if($shouldShowSerialNumber):?>
+                        <div class="detail-redeem">
+                            <label><?= __('兌換序號') ?></label>
+                            <div class="content">
+                                <span class="serial"><?= $serialNumber ?></span>
+                                <?php if ($status == Status::STATUS_UNUSED) :?>
+                                <div class="copy button" onclick="copyText(event, '<?= $serialNumber ?>')" data-text="<?= $serialNumber ?>">
+                                    <span class="text"><?= $block->escapeHtml(__("複製")); ?></span>
+                                    <span class="copy-notify"><?= __('複製的') ?></span>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if($shouldShowPassword):?>
+                    <!--Todo: password-->
+                    <div class="detail-redeem">
+                        <label><?= __('驗証碼/序號') ?></label>
+                        <div class="content">
+                            <span class="serial"><?= $ticket->getPassword() ?></span>
+                            <?php if ($status == Status::STATUS_UNUSED) :?>
+                            <div class="copy button" onclick="copyText(event, '<?= $ticket->getPassword() ?>')" data-text="<?= $ticket->getPassword() ?>">
+                                <span class="text"><?= $block->escapeHtml(__("複製")); ?></span>
+                                <span class="copy-notify"><?= __('複製的') ?></span>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <!--End Todo: password-->
+                    <?php endif; ?>
+
+                    <!-- phase 2  -->
+                    <?php if ($ticket->getData('is_lottery')) :?>
+                        <?php
+                        $lotteryStatusLabel = $ticket->getData('has_drawn') ? __('未開獎')
+                            : ($ticket->getData('is_winner') ? __('已中獎') : __('未中獎'));
+                        ?>
+
+                        <div class="detail-redeem">
+                            <label><?= __('兌獎狀況') ?></label>
+                            <div class="content">
+                                <span class="<?= $ticket->getData('is_winner') ? 'red-text' : 'grey-text'?> bold"><?= $lotteryStatusLabel ?></span>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($shouldShowDownloadButton) :?>
+
+                    <div class="detail-is-used">
+                        <label><?= __('是否已使用此票券？') ?></label>
+                        <div class="content">
+                            <button type="button"
+                                    title="<?= $status !== Status::STATUS_USED ? __('將此票券歸類為已使用') : __('已使用') ?>"
+                                    class="action outline-primary <?= $buttonAdditionClass ?> <?= $status !== Status::STATUS_USED ? $markAsUsed : '' ?>"
+                                <?=$buttonAdditionAttr?>
+                            >
+                                <span><?= $status !== Status::STATUS_USED ? __('將此票券歸類為已使用') : __('已使用') ?></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <?php endif; ?>
+
+                    <?php if ($exchangeHint) :?>
+                        <div class="detail-exchange-hint">
+                            <span><?= $exchangeHint ?></span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-details md-hide">
+            <?php if($shouldShowSerialNumber):?>
+                <div class="detail-redeem">
+                    <label><?= __('兌換序號') ?></label>
+                    <div class="content">
+                        <span class="serial"><?= $serialNumber ?></span>
+                        <?php if ($status == Status::STATUS_UNUSED) :?>
+                        <div class="copy button" onclick="copyText(event, '<?= $serialNumber ?>')" data-text="<?= $serialNumber ?>">
+                            <span class="text"><?= $block->escapeHtml(__("複製")); ?></span>
+                            <span class="copy-notify"><?= __('複製的') ?></span>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if($shouldShowPassword):?>
+            <!--Todo: password-->
+            <div class="detail-redeem">
+                <label><?= __('驗証碼/序號') ?></label>
+                <div class="content">
+                    <!--Todo: replace batchcode -->
+                    <span class="serial"><?= $ticket->getPassword() ?></span>
+                    <?php if ($status == Status::STATUS_UNUSED) :?>
+                    <div class="copy button" onclick="copyText(event, '<?= $ticket->getPassword() ?>')" data-text="<?= $ticket->getPassword() ?>">
+                        <span class="text"><?= $block->escapeHtml(__("複製")); ?></span>
+                        <span class="copy-notify"><?= __('複製的') ?></span>
+                    </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <!--End Todo: password-->
+            <?php endif; ?>
+
+            <?php if ($ticket->getData('is_lottery')) :?>
+                <?php
+                    $lotteryStatusLabel = $ticket->getData('has_drawn') ? __('未開獎')
+                        : ($ticket->getData('is_winner') ? __('已中獎') : __('未中獎'));
+                ?>
+
+                <div class="detail-redeem">
+                    <label><?= __('兌獎狀況') ?></label>
+                    <div class="content">
+                        <span class="<?= $ticket->getData('is_winner') ? 'red-text' : 'grey-text'?> bold"><?= $lotteryStatusLabel ?></span>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($shouldShowDownloadButton) :?>
+
+            <div class="detail-is-used">
+                <label><?= __('是否已使用此票券？') ?></label>
+                <div class="content">
+                    <button type="button"
+                            title="<?= $status !== Status::STATUS_USED ? __('將此票券歸類為已使用') : __('已使用') ?>"
+                            class="action outline-primary <?= $buttonAdditionClass ?> <?= $status !== Status::STATUS_USED ? $markAsUsed : '' ?>"
+                            <?=$buttonAdditionAttr?>
+                    >
+                        <span><?= $status !== Status::STATUS_USED ? __('將此票券歸類為已使用') : __('已使用') ?></span>
+                    </button>
+                </div>
+            </div>
+
+            <?php endif; ?> <!-- if ($shouldShowDownloadButton) -->
+
+            <?php if ($exchangeHint) :?>
+                <div class="detail-exchange-hint">
+                    <span><?= $exchangeHint ?></span>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <?php if ($shouldSHowBarcode) :?>
+        <div class="detail-qrcode <?= $qrCodeClass ?>">
+            <label class="d-none"><?= __('Code') ?></label>
+            <div class="content">
+                <?php if (in_array($barcodeType, [BarcodeType::TYPE_QRCODE, BarcodeType::TYPE_QRCODE_AND_CODE_128])) : ?>
+                <span>
+                    <img src="<?= $block->getBarCodeUrl(BarcodeType::TYPE_QRCODE, $serialNumber) ?>" alt="<?= $serialNumber ?>">
+                </span>
+                <?php endif; ?>
+
+                <?php if (in_array($barcodeType, [BarcodeType::TYPE_CODE_39, BarcodeType::TYPE_CODE_128, BarcodeType::TYPE_QRCODE_AND_CODE_128])) : ?>
+                <span>
+                      <?php
+                            $type = $barcodeType === BarcodeType::TYPE_CODE_39 ? BarcodeType::TYPE_CODE_39 : BarcodeType::TYPE_CODE_128;
+                      ?>
+                     <img src="<?= $block->getBarCodeUrl($type, $serialNumber) ?>" alt="<?= $serialNumber ?>">
+                </span>
+                <?php endif; ?>
+
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($shouldShowCancelTicketButton || $shouldShowDownloadButton || $shouldShowRedeemButton) :?>
+
+        <div class="detail-action md-hide">
+            <?php if ($shouldShowCancelTicketButton) :?>
+            <button type="button"
+                    title="<?= __('票券已核銷') ?>"
+                    class="action primary canceled <?= $buttonAdditionClass?>"
+                    id="canceledButtonMobile"
+                    <?= $buttonAdditionAttr ?>
+            >
+                <span><?= __('票券已核銷') ?></span>
+            </button>
+            <?php endif; ?>
+
+            <?php if ($shouldShowDownloadButton) :?>
+            <!-- <button type="button"
+                    title="<?= __('下載') ?>"
+                    class="action primary download <?= $buttonAdditionClass?>"
+                    id="download-button"
+                    <?= $buttonAdditionAttr ?>
+            >
+                <span><?= __('下載') ?></span>
+            </button> -->
+            <?php endif; ?>
+
+
+            <?php if ($shouldShowRedeemButton) :?>
+                <a type="button"
+                        href="<?= $redeemUrl ?>"
+                        class="action primary <?= $buttonAdditionClass ?> "
+                        id="redeem-button"
+                        <?= $buttonAdditionAttr ?>
+                >
+                    <span><?= $status != Status::STATUS_USED ? ('前往兌換') : __('已完成兌換') ?></span>
+                </a>
+            <?php endif; ?>
+
+            <?php if ($shouldShowCancelTicketButton) :?>
+            <div class="warning-wrapper">
+                <div class="warning-text">
+                    <span class="warning-icon"></span>
+                </div>
+                <div class="warning-details">
+                    <span>
+                        <?= __('此按鈕應由工作人員於現場操作，請勿自行點擊') ?>
+                    </span>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+        <?php endif;?>
+        <?php if ($ticket->getData('is_lottery') && $ticket->getData('has_drawn')) :?>
+        <!--Todo: winner list-->
+        <div class="detail-winner-list">
+            <label><?= __('得獎名單') ?></label>
+            <div class="content">
+                <img height="100%" width="100%" src="<?= $mockUrl["winner"] ?>" alt="<?= $mockUrl["winner"] ?>">
+
+            </div>
+        </div>
+        <!--End Todo: winner list-->
+        <?php endif; ?>
+        <div class="detail-description">
+            <label><?= __('說明') ?></label>
+            <?= $ticketDescription ?>
+        </div>
+    </div>
+</div>
+
+<div class="detail-action d-none md-block">
+    <?php if ($shouldShowCancelTicketButton) :?>
+        <button type="button"
+                title="<?= __('票券已核銷') ?>"
+                class="action primary canceled <?= $buttonAdditionClass?>"
+                id="canceledButton"
+            <?= $buttonAdditionAttr ?>
+        >
+            <span><?= __('票券已核銷') ?></span>
+        </button>
+    <?php endif; ?>
+
+    <?php if ($shouldShowDownloadButton) :?>
+        <!-- <button type="button" title="<?= __('下載') ?>"
+                class="action primary download <?= $buttonAdditionClass?>"
+                id="download-button"
+                <?= $buttonAdditionAttr ?>
+        >
+            <span><?= __('下載') ?></span>
+        </button> -->
+    <?php endif; ?>
+
+
+    <?php if ($shouldShowRedeemButton) :?>
+        <a type="button"
+           href="<?= $redeemUrl ?>"
+           class="action primary <?= $buttonAdditionClass ?> "
+           id="redeem-button"
+            <?= $buttonAdditionAttr ?>
+        >
+            <span><?= $status != Status::STATUS_USED ? ('前往兌換') : __('已完成兌換') ?></span>
+        </a>
+    <?php endif; ?>
+
+    <?php if ($shouldShowCancelTicketButton) :?>
+        <div class="warning-wrapper">
+            <div class="warning-text">
+                <span class="warning-icon"></span>
+            </div>
+            <div class="warning-details">
+                    <span>
+                        <?= __('此按鈕應由工作人員於現場操作，請勿自行點擊') ?>
+                    </span>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+
+<!-- Todo: Modal cancel ticket-->
+<div id="modal-cancel-ticket" class="modal-hide">
+    <div class="modal-custom-header">
+        <h5><?= __('票券核銷') ?></h5>
+    </div>
+    <div class="modal-custom-content">
+        <p><?= __('是否確定核銷此票券？核銷後將無法復原。') ?></p>
+    </div>
+</div>
+
+<script>
+    function copyText(event, text) {
+        // Use the Clipboard API (modern browsers)
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage(event);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        } else {
+            // Fallback for older browsers
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showMessage(event);
+        }
+    }
+
+    function showMessage(event) {
+        const message = document.getElementById("message");
+        console.log(event.target, 'event');
+        event.target.nextElementSibling.classList.add("copied");
+        setTimeout(() => {
+            event.target.nextElementSibling.classList.remove("copied");
+        }, 2000); // Hide message after 2 seconds
+    }
+</script>
+
+<script>
+    require(['jquery', 'Magento_Ui/js/modal/modal'], function ($, modal) {
+        'use strict';
+
+        let options = {
+            type: 'popup',
+            responsive: false,
+            modalClass: 'modal-custom cancel-ticket-popup',
+            buttons: [{
+                text: $.mage.__('取消'),
+                class: 'action secondary action-secondary',
+                click: function () {
+                    this.closeModal();
+                }
+            },
+            {
+                text: $.mage.__('確定'),
+                class: 'action primary action-primary',
+                click: function () {
+                    <?php
+                    if($ticket->getData('isGiftTicket')){
+                        echo 'setUsedPollTicketSubmit();';
+                    }else{
+                        echo 'setUsedProductTicketSubmit();';
+                    }
+                    ?>
+                    this.closeModal();
+                    // handle action here
+                }
+            }]
+        };
+        let popup = modal(options, $('#modal-cancel-ticket'));
+        $("#canceledButton").click(function () {
+            $("#modal-cancel-ticket").modal('openModal');
+        });
+        $("#canceledButtonMobile").click(function () {
+            $("#modal-cancel-ticket").modal('openModal');
+        });
+
+        $('.<?php echo $markAsUsed;?>').on('click', function(e) {
+            e.preventDefault();
+
+            var productId = '<?= $productId ?>';
+            var serialNumber = '<?= $serialNumber ?>';
+            var formKey = $('[name="form_key"]').val();
+
+            var form = $('<form>', {
+                action: '<?php echo $poolSetUsedUrl;?>',
+                method: 'POST'
+            });
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'product_id',
+                value: productId
+            }).appendTo(form);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'serial_number',
+                value: serialNumber
+            }).appendTo(form);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'form_key',
+                value: formKey
+            }).appendTo(form);
+
+            $(form).appendTo('body').submit();
+        });
+
+        function setUsedProductTicketSubmit() {
+            let productId = '<?= $productId ?>';
+            let serialNumber = '<?= $serialNumber ?>';
+            let formKey = $('[name="form_key"]').val();
+
+            let form = $('<form>', {
+                action: '/GeneralNonNotifyTicket/handle/setused',
+                method: 'POST'
+            });
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'product_id',
+                value: productId
+            }).appendTo(form);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'serial_number',
+                value: serialNumber
+            }).appendTo(form);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'form_key',
+                value: formKey
+            }).appendTo(form);
+
+            $(form).appendTo('body').submit();
+        }
+
+        function setUsedPollTicketSubmit() {
+            let poolId = '<?= $productId ?>';
+            let serialNumber = '<?= $serialNumber ?>';
+            let formKey = $('[name="form_key"]').val();
+
+            let form = $('<form>', {
+                action: '/poolticket/handle/setUsed',
+                method: 'POST'
+            });
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'product_id',
+                value: poolId
+            }).appendTo(form);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'serial_number',
+                value: serialNumber
+            }).appendTo(form);
+
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'form_key',
+                value: formKey
+            }).appendTo(form);
+
+            $(form).appendTo('body').submit();
+        }
+    });
+</script>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Reports::report">
+                    <resource id="Branch8_MarketPlaceOrderExportSeller::report_seller"
+                              title="Seller Detail Sales Report" translate="title">
+                        <resource id="Branch8_MarketPlaceOrderExportSeller::seller_detail_report"
+                                  title="Seller Detail Sales Report" translate="title"/>
+                        <resource id="Branch8_MarketPlaceOrderExportSeller::seller_summarize_report"
+                                  title="Seller Summarize Sales Report" translate="title"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

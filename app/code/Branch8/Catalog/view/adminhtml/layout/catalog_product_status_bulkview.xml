@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Branch8\Catalog\Block\Adminhtml\Product\History\Bulkview" name="branch8.catalog.product.history.bulkview" template="Branch8_Catalog::product/history_bulkview.phtml">
+                <arguments>
+                    <argument name="back_route_path" xsi:type="string">catalog/product_status/history</argument>
+                </arguments>
+                <block class="Branch8\Catalog\Block\Adminhtml\Product\History\Bulkview\Grid" name="branch8.catalog.product.history.bulkview.grid" as="producthistorybulkview_grid"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

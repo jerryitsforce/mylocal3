@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * Pager template
+ *
+ * @var \Magento\Theme\Block\Html\Pager $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\Locale\LocaleFormatter $localeFormatter
+ */
+
+?>
+<?php if ($block->getCollection()->getSize()): ?>
+    <?php if ($block->getLastPageNum()>1): ?>
+        <div class="giftbox-listing-actions">
+        <button class="action primary" id="giftbox-listing-more-button" title="<?= $block->escapeHtml(__('逛逛和泰購')) ?>" data-event-page="1">
+            <span><?= $block->escapeHtml(__('逛逛和泰購')) ?></span>
+        </button>
+        </div>
+        <script type="text/x-magento-init">
+            {
+                "*": {
+                    "giftListingLoadMore": {
+                        "pageSize": 10
+                    }
+                }
+            }
+        </script>
+    <?php endif ?>
+<?php endif ?>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <head>
+        <!-- 自定義CSS -->
+        <css src="HotaiConnected_Account::css/custom.css"/>
+    </head>
+    <body>
+        <!-- 移除側邊欄 -->
+        <referenceContainer name="sidebar.main" remove="true"/>
+        <referenceContainer name="sidebar.additional" remove="true"/>
+        <referenceContainer name="div.sidebar.main" remove="true"/>
+
+        <!-- 設置為單欄布局 -->
+        <attribute name="class" value="page-layout-1column"/>
+
+        <!-- success區塊 -->
+        <referenceContainer name="main" htmlClass="main-content-wrapper"/>
+        <referenceContainer name="content" htmlTag="div" htmlClass="container-full-width">
+            <block class="HotaiConnected\Account\Block\Login\Success" 
+                   name="hotaiconnected.account.success" 
+                   template="HotaiConnected_Account::loginsuccess/index.phtml" />
+        </referenceContainer>
+    </body>
+</page>

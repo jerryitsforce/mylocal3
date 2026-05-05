@@ -1,0 +1,8 @@
+<!--@subject {{trans "客服表單已送出"}} @-->
+
+{{template config_path="design/email/header_template"}}
+
+{{trans "Dear %ticket_customer_name" ticket_customer_name=$ticket.customer_name}},
+<br>
+{{trans "Your service request has been successfully created, and we will respond to you as soon as possible"}}
+{{template config_path="design/email/footer_template"}}

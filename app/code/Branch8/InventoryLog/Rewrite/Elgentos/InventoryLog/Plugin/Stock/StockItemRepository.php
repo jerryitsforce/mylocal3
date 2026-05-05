@@ -1,0 +1,118 @@
+<?php
+/**
+ * Copyright ©  All rights reserved.
+ * See COPYING.txt for license details.
+ */
+declare(strict_types=1);
+
+namespace Branch8\InventoryLog\Rewrite\Elgentos\InventoryLog\Plugin\Stock;
+
+use Elgentos\InventoryLog\Helper\Data as InventoryLogHelper;
+
+class StockItemRepository extends \Elgentos\InventoryLog\Plugin\Stock\StockItemRepository
+{
+    /**
+     * @var InventoryLogHelper
+     */
+    public $helper;
+
+    /**
+     * @var \Elgentos\InventoryLog\Model\ResourceModel\Movement
+     */
+    private $movementResourceModel;
+
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    public $registry;
+
+    /**
+     * @var \Elgentos\InventoryLog\Api\MovementRepositoryInterface
+     */
+    public $movementRepository;
+
+    /**
+     * StockItemRepository constructor.
+     * @param InventoryLogHelper $helper
+     * @param \Elgentos\InventoryLog\Model\ResourceModel\Movement $movementResourceModel
+     * @param \Magento\Framework\Registry $registry
+     * @param \Elgentos\InventoryLog\Api\MovementRepositoryInterface $movementRepository
+     */
+    public function __construct(
+        InventoryLogHelper $helper,
+        \Elgentos\InventoryLog\Model\ResourceModel\Movement $movementResourceModel,
+        \Magento\Framework\Registry $registry,
+        \Elgentos\InventoryLog\Api\MovementRepositoryInterface $movementRepository
+    ) {
+        $this->helper = $helper;
+        $this->movementResourceModel = $movementResourceModel;
+        $this->registry = $registry;
+        $this->movementRepository = $movementRepository;
+    }
+
+    /**
+     * @param $subject
+     * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
+     * @return array
+     */
+    public function beforeSave(
+        $subject,
+        \Magento\CatalogInventory\Api\Data\StockItemInterface $stockItem
+    ) {
+        if ($this->helper->isModuleEnabled()) {
+            $uKey = $this->helper->getRandomUniqueString($stockItem->getProductId());
+            $stockItem->setUkey($uKey);
+
+            /*Fetch Stock item qty from Table */
+            $stockItemTable = $this->movementResourceModel->getStockQty($stockItem->getItemId());
+            $stockItem->setOldQty($stockItemTable);
+        }
+        return [$stockItem];
+    }
+
+    /**
+     * @param $subject
+     * @param \Magento\CatalogInventory\Api\Data\StockItemInterface $result
+     * @return \Magento\CatalogInventory\Api\Data\StockItemInterface
+     */
+    public function afterSave(
+        $subject,
+        \Magento\CatalogInventory\Api\Data\StockItemInterface $result
+    ) {
+        if ($this->helper->isModuleEnabled()) {
+            $stockItem = $result;
+            $movementSection = $this->registry->registry(InventoryLogHelper::MOVEMENT_SECTION);
+            $newProduct = $this->registry->registry(InventoryLogHelper::NEW_PRODUCT);
+            if ($movementSection == InventoryLogHelper::STOCK_UPDATE) {
+                $message = __('Stock saved manually');
+                $stockAutoFlag = $stockItem->getStockStatusChangedAutomaticallyFlag();
+                if (!$stockAutoFlag || $stockItem->getOldQty() != $stockItem->getQty() || $newProduct == 1) {
+                    $this->movementRepository->insertStockMovement($stockItem, $message, $newProduct);
+                }
+            } elseif ($movementSection == InventoryLogHelper::ORDER_CANCEL) {
+                $movementData = $this->registry->registry(InventoryLogHelper::MOVEMENT_DATA);
+                if (!empty($movementData[InventoryLogHelper::ORDER_CANCEL]['order_id'])) {
+                    $msg = __('Product restocked after order cancellation (order: %s)');
+                    $message = sprintf(
+                        $msg,
+                        $movementData[InventoryLogHelper::ORDER_CANCEL]['order_id']
+                    );
+                } else {
+                    $message = __('Product restocked after order cancellation');
+                }
+                $this->movementRepository->insertStockMovement($stockItem, $message);
+            } elseif ($movementSection === InventoryLogHelper::WEBAPI_STOCK_UPDATE) {
+                $message = __('Stock updated via WebAPI');
+                if($newProduct == 1){
+                    $message = __('Stock init via WebAPI');
+                }
+                $stockAutoFlag = $stockItem->getStockStatusChangedAutomaticallyFlag();
+                if (!$stockAutoFlag || $stockItem->getOldQty() != $stockItem->getQty() || $newProduct == 1) {
+                    $this->movementRepository->insertStockMovement($stockItem, $message, $newProduct);
+                }
+            }
+            $this->helper->unRegisterAllData();
+        }
+        return $result;
+    }
+}

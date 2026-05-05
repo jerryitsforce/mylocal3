@@ -1,0 +1,55 @@
+<?php
+/** @var \Branch8\MarketPlaceParentOrderAdminUi\Block\Adminhtml\Edit\Tab\Information\History $block */
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
+ * @var \Magento\Sales\Model\Order $subOrder
+ * @var \Magento\Sales\Model\Order\Shipment $shipment
+ * */
+$parentBlock = $block->getParentBlock();
+$subOrders = $parentBlock->getParentOrder()->getSubOrders();
+$shippingHelper = $this->helper(\Magento\Shipping\Helper\Data::class);
+?>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><strong><?= __('Shipments') ?></strong></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?php foreach ($subOrders as $subOrder): ?>
+            <?php if($subOrder->getData('is_flagship_store_process_order')) continue;?>
+            <section class="admin__page-section-item order-payment-method">
+                <div id="track_<?= $block->escapeHtml($subOrder->getIncrementId()) ?>">
+                    <div class="admin__page-section-content">
+                        <div class="admin__page-section-item">
+                            <div class="admin__page-section-item-title">
+                                <span class="title"><?= __("#%1", $block->escapeHtml($subOrder->getIncrementId())) ?></span>
+                                <div class="admin__page-section-item-content invoice-info">
+                                    <?php $shipmentCollection = $subOrder->getShipmentsCollection(); ?>
+                                    <?php $tracks = []; ?>
+                                    <?php foreach ($shipmentCollection as $shipment): ?>
+                                        <?php foreach ($shipment->getAllTracks() as $track): ?>
+                                            <?php $tracks[] = $track ?>
+                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                    <?php if (count($tracks)): ?>
+                                        <p>
+                                            <a href="#" id="linkId_<?= $block->escapeHtml($subOrder->getId()) ?>"
+                                               title="Track Order"><?= __('Track Order') ?></a>
+                                        </p>
+                                        <?=
+                                        $secureRenderer->renderEventListenerAsTag(
+                                            'onclick',
+                                            "popWin('" . $block->escapeJs($shippingHelper->getTrackingPopupUrlBySalesModel($subOrder)) .
+                                            "','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')",
+                                            'a#linkId_' . $block->escapeHtml($subOrder->getId())
+                                        ) ?>
+                                    <?php else: ?>
+                                        <p><?= __('Do not have any shipment') ?></p>
+                                    <?php endif; ?>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
+        <?php endforeach; ?>
+    </div>
+</section>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="return_exchange_change">
+        <observer name="return_exchange_send_notification" instance="Branch8\CustomNotification\Observer\SendNotificationReturn" />
+    </event>
+    <event name="notification_save_before">
+        <observer name="save_one_id_list" instance="Branch8\CustomNotification\Observer\SaveOneIDList" />
+    </event>
+    <event name="notification_save_after">
+        <observer name="index_oneide" instance="Branch8\CustomNotification\Observer\IndexOneIdList" />
+    </event>
+    <event name="notification_delete_commit_after">
+        <observer name="delete_import_history" instance="Branch8\CustomNotification\Observer\DeleteAfter" />
+    </event>
+</config>

@@ -1,0 +1,6 @@
+<?php
+$helper = $this->helper(\Branch8\Checkout\Helper\Data::class);
+$placeholderAddress = $helper->getPlaceHolderData();
+?>
+
+<div class="hidden" id="placeholderAddress" data-address='<?php echo json_encode($placeholderAddress);?>'></div>

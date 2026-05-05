@@ -1,0 +1,116 @@
+<div id="shipping" class="opc-section checkout-shipping-address amcheckout-shipping-address" data-bind="fadeVisible: isVisibleShipping()">
+    <h3 class="step-title amcheckout-title"
+       data-amcheckout-js="step-title"
+       data-bind="i18n: getNameShippingAddress()"
+       data-role="title"></h3>
+    <div id="checkout-step-shipping"
+         class="step-content amcheckout-content"
+         data-amcheckout-js="step-content"
+         data-role="content"
+         data-bind="mageInit: {'checkoutCollapsibleSteps': {}}">
+        <div class="amcheckout-wrapper">
+            <!-- ko ifnot: quoteIsVirtual -->
+            <!-- ko fastForEach: getRegion('customer-email') -->
+                    <!-- ko fastForEach: getRegion('amazon-button-region') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!-- /ko -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+            <!--/ko-->
+            <div class="select-shipping-process-wrapper" data-bind="{attr: {'data-type': isHideBorderLine}}">
+                <!-- ko ifnot: isVirtualCheckout() -->
+                <div class="select-shipping-process">
+                    <input type="radio" name="shipping_address_process" id="sameAsPurchaserInput" class="action action-select-shipping-process"
+                        data-bind="checked: sameAsPurchaser, checkedValue: 1">
+                    <label for="sameAsPurchaserInput" translate="'Same as purchaser'"></label>
+                </div>
+                <div class="select-shipping-process">
+                    <input type="radio" name="shipping_address_process" id="frequentlyUsedRecipientsInput" class="action action-select-shipping-process"
+                        data-bind="checked: sameAsPurchaser, checkedValue: 0">
+                    <label for="frequentlyUsedRecipientsInput" translate="'Frequently used recipients'"></label>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: isVirtualCheckout() -->
+                    <div data-bind="{attr: {class: 'select-shipping-process unselect-gift-to-friend-process' + (isVirtualCheckout ? ' select-gift-to-friend-virtual' : '')}}">
+                        <input type="radio" name="shipping_address_process" id="unSelectGiftToFriendInput" class="action action-select-shipping-process"
+                            data-bind="checked: sameAsPurchaser, checkedValue: 3">
+                        <label for="unSelectGiftToFriendInput" translate="'歸戶到我的票券'"></label>
+                    </div>
+                <!-- /ko -->
+                <!-- ko if: allowGiftToFriend() && isGiftAvailable() -->
+                    <div data-bind="{attr: {class: 'select-shipping-process select-gift-to-friend-process' + (isVirtualCheckout ? ' select-gift-to-friend-virtual' : '')}}">
+                        <input type="radio" name="shipping_address_process" id="selectGiftToFriendInput" class="action action-select-shipping-process"
+                            data-bind="checked: sameAsPurchaser, checkedValue: 2, disable: disabledGiftToFriend">
+                        <label for="selectGiftToFriendInput" translate="'我要贈禮'"></label>
+                        <span translate="'送禮訂單僅支援宅配'" data-bind="visible: disabledGiftToFriend"></span>
+                    </div>
+                <!-- /ko -->
+            </div>
+            <!-- ko if: isVirtualCheckout() -->
+                <!-- ko if: sameAsPurchaser -->
+                    <!-- ko if: (sameAsPurchaser() === 2)-->
+                        <!-- ko template: 'Branch8_OneStepCheckout/shipping-address/form-gift-to-friend' --><!-- /ko -->
+                    <!-- /ko --> 
+                <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot: isShippingMethodSelected()-->
+                <!-- ko ifnot: isVirtualCheckout() -->
+                <div class="checkout-shipping-message no-shipping-method">
+                    <span translate="'Please select shipping method first'"></span>
+                </div>
+                <!-- /ko -->
+            <!-- /ko -->
+            
+            <!-- ko if: isShippingMethodSelected()-->
+                <!-- ko if: sameAsPurchaser -->
+                    <!-- ko if: sameAsPurchaser() === 1 -->
+                     <!-- ko template: 'Branch8_OneStepCheckout/shipping-address/form-same-as-purchaser' --><!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: (sameAsPurchaser() === 2)-->
+                        <!-- ko template: 'Branch8_OneStepCheckout/shipping-address/form-gift-to-friend' --><!-- /ko -->
+                    <!-- /ko --> 
+                <!-- /ko -->
+
+                <!-- ko ifnot: sameAsPurchaser -->
+                    <!-- ko fastForEach: getRegion('address-list') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!--/ko-->
+
+                    <!-- ko fastForEach: getRegion('address-list-additional-addresses') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!--/ko-->
+
+                    <!-- ko fastForEach: getRegion('before-form') -->
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                    <!--/ko-->
+
+                    <!-- ko template: 'Branch8_OneStepCheckout/shipping-address/form' --><!-- /ko -->
+
+                    <!-- ko if: isShippingMethodSelected() -->
+                        <!-- ko if: isSelectStoreVisible() -->
+                        <button type="button" class="action action-show-new-address"
+                        id="add-new-address-label"
+                        data-bind="click: refreshFormToAddNewAddress, visible: !isNewAddressAdded(), afterRender: onAfterRender">
+                                <!-- <span data-bind="i18n: '選擇超商門市'"></span> -->
+                                <span data-bind="i18n: '新增常用收件人'"></span>
+                        </button>
+                        <!-- /ko -->
+                        <!-- ko if: !isSelectStoreVisible() -->
+                        <button type="button" class="action action-show-new-address"
+                        id="add-new-address-label"
+                        data-bind="click: refreshFormToAddNewAddress, visible: !isNewAddressAdded()">
+                                <span data-bind="i18n: '新增常用收件人'"></span>
+                        </button>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko fastForEach: getRegion('billing-address-form-shared') -->
+                <div style="display: none;">
+                    <!-- ko template: getTemplate() --><!-- /ko -->
+                </div>
+            <!--/ko-->
+        </div>
+    </div>
+</div>

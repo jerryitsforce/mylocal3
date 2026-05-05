@@ -1,0 +1,17 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="data-grid-cell-content">
+    <ul style="display: grid; row-gap: 8px;"
+        data-bind="foreach: getLatestOrder($row())">
+        <li>
+            <a data-bind="attr:{href:link}"> <span data-bind="html:incrementId"></span></a>
+        </li>
+    </ul>
+</div>
+
+
+

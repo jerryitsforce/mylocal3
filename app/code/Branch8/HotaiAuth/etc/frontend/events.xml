@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_logout">
+        <observer name="custom_customer_log_logout" instance="Branch8\HotaiAuth\Observer\LogLastLogoutAtObserver" />
+    </event>
+    <event name="customer_login">
+        <observer name="custom_customer_log_login" instance="Branch8\HotaiAuth\Observer\LogLastLoginAtObserver" />
+    </event>
+    <event name="controller_action_predispatch">
+        <observer name="hotai_token_check" instance="Branch8\HotaiAuth\Observer\CheckHotaiTokenObserver" />
+    </event>
+</config>

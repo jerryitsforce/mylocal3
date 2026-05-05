@@ -1,0 +1,16 @@
+<?php
+/** @var \Branch8\MarketPlaceParentOrderFrontendUi\Block\ParentOrder\SubOrderItems $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$subOrder = $block->getData('sub_order');
+$notifications = $block->getItemNotifications($block->getItem(), $subOrder);
+?>
+<?php if (!empty($notifications)): ?>
+<?php foreach ($notifications as $notification): ?>
+    <div class="sub-order-notification">
+        <div class="notification-box">
+            <span><?= $escaper->escapeHtml($notification) ?></span>
+        </div>
+    </div>
+<?php endforeach; ?>
+<?php endif; ?>

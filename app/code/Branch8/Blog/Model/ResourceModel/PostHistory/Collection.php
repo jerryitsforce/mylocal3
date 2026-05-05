@@ -1,0 +1,122 @@
+<?php
+/**
+ *
+ * @category    Branch8
+ * @package     Branch8_Blog
+ */
+
+namespace Branch8\Blog\Model\ResourceModel\PostHistory;
+
+use DateTime;
+use DateTimeZone;
+use Exception;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Select;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Locale\ResolverInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Branch8\Blog\Model\PostHistory;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Class Collection
+ * @package Branch8\Blog\Model\ResourceModel\PostLike
+ */
+class Collection extends AbstractCollection
+{
+    /**
+     * @var TimezoneInterface
+     */
+    private $localeDate;
+
+    /**
+     * @var string
+     */
+    private $locale;
+
+    /**
+     * Collection constructor.
+     *
+     * @param TimezoneInterface $localeDate
+     * @param ResolverInterface $localeResolver
+     * @param EntityFactoryInterface $entityFactory
+     * @param LoggerInterface $logger
+     * @param FetchStrategyInterface $fetchStrategy
+     * @param ManagerInterface $eventManager
+     * @param AdapterInterface|null $connection
+     * @param AbstractDb|null $resource
+     */
+    public function __construct(
+        TimezoneInterface $localeDate,
+        ResolverInterface $localeResolver,
+        EntityFactoryInterface $entityFactory,
+        LoggerInterface $logger,
+        FetchStrategyInterface $fetchStrategy,
+        ManagerInterface $eventManager,
+        ?AdapterInterface $connection = null,
+        ?AbstractDb $resource = null
+    ) {
+        $this->localeDate = $localeDate;
+        $this->locale = $localeResolver->getLocale();
+
+        parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
+    }
+
+    /**
+     * Define model & resource model
+     */
+    protected function _construct()
+    {
+        $this->_init(PostHistory::class, \Branch8\Blog\Model\ResourceModel\PostHistory::class);
+    }
+
+    /**
+     * Add field filter to collection
+     *
+     * @param string|array $field
+     * @param null|string|array $condition
+     *
+     * @return \Magento\Framework\Data\Collection\AbstractDb
+     * @see self::_getConditionSql for $condition
+     *
+     */
+    public function addFieldToFilter($field, $condition = null)
+    {
+        if (is_array($field)) {
+            $conditions = [];
+            foreach ($field as $key => $value) {
+                $conditions[] = $this->_translateCondition($value, isset($condition[$key]) ? $condition[$key] : null);
+            }
+
+            $resultCondition = '(' . implode(') ' . \Magento\Framework\DB\Select::SQL_OR . ' (', $conditions) . ')';
+        } else {
+            $resultCondition = $this->_translateCondition($field, $condition);
+        }
+
+        $this->_select->where($resultCondition, null, Select::TYPE_CONDITION);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     * @throws Exception
+     */
+    protected function _afterLoad()
+    {
+        foreach ($this->getItems() as $item) {
+            $convertedDate = $this->localeDate->date(
+                new DateTime($item->getData('updated_at'), new DateTimeZone('UTC')),
+                $this->locale,
+                true
+            );
+            $item->setData('updated_at', $convertedDate->format('M j, Y h:i:s A'));
+        }
+
+        return parent::_afterLoad();
+    }
+}

@@ -1,0 +1,6 @@
+"Shipping Subsidy","運費補貼"
+"Subsidy Mode","模式選擇"
+"Home Delivery Subsidy","宅配：(預設補貼費用)"
+"Store Pickup Subsidy","超取：(預設補貼費用)"
+"The ""Use Default Config"" checkbox is checked by default. When checked, all options follow the settings in <a href='%1'>Store > Configuration > Branch8 > Shipping Subsidy</a>.<br/>If you want to modify, please uncheck it and edit individually.","所有的選項旁邊都有Use Config Settings，預設是勾選的，在勾選的狀態下，所有選項依照<a href='%1'>Store>configuration>Branch8>運費補貼的設定></a><br/>。
+"Once disabled, it means this seller does not participate in shipping subsidies","一旦關閉，意味這個賣家不參加運費補貼"                                                                                                                                                                                                        如果要修改，請取消勾選後，單獨編輯。"

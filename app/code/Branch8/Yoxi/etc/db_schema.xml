@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+        <!--<table name="yoxi_ticket_record" resource="default" engine="innodb" disabled="true" />
+        <table name="yoxi_batch_setting" resource="default" engine="innodb" disabled="true" />-->
+        <table name="yoxi_batch_setting_v2" resource="default" engine="innodb" comment="YOXI票卷紀錄表">
+                <column xsi:type="int" name="setting_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="賣家ID" />
+                <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="false" comment="此紀錄歸屬的Magento商品ID" />
+                <column xsi:type="varchar" name="batch_code" nullable="false" length="255" comment="貨號(代表分批匯入的代碼, 同一批匯入會是同個貨號)" />
+                <column xsi:type="int" name="safety_stock" unsigned="true" nullable="true" comment="安全庫存量" />
+                <column xsi:type="datetime" name="sale_start_time" on_update="false" nullable="false" comment="銷售開始日期" />
+                <column xsi:type="datetime" name="sale_end_time" on_update="false" nullable="false" comment="銷售結束日期" />
+                <column xsi:type="datetime" name="use_start_time" on_update="false" nullable="true" comment="核銷(商品可實際使用)開始日期" />
+                <column xsi:type="datetime" name="use_end_time" on_update="false" nullable="true" comment="核銷(商品可實際使用)結束日期" />
+                <column xsi:type="int" name="due_days" unsigned="true" nullable="true" comment="另一種核銷結束日期; 購買後X天有效" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="setting_id" />
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_BATCH_CODE" disabled="true">
+                        <column name="batch_code"/>
+                </constraint>
+                <constraint xsi:type="foreign" referenceId="FOREIGN_BELONG_TO_PRODUCT_ID" table="yoxi_batch_setting_v2" column="belong_to_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" />
+        </table>
+        <table name="yoxi_ticket_record_v2" resource="default" engine="innodb" comment="YOXI票卷紀錄表">
+                <column xsi:type="int" name="record_id" unsigned="true" nullable="false" identity="true" comment="主鍵ID" />
+                <column xsi:type="int" name="batch_setting_id" unsigned="true" nullable="false" comment="貨號設定id" />
+                <column xsi:type="varchar" name="serial_number" nullable="false" length="255" comment="唯一序號" />
+                <column xsi:type="int" name="seller_id" unsigned="true" nullable="false" comment="賣家ID" />
+                <column xsi:type="int" name="belong_to_product_id" unsigned="true" nullable="false" comment="此紀錄歸屬的Magento商品ID" />
+                <column xsi:type="int" name="quote_item_id" unsigned="true" nullable="true" comment="此紀錄預分配時歸屬的quote item ID" />
+                <column xsi:type="int" name="sales_order_item_id" unsigned="true" nullable="true" comment="此紀錄賣出時歸屬的sales order item ID" />
+                <column xsi:type="datetime" name="use_start_time" on_update="false" nullable="true" comment="核銷(商品可實際使用)開始日期" />
+                <column xsi:type="datetime" name="use_end_time" on_update="false" nullable="true" comment="核銷(商品可實際使用)結束日期" />
+                <column xsi:type="int" name="due_days" unsigned="true" nullable="true" comment="另一種核銷結束日期; 在確定賣出後會根據當下時間轉換成use_end_time" />
+                <column xsi:type="datetime" name="used_date" nullable="true" comment="使用日期" />
+                <!-- yoxi won't have multiple use time now, zzz -->
+                <column xsi:type="varchar" name="used_transaction_no" nullable="true" comment="使用交易序號" />
+                <column xsi:type="varchar" name="used_store_no" nullable="true" comment="使用商店代號" />
+                <column xsi:type="int" name="used_count" unsigned="true" nullable="false" default="0" comment="已使用次數" />
+                <column xsi:type="datetime" name="returned_date" nullable="true" comment="退貨日期" />
+                <column xsi:type="int" name="status" nullable="false" default="0" comment="當前流程狀態(見\Branch8\HotaiCore\Model\Ticket\Status)" />
+                <column xsi:type="text" name="memo" nullable="true" comment="備註" />
+                <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At" />
+                <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At" />
+                <constraint xsi:type="primary" referenceId="PRIMARY">
+                        <column name="record_id" />
+                </constraint>
+                <constraint xsi:type="unique" referenceId="UNIQUE_SERIAL_NUMBER">
+                        <column name="serial_number"/>
+                </constraint>
+                <index referenceId="INDEX_BELONG_TO_PRODUCT_ID" indexType="btree">
+                        <column name="belong_to_product_id"/>
+                </index>
+                <index referenceId="INDEX_BATCH_SETTING_ID_AND_STATUS" indexType="btree">
+                        <column name="batch_setting_id"/>
+                        <column name="status"/>
+                </index>
+                <constraint xsi:type="foreign" referenceId="FOREIGN_BATCH_SETTING_ID" table="yoxi_ticket_record_v2" column="batch_setting_id" referenceTable="yoxi_batch_setting_v2" referenceColumn="setting_id" />
+                <constraint xsi:type="foreign" referenceId="FOREIGN_BELONG_TO_PRODUCT_ID" table="yoxi_ticket_record_v2" column="belong_to_product_id" referenceTable="catalog_product_entity" referenceColumn="entity_id" />
+                <constraint xsi:type="foreign" referenceId="FOREIGN_SALES_ORDER_ITEM_ID" table="yoxi_ticket_record_v2" column="sales_order_item_id" referenceTable="sales_order_item" referenceColumn="item_id" />
+        </table>
+</schema>
